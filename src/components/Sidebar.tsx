@@ -71,10 +71,14 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
 
           <Collapsible defaultOpen>
             <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-semibold text-white hover:bg-sidebar-hover">
-              Guias Rápidos
+              Consulta e Estudo
               <ChevronsUpDown className="h-4 w-4" />
             </CollapsibleTrigger>
             <CollapsibleContent className="space-y-1 pt-2 pl-4">
+              <NavLink to="/questions" className={navLinkClass}>
+                <FileQuestion className="h-4 w-4" />
+                Banca de Questões
+              </NavLink>
               <NavLink to="/procedures" className={navLinkClass}>
                 <ClipboardList className="h-4 w-4" />
                 Procedimentos
@@ -97,11 +101,6 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
               </NavLink>
             </CollapsibleContent>
           </Collapsible>
-
-          <NavLink to="/questions" className={navLinkClass}>
-            <FileQuestion className="h-4 w-4" />
-            Banca de Questões
-          </NavLink>
 
           {isAdmin && (
             <NavLink to="/admin" className={navLinkClass}>
