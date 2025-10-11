@@ -1,10 +1,14 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList } from "lucide-react";
+import { Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabase";
 
-const Navigation = () => {
+interface NavigationProps {
+  isAdmin: boolean;
+}
+
+const Navigation = ({ isAdmin }: NavigationProps) => {
   const navigate = useNavigate();
   const navItems = [
     { to: "/questions", icon: FileQuestion, label: "Questões" },
@@ -17,7 +21,7 @@ const Navigation = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/'); 
+    navigate('/login'); 
   };
 
   return (
@@ -48,6 +52,20 @@ const Navigation = () => {
                 <span className="hidden sm:inline">{item.label}</span>
               </NavLink>
             ))}
+            {isAdmin && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  cn(
+                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium text-blue-100 hover:bg-white/20 hover:text-white",
+                    isActive && "bg-white text-blue-700 font-semibold shadow-inner"
+                  )
+                }
+              >
+                <Shield className="h-4 w-4" />
+                <span className="hidden sm:inline">Admin</span>
+              </NavLink>
+            )}
             <Button variant="ghost" size="icon" onClick={handleLogout} className="text-blue-200 hover:bg-blue-700 hover:text-white ml-2" title="Sair">
               <LogOut className="h-5 w-5" />
               <span className="sr-only">Sair</span>
