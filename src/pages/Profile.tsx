@@ -67,7 +67,6 @@ const ProfilePage = () => {
 
     let newAvatarUrl = profile.avatar_url;
 
-    // 1. Se um novo arquivo foi selecionado, faça o upload primeiro.
     if (selectedFile) {
       const fileExt = selectedFile.name.split('.').pop();
       const filePath = `${profile.id}-${Date.now()}.${fileExt}`;
@@ -86,7 +85,6 @@ const ProfilePage = () => {
       newAvatarUrl = data.publicUrl;
     }
 
-    // 2. Atualize a tabela de perfis com todos os dados de uma vez.
     const { error: updateError } = await supabase
       .from('profiles')
       .update({
@@ -94,7 +92,6 @@ const ProfilePage = () => {
         last_name: values.lastName,
         bio: values.bio,
         avatar_url: newAvatarUrl,
-        updated_at: new Date(),
       })
       .eq('id', profile.id);
 
@@ -104,7 +101,7 @@ const ProfilePage = () => {
       toast.error("Erro ao atualizar perfil", { description: updateError.message });
     } else {
       toast.success("Perfil atualizado com sucesso!");
-      setSelectedFile(null); // Limpa o arquivo selecionado após o sucesso
+      setSelectedFile(null);
     }
   }
   
