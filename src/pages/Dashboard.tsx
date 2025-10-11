@@ -25,10 +25,50 @@ interface Question {
 }
 
 const quickAccessLinks = [
-  { title: "Gotejamento", icon: Calculator, path: "/calculator", description: "Calcule taxas de infusão." },
-  { title: "Medicamentos", icon: Syringe, path: "/medications", description: "Guia rápido de fármacos." },
-  { title: "Escalas Clínicas", icon: Scale, path: "/scales", description: "Avaliações padronizadas." },
-  { title: "Emergências", icon: Siren, path: "/emergency", description: "Protocolos de emergência." },
+  {
+    title: "Gotejamento",
+    icon: Calculator,
+    path: "/calculator",
+    description: "Calcule taxas de infusão.",
+    colorClasses: {
+      bg: "bg-blue-100 dark:bg-blue-900/30",
+      text: "text-blue-600 dark:text-blue-400",
+      hoverBorder: "hover:border-blue-400 dark:hover:border-blue-600",
+    },
+  },
+  {
+    title: "Medicamentos",
+    icon: Syringe,
+    path: "/medications",
+    description: "Guia rápido de fármacos.",
+    colorClasses: {
+      bg: "bg-red-100 dark:bg-red-900/30",
+      text: "text-red-600 dark:text-red-400",
+      hoverBorder: "hover:border-red-400 dark:hover:border-red-600",
+    },
+  },
+  {
+    title: "Escalas Clínicas",
+    icon: Scale,
+    path: "/scales",
+    description: "Avaliações padronizadas.",
+    colorClasses: {
+      bg: "bg-emerald-100 dark:bg-emerald-900/30",
+      text: "text-emerald-600 dark:text-emerald-400",
+      hoverBorder: "hover:border-emerald-400 dark:hover:border-emerald-600",
+    },
+  },
+  {
+    title: "Emergências",
+    icon: Siren,
+    path: "/emergency",
+    description: "Protocolos de emergência.",
+    colorClasses: {
+      bg: "bg-amber-100 dark:bg-amber-900/30",
+      text: "text-amber-600 dark:text-amber-400",
+      hoverBorder: "hover:border-amber-400 dark:hover:border-amber-600",
+    },
+  },
 ];
 
 const clinicalTips = [
@@ -75,6 +115,43 @@ const Dashboard = () => {
       <div>
         <h1 className="text-3xl font-bold text-foreground">Olá, {profile?.first_name || 'Profissional'}!</h1>
         <p className="text-muted-foreground mt-2">Bem-vindo(a) de volta ao seu ambiente de estudo e trabalho.</p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <h2 className="text-2xl font-semibold text-foreground mb-4">Acesso Rápido</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {quickAccessLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link to={link.path} key={link.title}>
+                  <Card className={cn("h-full hover:bg-accent transition-all group border-2 border-transparent", link.colorClasses.hoverBorder)}>
+                    <CardContent className="flex flex-col items-center justify-center text-center p-4">
+                      <div className={cn("p-3 rounded-lg mb-3 transition-colors", link.colorClasses.bg)}>
+                        <Icon className={cn("h-6 w-6 transition-colors", link.colorClasses.text)} />
+                      </div>
+                      <p className="font-semibold text-sm">{link.title}</p>
+                      <p className="text-xs text-muted-foreground">{link.description}</p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+        <div className="lg:col-span-1">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Lightbulb className="h-5 w-5 text-amber-500" />
+                Dica Clínica
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground italic">"{randomTip}"</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <Card className="w-full max-w-4xl mx-auto shadow-lg">
@@ -146,43 +223,6 @@ const Dashboard = () => {
           </div>
         </CardFooter>
       </Card>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <h2 className="text-2xl font-semibold text-foreground mb-4">Acesso Rápido</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {quickAccessLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <Link to={link.path} key={link.title}>
-                  <Card className="h-full hover:bg-accent hover:border-primary transition-all group">
-                    <CardContent className="flex flex-col items-center justify-center text-center p-4">
-                      <div className="p-3 bg-primary/10 rounded-lg mb-3 group-hover:bg-primary group-hover:text-primary-foreground">
-                        <Icon className="h-6 w-6 text-primary group-hover:text-primary-foreground" />
-                      </div>
-                      <p className="font-semibold text-sm">{link.title}</p>
-                      <p className="text-xs text-muted-foreground">{link.description}</p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-        <div className="lg:col-span-1">
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5 text-amber-500" />
-                Dica Clínica
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground italic">"{randomTip}"</p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
     </div>
   );
 };
