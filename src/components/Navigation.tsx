@@ -7,11 +7,11 @@ import { supabase } from "@/lib/supabase";
 const Navigation = () => {
   const navigate = useNavigate();
   const navItems = [
-    { to: "/", icon: Calculator, label: "Calculadora" },
-    { to: "/emergency", icon: Siren, label: "Emergências" },
-    { to: "/medications", icon: Syringe, label: "Medicamentos" },
-    { to: "/wound-care", icon: Bandage, label: "Curativos" },
-    { to: "/questions", icon: FileQuestion, label: "Questões" }
+    { to: "/", icon: Calculator, label: "Calculadora", activeClass: "bg-primary text-primary-foreground", inactiveClass: "hover:bg-primary/10 hover:text-primary" },
+    { to: "/emergency", icon: Siren, label: "Emergências", activeClass: "bg-destructive text-destructive-foreground", inactiveClass: "hover:bg-destructive/10 hover:text-destructive" },
+    { to: "/medications", icon: Syringe, label: "Medicamentos", activeClass: "bg-purple-600 text-white", inactiveClass: "hover:bg-purple-600/10 hover:text-purple-600" },
+    { to: "/wound-care", icon: Bandage, label: "Curativos", activeClass: "bg-teal-600 text-white", inactiveClass: "hover:bg-teal-600/10 hover:text-teal-600" },
+    { to: "/questions", icon: FileQuestion, label: "Questões", activeClass: "bg-amber-500 text-white", inactiveClass: "hover:bg-amber-500/10 hover:text-amber-600" }
   ];
 
   const handleLogout = async () => {
@@ -38,15 +38,15 @@ const Navigation = () => {
                 end={item.to === "/"}
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
+                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium",
                     isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                      ? item.activeClass
+                      : `text-muted-foreground ${item.inactiveClass}`
                   )
                 }
               >
                 <item.icon className="h-4 w-4" />
-                <span className="hidden sm:inline font-medium">{item.label}</span>
+                <span className="hidden sm:inline">{item.label}</span>
               </NavLink>
             ))}
             <Button variant="ghost" size="icon" onClick={handleLogout} className="text-muted-foreground hover:bg-accent hover:text-accent-foreground ml-2" title="Sair">
