@@ -132,30 +132,30 @@ const Calculator = () => {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <Card>
+        <Card className="bg-secondary/10">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><FlaskConical className="h-5 w-5 text-primary"/> Fórmulas de Cálculo</CardTitle>
+            <CardTitle className="flex items-center gap-2"><FlaskConical className="h-5 w-5 text-secondary"/> Fórmulas de Cálculo</CardTitle>
             <CardDescription>Entenda as fórmulas utilizadas</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="p-3 bg-muted rounded-lg">
+            <div className="p-3 bg-background/70 rounded-lg">
               <h3 className="font-semibold text-sm">Fórmula Geral</h3>
               <p className="font-mono text-xs text-muted-foreground">gotas/min = (Volume × Fator) ÷ (Tempo × 60)</p>
             </div>
-            <div className="p-3 bg-muted rounded-lg">
+            <div className="p-3 bg-background/70 rounded-lg">
               <h3 className="font-semibold text-sm">Macrogotas (20 gts/mL)</h3>
               <p className="text-xs text-muted-foreground">Simplificado: Volume ÷ (Tempo × 3)</p>
             </div>
-            <div className="p-3 bg-muted rounded-lg">
+            <div className="p-3 bg-background/70 rounded-lg">
               <h3 className="font-semibold text-sm">Microgotas (60 gts/mL)</h3>
               <p className="text-xs text-muted-foreground">Simplificado: Volume ÷ Tempo</p>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-accent">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><BookOpen className="h-5 w-5 text-primary"/> Guia de Uso</CardTitle>
+            <CardTitle className="flex items-center gap-2"><BookOpen className="h-5 w-5 text-accent-foreground"/> Guia de Uso</CardTitle>
             <CardDescription>Quando usar cada tipo de equipo</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -167,7 +167,7 @@ const Calculator = () => {
               <h4 className="font-semibold text-foreground">Microgotas (60 gts/mL)</h4>
               <p className="text-muted-foreground">Medicações de precisão, drogas vasoativas, pediatria, restrição hídrica.</p>
             </div>
-            <Alert>
+            <Alert className="bg-background/70">
               <CheckSquare className="h-4 w-4" />
               <AlertDescription className="text-sm">
                 <strong>Importante:</strong> Sempre verifique o tipo de equipo antes de iniciar a infusão.
