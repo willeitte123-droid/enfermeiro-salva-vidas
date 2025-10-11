@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -6,343 +7,30 @@ import {
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { ClipboardList, Syringe, Droplets, Info, AirVent, Bandage, CheckSquare, GitBranchPlus, Beaker, Bone, Scissors, Activity, HeartPulse, LineChart, TestTube, Zap } from "lucide-react";
-
-const procedures = [
-  {
-    title: "Sondagem Vesical de Demora (SVD)",
-    icon: ClipboardList,
-    color: "text-blue-500",
-    openColor: "text-blue-600",
-    description: "Inserção de um cateter na bexiga para drenagem contínua de urina.",
-    materials: [
-      "Pacote de cateterismo estéril", "Luvas estéreis", "Sonda de Foley", "Xilocaína gel", "Seringa 10/20ml", "Água destilada", "Clorexidina aquosa", "Bolsa coletora"
-    ],
-    steps: [
-      "Explicar o procedimento e garantir privacidade.",
-      "Realizar higiene íntima.",
-      "Abrir campo estéril e calçar luvas estéreis.",
-      "Realizar antissepsia da região genital.",
-      "Lubrificar e introduzir a sonda até o retorno de urina.",
-      "Insuflar o balonete com água destilada.",
-      "Conectar à bolsa coletora e fixar a sonda.",
-      "Registrar o procedimento e características da urina."
-    ],
-    observations: "Técnica estritamente asséptica é crucial para prevenir ITU. Nunca force a passagem da sonda. Documente o volume do balonete."
-  },
-  {
-    title: "Sondagem Vesical de Alívio",
-    icon: ClipboardList,
-    color: "text-sky-500",
-    openColor: "text-sky-600",
-    description: "Inserção de um cateter para esvaziamento imediato da bexiga, com remoção logo após o procedimento.",
-    materials: [
-      "Pacote de cateterismo estéril", "Luvas estéreis", "Sonda uretral (Nelaton)", "Xilocaína gel", "Clorexidina aquosa", "Cuba redonda ou similar para coletar urina"
-    ],
-    steps: [
-      "Seguir os mesmos passos de assepsia e preparo da Sondagem Vesical de Demora.",
-      "Lubrificar e introduzir a sonda uretral até o retorno de urina.",
-      "Drenar completamente a bexiga.",
-      "Retirar a sonda delicadamente assim que o fluxo de urina cessar.",
-      "Registrar o procedimento, volume e características da urina."
-    ],
-    observations: "Técnica limpa intermitente pode ser ensinada ao paciente para autocateterismo em domicílio. Em ambiente hospitalar, a técnica deve ser estéril."
-  },
-  {
-    title: "Acesso Venoso Periférico (AVP)",
-    icon: Syringe,
-    color: "text-red-500",
-    openColor: "text-red-600",
-    description: "Punção de uma veia periférica para administração de fluidos e medicamentos.",
-    materials: [
-      "Cateter sobre agulha (Jelco)", "Luvas de procedimento", "Garrote", "Swab com álcool 70%", "Curativo transparente", "Seringa com SF 0,9%"
-    ],
-    steps: [
-      "Escolher a veia (distal para proximal, membro não dominante).",
-      "Aplicar garrote e realizar antissepsia (aguardar secar).",
-      "Puncionar com bisel para cima (15-30º).",
-      "Observar refluxo sanguíneo, progredir o cateter e remover a agulha.",
-      "Soltar o garrote e conectar o equipo/polifix.",
-      "Testar perviedade com flush de SF 0,9%.",
-      "Fixar com curativo transparente e identificar o acesso.",
-      "Descartar perfurocortante adequadamente."
-    ],
-    observations: "Evitar articulações. Não puncionar membros com fístula, esvaziamento ganglionar ou lesões. Trocar apenas com indicação clínica."
-  },
-  {
-    title: "Inserção de Cateter Central de Inserção Periférica (PICC)",
-    icon: GitBranchPlus,
-    color: "text-indigo-500",
-    openColor: "text-indigo-600",
-    description: "Procedimento estéril para inserção de um cateter venoso central através de uma veia periférica.",
-    materials: [
-      "Kit PICC completo", "Ultrassom com probe linear", "Campo estéril amplo", "Anestésico local (Lidocaína)", "Equipamentos de proteção individual (EPI) completos"
-    ],
-    steps: [
-      "Obter consentimento informado.",
-      "Avaliar a rede venosa com ultrassom (veias basílica, braquial, cefálica).",
-      "Realizar paramentação cirúrgica completa.",
-      "Realizar antissepsia ampla do membro.",
-      "Anestesiar o local da punção.",
-      "Puncionar a veia guiado por ultrassom (Técnica de Seldinger).",
-      "Introduzir o fio-guia, seguido pelo introdutor/dilatador.",
-      "Inserir o cateter PICC até a medida pré-estabelecida.",
-      "Confirmar o posicionamento (padrão-ouro: radiografia de tórax).",
-      "Realizar curativo estéril com fixador específico."
-    ],
-    observations: "Procedimento avançado que exige capacitação e certificação específica. Seguir rigorosamente os protocolos institucionais e as resoluções do COFEN."
-  },
-  {
-    title: "Aferição da Pressão Venosa Central (PVC)",
-    icon: Activity,
-    color: "text-pink-500",
-    openColor: "text-pink-600",
-    description: "Medição da pressão na veia cava superior ou átrio direito, refletindo a pré-carga cardíaca.",
-    materials: [
-      "Kit de pressão invasiva (transdutor, domo)", "Bolsa pressurizadora", "Soro Fisiológico 0,9% 500ml", "Suporte de soro", "Monitor multiparamétrico com cabo de PAI"
-    ],
-    steps: [
-      "Montar o sistema de forma asséptica.",
-      "Instalar a bolsa de SF 0,9% no pressurizador e inflar até 300 mmHg.",
-      "Conectar o sistema ao monitor e ao cateter venoso central (via distal).",
-      "Posicionar o paciente em decúbito dorsal horizontal (0º).",
-      "Nivelar o transdutor no eixo flebostático (4º espaço intercostal, linha axilar média).",
-      "Zerar o sistema: fechar a via para o paciente, abrir para a atmosfera e acionar 'zerar PAI' no monitor.",
-      "Abrir a via para o paciente e observar a curva de pressão.",
-      "Registrar o valor da PVC (geralmente ao final da expiração)."
-    ],
-    observations: "O correto posicionamento do eixo flebostático é crucial para uma medida fidedigna. Valores normais: 2-8 mmHg ou 3-10 cmH₂O. Sempre verificar a qualidade da curva no monitor."
-  },
-  {
-    title: "Punção Arterial para Gasometria",
-    icon: Beaker,
-    color: "text-cyan-500",
-    openColor: "text-cyan-600",
-    description: "Coleta de sangue arterial para análise de gases sanguíneos, pH e eletrólitos.",
-    materials: [
-      "Seringa específica para gasometria (com heparina)", "Luvas de procedimento", "Antisséptico", "Gaze estéril", "Dispositivo de proteção para agulha"
-    ],
-    steps: [
-      "Realizar o Teste de Allen modificado para avaliar a circulação colateral (se puncionar a artéria radial).",
-      "Localizar o pulso arterial (radial, braquial ou femoral).",
-      "Realizar antissepsia do local.",
-      "Puncionar a artéria em um ângulo de 45-60º (radial) ou 90º (femoral).",
-      "Coletar 1-2 mL de sangue (a seringa se encherá com a pressão arterial).",
-      "Remover a agulha e aplicar compressão firme no local por 5-10 minutos.",
-      "Remover bolhas de ar da seringa, vedá-la e encaminhar ao laboratório imediatamente (em gelo, se necessário)."
-    ],
-    observations: "Evitar puncionar locais com lesões, fístulas ou infecções. A compressão pós-punção é vital para evitar hematomas."
-  },
-  {
-    title: "Acesso Intraósseo (AIO)",
-    icon: Bone,
-    color: "text-orange-500",
-    openColor: "text-orange-600",
-    description: "Punção da cavidade medular óssea para infusão de fluidos e drogas em emergências.",
-    materials: [
-      "Dispositivo de inserção (ex: EZ-IO, BIG)", "Agulha de calibre apropriado", "Antisséptico", "Seringa com SF 0,9%", "Equipo de infusão"
-    ],
-    steps: [
-      "Identificar o sítio de inserção (ex: tíbia proximal, úmero proximal).",
-      "Realizar antissepsia rigorosa do local.",
-      "Inserir o dispositivo de punção perpendicularmente ao osso até sentir a perda de resistência.",
-      "Remover o mandril e conectar uma seringa.",
-      "Aspirar para confirmar a presença de medula óssea (nem sempre visível).",
-      "Realizar flush com 10ml de SF 0,9% (pode exigir pressão).",
-      "Fixar o dispositivo e iniciar a infusão (pode ser necessário pressurizador)."
-    ],
-    observations: "Indicado em emergências (PCR, choque) quando o acesso venoso não é obtido rapidamente. É uma ponte temporária até um acesso definitivo ser estabelecido."
-  },
-  {
-    title: "Sutura de Feridas Simples",
-    icon: Scissors,
-    color: "text-gray-500",
-    openColor: "text-gray-600",
-    description: "Aproximação das bordas de feridas cutâneas limpas e superficiais.",
-    materials: [
-      "Kit de sutura estéril (porta-agulha, pinça, tesoura)", "Fio de sutura apropriado", "Anestésico local", "Seringa e agulha", "Antisséptico", "Campo estéril"
-    ],
-    steps: [
-      "Avaliar a ferida (profundidade, contaminação, corpos estranhos).",
-      "Realizar anestesia local infiltrativa.",
-      "Limpar e irrigar a ferida abundantemente com SF 0,9%.",
-      "Realizar a aproximação das bordas da ferida.",
-      "Executar a técnica de sutura (ex: pontos simples interrompidos).",
-      "Limpar a área suturada e aplicar curativo oclusivo.",
-      "Orientar o paciente sobre os cuidados e o retorno para retirada dos pontos."
-    ],
-    observations: "Realizado por enfermeiros com capacitação específica, conforme protocolos institucionais. Indicado para feridas lineares, limpas e sem perda de tecido."
-  },
-  {
-    title: "Sondagem Nasogástrica/Enteral (SNG/SNE)",
-    icon: Droplets,
-    color: "text-green-500",
-    openColor: "text-green-600",
-    description: "Inserção de sonda pelo nariz até o estômago/intestino para alimentação ou drenagem.",
-    materials: [
-      "Sonda (calibre adequado)", "Luvas", "Xilocaína gel", "Seringa 20ml", "Fita adesiva", "Estetoscópio", "Tira de pH"
-    ],
-    steps: [
-      "Posicionar paciente em Fowler (cabeceira 45-90º).",
-      "Medir a sonda (nariz -> lóbulo da orelha -> apêndice xifoide).",
-      "Lubrificar e introduzir a sonda, solicitando deglutição.",
-      "Verificar posicionamento: aspirar conteúdo gástrico e testar pH (≤ 5.5).",
-      "<strong>Padrão-ouro:</strong> solicitar radiografia para confirmar antes do uso.",
-      "Fixar a sonda e registrar o procedimento."
-    ],
-    observations: "Se o paciente tossir ou apresentar dispneia, retire a sonda imediatamente. O método de ausculta com injeção de ar é inseguro e não recomendado."
-  },
-  {
-    title: "Aspiração de Vias Aéreas",
-    icon: AirVent,
-    color: "text-purple-500",
-    openColor: "text-purple-600",
-    description: "Remoção de secreções da árvore traqueobrônquica.",
-    materials: [
-      "Sonda de aspiração estéril", "Luva estéril", "Fonte de vácuo (80-120 mmHg)", "Frasco coletor", "Gaze estéril", "SF 0,9% ou AD"
-    ],
-    steps: [
-      "Hiperoxigenar o paciente por 1-2 minutos.",
-      "Calçar luva estéril na mão dominante.",
-      "Conectar a sonda e introduzir desligada até encontrar resistência.",
-      "Aplicar aspiração intermitente, com movimentos rotacionais, ao retirar a sonda.",
-      "O procedimento não deve exceder <strong>15 segundos</strong>.",
-      "Reoxigenar o paciente entre as aspirações.",
-      "Registrar aspecto e volume da secreção."
-    ],
-    observations: "Técnica estritamente asséptica. Monitorar SpO2 e FC durante todo o procedimento. Aspirar primeiro a via aérea artificial, depois a boca/nariz com outra sonda."
-  },
-  {
-    title: "Curativo Simples",
-    icon: Bandage,
-    color: "text-teal-500",
-    openColor: "text-teal-600",
-    description: "Limpeza e proteção de feridas limpas com baixo potencial de infecção.",
-    materials: [
-      "Pacote de curativo estéril", "Luvas de procedimento", "Soro fisiológico 0,9% morno", "Cobertura secundária", "Fita adesiva"
-    ],
-    steps: [
-      "Remover o curativo antigo e avaliar a ferida.",
-      "Calçar novas luvas ou usar técnica asséptica com pinças.",
-      "Limpar a ferida com gaze umedecida em SF 0,9%.",
-      "Realizar a limpeza sempre da <strong>área menos contaminada para a mais contaminada</strong> (centro para as bordas).",
-      "Secar as bordas da ferida com gaze seca.",
-      "Aplicar a cobertura secundária estéril e fixar.",
-      "Registrar o procedimento e a evolução da ferida."
-    ],
-    observations: "Sempre registrar as características da lesão para acompanhar a evolução. Feridas com sinais de infecção exigem avaliação e coberturas específicas."
-  },
-  {
-    title: "Transfusão Sanguínea",
-    icon: HeartPulse,
-    color: "text-red-600",
-    openColor: "text-red-700",
-    description: "Administração de hemocomponentes (concentrado de hemácias, plaquetas, plasma) por via intravenosa.",
-    materials: [
-      "Equipo de transfusão com filtro", "Hemocomponente", "Acesso venoso pérvio (18G/20G)", "Luvas", "Material para aferição de SSVV"
-    ],
-    steps: [
-      "Confirmar prescrição e consentimento informado.",
-      "Obter o hemocomponente no serviço de hemoterapia.",
-      "<strong>Dupla checagem à beira-leito:</strong> Dois profissionais devem confirmar a identificação do paciente (nome completo, data de nascimento) com a etiqueta da bolsa (tipo sanguíneo, fator Rh, número da bolsa).",
-      "Aferir e registrar os sinais vitais basais do paciente.",
-      "Instalar o equipo e iniciar a infusão lentamente nos primeiros 15 minutos (aprox. 2 mL/min).",
-      "<strong>Permanecer com o paciente nos primeiros 15 minutos</strong>, monitorando sinais de reação transfusional (febre, calafrios, dor lombar, prurido, dispneia).",
-      "Se não houver reação, ajustar a velocidade de infusão conforme prescrição (geralmente para correr em até 4 horas para CH).",
-      "Aferir SSVV periodicamente durante e após a transfusão.",
-      "Registrar todo o procedimento, incluindo horários, SSVV e qualquer intercorrência."
-    ],
-    observations: "A checagem de identificação à beira-leito é a barreira de segurança mais crítica para prevenir reações hemolíticas fatais. Nunca adicione medicamentos à bolsa de sangue. O tempo máximo de infusão para concentrado de hemácias é de 4 horas."
-  },
-  {
-    title: "Eletrocardiograma (ECG) de 12 Derivações",
-    icon: LineChart,
-    color: "text-purple-600",
-    openColor: "text-purple-700",
-    description: "Registro da atividade elétrica do coração a partir de 12 pontos de vista diferentes.",
-    materials: [
-      "Eletrocardiógrafo", "Eletrodos descartáveis", "Gaze com álcool", "Material para tricotomia (se necessário)"
-    ],
-    steps: [
-      "Explicar o procedimento e posicionar o paciente em decúbito dorsal, relaxado.",
-      "Expor o tórax, punhos e tornozelos. Realizar tricotomia e limpeza da pele com álcool se necessário.",
-      "<strong>Posicionamento dos eletrodos periféricos:</strong> R (braço direito - Vermelho), A (braço esquerdo - Amarelo), L (perna esquerda - Verde/Green), N (perna direita - Preto/Neutro). Mnemônico: 'Flamengo Sempre Ganha no Brasil'.",
-      "<strong>Posicionamento dos eletrodos precordiais:</strong> V1 (4º EIC, à direita do esterno), V2 (4º EIC, à esquerda do esterno), V3 (entre V2 e V4), V4 (5º EIC, na linha hemiclavicular), V5 (5º EIC, na linha axilar anterior), V6 (5º EIC, na linha axilar média).",
-      "Conectar os cabos aos eletrodos, seguindo as cores e identificações.",
-      "Verificar a calibração padrão (N = 10mm, 25 mm/s) e registrar o ECG, solicitando ao paciente que não fale ou se mova.",
-      "Identificar o traçado com nome completo do paciente, data e hora."
-    ],
-    observations: "O posicionamento correto dos eletrodos é crucial para um diagnóstico preciso. A troca de cabos gera alterações que podem simular patologias graves. Em mulheres, os eletrodos V3-V6 devem ser colocados abaixo da mama."
-  },
-  {
-    title: "Coleta de Hemoculturas",
-    icon: TestTube,
-    color: "text-orange-600",
-    openColor: "text-orange-700",
-    description: "Coleta de amostras de sangue para detecção de microrganismos na corrente sanguínea.",
-    materials: [
-      "Frascos de hemocultura (aeróbio e anaeróbio)", "Luvas estéreis", "Clorexidina alcoólica >0,5%", "Dispositivo de coleta", "Garrote", "Gaze estéril"
-    ],
-    steps: [
-      "Realizar higiene das mãos e identificar os frascos.",
-      "Escolher o sítio de punção (preferencialmente veia periférica).",
-      "<strong>Realizar antissepsia rigorosa da pele:</strong> Aplicar clorexidina alcoólica com movimentos de vai e vem por 30 segundos e aguardar a secagem completa.",
-      "Realizar antissepsia da tampa de borracha dos frascos com álcool 70%.",
-      "Calçar luvas estéreis e realizar a punção venosa sem palpar novamente o local.",
-      "Coletar o volume de sangue recomendado (8-10 mL por frasco em adultos).",
-      "Inocular primeiro o frasco <strong>aeróbio</strong>, depois o <strong>anaeróbio</strong>.",
-      "Homogeneizar suavemente os frascos e encaminhar ao laboratório imediatamente."
-    ],
-    observations: "A contaminação da amostra é o principal desafio. A técnica de antissepsia da pele é a etapa mais crítica. Idealmente, coletar duas amostras de locais de punção diferentes. Evitar coletar de acessos venosos já existentes."
-  },
-  {
-    title: "Cuidados com Traqueostomia",
-    icon: AirVent,
-    color: "text-cyan-600",
-    openColor: "text-cyan-700",
-    description: "Manutenção da perviedade e higiene da via aérea artificial para prevenir complicações.",
-    materials: [
-      "Kit de curativo estéril", "Luvas (estéril e de procedimento)", "SF 0,9%", "Gaze estéril", "Cadarço de fixação", "Material para aspiração"
-    ],
-    steps: [
-      "Explicar o procedimento e posicionar o paciente em semi-Fowler.",
-      "Aspirar a via aérea (cânula e boca) antes de iniciar o curativo.",
-      "Remover o curativo antigo e inspecionar o estoma para sinais de infecção.",
-      "<strong>Limpeza do estoma:</strong> Com técnica asséptica, limpar a pele ao redor do estoma com gaze umedecida em SF 0,9%, do estoma para fora.",
-      "Secar a pele e aplicar um novo curativo estéril específico para traqueostomia (não cortar gaze comum).",
-      "<strong>Troca do cadarço de fixação (realizada por dois profissionais):</strong> Um estabiliza a cânula enquanto o outro troca o cadarço. A fixação deve permitir a passagem de um dedo.",
-      "Se aplicável, remover, limpar e reinserir a cânula interna.",
-      "Verificar e manter a pressão do cuff entre 20-30 cmH₂O."
-    ],
-    observations: "A troca do cadarço é um momento de alto risco para decanulação acidental. Manter sempre um kit de traqueostomia de emergência (com uma cânula do mesmo tamanho e uma de tamanho menor) à beira do leito."
-  },
-  {
-    title: "Cardioversão Elétrica e Desfibrilação",
-    icon: Zap,
-    color: "text-yellow-500",
-    openColor: "text-yellow-600",
-    description: "Aplicação de uma corrente elétrica no tórax para reverter arritmias cardíacas.",
-    materials: [
-      "Desfibrilador/cardioversor", "Pás ou eletrodos adesivos", "Material para sedação/analgesia", "Material de SAV"
-    ],
-    steps: [
-      "<strong>Desfibrilação (PCR por FV/TV sem pulso):</strong>",
-      "1. Ligar o desfibrilador e aplicar as pás/eletrodos.",
-      "2. Selecionar a carga (ex: 200J bifásico) e carregar enquanto a RCP continua.",
-      "3. <strong>Garantir segurança:</strong> Afastar todos do paciente ('Afastar!').",
-      "4. Aplicar o choque e <strong>reiniciar a RCP imediatamente</strong>.",
-      "<strong>Cardioversão Sincronizada (Taquiarritmias instáveis com pulso):</strong>",
-      "1. Administrar sedação/analgesia.",
-      "2. <strong>Ativar o modo 'SINCRONIZAR' (SYNC)</strong> e verificar se há um marcador em cada QRS.",
-      "3. Selecionar a carga (ex: 50-100J para FA) e carregar.",
-      "4. Garantir segurança ('Afastar!').",
-      "5. Pressionar e <strong>manter pressionado</strong> o botão de choque até a descarga ocorrer."
-    ],
-    observations: "A principal diferença é a <strong>sincronização</strong>. Desfibrilação é para PCR e não é sincronizada. Cardioversão é para pacientes com pulso e <strong>DEVE</strong> ser sincronizada para evitar o fenômeno R sobre T. Se o paciente entrar em PCR, desligue o modo SYNC e desfibrila."
-  }
-];
+import { Info, CheckSquare, Search } from "lucide-react";
+import { procedures } from "@/data/procedures";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Procedures = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeCategory, setActiveCategory] = useState("Todos");
+
+  const categories = useMemo(() => {
+    const allCategories = procedures.map(p => p.category);
+    return ["Todos", ...Array.from(new Set(allCategories))];
+  }, []);
+
+  const filteredProcedures = useMemo(() => {
+    return procedures
+      .filter(proc => activeCategory === "Todos" || proc.category === activeCategory)
+      .filter(proc =>
+        proc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        proc.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+  }, [searchTerm, activeCategory]);
+
   return (
     <div className="space-y-6">
       <div>
@@ -350,54 +38,82 @@ const Procedures = () => {
         <p className="text-muted-foreground">Checklists passo a passo para os principais procedimentos de enfermagem</p>
       </div>
 
-      <Accordion type="single" collapsible className="w-full space-y-4">
-        {procedures.map((proc, index) => {
-          const Icon = proc.icon;
-          return (
-            <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
-              <AccordionTrigger className="group hover:no-underline text-left">
-                <div className="flex items-center gap-4">
-                  <Icon className={`h-6 w-6 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
+      <div className="space-y-4">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por procedimento..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+
+        <Tabs value={activeCategory} onValueChange={setActiveCategory}>
+          <TabsList className="flex flex-wrap h-auto">
+            {categories.map(category => (
+              <TabsTrigger key={category} value={category}>{category}</TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </div>
+
+      {filteredProcedures.length > 0 ? (
+        <Accordion type="single" collapsible className="w-full space-y-4">
+          {filteredProcedures.map((proc, index) => {
+            const Icon = proc.icon;
+            return (
+              <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
+                <AccordionTrigger className="group hover:no-underline text-left">
+                  <div className="flex items-center gap-4">
+                    <Icon className={`h-6 w-6 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
+                    <div>
+                      <h3 className="font-semibold text-lg">{proc.title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">{proc.description}</p>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 space-y-6">
                   <div>
-                    <h3 className="font-semibold text-lg">{proc.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-1">{proc.description}</p>
+                    <h4 className="font-semibold text-primary mb-3">Materiais Essenciais</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {proc.materials.map((material, i) => (
+                        <Badge key={i} variant="secondary">{material}</Badge>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="pt-4 space-y-6">
-                <div>
-                  <h4 className="font-semibold text-primary mb-3">Materiais Essenciais</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {proc.materials.map((material, i) => (
-                      <Badge key={i} variant="secondary">{material}</Badge>
-                    ))}
+
+                  <div>
+                    <h4 className="font-semibold text-primary mb-3">Passo a Passo</h4>
+                    <ol className="space-y-3">
+                      {proc.steps.map((step, i) => (
+                        <li key={i} className="flex items-start gap-3 text-sm">
+                          <CheckSquare className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                          <span dangerouslySetInnerHTML={{ __html: step }} />
+                        </li>
+                      ))}
+                    </ol>
                   </div>
-                </div>
 
-                <div>
-                  <h4 className="font-semibold text-primary mb-3">Passo a Passo</h4>
-                  <ol className="space-y-3">
-                    {proc.steps.map((step, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm">
-                        <CheckSquare className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                        <span dangerouslySetInnerHTML={{ __html: step }} />
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-
-                <Alert>
-                  <Info className="h-4 w-4" />
-                  <AlertTitle className="font-semibold">Pontos Críticos</AlertTitle>
-                  <AlertDescription>
-                    {proc.observations}
-                  </AlertDescription>
-                </Alert>
-              </AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
+                  <Alert>
+                    <Info className="h-4 w-4" />
+                    <AlertTitle className="font-semibold">Pontos Críticos</AlertTitle>
+                    <AlertDescription>
+                      {proc.observations}
+                    </AlertDescription>
+                  </Alert>
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      ) : (
+        <Card>
+          <CardContent className="py-12 text-center text-muted-foreground">
+            Nenhum procedimento encontrado para os filtros selecionados.
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
