@@ -33,23 +33,28 @@ const AppContent = () => {
 
   useEffect(() => {
     const getSessionAndProfile = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        setSession(session);
 
-      if (session?.user) {
-        const { data: profileData, error } = await supabase
-          .from('profiles')
-          .select('id, role, status')
-          .eq('id', session.user.id)
-          .single();
-        
-        if (error) {
-          console.error("Error fetching profile:", error);
-        } else {
-          setProfile(profileData);
+        if (session?.user) {
+          const { data: profileData, error } = await supabase
+            .from('profiles')
+            .select('id, role, status')
+            .eq('id', session.user.id)
+            .single();
+          
+          if (error) {
+            console.error("Error fetching profile:", error);
+          } else {
+            setProfile(profileData);
+          }
         }
+      } catch (e) {
+        console.error("Error during initial session fetch:", e);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     getSessionAndProfile();
