@@ -7,12 +7,12 @@ import { supabase } from "@/lib/supabase";
 const Navigation = () => {
   const navigate = useNavigate();
   const navItems = [
-    { to: "/questions", icon: FileQuestion, label: "Questões", activeClass: "text-amber-600 bg-amber-500/10", inactiveClass: "hover:bg-accent" },
-    { to: "/procedures", icon: ClipboardList, label: "Procedimentos", activeClass: "text-cyan-600 bg-cyan-500/10", inactiveClass: "hover:bg-accent" },
-    { to: "/medications", icon: Syringe, label: "Medicamentos", activeClass: "text-purple-600 bg-purple-500/10", inactiveClass: "hover:bg-accent" },
-    { to: "/", icon: Calculator, label: "Calculadora", activeClass: "text-indigo-600 bg-indigo-500/10", inactiveClass: "hover:bg-accent" },
-    { to: "/emergency", icon: Siren, label: "Emergências", activeClass: "text-rose-600 bg-rose-500/10", inactiveClass: "hover:bg-accent" },
-    { to: "/wound-care", icon: Bandage, label: "Curativos", activeClass: "text-emerald-600 bg-emerald-500/10", inactiveClass: "hover:bg-accent" }
+    { to: "/questions", icon: FileQuestion, label: "Questões", activeClass: "text-amber-600 bg-amber-500/10", inactiveClass: "hover:bg-white/60" },
+    { to: "/procedures", icon: ClipboardList, label: "Procedimentos", activeClass: "text-cyan-600 bg-cyan-500/10", inactiveClass: "hover:bg-white/60" },
+    { to: "/medications", icon: Syringe, label: "Medicamentos", activeClass: "text-purple-600 bg-purple-500/10", inactiveClass: "hover:bg-white/60" },
+    { to: "/", icon: Calculator, label: "Calculadora", activeClass: "text-indigo-600 bg-indigo-500/10", inactiveClass: "hover:bg-white/60" },
+    { to: "/emergency", icon: Siren, label: "Emergências", activeClass: "text-rose-600 bg-rose-500/10", inactiveClass: "hover:bg-white/60" },
+    { to: "/wound-care", icon: Bandage, label: "Curativos", activeClass: "text-emerald-600 bg-emerald-500/10", inactiveClass: "hover:bg-white/60" }
   ];
 
   const handleLogout = async () => {
@@ -21,7 +21,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="border-b bg-card">
+    <nav className="border-b border-blue-200 bg-blue-100">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
@@ -50,7 +50,7 @@ const Navigation = () => {
                 <span className="hidden sm:inline">{item.label}</span>
               </NavLink>
             ))}
-            <Button variant="ghost" size="icon" onClick={handleLogout} className="text-muted-foreground hover:bg-accent hover:text-accent-foreground ml-2" title="Sair">
+            <Button variant="ghost" size="icon" onClick={handleLogout} className="text-muted-foreground hover:bg-white/60 hover:text-accent-foreground ml-2" title="Sair">
               <LogOut className="h-5 w-5" />
               <span className="sr-only">Sair</span>
             </Button>
