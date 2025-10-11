@@ -2,6 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/comp
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Brain, User, ShieldAlert, Gauge, Smile, Users, Bed } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const scales = [
   {
@@ -10,6 +11,11 @@ const scales = [
     icon: Brain,
     path: "/scales/glasgow",
     status: "available",
+    color: {
+      bg: "bg-blue-100 dark:bg-blue-900/30",
+      text: "text-blue-600 dark:text-blue-400",
+      border: "hover:border-blue-300 dark:hover:border-blue-700",
+    },
   },
   {
     title: "Escala de Braden",
@@ -17,6 +23,11 @@ const scales = [
     icon: User,
     path: "/scales/braden",
     status: "available",
+    color: {
+      bg: "bg-emerald-100 dark:bg-emerald-900/30",
+      text: "text-emerald-600 dark:text-emerald-400",
+      border: "hover:border-emerald-300 dark:hover:border-emerald-700",
+    },
   },
   {
     title: "Escala de RASS",
@@ -24,6 +35,11 @@ const scales = [
     icon: Gauge,
     path: "/scales/rass",
     status: "available",
+    color: {
+      bg: "bg-amber-100 dark:bg-amber-900/30",
+      text: "text-amber-600 dark:text-amber-400",
+      border: "hover:border-amber-300 dark:hover:border-amber-700",
+    },
   },
   {
     title: "Escala de Faces (Wong-Baker)",
@@ -31,6 +47,11 @@ const scales = [
     icon: Smile,
     path: "/scales/wong-baker",
     status: "available",
+    color: {
+      bg: "bg-rose-100 dark:bg-rose-900/30",
+      text: "text-rose-600 dark:text-rose-400",
+      border: "hover:border-rose-300 dark:hover:border-rose-700",
+    },
   },
   {
     title: "Escala de Fugulin",
@@ -38,6 +59,11 @@ const scales = [
     icon: Users,
     path: "/scales/fugulin",
     status: "available",
+    color: {
+      bg: "bg-violet-100 dark:bg-violet-900/30",
+      text: "text-violet-600 dark:text-violet-400",
+      border: "hover:border-violet-300 dark:hover:border-violet-700",
+    },
   },
   {
     title: "Escala de Morse",
@@ -45,6 +71,11 @@ const scales = [
     icon: ShieldAlert,
     path: "/scales/morse",
     status: "available",
+    color: {
+      bg: "bg-red-100 dark:bg-red-900/30",
+      text: "text-red-600 dark:text-red-400",
+      border: "hover:border-red-300 dark:hover:border-red-700",
+    },
   },
   {
     title: "Índice de Aldrete",
@@ -52,6 +83,11 @@ const scales = [
     icon: Bed,
     path: "/scales/aldrete",
     status: "available",
+    color: {
+      bg: "bg-sky-100 dark:bg-sky-900/30",
+      text: "text-sky-600 dark:text-sky-400",
+      border: "hover:border-sky-300 dark:hover:border-sky-700",
+    },
   },
 ];
 
@@ -68,11 +104,11 @@ const Scales = () => {
         {scales.map((scale, index) => {
           const Icon = scale.icon;
           return (
-            <Card key={index} className="flex flex-col">
+            <Card key={index} className={cn("flex flex-col transition-all", scale.color.border)}>
               <CardHeader>
                 <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 p-3 rounded-lg">
-                    <Icon className="h-6 w-6 text-primary" />
+                  <div className={cn("p-3 rounded-lg", scale.color.bg)}>
+                    <Icon className={cn("h-6 w-6", scale.color.text)} />
                   </div>
                   <div>
                     <CardTitle>{scale.title}</CardTitle>
