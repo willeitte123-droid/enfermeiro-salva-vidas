@@ -140,15 +140,15 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="lg:col-span-1">
-          <Card className="h-full">
+          <Card className="h-full bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5 text-amber-500" />
+              <CardTitle className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                <Lightbulb className="h-5 w-5" />
                 Dica Clínica
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground italic">"{randomTip}"</p>
+              <p className="text-sm text-amber-900 dark:text-amber-200 italic">"{randomTip}"</p>
             </CardContent>
           </Card>
         </div>
