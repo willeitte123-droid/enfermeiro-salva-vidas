@@ -18,6 +18,9 @@ import Admin from "./pages/Admin";
 import Scales from "./pages/Scales";
 import GlasgowScale from "./pages/scales/GlasgowScale";
 import BradenScale from "./pages/scales/BradenScale";
+import RassScale from "./pages/scales/RassScale";
+import WongBakerScale from "./pages/scales/WongBakerScale";
+import FugulinScale from "./pages/scales/FugulinScale";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
@@ -60,6 +63,9 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="scales" element={<Scales />} />
         <Route path="scales/glasgow" element={<GlasgowScale />} />
         <Route path="scales/braden" element={<BradenScale />} />
+        <Route path="scales/rass" element={<RassScale />} />
+        <Route path="scales/wong-baker" element={<WongBakerScale />} />
+        <Route path="scales/fugulin" element={<FugulinScale />} />
         <Route path="ecg" element={<div className="text-center p-12">Guia de ECG em construção...</div>} />
         <Route path="*" element={<NotFound />} />
       </Route>

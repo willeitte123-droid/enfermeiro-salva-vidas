@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Brain, User, ShieldAlert, Gauge, Smile, Baby } from "lucide-react";
+import { Brain, User, ShieldAlert, Gauge, Smile, Users } from "lucide-react";
 
 const scales = [
   {
@@ -19,30 +19,30 @@ const scales = [
     status: "available",
   },
   {
-    title: "Escala de Morse",
-    description: "Avalia o risco de queda em pacientes hospitalizados.",
-    icon: ShieldAlert,
-    path: "#",
-    status: "soon",
-  },
-  {
     title: "Escala de RASS",
     description: "Monitora o nível de agitação e sedação em pacientes críticos.",
     icon: Gauge,
-    path: "#",
-    status: "soon",
+    path: "/scales/rass",
+    status: "available",
   },
   {
     title: "Escala de Faces (Wong-Baker)",
     description: "Avalia a intensidade da dor, especialmente em crianças.",
     icon: Smile,
-    path: "#",
-    status: "soon",
+    path: "/scales/wong-baker",
+    status: "available",
   },
   {
     title: "Escala de Fugulin",
     description: "Classifica o grau de dependência dos pacientes para dimensionamento.",
-    icon: Baby,
+    icon: Users,
+    path: "/scales/fugulin",
+    status: "available",
+  },
+  {
+    title: "Escala de Morse",
+    description: "Avalia o risco de queda em pacientes hospitalizados.",
+    icon: ShieldAlert,
     path: "#",
     status: "soon",
   },
