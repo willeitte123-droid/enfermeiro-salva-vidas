@@ -7,13 +7,14 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabase";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface SidebarProps {
   isAdmin: boolean;
   user: {
     first_name?: string;
     last_name?: string;
+    avatar_url?: string;
   } | null;
 }
 
@@ -114,6 +115,7 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Avatar className="h-9 w-9">
+              <AvatarImage src={user?.avatar_url} alt={`${user?.first_name} ${user?.last_name}`} />
               <AvatarFallback className="bg-primary text-primary-foreground">{getInitials()}</AvatarFallback>
             </Avatar>
             <div>

@@ -8,6 +8,7 @@ interface Profile {
   status: string;
   first_name?: string;
   last_name?: string;
+  avatar_url?: string;
 }
 
 interface MainLayoutProps {
@@ -17,7 +18,11 @@ interface MainLayoutProps {
 
 const MainLayout = ({ session, profile }: MainLayoutProps) => {
   const isAdmin = profile?.role === 'admin';
-  const user = profile ? { first_name: profile.first_name, last_name: profile.last_name } : null;
+  const user = profile ? { 
+    first_name: profile.first_name, 
+    last_name: profile.last_name,
+    avatar_url: profile.avatar_url 
+  } : null;
 
   return (
     <div className="flex min-h-screen w-full bg-muted/40">
