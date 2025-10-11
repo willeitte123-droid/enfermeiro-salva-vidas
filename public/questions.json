@@ -41,7 +41,7 @@
   {
     "id": 4,
     "category": "Sinais Vitais",
-    "question": "Qual a frequência respiratória normal em um adulto em repou so?",
+    "question": "Qual a frequência respiratória normal em um adulto em repouso?",
     "options": [
       { "id": "A", "text": "8 a 10 irpm" },
       { "id": "B", "text": "12 a 20 irpm" },
