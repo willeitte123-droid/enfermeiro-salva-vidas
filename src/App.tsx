@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Calculator from "./pages/Calculator";
 import Emergency from "./pages/Emergency";
@@ -15,6 +15,9 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
+import Scales from "./pages/Scales";
+import GlasgowScale from "./pages/scales/GlasgowScale";
+import BradenScale from "./pages/scales/BradenScale";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
@@ -54,8 +57,9 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="procedures" element={<Procedures />} />
         <Route path="questions" element={<Questions />} />
         <Route path="admin" element={isAdmin ? <Admin /> : <Navigate to="/" />} />
-        {/* Adicione rotas para as novas páginas aqui */}
-        <Route path="scales" element={<div className="text-center p-12">Página de Escalas Clínicas em construção...</div>} />
+        <Route path="scales" element={<Scales />} />
+        <Route path="scales/glasgow" element={<GlasgowScale />} />
+        <Route path="scales/braden" element={<BradenScale />} />
         <Route path="ecg" element={<div className="text-center p-12">Guia de ECG em construção...</div>} />
         <Route path="*" element={<NotFound />} />
       </Route>
