@@ -3,7 +3,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
 import Calculator from "./pages/Calculator";
 import Emergency from "./pages/Emergency";
 import Medications from "./pages/Medications";
@@ -11,13 +12,13 @@ import WoundCare from "./pages/WoundCare";
 import Procedures from "./pages/Procedures";
 import Questions from "./pages/Questions";
 import NotFound from "./pages/NotFound";
-import Navigation from "./components/Navigation";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
+import MainLayout from "./components/MainLayout";
 
 const queryClient = new QueryClient();
 
@@ -27,70 +28,9 @@ interface Profile {
   status: string;
 }
 
-const AppContent = () => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // 1. Perform the initial, one-time session check.
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false); // Crucial: stop loading after the first check
-    });
-
-    // 2. Set up the listener for subsequent auth changes.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    // 3. Clean up the listener on component unmount.
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (session?.user) {
-      const fetchProfile = async () => {
-        try {
-          const { data: profileData, error } = await supabase
-            .from('profiles')
-            .select('id, role, status')
-            .eq('id', session.user.id)
-            .single();
-          
-          if (error) {
-            console.error("Error fetching profile:", error.message);
-            setProfile(null);
-          } else {
-            setProfile(profileData);
-          }
-        } catch (e) {
-          console.error("An unexpected error occurred while fetching profile:", e);
-          setProfile(null);
-        }
-      };
-      fetchProfile();
-    } else {
-      setProfile(null);
-    }
-  }, [session]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        Carregando...
-      </div>
-    );
-  }
-
+const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null, profile: Profile | null, isAdmin: boolean }) => {
   if (!session) {
-    return (
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    );
+    return <Navigate to="/login" />;
   }
 
   if (profile?.status === 'pending') {
@@ -103,26 +43,74 @@ const AppContent = () => {
     );
   }
 
+  return (
+    <Routes>
+      <Route path="/" element={<MainLayout session={session} />}>
+        <Route index element={<Dashboard />} />
+        <Route path="calculator" element={<Calculator />} />
+        <Route path="emergency" element={<Emergency />} />
+        <Route path="medications" element={<Medications />} />
+        <Route path="wound-care" element={<WoundCare />} />
+        <Route path="procedures" element={<Procedures />} />
+        <Route path="questions" element={<Questions />} />
+        <Route path="admin" element={isAdmin ? <Admin /> : <Navigate to="/" />} />
+        {/* Adicione rotas para as novas páginas aqui */}
+        <Route path="scales" element={<div className="text-center p-12">Página de Escalas Clínicas em construção...</div>} />
+        <Route path="ecg" element={<div className="text-center p-12">Guia de ECG em construção...</div>} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  );
+};
+
+const AppContent = () => {
+  const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (session?.user) {
+      const fetchProfile = async () => {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, role, status')
+          .eq('id', session.user.id)
+          .single();
+        
+        if (error) {
+          console.error("Error fetching profile:", error.message);
+          setProfile(null);
+        } else {
+          setProfile(data);
+        }
+      };
+      fetchProfile();
+    } else {
+      setProfile(null);
+    }
+  }, [session]);
+
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">Carregando...</div>;
+  }
+
   const isAdmin = profile?.role === 'admin';
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navigation isAdmin={isAdmin} />
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <Routes>
-          <Route path="/login" element={<Navigate to="/" />} />
-          <Route path="/register" element={<Navigate to="/" />} />
-          <Route path="/" element={<Calculator />} />
-          <Route path="/emergency" element={<Emergency />} />
-          <Route path="/medications" element={<Medications />} />
-          <Route path="/wound-care" element={<WoundCare />} />
-          <Route path="/procedures" element={<Procedures />} />
-          <Route path="/questions" element={<Questions />} />
-          <Route path="/admin" element={isAdmin ? <Admin /> : <Navigate to="/" />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-    </div>
+    <Routes>
+      <Route path="/login" element={session ? <Navigate to="/" /> : <Login />} />
+      <Route path="/register" element={session ? <Navigate to="/" /> : <Register />} />
+      <Route path="/*" element={<ProtectedRoute session={session} profile={profile} isAdmin={isAdmin} />} />
+    </Routes>
   );
 };
 
