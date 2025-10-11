@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -19,21 +20,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Stethoscope } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor, insira um email válido." }),
   password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
 });
 
-interface LoginProps {
-  onLoginSuccess: () => void;
-}
-
-const Login = ({ onLoginSuccess }: LoginProps) => {
-  const navigate = useNavigate();
+const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,12 +40,16 @@ const Login = ({ onLoginSuccess }: LoginProps) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    if (values.email === "admin@enfermagem.pro" && values.password === "admin123") {
-      onLoginSuccess();
-      navigate("/");
-    } else {
-      toast.error("Email ou senha inválidos.", {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
+    setIsLoading(false);
+
+    if (error) {
+      toast.error("Falha no login", {
         description: "Por favor, verifique seus dados e tente novamente.",
       });
     }
@@ -75,7 +77,7 @@ const Login = ({ onLoginSuccess }: LoginProps) => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="admin@enfermagem.pro" {...field} />
+                      <Input placeholder="willeitte123@gmail.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,14 +99,14 @@ const Login = ({ onLoginSuccess }: LoginProps) => {
                       </Link>
                     </div>
                     <FormControl>
-                      <Input type="password" placeholder="admin123" {...field} />
+                      <Input type="password" placeholder="Enfermagem@12" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
-                Entrar
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Entrando..." : "Entrar"}
               </Button>
             </form>
           </Form>
