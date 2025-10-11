@@ -1,0 +1,652 @@
+[
+  {
+    "id": 1,
+    "category": "Farmacologia",
+    "question": "Qual o antídoto específico para intoxicação por paracetamol?",
+    "options": [
+      { "id": "A", "text": "Flumazenil" },
+      { "id": "B", "text": "N-acetilcisteína" },
+      { "id": "C", "text": "Naloxona" },
+      { "id": "D", "text": "Protamina" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A N-acetilcisteína é o antídoto para intoxicação por paracetamol, pois repõe os estoques de glutationa hepática."
+  },
+  {
+    "id": 2,
+    "category": "Urgência e Emergência",
+    "question": "Em uma PCR, qual a sequência correta do suporte básico de vida?",
+    "options": [
+      { "id": "A", "text": "A-B-C (Vias aéreas, Respiração, Circulação)" },
+      { "id": "B", "text": "C-A-B (Circulação, Vias aéreas, Respiração)" },
+      { "id": "C", "text": "A-C-B (Vias aéreas, Circulação, Respiração)" },
+      { "id": "D", "text": "B-C-A (Respiração, Circulação, Vias aéreas)" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A sequência C-A-B prioriza iniciar compressões torácicas imediatamente."
+  },
+  {
+    "id": 3,
+    "category": "Administração de Medicamentos",
+    "question": "Qual via de administração apresenta absorção mais rápida?",
+    "options": [
+      { "id": "A", "text": "Via oral" },
+      { "id": "B", "text": "Via subcutânea" },
+      { "id": "C", "text": "Via intramuscular" },
+      { "id": "D", "text": "Via intravenosa" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A via intravenosa (IV) proporciona absorção imediata do medicamento na corrente sanguínea."
+  },
+  {
+    "id": 4,
+    "category": "Sinais Vitais",
+    "question": "Qual a frequência respiratória normal em um adulto em repouso?",
+    "options": [
+      { "id": "A", "text": "8 a 10 irpm" },
+      { "id": "B", "text": "12 a 20 irpm" },
+      { "id": "C", "text": "25 a 30 irpm" },
+      { "id": "D", "text": "30 a 40 irpm" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A frequência respiratória normal em adultos em repouso é de 12 a 20 incursões por minuto (irpm)."
+  },
+  {
+    "id": 5,
+    "category": "Curativos",
+    "question": "Para feridas com grande quantidade de exsudato, qual cobertura é mais indicada?",
+    "options": [
+      { "id": "A", "text": "Hidrocolóide" },
+      { "id": "B", "text": "Alginato de cálcio" },
+      { "id": "C", "text": "Filme transparente" },
+      { "id": "D", "text": "Hidrogel" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O alginato de cálcio tem alta capacidade de absorção de exsudato."
+  },
+  {
+    "id": 6,
+    "category": "Infecção Hospitalar",
+    "question": "Qual o tempo mínimo para higienização das mãos com álcool gel 70%?",
+    "options": [
+      { "id": "A", "text": "5 a 10 segundos" },
+      { "id": "B", "text": "20 a 30 segundos" },
+      { "id": "C", "text": "40 a 60 segundos" },
+      { "id": "D", "text": "1 a 2 minutos" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A higienização das mãos com álcool gel 70% deve durar de 20 a 30 segundos."
+  },
+  {
+    "id": 7,
+    "category": "Cálculo de Medicamentos",
+    "question": "Prescrito Dipirona 2g EV. Disponível ampola de 2ml com 500mg/ml. Quantos ml administrar?",
+    "options": [
+      { "id": "A", "text": "2 ml" },
+      { "id": "B", "text": "4 ml" },
+      { "id": "C", "text": "6 ml" },
+      { "id": "D", "text": "8 ml" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "2g = 2000mg. Se cada ml contém 500mg, então: 2000mg ÷ 500mg/ml = 4ml."
+  },
+  {
+    "id": 8,
+    "category": "Oxigenoterapia",
+    "question": "Qual dispositivo de O2 permite a administração de FiO2 mais precisa?",
+    "options": [
+      { "id": "A", "text": "Cateter nasal" },
+      { "id": "B", "text": "Máscara de Venturi" },
+      { "id": "C", "text": "Máscara simples" },
+      { "id": "D", "text": "Máscara com reservatório" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A máscara de Venturi permite administração precisa de FiO2 através de adaptadores coloridos."
+  },
+  {
+    "id": 9,
+    "category": "Sondagem",
+    "question": "Qual o volume para insuflar o balonete de uma sonda vesical em adultos?",
+    "options": [
+      { "id": "A", "text": "3 a 5 ml" },
+      { "id": "B", "text": "5 a 10 ml" },
+      { "id": "C", "text": "10 a 20 ml" },
+      { "id": "D", "text": "20 a 30 ml" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O volume recomendado para insuflar o balonete de uma sonda vesical em adultos é de 10 a 20ml de água destilada."
+  },
+  {
+    "id": 10,
+    "category": "Ética e Legislação",
+    "question": "Segundo o Código de Ética, qual conduta é considerada infração?",
+    "options": [
+      { "id": "A", "text": "Recusar-se a executar atividades não pertinentes" },
+      { "id": "B", "text": "Registrar informações no prontuário" },
+      { "id": "C", "text": "Divulgar informação confidencial do paciente" },
+      { "id": "D", "text": "Prestar assistência livre de danos" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Divulgar informação confidencial do paciente sem autorização configura quebra do sigilo profissional."
+  },
+  {
+    "id": 11,
+    "category": "Hemodinâmica",
+    "question": "Qual a pressão sistólica considerada como hipotensão em adultos?",
+    "options": [
+      { "id": "A", "text": "Menor que 120 mmHg" },
+      { "id": "B", "text": "Menor que 110 mmHg" },
+      { "id": "C", "text": "Menor que 100 mmHg" },
+      { "id": "D", "text": "Menor que 90 mmHg" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Pressão arterial sistólica menor que 90 mmHg é considerada hipotensão arterial em adultos."
+  },
+  {
+    "id": 12,
+    "category": "Nutrição Parenteral",
+    "question": "Qual via de acesso é preferencial para nutrição parenteral total (NPT)?",
+    "options": [
+      { "id": "A", "text": "Via periférica" },
+      { "id": "B", "text": "Via intramuscular" },
+      { "id": "C", "text": "Via central" },
+      { "id": "D", "text": "Via subcutânea" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A NPT deve ser administrada por via central devido à alta osmolaridade da solução."
+  },
+  {
+    "id": 13,
+    "category": "Glicemia",
+    "question": "Qual valor de glicemia capilar caracteriza hipoglicemia em adultos?",
+    "options": [
+      { "id": "A", "text": "Menor que 100 mg/dL" },
+      { "id": "B", "text": "Menor que 90 mg/dL" },
+      { "id": "C", "text": "Menor que 80 mg/dL" },
+      { "id": "D", "text": "Menor que 70 mg/dL" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Glicemia capilar menor que 70 mg/dL caracteriza hipoglicemia em adultos."
+  },
+  {
+    "id": 14,
+    "category": "Imunização",
+    "question": "Qual vacina é contraindicada para gestantes?",
+    "options": [
+      { "id": "A", "text": "Hepatite B" },
+      { "id": "B", "text": "Tríplice viral (sarampo, caxumba, rubéola)" },
+      { "id": "C", "text": "Influenza" },
+      { "id": "D", "text": "dTpa (tríplice bacteriana acelular)" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A vacina tríplice viral é contraindicada na gestação por conter vírus vivos atenuados."
+  },
+  {
+    "id": 15,
+    "category": "Queimaduras",
+    "question": "Pela regra dos nove, qual a % de área queimada em um adulto com queimadura em todo membro inferior direito?",
+    "options": [
+      { "id": "A", "text": "9%" },
+      { "id": "B", "text": "18%" },
+      { "id": "C", "text": "27%" },
+      { "id": "D", "text": "36%" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Pela regra dos nove de Wallace, cada membro inferior corresponde a 18% da superfície corporal total."
+  },
+  {
+    "id": 16,
+    "category": "Transfusão Sanguínea",
+    "question": "Qual o tempo máximo para infusão de uma unidade de concentrado de hemácias?",
+    "options": [
+      { "id": "A", "text": "1 hora" },
+      { "id": "B", "text": "2 horas" },
+      { "id": "C", "text": "4 horas" },
+      { "id": "D", "text": "6 horas" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O tempo máximo para infusão de concentrado de hemácias é de 4 horas."
+  },
+  {
+    "id": 17,
+    "category": "Precauções e Isolamento",
+    "question": "Qual tipo de precaução para paciente com tuberculose pulmonar bacilífera?",
+    "options": [
+      { "id": "A", "text": "Precaução de contato" },
+      { "id": "B", "text": "Precaução de gotículas" },
+      { "id": "C", "text": "Precaução aerossol/aérea" },
+      { "id": "D", "text": "Precaução padrão apenas" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Tuberculose pulmonar bacilífera requer precaução aerossol/aérea e uso de máscara N95/PFF2."
+  },
+  {
+    "id": 18,
+    "category": "Dor",
+    "question": "Qual escala de dor é mais adequada para pacientes com dificuldade de comunicação verbal?",
+    "options": [
+      { "id": "A", "text": "Escala Visual Analógica (EVA)" },
+      { "id": "B", "text": "Escala Numérica" },
+      { "id": "C", "text": "Escala de Faces" },
+      { "id": "D", "text": "Escala Verbal" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Escala de Faces é mais adequada para pacientes com dificuldade de comunicação verbal, crianças e idosos."
+  },
+  {
+    "id": 19,
+    "category": "Eletrocardiograma",
+    "question": "Qual derivação é mais sensível para detectar isquemia em parede inferior do miocárdio?",
+    "options": [
+      { "id": "A", "text": "V1, V2, V3" },
+      { "id": "B", "text": "DI e aVL" },
+      { "id": "C", "text": "DII, DIII e aVF" },
+      { "id": "D", "text": "V5 e V6" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "As derivações DII, DIII e aVF são as mais sensíveis para detectar alterações isquêmicas em parede inferior do miocárdio."
+  },
+  {
+    "id": 20,
+    "category": "Pediatria",
+    "question": "Qual o local mais adequado para verificar o pulso em lactentes durante uma PCR?",
+    "options": [
+      { "id": "A", "text": "Pulso radial" },
+      { "id": "B", "text": "Pulso carotídeo" },
+      { "id": "C", "text": "Pulso braquial" },
+      { "id": "D", "text": "Pulso femoral" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Em lactentes (menores de 1 ano), o pulso braquial é o mais adequado para verificação durante PCR."
+  },
+  {
+    "id": 21,
+    "category": "Segurança do Paciente",
+    "question": "Qual é o método mais confiável para identificação do paciente?",
+    "options": [
+      { "id": "A", "text": "Perguntar o nome do paciente" },
+      { "id": "B", "text": "Verificar o número do leito" },
+      { "id": "C", "text": "Conferir nome completo e data de nascimento na pulseira" },
+      { "id": "D", "text": "Confirmar com o acompanhante" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A dupla checagem (nome completo e data de nascimento) na pulseira de identificação é o padrão-ouro."
+  },
+  {
+    "id": 22,
+    "category": "Sinais Vitais",
+    "question": "Qual é a faixa de pressão arterial considerada normal para um adulto?",
+    "options": [
+      { "id": "A", "text": "Sistólica < 140 e Diastólica < 90 mmHg" },
+      { "id": "B", "text": "Sistólica < 120 e Diastólica < 80 mmHg" },
+      { "id": "C", "text": "Sistólica < 130 e Diastólica < 85 mmHg" },
+      { "id": "D", "text": "Sistólica < 160 e Diastólica < 100 mmHg" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Uma pressão arterial com sistólica inferior a 120 mmHg e diastólica inferior a 80 mmHg é considerada ótima/normal."
+  },
+  {
+    "id": 23,
+    "category": "Administração de Medicamentos",
+    "question": "Os '5 Certos' são: Paciente, Medicamento, Via, Hora e...?",
+    "options": [
+      { "id": "A", "text": "Registro Certo" },
+      { "id": "B", "text": "Médico Certo" },
+      { "id": "C", "text": "Dose Certa" },
+      { "id": "D", "text": "Validade Certa" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Os 5 Certos fundamentais são: Paciente Certo, Medicamento Certo, Via Certa, Hora Certa e Dose Certa."
+  },
+  {
+    "id": 24,
+    "category": "Procedimentos de Enfermagem",
+    "question": "Qual é o ângulo de inserção da agulha para uma injeção intramuscular no deltoide?",
+    "options": [
+      { "id": "A", "text": "15 graus" },
+      { "id": "B", "text": "45 graus" },
+      { "id": "C", "text": "90 graus" },
+      { "id": "D", "text": "120 graus" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A injeção intramuscular deve ser administrada em um ângulo de 90 graus."
+  },
+  {
+    "id": 25,
+    "category": "Urgência e Emergência",
+    "question": "Na Escala de Coma de Glasgow, qual pontuação indica coma (grave)?",
+    "options": [
+      { "id": "A", "text": "15" },
+      { "id": "B", "text": "12 a 14" },
+      { "id": "C", "text": "9 a 11" },
+      { "id": "D", "text": "Igual ou inferior a 8" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Uma pontuação na Escala de Coma de Glasgow igual ou inferior a 8 é classificada como TCE grave."
+  },
+  {
+    "id": 26,
+    "category": "Curativos",
+    "question": "Quais são os sinais clássicos de infecção em uma ferida?",
+    "options": [
+      { "id": "A", "text": "Dor, calor, rubor e edema" },
+      { "id": "B", "text": "Prurido e descamação" },
+      { "id": "C", "text": "Tecido de granulação" },
+      { "id": "D", "text": "Exsudato seroso" }
+    ],
+    "correctAnswer": "A",
+    "explanation": "Os sinais flogísticos clássicos de infecção são: dor, calor, rubor (vermelhidão) e edema (inchaço)."
+  },
+  {
+    "id": 27,
+    "category": "Ética e Legislação",
+    "question": "A recusa de um paciente consciente em aceitar um tratamento deve ser:",
+    "options": [
+      { "id": "A", "text": "Ignorada" },
+      { "id": "B", "text": "Respeitada e documentada" },
+      { "id": "C", "text": "Comunicada à família para que decidam" },
+      { "id": "D", "text": "Forçada" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O princípio da autonomia garante ao paciente o direito de decidir sobre seu tratamento. A recusa deve ser respeitada e registrada."
+  },
+  {
+    "id": 28,
+    "category": "Cuidados Fundamentais",
+    "question": "Qual é a principal medida para prevenção de lesão por pressão?",
+    "options": [
+      { "id": "A", "text": "Administração de analgésicos" },
+      { "id": "B", "text": "Uso de colchão de água" },
+      { "id": "C", "text": "Mudança de decúbito a cada 2 horas" },
+      { "id": "D", "text": "Manter o paciente em decúbito dorsal" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A mudança de decúbito programada (a cada 2 horas) é a intervenção mais eficaz para aliviar a pressão."
+  },
+  {
+    "id": 29,
+    "category": "Controle de Infecção",
+    "question": "Qual dos seguintes é considerado um Equipamento de Proteção Individual (EPI)?",
+    "options": [
+      { "id": "A", "text": "Bisturi" },
+      { "id": "B", "text": "Seringa" },
+      { "id": "C", "text": "Luvas de procedimento" },
+      { "id": "D", "text": "Termômetro" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Luvas de procedimento são um EPI essencial para proteger o profissional e o paciente."
+  },
+  {
+    "id": 30,
+    "category": "Eletrocardiograma",
+    "question": "No ECG, a onda P representa qual evento elétrico do coração?",
+    "options": [
+      { "id": "A", "text": "Repolarização ventricular" },
+      { "id": "B", "text": "Despolarização ventricular" },
+      { "id": "C", "text": "Despolarização atrial" },
+      { "id": "D", "text": "Repolarização atrial" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A onda P no eletrocardiograma corresponde à despolarização dos átrios."
+  },
+  {
+    "id": 31,
+    "category": "Saúde da Mulher",
+    "question": "Qual o período de puerpério imediato?",
+    "options": [
+      { "id": "A", "text": "Do 1º ao 10º dia pós-parto" },
+      { "id": "B", "text": "Do 11º ao 45º dia pós-parto" },
+      { "id": "C", "text": "As primeiras 24 horas pós-parto" },
+      { "id": "D", "text": "A partir do 45º dia pós-parto" }
+    ],
+    "correctAnswer": "A",
+    "explanation": "O puerpério imediato compreende o período do 1º ao 10º dia após o parto, fase de maiores transformações involutivas."
+  },
+  {
+    "id": 32,
+    "category": "Saúde Mental",
+    "question": "Qual o principal cuidado de enfermagem a um paciente em crise de ansiedade?",
+    "options": [
+      { "id": "A", "text": "Deixá-lo sozinho para se acalmar" },
+      { "id": "B", "text": "Administrar medicação sem avaliação prévia" },
+      { "id": "C", "text": "Manter um ambiente calmo e seguro, e utilizar comunicação terapêutica" },
+      { "id": "D", "text": "Confrontar o paciente sobre seus medos" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Manter um ambiente tranquilo, garantir a segurança e usar uma comunicação clara e empática são fundamentais para ajudar o paciente a retomar o controle."
+  },
+  {
+    "id": 33,
+    "category": "Centro Cirúrgico",
+    "question": "A contagem de compressas e instrumentais cirúrgicos é realizada em qual momento?",
+    "options": [
+      { "id": "A", "text": "Apenas no início do procedimento" },
+      { "id": "B", "text": "Apenas no final do procedimento" },
+      { "id": "C", "text": "Antes do início, antes do fechamento de cavidades e ao final" },
+      { "id": "D", "text": "Apenas se o cirurgião solicitar" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A contagem de segurança deve ser realizada em três momentos chave para prevenir a retenção de corpos estranhos no paciente."
+  },
+  {
+    "id": 34,
+    "category": "CME",
+    "question": "Qual método de esterilização é indicado para artigos termossensíveis?",
+    "options": [
+      { "id": "A", "text": "Autoclave a vapor" },
+      { "id": "B", "text": "Estufa" },
+      { "id": "C", "text": "Óxido de etileno (ETO) ou plasma de peróxido de hidrogênio" },
+      { "id": "D", "text": "Fervura" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Métodos de baixa temperatura como óxido de etileno (ETO) ou plasma de peróxido de hidrogênio são usados para esterilizar materiais que não suportam o calor da autoclave."
+  },
+  {
+    "id": 35,
+    "category": "Geriatria",
+    "question": "Qual a principal complicação da imobilidade prolongada em idosos?",
+    "options": [
+      { "id": "A", "text": "Melhora da circulação" },
+      { "id": "B", "text": "Aumento da massa muscular" },
+      { "id": "C", "text": "Lesão por pressão e trombose venosa profunda" },
+      { "id": "D", "text": "Aumento da densidade óssea" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A imobilidade aumenta o risco de lesões por pressão devido à compressão tecidual e de trombose venosa profunda pela estase sanguínea."
+  },
+  {
+    "id": 36,
+    "category": "Farmacologia",
+    "question": "A heparina é um anticoagulante. Qual exame laboratorial é usado para monitorar sua dose terapêutica?",
+    "options": [
+      { "id": "A", "text": "Tempo de Protrombina (TP/INR)" },
+      { "id": "B", "text": "Tempo de Tromboplastina Parcial Ativada (TTPa)" },
+      { "id": "C", "text": "Contagem de plaquetas" },
+      { "id": "D", "text": "Hemograma completo" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O TTPa é utilizado para monitorar a terapia com heparina não fracionada, mantendo-se geralmente entre 1,5 a 2,5 vezes o valor de controle."
+  },
+  {
+    "id": 37,
+    "category": "Urgência e Emergência",
+    "question": "Em um paciente com suspeita de Infarto Agudo do Miocárdio (IAM), qual a sigla mnemônica para o tratamento inicial?",
+    "options": [
+      { "id": "A", "text": "FAST (Face, Arms, Speech, Time)" },
+      { "id": "B", "text": "CAB (Compressions, Airway, Breathing)" },
+      { "id": "C", "text": "MONA (Morfina, Oxigênio, Nitrato, AAS)" },
+      { "id": "D", "text": "SAMU (Serviço de Atendimento Móvel de Urgência)" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "MONA é um mnemônico clássico para as primeiras intervenções no IAM, embora a sequência e indicação de cada item dependam da avaliação clínica."
+  },
+  {
+    "id": 38,
+    "category": "Sinais Vitais",
+    "question": "O que é a Pressão Arterial Média (PAM) e qual seu valor ideal?",
+    "options": [
+      { "id": "A", "text": "A média entre a sistólica e diastólica, ideal > 90 mmHg" },
+      { "id": "B", "text": "A pressão de pulso, ideal > 40 mmHg" },
+      { "id": "C", "text": "A pressão de perfusão tecidual, ideal entre 70 e 105 mmHg" },
+      { "id": "D", "text": "A pressão venosa central, ideal < 8 mmHg" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A PAM reflete a perfusão dos órgãos. É calculada como (PAS + 2xPAD)/3. Um valor acima de 65-70 mmHg é geralmente necessário para manter a perfusão adequada."
+  },
+  {
+    "id": 39,
+    "category": "Curativos",
+    "question": "O que é desbridamento autolítico?",
+    "options": [
+      { "id": "A", "text": "Remoção cirúrgica de tecido necrótico" },
+      { "id": "B", "text": "Uso de larvas para limpar a ferida" },
+      { "id": "C", "text": "Uso de coberturas que mantêm a umidade para que as enzimas do corpo removam o tecido desvitalizado" },
+      { "id": "D", "text": "Aplicação de produtos químicos para dissolver a necrose" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O desbridamento autolítico é um processo natural facilitado por curativos como hidrogel e hidrocoloide, que criam um ambiente úmido para a ação de enzimas endógenas."
+  },
+  {
+    "id": 40,
+    "category": "Segurança do Paciente",
+    "question": "A Escala de Morse é utilizada para avaliar o risco de quê?",
+    "options": [
+      { "id": "A", "text": "Lesão por pressão" },
+      { "id": "B", "text": "Quedas" },
+      { "id": "C", "text": "Desnutrição" },
+      { "id": "D", "text": "Flebite" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Escala de Morse é uma ferramenta validada para avaliar o risco de quedas em pacientes hospitalizados, baseada em fatores como histórico de quedas, diagnóstico secundário e uso de dispositivos."
+  },
+  {
+    "id": 41,
+    "category": "Pediatria",
+    "question": "Qual é o sinal de sofrimento respiratório mais comum em recém-nascidos?",
+    "options": [
+      { "id": "A", "text": "Tosse seca" },
+      { "id": "B", "text": "Febre alta" },
+      { "id": "C", "text": "Batimento de asa de nariz e tiragem intercostal" },
+      { "id": "D", "text": "Choro forte e contínuo" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Batimento de asa de nariz, tiragem intercostal/subcostal e gemência expiratória são sinais clássicos de desconforto respiratório em neonatos."
+  },
+  {
+    "id": 42,
+    "category": "Administração de Medicamentos",
+    "question": "Por que a insulina NPH nunca deve ser administrada por via intravenosa?",
+    "options": [
+      { "id": "A", "text": "Porque causa dor intensa" },
+      { "id": "B", "text": "Porque é uma suspensão e pode causar embolia" },
+      { "id": "C", "text": "Porque seu efeito é muito lento" },
+      { "id": "D", "text": "Porque causa reação alérgica grave" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A insulina NPH tem aspecto leitoso por ser uma suspensão. A administração IV de suspensões é proibida pelo risco de embolia pulmonar."
+  },
+  {
+    "id": 43,
+    "category": "Eletrocardiograma",
+    "question": "O que o complexo QRS representa no ECG?",
+    "options": [
+      { "id": "A", "text": "Contração dos átrios" },
+      { "id": "B", "text": "Relaxamento dos ventrículos" },
+      { "id": "C", "text": "Despolarização dos ventrículos" },
+      { "id": "D", "text": "Abertura da válvula aórtica" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O complexo QRS representa a despolarização ventricular, que é o impulso elétrico que leva à contração dos ventrículos."
+  },
+  {
+    "id": 44,
+    "category": "Controle de Infecção",
+    "question": "Qual a diferença entre antissepsia e assepsia?",
+    "options": [
+      { "id": "A", "text": "Não há diferença, são sinônimos" },
+      { "id": "B", "text": "Antissepsia é em superfícies inanimadas e assepsia em tecidos vivos" },
+      { "id": "C", "text": "Antissepsia é a redução de microrganismos em tecidos vivos e assepsia é o conjunto de medidas para evitar a contaminação de uma área" },
+      { "id": "D", "text": "Assepsia é a esterilização e antissepsia é a desinfecção" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Antissepsia refere-se ao uso de antissépticos (ex: clorexidina) na pele para reduzir a carga microbiana. Assepsia é o conjunto de práticas (ex: uso de campos estéreis) para manter um ambiente livre de contaminação."
+  },
+  {
+    "id": 45,
+    "category": "Cálculo de Medicamentos",
+    "question": "Para administrar 500ml de Soro Fisiológico em 8 horas, qual será a taxa de gotejamento em gotas/minuto (equipo macrogotas)?",
+    "options": [
+      { "id": "A", "text": "15 gts/min" },
+      { "id": "B", "text": "21 gts/min" },
+      { "id": "C", "text": "28 gts/min" },
+      { "id": "D", "text": "35 gts/min" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Fórmula: Volume (ml) / (Tempo (h) x 3). Cálculo: 500 / (8 x 3) = 500 / 24 ≈ 20,8. O valor mais próximo é 21 gotas/minuto."
+  },
+  {
+    "id": 46,
+    "category": "Sondagem",
+    "question": "Qual o teste realizado para confirmar o posicionamento da sonda nasogástrica antes da primeira utilização?",
+    "options": [
+      { "id": "A", "text": "Injetar 20ml de ar e auscultar o epigástrio" },
+      { "id": "B", "text": "Aspirar conteúdo gástrico e verificar o pH" },
+      { "id": "C", "text": "Radiografia de tórax e abdômen" },
+      { "id": "D", "text": "Colocar a ponta da sonda em um copo com água" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A radiografia é o padrão-ouro para confirmar o posicionamento correto da sonda no estômago e descartar posicionamento pulmonar, que é um risco grave."
+  },
+  {
+    "id": 47,
+    "category": "Imunização",
+    "question": "A vacina BCG protege contra quais formas graves de tuberculose?",
+    "options": [
+      { "id": "A", "text": "Tuberculose pulmonar" },
+      { "id": "B", "text": "Tuberculose cutânea" },
+      { "id": "C", "text": "Tuberculose miliar e meníngea" },
+      { "id": "D", "text": "Tuberculose óssea" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A vacina BCG é altamente eficaz na prevenção das formas graves e disseminadas da tuberculose na infância, como a miliar e a meníngea."
+  },
+  {
+    "id": 48,
+    "category": "Ética e Legislação",
+    "question": "O que é imperícia na prática de enfermagem?",
+    "options": [
+      { "id": "A", "text": "Agir de forma precipitada, sem cautela" },
+      { "id": "B", "text": "Deixar de fazer algo que deveria ser feito" },
+      { "id": "C", "text": "Realizar um procedimento sem ter o conhecimento técnico e habilidade necessários" },
+      { "id": "D", "text": "Causar dano intencionalmente ao paciente" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Imperícia é a falta de habilidade ou conhecimento técnico para realizar um ato profissional, resultando em dano ao paciente."
+  },
+  {
+    "id": 49,
+    "category": "Cuidados Fundamentais",
+    "question": "Qual a posição recomendada para um paciente com dispneia (falta de ar)?",
+    "options": [
+      { "id": "A", "text": "Decúbito dorsal (deitado de costas)" },
+      { "id": "B", "text": "Posição de Trendelenburg (pés elevados)" },
+      { "id": "C", "text": "Posição de Fowler ou semi-Fowler (cabeceira elevada)" },
+      { "id": "D", "text": "Decúbito ventral (deitado de bruços)" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A posição de Fowler (cabeceira elevada a 45-60 graus) facilita a expansão pulmonar e alivia a sensação de falta de ar."
+  },
+  {
+    "id": 50,
+    "category": "Transfusão Sanguínea",
+    "question": "Quais são os primeiros sinais e sintomas de uma reação transfusional aguda?",
+    "options": [
+      { "id": "A", "text": "Sonolência e relaxamento" },
+      { "id": "B", "text": "Aumento da diurese" },
+      { "id": "C", "text": "Febre, calafrios, dor lombar e prurido" },
+      { "id": "D", "text": "Melhora súbita do estado geral" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Febre, calafrios, dor lombar, prurido, urticária e taquicardia são sinais de alerta para uma reação transfusional. A infusão deve ser interrompida imediatamente."
+  }
+]
