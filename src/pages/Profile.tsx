@@ -30,6 +30,8 @@ const profileSchema = z.object({
 const ProfilePage = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [isLoading, setIsLoading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -47,29 +49,70 @@ const ProfilePage = () => {
         lastName: profile.last_name || "",
         bio: profile.bio || "",
       });
+      setAvatarUrl(profile.avatar_url || null);
     }
   }, [profile, form]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      setSelectedFile(file);
+      setAvatarUrl(URL.createObjectURL(file));
+    }
+  };
 
   async function onSubmit(values: z.infer<typeof profileSchema>) {
     if (!profile) return;
     setIsLoading(true);
-    const { error } = await supabase
+
+    let newAvatarUrl = profile.avatar_url;
+
+    // 1. Se um novo arquivo foi selecionado, faça o upload primeiro.
+    if (selectedFile) {
+      const fileExt = selectedFile.name.split('.').pop();
+      const filePath = `${profile.id}-${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, selectedFile);
+
+      if (uploadError) {
+        toast.error("Erro no upload da foto", { description: uploadError.message });
+        setIsLoading(false);
+        return;
+      }
+      
+      const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+      newAvatarUrl = data.publicUrl;
+    }
+
+    // 2. Atualize a tabela de perfis com todos os dados de uma vez.
+    const { error: updateError } = await supabase
       .from('profiles')
       .update({
         first_name: values.firstName,
         last_name: values.lastName,
         bio: values.bio,
+        avatar_url: newAvatarUrl,
         updated_at: new Date(),
       })
       .eq('id', profile.id);
+
     setIsLoading(false);
 
-    if (error) {
-      toast.error("Erro ao atualizar perfil", { description: error.message });
+    if (updateError) {
+      toast.error("Erro ao atualizar perfil", { description: updateError.message });
     } else {
       toast.success("Perfil atualizado com sucesso!");
+      setSelectedFile(null); // Limpa o arquivo selecionado após o sucesso
     }
   }
+  
+  const getInitials = () => {
+    const firstName = form.getValues("firstName")?.[0] || '';
+    const lastName = form.getValues("lastName")?.[0] || '';
+    return `${firstName}${lastName}`.toUpperCase();
+  };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -78,23 +121,27 @@ const ProfilePage = () => {
         <p className="text-muted-foreground">Atualize suas informações pessoais e sua biografia.</p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Foto de Perfil</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <AvatarUpload />
-        </CardContent>
-      </Card>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Foto de Perfil</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <AvatarUpload 
+                avatarUrl={avatarUrl}
+                onFileChange={handleFileChange}
+                getInitials={getInitials}
+              />
+            </CardContent>
+          </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Informações Pessoais</CardTitle>
-          <CardDescription>Seu nome e biografia serão exibidos em seu perfil público.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Informações Pessoais</CardTitle>
+              <CardDescription>Seu nome e biografia serão exibidos em seu perfil público.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -136,14 +183,17 @@ const ProfilePage = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isLoading}>
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Salvar Alterações
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+          
+          <div className="flex justify-end">
+            <Button type="submit" disabled={isLoading}>
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Salvar Alterações
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 };
