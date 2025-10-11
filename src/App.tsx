@@ -33,11 +33,24 @@ const AppContent = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // onAuthStateChange fires an event immediately with the initial session.
-    // This is the most reliable way to get the session state on page load.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    // 1. Perform the initial, one-time session check.
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      if (session?.user) {
+      setLoading(false); // Crucial: stop loading after the first check
+    });
+
+    // 2. Set up the listener for subsequent auth changes.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    // 3. Clean up the listener on component unmount.
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (session?.user) {
+      const fetchProfile = async () => {
         try {
           const { data: profileData, error } = await supabase
             .from('profiles')
@@ -46,9 +59,7 @@ const AppContent = () => {
             .single();
           
           if (error) {
-            // This can happen if the profile hasn't been created yet.
-            // We'll log it but not treat it as a fatal error.
-            console.error("Error fetching profile on auth change:", error.message);
+            console.error("Error fetching profile:", error.message);
             setProfile(null);
           } else {
             setProfile(profileData);
@@ -57,17 +68,12 @@ const AppContent = () => {
           console.error("An unexpected error occurred while fetching profile:", e);
           setProfile(null);
         }
-      } else {
-        setProfile(null);
-      }
-      // The first event from onAuthStateChange has been processed, so we can stop loading.
-      setLoading(false);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+      };
+      fetchProfile();
+    } else {
+      setProfile(null);
+    }
+  }, [session]);
 
   if (loading) {
     return (
