@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { AlertCircle, Heart, Stethoscope, Siren, CheckCircle } from "lucide-react";
+import { AlertCircle, Heart, Stethoscope, Siren, CheckCircle, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 const Emergency = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   const emergencies = [
     {
       title: "Parada Cardiorrespiratória (PCR)",
@@ -10,11 +15,11 @@ const Emergency = () => {
       color: "text-red-600",
       openColor: "text-red-700",
       content: [
-        "<strong>Verificar responsividade e respiração</strong> (máx 10s).",
+        "Verificar <strong>responsividade e respiração</strong> (máx 10s).",
         "Acionar ajuda (SAMU 192) e pegar o DEA.",
-        "Iniciar compressões: <strong>30 compressões</strong> (100-120/min, 5-6 cm profundidade).",
-        "Abrir vias aéreas e realizar <strong>2 ventilações</strong>.",
-        "Manter ciclos <strong>30:2</strong> com mínimas interrupções.",
+        "Iniciar compressões: <Badge variant='destructive'>30 compressões</Badge> (100-120/min, 5-6 cm profundidade).",
+        "Abrir vias aéreas e realizar <Badge variant='destructive'>2 ventilações</Badge>.",
+        "Manter ciclos <Badge variant='destructive'>30:2</Badge> com mínimas interrupções.",
         "Instalar e seguir os comandos do <strong>DEA</strong> assim que disponível.",
         "Trocar o socorrista a cada 2 minutos para evitar fadiga."
       ]
@@ -26,7 +31,7 @@ const Emergency = () => {
       openColor: "text-orange-600",
       content: [
         "<strong>Obstrução Leve (tosse eficaz):</strong> Encorajar a tosse e monitorar.",
-        "<strong>Obstrução Grave (consciente):</strong> Realizar <strong>5 golpes dorsais</strong> seguidos de <strong>5 compressões abdominais</strong> (Manobra de Heimlich).",
+        "<strong>Obstrução Grave (consciente):</strong> Realizar <Badge variant='destructive'>5 golpes dorsais</Badge> seguidos de <Badge variant='destructive'>5 compressões abdominais</Badge> (Manobra de Heimlich).",
         "<strong>Gestantes/Obesos:</strong> Realizar compressões torácicas.",
         "<strong>Lactentes (<1 ano):</strong> Alternar 5 golpes dorsais com 5 compressões torácicas.",
         "Se a vítima ficar <strong>inconsciente</strong>, iniciar RCP imediatamente."
@@ -39,9 +44,9 @@ const Emergency = () => {
       openColor: "text-purple-700",
       content: [
         "Reconhecer sinais: urticária, angioedema, dispneia, hipotensão.",
-        "<strong>PRIMEIRA LINHA:</strong> Administrar <strong>Epinefrina 0,3-0,5 mg IM</strong> (1:1000) no vasto lateral da coxa.",
+        "<strong>PRIMEIRA LINHA:</strong> Administrar <Badge variant='destructive'>Epinefrina 0,3-0,5 mg IM</Badge> (1:1000) no vasto lateral da coxa.",
         "Posicionar paciente em decúbito dorsal com pernas elevadas.",
-        "Garantir via aérea e ofertar <strong>O₂ 10-15 L/min</strong>.",
+        "Garantir via aérea e ofertar <Badge variant='destructive'>O₂ 10-15 L/min</Badge>.",
         "Obter 2 acessos venosos calibrosos e iniciar reposição volêmica com SF 0,9%.",
         "<strong>Medicações adjuvantes:</strong> Anti-histamínicos e Corticoides IV.",
         "Monitorização contínua e observação por 4-6 horas."
@@ -56,7 +61,7 @@ const Emergency = () => {
         "<strong>Durante a crise:</strong> Proteger a cabeça, afastar objetos, afrouxar roupas. <strong>NÃO</strong> conter e <strong>NÃO</strong> colocar nada na boca.",
         "Anotar o horário de início e observar as características.",
         "<strong>Após a crise:</strong> Posicionar em decúbito lateral (posição de recuperação).",
-        "<strong>Estado de Mal Epiléptico (>5 min):</strong> Acionar ajuda, obter acesso venoso e administrar <strong>Benzodiazepínico IV</strong> (Diazepam ou Midazolam) conforme protocolo."
+        "<strong>Estado de Mal Epiléptico (>5 min):</strong> Acionar ajuda, obter acesso venoso e administrar <Badge variant='destructive'>Benzodiazepínico IV</Badge> (Diazepam ou Midazolam) conforme protocolo."
       ]
     },
     {
@@ -78,20 +83,35 @@ const Emergency = () => {
       color: "text-blue-500",
       openColor: "text-blue-600",
       content: [
-        "Confirmar glicemia capilar (<strong><70 mg/dL</strong>).",
+        "Confirmar glicemia capilar (<Badge variant='destructive'><70 mg/dL</Badge>).",
         "<strong>Paciente consciente:</strong> Oferecer 15g de carboidrato simples (ex: 150ml de suco). Reavaliar em 15 min (Regra dos 15).",
-        "<strong>Paciente inconsciente:</strong> <strong>NÃO</strong> dar nada via oral. Obter acesso venoso e administrar <strong>Glicose 50% 25-50 mL IV</strong>.",
-        "Sem acesso venoso: Administrar <strong>Glucagon 1 mg IM</strong>.",
+        "<strong>Paciente inconsciente:</strong> <strong>NÃO</strong> dar nada via oral. Obter acesso venoso e administrar <Badge variant='destructive'>Glicose 50% 25-50 mL IV</Badge>.",
+        "Sem acesso venoso: Administrar <Badge variant='destructive'>Glucagon 1 mg IM</Badge>.",
         "Após recuperação, oferecer lanche com carboidrato complexo."
       ]
     }
   ];
+
+  const filteredEmergencies = emergencies.filter(emergency =>
+    emergency.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    emergency.content.join(" ").toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2">Urgências e Emergências</h1>
         <p className="text-muted-foreground">Protocolos rápidos e diretos para atendimento de emergência</p>
+      </div>
+
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Buscar por emergência (ex: PCR, choque...)"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-10"
+        />
       </div>
 
       <Card className="border-destructive/50 bg-destructive/5">
@@ -109,31 +129,40 @@ const Emergency = () => {
         </CardContent>
       </Card>
 
-      <Accordion type="single" collapsible className="space-y-4">
-        {emergencies.map((emergency, index) => {
+      <div className="grid md:grid-cols-2 gap-4">
+        {filteredEmergencies.map((emergency, index) => {
           const Icon = emergency.icon;
           return (
-            <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
-              <AccordionTrigger className="group hover:no-underline">
-                <div className="flex items-center gap-3">
-                  <Icon className={`h-5 w-5 ${emergency.color} transition-colors group-data-[state=open]:${emergency.openColor}`} />
-                  <span className="font-semibold text-left">{emergency.title}</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <ul className="space-y-3 pt-4 pl-2">
-                  {emergency.content.map((step, stepIndex) => (
-                    <li key={stepIndex} className="flex items-start gap-3">
-                      <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-1" />
-                      <span className="text-sm" dangerouslySetInnerHTML={{ __html: step }} />
-                    </li>
-                  ))}
-                </ul>
-              </AccordionContent>
-            </AccordionItem>
+            <Accordion type="single" collapsible key={index}>
+              <AccordionItem value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
+                <AccordionTrigger className="group hover:no-underline">
+                  <div className="flex items-center gap-3">
+                    <Icon className={`h-5 w-5 ${emergency.color} transition-colors group-data-[state=open]:${emergency.openColor}`} />
+                    <span className="font-semibold text-left">{emergency.title}</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <ul className="space-y-3 pt-4 pl-2">
+                    {emergency.content.map((step, stepIndex) => (
+                      <li key={stepIndex} className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-1" />
+                        <span className="text-sm" dangerouslySetInnerHTML={{ __html: step }} />
+                      </li>
+                    ))}
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           );
         })}
-      </Accordion>
+      </div>
+      {filteredEmergencies.length === 0 && (
+        <Card>
+          <CardContent className="py-12 text-center text-muted-foreground">
+            Nenhuma emergência encontrada para "{searchTerm}"
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
