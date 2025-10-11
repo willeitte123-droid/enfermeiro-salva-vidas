@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { ClipboardList, Syringe, Droplets, Info, AirVent, Bandage, CheckSquare } from "lucide-react";
+import { ClipboardList, Syringe, Droplets, Info, AirVent, Bandage, CheckSquare, GitBranchPlus, Beaker, Bone, Scissors } from "lucide-react";
 
 const procedures = [
   {
@@ -50,6 +50,89 @@ const procedures = [
       "Descartar perfurocortante adequadamente."
     ],
     observations: "Evitar articulações. Não puncionar membros com fístula, esvaziamento ganglionar ou lesões. Trocar apenas com indicação clínica."
+  },
+  {
+    title: "Inserção de Cateter Central de Inserção Periférica (PICC)",
+    icon: GitBranchPlus,
+    color: "text-indigo-500",
+    openColor: "text-indigo-600",
+    description: "Procedimento estéril para inserção de um cateter venoso central através de uma veia periférica.",
+    materials: [
+      "Kit PICC completo", "Ultrassom com probe linear", "Campo estéril amplo", "Anestésico local (Lidocaína)", "Equipamentos de proteção individual (EPI) completos"
+    ],
+    steps: [
+      "Obter consentimento informado.",
+      "Avaliar a rede venosa com ultrassom (veias basílica, braquial, cefálica).",
+      "Realizar paramentação cirúrgica completa.",
+      "Realizar antissepsia ampla do membro.",
+      "Anestesiar o local da punção.",
+      "Puncionar a veia guiado por ultrassom (Técnica de Seldinger).",
+      "Introduzir o fio-guia, seguido pelo introdutor/dilatador.",
+      "Inserir o cateter PICC até a medida pré-estabelecida.",
+      "Confirmar o posicionamento (padrão-ouro: radiografia de tórax).",
+      "Realizar curativo estéril com fixador específico."
+    ],
+    observations: "Procedimento avançado que exige capacitação e certificação específica. Seguir rigorosamente os protocolos institucionais e as resoluções do COFEN."
+  },
+  {
+    title: "Punção Arterial para Gasometria",
+    icon: Beaker,
+    color: "text-cyan-500",
+    openColor: "text-cyan-600",
+    description: "Coleta de sangue arterial para análise de gases sanguíneos, pH e eletrólitos.",
+    materials: [
+      "Seringa específica para gasometria (com heparina)", "Luvas de procedimento", "Antisséptico", "Gaze estéril", "Dispositivo de proteção para agulha"
+    ],
+    steps: [
+      "Realizar o Teste de Allen modificado para avaliar a circulação colateral (se puncionar a artéria radial).",
+      "Localizar o pulso arterial (radial, braquial ou femoral).",
+      "Realizar antissepsia do local.",
+      "Puncionar a artéria em um ângulo de 45-60º (radial) ou 90º (femoral).",
+      "Coletar 1-2 mL de sangue (a seringa se encherá com a pressão arterial).",
+      "Remover a agulha e aplicar compressão firme no local por 5-10 minutos.",
+      "Remover bolhas de ar da seringa, vedá-la e encaminhar ao laboratório imediatamente (em gelo, se necessário)."
+    ],
+    observations: "Evitar puncionar locais com lesões, fístulas ou infecções. A compressão pós-punção é vital para evitar hematomas."
+  },
+  {
+    title: "Acesso Intraósseo (AIO)",
+    icon: Bone,
+    color: "text-orange-500",
+    openColor: "text-orange-600",
+    description: "Punção da cavidade medular óssea para infusão de fluidos e drogas em emergências.",
+    materials: [
+      "Dispositivo de inserção (ex: EZ-IO, BIG)", "Agulha de calibre apropriado", "Antisséptico", "Seringa com SF 0,9%", "Equipo de infusão"
+    ],
+    steps: [
+      "Identificar o sítio de inserção (ex: tíbia proximal, úmero proximal).",
+      "Realizar antissepsia rigorosa do local.",
+      "Inserir o dispositivo de punção perpendicularmente ao osso até sentir a perda de resistência.",
+      "Remover o mandril e conectar uma seringa.",
+      "Aspirar para confirmar a presença de medula óssea (nem sempre visível).",
+      "Realizar flush com 10ml de SF 0,9% (pode exigir pressão).",
+      "Fixar o dispositivo e iniciar a infusão (pode ser necessário pressurizador)."
+    ],
+    observations: "Indicado em emergências (PCR, choque) quando o acesso venoso não é obtido rapidamente. É uma ponte temporária até um acesso definitivo ser estabelecido."
+  },
+  {
+    title: "Sutura de Feridas Simples",
+    icon: Scissors,
+    color: "text-gray-500",
+    openColor: "text-gray-600",
+    description: "Aproximação das bordas de feridas cutâneas limpas e superficiais.",
+    materials: [
+      "Kit de sutura estéril (porta-agulha, pinça, tesoura)", "Fio de sutura apropriado", "Anestésico local", "Seringa e agulha", "Antisséptico", "Campo estéril"
+    ],
+    steps: [
+      "Avaliar a ferida (profundidade, contaminação, corpos estranhos).",
+      "Realizar anestesia local infiltrativa.",
+      "Limpar e irrigar a ferida abundantemente com SF 0,9%.",
+      "Realizar a aproximação das bordas da ferida.",
+      "Executar a técnica de sutura (ex: pontos simples interrompidos).",
+      "Limpar a área suturada e aplicar curativo oclusivo.",
+      "Orientar o paciente sobre os cuidados e o retorno para retirada dos pontos."
+    ],
+    observations: "Realizado por enfermeiros com capacitação específica, conforme protocolos institucionais. Indicado para feridas lineares, limpas e sem perda de tecido."
   },
   {
     title: "Sondagem Nasogástrica/Enteral (SNG/SNE)",
