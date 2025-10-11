@@ -7,6 +7,7 @@ const Emergency = () => {
     {
       title: "Parada Cardiorrespiratória (PCR)",
       icon: Heart,
+      color: "text-red-600",
       content: [
         "<strong>Verificar responsividade e respiração</strong> (máx 10s).",
         "Acionar ajuda (SAMU 192) e pegar o DEA.",
@@ -20,6 +21,7 @@ const Emergency = () => {
     {
       title: "Obstrução de Vias Aéreas (OVACE)",
       icon: AlertCircle,
+      color: "text-orange-500",
       content: [
         "<strong>Obstrução Leve (tosse eficaz):</strong> Encorajar a tosse e monitorar.",
         "<strong>Obstrução Grave (consciente):</strong> Realizar <strong>5 golpes dorsais</strong> seguidos de <strong>5 compressões abdominais</strong> (Manobra de Heimlich).",
@@ -31,6 +33,7 @@ const Emergency = () => {
     {
       title: "Choque Anafilático",
       icon: Siren,
+      color: "text-purple-600",
       content: [
         "Reconhecer sinais: urticária, angioedema, dispneia, hipotensão.",
         "<strong>PRIMEIRA LINHA:</strong> Administrar <strong>Epinefrina 0,3-0,5 mg IM</strong> (1:1000) no vasto lateral da coxa.",
@@ -44,6 +47,7 @@ const Emergency = () => {
     {
       title: "Crise Convulsiva",
       icon: AlertCircle,
+      color: "text-yellow-500",
       content: [
         "<strong>Durante a crise:</strong> Proteger a cabeça, afastar objetos, afrouxar roupas. <strong>NÃO</strong> conter e <strong>NÃO</strong> colocar nada na boca.",
         "Anotar o horário de início e observar as características.",
@@ -54,6 +58,7 @@ const Emergency = () => {
     {
       title: "Hemorragia Externa Grave",
       icon: Heart,
+      color: "text-red-500",
       content: [
         "<strong>Pressão direta e firme</strong> sobre o ferimento com gaze ou pano limpo.",
         "Elevar o membro afetado (se não houver fratura).",
@@ -65,6 +70,7 @@ const Emergency = () => {
     {
       title: "Hipoglicemia",
       icon: Stethoscope,
+      color: "text-blue-500",
       content: [
         "Confirmar glicemia capilar (<strong><70 mg/dL</strong>).",
         "<strong>Paciente consciente:</strong> Oferecer 15g de carboidrato simples (ex: 150ml de suco). Reavaliar em 15 min (Regra dos 15).",
@@ -104,7 +110,7 @@ const Emergency = () => {
             <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Icon className="h-5 w-5 text-primary" />
+                  <Icon className={`h-5 w-5 ${emergency.color}`} />
                   <span className="font-semibold text-left">{emergency.title}</span>
                 </div>
               </AccordionTrigger>

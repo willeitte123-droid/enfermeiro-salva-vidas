@@ -12,6 +12,7 @@ const procedures = [
   {
     title: "Sondagem Vesical de Demora (SVD)",
     icon: ClipboardList,
+    color: "text-blue-500",
     description: "Inserção de um cateter na bexiga para drenagem contínua de urina.",
     materials: [
       "Pacote de cateterismo estéril", "Luvas estéreis", "Sonda de Foley", "Xilocaína gel", "Seringa 10/20ml", "Água destilada", "Clorexidina aquosa", "Bolsa coletora"
@@ -31,6 +32,7 @@ const procedures = [
   {
     title: "Acesso Venoso Periférico (AVP)",
     icon: Syringe,
+    color: "text-red-500",
     description: "Punção de uma veia periférica para administração de fluidos e medicamentos.",
     materials: [
       "Cateter sobre agulha (Jelco)", "Luvas de procedimento", "Garrote", "Swab com álcool 70%", "Curativo transparente", "Seringa com SF 0,9%"
@@ -50,6 +52,7 @@ const procedures = [
   {
     title: "Sondagem Nasogástrica/Enteral (SNG/SNE)",
     icon: Droplets,
+    color: "text-green-500",
     description: "Inserção de sonda pelo nariz até o estômago/intestino para alimentação ou drenagem.",
     materials: [
       "Sonda (calibre adequado)", "Luvas", "Xilocaína gel", "Seringa 20ml", "Fita adesiva", "Estetoscópio", "Tira de pH"
@@ -67,6 +70,7 @@ const procedures = [
   {
     title: "Aspiração de Vias Aéreas",
     icon: AirVent,
+    color: "text-purple-500",
     description: "Remoção de secreções da árvore traqueobrônquica.",
     materials: [
       "Sonda de aspiração estéril", "Luva estéril", "Fonte de vácuo (80-120 mmHg)", "Frasco coletor", "Gaze estéril", "SF 0,9% ou AD"
@@ -85,6 +89,7 @@ const procedures = [
   {
     title: "Curativo Simples",
     icon: Bandage,
+    color: "text-teal-500",
     description: "Limpeza e proteção de feridas limpas com baixo potencial de infecção.",
     materials: [
       "Pacote de curativo estéril", "Luvas de procedimento", "Soro fisiológico 0,9% morno", "Cobertura secundária", "Fita adesiva"
@@ -117,7 +122,7 @@ const Procedures = () => {
             <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
               <AccordionTrigger className="hover:no-underline text-left">
                 <div className="flex items-center gap-4">
-                  <Icon className="h-6 w-6 text-primary flex-shrink-0" />
+                  <Icon className={`h-6 w-6 ${proc.color} flex-shrink-0`} />
                   <div>
                     <h3 className="font-semibold text-lg">{proc.title}</h3>
                     <p className="text-sm text-muted-foreground mt-1">{proc.description}</p>
