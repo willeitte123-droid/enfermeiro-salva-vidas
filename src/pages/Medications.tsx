@@ -42,6 +42,14 @@ const Medications = () => {
       category: "Antiemético/Procinético"
     },
     {
+      name: "Dramin B6 DL",
+      activeIngredient: "Dimenidrinato + Piridoxina",
+      indication: "Antiemético e antivertiginoso. Náuseas, vômitos, cinetose. Dose: <strong>1 mL (50mg de dimenidrinato) IV/IM</strong> a cada 6h.",
+      contraindication: "Hipersensibilidade aos componentes, crise asmática aguda, glaucoma de ângulo fechado.",
+      adverseEffects: "<strong>Sonolência acentuada</strong>, boca seca, visão turva, tontura. Potencializa o efeito de depressores do SNC (álcool, benzodiazepínicos).",
+      category: "Antiemético/Anti-histamínico"
+    },
+    {
       name: "Omeprazol",
       activeIngredient: "Omeprazol",
       indication: "Inibidor de bomba de prótons (IBP). Úlcera, DRGE, profilaxia. Dose: <strong>40mg IV/dia</strong> (infundir em 20-30 min).",
