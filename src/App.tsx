@@ -34,34 +34,52 @@ const AppContent = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    // 1. Busca a sessão inicial para determinar o estado do usuário rapidamente.
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      if (session?.user) {
-        try {
-          const { data: profileData, error } = await supabase
-            .from('profiles')
-            .select('id, role, status')
-            .eq('id', session.user.id)
-            .single();
-          
-          if (error) {
-            console.error("Error fetching profile on auth change:", error);
-            setProfile(null);
-          } else {
-            setProfile(profileData);
-          }
-        } catch (e) {
-          console.error("Unhandled error fetching profile:", e);
-          setProfile(null);
-        }
-      } else {
-        setProfile(null);
+      // Se não houver sessão, podemos parar de carregar imediatamente.
+      if (!session) {
+        setLoading(false);
       }
-      setLoading(false);
+    });
+
+    // 2. Ouve futuras mudanças de autenticação (login/logout).
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      // Se o usuário fizer logout, para de carregar.
+      if (!session) {
+        setLoading(false);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // 3. Efeito que roda sempre que a sessão muda para buscar o perfil do usuário.
+  useEffect(() => {
+    // Só roda se houver uma sessão e um usuário.
+    if (session?.user) {
+      supabase
+        .from('profiles')
+        .select('id, role, status')
+        .eq('id', session.user.id)
+        .single()
+        .then(({ data, error }) => {
+          if (error) {
+            console.error("Error fetching profile:", error);
+            setProfile(null);
+          } else {
+            setProfile(data);
+          }
+          // 4. Assim que o perfil é buscado (ou falha), para de carregar.
+          setLoading(false);
+        });
+    } else {
+      // Se não há sessão, não há perfil para buscar.
+      setProfile(null);
+    }
+  }, [session]);
+
 
   if (loading) {
     return (
