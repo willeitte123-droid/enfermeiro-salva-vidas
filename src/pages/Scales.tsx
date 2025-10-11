@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Brain, User, ShieldAlert, Gauge, Smile, Users } from "lucide-react";
+import { Brain, User, ShieldAlert, Gauge, Smile, Users, Bed } from "lucide-react";
 
 const scales = [
   {
@@ -43,8 +43,15 @@ const scales = [
     title: "Escala de Morse",
     description: "Avalia o risco de queda em pacientes hospitalizados.",
     icon: ShieldAlert,
-    path: "#",
-    status: "soon",
+    path: "/scales/morse",
+    status: "available",
+  },
+  {
+    title: "Índice de Aldrete",
+    description: "Avalia a recuperação pós-anestésica para alta da SRPA.",
+    icon: Bed,
+    path: "/scales/aldrete",
+    status: "available",
   },
 ];
 

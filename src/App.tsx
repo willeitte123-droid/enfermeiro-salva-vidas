@@ -21,6 +21,8 @@ import BradenScale from "./pages/scales/BradenScale";
 import RassScale from "./pages/scales/RassScale";
 import WongBakerScale from "./pages/scales/WongBakerScale";
 import FugulinScale from "./pages/scales/FugulinScale";
+import MorseScale from "./pages/scales/MorseScale";
+import AldreteScale from "./pages/scales/AldreteScale";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
@@ -66,6 +68,8 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="scales/rass" element={<RassScale />} />
         <Route path="scales/wong-baker" element={<WongBakerScale />} />
         <Route path="scales/fugulin" element={<FugulinScale />} />
+        <Route path="scales/morse" element={<MorseScale />} />
+        <Route path="scales/aldrete" element={<AldreteScale />} />
         <Route path="ecg" element={<div className="text-center p-12">Guia de ECG em construção...</div>} />
         <Route path="*" element={<NotFound />} />
       </Route>
