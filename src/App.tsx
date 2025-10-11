@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Calculator from "./pages/Calculator";
 import Emergency from "./pages/Emergency";
@@ -35,6 +35,8 @@ interface Profile {
   id: string;
   role: string;
   status: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null, profile: Profile | null, isAdmin: boolean }) => {
@@ -54,7 +56,7 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
 
   return (
     <Routes>
-      <Route path="/" element={<MainLayout session={session} />}>
+      <Route path="/" element={<MainLayout session={session} profile={profile} />}>
         <Route index element={<Dashboard />} />
         <Route path="calculator" element={<Calculator />} />
         <Route path="emergency" element={<Emergency />} />
@@ -97,7 +99,7 @@ const AppContent = () => {
       const fetchProfile = async () => {
         const { data, error } = await supabase
           .from('profiles')
-          .select('id, role, status')
+          .select('*')
           .eq('id', session.user.id)
           .single();
         
