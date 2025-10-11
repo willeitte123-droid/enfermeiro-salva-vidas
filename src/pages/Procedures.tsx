@@ -65,15 +65,13 @@ const Procedures = () => {
             return (
               <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
                 <AccordionTrigger className="group hover:no-underline text-left">
-                  <div className="flex items-center gap-4">
-                    <Icon className={`h-6 w-6 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
-                    <div>
-                      <h3 className="font-semibold text-lg">{proc.title}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">{proc.description}</p>
-                    </div>
+                  <div className="flex items-center gap-3">
+                    <Icon className={`h-5 w-5 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
+                    <span className="font-semibold text-left">{proc.title}</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 space-y-6">
+                  <p className="text-sm text-muted-foreground">{proc.description}</p>
                   <div>
                     <h4 className="font-semibold text-primary mb-3">Materiais Essenciais</h4>
                     <div className="flex flex-wrap gap-2">
