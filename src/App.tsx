@@ -26,6 +26,8 @@ import AldreteScale from "./pages/scales/AldreteScale";
 import EcgGuide from "./pages/EcgGuide";
 import ProfilePage from "./pages/Profile";
 import PublicProfile from "./pages/PublicProfile";
+import Semiology from "./pages/Semiology";
+import SemioTechnique from "./pages/Semiotechnique";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
@@ -79,6 +81,8 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="ecg" element={<EcgGuide />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="user/:userId" element={<PublicProfile />} />
+        <Route path="semiology" element={<Semiology />} />
+        <Route path="semiotechnique" element={<SemioTechnique />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

@@ -1,0 +1,171 @@
+import { LucideIcon, Stethoscope, Hand, Ear, Eye, Brain, Heart, Lungs, CircleDot, Waves, Thermometer, HeartPulse, Wind, Ruler, Smile } from "lucide-react";
+
+export interface AnamnesisStep {
+  title: string;
+  description: string;
+}
+
+export interface PropaedeuticMethod {
+  name: string;
+  icon: LucideIcon;
+  description: string;
+}
+
+export interface AssessmentDetail {
+  method: string;
+  technique: string;
+  findings: string[];
+}
+
+export interface SystemAssessment {
+  id: string;
+  name: string;
+  icon: LucideIcon;
+  color: string;
+  details: AssessmentDetail[];
+}
+
+export interface VitalSign {
+  id: string;
+  name: string;
+  icon: LucideIcon;
+  color: string;
+  technique: string[];
+  normalValues: string;
+  alterations: { term: string; description: string }[];
+}
+
+export const anamnesisSteps: AnamnesisStep[] = [
+  { title: "1. Identificação", description: "Nome, idade, gênero, estado civil, profissão, naturalidade, etc." },
+  { title: "2. Queixa Principal (QP)", description: "O motivo da consulta, registrado com as palavras do paciente. Ex: 'dor no peito há 2 horas'." },
+  { title: "3. História da Doença Atual (HDA)", description: "Detalhar a queixa principal: início, duração, frequência, intensidade, fatores de melhora/piora." },
+  { title: "4. Interrogatório Sintomatológico", description: "Revisão de todos os sistemas corporais em busca de outros sinais e sintomas." },
+  { title: "5. Antecedentes Pessoais", description: "Doenças prévias, cirurgias, alergias, medicamentos em uso, vacinas, hábitos de vida." },
+  { title: "6. Antecedentes Familiares", description: "Doenças com componente genético na família (HAS, DM, câncer)." },
+  { title: "7. História Psicossocial", description: "Condições de moradia, trabalho, rede de apoio, lazer." },
+];
+
+export const propaedeuticMethods: PropaedeuticMethod[] = [
+  { name: "Inspeção", icon: Eye, description: "Observação visual detalhada do paciente, de forma geral e específica." },
+  { name: "Palpação", icon: Hand, description: "Uso do tato para sentir texturas, temperatura, umidade, pulsações e massas." },
+  { name: "Percussão", icon: CircleDot, description: "Golpes leves em áreas do corpo para avaliar a densidade dos tecidos subjacentes." },
+  { name: "Ausculta", icon: Stethoscope, description: "Escuta de sons corporais (cardíacos, respiratórios, intestinais) com o estetoscópio." },
+];
+
+export const systemAssessments: SystemAssessment[] = [
+  {
+    id: "head-neck",
+    name: "Cabeça e Pescoço",
+    icon: Brain,
+    color: "text-sky-500",
+    details: [
+      { method: "Inspeção", technique: "Avaliar simetria facial, couro cabeludo, olhos (pupilas, conjuntivas), nariz, boca, tireoide, estase jugular.", findings: ["Pupilas isocóricas e fotorreagentes (PIC)", "Conjuntivas coradas/hipocoradas", "Mucosas úmidas/secas", "Presença de bócio"] },
+      { method: "Palpação", technique: "Palpar crânio, linfonodos cervicais, tireoide, pulsos carotídeos (um de cada vez).", findings: ["Linfonodos impalpáveis ou móveis e indolores", "Tireoide de tamanho normal, sem nódulos", "Pulsos carotídeos amplos e simétricos"] },
+    ],
+  },
+  {
+    id: "respiratory",
+    name: "Sistema Respiratório",
+    icon: Lungs,
+    color: "text-emerald-500",
+    details: [
+      { method: "Inspeção", technique: "Observar padrão respiratório (frequência, ritmo, profundidade), uso de musculatura acessória, cianose, formato do tórax.", findings: ["Eupneia", "Taquipneia/Bradipneia", "Tiragem intercostal", "Cianose de extremidades"] },
+      { method: "Palpação", technique: "Verificar expansibilidade torácica e frêmito tóraco-vocal (FTV).", findings: ["Expansibilidade simétrica", "FTV normal, aumentado (consolidação) ou diminuído (derrame/pneumotórax)"] },
+      { method: "Percussão", technique: "Percutir espaços intercostais, comparando os hemitórax.", findings: ["Som claro pulmonar (normal)", "Hipertimpanismo (pneumotórax)", "Macicez (derrame pleural, consolidação)"] },
+      { method: "Ausculta", technique: "Auscultar todos os lobos pulmonares, solicitando respirações profundas.", findings: ["Murmúrio vesicular presente (normal)", "Sibilos (asma, DPOC)", "Estertores crepitantes (congestão, pneumonia)", "Roncos (secreção em vias aéreas calibrosas)"] },
+    ],
+  },
+  {
+    id: "cardiovascular",
+    name: "Sistema Cardiovascular",
+    icon: Heart,
+    color: "text-red-500",
+    details: [
+      { method: "Inspeção e Palpação", technique: "Avaliar ictus cordis (ápice), pulsos periféricos (radiais, pediosos), perfusão capilar, edema.", findings: ["Ictus cordis palpável no 5º EIC", "Pulsos cheios e simétricos", "Perfusão < 2s", "Edema de membros inferiores (avaliar com sinal de Godet)"] },
+      { method: "Ausculta", technique: "Auscultar os 4 focos cardíacos (Aórtico, Pulmonar, Tricúspide, Mitral) com diafragma e campânula.", findings: ["Bulhas rítmicas normofonéticas em 2 tempos (B1, B2)", "Presença de 3ª bulha (B3 - sobrecarga de volume)", "Presença de 4ª bulha (B4 - sobrecarga de pressão)", "Sopros cardíacos (sistólicos/diastólicos)"] },
+    ],
+  },
+  {
+    id: "abdominal",
+    name: "Abdome",
+    icon: Waves,
+    color: "text-amber-500",
+    details: [
+      { method: "Inspeção", technique: "Observar formato (plano, globoso, escavado), simetria, cicatrizes, circulação colateral, movimentos peristálticos.", findings: ["Abdome plano/globoso", "Cicatriz umbilical intrusa", "Ausência de pulsações visíveis"] },
+      { method: "Ausculta", technique: "Auscultar os 4 quadrantes ANTES da percussão/palpação para não alterar os ruídos.", findings: ["Ruídos hidroaéreos (RHA) presentes e normoativos", "RHA aumentados (hiperativos) ou diminuídos (hipoativos)"] },
+      { method: "Percussão", technique: "Percutir os 4 quadrantes para avaliar a distribuição de gases e identificar massas ou visceromegalias.", findings: ["Som timpânico (predominante)", "Macicez em região hepática", "Macicez móvel (ascite)"] },
+      { method: "Palpação", technique: "Iniciar com palpação superficial e depois profunda. Avaliar dor, massas, visceromegalias, defesa abdominal.", findings: ["Abdome flácido, indolor à palpação", "Dor à descompressão brusca (sinal de Blumberg - peritonite)", "Hepatomegalia/Esplenomegalia"] },
+    ],
+  },
+];
+
+export const vitalSigns: VitalSign[] = [
+    {
+        id: "temperature",
+        name: "Temperatura",
+        icon: Thermometer,
+        color: "text-red-500",
+        technique: ["Realizar antissepsia do termômetro.", "Manter o termômetro em contato com a pele (axila) por 3-5 minutos.", "Realizar a leitura e registrar."],
+        normalValues: "36,1°C a 37,2°C (axilar)",
+        alterations: [
+            { term: "Hipotermia", description: "< 35°C" },
+            { term: "Afebril", description: "36,1°C a 37,2°C" },
+            { term: "Febrícula", description: "37,3°C a 37,7°C" },
+            { term: "Febre", description: "≥ 37,8°C" },
+            { term: "Hiperpirexia", description: "≥ 41°C" }
+        ]
+    },
+    {
+        id: "pulse",
+        name: "Frequência Cardíaca",
+        icon: HeartPulse,
+        color: "text-pink-500",
+        technique: ["Localizar o pulso (geralmente radial) com os dedos indicador e médio.", "Contar os batimentos por 1 minuto completo.", "Avaliar ritmo, amplitude e simetria."],
+        normalValues: "60 a 100 bpm (adulto em repouso)",
+        alterations: [
+            { term: "Bradicardia", description: "< 60 bpm" },
+            { term: "Normocardia", description: "60 a 100 bpm" },
+            { term: "Taquicardia", description: "> 100 bpm" }
+        ]
+    },
+    {
+        id: "respiration",
+        name: "Frequência Respiratória",
+        icon: Wind,
+        color: "text-blue-500",
+        technique: ["Observar os movimentos de expansão torácica discretamente.", "Contar as incursões (inspiração + expiração) por 1 minuto.", "Avaliar ritmo e profundidade."],
+        normalValues: "12 a 20 irpm (adulto em repouso)",
+        alterations: [
+            { term: "Bradipneia", description: "< 12 irpm" },
+            { term: "Eupneia", description: "12 a 20 irpm" },
+            { term: "Taquipneia", description: "> 20 irpm" },
+            { term: "Apneia", description: "Ausência de respiração" }
+        ]
+    },
+    {
+        id: "blood-pressure",
+        name: "Pressão Arterial",
+        icon: Ruler,
+        color: "text-purple-500",
+        technique: ["Posicionar o manguito adequado ao braço do paciente.", "Estimar a pressão sistólica pelo método palpatório.", "Insuflar 30 mmHg acima do estimado e desinsuflar lentamente.", "Auscultar os sons de Korotkoff para determinar a PAS e a PAD."],
+        normalValues: "Sistólica < 120 mmHg e Diastólica < 80 mmHg",
+        alterations: [
+            { term: "Hipotensão", description: "PAS < 90 mmHg" },
+            { term: "Normotensão", description: "PAS < 120 e PAD < 80" },
+            { term: "Hipertensão", description: "PAS ≥ 140 ou PAD ≥ 90" }
+        ]
+    },
+    {
+        id: "pain",
+        name: "Dor (5º Sinal Vital)",
+        icon: Smile,
+        color: "text-amber-500",
+        technique: ["Utilizar uma escala apropriada (Numérica, Faces, Comportamental).", "Questionar sobre localização, intensidade, tipo e duração.", "Avaliar antes e após a administração de analgésicos."],
+        normalValues: "0 (ausência de dor)",
+        alterations: [
+            { term: "Dor Leve", description: "1 a 3 na escala numérica" },
+            { term: "Dor Moderada", description: "4 a 6 na escala numérica" },
+            { term: "Dor Intensa", description: "7 a 10 na escala numérica" }
+        ]
+    }
+];
