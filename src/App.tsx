@@ -23,6 +23,7 @@ import WongBakerScale from "./pages/scales/WongBakerScale";
 import FugulinScale from "./pages/scales/FugulinScale";
 import MorseScale from "./pages/scales/MorseScale";
 import AldreteScale from "./pages/scales/AldreteScale";
+import EcgGuide from "./pages/EcgGuide";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
@@ -70,7 +71,7 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="scales/fugulin" element={<FugulinScale />} />
         <Route path="scales/morse" element={<MorseScale />} />
         <Route path="scales/aldrete" element={<AldreteScale />} />
-        <Route path="ecg" element={<div className="text-center p-12">Guia de ECG em construção...</div>} />
+        <Route path="ecg" element={<EcgGuide />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
