@@ -150,7 +150,6 @@ const Questions = () => {
     setIsSubmittingComment(true);
     const { error } = await supabase.from("comments").insert({
       question_id: questions[currentQuestion].id,
-      user_id: profile.id,
       content: values.content,
     });
     setIsSubmittingComment(false);
