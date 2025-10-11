@@ -240,6 +240,62 @@ const Medications = () => {
       contraindication: "Insuficiência respiratória grave, miastenia gravis, glaucoma de ângulo fechado.",
       adverseEffects: "Sonolência, depressão respiratória, hipotensão. <strong>Requer monitorização respiratória</strong>.",
       category: "Benzodiazepínico/Anticonvulsivante"
+    },
+    {
+      name: "Tenoxicam (Tilatil)",
+      activeIngredient: "Tenoxicam",
+      indication: "AINE para dor e inflamação, especialmente em doenças reumáticas. Dose: <strong>20mg IV/IM</strong> 1x/dia.",
+      contraindication: "Hipersensibilidade a AINEs, úlcera péptica ativa, insuficiência renal/hepática/cardíaca grave.",
+      adverseEffects: "Dor no local da injeção, dispepsia. <strong>Risco de lesão renal e sangramento gastrointestinal</strong>.",
+      category: "Anti-inflamatório (AINE)"
+    },
+    {
+      name: "Benzetacil (Penicilina G Benzatina)",
+      activeIngredient: "Penicilina G Benzatina",
+      indication: "Antibiótico para infecções por estreptococos (faringite, febre reumática, sífilis). Dose: <strong>1.200.000 UI IM profundo</strong> (glúteo).",
+      contraindication: "Hipersensibilidade a penicilinas ou cefalosporinas.",
+      adverseEffects: "<strong>Dor intensa no local da aplicação</strong>. Reações alérgicas, incluindo anafilaxia (rara mas grave). <strong>NUNCA administrar IV (risco de embolia e PCR)</strong>.",
+      category: "Antibiótico Penicilina"
+    },
+    {
+      name: "Buscopan Simples",
+      activeIngredient: "Butilbrometo de Escopolamina",
+      indication: "Antiespasmódico para cólicas gastrointestinais, biliares e geniturinárias. Dose: <strong>20mg IV/IM</strong> a cada 6-8h.",
+      contraindication: "Glaucoma de ângulo fechado, miastenia gravis, megacólon.",
+      adverseEffects: "Boca seca, taquicardia, visão turva, retenção urinária. Administrar IV lentamente.",
+      category: "Antiespasmódico"
+    },
+    {
+      name: "Buscopan Composto",
+      activeIngredient: "Butilbrometo de Escopolamina + Dipirona Sódica",
+      indication: "Dor e cólica intensa (abdominal, renal, biliar). Dose: <strong>1 ampola IV lento (≥5 min)</strong> a cada 6-8h.",
+      contraindication: "Mesmas da Dipirona e Buscopan Simples.",
+      adverseEffects: "<strong>Hipotensão (infusão IV rápida)</strong>, boca seca, taquicardia. Risco de agranulocitose (raro).",
+      category: "Antiespasmódico/Analgésico"
+    },
+    {
+      name: "Hidralazina (Apresolina)",
+      activeIngredient: "Cloridrato de Hidralazina",
+      indication: "Vasodilatador para crises hipertensivas, especialmente na gestação (pré-eclâmpsia). Dose: <strong>5-10mg IV lento</strong>, pode repetir.",
+      contraindication: "Doença arterial coronariana, dissecção de aorta.",
+      adverseEffects: "Taquicardia reflexa, cefaleia, hipotensão, flushing. Requer monitorização contínua da PA.",
+      category: "Anti-hipertensivo/Vasodilatador"
+    },
+    {
+      name: "Complexo B",
+      activeIngredient: "Vitaminas B1, B2, B3, B5, B6",
+      indication: "Reposição vitamínica em etilistas, desnutridos, neuropatias. Dose: <strong>1-2 ampolas IM/IV lento</strong>.",
+      contraindication: "Hipersensibilidade a qualquer componente.",
+      adverseEffects: "Reações alérgicas (principalmente à Tiamina - B1), dor no local da injeção IM.",
+      category: "Vitamina"
+    },
+    {
+      name: "Vitamina C (Ácido Ascórbico)",
+      activeIngredient: "Ácido Ascórbico",
+      indication: "Deficiência de Vitamina C (escorbuto), auxiliar na cicatrização, antioxidante. Dose: <strong>500mg-1g IV/IM</strong> 1x/dia.",
+      contraindication: "Litíase renal por oxalato.",
+      adverseEffects: "Doses elevadas podem causar diarreia e formação de cálculos renais de oxalato.",
+      category: "Vitamina"
     }
   ];
 
@@ -261,7 +317,7 @@ const Medications = () => {
         <Input
           placeholder="Buscar por nome, princípio ativo ou categoria..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.g.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="pl-10"
         />
       </div>
