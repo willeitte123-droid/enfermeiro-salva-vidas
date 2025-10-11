@@ -1,13 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Bandage, Info, Droplet } from "lucide-react";
+import { Bandage, Info, Droplet, CheckCircle, Zap, XCircle } from "lucide-react";
 
 const WoundCare = () => {
   const tissueTypes = [
     {
       name: "Tecido de Granulação",
       color: "Vermelho vivo",
+      borderColor: "border-red-500",
       description: "Tecido conjuntivo novo, vascularizado e saudável. Indica progressão da cicatrização.",
       objectives: "Manter o leito da ferida úmido, proteger contra traumas e promover a epitelização.",
       dressings: ["Espuma não adesiva", "Hidrocoloide", "Filme transparente", "Hidrogel", "AGE"]
@@ -15,6 +16,7 @@ const WoundCare = () => {
     {
       name: "Tecido de Epitelização",
       color: "Rosa pálido/translúcido",
+      borderColor: "border-pink-400",
       description: "Camada de novas células epiteliais que migram das bordas da ferida. Fase final da cicatrização.",
       objectives: "Proteger o novo tecido frágil, manter a umidade e evitar maceração.",
       dressings: ["Filme transparente", "Hidrocoloide extrafino", "Curativo de silicone", "AGE"]
@@ -22,6 +24,7 @@ const WoundCare = () => {
     {
       name: "Esfacelo / Fibrina",
       color: "Amarelo/Esbranquiçado",
+      borderColor: "border-yellow-500",
       description: "Tecido desvitalizado, úmido, composto por fibrina, leucócitos e bactérias. Adere ao leito da ferida.",
       objectives: "Promover o desbridamento autolítico ou enzimático para remover o tecido não viável.",
       dressings: ["Hidrogel com alginato", "Colagenase", "Papaína", "Alginato de cálcio", "Hidrofibra"]
@@ -29,6 +32,7 @@ const WoundCare = () => {
     {
       name: "Necrose de Coagulação (Escara)",
       color: "Preto/Marrom",
+      borderColor: "border-gray-800",
       description: "Tecido morto, seco e duro (escara). Impede a cicatrização e pode mascarar infecções.",
       objectives: "Amolecer e remover a escara através de desbridamento (autolítico, enzimático ou cirúrgico).",
       dressings: ["Hidrogel", "Papaína 10%", "Colagenase", "AGE (para manter hidratado)"]
@@ -36,6 +40,7 @@ const WoundCare = () => {
     {
       name: "Sinais de Infecção",
       color: "Variável",
+      borderColor: "border-purple-600",
       description: "Presença de sinais flogísticos (dor, calor, rubor, edema), exsudato purulento, odor fétido e tecido friável.",
       objectives: "Controlar a carga bacteriana, gerenciar o exsudato e tratar a infecção sistemicamente se necessário.",
       dressings: ["Alginato com prata", "Espuma com prata/PHMB", "Carvão ativado com prata", "Coberturas com iodo (cadexômero)"]
@@ -147,7 +152,7 @@ const WoundCare = () => {
           </Card>
 
           {tissueTypes.map((tissue, index) => (
-            <Card key={index}>
+            <Card key={index} className={`border-l-4 ${tissue.borderColor}`}>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
@@ -188,10 +193,10 @@ const WoundCare = () => {
               <CardDescription>O tipo e o volume do exsudato guiam a escolha da cobertura.</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <div className="p-2 bg-muted rounded-lg"><strong>Seroso:</strong> Claro, aquoso.</div>
-              <div className="p-2 bg-muted rounded-lg"><strong>Sanguinolento:</strong> Vermelho vivo, sanguinolento.</div>
-              <div className="p-2 bg-muted rounded-lg"><strong>Serossanguinolento:</strong> Rosado, mistura de seroso e sanguíneo.</div>
-              <div className="p-2 bg-muted rounded-lg"><strong>Purulento:</strong> Amarelado/esverdeado, espesso, indica infecção.</div>
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg"><strong>Seroso:</strong> Claro, aquoso.</div>
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg"><strong>Sanguinolento:</strong> Vermelho vivo.</div>
+              <div className="p-3 bg-pink-50 border border-pink-200 rounded-lg"><strong>Serossanguinolento:</strong> Rosado.</div>
+              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg"><strong>Purulento:</strong> Amarelado/esverdeado.</div>
             </CardContent>
           </Card>
 
@@ -201,18 +206,27 @@ const WoundCare = () => {
                 <CardHeader>
                   <CardTitle className="text-lg">{dressing.name}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div>
-                    <h4 className="font-semibold text-sm text-primary mb-1">Indicação</h4>
-                    <p className="text-sm">{dressing.indication}</p>
+                <CardContent className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-sm text-green-700 mb-1">Indicação</h4>
+                      <p className="text-sm">{dressing.indication}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-sm text-muted-foreground mb-1">Ação</h4>
-                    <p className="text-sm">{dressing.action}</p>
+                  <div className="flex items-start gap-3">
+                    <Zap className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-sm text-blue-700 mb-1">Ação</h4>
+                      <p className="text-sm">{dressing.action}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-sm text-destructive mb-1">Contraindicação / Cuidado</h4>
-                    <p className="text-sm">{dressing.contraindication}</p>
+                  <div className="flex items-start gap-3">
+                    <XCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-sm text-red-700 mb-1">Contraindicação / Cuidado</h4>
+                      <p className="text-sm">{dressing.contraindication}</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
