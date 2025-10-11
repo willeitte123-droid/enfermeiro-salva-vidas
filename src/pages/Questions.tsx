@@ -297,6 +297,146 @@ const questions: Question[] = [
     ],
     correctAnswer: "C",
     explanation: "Em lactentes (menores de 1 ano), o pulso braquial é o mais adequado para verificação durante PCR, pois é mais facilmente palpável devido ao pescoço curto e gordura subcutânea da região cervical."
+  },
+  {
+    id: 21,
+    category: "Segurança do Paciente",
+    question: "Qual é o método mais confiável para identificação do paciente antes de administrar um medicamento?",
+    options: [
+      { id: "A", text: "Perguntar o nome do paciente" },
+      { id: "B", text: "Verificar o número do leito" },
+      { id: "C", text: "Conferir nome completo e data de nascimento na pulseira de identificação" },
+      { id: "D", text: "Confirmar com o acompanhante" },
+      { id: "E", text: "Verificar a foto no prontuário" }
+    ],
+    correctAnswer: "C",
+    explanation: "A dupla checagem (nome completo e data de nascimento) na pulseira de identificação é o padrão-ouro para garantir a identificação correta do paciente, minimizando o risco de erros."
+  },
+  {
+    id: 22,
+    category: "Sinais Vitais",
+    question: "De acordo com as diretrizes mais recentes, qual é a faixa de pressão arterial considerada normal para um adulto saudável?",
+    options: [
+      { id: "A", text: "Sistólica < 140 e Diastólica < 90 mmHg" },
+      { id: "B", text: "Sistólica < 120 e Diastólica < 80 mmHg" },
+      { id: "C", text: "Sistólica < 130 e Diastólica < 85 mmHg" },
+      { id: "D", text: "Sistólica < 160 e Diastólica < 100 mmHg" },
+      { id: "E", text: "Sistólica < 110 e Diastólica < 70 mmHg" }
+    ],
+    correctAnswer: "B",
+    explanation: "Uma pressão arterial com sistólica inferior a 120 mmHg e diastólica inferior a 80 mmHg é considerada ótima/normal para adultos, segundo a maioria das diretrizes cardiológicas atuais."
+  },
+  {
+    id: 23,
+    category: "Administração de Medicamentos",
+    question: "Os '5 Certos' da administração de medicamentos são: Paciente Certo, Medicamento Certo, Via Certa, Hora Certa e...?",
+    options: [
+      { id: "A", text: "Registro Certo" },
+      { id: "B", text: "Médico Certo" },
+      { id: "C", text: "Dose Certa" },
+      { id: "D", text: "Farmacêutico Certo" },
+      { id: "E", text: "Validade Certa" }
+    ],
+    correctAnswer: "C",
+    explanation: "Os 5 Certos fundamentais são: Paciente Certo, Medicamento Certo, Via Certa, Hora Certa e Dose Certa. Atualmente, a recomendação se expandiu para 9 ou mais certos, incluindo registro e validade, mas a Dose Certa completa os 5 originais."
+  },
+  {
+    id: 24,
+    category: "Procedimentos de Enfermagem",
+    question: "Qual é o ângulo de inserção da agulha para uma injeção intramuscular no músculo deltoide em um adulto?",
+    options: [
+      { id: "A", text: "15 graus" },
+      { id: "B", text: "30 graus" },
+      { id: "C", text: "45 graus" },
+      { id: "D", text: "90 graus" },
+      { id: "E", text: "120 graus" }
+    ],
+    correctAnswer: "D",
+    explanation: "A injeção intramuscular deve ser administrada em um ângulo de 90 graus para garantir que a medicação seja depositada profundamente no tecido muscular, otimizando a absorção."
+  },
+  {
+    id: 25,
+    category: "Urgência e Emergência",
+    question: "Na Escala de Coma de Glasgow, qual pontuação indica o estado de coma (grave)?",
+    options: [
+      { id: "A", text: "15" },
+      { id: "B", text: "12 a 14" },
+      { id: "C", text: "9 a 11" },
+      { id: "D", text: "Igual ou inferior a 8" },
+      { id: "E", text: "Igual ou inferior a 3" }
+    ],
+    correctAnswer: "D",
+    explanation: "Uma pontuação na Escala de Coma de Glasgow igual ou inferior a 8 é classificada como traumatismo cranioencefálico (TCE) grave e geralmente indica a necessidade de intubação para proteção das vias aéreas."
+  },
+  {
+    id: 26,
+    category: "Curativos",
+    question: "Quais são os sinais clássicos de infecção em uma ferida?",
+    options: [
+      { id: "A", text: "Dor, calor, rubor e edema" },
+      { id: "B", text: "Prurido e descamação" },
+      { id: "C", text: "Tecido de granulação e bordas epitelizadas" },
+      { id: "D", text: "Exsudato seroso e ausência de odor" },
+      { id: "E", text: "Cicatriz hipertrófica" }
+    ],
+    correctAnswer: "A",
+    explanation: "Os sinais flogísticos clássicos de infecção em uma ferida são: dor, calor, rubor (vermelhidão) e edema (inchaço). A presença de exsudato purulento e odor fétido também são fortes indicativos."
+  },
+  {
+    id: 27,
+    category: "Ética e Legislação",
+    question: "A recusa de um paciente consciente e orientado em aceitar um tratamento proposto deve ser:",
+    options: [
+      { id: "A", text: "Ignorada, pois o profissional sabe o que é melhor" },
+      { id: "B", text: "Respeitada e documentada no prontuário" },
+      { id: "C", text: "Comunicada à família para que eles decidam" },
+      { id: "D", text: "Forçada, para garantir a saúde do paciente" },
+      { id: "E", text: "Discutida apenas com a equipe médica" }
+    ],
+    correctAnswer: "B",
+    explanation: "O princípio da autonomia garante ao paciente o direito de decidir sobre seu próprio tratamento. A recusa deve ser respeitada, e a decisão, juntamente com as orientações fornecidas, deve ser minuciosamente registrada no prontuário."
+  },
+  {
+    id: 28,
+    category: "Cuidados Fundamentais",
+    question: "Qual é a principal medida para prevenção de lesão por pressão em pacientes acamados?",
+    options: [
+      { id: "A", text: "Administração de analgésicos" },
+      { id: "B", text: "Uso de colchão de água" },
+      { id: "C", text: "Mudança de decúbito a cada 2 horas" },
+      { id: "D", text: "Manter o paciente sempre em decúbito dorsal" },
+      { id: "E", text: "Hidratação da pele com vaselina" }
+    ],
+    correctAnswer: "C",
+    explanation: "A mudança de decúbito programada (geralmente a cada 2 horas) é a intervenção mais eficaz para aliviar a pressão sobre as proeminências ósseas, prevenindo a isquemia tecidual e o desenvolvimento de lesões por pressão."
+  },
+  {
+    id: 29,
+    category: "Controle de Infecção",
+    question: "Qual dos seguintes é considerado um Equipamento de Proteção Individual (EPI)?",
+    options: [
+      { id: "A", text: "Bisturi" },
+      { id: "B", text: "Seringa" },
+      { id: "C", text: "Luvas de procedimento" },
+      { id: "D", text: "Termômetro" },
+      { id: "E", text: "Estetoscópio" }
+    ],
+    correctAnswer: "C",
+    explanation: "Luvas de procedimento são um EPI essencial, utilizado para proteger o profissional do contato com sangue, fluidos corporais, secreções e itens contaminados, além de proteger o paciente."
+  },
+  {
+    id: 30,
+    category: "Eletrocardiograma",
+    question: "No ECG, a onda P representa qual evento elétrico do coração?",
+    options: [
+      { id: "A", text: "Repolarização ventricular" },
+      { id: "B", text: "Despolarização ventricular" },
+      { id: "C", text: "Despolarização atrial" },
+      { id: "D", text: "Repolarização atrial" },
+      { id: "E", text: "Atraso no nó atrioventricular" }
+    ],
+    correctAnswer: "C",
+    explanation: "A onda P no eletrocardiograma corresponde à despolarização dos átrios, que é o impulso elétrico que precede a contração atrial. É a primeira deflexão do ciclo cardíaco normal."
   }
 ];
 
