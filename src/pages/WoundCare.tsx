@@ -1,131 +1,151 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Bandage, Info } from "lucide-react";
+import { Bandage, Info, Droplet } from "lucide-react";
 
 const WoundCare = () => {
   const tissueTypes = [
     {
       name: "Tecido de Granulação",
-      color: "Vermelho/Rosa",
-      description: "Tecido saudável em processo de cicatrização, rico em vasos sanguíneos",
-      dressings: [
-        "Hidrocoloide",
-        "Alginato de cálcio",
-        "Hidrogel",
-        "Filme transparente",
-        "Espuma de poliuretano"
-      ],
-      objectives: "Manter ambiente úmido e proteger o tecido"
+      color: "Vermelho vivo",
+      description: "Tecido conjuntivo novo, vascularizado e saudável. Indica progressão da cicatrização.",
+      objectives: "Manter o leito da ferida úmido, proteger contra traumas e promover a epitelização.",
+      dressings: ["Espuma não adesiva", "Hidrocoloide", "Filme transparente", "Hidrogel", "AGE"]
     },
     {
-      name: "Tecido Fibrinoso",
-      color: "Amarelo",
-      description: "Camada de fibrina e exsudato, indica necessidade de desbridamento",
-      dressings: [
-        "Hidrogel (para desbridamento autolítico)",
-        "Alginato de cálcio",
-        "Hidrocoloide",
-        "Papaína",
-        "Colagenase"
-      ],
-      objectives: "Facilitar desbridamento e remover tecido desvitalizado"
+      name: "Tecido de Epitelização",
+      color: "Rosa pálido/translúcido",
+      description: "Camada de novas células epiteliais que migram das bordas da ferida. Fase final da cicatrização.",
+      objectives: "Proteger o novo tecido frágil, manter a umidade e evitar maceração.",
+      dressings: ["Filme transparente", "Hidrocoloide extrafino", "Curativo de silicone", "AGE"]
     },
     {
-      name: "Tecido Necrótico",
+      name: "Esfacelo / Fibrina",
+      color: "Amarelo/Esbranquiçado",
+      description: "Tecido desvitalizado, úmido, composto por fibrina, leucócitos e bactérias. Adere ao leito da ferida.",
+      objectives: "Promover o desbridamento autolítico ou enzimático para remover o tecido não viável.",
+      dressings: ["Hidrogel com alginato", "Colagenase", "Papaína", "Alginato de cálcio", "Hidrofibra"]
+    },
+    {
+      name: "Necrose de Coagulação (Escara)",
       color: "Preto/Marrom",
-      description: "Tecido morto, escara seca ou úmida que impede cicatrização",
-      dressings: [
-        "Hidrogel (para amolecimento)",
-        "Desbridamento cirúrgico/instrumental",
-        "Papaína 10%",
-        "AGE (Ácidos Graxos Essenciais)"
-      ],
-      objectives: "Remover tecido necrótico completamente antes de outras coberturas"
+      description: "Tecido morto, seco e duro (escara). Impede a cicatrização e pode mascarar infecções.",
+      objectives: "Amolecer e remover a escara através de desbridamento (autolítico, enzimático ou cirúrgico).",
+      dressings: ["Hidrogel", "Papaína 10%", "Colagenase", "AGE (para manter hidratado)"]
     },
     {
-      name: "Tecido Esfacelado",
-      color: "Branco/Cinza",
-      description: "Tecido desvitalizado úmido, geralmente aderido à ferida",
-      dressings: [
-        "Hidrogel",
-        "Hidrocoloide",
-        "Papaína 2-6%",
-        "Colagenase"
-      ],
-      objectives: "Promover desbridamento autolítico e preparar leito da ferida"
-    },
-    {
-      name: "Tecido Epitelial",
-      color: "Rosa claro/branco pérola",
-      description: "Tecido de reepitelização, fase final da cicatrização",
-      dressings: [
-        "Filme transparente",
-        "Hidrocoloide fino",
-        "AGE",
-        "Silicone"
-      ],
-      objectives: "Proteger nova pele e prevenir trauma mecânico"
+      name: "Sinais de Infecção",
+      color: "Variável",
+      description: "Presença de sinais flogísticos (dor, calor, rubor, edema), exsudato purulento, odor fétido e tecido friável.",
+      objectives: "Controlar a carga bacteriana, gerenciar o exsudato e tratar a infecção sistemicamente se necessário.",
+      dressings: ["Alginato com prata", "Espuma com prata/PHMB", "Carvão ativado com prata", "Coberturas com iodo (cadexômero)"]
     }
   ];
 
   const dressingTypes = [
     {
       name: "Hidrocoloide",
-      indication: "Feridas limpas com pouco exsudato, tecido de granulação",
-      characteristics: "Absorve exsudato, mantém umidade, promove desbridamento autolítico"
+      indication: "Feridas limpas com exsudato leve a moderado, áreas de pressão.",
+      action: "Forma um gel que mantém o ambiente úmido, promove desbridamento autolítico.",
+      contraindication: "Não usar em feridas infectadas, com exposição óssea/tendínea ou em queimaduras de 3º grau."
     },
     {
       name: "Hidrogel",
-      indication: "Feridas secas, necrose, tecido esfacelado",
-      characteristics: "Hidrata, facilita desbridamento, alivia dor"
+      indication: "Feridas secas, com necrose ou esfacelo. Queimaduras.",
+      action: "Hidrata o leito da ferida, amolece tecidos desvitalizados, facilitando o desbridamento autolítico.",
+      contraindication: "Não indicado para feridas com alto exsudato (risco de maceração)."
     },
     {
-      name: "Alginato de Cálcio",
-      indication: "Feridas com médio a grande exsudato",
-      characteristics: "Alta absorção, hemostático, forma gel ao contato com exsudato"
+      name: "Alginato de Cálcio e Sódio",
+      indication: "Feridas com exsudato moderado a alto, cavitárias e sangrantes.",
+      action: "Alta capacidade de absorção, forma um gel ao contato com o exsudato. Possui ação hemostática.",
+      contraindication: "Não usar em feridas secas ou com necrose dura. Requer cobertura secundária."
     },
     {
       name: "Espuma de Poliuretano",
-      indication: "Feridas exsudativas, proteção de proeminências ósseas",
-      characteristics: "Absorvente, térmica, confortável"
+      indication: "Feridas com exsudato moderado a alto, proteção de proeminências ósseas.",
+      action: "Absorvente, mantém o leito úmido, protege contra impacto e é termicamente isolante.",
+      contraindication: "Não indicada para feridas secas ou com pouquíssimo exsudato."
     },
     {
-      name: "Papaína",
-      indication: "Desbridamento químico, tecido necrótico ou esfacelado",
-      characteristics: "Enzimático, diferentes concentrações (2% a 10%)"
+      name: "Carvão Ativado com Prata",
+      indication: "Feridas infectadas, com odor fétido e exsudativas.",
+      action: "Controla o odor (carvão) e a infecção (prata). Absorve o exsudato.",
+      contraindication: "Hipersensibilidade à prata. Não cortar a cobertura."
     },
     {
-      name: "Carvão Ativado",
-      indication: "Feridas infectadas ou com odor",
-      characteristics: "Absorve bactérias e odor, controla infecção"
+      name: "Coberturas com Prata",
+      indication: "Feridas com infecção ou alto risco de infecção (colonização crítica).",
+      action: "A prata tem ação antimicrobiana de amplo espectro. Disponível em espumas, alginatos, hidrofibras.",
+      contraindication: "Hipersensibilidade. Uso por tempo limitado (geralmente até 14 dias) para evitar toxicidade."
     },
     {
-      name: "Filme Transparente",
-      indication: "Proteção de pele íntegra, feridas superficiais",
-      characteristics: "Impermeável a líquidos, permeável a gases"
+      name: "Colagenase",
+      indication: "Desbridamento enzimático de tecido necrótico ou esfacelo.",
+      action: "Enzima que degrada seletivamente o colágeno desvitalizado, preservando o tecido de granulação.",
+      contraindication: "Não usar com produtos que contenham prata, iodo ou metais pesados (inativam a enzima)."
     },
     {
       name: "AGE (Ácidos Graxos Essenciais)",
-      indication: "Prevenção e tratamento de lesões, pele ressecada",
-      characteristics: "Mantém umidade, promove cicatrização, nutritivo"
+      indication: "Prevenção de lesões por pressão, hidratação de pele, feridas em fase de epitelização.",
+      action: "Promove quimiotaxia, angiogênese e mantém o meio úmido.",
+      contraindication: "Não usar em feridas muito exsudativas ou infectadas."
+    },
+    {
+      name: "Filme Transparente",
+      indication: "Fixação de cateteres, proteção de pele íntegra, cobertura de feridas superficiais sem exsudato.",
+      action: "Barreira contra água e bactérias, permite a visualização do local.",
+      contraindication: "Não usar em feridas exsudativas ou infectadas."
+    },
+    {
+      name: "Bota de Unna",
+      indication: "Úlceras venosas em membros inferiores, sem infecção.",
+      action: "Bandagem compressiva que melhora o retorno venoso e promove a cicatrização.",
+      contraindication: "Insuficiência arterial (ITB < 0.8), infecção ativa, ICC descompensada."
+    },
+    {
+      name: "PHMB (Polihexanida)",
+      indication: "Limpeza de feridas, tratamento de feridas colonizadas ou infectadas.",
+      action: "Antisséptico de amplo espectro com baixa toxicidade celular. Quebra o biofilme.",
+      contraindication: "Hipersensibilidade. Não usar em cartilagem hialina."
+    },
+    {
+      name: "Terapia por Pressão Negativa (TPN)",
+      indication: "Feridas complexas, agudas ou crônicas, com alto exsudato.",
+      action: "Aplica pressão subatmosférica controlada, remove exsudato, reduz edema e estimula a granulação.",
+      contraindication: "Necrose não desbridada, malignidade na ferida, fístulas não exploradas, osteomielite não tratada."
     }
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Curativos e Tipos de Tecido</h1>
-        <p className="text-muted-foreground">Guia de identificação de tecidos e coberturas apropriadas</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2">Curativos e Tratamento de Feridas</h1>
+        <p className="text-muted-foreground">Guia de avaliação de tecidos e seleção de coberturas apropriadas</p>
       </div>
 
       <Tabs defaultValue="tissues" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="tissues">Tipos de Tecido</TabsTrigger>
-          <TabsTrigger value="dressings">Coberturas</TabsTrigger>
+          <TabsTrigger value="tissues">Avaliação da Ferida</TabsTrigger>
+          <TabsTrigger value="dressings">Tipos de Cobertura</TabsTrigger>
         </TabsList>
 
         <TabsContent value="tissues" className="space-y-4">
+          <Card className="border-primary/50 bg-accent">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Info className="h-5 w-5 text-primary" />
+                Princípios de Avaliação (TIME)
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2 text-sm">
+              <p><strong>T (Tissue - Tecido):</strong> Avaliar o tipo de tecido (granulação, necrose) e desbridar se necessário.</p>
+              <p><strong>I (Infection/Inflammation - Infecção/Inflamação):</strong> Identificar e tratar a infecção/inflamação.</p>
+              <p><strong>M (Moisture - Umidade):</strong> Manter o equilíbrio da umidade. Ferida seca precisa de hidratação, ferida exsudativa precisa de absorção.</p>
+              <p><strong>E (Edge - Bordas):</strong> Avaliar e tratar as bordas da ferida para promover a epitelização.</p>
+            </CardContent>
+          </Card>
+
           {tissueTypes.map((tissue, index) => (
             <Card key={index}>
               <CardHeader>
@@ -159,32 +179,19 @@ const WoundCare = () => {
         </TabsContent>
 
         <TabsContent value="dressings" className="space-y-4">
-          <Card className="border-primary/50 bg-accent">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Info className="h-5 w-5 text-primary" />
-                Princípios de Seleção
+                <Droplet className="h-5 w-5 text-primary" />
+                Tipos de Exsudato
               </CardTitle>
+              <CardDescription>O tipo e o volume do exsudato guiam a escolha da cobertura.</CardDescription>
             </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Avaliar tipo de tecido, quantidade de exsudato e sinais de infecção</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Manter ambiente úmido favorece cicatrização</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Trocar curativo conforme saturação ou protocolo institucional</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Documentar evolução da ferida a cada troca</span>
-                </li>
-              </ul>
+            <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+              <div className="p-2 bg-muted rounded-lg"><strong>Seroso:</strong> Claro, aquoso.</div>
+              <div className="p-2 bg-muted rounded-lg"><strong>Sanguinolento:</strong> Vermelho vivo, sanguinolento.</div>
+              <div className="p-2 bg-muted rounded-lg"><strong>Serossanguinolento:</strong> Rosado, mistura de seroso e sanguíneo.</div>
+              <div className="p-2 bg-muted rounded-lg"><strong>Purulento:</strong> Amarelado/esverdeado, espesso, indica infecção.</div>
             </CardContent>
           </Card>
 
@@ -200,8 +207,12 @@ const WoundCare = () => {
                     <p className="text-sm">{dressing.indication}</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-sm text-muted-foreground mb-1">Características</h4>
-                    <p className="text-sm">{dressing.characteristics}</p>
+                    <h4 className="font-semibold text-sm text-muted-foreground mb-1">Ação</h4>
+                    <p className="text-sm">{dressing.action}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm text-destructive mb-1">Contraindicação / Cuidado</h4>
+                    <p className="text-sm">{dressing.contraindication}</p>
                   </div>
                 </CardContent>
               </Card>
