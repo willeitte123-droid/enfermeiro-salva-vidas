@@ -9,35 +9,35 @@ const EcgGuide = () => {
   const rhythms = [
     {
       name: "Ritmo Sinusal Normal",
-      svgPath: "M0,30 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,0 q2,5 4,0 l10,0 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,0 q2,5 4,0 l10,0 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,0 q2,5 4,0 l10,0 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,0 q2,5 4,0 l10,0 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,0 q2,5 4,0 l10,0",
+      svgPath: "M0,30 l15,0 q2,-5 4,0 l1,-1 l1,1 q1,10 2,-20 q1,30 2,-10 l1,-1 l1,1 q2,5 4,0 l15,0 l15,0 q2,-5 4,0 l1,-1 l1,1 q1,10 2,-20 q1,30 2,-10 l1,-1 l1,1 q2,5 4,0 l15,0 l15,0 q2,-5 4,0 l1,-1 l1,1 q1,10 2,-20 q1,30 2,-10 l1,-1 l1,1 q2,5 4,0 l15,0",
       criteria: ["Ritmo: Regular", "Frequência: 60-100 bpm", "Onda P: Presente, precede cada QRS", "Intervalo PR: 0,12-0,20s", "Complexo QRS: < 0,12s"],
       causes: ["Normalidade."],
       nursing_implications: ["Monitorar e registrar. É o ritmo de base."]
     },
     {
       name: "Taquicardia Sinusal",
-      svgPath: "M0,30 l2,0 q1,-5 2,0 l1,0 q0.5,10 1,-20 q0.5,30 1,-10 l1,0 q1,5 2,0 l4,0 l2,0 q1,-5 2,0 l1,0 q0.5,10 1,-20 q0.5,30 1,-10 l1,0 q1,5 2,0 l4,0 l2,0 q1,-5 2,0 l1,0 q0.5,10 1,-20 q0.5,30 1,-10 l1,0 q1,5 2,0 l4,0 l2,0 q1,-5 2,0 l1,0 q0.5,10 1,-20 q0.5,30 1,-10 l1,0 q1,5 2,0 l4,0 l2,0 q1,-5 2,0 l1,0 q0.5,10 1,-20 q0.5,30 1,-10 l1,0 q1,5 2,0 l4,0 l2,0 q1,-5 2,0 l1,0 q0.5,10 1,-20 q0.5,30 1,-10 l1,0 q1,5 2,0 l4,0",
+      svgPath: "M0,30 l5,0 q1.5,-5 3,0 l0.5,-0.5 l0.5,0.5 q0.5,10 1.5,-20 q0.5,30 1.5,-10 l0.5,-0.5 l0.5,0.5 q1.5,5 3,0 l5,0 l5,0 q1.5,-5 3,0 l0.5,-0.5 l0.5,0.5 q0.5,10 1.5,-20 q0.5,30 1.5,-10 l0.5,-0.5 l0.5,0.5 q1.5,5 3,0 l5,0 l5,0 q1.5,-5 3,0 l0.5,-0.5 l0.5,0.5 q0.5,10 1.5,-20 q0.5,30 1.5,-10 l0.5,-0.5 l0.5,0.5 q1.5,5 3,0 l5,0",
       criteria: ["Critérios de ritmo sinusal", "Frequência: > 100 bpm"],
       causes: ["Febre, dor, ansiedade, hipovolemia, hipóxia, medicamentos (cafeína, adrenalina)."],
       nursing_implications: ["Tratar a causa base. Avaliar a estabilidade hemodinâmica do paciente."]
     },
     {
       name: "Bradicardia Sinusal",
-      svgPath: "M0,30 l10,0 q3,-5 6,0 l4,0 q1.5,10 3,-20 q1.5,30 3,-10 l4,0 q3,5 6,0 l20,0 l10,0 q3,-5 6,0 l4,0 q1.5,10 3,-20 q1.5,30 3,-10 l4,0 q3,5 6,0 l20,0 l10,0 q3,-5 6,0 l4,0 q1.5,10 3,-20 q1.5,30 3,-10 l4,0 q3,5 6,0 l20,0",
+      svgPath: "M0,30 l25,0 q2,-5 4,0 l1,-1 l1,1 q1,10 2,-20 q1,30 2,-10 l1,-1 l1,1 q2,5 4,0 l25,0 l25,0 q2,-5 4,0 l1,-1 l1,1 q1,10 2,-20 q1,30 2,-10 l1,-1 l1,1 q2,5 4,0 l25,0",
       criteria: ["Critérios de ritmo sinusal", "Frequência: < 60 bpm"],
       causes: ["Atletas, sono, uso de betabloqueadores, bloqueios AV, isquemia."],
       nursing_implications: ["Avaliar se o paciente está sintomático (tontura, síncope, hipotensão). Se sintomático, preparar Atropina."]
     },
     {
       name: "Fibrilação Atrial (FA)",
-      svgPath: "M0,30 l1,1 l1,-1 l1,0.5 l1,-1.5 l1,1 l10,0 q1,10 2,-20 q1,30 2,-10 l10,0 l1,-1 l1,1.5 l1,-0.5 l1,1 l15,0 q1,10 2,-20 q1,30 2,-10 l8,0 l1,1 l1,-1 l1,0.5 l1,-1.5 l1,1 l12,0 q1,10 2,-20 q1,30 2,-10 l10,0",
+      svgPath: "M0,30 l1,1 l1,-1 l1,0.5 l1,-1.5 l1,1 l5,0 q1,10 2,-20 q1,30 2,-10 l15,0 l1,-1 l1,1.5 l1,-0.5 l1,1 l8,0 q1,10 2,-20 q1,30 2,-10 l20,0 l1,1 l1,-1 l1,0.5 l1,-1.5 l1,1 l12,0 q1,10 2,-20 q1,30 2,-10 l10,0",
       criteria: ["Ritmo: Irregularmente irregular", "Frequência: Variável", "Onda P: Ausente (substituída por ondas 'f')", "Intervalo PR: Não mensurável", "Complexo QRS: Geralmente estreito"],
       causes: ["HAS, DAC, ICC, valvopatias, pós-operatório de cirurgia cardíaca."],
       nursing_implications: ["Risco de formação de trombos e AVC. Monitorar frequência cardíaca e avaliar necessidade de anticoagulação e controle de frequência."]
     },
     {
       name: "Flutter Atrial",
-      svgPath: "M0,30 l3,-3 l3,3 l3,-3 l3,3 l3,-3 l3,3 l0,0 q1,10 2,-20 q1,30 2,-10 l5,0 l3,-3 l3,3 l3,-3 l3,3 l3,-3 l3,3 l5,0 q1,10 2,-20 q1,30 2,-10 l5,0 l3,-3 l3,3 l3,-3 l3,3 l3,-3 l3,3 l5,0",
+      svgPath: "M0,30 l3,-3 l3,3 l3,-3 l3,3 l3,-3 l3,3 l0,0 q1,10 2,-20 q1,30 2,-10 l10,0 l3,-3 l3,3 l3,-3 l3,3 l3,-3 l3,3 l10,0 q1,10 2,-20 q1,30 2,-10 l10,0 l3,-3 l3,3 l3,-3 l3,3 l3,-3 l3,3 l10,0",
       criteria: ["Ritmo: Regular ou irregular", "Frequência: Atrial 250-350 bpm, ventricular variável", "Onda P: Ausente (substituída por ondas 'F' em dente de serra)", "Complexo QRS: Geralmente estreito"],
       causes: ["Semelhantes à FA (DAC, DPOC, ICC)."],
       nursing_implications: ["Semelhantes à FA. Risco de instabilidade hemodinâmica se a resposta ventricular for muito alta."]
@@ -47,25 +47,25 @@ const EcgGuide = () => {
   const lethalRhythms = [
     {
       name: "Fibrilação Ventricular (FV)",
-      svgPath: "M0,30 q5,-10 10,5 q5,15 10,-5 q5,-20 10,0 q5,10 10,-10 q5,-15 10,5 q5,20 10,0 q5,-10 10,5 q5,15 10,-5 q5,-20 10,0 q5,10 10,-10 q5,-15 10,5 q5,20 10,0",
+      svgPath: "M0,30 q3,-8 6,2 q3,10 6,-2 q3,-12 6,0 q3,8 6,-4 q3,-12 6,2 q3,10 6,-2 q3,-12 6,0 q3,8 6,-4 q3,-12 6,2 q3,10 6,-2 q3,-12 6,0 q3,8 6,-4 q3,-12 6,2 q3,10 6,-2 q3,-12 6,0 q3,8 6,-4",
       description: "Atividade elétrica caótica e desorganizada. O coração 'treme' e não bombeia sangue.",
       treatment: "RCP de alta qualidade e desfibrilação imediata."
     },
     {
       name: "Taquicardia Ventricular sem Pulso (TVSP)",
-      svgPath: "M0,30 l5,-20 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40 l5,-40 l5,40",
+      svgPath: "M0,30 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0",
       description: "Ritmo ventricular rápido e organizado, mas sem pulso central. O coração bate tão rápido que não há tempo para enchimento.",
       treatment: "RCP de alta qualidade e desfibrilação imediata."
     },
     {
       name: "Atividade Elétrica Sem Pulso (AESP)",
-      svgPath: "M0,30 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,0 q2,5 4,0 l10,0 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,0 q2,5 4,0 l10,0 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,0 q2,5 4,0 l10,0",
+      svgPath: "M0,30 l20,0 q5,-25 10,0 q5,25 10,0 l20,0 l20,0 q5,-25 10,0 q5,25 10,0 l20,0 l20,0 q5,-25 10,0 q5,25 10,0 l20,0",
       description: "Presença de um ritmo organizado no monitor, mas o paciente não tem pulso. Dissociação eletromecânica.",
       treatment: "RCP de alta qualidade, adrenalina e busca ativa pelas causas reversíveis (5Hs e 5Ts)."
     },
     {
       name: "Assistolia",
-      svgPath: "M0,30 L300,30",
+      svgPath: "M0,30 l50,0.5 l50,-0.5 l50,0.2 l50,-0.4 l50,0.1 l50,-0.2",
       description: "Ausência completa de atividade elétrica ('linha reta').",
       treatment: "RCP de alta qualidade, adrenalina e busca por causas reversíveis. Confirmar em mais de uma derivação."
     }
