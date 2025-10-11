@@ -59,52 +59,54 @@ const Procedures = () => {
       </div>
 
       {filteredProcedures.length > 0 ? (
-        <Accordion type="single" collapsible className="w-full space-y-4">
+        <div className="grid md:grid-cols-2 gap-4">
           {filteredProcedures.map((proc, index) => {
             const Icon = proc.icon;
             return (
-              <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
-                <AccordionTrigger className="group hover:no-underline text-left">
-                  <div className="flex items-center gap-3">
-                    <Icon className={`h-5 w-5 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
-                    <span className="font-semibold text-left">{proc.title}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="pt-4 space-y-6">
-                  <p className="text-sm text-muted-foreground">{proc.description}</p>
-                  <div>
-                    <h4 className="font-semibold text-primary mb-3">Materiais Essenciais</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {proc.materials.map((material, i) => (
-                        <Badge key={i} variant="secondary">{material}</Badge>
-                      ))}
+              <Accordion type="single" collapsible key={index}>
+                <AccordionItem value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
+                  <AccordionTrigger className="group hover:no-underline text-left">
+                    <div className="flex items-center gap-3">
+                      <Icon className={`h-5 w-5 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
+                      <span className="font-semibold text-left">{proc.title}</span>
                     </div>
-                  </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="pt-4 space-y-6">
+                    <p className="text-sm text-muted-foreground">{proc.description}</p>
+                    <div>
+                      <h4 className="font-semibold text-primary mb-3">Materiais Essenciais</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {proc.materials.map((material, i) => (
+                          <Badge key={i} variant="secondary">{material}</Badge>
+                        ))}
+                      </div>
+                    </div>
 
-                  <div>
-                    <h4 className="font-semibold text-primary mb-3">Passo a Passo</h4>
-                    <ol className="space-y-3">
-                      {proc.steps.map((step, i) => (
-                        <li key={i} className="flex items-start gap-3 text-sm">
-                          <CheckSquare className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                          <span dangerouslySetInnerHTML={{ __html: step }} />
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
+                    <div>
+                      <h4 className="font-semibold text-primary mb-3">Passo a Passo</h4>
+                      <ol className="space-y-3">
+                        {proc.steps.map((step, i) => (
+                          <li key={i} className="flex items-start gap-3 text-sm">
+                            <CheckSquare className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                            <span dangerouslySetInnerHTML={{ __html: step }} />
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
 
-                  <Alert>
-                    <Info className="h-4 w-4" />
-                    <AlertTitle className="font-semibold">Pontos Críticos</AlertTitle>
-                    <AlertDescription>
-                      {proc.observations}
-                    </AlertDescription>
-                  </Alert>
-                </AccordionContent>
-              </AccordionItem>
+                    <Alert>
+                      <Info className="h-4 w-4" />
+                      <AlertTitle className="font-semibold">Pontos Críticos</AlertTitle>
+                      <AlertDescription>
+                        {proc.observations}
+                      </AlertDescription>
+                    </Alert>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             );
           })}
-        </Accordion>
+        </div>
       ) : (
         <Card>
           <CardContent className="py-12 text-center text-muted-foreground">
