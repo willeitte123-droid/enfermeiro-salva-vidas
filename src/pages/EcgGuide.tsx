@@ -127,12 +127,12 @@ const EcgGuide = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow><TableCell>Onda P</TableCell><TableCell>Despolarização atrial</TableCell><TableCell>Arredondada, < 2,5mm altura</TableCell></TableRow>
+                  <TableRow><TableCell>Onda P</TableCell><TableCell>Despolarização atrial</TableCell><TableCell>Arredondada, &lt; 2,5mm altura</TableCell></TableRow>
                   <TableRow><TableCell>Intervalo PR</TableCell><TableCell>Condução do nó AV</TableCell><TableCell>0,12 - 0,20 segundos</TableCell></TableRow>
-                  <TableRow><TableCell>Complexo QRS</TableCell><TableCell>Despolarização ventricular</TableCell><TableCell>< 0,12 segundos</TableCell></TableRow>
+                  <TableRow><TableCell>Complexo QRS</TableCell><TableCell>Despolarização ventricular</TableCell><TableCell>&lt; 0,12 segundos</TableCell></TableRow>
                   <TableRow><TableCell>Segmento ST</TableCell><TableCell>Início da repolarização ventricular</TableCell><TableCell>Isoelétrico</TableCell></TableRow>
                   <TableRow><TableCell>Onda T</TableCell><TableCell>Repolarização ventricular</TableCell><TableCell>Assimétrica, positiva</TableCell></TableRow>
-                  <TableRow><TableCell>Intervalo QT</TableCell><TableCell>Sístole elétrica ventricular</TableCell><TableCell>Varia com a FC (corrigido: QTc < 0,44s)</TableCell></TableRow>
+                  <TableRow><TableCell>Intervalo QT</TableCell><TableCell>Sístole elétrica ventricular</TableCell><TableCell>Varia com a FC (corrigido: QTc &lt; 0,44s)</TableCell></TableRow>
                 </TableBody>
               </Table>
             </CardContent>
@@ -147,7 +147,7 @@ const EcgGuide = () => {
                 <div>
                   <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-600"/> Critérios</h4>
                   <ul className="list-disc list-inside text-sm space-y-1">
-                    {rhythm.criteria.map((c, i) => <li key={i}>{c}</li>)}
+                    {rhythm.criteria.map((c, i) => <li key={i} dangerouslySetInnerHTML={{ __html: c.replace('<', '&lt;') }} />)}
                   </ul>
                 </div>
                 <div>
