@@ -7,12 +7,12 @@ import { supabase } from "@/lib/supabase";
 const Navigation = () => {
   const navigate = useNavigate();
   const navItems = [
-    { to: "/questions", icon: FileQuestion, label: "Questões", activeClass: "bg-amber-500 text-white", inactiveClass: "hover:bg-amber-500/10 hover:text-amber-600" },
-    { to: "/procedures", icon: ClipboardList, label: "Procedimentos", activeClass: "bg-slate-600 text-white", inactiveClass: "hover:bg-slate-600/10 hover:text-slate-600" },
-    { to: "/medications", icon: Syringe, label: "Medicamentos", activeClass: "bg-purple-600 text-white", inactiveClass: "hover:bg-purple-600/10 hover:text-purple-600" },
-    { to: "/", icon: Calculator, label: "Calculadora", activeClass: "bg-primary text-primary-foreground", inactiveClass: "hover:bg-primary/10 hover:text-primary" },
-    { to: "/emergency", icon: Siren, label: "Emergências", activeClass: "bg-destructive text-destructive-foreground", inactiveClass: "hover:bg-destructive/10 hover:text-destructive" },
-    { to: "/wound-care", icon: Bandage, label: "Curativos", activeClass: "bg-teal-600 text-white", inactiveClass: "hover:bg-teal-600/10 hover:text-teal-600" }
+    { to: "/questions", icon: FileQuestion, label: "Questões", activeClass: "bg-yellow-500 text-white", inactiveClass: "hover:bg-yellow-500/10 hover:text-yellow-600" },
+    { to: "/procedures", icon: ClipboardList, label: "Procedimentos", activeClass: "bg-sky-500 text-white", inactiveClass: "hover:bg-sky-500/10 hover:text-sky-600" },
+    { to: "/medications", icon: Syringe, label: "Medicamentos", activeClass: "bg-violet-500 text-white", inactiveClass: "hover:bg-violet-500/10 hover:text-violet-600" },
+    { to: "/", icon: Calculator, label: "Calculadora", activeClass: "bg-blue-500 text-white", inactiveClass: "hover:bg-blue-500/10 hover:text-blue-600" },
+    { to: "/emergency", icon: Siren, label: "Emergências", activeClass: "bg-red-500 text-white", inactiveClass: "hover:bg-red-500/10 hover:text-red-600" },
+    { to: "/wound-care", icon: Bandage, label: "Curativos", activeClass: "bg-green-500 text-white", inactiveClass: "hover:bg-green-500/10 hover:text-green-600" }
   ];
 
   const handleLogout = async () => {
