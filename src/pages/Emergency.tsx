@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { AlertCircle, Heart, Stethoscope, Siren } from "lucide-react";
+import { AlertCircle, Heart, Stethoscope, Siren, CheckCircle } from "lucide-react";
 
 const Emergency = () => {
   const emergencies = [
