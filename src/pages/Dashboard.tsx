@@ -1,11 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { Syringe, Siren, Scale, Lightbulb, CheckCircle, XCircle, ArrowRight, RefreshCw, FileQuestion, ClipboardList } from "lucide-react";
+import { Syringe, Siren, Scale, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/lib/supabase";
 
 interface Profile {
   id: string;
@@ -18,10 +17,13 @@ interface Profile {
 interface Question {
   id: number;
   question: string;
-  options: { id: string; text: string }[];
-  correctAnswer: string;
-  explanation: string;
-  category: string;
+}
+
+interface FeaturedComment {
+  content: string;
+  author: string;
+  questionText: string;
+  questionId: number;
 }
 
 const quickAccessLinks = [
@@ -92,34 +94,45 @@ const clinicalTips = [
 
 const Dashboard = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
-  const [allQuestions, setAllQuestions] = useState<Question[]>([]);
-  const [dailyQuestion, setDailyQuestion] = useState<Question | null>(null);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [showAnswer, setShowAnswer] = useState(false);
+  const [featuredComment, setFeaturedComment] = useState<FeaturedComment | null>(null);
+  const [isLoadingComment, setIsLoadingComment] = useState(true);
 
   useEffect(() => {
-    fetch("/questions.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setAllQuestions(data);
-        setDailyQuestion(data[Math.floor(Math.random() * data.length)]);
-      });
+    const fetchFeaturedComment = async () => {
+      setIsLoadingComment(true);
+      try {
+        const questionsRes = await fetch("/questions.json");
+        const questionsData: Question[] = await questionsRes.json();
+
+        const { data: latestComment, error } = await supabase
+          .from("comments")
+          .select("*, profiles(first_name, last_name)")
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (latestComment && !error) {
+          const relatedQuestion = questionsData.find(q => q.id === latestComment.question_id);
+          if (relatedQuestion && latestComment.profiles) {
+            setFeaturedComment({
+              content: latestComment.content,
+              author: `${latestComment.profiles.first_name} ${latestComment.profiles.last_name?.[0] || ''}.`,
+              questionText: relatedQuestion.question,
+              questionId: relatedQuestion.id,
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch featured comment:", err);
+      } finally {
+        setIsLoadingComment(false);
+      }
+    };
+
+    fetchFeaturedComment();
   }, []);
 
-  const handleSelectOption = (optionId: string) => {
-    if (showAnswer) return;
-    setSelectedOption(optionId);
-    setShowAnswer(true);
-  };
-
-  const loadNewQuestion = () => {
-    setSelectedOption(null);
-    setShowAnswer(false);
-    setDailyQuestion(allQuestions[Math.floor(Math.random() * allQuestions.length)]);
-  };
-
   const randomTip = useMemo(() => clinicalTips[Math.floor(Math.random() * clinicalTips.length)], []);
-  const isCorrect = showAnswer && selectedOption === dailyQuestion?.correctAnswer;
 
   return (
     <div className="space-y-8">
@@ -167,71 +180,39 @@ const Dashboard = () => {
 
       <Card className="w-full max-w-4xl mx-auto shadow-lg">
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xl">Questão do Dia</CardTitle>
-            {dailyQuestion && <Badge variant="outline">{dailyQuestion.category}</Badge>}
-          </div>
+          <CardTitle className="flex items-center gap-3">
+            <MessageSquare className="h-6 w-6 text-primary" />
+            Comentário em Destaque
+          </CardTitle>
+          <CardDescription>Veja o que a comunidade está discutindo.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {dailyQuestion ? (
-            <>
-              <p className="text-base font-semibold leading-relaxed text-foreground">{dailyQuestion.question}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {dailyQuestion.options.map((opt) => {
-                  const isCorrectOption = opt.id === dailyQuestion.correctAnswer;
-                  const isSelectedOption = opt.id === selectedOption;
-                  return (
-                    <Button
-                      key={opt.id}
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-between items-center text-left h-auto py-3 px-4 whitespace-normal transition-all duration-200",
-                        "hover:bg-accent hover:border-primary",
-                        showAnswer && isCorrectOption && "bg-green-100 border-green-400 text-green-900 hover:bg-green-200 dark:bg-green-900/30 dark:border-green-700 dark:text-white",
-                        showAnswer && isSelectedOption && !isCorrectOption && "bg-red-100 border-red-400 text-red-900 hover:bg-red-200 dark:bg-red-900/30 dark:border-red-700 dark:text-white",
-                        showAnswer && !isSelectedOption && !isCorrectOption && "bg-muted/50 text-muted-foreground opacity-60"
-                      )}
-                      onClick={() => handleSelectOption(opt.id)}
-                      disabled={showAnswer}
-                    >
-                      <div className="flex items-center">
-                        <span className="font-bold mr-3">{opt.id})</span>
-                        <span className="flex-1">{opt.text}</span>
-                      </div>
-                      {showAnswer && isCorrectOption && <CheckCircle className="h-5 w-5 text-green-600" />}
-                      {showAnswer && isSelectedOption && !isCorrectOption && <XCircle className="h-5 w-5 text-red-600" />}
-                    </Button>
-                  );
-                })}
-              </div>
-            </>
+        <CardContent>
+          {isLoadingComment ? (
+            <div className="flex items-center justify-center h-32">
+              <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            </div>
+          ) : featuredComment ? (
+            <div className="space-y-4">
+              <blockquote className="border-l-4 pl-4 italic text-foreground">
+                "{featuredComment.content}"
+              </blockquote>
+              <p className="text-sm font-semibold text-right">— {featuredComment.author}</p>
+              <p className="text-xs text-muted-foreground pt-2 border-t">
+                Na questão: "{featuredComment.questionText.substring(0, 100)}..."
+              </p>
+            </div>
           ) : (
-            <p className="text-sm text-muted-foreground text-center py-8">Carregando questão...</p>
+            <p className="text-center text-muted-foreground h-32 flex items-center justify-center">
+              Nenhuma interação recente. Seja o primeiro a comentar em uma questão!
+            </p>
           )}
         </CardContent>
-        {showAnswer && dailyQuestion && (
-          <div className="p-6 border-t bg-muted/30">
-            <Alert className={cn("border-2", isCorrect ? "border-green-400 dark:border-green-700" : "border-red-400 dark:border-red-700")}>
-              <Lightbulb className="h-4 w-4" />
-              <AlertTitle className="font-semibold">{isCorrect ? "Resposta Correta!" : "Resposta Incorreta"}</AlertTitle>
-              <AlertDescription>
-                <strong>Gabarito: {dailyQuestion.correctAnswer}.</strong> {dailyQuestion.explanation}
-              </AlertDescription>
-            </Alert>
-          </div>
-        )}
-        <CardFooter className="p-4 flex justify-end items-center bg-muted/30">
-          <div className="flex gap-2">
-            <Button variant="ghost" onClick={loadNewQuestion}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Nova Questão
-            </Button>
-            <Button asChild>
-              <Link to="/questions">
-                Ver Banco de Questões <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
+        <CardFooter className="bg-muted/30 p-4 flex justify-end">
+          <Button asChild>
+            <Link to="/questions">
+              Participar da Discussão <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
         </CardFooter>
       </Card>
     </div>
