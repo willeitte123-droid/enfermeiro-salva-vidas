@@ -41,7 +41,7 @@
   {
     "id": 4,
     "category": "Sinais Vitais",
-    "question": "Qual a frequência respiratória normal em um adulto em repouso?",
+    "question": "Qual a frequência respiratória normal em um adulto em repou so?",
     "options": [
       { "id": "A", "text": "8 a 10 irpm" },
       { "id": "B", "text": "12 a 20 irpm" },
@@ -826,7 +826,7 @@
       { "id": "A", "text": "A pressão arterial da gestante" },
       { "id": "B", "text": "O bem-estar fetal" },
       { "id": "C", "text": "O crescimento fetal" },
-      { "id":- "D", "text": "A posição do feto" }
+      { "id": "D", "text": "A posição do feto" }
     ],
     "correctAnswer": "C",
     "explanation": "A medida da altura uterina é um método simples e eficaz para acompanhar o crescimento fetal e detectar possíveis restrições de crescimento ou polidrâmnio."
@@ -1190,7 +1190,7 @@
       { "id": "A", "text": "Permitir que a equipe faça um lanche" },
       { "id": "B", "text": "Verificar a pressão arterial do paciente" },
       { "id": "C", "text": "Confirmar coletivamente o paciente, o procedimento e o local corretos antes da incisão" },
-      { "id":- "D", "text": "Contar as compressas e instrumentais" }
+      { "id": "D", "text": "Contar as compressas e instrumentais" }
     ],
     "correctAnswer": "C",
     "explanation": "O Time Out é uma pausa realizada com toda a equipe antes do início da cirurgia para confirmar verbalmente informações críticas, como a identidade do paciente, o procedimento a ser realizado e a lateralidade/local cirúrgico, prevenindo cirurgias erradas."
