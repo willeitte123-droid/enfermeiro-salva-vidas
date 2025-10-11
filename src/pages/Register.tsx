@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
-import { Stethoscope, Eye, EyeOff } from "lucide-react";
+import { Stethoscope } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 
@@ -34,7 +34,6 @@ const formSchema = z.object({
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -134,26 +133,9 @@ const Register = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Senha</FormLabel>
-                    <div className="relative">
-                      <FormControl>
-                        <Input
-                          type={showPassword ? "text" : "password"}
-                          placeholder="Mínimo 6 caracteres"
-                          {...field}
-                        />
-                      </FormControl>
-                      <button
-                        type="button"
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-5 w-5 text-gray-400" />
-                        ) : (
-                          <Eye className="h-5 w-5 text-gray-400" />
-                        )}
-                      </button>
-                    </div>
+                    <FormControl>
+                      <Input type="password" placeholder="Mínimo 6 caracteres" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
