@@ -4279,7 +4279,7 @@
   {
     "id": 330,
     "category": "Transfusão Sanguínea",
-    "question": "Qual é a principal função do Fator Rh no sistema sanguíneo?",
+    "question": "Qual é o principal função do Fator Rh no sistema sanguíneo?",
     "options": [
       { "id": "A", "text": "Determinar se o sangue é do tipo A, B, AB ou O." },
       { "id": "B", "text": "É um antígeno presente na superfície das hemácias. Indivíduos que o possuem são Rh positivo; os que não o possuem são Rh negativo." },
