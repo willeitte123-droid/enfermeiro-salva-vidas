@@ -648,5 +648,655 @@
     ],
     "correctAnswer": "C",
     "explanation": "Febre, calafrios, dor lombar, prurido, urticária e taquicardia são sinais de alerta para uma reação transfusional. A infusão deve ser interrompida imediatamente."
+  },
+  {
+    "id": 51,
+    "category": "Saúde Coletiva / SUS",
+    "question": "Quais são os princípios doutrinários do Sistema Único de Saúde (SUS)?",
+    "options": [
+      { "id": "A", "text": "Universalidade, Equidade e Integralidade" },
+      { "id": "B", "text": "Regionalização, Hierarquização e Descentralização" },
+      { "id": "C", "text": "Participação Social, Complementaridade e Resolutividade" },
+      { "id": "D", "text": "Gratuidade, Acessibilidade e Qualidade" }
+    ],
+    "correctAnswer": "A",
+    "explanation": "Os princípios doutrinários (ou ideológicos) do SUS são a Universalidade (saúde para todos), Equidade (tratar desigualmente os desiguais) e Integralidade (cuidado completo ao indivíduo)."
+  },
+  {
+    "id": 52,
+    "category": "Clínica Médica",
+    "question": "Qual o principal cuidado de enfermagem na administração de Furosemida (Lasix) endovenosa?",
+    "options": [
+      { "id": "A", "text": "Monitorar a glicemia capilar" },
+      { "id": "B", "text": "Monitorar o nível de potássio sérico e a diurese" },
+      { "id": "C", "text": "Verificar a temperatura corporal" },
+      { "id": "D", "text": "Avaliar o nível de consciência" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Furosemida é um diurético de alça potente que causa espoliação de potássio (hipocalemia) e aumento da diurese. É crucial monitorar os níveis de potássio e o débito urinário."
+  },
+  {
+    "id": 53,
+    "category": "Saúde da Criança",
+    "question": "Na avaliação do crescimento infantil, qual parâmetro é mais sensível para detectar desnutrição aguda?",
+    "options": [
+      { "id": "A", "text": "Peso para a idade" },
+      { "id": "B", "text": "Altura para a idade" },
+      { "id": "C", "text": "Peso para a altura" },
+      { "id": "D", "text": "Perímetro cefálico" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O índice Peso/Altura (P/A) é o melhor indicador de desnutrição aguda (emagrecimento), pois reflete a harmonia entre o peso e a estatura atual da criança."
+  },
+  {
+    "id": 54,
+    "category": "Saúde da Mulher",
+    "question": "Qual o nome dado à primeira menstruação?",
+    "options": [
+      { "id": "A", "text": "Telarca" },
+      { "id": "B", "text": "Pubarca" },
+      { "id": "C", "text": "Menacme" },
+      { "id": "D", "text": "Menarca" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Menarca é o termo técnico para a primeira menstruação, um marco do desenvolvimento puberal feminino. Telarca é o desenvolvimento das mamas e Pubarca o surgimento de pelos pubianos."
+  },
+  {
+    "id": 55,
+    "category": "Centro Cirúrgico",
+    "question": "Qual a finalidade da degermação das mãos antes de um procedimento cirúrgico?",
+    "options": [
+      { "id": "A", "text": "Remover a sujidade visível" },
+      { "id": "B", "text": "Eliminar a microbiota transitória e reduzir a residente" },
+      { "id": "C", "text": "Apenas um ritual pré-cirúrgico" },
+      { "id": "D", "text": "Aquecer as mãos para melhorar a sensibilidade" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A degermação (escovação cirúrgica) com antisséptico visa eliminar a microbiota transitória (contaminante) e reduzir ao máximo a microbiota residente da pele, prevenindo infecções de sítio cirúrgico."
+  },
+  {
+    "id": 56,
+    "category": "Legislação Profissional",
+    "question": "Qual órgão é responsável pela fiscalização do exercício profissional da enfermagem no Brasil?",
+    "options": [
+      { "id": "A", "text": "Ministério da Saúde" },
+      { "id": "B", "text": "Associação Brasileira de Enfermagem (ABEn)" },
+      { "id": "C", "text": "Sistema COFEN/CORENs" },
+      { "id": "D", "text": "Sindicato dos Enfermeiros" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Conselho Federal de Enfermagem (COFEN) e os Conselhos Regionais de Enfermagem (CORENs) compõem o sistema responsável por normatizar, disciplinar e fiscalizar o exercício da profissão."
+  },
+  {
+    "id": 57,
+    "category": "Segurança do Paciente",
+    "question": "O que é um 'evento adverso' em saúde?",
+    "options": [
+      { "id": "A", "text": "Qualquer complicação esperada de uma doença" },
+      { "id": "B", "text": "Um incidente que resulta em dano ao paciente" },
+      { "id": "C", "text": "Um erro que não atingiu o paciente" },
+      { "id": "D", "text": "A queixa de um paciente sobre o atendimento" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Evento adverso é um incidente que resulta em dano não intencional ao paciente, decorrente do cuidado prestado e não da evolução natural da doença."
+  },
+  {
+    "id": 58,
+    "category": "Farmacologia",
+    "question": "Qual a principal ação da Metformina no tratamento do Diabetes Mellitus tipo 2?",
+    "options": [
+      { "id": "A", "text": "Estimular o pâncreas a produzir mais insulina" },
+      { "id": "B", "text": "Reduzir a produção de glicose pelo fígado e aumentar a sensibilidade à insulina" },
+      { "id": "C", "text": "Aumentar a excreção de glicose pela urina" },
+      { "id": "D", "text": "Retardar a absorção de carboidratos no intestino" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Metformina, uma biguanida, é a primeira linha no tratamento do DM2. Sua principal ação é diminuir a gliconeogênese hepática e melhorar a captação de glicose pelos tecidos periféricos."
+  },
+  {
+    "id": 59,
+    "category": "Urgência e Emergência",
+    "question": "Qual é a conduta imediata em um paciente com obstrução de vias aéreas por corpo estranho (OVACE) que está consciente e tossindo?",
+    "options": [
+      { "id": "A", "text": "Iniciar a Manobra de Heimlich imediatamente" },
+      { "id": "B", "text": "Estimular a tosse e monitorar o paciente" },
+      { "id": "C", "text": "Oferecer água para ajudar a desengasgar" },
+      { "id": "D", "text": "Realizar compressões torácicas" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Se a vítima de OVACE está consciente e consegue tossir (obstrução parcial), a tosse é o mecanismo mais eficaz para expelir o objeto. A conduta é encorajar a tosse e observar atentamente."
+  },
+  {
+    "id": 60,
+    "category": "Sinais Vitais",
+    "question": "O que significa o termo 'normocardia'?",
+    "options": [
+      { "id": "A", "text": "Pressão arterial normal" },
+      { "id": "B", "text": "Temperatura corporal normal" },
+      { "id": "C", "text": "Frequência cardíaca dentro da faixa de normalidade" },
+      { "id": "D", "text": "Frequência respiratória normal" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Normocardia refere-se a uma frequência cardíaca (FC) dentro dos limites normais para a idade. Em adultos, a faixa é de 60 a 100 batimentos por minuto (bpm)."
+  },
+  {
+    "id": 61,
+    "category": "Saúde Coletiva / SUS",
+    "question": "A Lei nº 8.080/90, que regulamenta o SUS, estabelece que a saúde é um:",
+    "options": [
+      { "id": "A", "text": "Dever exclusivo da família" },
+      { "id": "B", "text": "Direito fundamental do ser humano e dever do Estado" },
+      { "id": "C", "text": "Benefício para quem contribui com a previdência" },
+      { "id": "D", "text": "Serviço a ser comprado pelo cidadão" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Lei Orgânica da Saúde (Lei nº 8.080/90) define que a saúde é um direito de todos e um dever do Estado, garantido por meio de políticas sociais e econômicas."
+  },
+  {
+    "id": 62,
+    "category": "Clínica Médica",
+    "question": "Um paciente com Doença Pulmonar Obstrutiva Crônica (DPOC) descompensada apresenta-se com dispneia. Qual a posição mais indicada para aliviar o desconforto?",
+    "options": [
+      { "id": "A", "text": "Decúbito dorsal horizontal" },
+      { "id": "B", "text": "Posição de Trendelenburg" },
+      { "id": "C", "text": "Posição ortopneica (sentado com inclinação para frente e apoio)" },
+      { "id": "D", "text": "Decúbito lateral esquerdo" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A posição ortopneica, onde o paciente senta-se inclinado para frente com os braços apoiados, otimiza o uso da musculatura acessória da respiração e melhora a expansão torácica, aliviando a dispneia."
+  },
+  {
+    "id": 63,
+    "category": "Saúde da Criança",
+    "question": "Qual é o principal objetivo da administração de Vitamina K em recém-nascidos na sala de parto?",
+    "options": [
+      { "id": "A", "text": "Prevenir a icterícia neonatal" },
+      { "id": "B", "text": "Estimular o sistema imunológico" },
+      { "id": "C", "text": "Prevenir a doença hemorrágica do recém-nascido" },
+      { "id": "D", "text": "Aumentar o ganho de peso" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Vitamina K é administrada (geralmente via intramuscular) para prevenir a doença hemorrágica do recém-nascido, pois eles nascem com baixos estoques dessa vitamina, essencial para a coagulação."
+  },
+  {
+    "id": 64,
+    "category": "Saúde da Mulher",
+    "question": "Durante o pré-natal, a aferição da altura uterina tem como principal objetivo avaliar:",
+    "options": [
+      { "id": "A", "text": "A pressão arterial da gestante" },
+      { "id": "B", "text": "O bem-estar fetal" },
+      { "id": "C", "text": "O crescimento fetal" },
+      { "id":- "D", "text": "A posição do feto" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A medida da altura uterina é um método simples e eficaz para acompanhar o crescimento fetal e detectar possíveis restrições de crescimento ou polidrâmnio."
+  },
+  {
+    "id": 65,
+    "category": "CME",
+    "question": "Qual é a etapa que precede a esterilização de materiais em uma Central de Material e Esterilização (CME)?",
+    "options": [
+      { "id": "A", "text": "Empacotamento" },
+      { "id": "B", "text": "Limpeza e secagem" },
+      { "id": "C", "text": "Armazenamento" },
+      { "id": "D", "text": "Distribuição" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A limpeza rigorosa é a etapa mais crítica do processamento de artigos. A esterilização não é eficaz se houver matéria orgânica (sujidade) presente no material."
+  },
+  {
+    "id": 66,
+    "category": "Legislação Profissional",
+    "question": "O que significa a sigla SAE no contexto da prática de enfermagem?",
+    "options": [
+      { "id": "A", "text": "Serviço de Atendimento Especializado" },
+      { "id": "B", "text": "Sistema de Avaliação de Enfermagem" },
+      { "id": "C", "text": "Sistematização da Assistência de Enfermagem" },
+      { "id": "D", "text": "Supervisão de Ações de Enfermagem" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "SAE é a Sistematização da Assistência de Enfermagem, um método científico que organiza o trabalho do enfermeiro em etapas: Histórico, Diagnóstico, Planejamento, Implementação e Avaliação."
+  },
+  {
+    "id": 67,
+    "category": "Segurança do Paciente",
+    "question": "A 'dupla checagem' de medicamentos de alta vigilância é uma estratégia para prevenir erros de:",
+    "options": [
+      { "id": "A", "text": "Administração" },
+      { "id": "B", "text": "Dispensação" },
+      { "id": "C", "text": "Prescrição" },
+      { "id": "D", "text": "Armazenamento" }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A dupla checagem, realizada por dois profissionais no momento da administração, é uma barreira de segurança crucial para evitar erros com medicamentos que têm alto potencial de causar danos graves."
+  },
+  {
+    "id": 68,
+    "category": "Curativos",
+    "question": "Uma ferida com tecido de granulação vermelho vivo e pouco exsudato deve ser tratada com uma cobertura que:",
+    "options": [
+      { "id": "A", "text": "Promova o desbridamento químico" },
+      { "id": "B", "text": "Absorva grande quantidade de exsudato" },
+      { "id": "C", "text": "Mantenha o leito da ferida úmido e protegido" },
+      { "id": "D", "text": "Seque a ferida completamente" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O tecido de granulação é um tecido saudável de cicatrização. O objetivo é protegê-lo e manter um ambiente úmido, o que acelera a epitelização. Coberturas como hidrocoloides ou espumas são indicadas."
+  },
+  {
+    "id": 69,
+    "category": "Eletrocardiograma",
+    "question": "Qual arritmia é caracterizada no ECG pela ausência de onda P, ritmo irregular e complexos QRS estreitos?",
+    "options": [
+      { "id": "A", "text": "Taquicardia Sinusal" },
+      { "id": "B", "text": "Flutter Atrial" },
+      { "id": "C", "text": "Fibrilação Atrial (FA)" },
+      { "id": "D", "text": "Taquicardia Ventricular" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Fibrilação Atrial (FA) é a arritmia sustentada mais comum e se caracteriza por um ritmo 'irregularmente irregular', ausência de ondas P definidas (substituídas por ondas 'f') e QRS geralmente estreito."
+  },
+  {
+    "id": 70,
+    "category": "Pediatria",
+    "question": "Qual é a principal via de transmissão do rotavírus, causador de gastroenterite aguda em crianças?",
+    "options": [
+      { "id": "A", "text": "Respiratória (aerossóis)" },
+      { "id": "B", "text": "Fecal-oral" },
+      { "id": "C", "text": "Sexual" },
+      { "id": "D", "text": "Vetorial (mosquitos)" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O rotavírus é transmitido principalmente pela via fecal-oral, por meio do contato direto com pessoas, objetos, água ou alimentos contaminados com fezes."
+  },
+  {
+    "id": 71,
+    "category": "Saúde Mental",
+    "question": "Qual o principal cuidado de enfermagem a um paciente com risco de suicídio?",
+    "options": [
+      { "id": "A", "text": "Deixá-lo sozinho para refletir" },
+      { "id": "B", "text": "Manter vigilância contínua e remover objetos perigosos do ambiente" },
+      { "id": "C", "text": "Concordar com seus sentimentos de desesperança" },
+      { "id": "D", "text": "Evitar falar sobre o assunto para não incentivá-lo" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A segurança do paciente é a prioridade máxima. Isso inclui vigilância constante (muitas vezes, observação 1:1) e a criação de um ambiente seguro, livre de meios para autoagressão."
+  },
+  {
+    "id": 72,
+    "category": "Geriatria",
+    "question": "O que é 'presbiacusia'?",
+    "options": [
+      { "id": "A", "text": "Perda de visão relacionada à idade" },
+      { "id": "B", "text": "Perda de massa muscular relacionada à idade" },
+      { "id": "C", "text": "Perda auditiva relacionada à idade" },
+      { "id": "D", "text": "Dificuldade de deglutição em idosos" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Presbiacusia é a perda gradual da audição que ocorre com o envelhecimento, afetando principalmente a percepção de sons de alta frequência."
+  },
+  {
+    "id": 73,
+    "category": "Administração de Medicamentos",
+    "question": "Uma prescrição indica '10 mg de Morfina SC 4/4h'. O que significa a sigla 'SC'?",
+    "options": [
+      { "id": "A", "text": "Sublingual" },
+      { "id": "B", "text": "Sem contraindicação" },
+      { "id": "C", "text": "Se necessário" },
+      { "id": "D", "text": "Subcutânea" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "SC é a abreviação padrão para a via de administração subcutânea, na qual o medicamento é injetado na camada de gordura sob a pele."
+  },
+  {
+    "id": 74,
+    "category": "Procedimentos de Enfermagem",
+    "question": "Ao realizar um curativo, qual é o sentido correto da limpeza da ferida?",
+    "options": [
+      { "id": "A", "text": "Da área mais contaminada para a menos contaminada" },
+      { "id": "B", "text": "Da área menos contaminada para a mais contaminada" },
+      { "id": "C", "text": "Das bordas para o centro" },
+      { "id": "D", "text": "Em movimentos circulares aleatórios" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A limpeza deve ser sempre do centro da ferida (área menos contaminada) para as bordas (área mais contaminada), para evitar levar microrganismos da pele circundante para dentro do leito da ferida."
+  },
+  {
+    "id": 75,
+    "category": "Imunização",
+    "question": "A vacina contra a Febre Amarela é produzida com vírus:",
+    "options": [
+      { "id": "A", "text": "Inativado" },
+      { "id": "B", "text": "Atenuado" },
+      { "id": "C", "text": "Recombinante" },
+      { "id": "D", "text": "Toxoide" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A vacina da Febre Amarela é composta por vírus vivos atenuados, o que confere uma imunidade robusta e duradoura. Por isso, é contraindicada para gestantes e imunossuprimidos."
+  },
+  {
+    "id": 76,
+    "category": "Saúde Coletiva / SUS",
+    "question": "O que são as Redes de Atenção à Saúde (RAS)?",
+    "options": [
+      { "id": "A", "text": "Um sistema de convênios privados credenciados ao SUS" },
+      { "id": "B", "text": "Hospitais de alta complexidade" },
+      { "id": "C", "text": "Arranjos organizativos de ações e serviços de saúde, com diferentes densidades tecnológicas, integrados por sistemas de apoio técnico, logístico e de gestão" },
+      { "id": "D", "text": "Apenas as Unidades Básicas de Saúde (UBS)" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "As RAS são a estratégia do SUS para organizar o sistema de forma integrada, conectando os diferentes pontos de atenção (primária, secundária, terciária) para garantir a continuidade do cuidado ao usuário."
+  },
+  {
+    "id": 77,
+    "category": "Clínica Médica",
+    "question": "Qual é o principal sintoma de um Acidente Vascular Cerebral (AVC) isquêmico de início súbito?",
+    "options": [
+      { "id": "A", "text": "Dor de cabeça gradual" },
+      { "id": "B", "text": "Febre alta" },
+      { "id": "C", "text": "Déficit neurológico focal (ex: fraqueza em um lado do corpo, dificuldade de fala)" },
+      { "id": "D", "text": "Vômitos persistentes" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O AVC é caracterizado por um déficit neurológico focal de início súbito. A escala de Cincinnati (FAST/SAMU) avalia justamente esses sinais: assimetria facial, fraqueza nos braços e alteração na fala."
+  },
+  {
+    "id": 78,
+    "category": "Saúde da Criança",
+    "question": "O Teste do Pezinho deve ser realizado preferencialmente:",
+    "options": [
+      { "id": "A", "text": "Na primeira hora de vida" },
+      { "id": "B", "text": "Entre o 3º e o 5º dia de vida" },
+      { "id": "C", "text": "Com 15 dias de vida" },
+      { "id": "D", "text": "Com 30 dias de vida" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A coleta para o Teste do Pezinho deve ocorrer entre o 3º e o 5º dia de vida do bebê, período ideal para a detecção precoce de diversas doenças metabólicas, genéticas e infecciosas."
+  },
+  {
+    "id": 79,
+    "category": "Saúde da Mulher",
+    "question": "Qual é a principal via de transmissão do HPV (Papilomavírus Humano)?",
+    "options": [
+      { "id": "A", "text": "Sanguínea" },
+      { "id": "B", "text": "Respiratória" },
+      { "id": "C", "text": "Sexual" },
+      { "id": "D", "text": "Fecal-oral" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O HPV é a infecção sexualmente transmissível (IST) mais comum no mundo. A principal forma de contágio é por via sexual, através do contato com a pele ou mucosas infectadas."
+  },
+  {
+    "id": 80,
+    "category": "Centro Cirúrgico",
+    "question": "O que é a posição de litotomia, frequentemente utilizada em cirurgias ginecológicas e urológicas?",
+    "options": [
+      { "id": "A", "text": "Paciente em decúbito ventral" },
+      { "id": "B", "text": "Paciente em decúbito dorsal com as pernas elevadas e afastadas em perneiras" },
+      { "id": "C", "text": "Paciente em decúbito lateral" },
+      { "id": "D", "text": "Paciente sentado com a cabeça para frente" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A posição de litotomia (ou ginecológica) consiste em colocar o paciente em decúbito dorsal, com as coxas e pernas flexionadas e apoiadas em perneiras, para expor a região perineal."
+  },
+  {
+    "id": 81,
+    "category": "Legislação Profissional",
+    "question": "De acordo com a Lei do Exercício Profissional (Lei nº 7.498/86), qual atividade é privativa do Enfermeiro?",
+    "options": [
+      { "id": "A", "text": "Administrar medicamentos por via oral" },
+      { "id": "B", "text": "Realizar curativos simples" },
+      { "id": "C", "text": "Consulta de enfermagem e prescrição da assistência de enfermagem" },
+      { "id": "D", "text": "Verificar sinais vitais" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A consulta de enfermagem, a prescrição da assistência e a liderança da equipe de enfermagem são atividades privativas do enfermeiro, exigindo conhecimento científico e tomada de decisão complexa."
+  },
+  {
+    "id": 82,
+    "category": "Segurança do Paciente",
+    "question": "A Escala de Braden é utilizada para avaliar o risco de desenvolvimento de:",
+    "options": [
+      { "id": "A", "text": "Quedas" },
+      { "id": "B", "text": "Lesão por pressão" },
+      { "id": "C", "text": "Trombose Venosa Profunda" },
+      { "id": "D", "text": "Desnutrição" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Escala de Braden avalia seis fatores de risco (percepção sensorial, umidade, atividade, mobilidade, nutrição, fricção e cisalhamento) para prever o risco de um paciente desenvolver lesões por pressão."
+  },
+  {
+    "id": 83,
+    "category": "Farmacologia",
+    "question": "Qual classe de medicamento é representada pelo Captopril e Enalapril?",
+    "options": [
+      { "id": "A", "text": "Betabloqueadores" },
+      { "id": "B", "text": "Diuréticos" },
+      { "id": "C", "text": "Inibidores da Enzima Conversora de Angiotensina (IECA)" },
+      { "id": "D", "text": "Bloqueadores dos canais de cálcio" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Medicamentos terminados em '-pril' (Captopril, Enalapril, Lisinopril) são IECAs, amplamente utilizados no tratamento da hipertensão arterial e insuficiência cardíaca."
+  },
+  {
+    "id": 84,
+    "category": "Urgência e Emergência",
+    "question": "Em uma vítima de trauma com suspeita de lesão na coluna cervical, qual manobra deve ser utilizada para abrir as vias aéreas?",
+    "options": [
+      { "id": "A", "text": "Hiperextensão do pescoço (Head tilt-chin lift)" },
+      { "id": "B", "text": "Elevação da mandíbula (Jaw thrust)" },
+      { "id": "C", "text": "Flexão do pescoço" },
+      { "id": "D", "text": "Rotação lateral da cabeça" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A manobra de elevação da mandíbula (Jaw thrust ou tração de mandíbula) é indicada para vítimas de trauma, pois permite a abertura das vias aéreas sem movimentar a coluna cervical."
+  },
+  {
+    "id": 85,
+    "category": "Sinais Vitais",
+    "question": "A diferença entre a pressão sistólica e a diastólica é chamada de:",
+    "options": [
+      { "id": "A", "text": "Pressão Arterial Média (PAM)" },
+      { "id": "B", "text": "Pressão de Pulso" },
+      { "id": "C", "text": "Débito Cardíaco" },
+      { "id": "D", "text": "Convergência pressórica" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Pressão de Pulso (PP = PAS - PAD) reflete a força que o coração gera a cada contração. Uma PP muito baixa (convergente) ou muito alta (divergente) pode indicar problemas cardíacos."
+  },
+  {
+    "id": 86,
+    "category": "Saúde Coletiva / SUS",
+    "question": "Qual o objetivo principal da Atenção Primária à Saúde (APS), também conhecida como Atenção Básica?",
+    "options": [
+      { "id": "A", "text": "Realizar cirurgias de alta complexidade" },
+      { "id": "B", "text": "Ser a porta de entrada preferencial do sistema, focando na promoção da saúde e prevenção de doenças" },
+      { "id": "C", "text": "Atender exclusivamente casos de urgência e emergência" },
+      { "id": "D", "text": "Realizar exames de imagem sofisticados" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A APS é o primeiro nível de contato dos usuários com o SUS. Seu papel é resolver a maioria dos problemas de saúde da população, além de promover saúde, prevenir agravos e coordenar o cuidado na rede."
+  },
+  {
+    "id": 87,
+    "category": "Clínica Médica",
+    "question": "Qual o cuidado de enfermagem essencial para um paciente em uso de sonda nasoenteral para dieta?",
+    "options": [
+      { "id": "A", "text": "Manter o paciente em decúbito dorsal horizontal durante a infusão" },
+      { "id": "B", "text": "Lavar a sonda com 20ml de água antes e após cada administração" },
+      { "id": "C", "text": "Administrar a dieta gelada para melhor absorção" },
+      { "id": "D", "text": "Não interromper a dieta em nenhum momento" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A lavagem da sonda com água é fundamental para garantir sua perviedade, prevenir obstruções e hidratar o paciente. Além disso, a cabeceira deve ser mantida elevada (30-45º) para prevenir broncoaspiração."
+  },
+  {
+    "id": 88,
+    "category": "Saúde da Criança",
+    "question": "A Caderneta de Saúde da Criança é um instrumento para acompanhar:",
+    "options": [
+      { "id": "A", "text": "Apenas as vacinas" },
+      { "id": "B", "text": "Apenas o rendimento escolar" },
+      { "id": "C", "text": "A saúde, o crescimento e o desenvolvimento, do nascimento aos 9 anos" },
+      { "id": "D", "text": "Apenas a saúde bucal" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Caderneta é um documento completo que registra informações sobre vacinas, crescimento (curvas), desenvolvimento neuropsicomotor, saúde bucal, alimentação e outros marcos importantes da saúde infantil."
+  },
+  {
+    "id": 89,
+    "category": "Saúde da Mulher",
+    "question": "O exame de Papanicolau (citopatológico) é o principal método para rastreamento de qual tipo de câncer?",
+    "options": [
+      { "id": "A", "text": "Câncer de mama" },
+      { "id": "B", "text": "Câncer de ovário" },
+      { "id": "C", "text": "Câncer de colo de útero" },
+      { "id": "D", "text": "Câncer de endométrio" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Papanicolau é um exame de rastreio que detecta lesões precursoras e o câncer de colo de útero em estágio inicial, aumentando significativamente as chances de cura."
+  },
+  {
+    "id": 90,
+    "category": "CME",
+    "question": "O que indica um teste de Bowie-Dick realizado em uma autoclave a vapor?",
+    "options": [
+      { "id": "A", "text": "A eficácia da esterilização contra esporos" },
+      { "id": "B", "text": "A presença de umidade no pacote" },
+      { "id": "C", "text": "A eficácia da remoção do ar da câmara (qualidade do vácuo)" },
+      { "id": "D", "text": "A temperatura exata atingida no ciclo" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O teste de Bowie-Dick é um indicador químico que avalia a eficácia do sistema de vácuo da autoclave, garantindo que o ar residual foi removido e que o vapor pode penetrar em todos os pontos da carga."
+  },
+  {
+    "id": 91,
+    "category": "Legislação Profissional",
+    "question": "O que é negligência na prática de enfermagem?",
+    "options": [
+      { "id": "A", "text": "Realizar um procedimento sem habilidade técnica" },
+      { "id": "B", "text": "Agir com excesso de confiança e sem cautela" },
+      { "id": "C", "text": "A omissão ou falta de cuidado, deixando de fazer algo que deveria ser feito" },
+      { "id": "D", "text": "Revelar um segredo do paciente" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Negligência é caracterizada pela inércia, passividade ou omissão. É quando o profissional deixa de tomar uma atitude necessária, resultando em dano ao paciente (ex: não mudar decúbito, não administrar medicamento)."
+  },
+  {
+    "id": 92,
+    "category": "Segurança do Paciente",
+    "question": "Qual a finalidade do 'Time Out' (pausa de segurança) no centro cirúrgico?",
+    "options": [
+      { "id": "A", "text": "Permitir que a equipe faça um lanche" },
+      { "id": "B", "text": "Verificar a pressão arterial do paciente" },
+      { "id": "C", "text": "Confirmar coletivamente o paciente, o procedimento e o local corretos antes da incisão" },
+      { "id":- "D", "text": "Contar as compressas e instrumentais" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Time Out é uma pausa realizada com toda a equipe antes do início da cirurgia para confirmar verbalmente informações críticas, como a identidade do paciente, o procedimento a ser realizado e a lateralidade/local cirúrgico, prevenindo cirurgias erradas."
+  },
+  {
+    "id": 93,
+    "category": "Curativos",
+    "question": "O que é um tecido de epitelização em uma ferida?",
+    "options": [
+      { "id": "A", "text": "Tecido necrótico, preto e seco" },
+      { "id": "B", "text": "Tecido amarelo e úmido (esfacelo)" },
+      { "id": "C", "text": "Tecido vermelho, úmido e brilhante (granulação)" },
+      { "id": "D", "text": "Tecido rosa pálido ou translúcido que avança das bordas para o centro" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A epitelização é a fase final da cicatrização, onde novas células epiteliais migram sobre o tecido de granulação para fechar a ferida. É um tecido frágil que deve ser protegido."
+  },
+  {
+    "id": 94,
+    "category": "Eletrocardiograma",
+    "question": "Um ritmo sinusal normal no ECG é caracterizado por:",
+    "options": [
+      { "id": "A", "text": "Ausência de onda P e ritmo irregular" },
+      { "id": "B", "text": "Onda P presente antes de cada QRS e frequência entre 60-100 bpm" },
+      { "id": "C", "text": "Complexo QRS alargado e frequência acima de 150 bpm" },
+      { "id": "D", "text": "Ondas F 'em dente de serra' e ritmo regular" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Para ser considerado um ritmo sinusal, o impulso elétrico deve se originar no nó sinusal, o que é evidenciado no ECG por uma onda P positiva precedendo cada complexo QRS, com uma frequência cardíaca normal de 60 a 100 bpm."
+  },
+  {
+    "id": 95,
+    "category": "Pediatria",
+    "question": "Qual é a principal causa de parada cardiorrespiratória (PCR) em crianças?",
+    "options": [
+      { "id": "A", "text": "Causa cardíaca primária (arritmia)" },
+      { "id": "B", "text": "Causa respiratória (hipóxia)" },
+      { "id": "C", "text": "Intoxicação medicamentosa" },
+      { "id": "D", "text": "Trauma" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Diferente dos adultos, a maioria das PCRs em crianças é secundária à insuficiência respiratória e ao choque, levando à hipóxia e acidose. Por isso, a ventilação é um componente crucial na reanimação pediátrica."
+  },
+  {
+    "id": 96,
+    "category": "Saúde Mental",
+    "question": "O que são sintomas extrapiramidais, um possível efeito adverso de antipsicóticos?",
+    "options": [
+      { "id": "A", "text": "Ganho de peso e sonolência" },
+      { "id": "B", "text": "Tremores, rigidez muscular, acatisia (inquietação) e distonias" },
+      { "id": "C", "text": "Aumento da pressão arterial e taquicardia" },
+      { "id": "D", "text": "Alucinações visuais e auditivas" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Os sintomas extrapiramidais são distúrbios do movimento causados pelo bloqueio de receptores de dopamina no cérebro, um efeito colateral comum de antipsicóticos, especialmente os de primeira geração."
+  },
+  {
+    "id": 97,
+    "category": "Geriatria",
+    "question": "Qual é a principal característica do Delirium em idosos?",
+    "options": [
+      { "id": "A", "text": "Início gradual e curso progressivo" },
+      { "id": "B", "text": "Início agudo, curso flutuante e alteração da atenção" },
+      { "id": "C", "text": "Perda de memória recente sem outras alterações" },
+      { "id": "D", "text": "É um quadro irreversível" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Delirium é uma síndrome confusional aguda, caracterizada por um início súbito, flutuação do nível de consciência ao longo do dia e um déficit primário na atenção. Geralmente é reversível se a causa base for tratada."
+  },
+  {
+    "id": 98,
+    "category": "Administração de Medicamentos",
+    "question": "Qual o local mais seguro para administração de injeção intramuscular em adultos, especialmente para grandes volumes?",
+    "options": [
+      { "id": "A", "text": "Músculo deltoide" },
+      { "id": "B", "text": "Músculo vasto lateral" },
+      { "id": "C", "text": "Músculo dorsoglúteo" },
+      { "id": "D", "text": "Músculo ventroglúteo (técnica de Hochstetter)" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "O músculo ventroglúteo é considerado o local mais seguro por ser livre de grandes vasos e nervos importantes (como o ciático), além de ter uma camada de gordura menos espessa e boa massa muscular."
+  },
+  {
+    "id": 99,
+    "category": "Procedimentos de Enfermagem",
+    "question": "Qual a finalidade de realizar o 'flush' com solução salina em um cateter venoso periférico?",
+    "options": [
+      { "id": "A", "text": "Apenas para limpar o cateter" },
+      { "id": "B", "text": "Para diluir o medicamento que será administrado" },
+      { "id": "C", "text": "Para avaliar a perviedade do cateter e prevenir a formação de coágulos" },
+      { "id": "D", "text": "Para aquecer a veia antes da punção" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O flush (ou lavagem) com soro fisiológico serve para verificar se o acesso está pérvio (sem obstruções), remover resíduos de medicamentos e prevenir a formação de trombos que podem ocluir o cateter."
+  },
+  {
+    "id": 100,
+    "category": "Imunização",
+    "question": "O que é um 'evento adverso pós-vacinação' (EAPV)?",
+    "options": [
+      { "id": "A", "text": "Qualquer doença que a vacina não conseguiu prevenir" },
+      { "id": "B", "text": "Qualquer ocorrência médica indesejada após a vacinação, podendo ou não ter relação causal com a vacina" },
+      { "id": "C", "text": "Apenas reações alérgicas graves (anafilaxia)" },
+      { "id": "D", "text": "A recusa do paciente em tomar a vacina" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Um EAPV é definido como qualquer evento médico indesejado que ocorre após a vacinação. É crucial notificar todos os EAPVs para que a vigilância possa investigar e determinar se há uma relação causal com o imunobiológico."
   }
 ]
