@@ -98,26 +98,29 @@ const Emergency = () => {
       </Card>
 
       <Accordion type="single" collapsible className="space-y-4">
-        {emergencies.map((emergency, index) => (
-          <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
-            <AccordionTrigger className="hover:no-underline">
-              <div className="flex items-center gap-3">
-                <emergency.icon className="h-5 w-5 text-primary" />
-                <span className="font-semibold text-left">{emergency.title}</span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <ul className="space-y-3 pt-4 pl-2">
-                {emergency.content.map((step, stepIndex) => (
-                  <li key={stepIndex} className="flex items-start gap-3">
-                    <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-1" />
-                    <span className="text-sm" dangerouslySetInnerHTML={{ __html: step }} />
-                  </li>
-                ))}
-              </ul>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
+        {emergencies.map((emergency, index) => {
+          const Icon = emergency.icon;
+          return (
+            <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
+              <AccordionTrigger className="hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <Icon className="h-5 w-5 text-primary" />
+                  <span className="font-semibold text-left">{emergency.title}</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-3 pt-4 pl-2">
+                  {emergency.content.map((step, stepIndex) => (
+                    <li key={stepIndex} className="flex items-start gap-3">
+                      <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-1" />
+                      <span className="text-sm" dangerouslySetInnerHTML={{ __html: step }} />
+                    </li>
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          );
+        })}
       </Accordion>
     </div>
   );

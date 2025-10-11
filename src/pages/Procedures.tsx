@@ -111,49 +111,52 @@ const Procedures = () => {
       </div>
 
       <Accordion type="single" collapsible className="w-full space-y-4">
-        {procedures.map((proc, index) => (
-          <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
-            <AccordionTrigger className="hover:no-underline text-left">
-              <div className="flex items-center gap-4">
-                <proc.icon className="h-6 w-6 text-primary flex-shrink-0" />
+        {procedures.map((proc, index) => {
+          const Icon = proc.icon;
+          return (
+            <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
+              <AccordionTrigger className="hover:no-underline text-left">
+                <div className="flex items-center gap-4">
+                  <Icon className="h-6 w-6 text-primary flex-shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-lg">{proc.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">{proc.description}</p>
+                  </div>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="pt-4 space-y-6">
                 <div>
-                  <h3 className="font-semibold text-lg">{proc.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">{proc.description}</p>
+                  <h4 className="font-semibold text-primary mb-3">Materiais Essenciais</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {proc.materials.map((material, i) => (
+                      <Badge key={i} variant="secondary">{material}</Badge>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent className="pt-4 space-y-6">
-              <div>
-                <h4 className="font-semibold text-primary mb-3">Materiais Essenciais</h4>
-                <div className="flex flex-wrap gap-2">
-                  {proc.materials.map((material, i) => (
-                    <Badge key={i} variant="secondary">{material}</Badge>
-                  ))}
+
+                <div>
+                  <h4 className="font-semibold text-primary mb-3">Passo a Passo</h4>
+                  <ol className="space-y-3">
+                    {proc.steps.map((step, i) => (
+                      <li key={i} className="flex items-start gap-3 text-sm">
+                        <CheckSquare className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                        <span dangerouslySetInnerHTML={{ __html: step }} />
+                      </li>
+                    ))}
+                  </ol>
                 </div>
-              </div>
 
-              <div>
-                <h4 className="font-semibold text-primary mb-3">Passo a Passo</h4>
-                <ol className="space-y-3">
-                  {proc.steps.map((step, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm">
-                      <CheckSquare className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span dangerouslySetInnerHTML={{ __html: step }} />
-                    </li>
-                  ))}
-                </ol>
-              </div>
-
-              <Alert>
-                <Info className="h-4 w-4" />
-                <AlertTitle className="font-semibold">Pontos Críticos</AlertTitle>
-                <AlertDescription>
-                  {proc.observations}
-                </AlertDescription>
-              </Alert>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
+                <Alert>
+                  <Info className="h-4 w-4" />
+                  <AlertTitle className="font-semibold">Pontos Críticos</AlertTitle>
+                  <AlertDescription>
+                    {proc.observations}
+                  </AlertDescription>
+                </Alert>
+              </AccordionContent>
+            </AccordionItem>
+          );
+        })}
       </Accordion>
     </div>
   );
