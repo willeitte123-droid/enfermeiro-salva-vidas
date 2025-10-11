@@ -2021,7 +2021,7 @@
     "options": [
       { "id": "A", "text": "Lacerações do trajeto de parto." },
       { "id": "B", "text": "Retenção de restos placentários." },
-      { "id":- "C", "text": "Atonia uterina." },
+      { "id": "C", "text": "Atonia uterina." },
       { "id": "D", "text": "Distúrbios de coagulação." }
     ],
     "correctAnswer": "C",
@@ -2438,7 +2438,7 @@
       { "id": "A", "text": "Administração de antibióticos profiláticos." },
       { "id": "B", "text": "Manter o paciente em decúbito dorsal horizontal." },
       { "id": "C", "text": "A implementação de um conjunto de medidas (bundle), como a elevação da cabeceira (30-45º) e a higiene oral com clorexidina." },
-      { "id":- "D", "text": "Realizar a troca do circuito do ventilador diariamente." }
+      { "id": "D", "text": "Realizar a troca do circuito do ventilador diariamente." }
     ],
     "correctAnswer": "C",
     "explanation": "A prevenção da PAV é feita através de um 'bundle' de cuidados, que inclui: elevação da cabeceira, higiene oral com antisséptico, avaliação diária da sedação ('despertar diário') e profilaxia de úlcera de estresse e TVP. A troca rotineira do circuito não é mais recomendada."
@@ -2489,7 +2489,7 @@
     "options": [
       { "id": "A", "text": "As derivações que são colocadas nos membros (DI, DII, DIII, aVR, aVL, aVF)." },
       { "id": "B", "text": "As derivações que são colocadas no tórax do paciente (V1 a V6)." },
-      { "id":- "C", "text": "As derivações utilizadas para monitorização contínua." },
+      { "id": "C", "text": "As derivações utilizadas para monitorização contínua." },
       { "id": "D", "text": "As derivações que avaliam a parede posterior do coração." }
     ],
     "correctAnswer": "B",
@@ -2697,7 +2697,7 @@
     "options": [
       { "id": "A", "text": "Aumento da frequência cardíaca de repouso." },
       { "id": "B", "text": "Diminuição da pressão arterial sistólica." },
-      { "id":- "C", "text": "Aumento da rigidez arterial e do ventrículo esquerdo." },
+      { "id": "C", "text": "Aumento da rigidez arterial e do ventrículo esquerdo." },
       { "id": "D", "text": "Melhora da capacidade de resposta ao estresse." }
     ],
     "correctAnswer": "C",
@@ -2749,7 +2749,7 @@
     "options": [
       { "id": "A", "text": "A capacidade de limpar adequadamente os materiais." },
       { "id": "B", "text": "A capacidade de identificar a localização de todos os materiais dentro do hospital." },
-      { "id":- "C", "text": "A capacidade de seguir o trajeto de um artigo processado, desde a esterilização até o uso no paciente, e vice-versa." },
+      { "id": "C", "text": "A capacidade de seguir o trajeto de um artigo processado, desde a esterilização até o uso no paciente, e vice-versa." },
       { "id": "D", "text": "O controle de validade dos pacotes estéreis." }
     ],
     "correctAnswer": "C",
@@ -3049,7 +3049,7 @@
       { "id": "A", "text": "É um item opcional, usado apenas por status." },
       { "id": "B", "text": "Identificar o profissional de forma legível em todos os seus atos, contendo nome completo, categoria profissional e número de inscrição no COREN." },
       { "id": "C", "text": "Substituir a assinatura do profissional." },
-      { "id":- "D", "text": "Ser usado apenas em documentos administrativos, não no prontuário." }
+      { "id": "D", "text": "Ser usado apenas em documentos administrativos, não no prontuário." }
     ],
     "correctAnswer": "B",
     "explanation": "O carimbo, juntamente com a assinatura, é obrigatório e serve para identificar o autor de uma anotação, prescrição ou qualquer outro ato profissional, garantindo a responsabilidade legal e a rastreabilidade da informação."
@@ -3347,7 +3347,7 @@
     "options": [
       { "id": "A", "text": "Uma reação alérgica leve com urticária." },
       { "id": "B", "text": "Uma sobrecarga de volume que causa edema pulmonar cardiogênico." },
-      { "id":- "C", "text": "Uma complicação grave caracterizada por edema pulmonar não cardiogênico e hipoxemia, que ocorre durante ou até 6 horas após a transfusão." },
+      { "id": "C", "text": "Uma complicação grave caracterizada por edema pulmonar não cardiogênico e hipoxemia, que ocorre durante ou até 6 horas após a transfusão." },
       { "id": "D", "text": "A transmissão de uma infecção através do sangue." }
     ],
     "correctAnswer": "C",
@@ -3399,7 +3399,7 @@
     "options": [
       { "id": "A", "text": "Aferir a pressão arterial e realizar punções venosas no membro da fístula." },
       { "id": "B", "text": "Manter o membro da fístula imobilizado." },
-      { "id":- "C", "text": "Avaliar a presença de frêmito e sopro na fístula e proteger o membro de compressões e punções." },
+      { "id": "C", "text": "Avaliar a presença de frêmito e sopro na fístula e proteger o membro de compressões e punções." },
       { "id": "D", "text": "Aplicar compressas frias no local da fístula." }
     ],
     "correctAnswer": "C",
@@ -4310,7 +4310,7 @@
       { "id": "A", "text": "Uma falha da bomba cardíaca que leva a um débito cardíaco inadequado e hipoperfusão tecidual, apesar de um volume intravascular adequado." },
       { "id": "B", "text": "Uma perda de volume sanguíneo que leva à hipotensão." },
       { "id": "C", "text": "Uma vasodilatação maciça causada por uma infecção." },
-      { "id":- "D", "text": "Uma obstrução física ao fluxo sanguíneo, como um tamponamento cardíaco." }
+      { "id": "D", "text": "Uma obstrução física ao fluxo sanguíneo, como um tamponamento cardíaco." }
     ],
     "correctAnswer": "A",
     "explanation": "No choque cardiogênico, o problema está no coração (ex: após um infarto extenso). O coração não consegue bombear sangue suficiente, levando a sinais de baixo débito (hipotensão, pele fria, oligúria) e congestão pulmonar (dispneia, estertores)."
@@ -4776,7 +4776,7 @@
     "question": "Qual é a finalidade do uso de pulseiras de identificação com cores diferentes em um hospital?",
     "options": [
       { "id": "A", "text": "Identificar a equipe de saúde responsável pelo paciente." },
-      { "id":- "B", "text": "É apenas uma questão estética." },
+      { "id": "B", "text": "É apenas uma questão estética." },
       { "id": "C", "text": "Comunicar visualmente e de forma rápida informações de alerta importantes, como risco de queda, alergia ou risco de sangramento." },
       { "id": "D", "text": "Identificar o convênio do paciente." }
     ],
@@ -4881,7 +4881,7 @@
     "options": [
       { "id": "A", "text": "Aumentar a força de contração do coração (efeito inotrópico)." },
       { "id": "B", "text": "Causar potente vasoconstrição periférica (efeito alfa-adrenérgico), aumentando a pressão arterial." },
-      { "id":- "C", "text": "Diminuir a frequência cardíaca." },
+      { "id": "C", "text": "Diminuir a frequência cardíaca." },
       { "id": "D", "text": "Causar broncodilatação." }
     ],
     "correctAnswer": "B",
@@ -5063,7 +5063,7 @@
     "options": [
       { "id": "A", "text": "Administrar o mais rápido possível." },
       { "id": "B", "text": "Diluir em soro glicosado." },
-      { "id":- "C", "text": "Iniciar a infusão lentamente, monitorar rigorosamente os sinais vitais e observar o paciente para reações adversas, que são mais comuns no início da infusão." },
+      { "id": "C", "text": "Iniciar a infusão lentamente, monitorar rigorosamente os sinais vitais e observar o paciente para reações adversas, que são mais comuns no início da infusão." },
       { "id": "D", "text": "Não requer monitoramento especial." }
     ],
     "correctAnswer": "C",
@@ -5115,7 +5115,7 @@
     "options": [
       { "id": "A", "text": "Oferecer alimentos ácidos e crocantes." },
       { "id": "B", "text": "Realizar higiene oral com enxaguantes bucais à base de álcool." },
-      { "id":- "C", "text": "Realizar higiene oral suave e frequente com escova de cerdas macias e solução sem álcool, e oferecer analgesia antes das refeições." },
+      { "id": "C", "text": "Realizar higiene oral suave e frequente com escova de cerdas macias e solução sem álcool, e oferecer analgesia antes das refeições." },
       { "id": "D", "text": "Suspender a higiene oral para não machucar." }
     ],
     "correctAnswer": "C",
