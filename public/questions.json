@@ -5350,7 +5350,7 @@
       { "id": "A", "text": "Uma inflamação do pericárdio." },
       { "id": "B", "text": "Uma infecção do músculo cardíaco (miocárdio)." },
       { "id": "C", "text": "Uma infecção do endocárdio, o revestimento interno das câmaras e valvas cardíacas." },
-      { "id":- "D", "text": "Uma arritmia cardíaca." }
+      { "id": "D", "text": "Uma arritmia cardíaca." }
     ],
     "correctAnswer": "C",
     "explanation": "A endocardite geralmente ocorre em valvas cardíacas danificadas ou em próteses valvares. A infecção leva à formação de 'vegetações' (um aglomerado de bactérias, plaquetas e fibrina), que podem destruir a valva ou se desprender, causando êmbolos para outros órgãos."
@@ -5362,7 +5362,7 @@
     "options": [
       { "id": "A", "text": "A abreviação da vida de um paciente (eutanásia)." },
       { "id": "B", "text": "O uso de todos os meios possíveis para prolongar a vida, mesmo que causem sofrimento (distanásia)." },
-      { "id":- "C", "text": "A 'morte no tempo certo', permitindo que o processo de morrer ocorra naturalmente, sem o uso de medidas desproporcionais, e com foco no alívio do sofrimento." },
+      { "id": "C", "text": "A 'morte no tempo certo', permitindo que o processo de morrer ocorra naturalmente, sem o uso de medidas desproporcionais, e com foco no alívio do sofrimento." },
       { "id": "D", "text": "O suicídio assistido." }
     ],
     "correctAnswer": "C",
@@ -5595,7 +5595,7 @@
     "question": "Qual é a conduta imediata após um acidente com exposição a material biológico (ex: picada de agulha)?",
     "options": [
       { "id": "A", "text": "Continuar o trabalho normalmente." },
-      { "id":- "B", "text": "Lavar o local com água e sabão, comunicar a chefia e procurar o serviço de saúde do trabalhador para avaliação e início da profilaxia pós-exposição (PEP), se indicada." },
+      { "id": "B", "text": "Lavar o local com água e sabão, comunicar a chefia e procurar o serviço de saúde do trabalhador para avaliação e início da profilaxia pós-exposição (PEP), se indicada." },
       { "id": "C", "text": "Tomar antibióticos por conta própria." },
       { "id": "D", "text": "Fazer um curativo oclusivo e aguardar o final do plantão." }
     ],
@@ -5649,7 +5649,7 @@
       { "id": "A", "text": "A elaboração da escala de férias." },
       { "id": "B", "text": "Um processo gerencial para definir a direção a ser seguida pela organização, analisando o ambiente e definindo metas e ações de longo prazo." },
       { "id": "C", "text": "A compra de materiais e equipamentos." },
-      { "id":- "D", "text": "A resolução de conflitos do dia a dia." }
+      { "id": "D", "text": "A resolução de conflitos do dia a dia." }
     ],
     "correctAnswer": "B",
     "explanation": "O planejamento estratégico envolve a definição da missão, visão e valores, a análise SWOT (Forças, Fraquezas, Oportunidades, Ameaças) e a criação de um plano de ação para alcançar os objetivos da instituição ou do serviço de enfermagem."
@@ -5765,7 +5765,7 @@
     "options": [
       { "id": "A", "text": "Uma trombose venosa profunda nos membros inferiores." },
       { "id": "B", "text": "Uma emergência oncológica causada pela compressão da veia cava superior por um tumor (geralmente de pulmão ou linfoma)." },
-      { "id":- "C", "text": "Uma infecção do cateter venoso central." },
+      { "id": "C", "text": "Uma infecção do cateter venoso central." },
       { "id": "D", "text": "Uma complicação da quimioterapia." }
     ],
     "correctAnswer": "B",
@@ -5948,7 +5948,7 @@
       { "id": "A", "text": "Dificuldade para falar." },
       { "id": "B", "text": "Dificuldade para deglutir alimentos ou líquidos." },
       { "id": "C", "text": "Perda do paladar." },
-      { "id":- "D", "text": "Dor ao engolir." }
+      { "id": "D", "text": "Dor ao engolir." }
     ],
     "correctAnswer": "B",
     "explanation": "A disfagia é um sintoma comum em idosos e em pacientes com doenças neurológicas. Aumenta o risco de desnutrição, desidratação e, principalmente, de pneumonia aspirativa. A avaliação por um fonoaudiólogo é essencial para determinar a consistência segura da dieta."
@@ -6078,7 +6078,7 @@
       { "id": "A", "text": "Alergia ao leite de vaca." },
       { "id": "B", "text": "Uma doença autoimune desencadeada pela ingestão de glúten, que causa inflamação e atrofia das vilosidades do intestino delgado." },
       { "id": "C", "text": "Intolerância à lactose." },
-      { "id":- "D", "text": "Uma infecção intestinal crônica." }
+      { "id": "D", "text": "Uma infecção intestinal crônica." }
     ],
     "correctAnswer": "B",
     "explanation": "A atrofia das vilosidades leva à má absorção de nutrientes, causando sintomas como diarreia crônica, distensão abdominal, perda de peso e deficiências vitamínicas. O único tratamento é uma dieta estritamente isenta de glúten por toda a vida."
@@ -6376,7 +6376,7 @@
     "options": [
       { "id": "A", "text": "Infecção." },
       { "id": "B", "text": "Pneumotórax iatrogênico." },
-      { "id":- "C", "text": "Dor." },
+      { "id": "C", "text": "Dor." },
       { "id": "D", "text": "Sangramento." }
     ],
     "correctAnswer": "B",
