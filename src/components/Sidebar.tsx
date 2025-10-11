@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList, Shield,
   LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, Scale
@@ -27,7 +27,9 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
     return `${firstName}${lastName}`.toUpperCase();
   };
 
-  const handleLogout = async () => {
+  const handleLogout = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     await supabase.auth.signOut();
     navigate('/login');
   };
@@ -112,21 +114,21 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
         </nav>
       </div>
       <div className="mt-auto border-t border-border/10 p-4">
-        <div className="flex items-center justify-between">
+        <Link to="/profile" className="flex items-center justify-between p-2 rounded-md hover:bg-sidebar-hover group">
           <div className="flex items-center gap-3">
             <Avatar className="h-9 w-9">
               <AvatarImage src={user?.avatar_url} alt={`${user?.first_name} ${user?.last_name}`} />
               <AvatarFallback className="bg-primary text-primary-foreground">{getInitials()}</AvatarFallback>
             </Avatar>
             <div>
-              <p className="text-sm font-medium text-white">{`${user?.first_name || ''} ${user?.last_name || ''}`}</p>
+              <p className="text-sm font-medium text-white">{`${user?.first_name || 'Usuário'} ${user?.last_name || ''}`}</p>
               <p className="text-xs text-sidebar-foreground">{isAdmin ? 'Administrador' : 'Usuário'}</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleLogout} className="text-sidebar-foreground hover:bg-sidebar-hover hover:text-white" title="Sair">
+          <Button variant="ghost" size="icon" onClick={handleLogout} className="text-sidebar-foreground opacity-0 group-hover:opacity-100 transition-opacity hover:bg-sidebar-hover hover:text-white" title="Sair">
             <LogOut className="h-5 w-5" />
           </Button>
-        </div>
+        </Link>
       </div>
     </aside>
   );
