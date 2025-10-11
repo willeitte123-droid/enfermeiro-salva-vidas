@@ -112,6 +112,8 @@ const AppContent = () => {
       <Navigation isAdmin={isAdmin} />
       <main className="flex-1 container mx-auto px-4 py-8">
         <Routes>
+          <Route path="/login" element={<Navigate to="/" />} />
+          <Route path="/register" element={<Navigate to="/" />} />
           <Route path="/" element={<Calculator />} />
           <Route path="/emergency" element={<Emergency />} />
           <Route path="/medications" element={<Medications />} />
