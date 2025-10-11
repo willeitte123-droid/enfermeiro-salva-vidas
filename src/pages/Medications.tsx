@@ -112,6 +112,70 @@ const Medications = () => {
       contraindication: "Hipovolemia não corrigida.",
       adverseEffects: "Isquemia periférica, necrose tecidual (extravasamento), arritmias, bradicardia reflexa.",
       category: "Catecolamina/Vasopressor"
+    },
+    {
+      name: "Dobutamina",
+      activeIngredient: "Cloridrato de Dobutamina",
+      indication: "Suporte inotrópico para descompensação cardíaca (ICC, choque cardiogênico). Dose: <strong>2-20 mcg/kg/min</strong> em bomba de infusão contínua (BIC).",
+      contraindication: "Estenose subaórtica hipertrófica idiopática, feocromocitoma.",
+      adverseEffects: "Taquicardia, arritmias, hipertensão, dor torácica. <strong>Monitorização cardíaca e de PA contínua é essencial</strong>.",
+      category: "Inotrópico/Simpaticomimético"
+    },
+    {
+      name: "Heparina Sódica",
+      activeIngredient: "Heparina Sódica",
+      indication: "Anticoagulante para TVP, TEP, IAM. Dose: Bolus de <strong>5.000 UI IV</strong>, seguido de infusão contínua (BIC) ajustada por TTPa.",
+      contraindication: "Hemorragia ativa, plaquetopenia grave, cirurgia recente do SNC/olhos.",
+      adverseEffects: "<strong>Hemorragia (antídoto: Protamina)</strong>, trombocitopenia induzida por heparina (TIH). Monitorar TTPa e plaquetas.",
+      category: "Anticoagulante"
+    },
+    {
+      name: "Dexametasona (Decadron)",
+      activeIngredient: "Fosfato de Dexametasona",
+      indication: "Corticosteroide potente com ação anti-inflamatória e imunossupressora. Edema cerebral, reações alérgicas graves. Dose: <strong>4-20mg IV/IM</strong>.",
+      contraindication: "Infecções fúngicas sistêmicas. Cautela em diabéticos e hipertensos.",
+      adverseEffects: "Hiperglicemia, hipertensão, retenção de líquidos, insônia, aumento do risco de infecção.",
+      category: "Corticosteroide"
+    },
+    {
+      name: "Ondansetrona (Vonau)",
+      activeIngredient: "Cloridrato de Ondansetrona",
+      indication: "Antiemético para náuseas e vômitos induzidos por quimio/radioterapia ou pós-operatório. Dose: <strong>4-8mg IV lento</strong>.",
+      contraindication: "Uso concomitante com apomorfina.",
+      adverseEffects: "Cefaleia, constipação. <strong>Risco de prolongamento do intervalo QT</strong>, especialmente em doses altas.",
+      category: "Antiemético (Antagonista 5-HT3)"
+    },
+    {
+      name: "Cetoprofeno (Profenid)",
+      activeIngredient: "Cetoprofeno",
+      indication: "Anti-inflamatório não esteroide (AINE) para dor e inflamação. Dose: <strong>100mg IV/IM</strong> a cada 12-24h. Infundir IV em 20 min.",
+      contraindication: "Hipersensibilidade a AINEs, úlcera péptica ativa, insuficiência renal/hepática/cardíaca grave.",
+      adverseEffects: "Dor no local da injeção, dispepsia, náusea. <strong>Risco de lesão renal e sangramento gastrointestinal</strong>.",
+      category: "Anti-inflamatório (AINE)"
+    },
+    {
+      name: "Diazepam",
+      activeIngredient: "Diazepam",
+      indication: "Benzodiazepínico para estado de mal epiléptico, sedação, ansiedade aguda. Dose: <strong>5-10mg IV lento</strong> (não exceder 5mg/min).",
+      contraindication: "Miastenia gravis, insuficiência respiratória grave, apneia do sono.",
+      adverseEffects: "<strong>Depressão respiratória, hipotensão</strong>, sonolência, tontura. Risco de flebite (administrar em veia calibrosa).",
+      category: "Benzodiazepínico/Anticonvulsivante"
+    },
+    {
+      name: "Haloperidol (Haldol)",
+      activeIngredient: "Haloperidol",
+      indication: "Antipsicótico para agitação psicomotora aguda, delirium. Dose: <strong>2-5mg IM</strong> (preferencial) ou IV lento.",
+      contraindication: "Doença de Parkinson, depressão grave do SNC, coma.",
+      adverseEffects: "<strong>Sintomas extrapiramidais</strong>, sedação. Risco de <strong>prolongamento do intervalo QT</strong> e Torsades de Pointes (monitorar ECG).",
+      category: "Antipsicótico"
+    },
+    {
+      name: "Insulina Regular Humana",
+      activeIngredient: "Insulina Humana Regular",
+      indication: "Tratamento de hiperglicemia e cetoacidose diabética. Única insulina que pode ser usada <strong>IV</strong>. Dose variável, geralmente em BIC.",
+      contraindication: "Hipoglicemia.",
+      adverseEffects: "<strong>Hipoglicemia</strong> (principal efeito adverso), hipocalemia (quando em infusão contínua). Monitorização glicêmica rigorosa.",
+      category: "Hormônio/Antidiabético"
     }
   ];
 
