@@ -39,8 +39,8 @@ const Navigation = () => {
                 end={item.to === "/"}
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium text-blue-200 hover:bg-blue-700 hover:text-white",
-                    isActive && "bg-blue-700 text-white"
+                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium text-blue-100 hover:bg-white/20 hover:text-white",
+                    isActive && "bg-white text-blue-700 font-semibold shadow-inner"
                   )
                 }
               >
