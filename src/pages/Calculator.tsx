@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Droplet, Activity, Info } from "lucide-react";
+import { Droplet, Activity, Info, FlaskConical, BookOpen, CheckSquare } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Calculator = () => {
   const [volume, setVolume] = useState("");
@@ -72,54 +72,53 @@ const Calculator = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="factor">Tipo de Equipo</Label>
-              <select
-                id="factor"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                value={dropFactor}
-                onChange={(e) => setDropFactor(e.target.value)}
-              >
-                <option value="20">Macrogotas - 20 gotas/mL (adulto)</option>
-                <option value="60">Microgotas - 60 gotas/mL (precisão)</option>
-                <option value="15">Equipo Pediátrico - 15 gotas/mL</option>
-              </select>
+              <Label>Tipo de Equipo</Label>
+              <Select value={dropFactor} onValueChange={setDropFactor}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o tipo de equipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="20">Macrogotas - 20 gotas/mL</SelectItem>
+                  <SelectItem value="60">Microgotas - 60 gotas/mL</SelectItem>
+                  <SelectItem value="15">Equipo Pediátrico - 15 gotas/mL</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-accent">
+        <Card className="bg-accent flex flex-col">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Activity className="h-5 w-5 text-primary" />
               Resultados
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 flex flex-col justify-center">
             {result !== null ? (
               <div className="space-y-6">
-                <div className="text-center py-4 border-b">
-                  <div className="text-5xl font-bold text-primary mb-2">{result}</div>
+                <div className="text-center py-4 border-b border-primary/20">
+                  <div className="text-6xl font-bold text-primary mb-2">{result}</div>
                   <div className="text-lg text-muted-foreground">
                     {dropFactor === "60" ? "microgotas/minuto" : "gotas/minuto"}
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-background rounded-lg">
+                  <div className="text-center p-4 bg-background rounded-lg shadow-sm">
                     <div className="text-2xl font-semibold text-foreground">{mlPerHour}</div>
                     <div className="text-sm text-muted-foreground mt-1">mL/hora</div>
                   </div>
-                  <div className="text-center p-4 bg-background rounded-lg">
+                  <div className="text-center p-4 bg-background rounded-lg shadow-sm">
                     <div className="text-2xl font-semibold text-foreground">{dropFactor}</div>
-                    <div className="text-sm text-muted-foreground mt-1">fator do equipo</div>
+                    <div className="text-sm text-muted-foreground mt-1">gotas/mL</div>
                   </div>
                 </div>
 
-                <Alert>
-                  <Info className="h-4 w-4" />
-                  <AlertDescription className="text-sm">
-                    Monitore regularmente a infusão e ajuste conforme necessário. 
-                    Sempre confira com dois profissionais em medicações de alto risco.
+                <Alert className="bg-primary/5 border-primary/20 text-primary-foreground">
+                  <Info className="h-4 w-4 text-primary" />
+                  <AlertDescription className="text-sm text-foreground">
+                    Monitore regularmente a infusão e ajuste conforme necessário.
                   </AlertDescription>
                 </Alert>
               </div>
@@ -130,120 +129,48 @@ const Calculator = () => {
             )}
           </CardContent>
         </Card>
-
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Fórmulas de Cálculo</CardTitle>
-            <CardDescription>Entenda as fórmulas utilizadas para cada tipo de equipo</CardDescription>
+            <CardTitle className="flex items-center gap-2"><FlaskConical className="h-5 w-5 text-primary"/> Fórmulas de Cálculo</CardTitle>
+            <CardDescription>Entenda as fórmulas utilizadas</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Fórmula Geral</h3>
-                <Badge variant="outline">Universal</Badge>
-              </div>
-              <p className="font-mono text-sm">gotas/min = (Volume × Fator) ÷ (Tempo × 60)</p>
+          <CardContent className="space-y-3">
+            <div className="p-3 bg-muted rounded-lg">
+              <h3 className="font-semibold text-sm">Fórmula Geral</h3>
+              <p className="font-mono text-xs text-muted-foreground">gotas/min = (Volume × Fator) ÷ (Tempo × 60)</p>
             </div>
-            
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Macrogotas</h3>
-                <Badge variant="secondary">20 gts/mL</Badge>
-              </div>
-              <p className="font-mono text-sm">gotas/min = (Volume × 20) ÷ (Tempo × 60)</p>
-              <p className="text-xs text-muted-foreground mt-2">Simplificado: Volume ÷ (Tempo × 3)</p>
+            <div className="p-3 bg-muted rounded-lg">
+              <h3 className="font-semibold text-sm">Macrogotas (20 gts/mL)</h3>
+              <p className="text-xs text-muted-foreground">Simplificado: Volume ÷ (Tempo × 3)</p>
             </div>
-            
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Microgotas</h3>
-                <Badge variant="secondary">60 gts/mL</Badge>
-              </div>
-              <p className="font-mono text-sm">μgts/min = (Volume × 60) ÷ (Tempo × 60)</p>
-              <p className="text-xs text-muted-foreground mt-2">Simplificado: Volume ÷ Tempo</p>
-            </div>
-
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Equipo Pediátrico</h3>
-                <Badge variant="secondary">15 gts/mL</Badge>
-              </div>
-              <p className="font-mono text-sm">gotas/min = (Volume × 15) ÷ (Tempo × 60)</p>
-              <p className="text-xs text-muted-foreground mt-2">Simplificado: Volume ÷ (Tempo × 4)</p>
+            <div className="p-3 bg-muted rounded-lg">
+              <h3 className="font-semibold text-sm">Microgotas (60 gts/mL)</h3>
+              <p className="text-xs text-muted-foreground">Simplificado: Volume ÷ Tempo</p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Guia de Uso dos Equipos</CardTitle>
+            <CardTitle className="flex items-center gap-2"><BookOpen className="h-5 w-5 text-primary"/> Guia de Uso</CardTitle>
             <CardDescription>Quando usar cada tipo de equipo</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-3">
-              <div className="p-4 border border-primary/20 rounded-lg">
-                <h4 className="font-semibold text-primary mb-2">Macrogotas (20 gts/mL)</h4>
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary mt-0.5">•</span>
-                    <span>Infusões de maior volume (&gt;100 mL)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary mt-0.5">•</span>
-                    <span>Hidratação venosa padrão</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary mt-0.5">•</span>
-                    <span>Hemoderivados e hemocomponentes</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="p-4 border border-secondary/20 rounded-lg">
-                <h4 className="font-semibold text-secondary mb-2">Microgotas (60 gts/mL)</h4>
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-start gap-2">
-                    <span className="text-secondary mt-0.5">•</span>
-                    <span>Medicações que exigem controle rigoroso</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-secondary mt-0.5">•</span>
-                    <span>Drogas vasoativas e inotrópicos</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-secondary mt-0.5">•</span>
-                    <span>Pacientes com restrição hídrica</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-secondary mt-0.5">•</span>
-                    <span>Neonatologia e pediatria</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="p-4 border border-muted-foreground/20 rounded-lg">
-                <h4 className="font-semibold text-muted-foreground mb-2">Equipo Pediátrico (15 gts/mL)</h4>
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-start gap-2">
-                    <span className="text-muted-foreground mt-0.5">•</span>
-                    <span>Uso específico em pediatria</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-muted-foreground mt-0.5">•</span>
-                    <span>Menor volume por gota</span>
-                  </li>
-                </ul>
-              </div>
+            <div className="space-y-1 text-sm">
+              <h4 className="font-semibold text-foreground">Macrogotas (20 gts/mL)</h4>
+              <p className="text-muted-foreground">Infusões de maior volume, hidratação padrão, hemoderivados.</p>
             </div>
-
-            <Alert className="bg-primary/5 border-primary/20">
-              <Info className="h-4 w-4 text-primary" />
+            <div className="space-y-1 text-sm">
+              <h4 className="font-semibold text-foreground">Microgotas (60 gts/mL)</h4>
+              <p className="text-muted-foreground">Medicações de precisão, drogas vasoativas, pediatria, restrição hídrica.</p>
+            </div>
+            <Alert>
+              <CheckSquare className="h-4 w-4" />
               <AlertDescription className="text-sm">
-                <strong>Importante:</strong> Sempre verifique o tipo de equipo antes de iniciar a infusão. 
-                O erro na identificação pode causar administração incorreta do volume.
+                <strong>Importante:</strong> Sempre verifique o tipo de equipo antes de iniciar a infusão.
               </AlertDescription>
             </Alert>
           </CardContent>

@@ -3,8 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Lightbulb } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
 
 interface Question {
   id: number;
@@ -37,7 +38,6 @@ const Questions = () => {
           throw new Error('Falha ao carregar as questões.');
         }
         const data: Question[] = await response.json();
-        // Embaralhar as questões para uma nova experiência a cada vez
         setQuestions(data.sort(() => Math.random() - 0.5));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Ocorreu um erro desconhecido.');
@@ -70,21 +70,12 @@ const Questions = () => {
     }
   };
 
-  const handlePreviousQuestion = () => {
-    setSelectedAnswer("");
-    setShowExplanation(false);
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-    }
-  };
-
   const resetQuiz = () => {
     setCurrentQuestion(0);
     setSelectedAnswer("");
     setShowExplanation(false);
     setScore(0);
     setAnsweredQuestions([]);
-    // Re-embaralhar as questões
     setQuestions([...questions].sort(() => Math.random() - 0.5));
   };
 
@@ -112,33 +103,33 @@ const Questions = () => {
   }
 
   const isCorrect = selectedAnswer === questions[currentQuestion].correctAnswer;
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="text-4xl font-bold text-foreground mb-2">Banca de Questões</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-2">Banca de Questões</h1>
         <p className="text-muted-foreground">
-          Teste seus conhecimentos em enfermagem com questões comentadas
+          Teste seus conhecimentos com questões de concurso comentadas.
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mb-2">
+            <Badge variant="secondary">{questions[currentQuestion].category}</Badge>
             <CardDescription>
-              Questão {currentQuestion + 1} de {questions.length}
-            </CardDescription>
-            <CardDescription>
-              Pontuação: {score} / {answeredQuestions.length}
+              Pontuação: <strong>{score} / {answeredQuestions.length}</strong>
             </CardDescription>
           </div>
-          <CardTitle className="text-sm font-medium text-primary">
-            {questions[currentQuestion].category}
+          <CardTitle className="text-lg">
+            Questão {currentQuestion + 1}
           </CardTitle>
+          <Progress value={progress} className="mt-2" />
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-4">
+            <h3 className="text-base font-semibold text-foreground mb-4">
               {questions[currentQuestion].question}
             </h3>
             
@@ -149,94 +140,70 @@ const Questions = () => {
               className="space-y-3"
             >
               {questions[currentQuestion].options.map((option) => (
-                <div
+                <Label
                   key={option.id}
-                  className={`flex items-center space-x-3 p-4 rounded-lg border transition-colors ${
+                  htmlFor={option.id}
+                  className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer ${
                     showExplanation
                       ? option.id === questions[currentQuestion].correctAnswer
-                        ? "border-green-500 bg-green-50 dark:bg-green-950"
+                        ? "border-green-500 bg-green-50 dark:bg-green-950 font-semibold"
                         : option.id === selectedAnswer
                         ? "border-red-500 bg-red-50 dark:bg-red-950"
                         : "border-border"
-                      : "border-border hover:border-primary"
+                      : "border-border hover:border-primary hover:bg-accent"
                   }`}
                 >
                   <RadioGroupItem value={option.id} id={option.id} />
-                  <Label
-                    htmlFor={option.id}
-                    className="flex-1 cursor-pointer text-foreground"
-                  >
-                    <span className="font-medium">{option.id}.</span> {option.text}
-                  </Label>
+                  <span className="flex-1 text-foreground">
+                    <span className="font-bold">{option.id})</span> {option.text}
+                  </span>
                   {showExplanation && option.id === questions[currentQuestion].correctAnswer && (
                     <CheckCircle2 className="h-5 w-5 text-green-600" />
                   )}
                   {showExplanation && option.id === selectedAnswer && option.id !== questions[currentQuestion].correctAnswer && (
                     <XCircle className="h-5 w-5 text-red-600" />
                   )}
-                </div>
+                </Label>
               ))}
             </RadioGroup>
           </div>
 
           {showExplanation && (
-            <div className={`p-4 rounded-lg border ${
-              isCorrect
-                ? "border-green-500 bg-green-50 dark:bg-green-950"
-                : "border-red-500 bg-red-50 dark:bg-red-950"
+            <Alert className={`border-2 ${
+              isCorrect ? "border-green-500" : "border-red-500"
             }`}>
-              <div className="flex items-start gap-3">
-                {isCorrect ? (
-                  <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                ) : (
-                  <XCircle className="h-6 w-6 text-red-600 flex-shrink-0 mt-0.5" />
-                )}
-                <div>
-                  <h4 className="font-semibold text-foreground mb-2">
-                    {isCorrect ? "Resposta Correta!" : "Resposta Incorreta"}
-                  </h4>
-                  <p className="text-sm text-foreground">
-                    <strong>Gabarito: {questions[currentQuestion].correctAnswer}</strong>
-                  </p>
-                  <p className="text-sm text-foreground mt-2">
-                    {questions[currentQuestion].explanation}
-                  </p>
-                </div>
-              </div>
-            </div>
+              <Lightbulb className="h-4 w-4" />
+              <AlertTitle className="font-semibold">
+                {isCorrect ? "Resposta Correta!" : "Resposta Incorreta"}
+              </AlertTitle>
+              <AlertDescription>
+                <strong>Gabarito: {questions[currentQuestion].correctAnswer}.</strong> {questions[currentQuestion].explanation}
+              </AlertDescription>
+            </Alert>
           )}
 
-          <div className="flex gap-3 justify-between">
-            <Button
-              variant="outline"
-              onClick={handlePreviousQuestion}
-              disabled={currentQuestion === 0}
-            >
-              Anterior
-            </Button>
-            
-            <div className="flex gap-3">
-              {!showExplanation ? (
-                <Button
-                  onClick={handleAnswerSubmit}
-                  disabled={!selectedAnswer}
-                >
-                  Responder
-                </Button>
-              ) : (
-                <>
-                  {currentQuestion < questions.length - 1 ? (
-                    <Button onClick={handleNextQuestion}>
-                      Próxima Questão
-                    </Button>
-                  ) : (
-                    <Button onClick={resetQuiz}>
-                      Reiniciar Questionário
-                    </Button>
-                  )}
-                </>
-              )}
-            </div>
+          <div className="flex justify-end">
+            {!showExplanation ? (
+              <Button
+                onClick={handleAnswerSubmit}
+                disabled={!selectedAnswer}
+                className="w-full md:w-auto"
+              >
+                Responder
+              </Button>
+            ) : (
+              <>
+                {currentQuestion < questions.length - 1 ? (
+                  <Button onClick={handleNextQuestion} className="w-full md:w-auto">
+                    Próxima Questão
+                  </Button>
+                ) : (
+                  <Button onClick={resetQuiz} className="w-full md:w-auto">
+                    Finalizar e Reiniciar
+                  </Button>
+                )}
+              </>
+            )}
           </div>
         </CardContent>
       </Card>
