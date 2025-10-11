@@ -18,6 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { toast } from "sonner";
 
 interface Question {
   id: number;
@@ -99,7 +100,7 @@ const Questions = () => {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("Error fetching comments:", error);
+      toast.error("Erro ao buscar comentários", { description: error.message });
     } else {
       setComments(data || []);
     }
@@ -154,8 +155,10 @@ const Questions = () => {
     });
     setIsSubmittingComment(false);
     if (error) {
+      toast.error("Falha ao enviar comentário", { description: "Por favor, tente novamente. Se o erro persistir, contate o suporte." });
       console.error("Error submitting comment:", error);
     } else {
+      toast.success("Comentário enviado!");
       form.reset();
       fetchComments(questions[currentQuestion].id);
     }
