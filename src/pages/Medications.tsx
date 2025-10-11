@@ -296,6 +296,70 @@ const Medications = () => {
       contraindication: "Litíase renal por oxalato.",
       adverseEffects: "Doses elevadas podem causar diarreia e formação de cálculos renais de oxalato.",
       category: "Vitamina"
+    },
+    {
+      name: "Piperacilina + Tazobactam (Tazocin®)",
+      activeIngredient: "Piperacilina Sódica + Tazobactam Sódico",
+      indication: "Antibiótico de amplo espectro para infecções hospitalares graves (pneumonia, sepse, infecções intra-abdominais). Dose: <strong>4,5g IV</strong> a cada 6-8h (infundir em 30 min).",
+      contraindication: "Hipersensibilidade a penicilinas, cefalosporinas ou inibidores de beta-lactamase.",
+      adverseEffects: "Diarreia, rash, flebite. Pode causar neurotoxicidade (convulsões) em altas doses ou em pacientes com insuficiência renal.",
+      category: "Antibiótico Penicilina"
+    },
+    {
+      name: "Propofol (Diprivan®)",
+      activeIngredient: "Propofol",
+      indication: "Anestésico geral de curta duração para indução e manutenção de sedação em UTI ou procedimentos. Dose: <strong>Infusão contínua (BIC)</strong> titulada conforme o nível de sedação desejado.",
+      contraindication: "Hipersensibilidade a ovo ou soja (presentes na emulsão lipídica).",
+      adverseEffects: "<strong>Hipotensão, depressão respiratória, apneia</strong>. Dor no local da injeção. Risco de Síndrome da Infusão do Propofol (PRIS) em altas doses/longo tempo.",
+      category: "Anestésico/Sedativo"
+    },
+    {
+      name: "Cloreto de Potássio (KCl)",
+      activeIngredient: "Cloreto de Potássio",
+      indication: "Reposição de potássio em casos de hipocalemia. Dose variável, <strong>SEMPRE diluído</strong> e em infusão lenta.",
+      contraindication: "Hipercalemia, insuficiência renal grave.",
+      adverseEffects: "<strong>NUNCA administrar em bolus IV (risco de parada cardíaca)</strong>. Flebite, dor no local da infusão. A velocidade de infusão não deve exceder 10-20 mEq/h em acesso periférico.",
+      category: "Eletrólito/Alta Vigilância"
+    },
+    {
+      name: "Sulfato de Magnésio",
+      activeIngredient: "Sulfato de Magnésio",
+      indication: "Prevenção e tratamento de convulsões na pré-eclâmpsia/eclâmpsia. Tratamento de Torsades de Pointes, crises asmáticas graves. Dose de ataque na eclâmpsia: <strong>4-6g IV</strong> em 20 min.",
+      contraindication: "Bloqueio cardíaco, insuficiência renal grave.",
+      adverseEffects: "Rubor, sudorese, hipotensão. Sinais de toxicidade: <strong>perda do reflexo patelar, depressão respiratória</strong>. Antídoto: <strong>Gluconato de Cálcio</strong>.",
+      category: "Eletrólito/Anticonvulsivante"
+    },
+    {
+      name: "Gluconato de Cálcio 10%",
+      activeIngredient: "Gluconato de Cálcio",
+      indication: "Tratamento de hipocalcemia sintomática, toxicidade por sulfato de magnésio, proteção miocárdica na hipercalemia grave. Dose: <strong>10-20 mL IV lento</strong>.",
+      contraindication: "Hipercalcemia, uso concomitante com digitálicos (risco de arritmias).",
+      adverseEffects: "Bradicardia, hipotensão (infusão rápida). Irritante para as veias, risco de necrose tecidual com extravasamento. <strong>Administrar em veia calibrosa</strong>.",
+      category: "Eletrólito"
+    },
+    {
+      name: "Bicarbonato de Sódio 8,4%",
+      activeIngredient: "Bicarbonato de Sódio",
+      indication: "Tratamento de acidose metabólica grave, hipercalemia, intoxicação por antidepressivos tricíclicos. Dose guiada pela gasometria arterial.",
+      contraindication: "Alcalose metabólica ou respiratória, hipocalcemia.",
+      adverseEffects: "Alcalose metabólica, hipocalemia, sobrecarga de sódio. Extravasamento pode causar necrose tecidual. <strong>Incompatível com muitas drogas (ex: catecolaminas)</strong>.",
+      category: "Solução Alcalinizante"
+    },
+    {
+      name: "Manitol 20%",
+      activeIngredient: "Manitol",
+      indication: "Diurético osmótico para redução da pressão intracraniana (HIC) e tratamento de oligúria na insuficiência renal aguda. Dose: <strong>0,25-1 g/kg IV</strong>.",
+      contraindication: "Anúria estabelecida, congestão pulmonar grave, sangramento intracraniano ativo.",
+      adverseEffects: "Distúrbios hidroeletrolíticos, desidratação, edema pulmonar de rebote. <strong>Pode cristalizar em baixas temperaturas (inspecionar frasco)</strong>. Usar equipo com filtro.",
+      category: "Diurético Osmótico"
+    },
+    {
+      name: "Nitroprussiato de Sódio (Nipride®)",
+      activeIngredient: "Nitroprussiato de Sódio",
+      indication: "Vasodilatador potente para emergências hipertensivas e redução da pós-carga na ICC aguda. Dose: <strong>0,3-10 mcg/kg/min</strong> em BIC, titular para o efeito desejado.",
+      contraindication: "Hipertensão compensatória (ex: shunt arteriovenoso), insuficiência hepática/renal grave.",
+      adverseEffects: "Hipotensão profunda, taquicardia reflexa. <strong>Fotossensível (proteger frasco e equipo da luz)</strong>. Risco de toxicidade por cianeto em infusões prolongadas/altas doses.",
+      category: "Anti-hipertensivo/Vasodilatador"
     }
   ];
 
