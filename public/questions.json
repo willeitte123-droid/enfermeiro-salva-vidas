@@ -2069,7 +2069,7 @@
   {
     "id": 160,
     "category": "Geriatria",
-    "question": "A avaliação da capacidade funcional do idoso é fundamental. Qual escala é amplamente utilizada para avaliar as Atividades Básicas de Vida Diária (ABVD)?",
+    "question": "Qual a avaliação da capacidade funcional do idoso é fundamental. Qual escala é amplamente utilizada para avaliar as Atividades Básicas de Vida Diária (ABVD)?",
     "options": [
       { "id": "A", "text": "Escala de Lawton e Brody" },
       { "id": "B", "text": "Mini Exame do Estado Mental (MEEM)" },
@@ -3397,7 +3397,7 @@
     "category": "Clínica Médica",
     "question": "Qual é o principal cuidado de enfermagem para um paciente com fístula arteriovenosa (FAV) para hemodiálise?",
     "options": [
-      { "id": "A", "text": "Aferir a pressão arterial e realizar punções venosas no membro da fístula." },
+      { "id":- "A", "text": "Aferir a pressão arterial e realizar punções venosas no membro da fístula." },
       { "id": "B", "text": "Manter o membro da fístula imobilizado." },
       { "id": "C", "text": "Avaliar a presença de frêmito e sopro na fístula e proteger o membro de compressões e punções." },
       { "id": "D", "text": "Aplicar compressas frias no local da fístula." }
@@ -4448,7 +4448,7 @@
   {
     "id": 343,
     "category": "Procedimentos de Enfermagem",
-    "question": "Qual é o principal objetivo da Escala de Coma de Glasgow?",
+    "question": "Qual é a principal objetivo da Escala de Coma de Glasgow?",
     "options": [
       { "id": "A", "text": "Diagnosticar a causa do coma." },
       { "id": "B", "text": "Fornecer uma medida objetiva e padronizada do nível de consciência de um paciente." },
@@ -4869,7 +4869,7 @@
       { "id": "A", "text": "Corrigir a anemia." },
       { "id": "B", "text": "Repor o volume sanguíneo." },
       { "id": "C", "text": "É uma fonte concentrada de Fator VIII, Fator de von Willebrand, Fator XIII e, principalmente, Fibrinogênio." },
-      { "id": "D", "text": "Tratar a plaquetopenia." }
+      { "id":- "D", "text": "Tratar a plaquetopenia." }
     ],
     "correctAnswer": "C",
     "explanation": "O crioprecipitado é usado para repor fibrinogênio em casos de sangramento com hipofibrinogenemia, como na coagulação intravascular disseminada (CIVD) ou em transfusões maciças. Também é usado no tratamento de hemofilia A e doença de von Willebrand quando os fatores específicos não estão disponíveis."
@@ -5310,7 +5310,7 @@
     "options": [
       { "id": "A", "text": "Manter o paciente em isolamento." },
       { "id": "B", "text": "Avaliar e manejar os efeitos colaterais, especialmente a radiodermite (reação de pele), e orientar o paciente sobre os cuidados com a pele irradiada." },
-      { "id": "C", "text": "Administrar quimioterapia concomitante." },
+      { "id":- "C", "text": "Administrar quimioterapia concomitante." },
       { "id": "D", "text": "Realizar curativos oclusivos na área irradiada." }
     ],
     "correctAnswer": "B",
