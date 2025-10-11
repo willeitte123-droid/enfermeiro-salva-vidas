@@ -10,6 +10,7 @@ import WoundCare from "./pages/WoundCare";
 import Questions from "./pages/Questions";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
               <Route path="/medications" element={<Medications />} />
               <Route path="/wound-care" element={<WoundCare />} />
               <Route path="/questions" element={<Questions />} />
+              <Route path="/login" element={<Login />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
