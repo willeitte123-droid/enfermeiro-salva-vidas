@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { CheckCircle2, XCircle, Loader2, Lightbulb, Award, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 
 interface Question {
   id: number;
