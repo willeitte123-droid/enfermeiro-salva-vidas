@@ -15,4 +15,9 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Adicionado para garantir que as variáveis de ambiente sejam injetadas no build da Vercel
+  define: {
+    'import.meta.env.VITE_SUPABASE_URL': `"${process.env.VITE_SUPABASE_URL}"`,
+    'import.meta.env.VITE_SUPABASE_ANON_KEY': `"${process.env.VITE_SUPABASE_ANON_KEY}"`,
+  }
 }));
