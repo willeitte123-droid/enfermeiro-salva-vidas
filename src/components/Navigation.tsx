@@ -7,12 +7,12 @@ import { supabase } from "@/lib/supabase";
 const Navigation = () => {
   const navigate = useNavigate();
   const navItems = [
-    { to: "/questions", icon: FileQuestion, label: "Questões", activeClass: "bg-yellow-500 text-white", inactiveClass: "hover:bg-yellow-500/10 hover:text-yellow-600" },
-    { to: "/procedures", icon: ClipboardList, label: "Procedimentos", activeClass: "bg-sky-500 text-white", inactiveClass: "hover:bg-sky-500/10 hover:text-sky-600" },
-    { to: "/medications", icon: Syringe, label: "Medicamentos", activeClass: "bg-violet-500 text-white", inactiveClass: "hover:bg-violet-500/10 hover:text-violet-600" },
-    { to: "/", icon: Calculator, label: "Calculadora", activeClass: "bg-blue-500 text-white", inactiveClass: "hover:bg-blue-500/10 hover:text-blue-600" },
-    { to: "/emergency", icon: Siren, label: "Emergências", activeClass: "bg-red-500 text-white", inactiveClass: "hover:bg-red-500/10 hover:text-red-600" },
-    { to: "/wound-care", icon: Bandage, label: "Curativos", activeClass: "bg-green-500 text-white", inactiveClass: "hover:bg-green-500/10 hover:text-green-600" }
+    { to: "/questions", icon: FileQuestion, label: "Questões", activeClass: "text-yellow-600 bg-yellow-500/10", inactiveClass: "hover:bg-accent" },
+    { to: "/procedures", icon: ClipboardList, label: "Procedimentos", activeClass: "text-sky-600 bg-sky-500/10", inactiveClass: "hover:bg-accent" },
+    { to: "/medications", icon: Syringe, label: "Medicamentos", activeClass: "text-violet-600 bg-violet-500/10", inactiveClass: "hover:bg-accent" },
+    { to: "/", icon: Calculator, label: "Calculadora", activeClass: "text-blue-600 bg-blue-500/10", inactiveClass: "hover:bg-accent" },
+    { to: "/emergency", icon: Siren, label: "Emergências", activeClass: "text-red-600 bg-red-500/10", inactiveClass: "hover:bg-accent" },
+    { to: "/wound-care", icon: Bandage, label: "Curativos", activeClass: "text-green-600 bg-green-500/10", inactiveClass: "hover:bg-accent" }
   ];
 
   const handleLogout = async () => {
@@ -39,10 +39,10 @@ const Navigation = () => {
                 end={item.to === "/"}
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium",
+                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium text-muted-foreground",
                     isActive
                       ? item.activeClass
-                      : `text-muted-foreground ${item.inactiveClass}`
+                      : item.inactiveClass
                   )
                 }
               >
