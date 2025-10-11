@@ -19,15 +19,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Stethoscope } from "lucide-react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor, insira um email válido." }),
   password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
 });
 
-const Login = () => {
+interface LoginProps {
+  onLoginSuccess: () => void;
+}
+
+const Login = ({ onLoginSuccess }: LoginProps) => {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,12 +43,18 @@ const Login = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // A lógica de autenticação será implementada futuramente.
-    console.log("Dados do formulário de login:", values);
+    if (values.email === "admin@enfermagem.pro" && values.password === "admin123") {
+      onLoginSuccess();
+      navigate("/");
+    } else {
+      toast.error("Email ou senha inválidos.", {
+        description: "Por favor, verifique seus dados e tente novamente.",
+      });
+    }
   }
 
   return (
-    <div className="flex items-center justify-center py-12">
+    <div className="flex items-center justify-center min-h-screen bg-background">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto h-12 w-12 rounded-lg bg-primary flex items-center justify-center mb-4">
@@ -63,7 +75,7 @@ const Login = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="seuemail@exemplo.com" {...field} />
+                      <Input placeholder="admin@enfermagem.pro" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -77,14 +89,15 @@ const Login = () => {
                     <div className="flex items-center justify-between">
                       <FormLabel>Senha</FormLabel>
                       <Link
-                        to="/forgot-password"
+                        to="#"
                         className="text-sm text-primary hover:underline"
+                        onClick={(e) => e.preventDefault()}
                       >
                         Esqueceu a senha?
                       </Link>
                     </div>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <Input type="password" placeholder="admin123" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -99,7 +112,11 @@ const Login = () => {
         <CardFooter className="flex justify-center">
           <p className="text-sm text-muted-foreground">
             Não tem uma conta?{" "}
-            <Link to="/signup" className="text-primary hover:underline">
+            <Link
+              to="#"
+              className="text-primary hover:underline"
+              onClick={(e) => e.preventDefault()}
+            >
               Cadastre-se
             </Link>
           </p>
