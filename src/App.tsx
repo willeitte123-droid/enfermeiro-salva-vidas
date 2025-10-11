@@ -25,6 +25,7 @@ import MorseScale from "./pages/scales/MorseScale";
 import AldreteScale from "./pages/scales/AldreteScale";
 import EcgGuide from "./pages/EcgGuide";
 import ProfilePage from "./pages/Profile";
+import PublicProfile from "./pages/PublicProfile";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
@@ -77,6 +78,7 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="scales/aldrete" element={<AldreteScale />} />
         <Route path="ecg" element={<EcgGuide />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="user/:userId" element={<PublicProfile />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

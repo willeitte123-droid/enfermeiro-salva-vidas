@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { AvatarUpload } from "@/components/AvatarUpload";
@@ -17,11 +18,13 @@ interface Profile {
   first_name?: string;
   last_name?: string;
   avatar_url?: string;
+  bio?: string;
 }
 
 const profileSchema = z.object({
   firstName: z.string().min(1, { message: "O nome é obrigatório." }),
   lastName: z.string().min(1, { message: "O sobrenome é obrigatório." }),
+  bio: z.string().max(500, { message: "A biografia não pode ter mais de 500 caracteres." }).optional(),
 });
 
 const ProfilePage = () => {
@@ -33,6 +36,7 @@ const ProfilePage = () => {
     defaultValues: {
       firstName: "",
       lastName: "",
+      bio: "",
     },
   });
 
@@ -41,6 +45,7 @@ const ProfilePage = () => {
       form.reset({
         firstName: profile.first_name || "",
         lastName: profile.last_name || "",
+        bio: profile.bio || "",
       });
     }
   }, [profile, form]);
@@ -53,6 +58,7 @@ const ProfilePage = () => {
       .update({
         first_name: values.firstName,
         last_name: values.lastName,
+        bio: values.bio,
         updated_at: new Date(),
       })
       .eq('id', profile.id);
@@ -69,68 +75,75 @@ const ProfilePage = () => {
     <div className="space-y-6 max-w-4xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2">Meu Perfil</h1>
-        <p className="text-muted-foreground">Atualize suas informações pessoais e seu avatar.</p>
+        <p className="text-muted-foreground">Atualize suas informações pessoais e sua biografia.</p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-8">
-        <div className="md:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Foto de Perfil</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <AvatarUpload />
-            </CardContent>
-          </Card>
-        </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Foto de Perfil</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AvatarUpload />
+        </CardContent>
+      </Card>
 
-        <div className="md:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Informações Pessoais</CardTitle>
-              <CardDescription>Seu nome e sobrenome serão exibidos no aplicativo.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="firstName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Nome</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Seu nome" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="lastName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Sobrenome</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Seu sobrenome" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <Button type="submit" disabled={isLoading}>
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Salvar Alterações
-                  </Button>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Informações Pessoais</CardTitle>
+          <CardDescription>Seu nome e biografia serão exibidos em seu perfil público.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nome</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Seu nome" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Sobrenome</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Seu sobrenome" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Biografia</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Fale um pouco sobre você, sua área de atuação ou interesses na enfermagem..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" disabled={isLoading}>
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Salvar Alterações
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 };

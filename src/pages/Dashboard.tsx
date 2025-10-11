@@ -22,6 +22,7 @@ interface Question {
 interface FeaturedComment {
   content: string;
   author: string;
+  authorId: string;
   questionText: string;
   questionId: number;
 }
@@ -107,7 +108,7 @@ const Dashboard = () => {
 
         const { data: latestComments, error } = await supabase
           .from("comments")
-          .select("*, profiles(first_name, last_name)")
+          .select("*, profiles(id, first_name, last_name)")
           .order("created_at", { ascending: false })
           .limit(5);
 
@@ -119,6 +120,7 @@ const Dashboard = () => {
                 return {
                   content: comment.content,
                   author: `${comment.profiles.first_name} ${comment.profiles.last_name?.[0] || ''}.`,
+                  authorId: comment.profiles.id,
                   questionText: relatedQuestion.question,
                   questionId: relatedQuestion.id,
                 };
@@ -213,7 +215,7 @@ const Dashboard = () => {
               <blockquote className="border-l-4 pl-4 italic text-foreground">
                 "{currentComment.content}"
               </blockquote>
-              <p className="text-sm font-semibold text-right">— {currentComment.author}</p>
+              <p className="text-sm font-semibold text-right">— <Link to={`/user/${currentComment.authorId}`} className="hover:underline text-primary">{currentComment.author}</Link></p>
               <p className="text-xs text-muted-foreground pt-2 border-t">
                 Na questão: "{currentComment.questionText.substring(0, 100)}..."
               </p>

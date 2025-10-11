@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { toast } from "sonner";
@@ -36,6 +36,7 @@ interface Profile {
   id: string;
   first_name: string;
   last_name: string;
+  avatar_url: string;
 }
 
 interface Comment {
@@ -43,8 +44,10 @@ interface Comment {
   content: string;
   created_at: string;
   profiles: {
+    id: string;
     first_name: string;
     last_name: string;
+    avatar_url: string;
   } | null;
 }
 
@@ -95,7 +98,7 @@ const Questions = () => {
     setIsCommentsLoading(true);
     const { data, error } = await supabase
       .from("comments")
-      .select("*, profiles(first_name, last_name)")
+      .select("*, profiles(id, first_name, last_name, avatar_url)")
       .eq("question_id", questionId)
       .order("created_at", { ascending: false });
 
@@ -224,8 +227,10 @@ const Questions = () => {
                       <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
                         {comments.map(comment => (
                           <div key={comment.id} className="flex items-start gap-3">
-                            <Avatar className="h-8 w-8"><AvatarFallback>{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback></Avatar>
-                            <div className="flex-1 bg-muted p-3 rounded-lg"><div className="flex justify-between items-center"><p className="text-sm font-semibold">{`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}</p><p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</p></div><p className="text-sm mt-1">{comment.content}</p></div>
+                            <Link to={`/user/${comment.profiles?.id}`} className="flex-shrink-0">
+                              <Avatar className="h-8 w-8"><AvatarImage src={comment.profiles?.avatar_url} /><AvatarFallback>{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback></Avatar>
+                            </Link>
+                            <div className="flex-1 bg-muted p-3 rounded-lg"><div className="flex justify-between items-center"><Link to={`/user/${comment.profiles?.id}`} className="hover:underline"><p className="text-sm font-semibold">{`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}</p></Link><p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</p></div><p className="text-sm mt-1">{comment.content}</p></div>
                           </div>
                         ))}
                       </div>
