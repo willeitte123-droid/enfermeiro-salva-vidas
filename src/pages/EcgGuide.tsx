@@ -204,6 +204,7 @@ const EcgGuide = () => {
               <CardDescription>Indica <strong>lesão transmural</strong> (infarto agudo do miocárdio - IAMCSST). É uma emergência!</CardDescription>
             </CardHeader>
             <CardContent>
+              <EcgStrip path="M10,30 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l0,-5 c 5,0 10,0 15,5 l5,0 l20,0 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l0,-5 c 5,0 10,0 15,5 l5,0 l20,0" />
               <Table>
                 <TableHeader><TableRow><TableHead>Parede</TableHead><TableHead>Leads Afetadas</TableHead></TableRow></TableHeader>
                 <TableBody>
@@ -221,6 +222,7 @@ const EcgGuide = () => {
               <CardDescription>Indica <strong>isquemia subendocárdica</strong> (angina instável ou IAMSSST).</CardDescription>
             </CardHeader>
             <CardContent>
+              <EcgStrip path="M10,30 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,5 c 5,0 10,0 15,-5 l5,0 l20,0 l5,0 q2,-5 4,0 l2,0 q1,10 2,-20 q1,30 2,-10 l2,5 c 5,0 10,0 15,-5 l5,0 l20,0" />
               <p className="text-sm">O infradesnível de ST, especialmente quando acompanhado de dor torácica, é um sinal de alerta para Síndrome Coronariana Aguda. O paciente necessita de monitorização e tratamento imediatos.</p>
             </CardContent>
           </Card>
