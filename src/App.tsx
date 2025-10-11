@@ -8,6 +8,7 @@ import Calculator from "./pages/Calculator";
 import Emergency from "./pages/Emergency";
 import Medications from "./pages/Medications";
 import WoundCare from "./pages/WoundCare";
+import Procedures from "./pages/Procedures";
 import Questions from "./pages/Questions";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
@@ -62,6 +63,7 @@ const AppContent = () => {
           <Route path="/emergency" element={<Emergency />} />
           <Route path="/medications" element={<Medications />} />
           <Route path="/wound-care" element={<WoundCare />} />
+          <Route path="/procedures" element={<Procedures />} />
           <Route path="/questions" element={<Questions />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

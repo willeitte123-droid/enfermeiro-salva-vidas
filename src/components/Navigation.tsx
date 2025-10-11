@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut } from "lucide-react";
+import { Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabase";
@@ -11,6 +11,7 @@ const Navigation = () => {
     { to: "/emergency", icon: Siren, label: "Emergências", activeClass: "bg-destructive text-destructive-foreground", inactiveClass: "hover:bg-destructive/10 hover:text-destructive" },
     { to: "/medications", icon: Syringe, label: "Medicamentos", activeClass: "bg-purple-600 text-white", inactiveClass: "hover:bg-purple-600/10 hover:text-purple-600" },
     { to: "/wound-care", icon: Bandage, label: "Curativos", activeClass: "bg-teal-600 text-white", inactiveClass: "hover:bg-teal-600/10 hover:text-teal-600" },
+    { to: "/procedures", icon: ClipboardList, label: "Procedimentos", activeClass: "bg-slate-600 text-white", inactiveClass: "hover:bg-slate-600/10 hover:text-slate-600" },
     { to: "/questions", icon: FileQuestion, label: "Questões", activeClass: "bg-amber-500 text-white", inactiveClass: "hover:bg-amber-500/10 hover:text-amber-600" }
   ];
 
