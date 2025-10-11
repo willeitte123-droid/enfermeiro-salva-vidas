@@ -94,45 +94,62 @@ const clinicalTips = [
 
 const Dashboard = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
-  const [featuredComment, setFeaturedComment] = useState<FeaturedComment | null>(null);
+  const [featuredComments, setFeaturedComments] = useState<FeaturedComment[]>([]);
+  const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
   const [isLoadingComment, setIsLoadingComment] = useState(true);
 
   useEffect(() => {
-    const fetchFeaturedComment = async () => {
+    const fetchFeaturedComments = async () => {
       setIsLoadingComment(true);
       try {
         const questionsRes = await fetch("/questions.json");
         const questionsData: Question[] = await questionsRes.json();
 
-        const { data: latestComment, error } = await supabase
+        const { data: latestComments, error } = await supabase
           .from("comments")
           .select("*, profiles(first_name, last_name)")
           .order("created_at", { ascending: false })
-          .limit(1)
-          .single();
+          .limit(5);
 
-        if (latestComment && !error) {
-          const relatedQuestion = questionsData.find(q => q.id === latestComment.question_id);
-          if (relatedQuestion && latestComment.profiles) {
-            setFeaturedComment({
-              content: latestComment.content,
-              author: `${latestComment.profiles.first_name} ${latestComment.profiles.last_name?.[0] || ''}.`,
-              questionText: relatedQuestion.question,
-              questionId: relatedQuestion.id,
-            });
-          }
+        if (latestComments && !error) {
+          const formattedComments = latestComments
+            .map(comment => {
+              const relatedQuestion = questionsData.find(q => q.id === comment.question_id);
+              if (relatedQuestion && comment.profiles) {
+                return {
+                  content: comment.content,
+                  author: `${comment.profiles.first_name} ${comment.profiles.last_name?.[0] || ''}.`,
+                  questionText: relatedQuestion.question,
+                  questionId: relatedQuestion.id,
+                };
+              }
+              return null;
+            })
+            .filter((c): c is FeaturedComment => c !== null);
+          
+          setFeaturedComments(formattedComments);
         }
       } catch (err) {
-        console.error("Failed to fetch featured comment:", err);
+        console.error("Failed to fetch featured comments:", err);
       } finally {
         setIsLoadingComment(false);
       }
     };
 
-    fetchFeaturedComment();
+    fetchFeaturedComments();
   }, []);
 
+  useEffect(() => {
+    if (featuredComments.length > 1) {
+      const timer = setInterval(() => {
+        setCurrentCommentIndex(prevIndex => (prevIndex + 1) % featuredComments.length);
+      }, 7000); // Rotate every 7 seconds
+      return () => clearInterval(timer);
+    }
+  }, [featuredComments]);
+
   const randomTip = useMemo(() => clinicalTips[Math.floor(Math.random() * clinicalTips.length)], []);
+  const currentComment = featuredComments[currentCommentIndex];
 
   return (
     <div className="space-y-8">
@@ -182,7 +199,7 @@ const Dashboard = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-3">
             <MessageSquare className="h-6 w-6 text-primary" />
-            Comentário em Destaque
+            Comentários em Destaque
           </CardTitle>
           <CardDescription>Veja o que a comunidade está discutindo.</CardDescription>
         </CardHeader>
@@ -191,14 +208,14 @@ const Dashboard = () => {
             <div className="flex items-center justify-center h-32">
               <Loader2 className="h-6 w-6 animate-spin text-primary" />
             </div>
-          ) : featuredComment ? (
-            <div className="space-y-4">
+          ) : currentComment ? (
+            <div key={currentCommentIndex} className="space-y-4 animate-in fade-in-50 duration-500">
               <blockquote className="border-l-4 pl-4 italic text-foreground">
-                "{featuredComment.content}"
+                "{currentComment.content}"
               </blockquote>
-              <p className="text-sm font-semibold text-right">— {featuredComment.author}</p>
+              <p className="text-sm font-semibold text-right">— {currentComment.author}</p>
               <p className="text-xs text-muted-foreground pt-2 border-t">
-                Na questão: "{featuredComment.questionText.substring(0, 100)}..."
+                Na questão: "{currentComment.questionText.substring(0, 100)}..."
               </p>
             </div>
           ) : (
