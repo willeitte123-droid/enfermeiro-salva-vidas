@@ -176,6 +176,70 @@ const Medications = () => {
       contraindication: "Hipoglicemia.",
       adverseEffects: "<strong>Hipoglicemia</strong> (principal efeito adverso), hipocalemia (quando em infusão contínua). Monitorização glicêmica rigorosa.",
       category: "Hormônio/Antidiabético"
+    },
+    {
+      name: "Glicose 50%",
+      activeIngredient: "Glicose Anidra",
+      indication: "Tratamento de hipoglicemia grave em pacientes com acesso venoso. Dose: <strong>25-50 mL (1-2 ampolas) IV lento</strong>.",
+      contraindication: "Hiperglicemia, anúria, hemorragia intracraniana.",
+      adverseEffects: "Hiperglicemia de rebote, flebite, esclerose venosa (solução hipertônica). <strong>Administrar em veia calibrosa</strong>.",
+      category: "Solução Hipertônica/Glicose"
+    },
+    {
+      name: "Hidrocortisona (Solu-Cortef)",
+      activeIngredient: "Succinato Sódico de Hidrocortisona",
+      indication: "Corticosteroide para insuficiência adrenal, reações alérgicas graves, asma. Dose: <strong>100-500mg IV/IM</strong> a cada 2-6h.",
+      contraindication: "Infecções fúngicas sistêmicas, hipersensibilidade.",
+      adverseEffects: "Hiperglicemia, hipertensão, retenção de sódio e água, hipocalemia.",
+      category: "Corticosteroide"
+    },
+    {
+      name: "Fenitoína (Hidantal)",
+      activeIngredient: "Fenitoína Sódica",
+      indication: "Anticonvulsivante para estado de mal epiléptico. Dose de ataque: <strong>15-20mg/kg IV</strong>, infusão lenta (≤50mg/min).",
+      contraindication: "Bradicardia sinusal, bloqueio AV. <strong>Incompatível com soro glicosado</strong> (usar SF 0,9%).",
+      adverseEffects: "Hipotensão, arritmias (infusão rápida), flebite, nistagmo, ataxia. <strong>Requer monitorização cardíaca</strong>.",
+      category: "Anticonvulsivante"
+    },
+    {
+      name: "Atropina",
+      activeIngredient: "Sulfato de Atropina",
+      indication: "Anticolinérgico para bradicardia sinusal sintomática. Dose: <strong>1mg IV em bolus</strong>, repetir a cada 3-5min (máx 3mg).",
+      contraindication: "Glaucoma de ângulo fechado, taquicardia, obstrução GI/urinária.",
+      adverseEffects: "Taquicardia, boca seca, visão turva, retenção urinária, agitação.",
+      category: "Anticolinérgico/Antiarrítmico"
+    },
+    {
+      name: "Enoxaparina (Clexane)",
+      activeIngredient: "Enoxaparina Sódica",
+      indication: "Heparina de baixo peso molecular (HBPM) para profilaxia e tratamento de TVP/TEP. Dose profilática: <strong>40mg SC 1x/dia</strong>.",
+      contraindication: "Hemorragia ativa, plaquetopenia grave, hipersensibilidade à heparina.",
+      adverseEffects: "Hemorragia, hematoma no local da injeção, trombocitopenia. <strong>Não expelir a bolha de ar da seringa</strong>.",
+      category: "Anticoagulante (HBPM)"
+    },
+    {
+      name: "Meropenem (Meronem)",
+      activeIngredient: "Meropenem Tri-hidratado",
+      indication: "Antibiótico carbapenêmico de amplo espectro para infecções hospitalares graves. Dose: <strong>1-2g IV</strong> a cada 8h (infundir em 30 min).",
+      contraindication: "Hipersensibilidade a carbapenêmicos ou beta-lactâmicos.",
+      adverseEffects: "Náusea, vômito, diarreia, rash. Risco de convulsões em pacientes com histórico ou disfunção do SNC.",
+      category: "Antibiótico Carbapenêmico"
+    },
+    {
+      name: "Fentanil",
+      activeIngredient: "Citrato de Fentanila",
+      indication: "Analgésico opioide potente para dor intensa, sedação. Dose: <strong>25-100mcg IV lento</strong>. 100x mais potente que a morfina.",
+      contraindication: "Depressão respiratória grave, uso de IMAOs.",
+      adverseEffects: "<strong>Depressão respiratória, rigidez torácica (infusão rápida)</strong>, bradicardia, hipotensão. Antídoto: Naloxona.",
+      category: "Analgésico Opioide"
+    },
+    {
+      name: "Clonazepam (Rivotril)",
+      activeIngredient: "Clonazepam",
+      indication: "Benzodiazepínico para estado de mal epiléptico, crises de pânico. Dose: <strong>1mg IV lento</strong>, diluído.",
+      contraindication: "Insuficiência respiratória grave, miastenia gravis, glaucoma de ângulo fechado.",
+      adverseEffects: "Sonolência, depressão respiratória, hipotensão. <strong>Requer monitorização respiratória</strong>.",
+      category: "Benzodiazepínico/Anticonvulsivante"
     }
   ];
 
@@ -197,7 +261,7 @@ const Medications = () => {
         <Input
           placeholder="Buscar por nome, princípio ativo ou categoria..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.g.target.value)}
           className="pl-10"
         />
       </div>
