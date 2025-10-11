@@ -32,8 +32,7 @@ const Questions = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        // O Vite permite importar JSON diretamente, mas para simular um fetch e ser mais robusto:
-        const response = await fetch('/src/data/questions.json');
+        const response = await fetch('/questions.json');
         if (!response.ok) {
           throw new Error('Falha ao carregar as questões.');
         }
