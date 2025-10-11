@@ -360,6 +360,46 @@ const Medications = () => {
       contraindication: "Hipertensão compensatória (ex: shunt arteriovenoso), insuficiência hepática/renal grave.",
       adverseEffects: "Hipotensão profunda, taquicardia reflexa. <strong>Fotossensível (proteger frasco e equipo da luz)</strong>. Risco de toxicidade por cianeto em infusões prolongadas/altas doses.",
       category: "Anti-hipertensivo/Vasodilatador"
+    },
+    {
+      name: "Naloxona (Narcan)",
+      activeIngredient: "Cloridrato de Naloxona",
+      indication: "Antagonista opioide para reversão da depressão respiratória e sedação causadas por opioides. Dose: <strong>0,4-2mg IV/IM/SC</strong>, pode repetir a cada 2-3 min.",
+      contraindication: "Hipersensibilidade. Usar com cautela em pacientes com dependência física de opioides (risco de síndrome de abstinência aguda).",
+      adverseEffects: "Náusea, vômito, taquicardia, hipertensão, agitação. <strong>Sua meia-vida é mais curta que a da maioria dos opioides, exigindo monitorização contínua do paciente</strong>.",
+      category: "Antídoto/Antagonista Opioide"
+    },
+    {
+      name: "Vitamina K1 (Fitomenadiona)",
+      activeIngredient: "Fitomenadiona",
+      indication: "Prevenção e tratamento de hemorragias por hipoprotrombinemia. Reversão de anticoagulantes cumarínicos (Varfarina). Dose: <strong>10mg IV lento/IM/SC</strong>.",
+      contraindication: "Hipersensibilidade.",
+      adverseEffects: "Reações anafilactoides com a administração IV (rara, mas grave). <strong>Administrar IV muito lentamente (diluído, em pelo menos 30 min)</strong>. Dor no local da injeção IM.",
+      category: "Vitamina/Antídoto"
+    },
+    {
+      name: "Ketamina (Ketamin)",
+      activeIngredient: "Cloridrato de Cetamina",
+      indication: "Anestésico dissociativo para sedação e analgesia em procedimentos. Indução anestésica. Dose: <strong>1-2mg/kg IV</strong> para indução.",
+      contraindication: "Hipertensão grave, IAM, AVC. Condições em que o aumento da pressão arterial seria perigoso.",
+      adverseEffects: "Aumento da PA, FC e PIC. <strong>Reações de emergência (alucinações, delírio)</strong>, que podem ser minimizadas com o uso de benzodiazepínicos. Laringoespasmo, sialorreia.",
+      category: "Anestésico Dissociativo"
+    },
+    {
+      name: "Pantoprazol (Pantozol)",
+      activeIngredient: "Pantoprazol Sódico Sesqui-hidratado",
+      indication: "Inibidor de bomba de prótons (IBP). Tratamento de DRGE, úlceras, profilaxia de úlcera de estresse em pacientes críticos. Dose: <strong>40mg IV 1x/dia</strong>.",
+      contraindication: "Hipersensibilidade a IBPs.",
+      adverseEffects: "Cefaleia, diarreia, flebite. Uso prolongado associado a risco de fraturas, hipomagnesemia e infecções entéricas.",
+      category: "Inibidor Bomba Prótons"
+    },
+    {
+      name: "Ciprofloxacino (Cipro)",
+      activeIngredient: "Cloridrato de Ciprofloxacino",
+      indication: "Antibiótico (quinolona) para infecções do trato urinário, respiratórias, pele, ossos. Dose: <strong>400mg IV</strong> a cada 8-12h (infundir em 60 min).",
+      contraindication: "Hipersensibilidade a quinolonas, uso concomitante com tizanidina.",
+      adverseEffects: "Náusea, diarreia, flebite. <strong>Risco de tendinite e ruptura de tendão</strong> (especialmente em idosos), fotossensibilidade, prolongamento do intervalo QT.",
+      category: "Antibiótico Quinolona"
     }
   ];
 
