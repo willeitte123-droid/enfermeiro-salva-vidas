@@ -50,8 +50,8 @@ const EcgGuide = () => {
 
       <Tabs defaultValue="fundamentals" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="fundamentals">Fundamentos</TabsTrigger>
-          <TabsTrigger value="lethal">Arritmias Letais</TabsTrigger>
+          <TabsTrigger value="fundamentals" className="text-green-700 data-[state=active]:bg-green-600 data-[state=active]:text-white font-semibold">Fundamentos</TabsTrigger>
+          <TabsTrigger value="lethal" className="text-red-700 data-[state=active]:bg-red-600 data-[state=active]:text-white font-semibold">Arritmias Letais</TabsTrigger>
         </TabsList>
 
         <TabsContent value="fundamentals" className="space-y-6">
