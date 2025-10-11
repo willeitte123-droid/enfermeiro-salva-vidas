@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { ClipboardList, Syringe, Droplets, Info, AirVent, Bandage, CheckSquare, GitBranchPlus, Beaker, Bone, Scissors } from "lucide-react";
+import { ClipboardList, Syringe, Droplets, Info, AirVent, Bandage, CheckSquare, GitBranchPlus, Beaker, Bone, Scissors, Activity } from "lucide-react";
 
 const procedures = [
   {
@@ -29,6 +29,24 @@ const procedures = [
       "Registrar o procedimento e características da urina."
     ],
     observations: "Técnica estritamente asséptica é crucial para prevenir ITU. Nunca force a passagem da sonda. Documente o volume do balonete."
+  },
+  {
+    title: "Sondagem Vesical de Alívio",
+    icon: ClipboardList,
+    color: "text-sky-500",
+    openColor: "text-sky-600",
+    description: "Inserção de um cateter para esvaziamento imediato da bexiga, com remoção logo após o procedimento.",
+    materials: [
+      "Pacote de cateterismo estéril", "Luvas estéreis", "Sonda uretral (Nelaton)", "Xilocaína gel", "Clorexidina aquosa", "Cuba redonda ou similar para coletar urina"
+    ],
+    steps: [
+      "Seguir os mesmos passos de assepsia e preparo da Sondagem Vesical de Demora.",
+      "Lubrificar e introduzir a sonda uretral até o retorno de urina.",
+      "Drenar completamente a bexiga.",
+      "Retirar a sonda delicadamente assim que o fluxo de urina cessar.",
+      "Registrar o procedimento, volume e características da urina."
+    ],
+    observations: "Técnica limpa intermitente pode ser ensinada ao paciente para autocateterismo em domicílio. Em ambiente hospitalar, a técnica deve ser estéril."
   },
   {
     title: "Acesso Venoso Periférico (AVP)",
@@ -73,6 +91,27 @@ const procedures = [
       "Realizar curativo estéril com fixador específico."
     ],
     observations: "Procedimento avançado que exige capacitação e certificação específica. Seguir rigorosamente os protocolos institucionais e as resoluções do COFEN."
+  },
+  {
+    title: "Aferição da Pressão Venosa Central (PVC)",
+    icon: Activity,
+    color: "text-pink-500",
+    openColor: "text-pink-600",
+    description: "Medição da pressão na veia cava superior ou átrio direito, refletindo a pré-carga cardíaca.",
+    materials: [
+      "Kit de pressão invasiva (transdutor, domo)", "Bolsa pressurizadora", "Soro Fisiológico 0,9% 500ml", "Suporte de soro", "Monitor multiparamétrico com cabo de PAI"
+    ],
+    steps: [
+      "Montar o sistema de forma asséptica.",
+      "Instalar a bolsa de SF 0,9% no pressurizador e inflar até 300 mmHg.",
+      "Conectar o sistema ao monitor e ao cateter venoso central (via distal).",
+      "Posicionar o paciente em decúbito dorsal horizontal (0º).",
+      "Nivelar o transdutor no eixo flebostático (4º espaço intercostal, linha axilar média).",
+      "Zerar o sistema: fechar a via para o paciente, abrir para a atmosfera e acionar 'zerar PAI' no monitor.",
+      "Abrir a via para o paciente e observar a curva de pressão.",
+      "Registrar o valor da PVC (geralmente ao final da expiração)."
+    ],
+    observations: "O correto posicionamento do eixo flebostático é crucial para uma medida fidedigna. Valores normais: 2-8 mmHg ou 3-10 cmH₂O. Sempre verificar a qualidade da curva no monitor."
   },
   {
     title: "Punção Arterial para Gasometria",
