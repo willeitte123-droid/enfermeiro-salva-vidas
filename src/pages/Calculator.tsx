@@ -87,7 +87,7 @@ const Calculator = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-accent flex flex-col">
+        <Card className="bg-primary/10 flex flex-col">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Activity className="h-5 w-5 text-primary" />
