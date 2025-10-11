@@ -118,7 +118,7 @@ const AppContent = () => {
           <Route path="/wound-care" element={<WoundCare />} />
           <Route path="/procedures" element={<Procedures />} />
           <Route path="/questions" element={<Questions />} />
-          {isAdmin && <Route path="/admin" element={<Admin />} />}
+          <Route path="/admin" element={isAdmin ? <Admin /> : <Navigate to="/" />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
