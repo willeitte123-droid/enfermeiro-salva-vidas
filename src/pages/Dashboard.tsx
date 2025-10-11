@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { Syringe, Calculator, Siren, Scale, Lightbulb, CheckCircle, XCircle, ArrowRight } from "lucide-react";
+import { Syringe, Calculator, Siren, Scale, Lightbulb, CheckCircle, XCircle, ArrowRight, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 
 interface Profile {
   id: string;
@@ -19,6 +21,7 @@ interface Question {
   options: { id: string; text: string }[];
   correctAnswer: string;
   explanation: string;
+  category: string;
 }
 
 const quickAccessLinks = [
@@ -65,16 +68,87 @@ const Dashboard = () => {
   };
 
   const randomTip = useMemo(() => clinicalTips[Math.floor(Math.random() * clinicalTips.length)], []);
+  const isCorrect = showAnswer && selectedOption === dailyQuestion?.correctAnswer;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="lg:col-span-2 space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Olá, {profile?.first_name || 'Profissional'}!</h1>
-          <p className="text-muted-foreground mt-2">Bem-vindo(a) de volta ao seu ambiente de estudo e trabalho.</p>
-        </div>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-foreground">Olá, {profile?.first_name || 'Profissional'}!</h1>
+        <p className="text-muted-foreground mt-2">Bem-vindo(a) de volta ao seu ambiente de estudo e trabalho.</p>
+      </div>
 
-        <div>
+      <Card className="w-full max-w-4xl mx-auto shadow-lg">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-xl">Questão do Dia</CardTitle>
+            {dailyQuestion && <Badge variant="outline">{dailyQuestion.category}</Badge>}
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {dailyQuestion ? (
+            <>
+              <p className="text-base font-semibold leading-relaxed text-foreground">{dailyQuestion.question}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {dailyQuestion.options.map((opt) => {
+                  const isCorrectOption = opt.id === dailyQuestion.correctAnswer;
+                  const isSelectedOption = opt.id === selectedOption;
+                  return (
+                    <Button
+                      key={opt.id}
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-between items-center text-left h-auto py-3 px-4 whitespace-normal transition-all duration-200",
+                        "hover:bg-accent hover:border-primary",
+                        showAnswer && isCorrectOption && "bg-green-100 border-green-400 text-green-900 hover:bg-green-200 dark:bg-green-900/30 dark:border-green-700 dark:text-white",
+                        showAnswer && isSelectedOption && !isCorrectOption && "bg-red-100 border-red-400 text-red-900 hover:bg-red-200 dark:bg-red-900/30 dark:border-red-700 dark:text-white",
+                        showAnswer && !isSelectedOption && !isCorrectOption && "bg-muted/50 text-muted-foreground opacity-60"
+                      )}
+                      onClick={() => handleSelectOption(opt.id)}
+                      disabled={showAnswer}
+                    >
+                      <div className="flex items-center">
+                        <span className="font-bold mr-3">{opt.id})</span>
+                        <span className="flex-1">{opt.text}</span>
+                      </div>
+                      {showAnswer && isCorrectOption && <CheckCircle className="h-5 w-5 text-green-600" />}
+                      {showAnswer && isSelectedOption && !isCorrectOption && <XCircle className="h-5 w-5 text-red-600" />}
+                    </Button>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <p className="text-sm text-muted-foreground text-center py-8">Carregando questão...</p>
+          )}
+        </CardContent>
+        {showAnswer && dailyQuestion && (
+          <div className="p-6 border-t bg-muted/30">
+            <Alert className={cn("border-2", isCorrect ? "border-green-400 dark:border-green-700" : "border-red-400 dark:border-red-700")}>
+              <Lightbulb className="h-4 w-4" />
+              <AlertTitle className="font-semibold">{isCorrect ? "Resposta Correta!" : "Resposta Incorreta"}</AlertTitle>
+              <AlertDescription>
+                <strong>Gabarito: {dailyQuestion.correctAnswer}.</strong> {dailyQuestion.explanation}
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
+        <CardFooter className="p-4 flex justify-end items-center bg-muted/30">
+          <div className="flex gap-2">
+            <Button variant="ghost" onClick={loadNewQuestion}>
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Nova Questão
+            </Button>
+            <Button asChild>
+              <Link to="/questions">
+                Ver Banco de Questões <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </CardFooter>
+      </Card>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
           <h2 className="text-2xl font-semibold text-foreground mb-4">Acesso Rápido</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {quickAccessLinks.map((link) => {
@@ -95,70 +169,19 @@ const Dashboard = () => {
             })}
           </div>
         </div>
-      </div>
-
-      <div className="lg:col-span-1 space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Questão do Dia</CardTitle>
-            <CardDescription>Teste seu conhecimento.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {dailyQuestion ? (
-              <>
-                <p className="text-sm font-semibold">{dailyQuestion.question}</p>
-                <div className="space-y-2">
-                  {dailyQuestion.options.map((opt) => {
-                    const isCorrect = opt.id === dailyQuestion.correctAnswer;
-                    const isSelected = opt.id === selectedOption;
-                    return (
-                      <Button
-                        key={opt.id}
-                        variant="outline"
-                        className={cn(
-                          "w-full justify-start text-left h-auto py-2",
-                          showAnswer && isCorrect && "bg-green-100 border-green-300 text-green-800 hover:bg-green-200",
-                          showAnswer && isSelected && !isCorrect && "bg-red-100 border-red-300 text-red-800 hover:bg-red-200"
-                        )}
-                        onClick={() => handleSelectOption(opt.id)}
-                      >
-                        <span className="font-bold mr-2">{opt.id})</span>
-                        <span className="flex-1 whitespace-normal">{opt.text}</span>
-                        {showAnswer && isCorrect && <CheckCircle className="h-4 w-4 ml-2 text-green-600" />}
-                        {showAnswer && isSelected && !isCorrect && <XCircle className="h-4 w-4 ml-2 text-red-600" />}
-                      </Button>
-                    );
-                  })}
-                </div>
-                {showAnswer && (
-                  <div className="p-3 bg-muted rounded-md text-sm">
-                    <p><strong>Gabarito: {dailyQuestion.correctAnswer}.</strong> {dailyQuestion.explanation}</p>
-                  </div>
-                )}
-              </>
-            ) : (
-              <p className="text-sm text-muted-foreground">Carregando questão...</p>
-            )}
-          </CardContent>
-          <CardContent className="flex gap-2">
-            <Button variant="secondary" onClick={loadNewQuestion} className="w-full">Nova Questão</Button>
-            <Button asChild className="w-full">
-              <Link to="/questions">Ver Todas <ArrowRight className="ml-2 h-4 w-4" /></Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Lightbulb className="h-5 w-5 text-amber-500" />
-              Dica Clínica
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground italic">"{randomTip}"</p>
-          </CardContent>
-        </Card>
+        <div className="lg:col-span-1">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Lightbulb className="h-5 w-5 text-amber-500" />
+                Dica Clínica
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground italic">"{randomTip}"</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
