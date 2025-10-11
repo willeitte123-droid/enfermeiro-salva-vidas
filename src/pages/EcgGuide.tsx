@@ -64,22 +64,22 @@ const EcgGuide = () => {
               <div>
                 <h3 className="font-semibold text-lg mb-4 text-center">Derivações Precordiais (Tórax)</h3>
                 <div className="relative max-w-[250px] mx-auto">
-                  <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 100,10 C 40,10 10,40 10,80 L 10,210 L 190,210 L 190,80 C 190,40 160,10 100,10 Z" className="fill-blue-50 dark:fill-blue-900/20 stroke-blue-200 dark:stroke-blue-800" strokeWidth="1"/>
-                    <path d="M100,25 L100,130" className="stroke-gray-300 dark:stroke-gray-600" strokeWidth="2" />
-                    <path d="M100,25 C 60,25 40,45 20,55" className="stroke-gray-300 dark:stroke-gray-600" strokeWidth="2" fill="none" />
-                    <path d="M100,25 C 140,25 160,45 180,55" className="stroke-gray-300 dark:stroke-gray-600" strokeWidth="2" fill="none" />
-                    <path d="M30,85 L170,85" className="stroke-blue-100 dark:stroke-blue-900" strokeWidth="1" strokeDasharray="2"/>
-                    <text x="172" y="88" className="text-[8px] fill-muted-foreground">4º EIC</text>
-                    <path d="M25,115 L175,115" className="stroke-blue-100 dark:stroke-blue-900" strokeWidth="1" strokeDasharray="2"/>
-                    <text x="177" y="118" className="text-[8px] fill-muted-foreground">5º EIC</text>
-                    
-                    <g className="cursor-pointer" onClick={() => alert('V1: 4º espaço intercostal, à direita do esterno.')}><circle cx="88" cy="85" r="8" className="fill-primary"/><text x="88" y="89" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V1</text></g>
-                    <g className="cursor-pointer" onClick={() => alert('V2: 4º espaço intercostal, à esquerda do esterno.')}><circle cx="112" cy="85" r="8" className="fill-primary"/><text x="112" y="89" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V2</text></g>
-                    <g className="cursor-pointer" onClick={() => alert('V3: A meio caminho entre V2 e V4.')}><circle cx="100" cy="100" r="8" className="fill-primary"/><text x="100" y="104" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V3</text></g>
-                    <g className="cursor-pointer" onClick={() => alert('V4: 5º espaço intercostal, na linha hemiclavicular.')}><circle cx="80" cy="115" r="8" className="fill-primary"/><text x="80" y="119" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V4</text></g>
-                    <g className="cursor-pointer" onClick={() => alert('V5: 5º EIC, na linha axilar anterior.')}><circle cx="60" cy="120" r="8" className="fill-primary"/><text x="60" y="124" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V5</text></g>
-                    <g className="cursor-pointer" onClick={() => alert('V6: 5º EIC, na linha axilar média.')}><circle cx="40" cy="122" r="8" className="fill-primary"/><text x="40" y="126" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V6</text></g>
+                  <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+                    <path d="M60,0 C60,15 75,20 100,20 C125,20 140,15 140,0 L160,0 L200,40 L190,220 L10,220 L0,40 L40,0 Z" className="fill-amber-100 dark:fill-amber-900/20 stroke-amber-300 dark:stroke-amber-700" />
+                    <path d="M65,25 C80,35 120,35 135,25" fill="none" className="stroke-amber-400 dark:stroke-amber-600" strokeWidth="4" strokeLinecap="round" />
+                    <path d="M100,25 L100,120" fill="none" className="stroke-amber-400 dark:stroke-amber-600" strokeWidth="8" strokeLinecap="round" />
+                    <path d="M50,70 C70,65 130,65 150,70" fill="none" className="stroke-amber-300 dark:stroke-amber-700" strokeWidth="2" /><text x="155" y="70" className="text-[8px] fill-muted-foreground">3ª</text>
+                    <path d="M45,90 C65,85 135,85 155,90" fill="none" className="stroke-amber-300 dark:stroke-amber-700" strokeWidth="2" /><text x="160" y="90" className="text-[8px] fill-muted-foreground">4ª</text>
+                    <path d="M40,110 C60,105 140,105 160,110" fill="none" className="stroke-amber-300 dark:stroke-amber-700" strokeWidth="2" /><text x="165" y="110" className="text-[8px] fill-muted-foreground">5ª</text>
+                    <path d="M35,130 C55,125 145,125 165,130" fill="none" className="stroke-amber-300 dark:stroke-amber-700" strokeWidth="2" /><text x="170" y="130" className="text-[8px] fill-muted-foreground">6ª</text>
+                    <text x="10" y="83" className="text-[8px] fill-muted-foreground">4º EIC</text>
+                    <text x="5" y="103" className="text-[8px] fill-muted-foreground">5º EIC</text>
+                    <g className="cursor-pointer group" onClick={() => alert('V1: 4º espaço intercostal, à direita do esterno.')}><circle cx="110" cy="80" r="8" className="fill-primary group-hover:scale-110 transition-transform"/><text x="110" y="84" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V1</text></g>
+                    <g className="cursor-pointer group" onClick={() => alert('V2: 4º espaço intercostal, à esquerda do esterno.')}><circle cx="90" cy="80" r="8" className="fill-primary group-hover:scale-110 transition-transform"/><text x="90" y="84" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V2</text></g>
+                    <g className="cursor-pointer group" onClick={() => alert('V4: 5º espaço intercostal, na linha hemiclavicular.')}><circle cx="75" cy="100" r="8" className="fill-primary group-hover:scale-110 transition-transform"/><text x="75" y="104" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V4</text></g>
+                    <g className="cursor-pointer group" onClick={() => alert('V3: A meio caminho entre V2 e V4.')}><circle cx="82.5" cy="90" r="8" className="fill-primary group-hover:scale-110 transition-transform"/><text x="82.5" y="94" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V3</text></g>
+                    <g className="cursor-pointer group" onClick={() => alert('V5: 5º EIC, na linha axilar anterior.')}><circle cx="55" cy="105" r="8" className="fill-primary group-hover:scale-110 transition-transform"/><text x="55" y="109" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V5</text></g>
+                    <g className="cursor-pointer group" onClick={() => alert('V6: 5º EIC, na linha axilar média.')}><circle cx="35" cy="110" r="8" className="fill-primary group-hover:scale-110 transition-transform"/><text x="35" y="114" textAnchor="middle" className="fill-primary-foreground text-[8px] font-bold">V6</text></g>
                   </svg>
                 </div>
               </div>
