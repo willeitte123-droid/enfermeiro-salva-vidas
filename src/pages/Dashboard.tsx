@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { Syringe, Calculator, Siren, Scale, Lightbulb, CheckCircle, XCircle, ArrowRight, RefreshCw } from "lucide-react";
+import { Syringe, Siren, Scale, Lightbulb, CheckCircle, XCircle, ArrowRight, RefreshCw, FileQuestion, ClipboardList } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -25,17 +25,6 @@ interface Question {
 }
 
 const quickAccessLinks = [
-  {
-    title: "Gotejamento",
-    icon: Calculator,
-    path: "/calculator",
-    description: "Calcule taxas de infusão.",
-    colorClasses: {
-      bg: "bg-blue-100 dark:bg-blue-900/30",
-      text: "text-blue-600 dark:text-blue-400",
-      hoverBorder: "hover:border-blue-400 dark:hover:border-blue-600",
-    },
-  },
   {
     title: "Medicamentos",
     icon: Syringe,
@@ -67,6 +56,28 @@ const quickAccessLinks = [
       bg: "bg-amber-100 dark:bg-amber-900/30",
       text: "text-amber-600 dark:text-amber-400",
       hoverBorder: "hover:border-amber-400 dark:hover:border-amber-600",
+    },
+  },
+  {
+    title: "Banca de Questões",
+    icon: FileQuestion,
+    path: "/questions",
+    description: "Teste seus conhecimentos.",
+    colorClasses: {
+      bg: "bg-violet-100 dark:bg-violet-900/30",
+      text: "text-violet-600 dark:text-violet-400",
+      hoverBorder: "hover:border-violet-400 dark:hover:border-violet-600",
+    },
+  },
+  {
+    title: "Procedimentos",
+    icon: ClipboardList,
+    path: "/procedures",
+    description: "Guias passo a passo.",
+    colorClasses: {
+      bg: "bg-cyan-100 dark:bg-cyan-900/30",
+      text: "text-cyan-600 dark:text-cyan-400",
+      hoverBorder: "hover:border-cyan-400 dark:hover:border-cyan-600",
     },
   },
 ];
@@ -120,7 +131,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <h2 className="text-2xl font-semibold text-foreground mb-4">Acesso Rápido</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {quickAccessLinks.map((link) => {
               const Icon = link.icon;
               return (
