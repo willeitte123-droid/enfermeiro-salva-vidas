@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { ClipboardList, Syringe, Droplets, Info, AirVent, Bandage, CheckSquare, GitBranchPlus, Beaker, Bone, Scissors, Activity } from "lucide-react";
+import { ClipboardList, Syringe, Droplets, Info, AirVent, Bandage, CheckSquare, GitBranchPlus, Beaker, Bone, Scissors, Activity, HeartPulse, LineChart, TestTube, Zap } from "lucide-react";
 
 const procedures = [
   {
@@ -231,6 +231,114 @@ const procedures = [
       "Registrar o procedimento e a evolução da ferida."
     ],
     observations: "Sempre registrar as características da lesão para acompanhar a evolução. Feridas com sinais de infecção exigem avaliação e coberturas específicas."
+  },
+  {
+    title: "Transfusão Sanguínea",
+    icon: HeartPulse,
+    color: "text-red-600",
+    openColor: "text-red-700",
+    description: "Administração de hemocomponentes (concentrado de hemácias, plaquetas, plasma) por via intravenosa.",
+    materials: [
+      "Equipo de transfusão com filtro", "Hemocomponente", "Acesso venoso pérvio (18G/20G)", "Luvas", "Material para aferição de SSVV"
+    ],
+    steps: [
+      "Confirmar prescrição e consentimento informado.",
+      "Obter o hemocomponente no serviço de hemoterapia.",
+      "<strong>Dupla checagem à beira-leito:</strong> Dois profissionais devem confirmar a identificação do paciente (nome completo, data de nascimento) com a etiqueta da bolsa (tipo sanguíneo, fator Rh, número da bolsa).",
+      "Aferir e registrar os sinais vitais basais do paciente.",
+      "Instalar o equipo e iniciar a infusão lentamente nos primeiros 15 minutos (aprox. 2 mL/min).",
+      "<strong>Permanecer com o paciente nos primeiros 15 minutos</strong>, monitorando sinais de reação transfusional (febre, calafrios, dor lombar, prurido, dispneia).",
+      "Se não houver reação, ajustar a velocidade de infusão conforme prescrição (geralmente para correr em até 4 horas para CH).",
+      "Aferir SSVV periodicamente durante e após a transfusão.",
+      "Registrar todo o procedimento, incluindo horários, SSVV e qualquer intercorrência."
+    ],
+    observations: "A checagem de identificação à beira-leito é a barreira de segurança mais crítica para prevenir reações hemolíticas fatais. Nunca adicione medicamentos à bolsa de sangue. O tempo máximo de infusão para concentrado de hemácias é de 4 horas."
+  },
+  {
+    title: "Eletrocardiograma (ECG) de 12 Derivações",
+    icon: LineChart,
+    color: "text-purple-600",
+    openColor: "text-purple-700",
+    description: "Registro da atividade elétrica do coração a partir de 12 pontos de vista diferentes.",
+    materials: [
+      "Eletrocardiógrafo", "Eletrodos descartáveis", "Gaze com álcool", "Material para tricotomia (se necessário)"
+    ],
+    steps: [
+      "Explicar o procedimento e posicionar o paciente em decúbito dorsal, relaxado.",
+      "Expor o tórax, punhos e tornozelos. Realizar tricotomia e limpeza da pele com álcool se necessário.",
+      "<strong>Posicionamento dos eletrodos periféricos:</strong> R (braço direito - Vermelho), A (braço esquerdo - Amarelo), L (perna esquerda - Verde/Green), N (perna direita - Preto/Neutro). Mnemônico: 'Flamengo Sempre Ganha no Brasil'.",
+      "<strong>Posicionamento dos eletrodos precordiais:</strong> V1 (4º EIC, à direita do esterno), V2 (4º EIC, à esquerda do esterno), V3 (entre V2 e V4), V4 (5º EIC, na linha hemiclavicular), V5 (5º EIC, na linha axilar anterior), V6 (5º EIC, na linha axilar média).",
+      "Conectar os cabos aos eletrodos, seguindo as cores e identificações.",
+      "Verificar a calibração padrão (N = 10mm, 25 mm/s) e registrar o ECG, solicitando ao paciente que não fale ou se mova.",
+      "Identificar o traçado com nome completo do paciente, data e hora."
+    ],
+    observations: "O posicionamento correto dos eletrodos é crucial para um diagnóstico preciso. A troca de cabos gera alterações que podem simular patologias graves. Em mulheres, os eletrodos V3-V6 devem ser colocados abaixo da mama."
+  },
+  {
+    title: "Coleta de Hemoculturas",
+    icon: TestTube,
+    color: "text-orange-600",
+    openColor: "text-orange-700",
+    description: "Coleta de amostras de sangue para detecção de microrganismos na corrente sanguínea.",
+    materials: [
+      "Frascos de hemocultura (aeróbio e anaeróbio)", "Luvas estéreis", "Clorexidina alcoólica >0,5%", "Dispositivo de coleta", "Garrote", "Gaze estéril"
+    ],
+    steps: [
+      "Realizar higiene das mãos e identificar os frascos.",
+      "Escolher o sítio de punção (preferencialmente veia periférica).",
+      "<strong>Realizar antissepsia rigorosa da pele:</strong> Aplicar clorexidina alcoólica com movimentos de vai e vem por 30 segundos e aguardar a secagem completa.",
+      "Realizar antissepsia da tampa de borracha dos frascos com álcool 70%.",
+      "Calçar luvas estéreis e realizar a punção venosa sem palpar novamente o local.",
+      "Coletar o volume de sangue recomendado (8-10 mL por frasco em adultos).",
+      "Inocular primeiro o frasco <strong>aeróbio</strong>, depois o <strong>anaeróbio</strong>.",
+      "Homogeneizar suavemente os frascos e encaminhar ao laboratório imediatamente."
+    ],
+    observations: "A contaminação da amostra é o principal desafio. A técnica de antissepsia da pele é a etapa mais crítica. Idealmente, coletar duas amostras de locais de punção diferentes. Evitar coletar de acessos venosos já existentes."
+  },
+  {
+    title: "Cuidados com Traqueostomia",
+    icon: AirVent,
+    color: "text-cyan-600",
+    openColor: "text-cyan-700",
+    description: "Manutenção da perviedade e higiene da via aérea artificial para prevenir complicações.",
+    materials: [
+      "Kit de curativo estéril", "Luvas (estéril e de procedimento)", "SF 0,9%", "Gaze estéril", "Cadarço de fixação", "Material para aspiração"
+    ],
+    steps: [
+      "Explicar o procedimento e posicionar o paciente em semi-Fowler.",
+      "Aspirar a via aérea (cânula e boca) antes de iniciar o curativo.",
+      "Remover o curativo antigo e inspecionar o estoma para sinais de infecção.",
+      "<strong>Limpeza do estoma:</strong> Com técnica asséptica, limpar a pele ao redor do estoma com gaze umedecida em SF 0,9%, do estoma para fora.",
+      "Secar a pele e aplicar um novo curativo estéril específico para traqueostomia (não cortar gaze comum).",
+      "<strong>Troca do cadarço de fixação (realizada por dois profissionais):</strong> Um estabiliza a cânula enquanto o outro troca o cadarço. A fixação deve permitir a passagem de um dedo.",
+      "Se aplicável, remover, limpar e reinserir a cânula interna.",
+      "Verificar e manter a pressão do cuff entre 20-30 cmH₂O."
+    ],
+    observations: "A troca do cadarço é um momento de alto risco para decanulação acidental. Manter sempre um kit de traqueostomia de emergência (com uma cânula do mesmo tamanho e uma de tamanho menor) à beira do leito."
+  },
+  {
+    title: "Cardioversão Elétrica e Desfibrilação",
+    icon: Zap,
+    color: "text-yellow-500",
+    openColor: "text-yellow-600",
+    description: "Aplicação de uma corrente elétrica no tórax para reverter arritmias cardíacas.",
+    materials: [
+      "Desfibrilador/cardioversor", "Pás ou eletrodos adesivos", "Material para sedação/analgesia", "Material de SAV"
+    ],
+    steps: [
+      "<strong>Desfibrilação (PCR por FV/TV sem pulso):</strong>",
+      "1. Ligar o desfibrilador e aplicar as pás/eletrodos.",
+      "2. Selecionar a carga (ex: 200J bifásico) e carregar enquanto a RCP continua.",
+      "3. <strong>Garantir segurança:</strong> Afastar todos do paciente ('Afastar!').",
+      "4. Aplicar o choque e <strong>reiniciar a RCP imediatamente</strong>.",
+      "<strong>Cardioversão Sincronizada (Taquiarritmias instáveis com pulso):</strong>",
+      "1. Administrar sedação/analgesia.",
+      "2. <strong>Ativar o modo 'SINCRONIZAR' (SYNC)</strong> e verificar se há um marcador em cada QRS.",
+      "3. Selecionar a carga (ex: 50-100J para FA) e carregar.",
+      "4. Garantir segurança ('Afastar!').",
+      "5. Pressionar e <strong>manter pressionado</strong> o botão de choque até a descarga ocorrer."
+    ],
+    observations: "A principal diferença é a <strong>sincronização</strong>. Desfibrilação é para PCR e não é sincronizada. Cardioversão é para pacientes com pulso e <strong>DEVE</strong> ser sincronizada para evitar o fenômeno R sobre T. Se o paciente entrar em PCR, desligue o modo SYNC e desfibrila."
   }
 ];
 
