@@ -5198,5 +5198,1305 @@
     ],
     "correctAnswer": "B",
     "explanation": "A demência com corpos de Lewy é a segunda causa mais comum de demência degenerativa. A flutuação acentuada na atenção e no alerta, as alucinações visuais bem detalhadas e os sintomas motores semelhantes ao Parkinson são as características centrais para o diagnóstico."
+  },
+  {
+    "id": 401,
+    "category": "Terapia Intensiva",
+    "question": "Qual é o objetivo da Posição Prona em pacientes com Síndrome do Desconforto Respiratório Agudo (SDRA)?",
+    "options": [
+      { "id": "A", "text": "Melhorar o conforto do paciente." },
+      { "id": "B", "text": "Facilitar a aspiração de secreções." },
+      { "id": "C", "text": "Melhorar a relação ventilação/perfusão (V/Q) e a oxigenação, recrutando áreas pulmonares dorsais colapsadas." },
+      { "id": "D", "text": "Diminuir a pressão intracraniana." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A posição prona (de bruços) redistribui a ventilação para as áreas dorsais do pulmão, que são mais perfundidas, melhorando a troca gasosa. É uma estratégia comprovada para reduzir a mortalidade em pacientes com SDRA grave."
+  },
+  {
+    "id": 402,
+    "category": "Oncologia",
+    "question": "O que é a extravasamento de quimioterápicos vesicantes?",
+    "options": [
+      { "id": "A", "text": "Uma reação alérgica ao medicamento." },
+      { "id": "B", "text": "A infiltração acidental do medicamento no tecido subcutâneo, causando dor, inflamação e necrose tecidual grave." },
+      { "id": "C", "text": "A administração do medicamento em uma velocidade muito rápida." },
+      { "id": "D", "text": "A obstrução do cateter venoso." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O extravasamento de agentes vesicantes (ex: Doxorrubicina, Vincristina) é uma emergência oncológica. A conduta imediata é parar a infusão, tentar aspirar o máximo de droga e aplicar o antídoto ou medidas locais específicas para cada droga."
+  },
+  {
+    "id": 403,
+    "category": "Saúde do Trabalhador",
+    "question": "Qual é a principal via de transmissão da Hepatite B em profissionais de saúde?",
+    "options": [
+      { "id": "A", "text": "Via respiratória." },
+      { "id": "B", "text": "Via percutânea, através de acidentes com agulhas e materiais perfurocortantes contaminados." },
+      { "id": "C", "text": "Via fecal-oral." },
+      { "id": "D", "text": "Contato com pele íntegra." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O vírus da Hepatite B é altamente infeccioso e resistente. A prevenção se baseia na vacinação de todos os profissionais, na adoção de precauções padrão e no manejo cuidadoso de materiais perfurocortantes."
+  },
+  {
+    "id": 404,
+    "category": "Nefrologia",
+    "question": "Qual é o principal sinal de uma fístula arteriovenosa (FAV) madura e pronta para punção?",
+    "options": [
+      { "id": "A", "text": "Presença de edema e vermelhidão." },
+      { "id": "B", "text": "Ausência de frêmito." },
+      { "id": "C", "text": "Veias dilatadas e facilmente palpáveis, com frêmito forte e sopro contínuo." },
+      { "id": "D", "text": "Dor intensa à palpação." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A maturação da FAV leva de 4 a 6 semanas. O exame físico, avaliando o calibre das veias e a intensidade do frêmito e do sopro, é fundamental para determinar se a fístula está pronta para ser puncionada com segurança para a hemodiálise."
+  },
+  {
+    "id": 405,
+    "category": "Cardiologia",
+    "question": "Qual é a principal complicação da Fibrilação Atrial (FA) crônica?",
+    "options": [
+      { "id": "A", "text": "Infarto agudo do miocárdio." },
+      { "id": "B", "text": "Acidente vascular cerebral (AVC) isquêmico de origem cardioembólica." },
+      { "id": "C", "text": "Insuficiência renal." },
+      { "id": "D", "text": "Hipertensão arterial." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Na FA, a ausência de contração atrial efetiva leva à estase sanguínea nos átrios, o que favorece a formação de trombos. Se um trombo se desprende, ele pode viajar para o cérebro e causar um AVC. Por isso, a anticoagulação é um pilar do tratamento da FA."
+  },
+  {
+    "id": 406,
+    "category": "Cuidados Paliativos",
+    "question": "O que é o princípio do duplo efeito?",
+    "options": [
+      { "id": "A", "text": "A administração de dois medicamentos ao mesmo tempo." },
+      { "id": "B", "text": "Um princípio ético que permite uma ação com uma consequência boa (ex: alívio da dor) e uma consequência ruim previsível, mas não intencional (ex: depressão respiratória)." },
+      { "id": "C", "text": "A ocorrência de dois efeitos colaterais simultâneos." },
+      { "id": "D", "text": "A suspensão de todos os tratamentos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Em cuidados paliativos, o princípio do duplo efeito justifica o uso de doses de opioides necessárias para aliviar a dor intensa, mesmo que isso possa, como efeito secundário, acelerar a morte do paciente. A intenção primária é aliviar o sofrimento, não causar a morte."
+  },
+  {
+    "id": 407,
+    "category": "Gestão em Enfermagem",
+    "question": "O que é a liderança situacional?",
+    "options": [
+      { "id": "A", "text": "Um estilo de liderança onde o líder toma todas as decisões sozinho." },
+      { "id": "B", "text": "Um estilo de liderança onde o líder delega todas as tarefas." },
+      { "id": "C", "text": "Uma teoria que propõe que o líder deve adaptar seu estilo de liderança (direção, treinamento, apoio, delegação) ao nível de maturidade e competência do liderado." },
+      { "id": "D", "text": "Um estilo de liderança focado apenas em manter boas relações com a equipe." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A liderança situacional é um modelo flexível. Para um profissional inexperiente, o líder adota um estilo mais diretivo. Para um profissional experiente e motivado, o líder pode adotar um estilo de delegação, dando mais autonomia."
+  },
+  {
+    "id": 408,
+    "category": "Terapia Intensiva",
+    "question": "O que é a Pressão de Oclusão da Artéria Pulmonar (POAP) ou Pressão Capilar Pulmonar?",
+    "options": [
+      { "id": "A", "text": "A pressão na artéria pulmonar." },
+      { "id": "B", "text": "Uma medida indireta da pressão no átrio esquerdo, que reflete a pré-carga do ventrículo esquerdo." },
+      { "id": "C", "text": "A pressão venosa central." },
+      { "id": "D", "text": "A pressão arterial média." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A POAP é medida com um cateter de Swan-Ganz, inflando-se o balão na ponta do cateter para ocluir um ramo da artéria pulmonar. É um parâmetro crucial para avaliar a volemia e a função ventricular esquerda, e para diferenciar o edema pulmonar cardiogênico do não cardiogênico."
+  },
+  {
+    "id": 409,
+    "category": "Oncologia",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente recebendo radioterapia?",
+    "options": [
+      { "id": "A", "text": "Manter o paciente em isolamento." },
+      { "id": "B", "text": "Avaliar e manejar os efeitos colaterais, especialmente a radiodermite (reação de pele), e orientar o paciente sobre os cuidados com a pele irradiada." },
+      { "id": "C", "text": "Administrar quimioterapia concomitante." },
+      { "id": "D", "text": "Realizar curativos oclusivos na área irradiada." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A pele na área de tratamento fica muito sensível. As orientações incluem evitar fricção, usar roupas largas de algodão, não aplicar produtos não prescritos (cremes, desodorantes) e proteger a área do sol. O manejo da radiodermite é fundamental para o conforto e a continuidade do tratamento."
+  },
+  {
+    "id": 410,
+    "category": "Saúde do Trabalhador",
+    "question": "O que é a Comunicação de Acidente de Trabalho (CAT)?",
+    "options": [
+      { "id": "A", "text": "Um relatório interno do hospital." },
+      { "id": "B", "text": "Um documento que deve ser emitido pela empresa para informar à Previdência Social sobre um acidente de trabalho ou doença ocupacional." },
+      { "id": "C", "text": "Um atestado médico para o trabalhador." },
+      { "id": "D", "text": "Uma solicitação de transferência de setor." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A emissão da CAT é obrigatória, mesmo que não haja afastamento do trabalho. Ela é essencial para garantir os direitos do trabalhador, como o auxílio-doença acidentário e a estabilidade no emprego após o retorno."
+  },
+  {
+    "id": 411,
+    "category": "Nefrologia",
+    "question": "Qual é o principal sintoma da hipercalemia grave?",
+    "options": [
+      { "id": "A", "text": "Cãibras musculares." },
+      { "id": "B", "text": "Alterações no ECG (onda T apiculada, alargamento do QRS) e arritmias cardíacas potencialmente fatais." },
+      { "id": "C", "text": "Poliúria (aumento do volume urinário)." },
+      { "id": "D", "text": "Hipertensão arterial." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A hipercalemia (excesso de potássio) é uma emergência médica devido à sua cardiotoxicidade. As alterações no ECG são progressivas e podem levar à assistolia ou fibrilação ventricular. O tratamento visa estabilizar a membrana cardíaca (gluconato de cálcio), deslocar o potássio para dentro da célula e aumentar sua eliminação."
+  },
+  {
+    "id": 412,
+    "category": "Cardiologia",
+    "question": "O que é a endocardite infecciosa?",
+    "options": [
+      { "id": "A", "text": "Uma inflamação do pericárdio." },
+      { "id": "B", "text": "Uma infecção do músculo cardíaco (miocárdio)." },
+      { "id": "C", "text": "Uma infecção do endocárdio, o revestimento interno das câmaras e valvas cardíacas." },
+      { "id":- "D", "text": "Uma arritmia cardíaca." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A endocardite geralmente ocorre em valvas cardíacas danificadas ou em próteses valvares. A infecção leva à formação de 'vegetações' (um aglomerado de bactérias, plaquetas e fibrina), que podem destruir a valva ou se desprender, causando êmbolos para outros órgãos."
+  },
+  {
+    "id": 413,
+    "category": "Cuidados Paliativos",
+    "question": "O que é a ortotanásia?",
+    "options": [
+      { "id": "A", "text": "A abreviação da vida de um paciente (eutanásia)." },
+      { "id": "B", "text": "O uso de todos os meios possíveis para prolongar a vida, mesmo que causem sofrimento (distanásia)." },
+      { "id":- "C", "text": "A 'morte no tempo certo', permitindo que o processo de morrer ocorra naturalmente, sem o uso de medidas desproporcionais, e com foco no alívio do sofrimento." },
+      { "id": "D", "text": "O suicídio assistido." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A ortotanásia é a prática preconizada pelos cuidados paliativos e amparada pelo Código de Ética. Ela respeita a dignidade do paciente em terminalidade, evitando a obstinação terapêutica (distanásia) e a abreviação ativa da vida (eutanásia)."
+  },
+  {
+    "id": 414,
+    "category": "Gestão em Enfermagem",
+    "question": "O que é o 'feedback' no processo de comunicação?",
+    "options": [
+      { "id": "A", "text": "A mensagem inicial enviada pelo emissor." },
+      { "id": "B", "text": "O canal pelo qual a mensagem é transmitida." },
+      { "id": "C", "text": "A resposta do receptor ao emissor, que permite verificar se a mensagem foi compreendida corretamente." },
+      { "id": "D", "text": "Qualquer ruído que interfira na comunicação." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O feedback é um componente essencial da comunicação eficaz. Na enfermagem, é crucial para garantir que as orientações foram entendidas pelo paciente ou que as informações foram recebidas corretamente pela equipe, prevenindo erros."
+  },
+  {
+    "id": 415,
+    "category": "Terapia Intensiva",
+    "question": "O que é a Pressão Positiva Expiratória Final (PEEP)?",
+    "options": [
+      { "id": "A", "text": "A pressão máxima atingida durante a inspiração." },
+      { "id": "B", "text": "O volume de ar que entra nos pulmões a cada respiração." },
+      { "id": "C", "text": "Uma pressão positiva que é mantida nos alvéolos ao final da expiração, para prevenir o colapso alveolar." },
+      { "id": "D", "text": "A frequência com que o ventilador mecânico cicla." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A PEEP é um parâmetro fundamental da ventilação mecânica. Ao manter os alvéolos abertos, ela melhora a oxigenação, aumenta a capacidade residual funcional e previne a lesão pulmonar induzida pela ventilação (atelectrauma)."
+  },
+  {
+    "id": 416,
+    "category": "Oncologia",
+    "question": "O que é a Síndrome da Lise Tumoral?",
+    "options": [
+      { "id": "A", "text": "O crescimento descontrolado de um tumor." },
+      { "id": "B", "text": "Uma emergência metabólica causada pela rápida destruição de células tumorais (geralmente após o início da quimioterapia), com liberação maciça de seu conteúdo na corrente sanguínea." },
+      { "id": "C", "text": "A compressão de estruturas vitais por um tumor." },
+      { "id": "D", "text": "Uma infecção generalizada em um paciente com câncer." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A lise tumoral leva a distúrbios graves como hipercalemia, hiperfosfatemia, hipocalcemia e hiperuricemia, que podem causar arritmias cardíacas, insuficiência renal aguda e convulsões. A prevenção com hidratação e alopurinol é crucial em pacientes de alto risco."
+  },
+  {
+    "id": 417,
+    "category": "Saúde do Trabalhador",
+    "question": "Qual é o principal objetivo da NR-32 em relação aos materiais perfurocortantes?",
+    "options": [
+      { "id": "A", "text": "Proibir o uso de agulhas nos serviços de saúde." },
+      { "id": "B", "text": "Estabelecer medidas para prevenir acidentes, como a proibição do reencape de agulhas e a obrigatoriedade de descarte em coletores rígidos." },
+      { "id": "C", "text": "Responsabilizar o trabalhador por qualquer acidente." },
+      { "id": "D", "text": "Exigir que os coletores sejam preenchidos até a capacidade máxima." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A NR-32 estabelece regras claras para o manuseio e descarte de perfurocortantes, incluindo a proibição do reencape, do desconectar da seringa e o descarte em local apropriado, que deve ser preenchido apenas até a linha demarcada."
+  },
+  {
+    "id": 418,
+    "category": "Nefrologia",
+    "question": "O que é a uremia?",
+    "options": [
+      { "id": "A", "text": "A presença de sangue na urina." },
+      { "id": "B", "text": "A incapacidade de urinar." },
+      { "id": "C", "text": "Uma síndrome clínica que ocorre na insuficiência renal avançada, resultante do acúmulo de toxinas urêmicas no sangue." },
+      { "id": "D", "text": "Uma infecção do trato urinário." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A uremia afeta múltiplos sistemas e causa sintomas como náuseas, vômitos, fadiga, confusão mental, prurido e hálito urêmico. É uma indicação para o início da terapia renal substitutiva (diálise)."
+  },
+  {
+    "id": 419,
+    "category": "Cardiologia",
+    "question": "Qual é o principal objetivo do cateterismo cardíaco diagnóstico?",
+    "options": [
+      { "id": "A", "text": "Realizar uma cirurgia de revascularização do miocárdio." },
+      { "id": "B", "text": "Visualizar as artérias coronárias (coronariografia) para identificar obstruções e avaliar a função do músculo cardíaco." },
+      { "id": "C", "text": "Implantar um marca-passo." },
+      { "id": "D", "text": "Corrigir uma arritmia." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O cateterismo cardíaco é o padrão-ouro para o diagnóstico da doença arterial coronariana. Um cateter é inserido (geralmente pela artéria radial ou femoral) e levado até o coração, onde se injeta contraste para visualizar as coronárias por raios-X."
+  },
+  {
+    "id": 420,
+    "category": "Cuidados Paliativos",
+    "question": "O que são os 'estertores da morte'?",
+    "options": [
+      { "id": "A", "text": "Um sinal de melhora do quadro respiratório." },
+      { "id": "B", "text": "Um ruído respiratório causado pelo acúmulo de secreções na orofaringe em pacientes que estão no processo ativo de morte e perderam a capacidade de tossir ou deglutir." },
+      { "id": "C", "text": "Um tipo de tosse seca." },
+      { "id": "D", "text": "Um sinal de dor intensa." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Embora o som possa ser angustiante para a família, acredita-se que não cause desconforto ao paciente. O manejo envolve o posicionamento (decúbito lateral), a redução da hidratação e o uso de medicamentos anticolinérgicos (como Escopolamina) para diminuir a produção de secreções."
+  },
+  {
+    "id": 421,
+    "category": "Gestão em Enfermagem",
+    "question": "O que é a acreditação hospitalar?",
+    "options": [
+      { "id": "A", "text": "A licença de funcionamento emitida pela vigilância sanitária." },
+      { "id": "B", "text": "Um processo de avaliação voluntário, periódico e reservado, que busca garantir a qualidade da assistência através de padrões previamente definidos." },
+      { "id": "C", "text": "Uma auditoria financeira do hospital." },
+      { "id": "D", "text": "A classificação do hospital quanto ao seu porte." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A acreditação (ex: ONA, Joint Commission) é um selo de qualidade. Ela não fiscaliza, mas educa e certifica que a instituição possui processos de trabalho seguros e bem definidos, promovendo a melhoria contínua."
+  },
+  {
+    "id": 422,
+    "category": "Terapia Intensiva",
+    "question": "Qual é a principal complicação da ventilação mecânica invasiva?",
+    "options": [
+      { "id": "A", "text": "Pneumonia Associada à Ventilação Mecânica (PAV)." },
+      { "id": "B", "text": "Hipertensão arterial." },
+      { "id": "C", "text": "Melhora da função pulmonar." },
+      { "id": "D", "text": "Alcalose respiratória." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A PAV é uma infecção hospitalar grave e comum em pacientes intubados. A prevenção, através de um conjunto de medidas (bundle), é uma das principais metas de segurança em terapia intensiva."
+  },
+  {
+    "id": 423,
+    "category": "Oncologia",
+    "question": "O que é a neutropenia?",
+    "options": [
+      { "id": "A", "text": "Aumento do número de neutrófilos." },
+      { "id": "B", "text": "Diminuição do número de plaquetas." },
+      { "id": "C", "text": "Diminuição do número de neutrófilos, um tipo de glóbulo branco, o que aumenta o risco de infecções." },
+      { "id": "D", "text": "Diminuição do número de hemácias." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A neutropenia é um efeito colateral comum da quimioterapia (mielossupressão). A febre em um paciente neutropênico (neutropenia febril) é uma emergência médica, pois indica uma infecção que pode se tornar grave rapidamente."
+  },
+  {
+    "id": 424,
+    "category": "Saúde do Trabalhador",
+    "question": "Qual é a principal medida de prevenção contra a exposição a material biológico?",
+    "options": [
+      { "id": "A", "text": "A utilização de Equipamentos de Proteção Individual (EPIs) e a adesão às precauções padrão." },
+      { "id": "B", "text": "A realização de exames periódicos." },
+      { "id": "C", "text": "A comunicação de acidentes de trabalho." },
+      { "id": "D", "text": "A vacinação contra a gripe." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "As precauções padrão devem ser aplicadas no cuidado a TODOS os pacientes, independentemente do seu diagnóstico. Elas incluem a higienização das mãos, o uso de luvas, avental, máscara e óculos sempre que houver risco de contato com sangue ou fluidos corporais."
+  },
+  {
+    "id": 425,
+    "category": "Nefrologia",
+    "question": "Qual é a principal função da eritropoetina?",
+    "options": [
+      { "id": "A", "text": "Controlar a pressão arterial." },
+      { "id": "B", "text": "Estimular a medula óssea a produzir glóbulos vermelhos (hemácias)." },
+      { "id": "C", "text": "Regular os níveis de cálcio e fósforo." },
+      { "id": "D", "text": "Aumentar a excreção de potássio." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A eritropoetina é um hormônio produzido pelos rins. Na doença renal crônica, sua produção diminui, levando à anemia. A reposição com eritropoetina sintética é um tratamento padrão para a anemia da DRC."
+  },
+  {
+    "id": 426,
+    "category": "Cardiologia",
+    "question": "O que é o teste ergométrico?",
+    "options": [
+      { "id": "A", "text": "Um eletrocardiograma de repouso." },
+      { "id": "B", "text": "Um exame que registra a atividade elétrica do coração durante o esforço físico." },
+      { "id": "C", "text": "Uma ultrassonografia do coração." },
+      { "id": "D", "text": "A monitorização da pressão arterial por 24 horas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O teste ergométrico, ou teste de esforço, é usado para avaliar a resposta do coração ao estresse, podendo detectar isquemia miocárdica (angina) que não aparece no ECG de repouso, além de avaliar a capacidade funcional e a resposta da pressão arterial."
+  },
+  {
+    "id": 427,
+    "category": "Cuidados Paliativos",
+    "question": "O que é a Diretiva Antecipada de Vontade (DAV)?",
+    "options": [
+      { "id": "A", "text": "Um documento que nomeia um procurador para tomar decisões financeiras." },
+      { "id": "B", "text": "Um conjunto de desejos, prévia e expressamente manifestados pelo paciente, sobre cuidados e tratamentos que quer, ou não, receber no momento em que estiver incapacitado de expressar, livre e autonomamente, sua vontade." },
+      { "id": "C", "text": "Uma ordem judicial para suspender o tratamento." },
+      { "id": "D", "text": "Um consentimento para participar de uma pesquisa clínica." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A DAV, também conhecida como testamento vital, é um instrumento que garante a autonomia do paciente. O profissional de saúde deve respeitar as vontades expressas na DAV, desde que não infrinjam o código de ética."
+  },
+  {
+    "id": 428,
+    "category": "Gestão em Enfermagem",
+    "question": "O que é a auditoria em enfermagem?",
+    "options": [
+      { "id": "A", "text": "A fiscalização do exercício profissional pelo COREN." },
+      { "id": "B", "text": "A avaliação sistemática e formal da qualidade da assistência de enfermagem, através da análise dos registros no prontuário e da observação direta." },
+      { "id": "C", "text": "O cálculo dos custos da assistência de enfermagem." },
+      { "id": "D", "text": "A elaboração da escala de trabalho." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A auditoria é uma ferramenta de gestão da qualidade. Ela pode ser retrospectiva (análise de prontuários), concorrente (durante a internação) ou prospectiva. Seus achados servem para identificar problemas e subsidiar a educação permanente e a melhoria dos processos."
+  },
+  {
+    "id": 429,
+    "category": "Terapia Intensiva",
+    "question": "O que é o delírio em UTI (Síndrome Confusional Aguda)?",
+    "options": [
+      { "id": "A", "text": "Um estado de agitação que requer sedação profunda." },
+      { "id": "B", "text": "Uma disfunção cerebral aguda caracterizada por alteração do nível de consciência, desatenção e pensamento desorganizado." },
+      { "id": "C", "text": "Uma consequência normal da internação em UTI." },
+      { "id": "D", "text": "Um sinal de melhora neurológica." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O delírio é extremamente comum em pacientes críticos e está associado a piores desfechos. Pode ser hiperativo, hipoativo (o mais comum e subdiagnosticado) ou misto. A prevenção (estratégia ABCDEF) e o diagnóstico precoce (com escalas como o CAM-ICU) são fundamentais."
+  },
+  {
+    "id": 430,
+    "category": "Oncologia",
+    "question": "O que é a terapia-alvo no tratamento do câncer?",
+    "options": [
+      { "id": "A", "text": "A radioterapia." },
+      { "id": "B", "text": "A quimioterapia convencional." },
+      { "id": "C", "text": "Um tipo de tratamento que utiliza drogas que atuam em alvos moleculares específicos, presentes nas células tumorais." },
+      { "id": "D", "text": "A imunoterapia." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Diferente da quimioterapia, que atinge todas as células de rápida proliferação, a terapia-alvo é mais específica, o que pode resultar em maior eficácia e um perfil de efeitos colaterais diferente e, por vezes, mais tolerável."
+  },
+  {
+    "id": 431,
+    "category": "Saúde do Trabalhador",
+    "question": "Qual é a conduta imediata após um acidente com exposição a material biológico (ex: picada de agulha)?",
+    "options": [
+      { "id": "A", "text": "Continuar o trabalho normalmente." },
+      { "id":- "B", "text": "Lavar o local com água e sabão, comunicar a chefia e procurar o serviço de saúde do trabalhador para avaliação e início da profilaxia pós-exposição (PEP), se indicada." },
+      { "id": "C", "text": "Tomar antibióticos por conta própria." },
+      { "id": "D", "text": "Fazer um curativo oclusivo e aguardar o final do plantão." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O tempo é crucial. Os cuidados locais devem ser imediatos, e a avaliação para o início da PEP (para HIV, Hepatite B) deve ocorrer o mais rápido possível, idealmente nas primeiras 2 horas após o acidente, para garantir a máxima eficácia."
+  },
+  {
+    "id": 432,
+    "category": "Nefrologia",
+    "question": "Qual é a principal vantagem da diálise peritoneal em relação à hemodiálise?",
+    "options": [
+      { "id": "A", "text": "É mais eficaz na remoção de toxinas." },
+      { "id": "B", "text": "Pode ser realizada pelo próprio paciente em domicílio, oferecendo maior autonomia e flexibilidade." },
+      { "id": "C", "text": "Tem menor risco de infecção." },
+      { "id": "D", "text": "É um procedimento mais rápido." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A diálise peritoneal (DP) é uma terapia domiciliar que permite ao paciente mais liberdade e controle sobre seu tratamento. No entanto, exige um alto grau de comprometimento e treinamento para a realização da técnica de forma asséptica e segura."
+  },
+  {
+    "id": 433,
+    "category": "Cardiologia",
+    "question": "O que é a fração de ejeção do ventrículo esquerdo (FEVE)?",
+    "options": [
+      { "id": "A", "text": "A quantidade de sangue que o coração bombeia em um minuto." },
+      { "id": "B", "text": "A porcentagem de sangue que é ejetada do ventrículo esquerdo a cada batimento." },
+      { "id": "C", "text": "A pressão dentro do ventrículo esquerdo." },
+      { "id": "D", "text": "A espessura da parede do ventrículo esquerdo." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A FEVE é o principal parâmetro para avaliar a função sistólica (de contração) do coração. Um valor normal é > 55%. Valores reduzidos indicam insuficiência cardíaca com fração de ejeção reduzida (ICFER)."
+  },
+  {
+    "id": 434,
+    "category": "Cuidados Paliativos",
+    "question": "O que é a dor total?",
+    "options": [
+      { "id": "A", "text": "A dor que afeta o corpo todo." },
+      { "id": "B", "text": "A pior dor imaginável." },
+      { "id": "C", "text": "Um conceito que reconhece que o sofrimento do paciente é composto por dimensões físicas, psicológicas, sociais e espirituais." },
+      { "id": "D", "text": "A dor que não responde a opioides." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Introduzido por Cicely Saunders, o conceito de dor total é a base da abordagem paliativa. Ele mostra que o sofrimento não é apenas físico e que, para aliviá-lo, é necessária uma abordagem interdisciplinar que cuide de todas as dimensões do ser humano."
+  },
+  {
+    "id": 435,
+    "category": "Gestão em Enfermagem",
+    "question": "O que é o planejamento estratégico em enfermagem?",
+    "options": [
+      { "id": "A", "text": "A elaboração da escala de férias." },
+      { "id": "B", "text": "Um processo gerencial para definir a direção a ser seguida pela organização, analisando o ambiente e definindo metas e ações de longo prazo." },
+      { "id": "C", "text": "A compra de materiais e equipamentos." },
+      { "id":- "D", "text": "A resolução de conflitos do dia a dia." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O planejamento estratégico envolve a definição da missão, visão e valores, a análise SWOT (Forças, Fraquezas, Oportunidades, Ameaças) e a criação de um plano de ação para alcançar os objetivos da instituição ou do serviço de enfermagem."
+  },
+  {
+    "id": 436,
+    "category": "Terapia Intensiva",
+    "question": "O que é a Síndrome do Desconforto Respiratório Agudo (SDRA)?",
+    "options": [
+      { "id": "A", "text": "Uma crise de asma grave." },
+      { "id": "B", "text": "Uma infecção pulmonar." },
+      { "id": "C", "text": "Uma forma de insuficiência respiratória aguda com hipoxemia grave, causada por uma resposta inflamatória pulmonar difusa a uma injúria (ex: sepse, pneumonia, trauma)." },
+      { "id": "D", "text": "Um colapso pulmonar (pneumotórax)." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Na SDRA, os alvéolos se enchem de líquido inflamatório, o que impede a troca gasosa. O tratamento envolve a ventilação mecânica protetora (com baixos volumes correntes) e, em casos graves, a posição prona."
+  },
+  {
+    "id": 437,
+    "category": "Oncologia",
+    "question": "O que é a imunoterapia no tratamento do câncer?",
+    "options": [
+      { "id": "A", "text": "A vacinação contra o câncer." },
+      { "id": "B", "text": "Um tipo de tratamento que estimula o próprio sistema imunológico do paciente a reconhecer e destruir as células cancerígenas." },
+      { "id": "C", "text": "A transfusão de anticorpos." },
+      { "id": "D", "text": "A quimioterapia." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A imunoterapia, especialmente com os inibidores de checkpoint imunológico, revolucionou o tratamento de vários tipos de câncer. Ela 'remove os freios' do sistema imune, permitindo que os linfócitos T ataquem o tumor. Os efeitos colaterais são de natureza autoimune."
+  },
+  {
+    "id": 438,
+    "category": "Saúde do Trabalhador",
+    "question": "Qual é o principal risco ergonômico para a equipe de enfermagem?",
+    "options": [
+      { "id": "A", "text": "Exposição a ruído." },
+      { "id": "B", "text": "Exposição a radiação." },
+      { "id": "C", "text": "Lesões musculoesqueléticas, especialmente na coluna, decorrentes da movimentação e transporte de pacientes." },
+      { "id": "D", "text": "Estresse e burnout." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A movimentação manual de pacientes é uma das principais causas de afastamento do trabalho na enfermagem. A prevenção envolve o uso de equipamentos de auxílio (elevadores, pranchas de transferência) e o treinamento em mecânica corporal correta."
+  },
+  {
+    "id": 439,
+    "category": "Nefrologia",
+    "question": "O que é a hemodiálise?",
+    "options": [
+      { "id": "A", "text": "Um procedimento para filtrar o sangue dentro da cavidade abdominal." },
+      { "id": "B", "text": "Um procedimento onde o sangue do paciente passa por um filtro artificial (dialisador) para remover toxinas e excesso de líquido." },
+      { "id": "C", "text": "Um transplante de rim." },
+      { "id": "D", "text": "Um exame de urina." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A hemodiálise é a terapia renal substitutiva mais comum. O sangue é retirado do paciente (através de uma fístula ou cateter), bombeado para o dialisador (onde ocorre a troca de substâncias com a solução de diálise) e devolvido 'limpo' ao paciente."
+  },
+  {
+    "id": 440,
+    "category": "Cardiologia",
+    "question": "Qual é o principal cuidado de enfermagem no pós-operatório de uma cirurgia de revascularização do miocárdio?",
+    "options": [
+      { "id": "A", "text": "Estimular a deambulação precoce no mesmo dia da cirurgia." },
+      { "id": "B", "text": "Manter o paciente em jejum por 48 horas." },
+      { "id": "C", "text": "Monitorização hemodinâmica rigorosa, controle da dor, cuidados com os drenos torácicos e prevenção de complicações pulmonares." },
+      { "id": "D", "text": "Realizar a troca do curativo da incisão esternal a cada 6 horas." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O pós-operatório de cirurgia cardíaca é complexo e exige vigilância intensiva. O controle da pressão arterial, do débito cardíaco, do sangramento pelos drenos e a fisioterapia respiratória precoce são fundamentais para uma boa recuperação."
+  },
+  {
+    "id": 441,
+    "category": "Cuidados Paliativos",
+    "question": "O que é a comunicação de más notícias?",
+    "options": [
+      { "id": "A", "text": "A responsabilidade exclusiva do médico." },
+      { "id": "B", "text": "Um processo de comunicação que deve ser evitado para não causar sofrimento." },
+      { "id": "C", "text": "Uma habilidade de comunicação que envolve a transmissão de informações difíceis de forma empática e planejada, utilizando protocolos como o SPIKES." },
+      { "id": "D", "text": "A entrega de resultados de exames." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Embora o diagnóstico seja um ato médico, toda a equipe de saúde, incluindo a enfermagem, participa do processo de comunicação. O protocolo SPIKES (Setting, Perception, Invitation, Knowledge, Emotions, Strategy/Summary) é uma ferramenta útil para estruturar essa conversa difícil."
+  },
+  {
+    "id": 442,
+    "category": "Gestão em Enfermagem",
+    "question": "O que é a educação permanente em saúde?",
+    "options": [
+      { "id": "A", "text": "A formação acadêmica inicial (graduação)." },
+      { "id": "B", "text": "A aprendizagem que acontece no cotidiano do trabalho, a partir dos problemas enfrentados, e que busca transformar as práticas profissionais." },
+      { "id": "C", "text": "Cursos de pós-graduação." },
+      { "id": "D", "text": "Treinamentos pontuais sobre novos equipamentos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Diferente da educação continuada (que foca na atualização técnica), a educação permanente parte da problematização do processo de trabalho. A aprendizagem é significativa e busca a melhoria da qualidade do cuidado e a transformação da realidade local."
+  },
+  {
+    "id": 443,
+    "category": "Terapia Intensiva",
+    "question": "O que é a escala de RASS (Richmond Agitation-Sedation Scale)?",
+    "options": [
+      { "id": "A", "text": "Uma escala para avaliar a dor." },
+      { "id": "B", "text": "Uma escala para avaliar o risco de lesão por pressão." },
+      { "id": "C", "text": "Uma escala validada para monitorar o nível de agitação e sedação de pacientes críticos." },
+      { "id": "D", "text": "Uma escala para avaliar o delírio." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A escala de RASS é uma ferramenta objetiva que vai de +4 (combativo) a -5 (não despertável). Ela é fundamental para guiar a terapia de sedação, evitando tanto a sedação excessiva quanto a insuficiente, e é o primeiro passo para a avaliação do delírio com o CAM-ICU."
+  },
+  {
+    "id": 444,
+    "category": "Oncologia",
+    "question": "O que é a Síndrome da Veia Cava Superior?",
+    "options": [
+      { "id": "A", "text": "Uma trombose venosa profunda nos membros inferiores." },
+      { "id": "B", "text": "Uma emergência oncológica causada pela compressão da veia cava superior por um tumor (geralmente de pulmão ou linfoma)." },
+      { "id":- "C", "text": "Uma infecção do cateter venoso central." },
+      { "id": "D", "text": "Uma complicação da quimioterapia." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A compressão da veia cava superior obstrui o retorno venoso da cabeça, pescoço e membros superiores, causando edema facial e de braços, pletora facial (face avermelhada) e circulação colateral no tórax. O tratamento visa aliviar a obstrução com radioterapia ou quimioterapia."
+  },
+  {
+    "id": 445,
+    "category": "Saúde do Trabalhador",
+    "question": "O que é o burnout?",
+    "options": [
+      { "id": "A", "text": "Um estado de estresse agudo." },
+      { "id": "B", "text": "Uma síndrome resultante do estresse crônico no trabalho, caracterizada por exaustão emocional, despersonalização e baixa realização profissional." },
+      { "id": "C", "text": "Depressão." },
+      { "id": "D", "text": "Transtorno de ansiedade." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O burnout é um fenômeno ocupacional comum em profissionais de saúde. A exaustão emocional é a sensação de esgotamento; a despersonalização é o distanciamento cínico e negativo em relação ao trabalho e aos pacientes; e a baixa realização é a sensação de ineficácia."
+  },
+  {
+    "id": 446,
+    "category": "Nefrologia",
+    "question": "Qual é o principal objetivo da terapia nutricional no paciente com doença renal crônica pré-dialítica?",
+    "options": [
+      { "id": "A", "text": "Promover o ganho de peso rápido." },
+      { "id": "B", "text": "Oferecer uma dieta rica em proteínas para fortalecer os músculos." },
+      { "id": "C", "text": "Retardar a progressão da doença renal e prevenir complicações, através da restrição de proteínas, sódio, potássio e fósforo." },
+      { "id": "D", "text": "Não há necessidade de restrição dietética nessa fase." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A terapia nutricional é um pilar do tratamento conservador da DRC. A restrição proteica, em particular, ajuda a diminuir a sobrecarga de trabalho dos rins remanescentes, retardando a necessidade de iniciar a diálise."
+  },
+  {
+    "id": 447,
+    "category": "Cardiologia",
+    "question": "O que é a angioplastia coronária transluminal percutânea (ACTP)?",
+    "options": [
+      { "id": "A", "text": "A visualização das artérias coronárias." },
+      { "id": "B", "text": "Um procedimento terapêutico onde um balão é inflado dentro de uma artéria coronária obstruída para desobstruí-la, geralmente seguido pelo implante de um stent." },
+      { "id": "C", "text": "A cirurgia de revascularização do miocárdio." },
+      { "id": "D", "text": "Um teste de esforço." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A ACTP é o tratamento de reperfusão de escolha no infarto agudo do miocárdio com supradesnivelamento do ST (IAMCSST). O stent é uma pequena malha metálica que mantém a artéria aberta após a desobstrução pelo balão."
+  },
+  {
+    "id": 448,
+    "category": "Cuidados Paliativos",
+    "question": "O que é a sedação paliativa?",
+    "options": [
+      { "id": "A", "text": "É o mesmo que eutanásia." },
+      { "id": "B", "text": "O uso de medicamentos para induzir um nível de consciência reduzido ou ausente, com o objetivo de aliviar um sofrimento refratário em um paciente em terminalidade." },
+      { "id": "C", "text": "A administração de analgésicos para dor." },
+      { "id": "D", "text": "Um procedimento para prolongar a vida." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A sedação paliativa é um recurso terapêutico para quando um sintoma (como dispneia, dor ou delírio) não pode ser controlado com os tratamentos convencionais. A intenção é aliviar o sofrimento, não apressar a morte. É uma decisão complexa que envolve a equipe, o paciente e a família."
+  },
+  {
+    "id": 449,
+    "category": "Gestão em Enfermagem",
+    "question": "O que é a análise SWOT?",
+    "options": [
+      { "id": "A", "text": "Uma ferramenta para a avaliação de desempenho." },
+      { "id": "B", "text": "Uma ferramenta de planejamento estratégico que analisa as Forças (Strengths), Fraquezas (Weaknesses), Oportunidades (Opportunities) e Ameaças (Threats) de uma organização." },
+      { "id": "C", "text": "Um método para a resolução de conflitos." },
+      { "id": "D", "text": "Um fluxograma de processos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A análise SWOT é usada para avaliar o ambiente interno (forças e fraquezas) e externo (oportunidades e ameaças) de uma organização, fornecendo um diagnóstico que subsidia a tomada de decisões e a formulação de estratégias."
+  },
+  {
+    "id": 450,
+    "category": "Terapia Intensiva",
+    "question": "O que é o modo de ventilação mandatória controlada (VCV ou PCV)?",
+    "options": [
+      { "id": "A", "text": "Um modo onde o paciente respira espontaneamente com um suporte de pressão." },
+      { "id": "B", "text": "Um modo onde o ventilador mecânico controla totalmente a respiração do paciente, disparando os ciclos em uma frequência e com parâmetros pré-determinados." },
+      { "id": "C", "text": "Um modo de desmame da ventilação mecânica." },
+      { "id": "D", "text": "A ventilação não invasiva." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Nos modos controlados, o ventilador faz todo o trabalho respiratório. É usado em pacientes sob sedação profunda ou bloqueio neuromuscular. Em VCV (Ventilação com Volume Controlado), o volume é garantido. Em PCV (Ventilação com Pressão Controlada), a pressão é garantida."
+  },
+  {
+    "id": 451,
+    "category": "Farmacologia",
+    "question": "Qual é a principal ação da Adenosina em uma emergência cardiovascular?",
+    "options": [
+      { "id": "A", "text": "Aumentar a pressão arterial." },
+      { "id": "B", "text": "Causar um bloqueio transitório do nó atrioventricular (AV), interrompendo taquicardias supraventriculares por reentrada." },
+      { "id": "C", "text": "Aumentar a força de contração do coração." },
+      { "id": "D", "text": "Tratar arritmias ventriculares." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Adenosina é a droga de escolha para o tratamento da Taquicardia Supraventricular (TSV) estável. Sua meia-vida é ultracurta (< 10s), e ela causa uma breve assistolia, que é sentida pelo paciente como uma pausa no peito, antes do retorno ao ritmo sinusal."
+  },
+  {
+    "id": 452,
+    "category": "Urgência e Emergência",
+    "question": "Qual é a principal característica do choque hipovolêmico?",
+    "options": [
+      { "id": "A", "text": "Vasodilatação e pele quente." },
+      { "id": "B", "text": "Bradicardia e hipertensão." },
+      { "id": "C", "text": "Perda de volume intravascular (sangue ou fluidos) que leva a uma diminuição da pré-carga e do débito cardíaco." },
+      { "id": "D", "text": "Sinais de infecção." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "No choque hipovolêmico, o corpo tenta compensar com taquicardia e vasoconstrição periférica, resultando em pele fria e pegajosa, enchimento capilar lento e hipotensão (um sinal tardio). O tratamento é a reposição rápida do volume perdido."
+  },
+  {
+    "id": 453,
+    "category": "Segurança do Paciente",
+    "question": "O que é a cultura justa em uma organização de saúde?",
+    "options": [
+      { "id": "A", "text": "Uma cultura onde ninguém é responsabilizado por seus erros." },
+      { "id": "B", "text": "Uma cultura que diferencia o erro humano (deslize), o comportamento de risco e o comportamento imprudente, responsabilizando os indivíduos apenas pelas escolhas conscientes de risco." },
+      { "id": "C", "text": "Uma cultura que pune todos os erros da mesma forma." },
+      { "id": "D", "text": "Uma cultura focada apenas em melhorar os processos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A cultura justa busca um equilíbrio. Ela não culpa o indivíduo por erros de sistema (que devem levar à melhoria do processo), mas também não tolera comportamentos de risco intencionais ou negligência grosseira. Isso cria um ambiente onde os profissionais se sentem seguros para relatar erros, mas também são responsáveis por suas ações."
+  },
+  {
+    "id": 454,
+    "category": "Clínica Médica",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com ascite volumosa?",
+    "options": [
+      { "id": "A", "text": "Manter o paciente em decúbito dorsal para conforto." },
+      { "id": "B", "text": "Monitorar o padrão respiratório e posicionar o paciente em Fowler para aliviar a dispneia causada pela compressão do diafragma." },
+      { "id": "C", "text": "Estimular a ingestão de alimentos ricos em sódio." },
+      { "id": "D", "text": "Realizar a aferição da circunferência abdominal semanalmente." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A ascite de grande volume pode causar desconforto respiratório significativo. A posição de Fowler ou semi-Fowler ajuda a aliviar a pressão sobre o diafragma, melhorando a expansão pulmonar. O controle do peso diário e da circunferência abdominal também são importantes."
+  },
+  {
+    "id": 455,
+    "category": "Saúde da Mulher",
+    "question": "O que é a amniocentese?",
+    "options": [
+      { "id": "A", "text": "Uma ultrassonografia para avaliar o feto." },
+      { "id": "B", "text": "Um procedimento invasivo onde uma amostra de líquido amniótico é coletada para análise genética ou para avaliar a maturidade pulmonar fetal." },
+      { "id": "C", "text": "Um exame de sangue materno para rastrear síndromes genéticas." },
+      { "id": "D", "text": "A medição dos batimentos cardíacos fetais." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A amniocentese é um procedimento diagnóstico realizado geralmente entre 15 e 20 semanas de gestação. Ela permite o diagnóstico definitivo de anomalias cromossômicas, como a Síndrome de Down, mas carrega um pequeno risco de aborto."
+  },
+  {
+    "id": 456,
+    "category": "Saúde da Criança",
+    "question": "Qual é a principal característica da roséola infantum (exantema súbito)?",
+    "options": [
+      { "id": "A", "text": "Febre baixa e tosse." },
+      { "id": "B", "text": "Um exantema que aparece junto com a febre." },
+      { "id": "C", "text": "Febre alta por 3 a 5 dias, seguida por um exantema maculopapular que aparece subitamente após a febre ceder." },
+      { "id": "D", "text": "Lesões vesiculares na boca, mãos e pés." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A roséola é uma doença viral benigna, causada pelo herpesvírus humano 6. A sequência de febre alta seguida pelo aparecimento do exantema no momento em que a criança melhora (apirexia) é a marca registrada da doença."
+  },
+  {
+    "id": 457,
+    "category": "Legislação Profissional",
+    "question": "O que é o Código de Ética dos Profissionais de Enfermagem?",
+    "options": [
+      { "id": "A", "text": "Um guia de boas práticas, sem força de lei." },
+      { "id": "B", "text": "Uma resolução do COFEN que estabelece os direitos, deveres, proibições e infrações relacionados ao exercício da profissão." },
+      { "id": "C", "text": "A Lei do Exercício Profissional." },
+      { "id": "D", "text": "Um conjunto de protocolos técnicos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Código de Ética é o principal instrumento normativo que guia a conduta do profissional de enfermagem. Seu descumprimento pode levar à abertura de um processo ético-disciplinar no COREN."
+  },
+  {
+    "id": 458,
+    "category": "Geriatria",
+    "question": "O que é a disfagia?",
+    "options": [
+      { "id": "A", "text": "Dificuldade para falar." },
+      { "id": "B", "text": "Dificuldade para deglutir alimentos ou líquidos." },
+      { "id": "C", "text": "Perda do paladar." },
+      { "id":- "D", "text": "Dor ao engolir." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A disfagia é um sintoma comum em idosos e em pacientes com doenças neurológicas. Aumenta o risco de desnutrição, desidratação e, principalmente, de pneumonia aspirativa. A avaliação por um fonoaudiólogo é essencial para determinar a consistência segura da dieta."
+  },
+  {
+    "id": 459,
+    "category": "Saúde Coletiva / SUS",
+    "question": "O que é a descentralização no SUS?",
+    "options": [
+      { "id": "A", "text": "A concentração de todos os serviços de saúde na capital." },
+      { "id": "B", "text": "A transferência de responsabilidades e recursos da esfera federal para as esferas estadual e, principalmente, municipal." },
+      { "id": "C", "text": "A privatização dos serviços de saúde." },
+      { "id": "D", "text": "A criação de hospitais federais em todos os estados." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A descentralização, com ênfase na municipalização, é um princípio organizativo do SUS. A ideia é que o gestor municipal, por estar mais próximo da realidade local, tem melhores condições de planejar e executar as ações de saúde de acordo com as necessidades de sua população."
+  },
+  {
+    "id": 460,
+    "category": "Eletrocardiograma",
+    "question": "O que é um Infarto Agudo do Miocárdio com supradesnivelamento do segmento ST (IAMCSST)?",
+    "options": [
+      { "id": "A", "text": "Uma isquemia leve que não causa dano ao músculo cardíaco." },
+      { "id": "B", "text": "Uma oclusão total e súbita de uma artéria coronária, que causa necrose transmural (em toda a espessura) do miocárdio." },
+      { "id": "C", "text": "Uma obstrução parcial de uma artéria coronária." },
+      { "id": "D", "text": "Uma arritmia cardíaca." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O supradesnivelamento do segmento ST no ECG é o sinal de uma lesão miocárdica aguda e extensa. É uma emergência médica que requer terapia de reperfusão imediata (angioplastia ou trombólise) para restaurar o fluxo sanguíneo e salvar o músculo cardíaco."
+  },
+  {
+    "id": 461,
+    "category": "Procedimentos de Enfermagem",
+    "question": "Qual é a principal indicação para a realização de uma punção lombar?",
+    "options": [
+      { "id": "A", "text": "Aliviar a dor nas costas." },
+      { "id": "B", "text": "Coletar líquido cefalorraquidiano (LCR) para diagnóstico de doenças do sistema nervoso central, como a meningite." },
+      { "id": "C", "text": "Administrar anestesia para cirurgias abdominais." },
+      { "id": "D", "text": "Drenar um hematoma." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A punção lombar é um procedimento diagnóstico essencial na suspeita de meningite, hemorragia subaracnoide e outras doenças neurológicas. Também pode ser terapêutica, para alívio da pressão intracraniana ou administração de quimioterápicos."
+  },
+  {
+    "id": 462,
+    "category": "CME",
+    "question": "O que é a validação da limpeza?",
+    "options": [
+      { "id": "A", "text": "A inspeção visual do material para ver se está limpo." },
+      { "id": "B", "text": "Um processo documentado para demonstrar que o protocolo de limpeza é eficaz em remover a sujidade a níveis aceitáveis." },
+      { "id": "C", "text": "A esterilização do material." },
+      { "id": "D", "text": "A secagem do material." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A validação da limpeza utiliza testes (ex: detecção de proteína, ATP) para verificar objetivamente se o processo de limpeza (manual ou automatizado) está sendo eficaz. A inspeção visual sozinha não é suficiente para garantir a remoção de resíduos invisíveis."
+  },
+  {
+    "id": 463,
+    "category": "Transfusão Sanguínea",
+    "question": "O que é a prova de compatibilidade (prova cruzada)?",
+    "options": [
+      { "id": "A", "text": "A tipagem sanguínea ABO/Rh do paciente." },
+      { "id": "B", "text": "Um teste realizado em laboratório que mistura o plasma do receptor com as hemácias do doador para verificar a presença de anticorpos que possam causar uma reação hemolítica." },
+      { "id": "C", "text": "A pesquisa de anticorpos irregulares no sangue do receptor." },
+      { "id": "D", "text": "A checagem da bolsa de sangue à beira do leito." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A prova cruzada é a etapa final dos testes pré-transfusionais. Um resultado 'compatível' indica que é seguro transfundir aquela unidade de sangue específica para aquele paciente. É a simulação in vitro da transfusão."
+  },
+  {
+    "id": 464,
+    "category": "Farmacologia",
+    "question": "Qual é a principal ação do Ácido Acetilsalicílico (AAS) em baixas doses?",
+    "options": [
+      { "id": "A", "text": "Analgésica e antitérmica." },
+      { "id": "B", "text": "Anti-inflamatória." },
+      { "id": "C", "text": "Inibição irreversível da agregação plaquetária." },
+      { "id": "D", "text": "Anticoagulante." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Em baixas doses (75-100 mg/dia), o AAS atua como um antiagregante plaquetário, sendo fundamental na prevenção primária e secundária de eventos cardiovasculares, como infarto e AVC isquêmico."
+  },
+  {
+    "id": 465,
+    "category": "Urgência e Emergência",
+    "question": "Qual é a principal característica de uma ferida por arma de fogo?",
+    "options": [
+      { "id": "A", "text": "A lesão é sempre limitada ao trajeto visível do projétil." },
+      { "id": "B", "text": "O orifício de entrada é sempre maior que o de saída." },
+      { "id": "C", "text": "O projétil causa dano não apenas por laceração direta, mas também pela cavitação temporária, que lesa tecidos distantes do trajeto." },
+      { "id": "D", "text": "O sangramento é sempre externo e visível." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A energia cinética do projétil cria uma cavidade temporária muito maior que seu diâmetro, causando lesões extensas em órgãos e vasos que não foram diretamente atingidos. Por isso, toda ferida por arma de fogo em tronco é considerada grave e requer exploração cirúrgica."
+  },
+  {
+    "id": 466,
+    "category": "Sinais Vitais",
+    "question": "O que é a Escala de Coma de Glasgow-P (com reatividade pupilar)?",
+    "options": [
+      { "id": "A", "text": "Uma nova escala que substituiu a avaliação motora." },
+      { "id": "B", "text": "Uma atualização da ECG que subtrai um valor da pontuação total com base na reatividade pupilar, aumentando seu poder prognóstico." },
+      { "id": "C", "text": "Uma escala usada apenas para pacientes pediátricos." },
+      { "id": "D", "text": "Uma escala que adiciona pontos se as pupilas estiverem reativas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A pontuação da reatividade pupilar (PRP) é calculada (0, 1 ou 2) com base na resposta de ambas as pupilas à luz. A pontuação final da ECG-P é a soma da ECG tradicional menos a PRP. Uma pontuação de 1 na ECG-P é a pior possível."
+  },
+  {
+    "id": 467,
+    "category": "Clínica Médica",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com Coagulação Intravascular Disseminada (CIVD)?",
+    "options": [
+      { "id": "A", "text": "Administrar anticoagulantes em altas doses." },
+      { "id": "B", "text": "Monitorar rigorosamente para sinais de sangramento e trombose, e administrar hemoderivados (plaquetas, plasma, crioprecipitado) conforme prescrição." },
+      { "id": "C", "text": "Realizar múltiplas punções venosas para coleta de exames." },
+      { "id": "D", "text": "Manter o paciente em atividade para prevenir trombos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A CIVD é uma síndrome complexa onde a coagulação é ativada sistemicamente, levando à formação de microtrombos e ao consumo de plaquetas e fatores de coagulação. Isso resulta em um estado paradoxal de trombose e sangramento simultâneos. O tratamento principal é o da causa base."
+  },
+  {
+    "id": 468,
+    "category": "Saúde da Criança",
+    "question": "Qual é a principal característica da doença celíaca?",
+    "options": [
+      { "id": "A", "text": "Alergia ao leite de vaca." },
+      { "id": "B", "text": "Uma doença autoimune desencadeada pela ingestão de glúten, que causa inflamação e atrofia das vilosidades do intestino delgado." },
+      { "id": "C", "text": "Intolerância à lactose." },
+      { "id":- "D", "text": "Uma infecção intestinal crônica." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A atrofia das vilosidades leva à má absorção de nutrientes, causando sintomas como diarreia crônica, distensão abdominal, perda de peso e deficiências vitamínicas. O único tratamento é uma dieta estritamente isenta de glúten por toda a vida."
+  },
+  {
+    "id": 469,
+    "category": "Saúde da Mulher",
+    "question": "O que é o DIU de cobre?",
+    "options": [
+      { "id": "A", "text": "Um dispositivo que libera hormônios." },
+      { "id": "B", "text": "Um método contraceptivo de barreira." },
+      { "id": "C", "text": "Um dispositivo intrauterino não hormonal que atua criando um ambiente hostil aos espermatozoides, através de uma reação inflamatória estéril." },
+      { "id": "D", "text": "Um método contraceptivo de emergência." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O DIU de cobre é um método contraceptivo de longa duração (até 10 anos), altamente eficaz e livre de hormônios. Seu principal efeito colateral é o aumento do fluxo menstrual e das cólicas, especialmente nos primeiros meses de uso."
+  },
+  {
+    "id": 470,
+    "category": "Legislação Profissional",
+    "question": "O que é o erro de omissão na administração de medicamentos?",
+    "options": [
+      { "id": "A", "text": "Administrar um medicamento não prescrito." },
+      { "id": "B", "text": "Administrar o medicamento na hora errada." },
+      { "id": "C", "text": "Deixar de administrar uma dose prescrita." },
+      { "id": "D", "text": "Administrar a dose errada." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O erro de omissão é um tipo comum de erro de medicação e pode ter consequências graves, especialmente com medicamentos de uso contínuo, como anticonvulsivantes ou anti-hipertensivos. A checagem da prescrição antes e depois da administração é uma barreira importante."
+  },
+  {
+    "id": 471,
+    "category": "Segurança do Paciente",
+    "question": "O que é a 'human factors engineering' (engenharia de fatores humanos) aplicada à segurança do paciente?",
+    "options": [
+      { "id": "A", "text": "O treinamento de habilidades de comunicação." },
+      { "id": "B", "text": "O estudo de como as pessoas interagem com os sistemas, e o design de sistemas e processos que tornem mais fácil fazer a coisa certa e mais difícil fazer a coisa errada." },
+      { "id": "C", "text": "A implementação de mais protocolos e checklists." },
+      { "id": "D", "text": "A avaliação do clima de segurança." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A engenharia de fatores humanos reconhece que os humanos são falíveis e projeta sistemas à prova de erro. Exemplos incluem conectores que só se encaixam de uma maneira, a padronização de equipamentos e a remoção de eletrólitos concentrados das unidades de internação."
+  },
+  {
+    "id": 472,
+    "category": "Imunização",
+    "question": "O que é a vacina contra o rotavírus?",
+    "options": [
+      { "id": "A", "text": "Uma vacina de vírus inativado, administrada por via intramuscular." },
+      { "id": "B", "text": "Uma vacina de vírus vivo atenuado, administrada por via oral." },
+      { "id": "C", "text": "Uma vacina que protege contra a diarreia bacteriana." },
+      { "id": "D", "text": "Uma vacina recomendada para viajantes." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A vacina oral contra o rotavírus é altamente eficaz na prevenção das formas graves de gastroenterite causadas por este vírus, que é a principal causa de diarreia grave em lactentes. O esquema vacinal tem uma janela de aplicação restrita."
+  },
+  {
+    "id": 473,
+    "category": "Geriatria",
+    "question": "Qual é a principal causa de fratura de quadril em idosos?",
+    "options": [
+      { "id": "A", "text": "Acidentes de carro." },
+      { "id": "B", "text": "Quedas da própria altura." },
+      { "id": "C", "text": "Tumores ósseos." },
+      { "id": "D", "text": "Atividade física excessiva." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A fratura de quadril é uma consequência devastadora das quedas em idosos, frequentemente associada à osteoporose. Ela leva a uma alta morbimortalidade e perda de independência. A prevenção de quedas é, portanto, uma prioridade na saúde do idoso."
+  },
+  {
+    "id": 474,
+    "category": "Saúde Coletiva / SUS",
+    "question": "O que é a hierarquização no SUS?",
+    "options": [
+      { "id": "A", "text": "A organização dos profissionais de saúde por nível de formação." },
+      { "id": "B", "text": "A organização dos serviços de saúde em níveis de complexidade crescente (atenção primária, secundária e terciária)." },
+      { "id": "C", "text": "A priorização do atendimento para os casos mais graves." },
+      { "id": "D", "text": "A divisão de poder entre as esferas de governo." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A hierarquização organiza a rede de serviços. A atenção primária (UBS) é a porta de entrada e deve resolver a maioria dos problemas. Casos que necessitam de especialistas ou exames mais complexos são encaminhados para a atenção secundária, e casos de alta complexidade (internações, cirurgias) para a terciária."
+  },
+  {
+    "id": 475,
+    "category": "Eletrocardiograma",
+    "question": "O que é um Bloqueio de Ramo Esquerdo (BRE) no ECG?",
+    "options": [
+      { "id": "A", "text": "Um atraso na condução do impulso para o ventrículo direito." },
+      { "id": "B", "text": "Um atraso ou bloqueio na condução do impulso elétrico através do ramo esquerdo do feixe de His." },
+      { "id": "C", "text": "Um ritmo cardíaco lento." },
+      { "id": "D", "text": "Um sinal de infarto agudo do miocárdio." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O BRE causa um alargamento do complexo QRS (> 0,12s) com uma morfologia característica (ex: QRS entalhado em V5, V6, DI). Um BRE novo na presença de dor torácica é considerado um equivalente de IAM com supra de ST e requer terapia de reperfusão."
+  },
+  {
+    "id": 476,
+    "category": "Procedimentos de Enfermagem",
+    "question": "Qual é a principal complicação de uma biópsia hepática percutânea?",
+    "options": [
+      { "id": "A", "text": "Infecção." },
+      { "id": "B", "text": "Dor no local da punção." },
+      { "id": "C", "text": "Hemorragia." },
+      { "id": "D", "text": "Pneumotórax." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O fígado é um órgão altamente vascularizado. O sangramento é a complicação mais temida. Os cuidados de enfermagem no pós-procedimento incluem o repouso em decúbito lateral direito (para comprimir o local) e a monitorização rigorosa dos sinais vitais e de sinais de sangramento interno."
+  },
+  {
+    "id": 477,
+    "category": "CME",
+    "question": "O que é a esterilização por plasma de peróxido de hidrogênio?",
+    "options": [
+      { "id": "A", "text": "Um método de esterilização a alta temperatura." },
+      { "id": "B", "text": "Um método de esterilização a baixa temperatura que utiliza um gás ionizado (plasma) para esterilizar materiais termossensíveis." },
+      { "id": "C", "text": "Um método de desinfecção." },
+      { "id": "D", "text": "Um método que utiliza radiação." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "É um método rápido e seguro, pois não deixa resíduos tóxicos (os subprodutos são água e oxigênio). É ideal para artigos delicados e com lúmens, mas tem limitações quanto ao tipo de material que pode ser processado (não pode ser usado para celulose)."
+  },
+  {
+    "id": 478,
+    "category": "Transfusão Sanguínea",
+    "question": "O que é a pesquisa de anticorpos irregulares (PAI)?",
+    "options": [
+      { "id": "A", "text": "A tipagem sanguínea ABO/Rh." },
+      { "id": "B", "text": "Um teste que detecta no plasma do receptor a presença de anticorpos contra antígenos de outros sistemas sanguíneos (não ABO)." },
+      { "id": "C", "text": "A prova de compatibilidade." },
+      { "id": "D", "text": "Um teste para detectar infecções no sangue do doador." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A PAI (ou Coombs indireto) é um teste de triagem fundamental. Se for positiva, o laboratório precisa identificar qual é o anticorpo para selecionar bolsas de sangue que não possuam o antígeno correspondente, prevenindo uma reação transfusional."
+  },
+  {
+    "id": 479,
+    "category": "Farmacologia",
+    "question": "Qual é a principal ação do Clopidogrel?",
+    "options": [
+      { "id": "A", "text": "É um anticoagulante que inibe a Vitamina K." },
+      { "id": "B", "text": "É um antiagregante plaquetário que inibe o receptor P2Y12." },
+      { "id": "C", "text": "É um trombolítico que dissolve coágulos." },
+      { "id": "D", "text": "É um anti-hipertensivo." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Clopidogrel, assim como o AAS, impede a agregação das plaquetas, mas por um mecanismo diferente. A dupla antiagregação (AAS + Clopidogrel) é a base do tratamento após a angioplastia com stent e em síndromes coronarianas agudas."
+  },
+  {
+    "id": 480,
+    "category": "Urgência e Emergência",
+    "question": "Qual é a principal característica de uma queimadura de terceiro grau?",
+    "options": [
+      { "id": "A", "text": "Vermelhidão e dor." },
+      { "id": "B", "text": "Formação de bolhas." },
+      { "id": "C", "text": "Destruição de todas as camadas da pele, com aspecto esbranquiçado ou carbonizado e ausência de dor (pela destruição das terminações nervosas)." },
+      { "id": "D", "text": "Atinge apenas a epiderme." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A queimadura de terceiro grau (espessura total) é a mais profunda e grave. A área queimada é insensível, mas a dor pode ser intensa nas bordas da lesão, onde a queimadura é de segundo grau. Requer tratamento cirúrgico com enxertia de pele."
+  },
+  {
+    "id": 481,
+    "category": "Sinais Vitais",
+    "question": "O que é a tríade de Cushing?",
+    "options": [
+      { "id": "A", "text": "Hipotensão, taquicardia e taquipneia." },
+      { "id": "B", "text": "Hipertensão, bradicardia e alteração do padrão respiratório." },
+      { "id": "C", "text": "Febre, calafrios e sudorese." },
+      { "id": "D", "text": "Hipotensão, estase jugular e abafamento de bulhas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A tríade de Cushing é um sinal tardio e grave de hipertensão intracraniana (HIC), indicando herniação cerebral iminente. É uma resposta do corpo para tentar manter a perfusão cerebral diante da pressão elevada."
+  },
+  {
+    "id": 482,
+    "category": "Clínica Médica",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com Diabetes Insipidus?",
+    "options": [
+      { "id": "A", "text": "Restrição hídrica rigorosa." },
+      { "id": "B", "text": "Monitoramento rigoroso do balanço hídrico e da densidade urinária, e reposição de volume conforme prescrição." },
+      { "id": "C", "text": "Administração de insulina." },
+      { "id": "D", "text": "Controle da glicemia capilar." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Diabetes Insipidus é causado pela deficiência do hormônio antidiurético (ADH), levando a uma poliúria maciça (urina diluída) e risco de desidratação grave e hipernatremia. O controle do débito urinário e a reposição de líquidos são vitais."
+  },
+  {
+    "id": 483,
+    "category": "Saúde da Criança",
+    "question": "Qual é a principal característica da doença de Hirschsprung?",
+    "options": [
+      { "id": "A", "text": "Diarreia crônica desde o nascimento." },
+      { "id": "B", "text": "Uma malformação congênita caracterizada pela ausência de células nervosas em um segmento do intestino grosso, causando obstrução intestinal funcional." },
+      { "id": "C", "text": "Vômitos em jato." },
+      { "id": "D", "text": "Uma doença inflamatória do intestino." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A ausência dos gânglios nervosos impede o relaxamento e o peristaltismo do segmento afetado, levando a uma obstrução. Os sintomas no recém-nascido incluem a falha em eliminar o mecônio nas primeiras 48h, distensão abdominal e vômitos. O tratamento é cirúrgico."
+  },
+  {
+    "id": 484,
+    "category": "Saúde da Mulher",
+    "question": "O que é a placenta prévia?",
+    "options": [
+      { "id": "A", "text": "O descolamento prematuro da placenta." },
+      { "id": "B", "text": "A implantação da placenta no segmento inferior do útero, cobrindo parcial ou totalmente o orifício interno do colo." },
+      { "id": "C", "text": "Uma infecção da placenta." },
+      { "id": "D", "text": "A retenção de restos placentários após o parto." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A placenta prévia é uma causa importante de sangramento no terceiro trimestre. O sangramento é tipicamente vermelho vivo e indolor. O toque vaginal é contraindicado, e a resolução da gestação geralmente se dá por cesariana."
+  },
+  {
+    "id": 485,
+    "category": "Legislação Profissional",
+    "question": "O que é o consentimento informado?",
+    "options": [
+      { "id": "A", "text": "A autorização do paciente para o tratamento, dada após ele receber e compreender as informações sobre seu diagnóstico, o procedimento proposto, os riscos, benefícios e alternativas." },
+      { "id": "B", "text": "Um formulário padrão assinado na admissão hospitalar." },
+      { "id": "C", "text": "A permissão da família para o tratamento." },
+      { "id": "D", "text": "A concordância do médico com o plano de cuidados de enfermagem." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "O consentimento informado é a expressão máxima do princípio da autonomia. É um processo, não apenas um documento. O enfermeiro tem o papel de garantir que o paciente compreendeu as informações e que seu consentimento é livre e esclarecido."
+  },
+  {
+    "id": 486,
+    "category": "Segurança do Paciente",
+    "question": "O que é a 'janela terapêutica' de um medicamento?",
+    "options": [
+      { "id": "A", "text": "O tempo que o medicamento leva para ser eliminado do corpo." },
+      { "id": "B", "text": "A faixa de concentrações plasmáticas em que o medicamento é eficaz sem causar toxicidade significativa." },
+      { "id": "C", "text": "O período do dia em que o medicamento deve ser administrado." },
+      { "id": "D", "text": "A dose máxima permitida do medicamento." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Medicamentos com janela terapêutica estreita (ex: Digoxina, Lítio, Vancomicina) são mais perigosos, pois a dose terapêutica está muito próxima da dose tóxica. Eles exigem monitoramento rigoroso dos níveis séricos."
+  },
+  {
+    "id": 487,
+    "category": "Imunização",
+    "question": "O que é a vacina contra a poliomielite?",
+    "options": [
+      { "id": "A", "text": "Existem duas formas: a vacina oral de vírus atenuado (VOP) e a vacina inativada injetável (VIP)." },
+      { "id": "B", "text": "É uma vacina contra a paralisia facial." },
+      { "id": "C", "text": "É administrada apenas em adultos." },
+      { "id": "D", "text": "É uma vacina de dose única." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A VOP (gotinha) foi a principal ferramenta para a erradicação da pólio, mas carrega um risco raríssimo de causar a doença. Por isso, o esquema atual do PNI prioriza a VIP (injetável e mais segura) nas primeiras doses, com reforços da VOP."
+  },
+  {
+    "id": 488,
+    "category": "Geriatria",
+    "question": "O que é a avaliação 'Timed Up and Go' (TUG)?",
+    "options": [
+      { "id": "A", "text": "Um teste de memória." },
+      { "id": "B", "text": "Um teste simples para avaliar a mobilidade e o risco de quedas em idosos." },
+      { "id": "C", "text": "Uma avaliação do estado nutricional." },
+      { "id": "D", "text": "Um teste de acuidade visual." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "No teste TUG, o idoso é cronometrado enquanto se levanta de uma cadeira, caminha 3 metros, vira, retorna e senta-se novamente. Um tempo > 12-14 segundos indica um risco aumentado de quedas e a necessidade de uma avaliação mais aprofundada."
+  },
+  {
+    "id": 489,
+    "category": "Saúde Coletiva / SUS",
+    "question": "O que é a participação social no SUS?",
+    "options": [
+      { "id": "A", "text": "A participação dos profissionais de saúde na gestão." },
+      { "id": "B", "text": "A participação da comunidade (usuários) na formulação, acompanhamento e fiscalização das políticas de saúde." },
+      { "id": "C", "text": "A realização de pesquisas de satisfação." },
+      { "id": "D", "text": "O trabalho voluntário nos serviços de saúde." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A participação social, ou controle social, é uma diretriz do SUS e se materializa através dos Conselhos e das Conferências de Saúde, que são espaços institucionais onde os usuários, trabalhadores, gestores e prestadores de serviço debatem e deliberam sobre os rumos do sistema."
+  },
+  {
+    "id": 490,
+    "category": "Eletrocardiograma",
+    "question": "O que é o intervalo QT no ECG?",
+    "options": [
+      { "id": "A", "text": "O tempo de condução atrioventricular." },
+      { "id": "B", "text": "A duração da despolarização ventricular." },
+      { "id": "C", "text": "O tempo total da despolarização e repolarização ventricular." },
+      { "id": "D", "text": "A frequência cardíaca." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O intervalo QT é medido do início do QRS ao final da onda T. Um QT prolongado (congênito ou adquirido por medicamentos) aumenta o risco de arritmias ventriculares graves, como a Torsades de Pointes."
+  },
+  {
+    "id": 491,
+    "category": "Procedimentos de Enfermagem",
+    "question": "Qual é a principal complicação de uma toracocentese?",
+    "options": [
+      { "id": "A", "text": "Infecção." },
+      { "id": "B", "text": "Pneumotórax iatrogênico." },
+      { "id":- "C", "text": "Dor." },
+      { "id": "D", "text": "Sangramento." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A toracocentese é a punção do espaço pleural para drenar líquido. A principal complicação é a perfuração acidental do pulmão, causando um pneumotórax. A monitorização do padrão respiratório e da saturação de oxigênio após o procedimento é fundamental."
+  },
+  {
+    "id": 492,
+    "category": "CME",
+    "question": "O que é a 'barreira estéril'?",
+    "options": [
+      { "id": "A", "text": "A porta do centro cirúrgico." },
+      { "id": "B", "text": "O conjunto de invólucros que mantém a esterilidade de um artigo, como o papel grau cirúrgico ou o tecido de algodão." },
+      { "id": "C", "text": "O uso de luvas estéreis." },
+      { "id": "D", "text": "A autoclave." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O sistema de barreira estéril deve permitir a penetração do agente esterilizante e, após o processo, proteger o conteúdo da contaminação microbiana até o momento do uso. Sua integridade é a chave para a manutenção da esterilidade."
+  },
+  {
+    "id": 493,
+    "category": "Transfusão Sanguínea",
+    "question": "Qual é a principal causa de uma reação transfusional hemolítica aguda?",
+    "options": [
+      { "id": "A", "text": "Uma reação alérgica." },
+      { "id": "B", "text": "A transfusão de sangue ABO incompatível." },
+      { "id": "C", "text": "A contaminação bacteriana da bolsa." },
+      { "id": "D", "text": "A sobrecarga de volume." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "É a reação transfusional mais grave e temida. Ocorre quando os anticorpos do receptor atacam e destroem as hemácias do doador. É quase sempre causada por erro de identificação do paciente ou da bolsa. Os sintomas incluem febre, calafrios, dor lombar, hemoglobinúria e choque."
+  },
+  {
+    "id": 494,
+    "category": "Farmacologia",
+    "question": "Qual é a principal ação do Sulfato de Magnésio na pré-eclâmpsia grave/eclâmpsia?",
+    "options": [
+      { "id": "A", "text": "Diminuir a pressão arterial." },
+      { "id": "B", "text": "Atua como um neuroprotetor e anticonvulsivante, prevenindo e tratando as convulsões eclâmpticas." },
+      { "id": "C", "text": "Aumentar a diurese." },
+      { "id": "D", "text": "Induzir o parto." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Embora possa causar uma leve queda na PA, seu principal efeito é no sistema nervoso central. O cuidado de enfermagem é crucial para monitorar os sinais de toxicidade (perda do reflexo patelar, depressão respiratória) e ter o antídoto (gluconato de cálcio) disponível."
+  },
+  {
+    "id": 495,
+    "category": "Urgência e Emergência",
+    "question": "Qual é a principal característica de uma ferida torácica aberta (pneumotórax aberto)?",
+    "options": [
+      { "id": "A", "text": "Sangramento intenso." },
+      { "id": "B", "text": "Uma ferida que permite a comunicação entre o espaço pleural e o ambiente, causando um som de sucção durante a inspiração." },
+      { "id": "C", "text": "Fratura de múltiplas costelas." },
+      { "id": "D", "text": "Desvio de traqueia." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O tratamento de emergência consiste em aplicar um curativo de três pontas, que funciona como uma válvula, permitindo a saída de ar na expiração e impedindo sua entrada na inspiração, prevenindo a evolução para um pneumotórax hipertensivo."
+  },
+  {
+    "id": 496,
+    "category": "Sinais Vitais",
+    "question": "O que é a saturação venosa mista de oxigênio (SvO2)?",
+    "options": [
+      { "id": "A", "text": "A saturação de oxigênio no sangue arterial." },
+      { "id": "B", "text": "Um parâmetro que reflete o equilíbrio entre a oferta e o consumo de oxigênio pelos tecidos." },
+      { "id": "C", "text": "A quantidade de oxigênio dissolvida no plasma." },
+      { "id": "D", "text": "A pressão parcial de oxigênio." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A SvO2 é medida no sangue da artéria pulmonar (com cateter de Swan-Ganz). Um valor baixo indica que os tecidos estão extraindo mais oxigênio do que o normal, o que pode ser um sinal precoce de choque ou débito cardíaco inadequado."
+  },
+  {
+    "id": 497,
+    "category": "Clínica Médica",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com encefalopatia hepática?",
+    "options": [
+      { "id": "A", "text": "Oferecer uma dieta rica em proteínas." },
+      { "id": "B", "text": "Monitorar o nível de consciência, avaliar a presença de asterixis (flapping) e administrar lactulose conforme prescrito." },
+      { "id": "C", "text": "Manter o paciente em repouso absoluto no leito." },
+      { "id": "D", "text": "Administrar sedativos para controlar a agitação." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A encefalopatia hepática é causada pelo acúmulo de amônia no sangue. A lactulose atua diminuindo a absorção de amônia no intestino. O monitoramento neurológico é crucial para detectar a piora do quadro. A dieta deve ser normoproteica, e não rica em proteínas."
+  },
+  {
+    "id": 498,
+    "category": "Saúde da Criança",
+    "question": "Qual é a principal característica da epiglottite aguda?",
+    "options": [
+      { "id": "A", "text": "Tosse 'de cachorro'." },
+      { "id": "B", "text": "Uma emergência pediátrica causada por infecção bacteriana da epiglote, que leva a uma obstrução rápida e grave das vias aéreas." },
+      { "id": "C", "text": "Sibilância e tempo expiratório prolongado." },
+      { "id": "D", "text": "Coriza e febre baixa." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A criança tipicamente se apresenta com febre alta, dor de garganta intensa, disfagia, salivação e estridor. A visualização da garganta é contraindicada fora do ambiente cirúrgico, pois pode precipitar a obstrução total. A prioridade é garantir a via aérea."
+  },
+  {
+    "id": 499,
+    "category": "Saúde da Mulher",
+    "question": "O que é o descolamento prematuro de placenta (DPP)?",
+    "options": [
+      { "id": "A", "text": "A implantação da placenta na parte inferior do útero." },
+      { "id": "B", "text": "A separação da placenta da parede uterina antes do nascimento do feto." },
+      { "id": "C", "text": "O envelhecimento normal da placenta no final da gestação." },
+      { "id": "D", "text": "Uma infecção da placenta." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O DPP é uma emergência obstétrica que causa sangramento (geralmente escuro), dor abdominal intensa e hipertonia uterina. Pode levar a sofrimento fetal agudo e choque hemorrágico na mãe. A resolução rápida da gestação é necessária."
+  },
+  {
+    "id": 500,
+    "category": "Legislação Profissional",
+    "question": "O que é a Resolução COFEN nº 358/2009?",
+    "options": [
+      { "id": "A", "text": "O Código de Ética dos Profissionais de Enfermagem." },
+      { "id": "B", "text": "Dispõe sobre a Sistematização da Assistência de Enfermagem (SAE) e a implementação do Processo de Enfermagem em todos os ambientes onde ocorre o cuidado profissional de Enfermagem." },
+      { "id": "C", "text": "A regulamentação da atuação do enfermeiro em estética." },
+      { "id": "D", "text": "A norma sobre o dimensionamento de pessoal de enfermagem." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Esta resolução é um marco para a profissão, pois torna obrigatória a implementação da SAE e do Processo de Enfermagem, reforçando o caráter científico, metodológico e autônomo do cuidado de enfermagem."
   }
 ]
