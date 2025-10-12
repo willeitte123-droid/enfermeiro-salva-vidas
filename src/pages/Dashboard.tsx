@@ -56,17 +56,6 @@ const quickAccessLinks = [
     },
   },
   {
-    title: "Emergências",
-    icon: Siren,
-    path: "/emergency",
-    description: "Protocolos de emergência.",
-    colorClasses: {
-      bg: "bg-amber-100 dark:bg-amber-900/30",
-      text: "text-amber-600 dark:text-amber-400",
-      hoverBorder: "hover:border-amber-400 dark:hover:border-amber-600",
-    },
-  },
-  {
     title: "Banca de Questões",
     icon: FileQuestion,
     path: "/questions",
@@ -167,7 +156,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <h2 className="text-2xl font-semibold text-foreground mb-4">Acesso Rápido</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {quickAccessLinks.map((link) => {
               const Icon = link.icon;
               return (
@@ -177,7 +166,7 @@ const Dashboard = () => {
                       <div className={cn("p-3 rounded-lg mb-3 transition-colors", link.colorClasses.bg)}>
                         <Icon className={cn("h-6 w-6 transition-colors", link.colorClasses.text)} />
                       </div>
-                      <p className="font-semibold text-sm text-gray-50 break-all">{link.title}</p>
+                      <p className="font-semibold text-sm text-gray-50 break-words">{link.title}</p>
                       <p className="text-xs text-gray-400 break-words">{link.description}</p>
                     </CardContent>
                   </Card>
