@@ -648,5 +648,1305 @@
     ],
     "correctAnswer": "B",
     "explanation": "No Planejamento, o enfermeiro estabelece as prioridades, define os resultados esperados (metas) utilizando a Classificação dos Resultados de Enfermagem (NOC) e determina as intervenções (NIC) para alcançar esses resultados."
+  },
+  {
+    "id": 51,
+    "category": "Saúde da Criança",
+    "question": "Qual vacina do calendário infantil é contraindicada para crianças com história de anafilaxia a ovo?",
+    "options": [
+      { "id": "A", "text": "Tríplice Viral (SCR)" },
+      { "id": "B", "text": "Pentavalente" },
+      { "id": "C", "text": "Febre Amarela" },
+      { "id": "D", "text": "Pneumocócica 10V" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A vacina contra a Febre Amarela é produzida em ovos embrionados de galinha e, por isso, é contraindicada para pessoas com história de reação anafilática grave ao ovo. A Tríplice Viral, embora também cultivada em células de embrião de galinha, tem uma quantidade de proteína do ovo ínfima e é considerada segura."
+  },
+  {
+    "id": 52,
+    "category": "Princípios do SUS",
+    "question": "A Política Nacional de Atenção Básica (PNAB) define a Estratégia Saúde da Família (ESF) como modelo prioritário para a organização da Atenção Primária. Qual é a composição mínima de uma equipe de Saúde da Família?",
+    "options": [
+      { "id": "A", "text": "Médico, Enfermeiro, Psicólogo e Fisioterapeuta." },
+      { "id": "B", "text": "Médico, Enfermeiro, Técnico de Enfermagem e Agente Comunitário de Saúde." },
+      { "id": "C", "text": "Enfermeiro, Técnico de Enfermagem, Dentista e Assistente Social." },
+      { "id": "D", "text": "Médico, Enfermeiro, Nutricionista e Agente de Endemias." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A composição mínima da equipe de Saúde da Família (eSF) é: 1 Médico (preferencialmente especialista em Medicina de Família e Comunidade), 1 Enfermeiro (preferencialmente especialista em Saúde da Família), 1 Técnico ou Auxiliar de Enfermagem e Agentes Comunitários de Saúde (ACS), cujo número varia conforme a população adscrita."
+  },
+  {
+    "id": 53,
+    "category": "Emergência",
+    "question": "Um paciente chega ao pronto-socorro com rebaixamento do nível de consciência, hálito cetônico e glicemia capilar de 450 mg/dL. Qual é a principal medida terapêutica inicial para este quadro de cetoacidose diabética?",
+    "options": [
+      { "id": "A", "text": "Administração de Bicarbonato de Sódio para corrigir a acidose." },
+      { "id": "B", "text": "Administração de insulina NPH subcutânea." },
+      { "id": "C", "text": "Expansão volêmica vigorosa com Soro Fisiológico 0,9% e insulinoterapia regular endovenosa." },
+      { "id": "D", "text": "Administração de solução glicosada a 50% para evitar hipoglicemia de rebote." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O tratamento da cetoacidose diabética baseia-se em três pilares: 1) Hidratação venosa vigorosa para corrigir a desidratação e a hipovolemia; 2) Insulinoterapia com insulina regular em bomba de infusão contínua para corrigir a hiperglicemia e a cetose; 3) Correção dos distúrbios eletrolíticos, principalmente o potássio."
+  },
+  {
+    "id": 54,
+    "category": "Farmacologia",
+    "question": "Qual medicamento é o agente de escolha para reverter a toxicidade do Sulfato de Magnésio, caracterizada por depressão respiratória e perda de reflexos?",
+    "options": [
+      { "id": "A", "text": "Cloreto de Sódio 20%" },
+      { "id": "B", "text": "Bicarbonato de Sódio 8,4%" },
+      { "id": "C", "text": "Gluconato de Cálcio 10%" },
+      { "id": "D", "text": "Cloreto de Potássio 19,1%" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Gluconato de Cálcio é o antídoto específico para a intoxicação por Sulfato de Magnésio. O cálcio antagoniza os efeitos do magnésio na junção neuromuscular e no miocárdio, revertendo a depressão respiratória e a fraqueza muscular."
+  },
+  {
+    "id": 55,
+    "category": "Segurança do Paciente",
+    "question": "A dupla checagem é uma barreira de segurança recomendada para a administração de quais tipos de medicamentos?",
+    "options": [
+      { "id": "A", "text": "Todos os medicamentos administrados por via oral." },
+      { "id": "B", "text": "Apenas medicamentos controlados pela Portaria 344/98." },
+      { "id": "C", "text": "Medicamentos de alta vigilância (potencialmente perigosos)." },
+      { "id": "D", "text": "Todos os antibióticos de uso restrito." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A dupla checagem por dois profissionais é uma estratégia crucial para prevenir erros com medicamentos de alta vigilância, que são aqueles com maior potencial de causar danos graves aos pacientes se administrados incorretamente. Exemplos incluem: insulinas, heparina, eletrólitos concentrados, opioides e quimioterápicos."
+  },
+  {
+    "id": 56,
+    "category": "Saúde da Mulher",
+    "question": "Qual é o principal sinal de presunção de gravidez?",
+    "options": [
+      { "id": "A", "text": "Atraso menstrual (amenorreia)." },
+      { "id": "B", "text": "Aumento do volume abdominal." },
+      { "id": "C", "text": "Percepção dos movimentos fetais pela mãe." },
+      { "id": "D", "text": "Ausculta dos batimentos cardiofetais." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "Os sinais de gravidez são classificados em presunção, probabilidade e certeza. A amenorreia (atraso menstrual) é o sinal de presunção mais comum e que geralmente leva a mulher a suspeitar da gravidez. A ausculta dos batimentos fetais é um sinal de certeza."
+  },
+  {
+    "id": 57,
+    "category": "Ética e Legislação",
+    "question": "A quebra do sigilo profissional pelo profissional de enfermagem é permitida em qual das seguintes situações?",
+    "options": [
+      { "id": "A", "text": "Quando solicitado por um familiar próximo do paciente." },
+      { "id": "B", "text": "Em casos de maus-tratos a menores, como dever legal de notificação." },
+      { "id": "C", "text": "Para fins de pesquisa acadêmica, sem autorização do paciente." },
+      { "id": "D", "text": "Em discussões informais com outros colegas de profissão." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O sigilo profissional é um dever, mas pode ser quebrado em situações específicas previstas em lei, como a notificação compulsória de doenças e a comunicação de crimes de ação pública, como maus-tratos a crianças, idosos ou incapazes (justa causa ou dever legal)."
+  },
+  {
+    "id": 58,
+    "category": "Curativos",
+    "question": "Uma lesão por pressão que se apresenta como uma área de pele intacta, de coloração púrpura ou marrom-escura, ou uma bolha de sangue, é classificada como:",
+    "options": [
+      { "id": "A", "text": "Estágio 1" },
+      { "id": "B", "text": "Estágio 2" },
+      { "id": "C", "text": "Lesão por Pressão Tissular Profunda Suspeita" },
+      { "id": "D", "text": "Lesão por Pressão Não Classificável" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Lesão por Pressão Tissular Profunda Suspeita é caracterizada por uma área localizada de pele intacta ou não, com coloração anormal (púrpura/marrom) ou bolha de sangue, devido a dano no tecido mole subjacente por pressão e/ou cisalhamento."
+  },
+  {
+    "id": 59,
+    "category": "Semiologia",
+    "question": "Durante o exame físico do abdome, qual é a sequência correta dos métodos propedêuticos a serem aplicados?",
+    "options": [
+      { "id": "A", "text": "Inspeção, Palpação, Percussão, Ausculta." },
+      { "id": "B", "text": "Inspeção, Ausculta, Percussão, Palpação." },
+      { "id": "C", "text": "Palpação, Inspeção, Ausculta, Percussão." },
+      { "id": "D", "text": "Ausculta, Inspeção, Palpação, Percussão." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "No exame abdominal, a ausculta deve ser realizada ANTES da percussão e da palpação, pois estas manobras podem alterar os ruídos hidroaéreos intestinais, levando a uma avaliação incorreta."
+  },
+  {
+    "id": 60,
+    "category": "ECG",
+    "question": "Qual arritmia é caracterizada no ECG por ausência de onda P, ritmo ventricular irregularmente irregular e linha de base tremida?",
+    "options": [
+      { "id": "A", "text": "Taquicardia Sinusal" },
+      { "id": "B", "text": "Flutter Atrial" },
+      { "id": "C", "text": "Fibrilação Atrial (FA)" },
+      { "id": "D", "text": "Taquicardia Ventricular" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Fibrilação Atrial (FA) é uma taquiarritmia supraventricular caracterizada por uma atividade atrial caótica, que resulta em ausência de ondas P discerníveis, uma linha de base fibrilatória e um ritmo de QRS 'irregularmente irregular'."
+  },
+  {
+    "id": 61,
+    "category": "Saúde do Idoso",
+    "question": "A vacinação contra Influenza (gripe) para idosos é uma estratégia de saúde pública que deve ocorrer com qual frequência?",
+    "options": [
+      { "id": "A", "text": "Dose única na vida." },
+      { "id": "B", "text": "A cada 10 anos." },
+      { "id": "C", "text": "A cada 5 anos." },
+      { "id": "D", "text": "Anualmente." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A vacinação contra a gripe deve ser anual, pois o vírus Influenza sofre mutações constantes, exigindo a formulação de uma nova vacina a cada ano para proteger contra as cepas mais recentes em circulação."
+  },
+  {
+    "id": 62,
+    "category": "SAE",
+    "question": "A teoria de enfermagem que se concentra no autocuidado e na ajuda aos indivíduos para que realizem ações em seu próprio benefício é a de:",
+    "options": [
+      { "id": "A", "text": "Wanda Horta (Teoria das Necessidades Humanas Básicas)." },
+      { "id": "B", "text": "Dorothea Orem (Teoria do Déficit do Autocuidado)." },
+      { "id": "C", "text": "Hildegard Peplau (Teoria das Relações Interpessoais)." },
+      { "id": "D", "text": "Madeleine Leininger (Teoria do Cuidado Transcultural)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Teoria do Déficit do Autocuidado, de Dorothea Orem, postula que a enfermagem é necessária quando o indivíduo não consegue ou tem limitações para cuidar de si mesmo. O papel do enfermeiro é identificar esses déficits e intervir para supri-los."
+  },
+  {
+    "id": 63,
+    "category": "Procedimentos",
+    "question": "Qual é o local de aplicação preferencial para injeções intramusculares de grande volume (acima de 3 mL) em adultos, por ser livre de grandes vasos e nervos?",
+    "options": [
+      { "id": "A", "text": "Músculo Deltoide." },
+      { "id": "B", "text": "Músculo Dorsoglúteo." },
+      { "id": "C", "text": "Músculo Ventroglúteo (Técnica de Hochstetter)." },
+      { "id": "D", "text": "Músculo Vasto Lateral." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O músculo ventroglúteo é considerado o local mais seguro para injeções IM em adultos e crianças maiores de 7 meses, pois não possui estruturas anatômicas importantes como o nervo ciático e grandes vasos, além de ter uma camada de gordura menos espessa."
+  },
+  {
+    "id": 64,
+    "category": "Saúde Mental",
+    "question": "A notificação compulsória de violência autoprovocada (tentativa de suicídio e automutilação) é uma medida de vigilância em saúde. Qual é o prazo para essa notificação?",
+    "options": [
+      { "id": "A", "text": "Imediata (em até 24 horas)." },
+      { "id": "B", "text": "Semanal (em até 7 dias)." },
+      { "id": "C", "text": "Mensal." },
+      { "id": "D", "text": "A notificação é opcional." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A violência autoprovocada é um agravo de notificação compulsória semanal, o que significa que o serviço de saúde tem até 7 dias para comunicar o caso às autoridades de vigilância epidemiológica."
+  },
+  {
+    "id": 65,
+    "category": "Princípios do SUS",
+    "question": "A Lei nº 8.142/90, que complementa a Lei Orgânica da Saúde, dispõe sobre:",
+    "options": [
+      { "id": "A", "text": "A criação da ANVISA e da ANS." },
+      { "id": "B", "text": "A participação da comunidade na gestão do SUS e as transferências intergovernamentais de recursos financeiros." },
+      { "id": "C", "text": "A regulamentação do exercício profissional da enfermagem." },
+      { "id": "D", "text": "A Política Nacional de Atenção Básica (PNAB)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Lei 8.142/90 é fundamental pois regulamenta duas questões cruciais para o SUS: a participação social, através dos Conselhos e Conferências de Saúde, e a forma como os recursos financeiros da União são repassados para Estados e Municípios."
+  },
+  {
+    "id": 66,
+    "category": "Emergência",
+    "question": "Em um atendimento de Suporte Avançado de Vida Cardiovascular (SAVC/ACLS), qual é o ritmo de parada cardíaca que NÃO é passível de desfibrilação?",
+    "options": [
+      { "id": "A", "text": "Fibrilação Ventricular (FV)." },
+      { "id": "B", "text": "Taquicardia Ventricular Sem Pulso (TVSP)." },
+      { "id": "C", "text": "Atividade Elétrica Sem Pulso (AESP)." },
+      { "id": "D", "text": "Taquicardia Ventricular Polimórfica." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Os ritmos de PCR são divididos em chocáveis e não chocáveis. Os chocáveis são a Fibrilação Ventricular e a Taquicardia Ventricular Sem Pulso. Os não chocáveis são a Atividade Elétrica Sem Pulso (AESP) e a Assistolia. Nestes últimos, o tratamento se baseia em RCP de alta qualidade e adrenalina."
+  },
+  {
+    "id": 67,
+    "category": "Farmacologia",
+    "question": "A administração de um medicamento por via sublingual tem como principal vantagem:",
+    "options": [
+      { "id": "A", "text": "Ação prolongada e liberação lenta do fármaco." },
+      { "id": "B", "text": "Absorção rápida e ausência do efeito de primeira passagem hepática." },
+      { "id": "C", "text": "Possibilidade de administrar grandes volumes." },
+      { "id": "D", "text": "Ser a via mais segura para pacientes com dificuldade de deglutição." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A rica vascularização da mucosa sublingual permite que o fármaco seja absorvido diretamente para a corrente sanguínea, proporcionando um início de ação rápido e evitando o metabolismo de primeira passagem pelo fígado, o que aumenta sua biodisponibilidade."
+  },
+  {
+    "id": 68,
+    "category": "Saúde da Criança",
+    "question": "Qual é o principal objetivo da administração da Vitamina K no recém-nascido na sala de parto?",
+    "options": [
+      { "id": "A", "text": "Prevenir a icterícia neonatal." },
+      { "id": "B", "text": "Estimular o desenvolvimento do sistema imunológico." },
+      { "id": "C", "text": "Prevenir a Doença Hemorrágica do Recém-Nascido." },
+      { "id": "D", "text": "Acelerar o processo de queda do coto umbilical." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Os recém-nascidos têm uma deficiência fisiológica de Vitamina K, que é essencial para a produção de fatores de coagulação. A administração de Vitamina K (Fitomenadiona) previne a Doença Hemorrágica do Recém-Nascido, uma condição potencialmente grave."
+  },
+  {
+    "id": 69,
+    "category": "Semiologia",
+    "question": "A avaliação do nível de consciência de um paciente através da Escala de Coma de Glasgow (ECG) analisa quais três parâmetros?",
+    "options": [
+      { "id": "A", "text": "Resposta Pupilar, Resposta Verbal e Resposta Motora." },
+      { "id": "B", "text": "Abertura Ocular, Resposta Verbal e Resposta Motora." },
+      { "id": "C", "text": "Orientação, Memória e Cálculo." },
+      { "id": "D", "text": "Abertura Ocular, Frequência Cardíaca e Pressão Arterial." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Escala de Coma de Glasgow avalia três componentes do nível de consciência: Abertura Ocular (pontuação de 1 a 4), Resposta Verbal (pontuação de 1 a 5) e Melhor Resposta Motora (pontuação de 1 a 6). A reatividade pupilar pode ser subtraída do escore total (ECG-P)."
+  },
+  {
+    "id": 70,
+    "category": "Ética e Legislação",
+    "question": "Um técnico de enfermagem que se recusa a administrar um medicamento prescrito por não se sentir seguro, mesmo a prescrição estando correta, e não comunica sua dificuldade ao enfermeiro, está cometendo um ato de:",
+    "options": [
+      { "id": "A", "text": "Imperícia, pois não sabe realizar o procedimento." },
+      { "id": "B", "text": "Imprudência, pois agiu de forma precipitada." },
+      { "id": "C", "text": "Negligência, pois se omitiu de uma ação necessária e da comunicação." },
+      { "id": "D", "text": "Exercício legal da profissão, pois tem autonomia para decidir." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A negligência é caracterizada pela omissão ou falta de cuidado. Ao não administrar o medicamento e, crucialmente, não comunicar sua insegurança ou dificuldade ao enfermeiro para que outra pessoa o fizesse, o profissional foi omisso, quebrando a continuidade do cuidado e colocando o paciente em risco."
+  },
+  {
+    "id": 71,
+    "category": "Curativos",
+    "question": "Qual tipo de desbridamento utiliza enzimas para remover tecido necrótico de uma ferida?",
+    "options": [
+      { "id": "A", "text": "Desbridamento Autolítico" },
+      { "id": "B", "text": "Desbridamento Cirúrgico" },
+      { "id": "C", "text": "Desbridamento Mecânico" },
+      { "id": "D", "text": "Desbridamento Enzimático" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "O desbridamento enzimático utiliza agentes exógenos, como a colagenase, para degradar seletivamente o tecido desvitalizado (necrose, esfacelo), preservando o tecido de granulação saudável."
+  },
+  {
+    "id": 72,
+    "category": "ECG",
+    "question": "No ECG, o intervalo PR normal tem uma duração de:",
+    "options": [
+      { "id": "A", "text": "0,04 a 0,10 segundos (1 a 2,5 quadradinhos)." },
+      { "id": "B", "text": "0,12 a 0,20 segundos (3 a 5 quadradinhos)." },
+      { "id": "C", "text": "0,22 a 0,30 segundos (5,5 a 7,5 quadradinhos)." },
+      { "id": "D", "text": "Maior que 0,30 segundos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O intervalo PR representa o tempo de condução do estímulo elétrico desde os átrios até os ventrículos. Sua duração normal em um adulto é de 0,12 a 0,20 segundos. Um intervalo PR maior que 0,20s caracteriza um Bloqueio Atrioventricular (BAV) de 1º grau."
+  },
+  {
+    "id": 73,
+    "category": "Saúde da Mulher",
+    "question": "Qual é o método contraceptivo de emergência (Pílula do Dia Seguinte) mais utilizado e qual o prazo máximo para seu uso após a relação sexual desprotegida para garantir maior eficácia?",
+    "options": [
+      { "id": "A", "text": "Mifepristona, até 24 horas." },
+      { "id": "B", "text": "Levonorgestrel, até 72 horas (3 dias)." },
+      { "id": "C", "text": "Dispositivo Intrauterino (DIU) de cobre, até 12 horas." },
+      { "id": "D", "text": "Etinilestradiol + Levonorgestrel, até 120 horas (5 dias)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O método mais comum é o Levonorgestrel em dose única. Sua eficácia é maior quanto antes for tomado, sendo recomendado o uso em até 72 horas após a relação desprotegida, embora possa ter alguma eficácia até 120 horas."
+  },
+  {
+    "id": 74,
+    "category": "Procedimentos",
+    "question": "Para a coleta de uma amostra de sangue para hemocultura, qual é o passo mais crítico para evitar a contaminação da amostra?",
+    "options": [
+      { "id": "A", "text": "Utilizar o garrote por no máximo 1 minuto." },
+      { "id": "B", "text": "Realizar a antissepsia rigorosa da pele do paciente e da tampa do frasco." },
+      { "id": "C", "text": "Coletar o volume exato de sangue recomendado no frasco." },
+      { "id": "D", "text": "Homogeneizar o frasco vigorosamente após a coleta." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A contaminação da amostra com a microbiota da pele é a principal causa de resultados falso-positivos em hemoculturas. Portanto, a antissepsia rigorosa da pele (ex: com clorexidina alcoólica) e da tampa do frasco é a etapa mais crucial para garantir a qualidade do exame."
+  },
+  {
+    "id": 75,
+    "category": "SAE",
+    "question": "A Política Nacional de Humanização (PNH) do SUS propõe diversas diretrizes. Qual das seguintes opções é uma diretriz da PNH?",
+    "options": [
+      { "id": "A", "text": "Acolhimento com classificação de risco." },
+      { "id": "B", "text": "Regionalização e hierarquização dos serviços." },
+      { "id": "C", "text": "Participação social através de conselhos." },
+      { "id": "D", "text": "Financiamento tripartite do sistema." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "O Acolhimento com Classificação de Risco é uma das principais diretrizes da PNH. Ele busca reorganizar o processo de trabalho nas portas de entrada do SUS, garantindo um atendimento resolutivo e humanizado, baseado na escuta qualificada e na priorização por gravidade, e não por ordem de chegada."
+  },
+  {
+    "id": 76,
+    "category": "Saúde do Idoso",
+    "question": "Qual das seguintes alterações fisiológicas do envelhecimento aumenta o risco de intoxicação medicamentosa em idosos?",
+    "options": [
+      { "id": "A", "text": "Aumento da taxa de filtração glomerular." },
+      { "id": "B", "text": "Aumento do metabolismo hepático." },
+      { "id": "C", "text": "Diminuição da gordura corporal e aumento da água corporal total." },
+      { "id": "D", "text": "Diminuição da função renal e do metabolismo hepático." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Com o envelhecimento, há uma redução fisiológica da função renal (diminuição da filtração glomerular) e do metabolismo hepático. Isso leva a uma depuração mais lenta dos fármacos, aumentando sua meia-vida e o risco de acúmulo e toxicidade."
+  },
+  {
+    "id": 77,
+    "category": "Saúde Mental",
+    "question": "Um paciente em uso de Lítio para tratamento de transtorno bipolar deve ser orientado a manter uma ingestão adequada e regular de:",
+    "options": [
+      { "id": "A", "text": "Potássio e Vitamina C." },
+      { "id": "B", "text": "Sódio e água." },
+      { "id": "C", "text": "Cálcio e Vitamina D." },
+      { "id": "D", "text": "Gorduras e proteínas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O lítio e o sódio competem pela reabsorção nos túbulos renais. Uma baixa ingestão de sódio (hiponatremia) ou desidratação pode levar o rim a reabsorver mais lítio, aumentando seus níveis séricos e o risco de intoxicação. Por isso, a ingestão de sal e líquidos deve ser estável."
+  },
+  {
+    "id": 78,
+    "category": "Princípios do SUS",
+    "question": "As Redes de Atenção à Saúde (RAS) são arranjos organizativos de ações e serviços de saúde. Qual é o centro de comunicação e a ordenadora da RAS?",
+    "options": [
+      { "id": "A", "text": "A Atenção Hospitalar de Alta Complexidade." },
+      { "id": "B", "text": "A Atenção Primária à Saúde (Atenção Básica)." },
+      { "id": "C", "text": "Os serviços de Urgência e Emergência." },
+      { "id": "D", "text": "A Vigilância em Saúde." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Na organização das RAS, a Atenção Primária à Saúde (APS) é definida como o centro de comunicação e a coordenadora do cuidado. É a porta de entrada preferencial e a responsável por ordenar o fluxo dos usuários pelos diferentes pontos de atenção da rede."
+  },
+  {
+    "id": 79,
+    "category": "Emergência",
+    "question": "Um paciente com trauma torácico apresenta desvio de traqueia, turgência jugular, hipotensão e ausência de murmúrio vesicular em um hemitórax. Este quadro é altamente sugestivo de:",
+    "options": [
+      { "id": "A", "text": "Hemotórax maciço." },
+      { "id": "B", "text": "Pneumotórax hipertensivo." },
+      { "id": "C", "text": "Tamponamento cardíaco." },
+      { "id": "D", "text": "Tórax instável." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A tríade clássica do pneumotórax hipertensivo é hipotensão, turgência jugular e murmúrio vesicular abolido. O desvio de traqueia para o lado contralateral é um sinal tardio, mas confirmatório. É uma emergência que requer descompressão torácica imediata."
+  },
+  {
+    "id": 80,
+    "category": "Farmacologia",
+    "question": "A incompatibilidade da Fenitoína (Hidantal) com soro glicosado, que causa precipitação do fármaco, é um exemplo de incompatibilidade:",
+    "options": [
+      { "id": "A", "text": "Terapêutica." },
+      { "id": "B", "text": "Farmacocinética." },
+      { "id": "C", "text": "Físico-química." },
+      { "id": "D", "text": "Farmacodinâmica." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A incompatibilidade físico-química ocorre quando dois ou mais fármacos, ou um fármaco e uma solução, reagem e causam uma alteração visível, como mudança de cor, turvação ou precipitação, tornando a mistura imprópria para administração. A Fenitoína deve ser diluída exclusivamente em Soro Fisiológico 0,9%."
+  },
+  {
+    "id": 81,
+    "category": "Segurança do Paciente",
+    "question": "Qual das seguintes abreviaturas é considerada perigosa e deve ser evitada nas prescrições para reduzir o risco de erros de medicação?",
+    "options": [
+      { "id": "A", "text": "mg (miligrama)" },
+      { "id": "B", "text": "mL (mililitro)" },
+      { "id": "C", "text": "UI (Unidades Internacionais)" },
+      { "id": "D", "text": "EV (endovenoso)" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A abreviatura 'UI' pode ser facilmente confundida com 'IV' (intravenoso) ou com o número '10'. Recomenda-se escrever 'Unidades' por extenso para evitar erros de dosagem, especialmente com medicamentos de alta vigilância como heparina e insulina."
+  },
+  {
+    "id": 82,
+    "category": "Saúde da Criança",
+    "question": "A manobra de Leopold, realizada no pré-natal, tem como objetivo avaliar:",
+    "options": [
+      { "id": "A", "text": "A altura uterina e a idade gestacional." },
+      { "id": "B", "text": "Os batimentos cardíacos fetais." },
+      { "id": "C", "text": "A apresentação, posição e situação fetal." },
+      { "id": "D", "text": "A dilatação e o apagamento do colo uterino." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "As manobras de Leopold são um método de palpação abdominal para determinar a estática fetal, ou seja, a situação (longitudinal, transverso), a apresentação (cefálica, pélvica), a posição (dorso à direita ou à esquerda) e a insinuação do feto na pelve materna."
+  },
+  {
+    "id": 83,
+    "category": "Ética e Legislação",
+    "question": "A Resolução COFEN nº 564/2017 aprova o novo Código de Ética dos Profissionais de Enfermagem. Qual das seguintes ações é considerada uma proibição?",
+    "options": [
+      { "id": "A", "text": "Recusar-se a executar prescrição medicamentosa onde não conste a assinatura e o número de registro do profissional." },
+      { "id": "B", "text": "Realizar a consulta de enfermagem." },
+      { "id": "C", "text": "Delegar atribuições privativas do Enfermeiro para outro membro da equipe de enfermagem." },
+      { "id": "D", "text": "Registrar no prontuário as informações inerentes e indispensáveis ao processo de cuidar." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O CEPE proíbe expressamente a delegação de atividades privativas do Enfermeiro, como a consulta de enfermagem e a prescrição da assistência. As outras opções são direitos ou deveres do profissional."
+  },
+  {
+    "id": 84,
+    "category": "Curativos",
+    "question": "Qual cobertura é indicada para feridas com odor fétido, como as neoplásicas ou infectadas?",
+    "options": [
+      { "id": "A", "text": "Espuma de Poliuretano" },
+      { "id": "B", "text": "Carvão Ativado com Prata" },
+      { "id": "C", "text": "Hidrocoloide" },
+      { "id": "D", "text": "Filme Transparente" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A cobertura de Carvão Ativado é específica para o controle do odor, pois o carvão adsorve os gases e as toxinas bacterianas. A adição de prata confere ação antimicrobiana, sendo ideal para feridas infectadas e com mau cheiro."
+  },
+  {
+    "id": 85,
+    "category": "Semiologia",
+    "question": "A presença de icterícia, coloração amarelada da pele e mucosas, está relacionada ao acúmulo de qual substância no sangue?",
+    "options": [
+      { "id": "A", "text": "Ureia" },
+      { "id": "B", "text": "Creatinina" },
+      { "id": "C", "text": "Glicose" },
+      { "id": "D", "text": "Bilirrubina" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A icterícia é o sinal clínico da hiperbilirrubinemia, que é o aumento dos níveis de bilirrubina (um produto da degradação da hemoglobina) no sangue. Geralmente indica problemas hepáticos ou biliares."
+  },
+  {
+    "id": 86,
+    "category": "ECG",
+    "question": "Qual é a principal característica eletrocardiográfica do Flutter Atrial?",
+    "options": [
+      { "id": "A", "text": "Linha de base caótica e ritmo de QRS irregular." },
+      { "id": "B", "text": "Ondas P com morfologia variável e intervalo PR curto." },
+      { "id": "C", "text": "Complexos QRS largos e bizarros em alta frequência." },
+      { "id": "D", "text": "Ondas 'F' em 'dentes de serra' e ritmo de QRS regular ou irregular." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "O Flutter Atrial é caracterizado pelas ondas 'F' (de flutter), que têm um aspecto clássico de 'dentes de serra', melhor visualizadas nas derivações inferiores (DII, DIII, aVF). O ritmo ventricular pode ser regular (se o bloqueio AV for fixo) ou irregular (se o bloqueio for variável)."
+  },
+  {
+    "id": 87,
+    "category": "Saúde do Idoso",
+    "question": "O delírio em pacientes idosos hospitalizados é uma condição aguda e flutuante. Qual é o fator de risco mais comum para o seu desenvolvimento?",
+    "options": [
+      { "id": "A", "text": "História de hipertensão arterial." },
+      { "id": "B", "text": "Uso de anti-inflamatórios não esteroides." },
+      { "id": "C", "text": "Presença de uma infecção, como infecção do trato urinário." },
+      { "id": "D", "text": "Dieta pobre em fibras." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Infecções (urinária, pulmonar), distúrbios metabólicos, polifarmácia, dor não controlada e imobilidade são os principais fatores precipitantes para o delírio (estado confusional agudo) em idosos, uma emergência médica que requer investigação da causa base."
+  },
+  {
+    "id": 88,
+    "category": "SAE",
+    "question": "Qual teoria de enfermagem, desenvolvida no Brasil, organiza o cuidado em torno das necessidades humanas básicas psicobiológicas, psicossociais e psicoespirituais?",
+    "options": [
+      { "id": "A", "text": "Teoria do Cuidado Transcultural de Leininger." },
+      { "id": "B", "text": "Teoria das Necessidades Humanas Básicas de Wanda Horta." },
+      { "id": "C", "text": "Teoria do Déficit de Autocuidado de Orem." },
+      { "id": "D", "text": "Teoria da Adaptação de Roy." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Wanda de Aguiar Horta, pioneira da enfermagem no Brasil, desenvolveu a Teoria das Necessidades Humanas Básicas, baseada na teoria de Maslow. Ela classifica as necessidades em psicobiológicas (oxigenação, hidratação), psicossociais (comunicação, segurança) e psicoespirituais (religiosa, ética)."
+  },
+  {
+    "id": 89,
+    "category": "Procedimentos",
+    "question": "A administração de medicamentos pela via intradérmica (ID) é utilizada principalmente para qual finalidade?",
+    "options": [
+      { "id": "A", "text": "Aplicação de vacinas de grande volume." },
+      { "id": "B", "text": "Testes de sensibilidade (alergia) e Prova Tuberculínica (PPD)." },
+      { "id": "C", "text": "Administração de anticoagulantes como a heparina." },
+      { "id": "D", "text": "Infusão rápida de analgésicos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A via intradérmica, na qual a substância é injetada na derme, tem uma absorção muito lenta. Isso a torna ideal para testes diagnósticos de sensibilidade, como o teste de PPD para tuberculose e testes alérgicos, pois a reação local pode ser facilmente observada."
+  },
+  {
+    "id": 90,
+    "category": "Saúde Mental",
+    "question": "A Síndrome Neuroléptica Maligna é uma reação adversa rara, mas potencialmente fatal, aos antipsicóticos. Qual das seguintes opções é um sinal característico desta síndrome?",
+    "options": [
+      { "id": "A", "text": "Hipotensão, bradicardia e sonolência." },
+      { "id": "B", "text": "Hipertermia, rigidez muscular grave e instabilidade autonômica." },
+      { "id": "C", "text": "Movimentos orofaciais involuntários e coreia." },
+      { "id": "D", "text": "Poliúria, polidipsia e tremores finos de extremidades." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Síndrome Neuroléptica Maligna é uma emergência médica caracterizada por febre alta (hipertermia), rigidez muscular em 'cano de chumbo', alteração do estado mental e disfunção autonômica (taquicardia, PA instável, sudorese). Requer a suspensão imediata do antipsicótico e medidas de suporte intensivo."
+  },
+  {
+    "id": 91,
+    "category": "Princípios do SUS",
+    "question": "O Pacto pela Saúde, de 2006, foi um acordo entre os gestores do SUS que definiu prioridades e se organizou em três dimensões. Quais são essas dimensões?",
+    "options": [
+      { "id": "A", "text": "Pacto pela Vida, Pacto em Defesa do SUS e Pacto de Gestão." },
+      { "id": "B", "text": "Pacto pela Atenção Básica, Pacto pela Média Complexidade e Pacto pela Alta Complexidade." },
+      { "id": "C", "text": "Pacto Federativo, Pacto Sanitário e Pacto Social." },
+      { "id": "D", "text": "Pacto pela Universalidade, Pacto pela Equidade e Pacto pela Integralidade." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "O Pacto pela Saúde foi estruturado em três componentes: o Pacto pela Vida (com foco em prioridades sanitárias, como saúde do idoso e controle de cânceres), o Pacto em Defesa do SUS (ações para fortalecer o SUS como política pública) e o Pacto de Gestão (descentralização e regionalização)."
+  },
+  {
+    "id": 92,
+    "category": "Emergência",
+    "question": "Qual é a conduta imediata para um paciente com queimadura química nos olhos?",
+    "options": [
+      { "id": "A", "text": "Ocluir ambos os olhos com gaze e encaminhar ao oftalmologista." },
+      { "id": "B", "text": "Aplicar um colírio anestésico para aliviar a dor." },
+      { "id": "C", "text": "Tentar neutralizar o agente químico com uma substância oposta (ácido com base)." },
+      { "id": "D", "text": "Irrigar abundantemente os olhos com Soro Fisiológico 0,9% ou água corrente por pelo menos 20 minutos." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A medida mais importante e imediata é a irrigação copiosa para diluir e remover o agente químico, minimizando o dano à córnea. A irrigação deve ser iniciada no local do acidente e continuada no serviço de saúde. Tentar neutralizar a substância é contraindicado, pois a reação pode gerar calor e agravar a lesão."
+  },
+  {
+    "id": 93,
+    "category": "Farmacologia",
+    "question": "A Digoxina é um fármaco utilizado na insuficiência cardíaca e em certas arritmias. Qual é o principal sinal de intoxicação digitálica que a enfermagem deve monitorar?",
+    "options": [
+      { "id": "A", "text": "Taquicardia e hipertensão." },
+      { "id": "B", "text": "Náuseas, vômitos, alterações visuais (visão amarelada) e bradicardia." },
+      { "id": "C", "text": "Febre alta e rigidez muscular." },
+      { "id": "D", "text": "Tosse seca e angioedema." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Digoxina tem uma janela terapêutica estreita. Os sinais de toxicidade incluem sintomas gastrointestinais (anorexia, náuseas, vômitos), neurológicos (confusão, alterações visuais como xantopsia) e cardíacos (bradicardia, bloqueios atrioventriculares, arritmias)."
+  },
+  {
+    "id": 94,
+    "category": "Saúde da Criança",
+    "question": "A vacina Pentavalente, administrada aos 2, 4 e 6 meses, protege contra quais doenças?",
+    "options": [
+      { "id": "A", "text": "Sarampo, Caxumba, Rubéola, Varicela e Febre Amarela." },
+      { "id": "B", "text": "Difteria, Tétano, Coqueluche, Hepatite B e Haemophilus influenzae tipo b." },
+      { "id": "C", "text": "Poliomielite, Rotavírus, Meningite C, Pneumonia e Tuberculose." },
+      { "id": "D", "text": "Difteria, Tétano, Coqueluche, Sarampo e Caxumba." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A vacina Pentavalente (DTP/HB/Hib) é uma vacina combinada que oferece proteção contra cinco doenças: Difteria, Tétano, Coqueluche (Pertussis), Hepatite B e infecções causadas pela bactéria Haemophilus influenzae tipo b (como meningite)."
+  },
+  {
+    "id": 95,
+    "category": "Semiologia",
+    "question": "O que significa o termo 'ortopneia' na avaliação do sistema respiratório?",
+    "options": [
+      { "id": "A", "text": "Respiração rápida e superficial." },
+      { "id": "B", "text": "Dificuldade para respirar que surge subitamente durante a noite." },
+      { "id": "C", "text": "Desconforto respiratório que ocorre ou piora na posição de decúbito dorsal." },
+      { "id": "D", "text": "Ausência de movimentos respiratórios por mais de 20 segundos." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Ortopneia é a dispneia (falta de ar) que ocorre quando o paciente está deitado, forçando-o a sentar-se ou a usar vários travesseiros para dormir. É um sinal clássico de insuficiência cardíaca congestiva."
+  },
+  {
+    "id": 96,
+    "category": "Ética e Legislação",
+    "question": "A anotação de enfermagem, realizada pelo técnico ou auxiliar, deve conter quais elementos essenciais?",
+    "options": [
+      { "id": "A", "text": "Apenas os sinais vitais e a aceitação da dieta." },
+      { "id": "B", "text": "Observações, cuidados prestados, respostas do paciente, data, hora e identificação profissional." },
+      { "id": "C", "text": "O diagnóstico de enfermagem e a prescrição dos cuidados." },
+      { "id": "D", "text": "Somente as intercorrências e eventos adversos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A anotação de enfermagem deve ser um registro completo e cronológico do cuidado. Deve incluir todas as observações, os cuidados realizados (sejam de rotina ou específicos), as respostas do paciente a esses cuidados e as intercorrências, sempre finalizando com a identificação clara do profissional (nome e COREN) e o horário."
+  },
+  {
+    "id": 97,
+    "category": "Curativos",
+    "question": "O que é o biofilme em uma ferida crônica e por que ele dificulta a cicatrização?",
+    "options": [
+      { "id": "A", "text": "É o tecido de granulação saudável que preenche a ferida." },
+      { "id": "B", "text": "É uma camada de fibrina que pode ser facilmente removida com soro fisiológico." },
+      { "id": "C", "text": "É uma comunidade complexa de microrganismos aderida ao leito da ferida, protegida por uma matriz polimérica." },
+      { "id":- "D", "text": "É o tecido de epitelização que se forma nas bordas da ferida." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O biofilme é uma colônia organizada de bactérias que se protege dentro de uma matriz de polissacarídeos, tornando-as altamente resistentes a antibióticos e às defesas do hospedeiro. Ele mantém a ferida em um estado inflamatório crônico, impedindo a cicatrização."
+  },
+  {
+    "id": 98,
+    "category": "ECG",
+    "question": "Um intervalo QT prolongado no ECG aumenta o risco de qual arritmia ventricular potencialmente fatal?",
+    "options": [
+      { "id": "A", "text": "Fibrilação Atrial de alta resposta." },
+      { "id": "B", "text": "Bloqueio atrioventricular total (BAVT)." },
+      { "id": "C", "text": "Torsades de Pointes." },
+      { "id": "D", "text": "Flutter Atrial." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O prolongamento do intervalo QT (que representa a sístole elétrica ventricular) predispõe a uma forma polimórfica de taquicardia ventricular chamada Torsades de Pointes, que pode degenerar para fibrilação ventricular e morte súbita."
+  },
+  {
+    "id": 99,
+    "category": "Saúde da Mulher",
+    "question": "Qual é a principal causa de hemorragia pós-parto imediata?",
+    "options": [
+      { "id": "A", "text": "Lacerações do trajeto de parto." },
+      { "id": "B", "text": "Retenção de restos placentários." },
+      { "id": "C", "text": "Atonia uterina." },
+      { "id": "D", "text": "Distúrbios de coagulação." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A atonia uterina, que é a incapacidade do útero de se contrair eficazmente após o parto, é responsável por cerca de 80% dos casos de hemorragia pós-parto. A contração uterina é essencial para comprimir os vasos sanguíneos do leito placentário e estancar o sangramento."
+  },
+  {
+    "id": 100,
+    "category": "Procedimentos",
+    "question": "Qual é o ângulo de inserção da agulha para uma injeção subcutânea (SC)?",
+    "options": [
+      { "id": "A", "text": "10 a 15 graus." },
+      { "id": "B", "text": "30 graus." },
+      { "id": "C", "text": "45 a 90 graus." },
+      { "id": "D", "text": "Sempre 90 graus." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O ângulo para injeção subcutânea depende da quantidade de tecido adiposo do paciente e do comprimento da agulha. Em geral, utiliza-se 90 graus se for possível fazer uma prega cutânea de 5 cm, ou 45 graus se a prega for menor (2,5 cm), para garantir que a medicação seja depositada no tecido subcutâneo e não no músculo."
+  },
+  {
+    "id": 101,
+    "category": "SAE",
+    "question": "A Resolução COFEN nº 358/2009, que dispõe sobre a Sistematização da Assistência de Enfermagem (SAE), determina que a implementação da SAE é:",
+    "options": [
+      { "id": "A", "text": "Obrigatória em todos os ambientes, públicos ou privados, em que ocorre o cuidado profissional de Enfermagem." },
+      { "id": "B", "text": "Opcional, sendo uma recomendação para hospitais de grande porte." },
+      { "id": "C", "text": "Restrita a unidades de terapia intensiva e centros cirúrgicos." },
+      { "id": "D", "text": "Uma atividade privativa do enfermeiro, não envolvendo técnicos e auxiliares." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A resolução estabelece a obrigatoriedade da SAE em todos os contextos de cuidado de enfermagem, como forma de organizar o trabalho profissional quanto ao método, pessoal e instrumentos, tornando possível a operacionalização do Processo de Enfermagem."
+  },
+  {
+    "id": 102,
+    "category": "Saúde do Idoso",
+    "question": "A perda involuntária de urina associada a um esforço físico, como tossir ou espirrar, é classificada como qual tipo de incontinência urinária?",
+    "options": [
+      { "id": "A", "text": "Incontinência Urinária de Urgência." },
+      { "id": "B", "text": "Incontinência Urinária por Transbordamento." },
+      { "id": "C", "text": "Incontinência Urinária de Esforço." },
+      { "id": "D", "text": "Incontinência Urinária Funcional." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Incontinência Urinária de Esforço ocorre quando o aumento da pressão intra-abdominal (causado por tosse, espirro, riso, exercício) supera a pressão de fechamento da uretra, na ausência de contração do músculo detrusor. É comum em mulheres multíparas e idosos."
+  },
+  {
+    "id": 103,
+    "category": "Saúde Mental",
+    "question": "Qual é o principal objetivo de um Grupo Terapêutico em um Centro de Atenção Psicossocial (CAPS)?",
+    "options": [
+      { "id": "A", "text": "Garantir que todos os usuários tomem a medicação corretamente." },
+      { "id": "B", "text": "Oferecer um espaço de fala, escuta e troca de experiências, promovendo a reinserção social e a autonomia." },
+      { "id": "C", "text": "Realizar o diagnóstico psiquiátrico dos novos usuários do serviço." },
+      { "id": "D", "text": "Treinar os usuários para o mercado de trabalho formal." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Os grupos terapêuticos são uma ferramenta central no cuidado em saúde mental. Eles proporcionam um ambiente seguro para que os usuários possam compartilhar suas angústias, aprender com as experiências dos outros, fortalecer vínculos e desenvolver habilidades sociais, visando a reabilitação psicossocial."
+  },
+  {
+    "id": 104,
+    "category": "Princípios do SUS",
+    "question": "O Cartão Nacional de Saúde (CNS) é um instrumento que visa facilitar a identificação do usuário do SUS. A sua criação e implementação estão relacionadas a qual princípio ou diretriz do sistema?",
+    "options": [
+      { "id": "A", "text": "Equidade, pois permite priorizar o atendimento." },
+      { "id": "B", "text": "Integralidade, pois unifica as informações de saúde do indivíduo." },
+      { "id": "C", "text": "Participação Social, pois o usuário pode fiscalizar o sistema." },
+      { "id": "D", "text": "Descentralização, pois cada município emite o seu." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O CNS, ao criar um registro único para cada usuário, possibilita a criação de um prontuário eletrônico nacional e a integração das informações de saúde de um indivíduo nos diferentes pontos da rede. Isso fortalece a integralidade do cuidado, permitindo que os profissionais tenham uma visão completa do histórico de saúde do paciente."
+  },
+  {
+    "id": 105,
+    "category": "Emergência",
+    "question": "Um paciente com Acidente Vascular Cerebral (AVC) isquêmico agudo pode ser candidato à terapia trombolítica (uso de alteplase) se atendido dentro de qual janela de tempo a partir do início dos sintomas?",
+    "options": [
+      { "id": "A", "text": "Até 1 hora." },
+      { "id": "B", "text": "Até 4,5 horas." },
+      { "id": "C", "text": "Até 12 horas." },
+      { "id": "D", "text": "Até 24 horas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A janela terapêutica para o uso de trombolítico (rt-PA) no AVC isquêmico agudo é, na maioria dos casos, de até 4,5 horas a partir do início dos sintomas. Atender o paciente rapidamente e transportá-lo para um centro de AVC é crucial ('Tempo é cérebro')."
+  },
+  {
+    "id": 106,
+    "category": "Farmacologia",
+    "question": "Qual classe de medicamentos, como o Captopril e o Enalapril, age inibindo a enzima conversora de angiotensina e tem como efeito adverso característico a tosse seca?",
+    "options": [
+      { "id": "A", "text": "Betabloqueadores." },
+      { "id": "B", "text": "Inibidores da ECA (IECA)." },
+      { "id": "C", "text": "Bloqueadores dos canais de cálcio." },
+      { "id": "D", "text": "Diuréticos tiazídicos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Os Inibidores da Enzima Conversora de Angiotensina (IECA) são anti-hipertensivos que, ao inibirem a ECA, também aumentam os níveis de bradicinina, uma substância que pode causar irritação brônquica e uma tosse seca e persistente em cerca de 10-20% dos pacientes."
+  },
+  {
+    "id": 107,
+    "category": "Segurança do Paciente",
+    "question": "A Escala de Braden é uma ferramenta utilizada para avaliar o risco de desenvolvimento de:",
+    "options": [
+      { "id": "A", "text": "Quedas." },
+      { "id": "B", "text": "Lesão por Pressão." },
+      { "id": "C", "text": "Trombose Venosa Profunda." },
+      { "id": "D", "text": "Desnutrição." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Escala de Braden avalia seis subescalas: percepção sensorial, umidade, atividade, mobilidade, nutrição e fricção/cisalhamento. A pontuação total indica o risco do paciente para desenvolver Lesão por Pressão, orientando a implementação de medidas preventivas."
+  },
+  {
+    "id": 108,
+    "category": "Saúde da Criança",
+    "question": "Qual é o marco do desenvolvimento motor esperado para uma criança de 12 meses?",
+    "options": [
+      { "id": "A", "text": "Sustentar a cabeça." },
+      { "id": "B", "text": "Rolar na cama." },
+      { "id": "C", "text": "Sentar-se sem apoio." },
+      { "id": "D", "text": "Andar com ou sem apoio." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Por volta de 1 ano de idade, a maioria das crianças já consegue ficar em pé e dar os primeiros passos, seja se apoiando nos móveis ou de forma independente. Sentar-se sem apoio ocorre por volta dos 6-7 meses."
+  },
+  {
+    "id": 109,
+    "category": "Ética e Legislação",
+    "question": "A qual órgão o profissional de enfermagem deve se dirigir para obter seu registro profissional e a carteira de identidade profissional?",
+    "options": [
+      { "id": "A", "text": "Conselho Federal de Enfermagem (COFEN)." },
+      { "id": "B", "text": "Conselho Regional de Enfermagem (COREN) do estado onde irá atuar." },
+      { "id": "C", "text": "Sindicato dos Enfermeiros do seu estado." },
+      { "id": "D", "text": "Associação Brasileira de Enfermagem (ABEn)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O COREN de cada estado é a autarquia responsável por normatizar, disciplinar e fiscalizar o exercício da profissão de Enfermagem (Enfermeiros, Técnicos e Auxiliares) em sua jurisdição, incluindo a inscrição e o registro dos profissionais."
+  },
+  {
+    "id": 110,
+    "category": "Curativos",
+    "question": "A limpeza de uma ferida cirúrgica limpa (suturada) deve ser realizada com qual técnica e solução?",
+    "options": [
+      { "id": "A", "text": "Com álcool 70%, da área mais contaminada para a menos contaminada." },
+      { "id": "B", "text": "Com soro fisiológico 0,9%, da área menos contaminada (incisão) para a mais contaminada (bordas)." },
+      { "id": "C", "text": "Com PVPI, aplicando fricção vigorosa para remover crostas." },
+      { "id": "D", "text": "Com água oxigenada, para garantir a remoção de bactérias anaeróbias." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A limpeza de feridas deve seguir o princípio do menos para o mais contaminado. Em uma ferida cirúrgica fechada, a linha de incisão é considerada a área mais limpa. O soro fisiológico 0,9% é a solução de escolha por ser isotônica e não agredir os tecidos."
+  },
+  {
+    "id": 111,
+    "category": "Semiologia",
+    "question": "A avaliação da perfusão periférica através do tempo de enchimento capilar é considerada normal quando o retorno da coloração ocorre em:",
+    "options": [
+      { "id": "A", "text": "Menos de 2 segundos." },
+      { "id": "B", "text": "Entre 3 e 5 segundos." },
+      { "id": "C", "text": "Entre 5 e 7 segundos." },
+      { "id": "D", "text": "Mais de 7 segundos." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "O tempo de enchimento capilar é verificado pressionando o leito ungueal até ficar pálido e contando o tempo para o retorno da cor. Um tempo inferior a 2 segundos indica boa perfusão periférica. Valores aumentados podem indicar má perfusão, desidratação ou choque."
+  },
+  {
+    "id": 112,
+    "category": "ECG",
+    "question": "Qual derivação do ECG é posicionada no quinto espaço intercostal, na linha hemiclavicular esquerda?",
+    "options": [
+      { "id": "A", "text": "V1" },
+      { "id": "B", "text": "V2" },
+      { "id": "C", "text": "V3" },
+      { "id": "D", "text": "V4" }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A derivação V4 é posicionada no 5º espaço intercostal esquerdo, na linha que passa pelo meio da clavícula (hemiclavicular). É um ponto de referência importante para o posicionamento das outras derivações precordiais."
+  },
+  {
+    "id": 113,
+    "category": "Saúde da Mulher",
+    "question": "A Regra de Naegele é utilizada para calcular a Data Provável do Parto (DPP). Como ela é aplicada?",
+    "options": [
+      { "id": "A", "text": "Soma-se 9 meses e 10 dias à data da última menstruação (DUM)." },
+      { "id": "B", "text": "Soma-se 7 dias ao primeiro dia da DUM e subtrai-se 3 meses." },
+      { "id": "C", "text": "Subtrai-se 7 dias do primeiro dia da DUM e soma-se 9 meses." },
+      { "id": "D", "text": "Soma-se 15 dias à DUM e contam-se 8 meses." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Regra de Naegele consiste em somar 7 dias ao primeiro dia da Data da Última Menstruação (DUM) e subtrair 3 meses do mês correspondente (ou somar 9 meses, se for mais fácil). Ex: DUM 10/03/2023 -> (10+7)=17; (3-3)=0, que corresponde a 12 do ano anterior, mas como somamos 9 meses, o ano vira. Então, 17/12/2023. Ou, 10/03 + 7 dias = 17/03. Mês 3 + 9 meses = mês 12. DPP: 17/12/2023."
+  },
+  {
+    "id": 114,
+    "category": "Procedimentos",
+    "question": "Qual o principal cuidado de enfermagem para prevenir a pneumonia associada à ventilação mecânica (PAV)?",
+    "options": [
+      { "id": "A", "text": "Realizar a troca do circuito do ventilador a cada 24 horas." },
+      { "id": "B", "text": "Manter o paciente em decúbito dorsal horizontal." },
+      { "id": "C", "text": "Manter a cabeceira elevada entre 30 e 45 graus e realizar higiene oral com clorexidina." },
+      { "id": "D", "text": "Aspirar o tubo orotraqueal a cada hora, rotineiramente." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O 'bundle' de prevenção da PAV inclui medidas baseadas em evidências, sendo as principais: manter a cabeceira elevada (30-45º) para prevenir aspiração de conteúdo gástrico, realizar higiene oral regular com antisséptico (clorexidina) e avaliar diariamente a sedação para 'despertar' o paciente."
+  },
+  {
+    "id": 115,
+    "category": "SAE",
+    "question": "A prescrição de enfermagem é a etapa da SAE que corresponde à:",
+    "options": [
+      { "id": "A", "text": "Coleta de dados do paciente." },
+      { "id": "B", "text": "Elaboração dos diagnósticos de enfermagem." },
+      { "id": "C", "text": "Determinação das intervenções e ações de cuidado a serem realizadas." },
+      { "id": "D", "text": "Avaliação dos resultados alcançados." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A prescrição de enfermagem é o conjunto de intervenções planejadas pelo enfermeiro para serem executadas pela equipe, com o objetivo de alcançar os resultados esperados para cada diagnóstico. Corresponde à fase de Implementação do Processo de Enfermagem."
+  },
+  {
+    "id": 116,
+    "category": "Saúde do Idoso",
+    "question": "Qual das seguintes vacinas é especialmente recomendada para a população idosa para prevenir complicações respiratórias graves?",
+    "options": [
+      { "id": "A", "text": "BCG" },
+      { "id": "B", "text": "Tríplice Viral (SCR)" },
+      { "id": "C", "text": "Pneumocócica" },
+      { "id": "D", "text": "Hepatite A" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A vacina pneumocócica protege contra a bactéria Streptococcus pneumoniae, uma das principais causas de pneumonia, meningite e sepse em idosos e outros grupos de risco. A vacinação é uma estratégia importante para reduzir a morbimortalidade por essas doenças."
+  },
+  {
+    "id": 117,
+    "category": "Saúde Mental",
+    "question": "O Projeto Terapêutico Singular (PTS) é uma ferramenta de cuidado em saúde mental que se caracteriza por ser:",
+    "options": [
+      { "id": "A", "text": "Um protocolo padrão aplicado a todos os usuários com o mesmo diagnóstico." },
+      { "id": "B", "text": "Um plano de cuidados elaborado exclusivamente pelo psiquiatra." },
+      { "id": "C", "text": "Um conjunto de propostas e condutas terapêuticas articuladas, construído coletivamente pela equipe, usuário e sua rede social." },
+      { "id": "D", "text": "Um formulário para registro da evolução diária do paciente." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O PTS é uma estratégia de cuidado individualizado e contextualizado, construído de forma conjunta entre a equipe de saúde, o usuário e, quando possível, sua família. Ele define metas, responsabilidades e ações para atender às necessidades específicas daquela pessoa."
+  },
+  {
+    "id": 118,
+    "category": "Princípios do SUS",
+    "question": "A Política Nacional de Promoção da Saúde (PNPS) tem como um de seus temas prioritários:",
+    "options": [
+      { "id": "A", "text": "A construção de novos hospitais de alta complexidade." },
+      { "id": "B", "text": "A prática corporal e atividade física." },
+      { "id": "C", "text": "A importação de medicamentos de alto custo." },
+      { "id": "D", "text": "A formação de médicos especialistas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A PNPS busca atuar sobre os determinantes sociais da saúde. Seus temas prioritários incluem: alimentação adequada e saudável, prática corporal/atividade física, prevenção e controle do tabagismo, redução da morbimortalidade por álcool e outras drogas, e promoção da cultura da paz e direitos humanos, entre outros."
+  },
+  {
+    "id": 119,
+    "category": "Emergência",
+    "question": "Qual é o tratamento de primeira linha para um paciente em crise anafilática com hipotensão e broncoespasmo?",
+    "options": [
+      { "id": "A", "text": "Corticosteroide intravenoso." },
+      { "id": "B", "text": "Anti-histamínico oral." },
+      { "id": "C", "text": "Adrenalina (Epinefrina) intramuscular." },
+      { "id": "D", "text": "Salbutamol inalatório." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Adrenalina (Epinefrina) é o único medicamento capaz de reverter rapidamente os efeitos potencialmente fatais da anafilaxia. Deve ser administrada por via intramuscular na face anterolateral da coxa. As outras medicações são adjuvantes e de segunda linha."
+  },
+  {
+    "id": 120,
+    "category": "Farmacologia",
+    "question": "Por que a amiodarona, um antiarrítmico, deve ser preferencialmente diluída em Soro Glicosado 5%?",
+    "options": [
+      { "id": "A", "text": "Porque o Soro Fisiológico 0,9% inativa o medicamento." },
+      { "id": "B", "text": "Porque a amiodarona pode precipitar em soluções salinas." },
+      { "id": "C", "text": "Porque o Soro Glicosado aumenta a potência do fármaco." },
+      { "id": "D", "text": "Porque o Soro Fisiológico 0,9% aumenta o risco de flebite." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A amiodarona é instável em soluções com eletrólitos como o Soro Fisiológico, podendo ocorrer precipitação do fármaco. Por isso, a diluição padrão e recomendada pelo fabricante é em Soro Glicosado a 5%."
+  },
+  {
+    "id": 121,
+    "category": "Segurança do Paciente",
+    "question": "A notificação de eventos adversos em serviços de saúde no Brasil deve ser feita através de qual sistema?",
+    "options": [
+      { "id": "A", "text": "SINAN (Sistema de Informação de Agravos de Notificação)." },
+      { "id": "B", "text": "DATASUS (Departamento de Informática do SUS)." },
+      { "id": "C", "text": "NOTIVISA (Sistema de Notificações em Vigilância Sanitária)." },
+      { "id": "D", "text": "e-SUS Atenção Básica." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O NOTIVISA, gerenciado pela ANVISA, é o sistema informatizado para receber notificações de eventos adversos e queixas técnicas relacionadas a produtos sob vigilância sanitária, incluindo medicamentos, artigos médico-hospitalares e procedimentos."
+  },
+  {
+    "id": 122,
+    "category": "Saúde da Criança",
+    "question": "A icterícia neonatal fisiológica geralmente se manifesta:",
+    "options": [
+      { "id": "A", "text": "Nas primeiras 24 horas de vida." },
+      { "id": "B", "text": "Após o 7º dia de vida." },
+      { "id": "C", "text": "Entre o 2º e o 3º dia de vida, com pico por volta do 5º dia." },
+      { "id": "D", "text": "Apenas em recém-nascidos prematuros." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A icterícia fisiológica é comum e benigna, surgindo após as primeiras 24 horas de vida devido à imaturidade do fígado do bebê para conjugar a bilirrubina. A icterícia que surge no primeiro dia de vida é sempre considerada patológica e requer investigação."
+  },
+  {
+    "id": 123,
+    "category": "Ética e Legislação",
+    "question": "De acordo com a Lei do Exercício Profissional (Lei nº 7.498/86), qual atividade é privativa do Enfermeiro?",
+    "options": [
+      { "id": "A", "text": "Administração de medicamentos por via intramuscular." },
+      { "id": "B", "text": "Realização de curativos simples." },
+      { "id": "C", "text": "Cuidados de higiene e conforto ao paciente." },
+      { "id": "D", "text": "Organização e direção dos serviços de enfermagem." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A Lei 7.498/86 estabelece que a direção do órgão de enfermagem e a chefia de serviço e de unidade de enfermagem são atividades privativas do Enfermeiro. As outras opções são atividades que podem ser realizadas por técnicos e auxiliares, sob supervisão."
+  },
+  {
+    "id": 124,
+    "category": "Curativos",
+    "question": "O que significa o termo 'maceração' no contexto de uma ferida?",
+    "options": [
+      { "id": "A", "text": "A formação de tecido de granulação vermelho vivo." },
+      { "id": "B", "text": "A presença de tecido necrótico, seco e preto." },
+      { "id": "C", "text": "O amolecimento e esbranquiçamento da pele ao redor da ferida devido ao excesso de umidade." },
+      { "id": "D", "text": "A formação de túneis ou fístulas sob a pele." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A maceração ocorre quando a pele perilesional fica exposta ao excesso de exsudato, tornando-se frágil, esbranquiçada e suscetível a danos. É um sinal de que a cobertura utilizada não está gerenciando adequadamente a umidade."
+  },
+  {
+    "id": 125,
+    "category": "Semiologia",
+    "question": "A ausculta de ruídos hidroaéreos aumentados (hiperativos), que podem ser ouvidos sem estetoscópio, é chamada de:",
+    "options": [
+      { "id": "A", "text": "Íleo paralítico." },
+      { "id": "B", "text": "Borborygmi." },
+      { "id": "C", "text": "Sopro aórtico." },
+      { "id": "D", "text": "Crepitação." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Borborygmi (borborigmos) é o termo técnico para os ruídos intestinais audíveis, popularmente conhecidos como 'ronco da barriga'. Geralmente indicam hipermotilidade intestinal, como em casos de gastroenterite."
+  },
+  {
+    "id": 126,
+    "category": "ECG",
+    "question": "Qual alteração eletrolítica é classicamente associada a ondas T apiculadas e altas no ECG?",
+    "options": [
+      { "id": "A", "text": "Hipocalemia (baixo potássio)." },
+      { "id": "B", "text": "Hipercalemia (alto potássio)." },
+      { "id": "C", "text": "Hipocalcemia (baixo cálcio)." },
+      { "id": "D", "text": "Hipernatremia (alto sódio)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A hipercalemia é uma emergência médica que causa alterações progressivas no ECG. O primeiro sinal costuma ser o surgimento de ondas T altas, finas e 'em tenda' (apiculadas), seguido de achatamento da onda P, alargamento do QRS e, por fim, um padrão senoidal que precede a parada cardíaca."
+  },
+  {
+    "id": 127,
+    "category": "Saúde da Mulher",
+    "question": "A tríade clássica de sintomas da pré-eclâmpsia é:",
+    "options": [
+      { "id": "A", "text": "Hipertensão, proteinúria e edema." },
+      { "id": "B", "text": "Febre, dor pélvica e sangramento." },
+      { "id": "C", "text": "Hiperglicemia, polidipsia e poliúria." },
+      { "id": "D", "text": "Cefaleia, vômitos e alteração visual." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A pré-eclâmpsia é uma síndrome hipertensiva específica da gestação, diagnosticada após a 20ª semana. Sua apresentação clássica envolve o surgimento de hipertensão arterial (PA ≥ 140/90 mmHg) associada a proteinúria (perda de proteína na urina). O edema, embora comum, não é mais um critério diagnóstico obrigatório."
+  },
+  {
+    "id": 128,
+    "category": "Procedimentos",
+    "question": "Qual é a finalidade de manter a pressão do cuff (balonete) do tubo orotraqueal ou da cânula de traqueostomia entre 20 e 30 cmH₂O?",
+    "options": [
+      { "id": "A", "text": "Facilitar a fala do paciente." },
+      { "id": "B", "text": "Garantir a fixação do tubo na boca." },
+      { "id": "C", "text": "Vedar a via aérea para uma ventilação eficaz e prevenir a broncoaspiração." },
+      { "id": "D", "text": "Estimular o reflexo de tosse." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A pressão adequada do cuff é vital. Se for muito baixa, não veda a traqueia, permitindo o vazamento de ar (prejudicando a ventilação) e a passagem de secreções para o pulmão (broncoaspiração). Se for muito alta, pode causar isquemia e necrose da mucosa traqueal."
+  },
+  {
+    "id": 129,
+    "category": "SAE",
+    "question": "A Teoria das Relações Interpessoais, que descreve as fases da relação enfermeiro-paciente (orientação, identificação, exploração e resolução), foi desenvolvida por:",
+    "options": [
+      { "id": "A", "text": "Virginia Henderson" },
+      { "id": "B", "text": "Martha Rogers" },
+      { "id": "C", "text": "Hildegard Peplau" },
+      { "id": "D", "text": "Callista Roy" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Hildegard Peplau foi uma pioneira da enfermagem psiquiátrica. Sua teoria foca no processo interpessoal e terapêutico que ocorre entre o enfermeiro e o paciente, vendo a relação como um instrumento para o desenvolvimento e amadurecimento de ambos."
+  },
+  {
+    "id": 130,
+    "category": "Saúde do Idoso",
+    "question": "O 'Teste do Sussurro' é uma forma simples de triagem para avaliar qual condição em idosos?",
+    "options": [
+      { "id": "A", "text": "Déficit cognitivo." },
+      { "id": "B", "text": "Perda auditiva (presbiacusia)." },
+      { "id": "C", "text": "Diminuição da acuidade visual." },
+      { "id": "D", "text": "Risco de queda." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Teste do Sussurro é um método rápido e de baixo custo para triar a perda auditiva. O examinador fica atrás do paciente e sussurra uma combinação de letras e números, solicitando que ele repita. A incapacidade de repetir corretamente sugere a necessidade de uma avaliação audiológica formal."
+  },
+  {
+    "id": 131,
+    "category": "Saúde Mental",
+    "question": "A Lei nº 10.216/2001, da Reforma Psiquiátrica, estabelece que a internação psiquiátrica só deve ser indicada quando:",
+    "options": [
+      { "id": "A", "text": "O paciente apresentar qualquer transtorno mental." },
+      { "id": "B", "text": "A família do paciente solicitar." },
+      { "id": "C", "text": "Os recursos extra-hospitalares se mostrarem insuficientes." },
+      { "id": "D", "text": "For o primeiro episódio psicótico do paciente." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A lei preconiza que a internação é o último recurso terapêutico, devendo ser utilizada apenas por um curto período de tempo, quando as outras opções de cuidado na rede de base comunitária (como os CAPS) não forem suficientes para manejar a crise."
+  },
+  {
+    "id": 132,
+    "category": "Princípios do SUS",
+    "question": "Qual dos seguintes programas/estratégias NÃO faz parte da Atenção Primária à Saúde no Brasil?",
+    "options": [
+      { "id": "A", "text": "Estratégia Saúde da Família (ESF)." },
+      { "id": "B", "text": "Programa Nacional de Imunizações (PNI)." },
+      { "id": "C", "text": "Serviço de Atendimento Móvel de Urgência (SAMU 192)." },
+      { "id": "D", "text": "Programa Saúde na Escola (PSE)." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O SAMU 192 é um componente da Rede de Atenção às Urgências e Emergências, e não da Atenção Primária. A ESF é o modelo da APS, enquanto o PNI e o PSE são estratégias que operam fortemente ancoradas na Atenção Primária."
+  },
+  {
+    "id": 133,
+    "category": "Emergência",
+    "question": "Na cadeia de sobrevivência do atendimento à PCR, qual é o primeiro elo?",
+    "options": [
+      { "id": "A", "text": "RCP de alta qualidade." },
+      { "id": "B", "text": "Acionamento rápido do serviço de emergência." },
+      { "id": "C", "text": "Desfibrilação rápida." },
+      { "id": "D", "text": "Suporte avançado de vida." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O primeiro elo da cadeia de sobrevivência é o reconhecimento da PCR e o acionamento imediato do serviço médico de emergência. Chamar por ajuda antes de iniciar as outras ações é fundamental para que o suporte avançado chegue o mais rápido possível."
+  },
+  {
+    "id": 134,
+    "category": "Farmacologia",
+    "question": "Qual é o principal risco associado ao uso de Anti-inflamatórios Não Esteroides (AINEs), como o Cetoprofeno e o Diclofenaco, especialmente em idosos?",
+    "options": [
+      { "id": "A", "text": "Dependência química." },
+      { "id": "B", "text": "Depressão respiratória." },
+      { "id": "C", "text": "Lesão renal e sangramento gastrointestinal." },
+      { "id": "D", "text": "Hipertermia maligna." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Os AINEs inibem as prostaglandinas, que têm um papel protetor na mucosa gástrica e na manutenção do fluxo sanguíneo renal. Seu uso, principalmente crônico, está associado a um risco aumentado de úlceras, sangramento digestivo e insuficiência renal aguda."
+  },
+  {
+    "id": 135,
+    "category": "Segurança do Paciente",
+    "question": "A identificação do paciente, primeira meta internacional de segurança, deve ser realizada utilizando no mínimo quantos identificadores?",
+    "options": [
+      { "id": "A", "text": "Um: o nome completo do paciente." },
+      { "id": "B", "text": "Dois: o nome completo e a data de nascimento." },
+      { "id": "C", "text": "Três: o nome, o número do leito e o diagnóstico." },
+      { "id":- "D", "text": "Um: o número do prontuário." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A recomendação é usar pelo menos dois identificadores inequívocos, como o nome completo do paciente e sua data de nascimento ou o número do prontuário. O número do leito ou o diagnóstico NUNCA devem ser usados como identificadores, pois são informações que podem mudar."
+  },
+  {
+    "id": 136,
+    "category": "Saúde da Criança",
+    "question": "A manobra de Ortolani é utilizada na triagem neonatal para investigar qual condição?",
+    "options": [
+      { "id": "A", "text": "Reflexo de Moro." },
+      { "id": "B", "text": "Displasia do desenvolvimento do quadril." },
+      { "id": "C", "text": "Fratura de clavícula." },
+      { "id": "D", "text": "Paralisia de Erb-Duchenne." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A manobra de Ortolani (e a de Barlow) é um teste realizado no exame físico do recém-nascido para detectar a instabilidade da articulação do quadril. Um 'clique' audível ou palpável durante a manobra sugere uma luxação ou subluxação, indicando Displasia do Desenvolvimento do Quadril."
+  },
+  {
+    "id": 137,
+    "category": "Ética e Legislação",
+    "question": "A publicidade ou divulgação de informações inverídicas sobre assunto de sua área profissional é considerada pelo CEPE uma infração de qual natureza?",
+    "options": [
+      { "id": "A", "text": "Leve, passível de advertência verbal." },
+      { "id": "B", "text": "Moderada, passível de multa." },
+      { "id": "C", "text": "Grave, passível de censura." },
+      { "id": "D", "text": "Gravíssima, passível de suspensão ou cassação." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Código de Ética classifica as infrações em leves, moderadas, graves e gravíssimas. Divulgar informação inverídica é considerada uma infração grave, cuja penalidade prevista é a censura, que consiste em uma repreensão que será divulgada nas publicações oficiais do sistema Cofen/Coren."
+  },
+  {
+    "id": 138,
+    "category": "Curativos",
+    "question": "Qual é a principal função do Ácido Graxo Essencial (AGE) no tratamento de feridas?",
+    "options": [
+      { "id": "A", "text": "Promover o desbridamento enzimático." },
+      { "id": "B", "text": "Absorver grandes quantidades de exsudato." },
+      { "id": "C", "text": "Manter o meio úmido, promover a quimiotaxia e a angiogênese." },
+      { "id":- "D", "text": "Controlar a infecção e o odor." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O AGE (como o óleo de girassol) atua mantendo a umidade no leito da ferida, o que é essencial para a cicatrização. Além disso, ele estimula a migração de células inflamatórias (quimiotaxia) e a formação de novos vasos sanguíneos (angiogênese), processos fundamentais para a reparação tecidual."
+  },
+  {
+    "id": 139,
+    "category": "Semiologia",
+    "question": "A respiração de Cheyne-Stokes, caracterizada por períodos de apneia alternados com ciclos de respirações que aumentam e diminuem de amplitude, é frequentemente associada a:",
+    "options": [
+      { "id": "A", "text": "Crises de asma." },
+      { "id": "B", "text": "Obstrução de vias aéreas superiores." },
+      { "id": "C", "text": "Cetoacidose diabética." },
+      { "id": "D", "text": "Lesões cerebrais graves ou insuficiência cardíaca." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A respiração de Cheyne-Stokes é um padrão respiratório anormal que indica uma disfunção do centro respiratório no sistema nervoso central. É um sinal de mau prognóstico, comumente visto em pacientes com insuficiência cardíaca congestiva grave, AVC ou trauma cranioencefálico."
+  },
+  {
+    "id": 140,
+    "category": "ECG",
+    "question": "Qual é a conduta imediata ao identificar Fibrilação Ventricular (FV) em um paciente em parada cardiorrespiratória?",
+    "options": [
+      { "id": "A", "text": "Administrar 1 mg de Adrenalina IV." },
+      { "id": "B", "text": "Aplicar um soco precordial." },
+      { "id": "C", "text": "Realizar a desfibrilação elétrica imediata." },
+      { "id": "D", "text": "Iniciar um ciclo de 30 compressões e 2 ventilações." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Fibrilação Ventricular é um ritmo chocável. A prioridade absoluta é a desfibrilação o mais rápido possível, pois cada minuto de atraso diminui drasticamente a chance de sobrevida. A RCP deve ser realizada enquanto o desfibrilador é preparado e carregado, e reiniciada imediatamente após o choque."
+  },
+  {
+    "id": 141,
+    "category": "Saúde da Mulher",
+    "question": "O Teste Rápido para detecção de HIV e Sífilis deve ser ofertado à gestante em qual momento do pré-natal?",
+    "options": [
+      { "id": "A", "text": "Apenas na primeira consulta." },
+      { "id": "B", "text": "Apenas no terceiro trimestre." },
+      { "id": "C", "text": "Na primeira consulta (1º trimestre) e no 3º trimestre." },
+      { "id": "D", "text": "Apenas no momento do parto." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Ministério da Saúde recomenda a realização dos testes rápidos para HIV, sífilis e hepatites B e C na primeira consulta de pré-natal (idealmente no 1º trimestre) e a repetição no 3º trimestre, além do momento do parto, para diagnóstico e prevenção da transmissão vertical."
+  },
+  {
+    "id": 142,
+    "category": "Procedimentos",
+    "question": "Qual é a posição recomendada para o paciente durante a passagem de um cateter venoso central em veia jugular interna?",
+    "options": [
+      { "id": "A", "text": "Posição de Fowler (cabeceira elevada a 45 graus)." },
+      { "id": "B", "text": "Posição de Trendelenburg (cabeça mais baixa que o corpo)." },
+      { "id": "C", "text": "Decúbito lateral esquerdo." },
+      { "id": "D", "text": "Posição ortostática (em pé)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A posição de Trendelenburg (geralmente com um leve grau de inclinação, 15-30 graus) é utilizada para aumentar a ingurgitamento da veia jugular, facilitando a punção, e para aumentar a pressão venosa central, reduzindo o risco de embolia gasosa durante o procedimento."
+  },
+  {
+    "id": 143,
+    "category": "SAE",
+    "question": "A coleta de dados de enfermagem é composta por duas partes principais, que são:",
+    "options": [
+      { "id": "A", "text": "Diagnóstico e Planejamento." },
+      { "id": "B", "text": "Anamnese e Exame Físico." },
+      { "id": "C", "text": "Prescrição e Evolução." },
+      { "id": "D", "text": "Dados objetivos e Dados de familiares." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A primeira etapa da SAE, a Coleta de Dados (ou Histórico de Enfermagem), é a base de todo o processo. Ela é realizada através da Anamnese (entrevista com o paciente para obter dados subjetivos e histórico) e do Exame Físico (para obter dados objetivos)."
+  },
+  {
+    "id": 144,
+    "category": "Saúde do Idoso",
+    "question": "A sarcopenia, comum em idosos, refere-se à:",
+    "options": [
+      { "id": "A", "text": "Perda de densidade mineral óssea." },
+      { "id": "B", "text": "Diminuição da acuidade auditiva." },
+      { "id": "C", "text": "Perda progressiva e generalizada de massa e força muscular." },
+      { "id": "D", "text": "Dificuldade de deglutição para líquidos." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Sarcopenia é uma síndrome caracterizada pela perda de massa, força e função muscular associada ao envelhecimento. É um fator de risco importante para quedas, fragilidade, incapacidade funcional e mortalidade em idosos."
+  },
+  {
+    "id": 145,
+    "category": "Saúde Mental",
+    "question": "A Terapia Eletroconvulsiva (TEC) é um procedimento médico que, segundo a legislação brasileira, é indicado para quais situações?",
+    "options": [
+      { "id": "A", "text": "Como primeira opção para todos os transtornos de ansiedade." },
+      { "id": "B", "text": "Para fins punitivos em pacientes com comportamento agressivo." },
+      { "id": "C", "text": "Em casos de transtornos mentais graves e refratários a outras formas de tratamento." },
+      { "id": "D", "text": "Para tratamento de dependência química em adolescentes." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A TEC é um tratamento eficaz e seguro, realizado sob anestesia geral, para condições psiquiátricas graves como depressão maior refratária, catatonia, e alguns casos de esquizofrenia e transtorno bipolar que não responderam a outras terapias. Seu uso é regulamentado e não tem caráter punitivo."
+  },
+  {
+    "id": 146,
+    "category": "Princípios do SUS",
+    "question": "O que são as Comissões Intergestores Bipartite (CIB) e Tripartite (CIT) no âmbito do SUS?",
+    "options": [
+      { "id": "A", "text": "São os conselhos de saúde em nível estadual e federal." },
+      { "id": "B", "text": "São instâncias de pactuação e negociação entre os gestores do SUS." },
+      { "id": "C", "text": "São os órgãos responsáveis pela fiscalização do exercício profissional." },
+      { "id": "D", "text": "São comitês de ética em pesquisa." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "As Comissões Intergestores são espaços de articulação e pactuação entre os gestores. A CIB ocorre no âmbito estadual, reunindo gestores municipais e o gestor estadual. A CIT ocorre no âmbito federal, reunindo os gestores estaduais (representados pelo CONASS) e municipais (representados pelo CONASEMS) com o gestor federal (Ministério da Saúde)."
+  },
+  {
+    "id": 147,
+    "category": "Emergência",
+    "question": "Um paciente apresenta um ferimento por arma de fogo no abdome. Qual é a conduta correta em relação ao objeto empalado?",
+    "options": [
+      { "id": "A", "text": "Remover o objeto imediatamente para avaliar a profundidade da lesão." },
+      { "id": "B", "text": "Movimentar o objeto para verificar se há lesão de grandes vasos." },
+      { "id": "C", "text": "Estabilizar o objeto com curativos e não removê-lo." },
+      { "id": "D", "text": "Cortar a parte externa do objeto para facilitar o transporte." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Objetos empalados NUNCA devem ser removidos no atendimento pré-hospitalar, pois eles podem estar tamponando uma hemorragia grave. A conduta correta é estabilizar o objeto para evitar movimentação e encaminhar o paciente para o tratamento cirúrgico definitivo."
+  },
+  {
+    "id": 148,
+    "category": "Farmacologia",
+    "question": "Qual o principal cuidado de enfermagem na administração de Nitroprussiato de Sódio (Nipride)?",
+    "options": [
+      { "id": "A", "text": "Administrar em bolus rápido para efeito imediato." },
+      { "id": "B", "text": "Proteger o frasco e o equipo da luz, pois o medicamento é fotossensível." },
+      { "id": "C", "text": "Diluir exclusivamente em Soro Fisiológico 0,9%." },
+      { "id": "D", "text": "Monitorar a glicemia capilar a cada hora." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Nitroprussiato de Sódio é extremamente fotossensível e se degrada rapidamente quando exposto à luz, formando cianeto. Por isso, tanto o frasco da solução quanto o equipo de infusão devem ser protegidos com um material opaco (geralmente fornecido pelo fabricante)."
+  },
+  {
+    "id": 149,
+    "category": "Segurança do Paciente",
+    "question": "O checklist de cirurgia segura da OMS é dividido em três momentos. Quais são eles?",
+    "options": [
+      { "id": "A", "text": "Admissão, Transoperatório e Alta." },
+      { "id": "B", "text": "Antes da indução anestésica, antes da incisão cirúrgica e antes do paciente sair da sala." },
+      { "id": "C", "text": "Pré-operatório, Intraoperatório e Pós-operatório." },
+      { "id": "D", "text": "Preparo, Execução e Finalização." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O checklist de cirurgia segura é dividido em três fases de verificação: 1) 'Sign In' (Antes da indução anestésica); 2) 'Time Out' (Pausa cirúrgica, antes da primeira incisão); 3) 'Sign Out' (Antes de o paciente sair da sala de operação)."
+  },
+  {
+    "id": 150,
+    "category": "Saúde da Criança",
+    "question": "A reidratação oral em uma criança com diarreia e desidratação leve a moderada deve ser feita com:",
+    "options": [
+      { "id": "A", "text": "Água de coco e chás caseiros." },
+      { "id": "B", "text": "Soro de Reidratação Oral (SRO) de baixa osmolaridade." },
+      { "id": "C", "text": "Refrigerantes e sucos industrializados." },
+      { "id": "D", "text": "Água pura em grande quantidade." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Soro de Reidratação Oral, fornecido pelo SUS, tem a composição ideal de água, sódio, potássio, cloreto e glicose para corrigir a desidratação e os distúrbios eletrolíticos causados pela diarreia. Outras soluções não possuem o balanço adequado e podem piorar o quadro."
   }
 ]
