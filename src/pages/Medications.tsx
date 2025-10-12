@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Syringe, Search, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 interface Medication {
   name: string;
@@ -434,45 +435,47 @@ const Medications = () => {
         />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="space-y-4">
         {filteredMedications.map((medication, index) => (
-          <Card key={index} className="flex flex-col">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <Syringe className="h-5 w-5 text-primary" />
+          <Accordion type="single" collapsible key={index}>
+            <AccordionItem value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
+              <AccordionTrigger className="group hover:no-underline text-left">
+                <div className="flex items-start justify-between w-full">
+                  <div className="flex items-center gap-3">
+                    <Syringe className="h-5 w-5 text-primary" />
+                    <div>
+                      <p className="font-semibold text-left">{medication.name}</p>
+                      <p className="text-sm text-muted-foreground text-left mt-1">{medication.activeIngredient}</p>
+                    </div>
+                  </div>
+                  <Badge variant="secondary" className="ml-4 flex-shrink-0">{medication.category}</Badge>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="pt-4 space-y-4">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <CardTitle>{medication.name}</CardTitle>
-                    <CardDescription className="mt-1">{medication.activeIngredient}</CardDescription>
+                    <h4 className="font-semibold text-sm text-green-700 mb-1">Indicação</h4>
+                    <p className="text-sm" dangerouslySetInnerHTML={{ __html: medication.indication }} />
                   </div>
                 </div>
-                <Badge variant="secondary">{medication.category}</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4 flex-1">
-              <div className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-sm text-green-700 mb-1">Indicação</h4>
-                  <p className="text-sm" dangerouslySetInnerHTML={{ __html: medication.indication }} />
+                <div className="flex items-start gap-3">
+                  <XCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-sm text-red-700 mb-1">Contraindicação</h4>
+                    <p className="text-sm" dangerouslySetInnerHTML={{ __html: medication.contraindication }} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <XCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-sm text-red-700 mb-1">Contraindicação</h4>
-                  <p className="text-sm" dangerouslySetInnerHTML={{ __html: medication.contraindication }} />
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-sm text-amber-700 mb-1">Efeitos Adversos / Cuidados</h4>
+                    <p className="text-sm" dangerouslySetInnerHTML={{ __html: medication.adverseEffects }} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-sm text-amber-700 mb-1">Efeitos Adversos / Cuidados</h4>
-                  <p className="text-sm" dangerouslySetInnerHTML={{ __html: medication.adverseEffects }} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         ))}
       </div>
 
