@@ -1,4 +1,4 @@
-import { LucideIcon, Stethoscope, Hand, Ear, Eye, Brain, Heart, AirVent, CircleDot, Waves, Thermometer, HeartPulse, Wind, Ruler, Smile, Droplet } from "lucide-react";
+import { LucideIcon, Stethoscope, Hand, Eye, Brain, Heart, AirVent, CircleDot, Waves, Thermometer, HeartPulse, Wind, Ruler, Smile, Droplet } from "lucide-react";
 
 export interface AnamnesisStep {
   title: string;
@@ -25,14 +25,27 @@ export interface SystemAssessment {
   details: AssessmentDetail[];
 }
 
-export interface VitalSign {
+export interface Alteration {
+  term: string;
+  description: string;
+}
+
+export interface GlycemiaCriteria {
+  criterion: string;
+  normal: string;
+  preDiabetes: string;
+  diabetes: string;
+}
+
+export interface SemioTechniqueItem {
   id: string;
   name: string;
   icon: LucideIcon;
   color: string;
   technique: string[];
-  normalValues: string;
-  alterations: { term: string; description: string }[];
+  normalValues?: string;
+  alterations?: Alteration[];
+  glycemiaCriteria?: GlycemiaCriteria[];
 }
 
 export const anamnesisSteps: AnamnesisStep[] = [
@@ -99,7 +112,7 @@ export const systemAssessments: SystemAssessment[] = [
   },
 ];
 
-export const vitalSigns: VitalSign[] = [
+export const semioTechniqueData: SemioTechniqueItem[] = [
     {
         id: "temperature",
         name: "Temperatura",
@@ -167,28 +180,29 @@ export const vitalSigns: VitalSign[] = [
             { term: "Dor Moderada", description: "4 a 6 na escala numérica" },
             { term: "Dor Intensa", description: "7 a 10 na escala numérica" }
         ]
+    },
+    {
+        id: "glycemia",
+        name: "Glicemia Capilar",
+        icon: Droplet,
+        color: "text-orange-500",
+        technique: [
+            "Realizar higiene das mãos e calçar luvas de procedimento.",
+            "Selecionar o local da punção, preferencialmente na <strong>lateral da polpa digital</strong>.",
+            "Realizar antissepsia do local com algodão e álcool 70%, e aguardar secar.",
+            "Inserir a fita reagente no glicosímetro.",
+            "Puncionar o local com lanceta e desprezar a primeira gota de sangue.",
+            "Aproximar a fita reagente da gota de sangue para que ela seja aspirada.",
+            "Aguardar a leitura no visor do aparelho e registrar o valor.",
+            "Realizar compressão no local da punção com algodão seco."
+        ],
+        alterations: [
+            { term: "Hipoglicemia", description: "< 70 mg/dL" }
+        ],
+        glycemiaCriteria: [
+            { criterion: "Glicemia de Jejum", normal: "< 100 mg/dL", preDiabetes: "100 a 125 mg/dL", diabetes: "≥ 126 mg/dL" },
+            { criterion: "Glicemia 2h Pós-Sobrecarga (TOTG 75g)", normal: "< 140 mg/dL", preDiabetes: "140 a 199 mg/dL", diabetes: "≥ 200 mg/dL" },
+            { criterion: "Hemoglobina Glicada (HbA1c)", normal: "< 5,7%", preDiabetes: "5,7% a 6,4%", diabetes: "≥ 6,5%" },
+        ]
     }
 ];
-
-export const glycemiaAssessment: VitalSign = {
-    id: "glycemia",
-    name: "Glicemia Capilar",
-    icon: Droplet,
-    color: "text-orange-500",
-    technique: [
-        "Realizar higiene das mãos e calçar luvas de procedimento.",
-        "Selecionar o local da punção, preferencialmente na <strong>lateral da polpa digital</strong>.",
-        "Realizar antissepsia do local com algodão e álcool 70%, e aguardar secar.",
-        "Inserir a fita reagente no glicosímetro.",
-        "Puncionar o local com lanceta e desprezar a primeira gota de sangue.",
-        "Aproximar a fita reagente da gota de sangue para que ela seja aspirada.",
-        "Aguardar a leitura no visor do aparelho e registrar o valor.",
-        "Realizar compressão no local da punção com algodão seco."
-    ],
-    normalValues: "<strong>Glicemia de Jejum:</strong> 70-99 mg/dL<br /><strong>Glicemia 2h pós-sobrecarga:</strong> < 140 mg/dL<br /><strong>HbA1c:</strong> < 5,7%",
-    alterations: [
-        { term: "Hipoglicemia", description: "< 70 mg/dL" },
-        { term: "Pré-Diabetes", description: "<strong>Glicemia de Jejum:</strong> 100 a 125 mg/dL<br /><strong>Glicemia 2h pós-sobrecarga:</strong> 140 a 199 mg/dL<br /><strong>HbA1c:</strong> 5,7% a 6,4%" },
-        { term: "Diabetes Mellitus", description: "<strong>Glicemia de Jejum:</strong> ≥ 126 mg/dL<br /><strong>Glicemia 2h pós-sobrecarga:</strong> ≥ 200 mg/dL<br /><strong>HbA1c:</strong> ≥ 6,5%<br /><strong>Glicemia casual com sintomas:</strong> ≥ 200 mg/dL" }
-    ]
-};
