@@ -9,7 +9,8 @@ import { Timer, FileText, Info, PlayCircle } from "lucide-react";
 
 const SimuladoLobby = () => {
   const [numQuestions, setNumQuestions] = useState("20");
-  const [totalTime, setTotalTime] = useState("20"); // in minutes
+  const [totalTime, setTotalTime] = useState("40"); // Default time based on 2min/question for 20 questions
+
   const navigate = useNavigate();
 
   const handleStart = () => {
@@ -21,16 +22,23 @@ const SimuladoLobby = () => {
     });
   };
 
-  const totalTimeMinutes = parseInt(totalTime);
+  // Update time automatically when number of questions changes
+  const handleQuestionsChange = (value: string) => {
+    setNumQuestions(value);
+    const newTime = parseInt(value) * 2; // 2 minutes per question
+    setTotalTime(String(newTime));
+  };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Área de Simulado</h1>
+    <div className="max-w-4xl mx-auto space-y-8 py-8">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+          Área de Simulado
+        </h1>
         <p className="text-muted-foreground">Prepare-se para os desafios reais. Configure e inicie seu simulado cronometrado.</p>
       </div>
 
-      <Card className="shadow-lg">
+      <Card className="shadow-lg bg-gradient-to-br from-primary/10 to-secondary/10">
         <CardHeader>
           <CardTitle className="text-2xl">Configurar Simulado</CardTitle>
           <CardDescription>Ajuste os parâmetros para simular as condições do seu concurso ou prova.</CardDescription>
@@ -42,7 +50,7 @@ const SimuladoLobby = () => {
                 <FileText className="h-5 w-5 text-primary" />
                 Número de Questões
               </Label>
-              <Select value={numQuestions} onValueChange={setNumQuestions}>
+              <Select value={numQuestions} onValueChange={handleQuestionsChange}>
                 <SelectTrigger id="num-questions"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="10">10 Questões (Rápido)</SelectItem>
@@ -55,27 +63,20 @@ const SimuladoLobby = () => {
             <div className="space-y-2">
               <Label htmlFor="total-time" className="flex items-center gap-2 font-semibold">
                 <Timer className="h-5 w-5 text-primary" />
-                Tempo Total do Simulado
+                Tempo Sugerido
               </Label>
-              <Select value={totalTime} onValueChange={setTotalTime}>
-                <SelectTrigger id="total-time"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="20">20 minutos</SelectItem>
-                  <SelectItem value="30">30 minutos</SelectItem>
-                  <SelectItem value="60">1 hora</SelectItem>
-                  <SelectItem value="90">1 hora e 30 minutos</SelectItem>
-                  <SelectItem value="120">2 horas</SelectItem>
-                  <SelectItem value="180">3 horas</SelectItem>
-                  <SelectItem value="240">4 horas</SelectItem>
-                  <SelectItem value="300">5 horas</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="p-3 bg-background/70 rounded-md font-semibold text-lg text-center">
+                {totalTime} minutos
+              </div>
+              <p className="text-xs text-muted-foreground text-center">
+                (Baseado em 2 minutos por questão)
+              </p>
             </div>
           </div>
-          <div className="bg-muted/50 rounded-lg p-6 flex flex-col items-center justify-center text-center">
-            <h3 className="font-semibold text-lg">Resumo do Simulado</h3>
-            <p className="text-5xl font-bold text-primary my-4">{totalTimeMinutes}</p>
-            <p className="text-muted-foreground">Minutos Totais</p>
+          <div className="bg-primary/20 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-inner">
+            <h3 className="font-semibold text-lg text-primary-foreground">Resumo do Simulado</h3>
+            <p className="text-6xl font-bold text-white my-2">{numQuestions}</p>
+            <p className="text-primary-foreground/80">Questões Selecionadas</p>
           </div>
         </CardContent>
         <CardFooter className="flex-col items-start gap-4">
@@ -86,8 +87,8 @@ const SimuladoLobby = () => {
               O cronômetro iniciará assim que você clicar em "Iniciar" e não poderá ser pausado. As respostas não poderão ser alteradas após avançar para a próxima questão.
             </AlertDescription>
           </Alert>
-          <Button onClick={handleStart} size="lg" className="w-full">
-            <PlayCircle className="mr-2 h-5 w-5" />
+          <Button onClick={handleStart} size="lg" className="w-full text-lg font-bold py-6">
+            <PlayCircle className="mr-2 h-6 w-6" />
             Iniciar Simulado
           </Button>
         </CardFooter>

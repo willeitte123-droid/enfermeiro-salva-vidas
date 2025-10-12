@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Loader2, Timer, AlertTriangle } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import * as ProgressPrimitive from "@radix-ui/react-progress";
 
 interface Question {
   id: number;
@@ -98,14 +99,14 @@ const Simulado = () => {
   };
 
   if (loading || simuladoQuestions.length === 0) {
-    return <div className="flex items-center justify-center h-screen"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+    return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
 
   const currentQuestion = simuladoQuestions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / simuladoQuestions.length) * 100;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-muted/40 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-primary/10 p-4">
       <AlertDialog open={showTimeUpDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -127,7 +128,12 @@ const Simulado = () => {
               {formatTime(timeLeft)}
             </div>
           </div>
-          <Progress value={progress} className="mt-4" />
+          <ProgressPrimitive.Root value={progress} className="relative h-4 w-full overflow-hidden rounded-full bg-muted mt-4">
+            <ProgressPrimitive.Indicator
+              className="h-full w-full flex-1 bg-gradient-to-r from-green-400 to-blue-500 transition-all"
+              style={{ transform: `translateX(-${100 - (progress || 0)}%)` }}
+            />
+          </ProgressPrimitive.Root>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
           <div>
@@ -136,7 +142,7 @@ const Simulado = () => {
           </div>
           <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer} className="space-y-3">
             {currentQuestion.options.map((option) => (
-              <Label key={option.id} className="flex items-center space-x-3 p-4 rounded-lg border-2 border-border hover:border-primary hover:bg-accent transition-all cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/10">
+              <Label key={option.id} className="flex items-center space-x-3 p-4 rounded-lg border-2 border-border hover:border-primary hover:bg-accent transition-all cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:scale-[1.02]">
                 <RadioGroupItem value={option.id} />
                 <span className="font-medium">{option.text}</span>
               </Label>
