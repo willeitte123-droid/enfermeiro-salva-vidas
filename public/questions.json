@@ -1,0 +1,262 @@
+[
+  {
+    "id": 1,
+    "category": "Ética e Legislação",
+    "question": "De acordo com o Código de Ética dos Profissionais de Enfermagem (CEPE), a recusa em executar uma prescrição medicamentosa em caso de identificação de erro ou ilegibilidade é considerada:",
+    "options": [
+      { "id": "A", "text": "Um ato de insubordinação, passível de punição." },
+      { "id": "B", "text": "Um dever do profissional para garantir a segurança do paciente." },
+      { "id": "C", "text": "Uma infração ética, pois questiona a conduta de outro profissional." },
+      { "id": "D", "text": "Uma decisão opcional, que depende da relação com a equipe." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O CEPE estabelece como um dever do profissional de enfermagem avaliar criteriosamente a prescrição e, em caso de erro ou ilegibilidade, recusar-se a executá-la, comunicando o fato ao responsável para garantir a segurança do paciente."
+  },
+  {
+    "id": 2,
+    "category": "Segurança do Paciente",
+    "question": "Qual das seguintes ações é a principal medida para a prevenção de infecções relacionadas à assistência à saúde (IRAS), de acordo com as metas internacionais de segurança do paciente?",
+    "options": [
+      { "id": "A", "text": "Uso de antibióticos profiláticos em todos os pacientes." },
+      { "id": "B", "text": "Higienização das mãos nos 5 momentos preconizados pela OMS." },
+      { "id": "C", "text": "Isolamento de contato para todos os pacientes admitidos." },
+      { "id": "D", "text": "Limpeza terminal diária de todas as unidades de internação." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A higienização das mãos é a medida mais simples, barata e eficaz para prevenir a disseminação de microrganismos e reduzir as IRAS. As outras medidas são importantes, mas a higienização das mãos é o pilar central da Meta 5."
+  },
+  {
+    "id": 3,
+    "category": "Emergência",
+    "question": "Durante o atendimento a uma parada cardiorrespiratória (PCR) em um adulto, qual é a frequência e a profundidade corretas das compressões torácicas?",
+    "options": [
+      { "id": "A", "text": "80-100 compressões por minuto, com profundidade de 4-5 cm." },
+      { "id": "B", "text": "100-120 compressões por minuto, com profundidade de 5-6 cm." },
+      { "id": "C", "text": "120-140 compressões por minuto, com profundidade de 6-7 cm." },
+      { "id": "D", "text": "Pelo menos 100 compressões por minuto, com profundidade de 4 cm." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "As diretrizes de Suporte Básico e Avançado de Vida recomendam uma frequência de 100 a 120 compressões por minuto e uma profundidade de 5 a 6 cm para garantir uma perfusão coronariana e cerebral adequada."
+  },
+  {
+    "id": 4,
+    "category": "Saúde da Mulher",
+    "question": "Para o rastreamento do câncer de colo de útero no Brasil, a recomendação do Ministério da Saúde para a realização do exame Papanicolau é:",
+    "options": [
+      { "id": "A", "text": "Anual para todas as mulheres a partir do início da vida sexual." },
+      { "id": "B", "text": "A cada 5 anos para mulheres entre 30 e 59 anos." },
+      { "id": "C", "text": "A cada 3 anos para mulheres entre 25 e 64 anos, após dois exames anuais negativos." },
+      { "id": "D", "text": "Apenas para mulheres com múltiplos parceiros ou sintomas." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O rastreamento deve ser feito em mulheres de 25 a 64 anos. Os dois primeiros exames devem ser anuais. Se ambos forem negativos, os próximos podem ser realizados a cada três anos."
+  },
+  {
+    "id": 5,
+    "category": "Farmacologia",
+    "question": "A administração intravenosa rápida de Furosemida (Lasix) está associada a qual efeito adverso principal?",
+    "options": [
+      { "id": "A", "text": "Hipertensão de rebote." },
+      { "id": "B", "text": "Hipercalemia severa." },
+      { "id": "C", "text": "Ototoxicidade e hipotensão." },
+      { "id": "D", "text": "Bradicardia reflexa." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Furosemida, um diurético de alça, pode causar ototoxicidade (lesão no ouvido) e hipotensão, especialmente quando administrada em bolus intravenoso rápido. Por isso, a administração deve ser lenta."
+  },
+  {
+    "id": 6,
+    "category": "Saúde da Criança",
+    "question": "Qual vacina, administrada ao nascer, protege contra as formas graves de tuberculose?",
+    "options": [
+      { "id": "A", "text": "Hepatite B" },
+      { "id": "B", "text": "Pentavalente" },
+      { "id": "C", "text": "BCG" },
+      { "id": "D", "text": "Tríplice Viral" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A vacina BCG (Bacilo Calmette-Guérin) é administrada em dose única ao nascer para proteger contra as formas graves da tuberculose, como a meningite tuberculosa e a tuberculose miliar."
+  },
+  {
+    "id": 7,
+    "category": "Princípios do SUS",
+    "question": "O princípio do SUS que visa tratar desigualmente os desiguais, investindo mais onde a carência é maior, é conhecido como:",
+    "options": [
+      { "id": "A", "text": "Universalidade" },
+      { "id": "B", "text": "Integralidade" },
+      { "id": "C", "text": "Equidade" },
+      { "id": "D", "text": "Participação Social" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Equidade busca diminuir as desigualdades, oferecendo mais a quem mais precisa. Diferente da igualdade, que trata todos da mesma forma, a equidade reconhece as diferenças e ajusta o cuidado às necessidades de cada um."
+  },
+  {
+    "id": 8,
+    "category": "Curativos",
+    "question": "Para uma ferida com grande quantidade de exsudato e necessidade de desbridamento autolítico, qual das seguintes coberturas é mais indicada?",
+    "options": [
+      { "id": "A", "text": "Hidrogel" },
+      { "id": "B", "text": "Filme transparente" },
+      { "id": "C", "text": "Alginato de Cálcio" },
+      { "id": "D", "text": "Ácidos Graxos Essenciais (AGE)" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Alginato de Cálcio é altamente absorvente, formando um gel que mantém o ambiente úmido e auxilia no desbridamento autolítico, sendo ideal para feridas muito exsudativas. O hidrogel é para feridas secas."
+  },
+  {
+    "id": 9,
+    "category": "Semiologia",
+    "question": "Na ausculta pulmonar, a presença de sons contínuos, agudos e musicais, ouvidos principalmente na expiração, é característica de:",
+    "options": [
+      { "id": "A", "text": "Estertores crepitantes" },
+      { "id": "B", "text": "Roncos" },
+      { "id": "C", "text": "Sibilos" },
+      { "id": "D", "text": "Atrito pleural" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Sibilos são ruídos adventícios causados pela passagem de ar por vias aéreas estreitadas, típicos de condições como asma e DPOC."
+  },
+  {
+    "id": 10,
+    "category": "Farmacologia",
+    "question": "Qual é o antídoto específico para a reversão da depressão respiratória causada por benzodiazepínicos como o Midazolam?",
+    "options": [
+      { "id": "A", "text": "Naloxona" },
+      { "id": "B", "text": "Flumazenil" },
+      { "id": "C", "text": "Protamina" },
+      { "id": "D", "text": "Vitamina K" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Flumazenil (Lanexat) é o antagonista específico dos receptores benzodiazepínicos, utilizado para reverter seus efeitos sedativos e respiratórios. A Naloxona é o antídoto para opioides."
+  },
+  {
+    "id": 11,
+    "category": "SAE",
+    "question": "Dentro da Sistematização da Assistência de Enfermagem (SAE), qual etapa corresponde ao julgamento clínico sobre as respostas do indivíduo a problemas de saúde reais ou potenciais?",
+    "options": [
+      { "id": "A", "text": "Coleta de Dados" },
+      { "id": "B", "text": "Diagnóstico de Enfermagem" },
+      { "id": "C", "text": "Planejamento de Enfermagem" },
+      { "id": "D", "text": "Implementação" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Diagnóstico de Enfermagem é a segunda etapa da SAE, onde o enfermeiro analisa os dados coletados para identificar os problemas, riscos e potencialidades do paciente, utilizando taxonomias como a NANDA-I."
+  },
+  {
+    "id": 12,
+    "category": "ECG",
+    "question": "No eletrocardiograma, o complexo QRS representa qual evento elétrico do coração?",
+    "options": [
+      { "id": "A", "text": "A despolarização dos átrios." },
+      { "id": "B", "text": "A repolarização dos ventrículos." },
+      { "id": "C", "text": "O tempo de condução atrioventricular." },
+      { "id": "D", "text": "A despolarização dos ventrículos." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "O complexo QRS representa a rápida despolarização dos ventrículos direito e esquerdo. Sua duração normal é inferior a 0,12 segundos."
+  },
+  {
+    "id": 13,
+    "category": "Emergência",
+    "question": "Um paciente apresenta bradicardia sinusal sintomática com instabilidade hemodinâmica. Qual é o medicamento de primeira escolha para o tratamento, segundo as diretrizes do ACLS?",
+    "options": [
+      { "id": "A", "text": "Amiodarona" },
+      { "id": "B", "text": "Adrenalina" },
+      { "id": "C", "text": "Atropina" },
+      { "id": "D", "text": "Dopamina" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Atropina é o fármaco de primeira linha para o tratamento da bradicardia sintomática, na dose de 1 mg IV em bolus, podendo ser repetida a cada 3-5 minutos até um máximo de 3 mg."
+  },
+  {
+    "id": 14,
+    "category": "Saúde do Idoso",
+    "question": "A avaliação da capacidade de um idoso para realizar tarefas como usar o telefone, preparar refeições e gerenciar finanças refere-se a qual tipo de atividade?",
+    "options": [
+      { "id": "A", "text": "Atividades Básicas de Vida Diária (ABVD)" },
+      { "id": "B", "text": "Atividades Instrumentais de Vida Diária (AIVD)" },
+      { "id": "C", "text": "Atividades Avançadas de Vida Diária (AAVD)" },
+      { "id": "D", "text": "Atividades de Lazer e Produtividade (ALP)" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "As AIVDs são tarefas mais complexas que exigem maior função cognitiva e permitem que o indivíduo viva de forma independente na comunidade. As ABVDs incluem autocuidado básico como banho e alimentação."
+  },
+  {
+    "id": 15,
+    "category": "Saúde Mental",
+    "question": "Qual dispositivo da Rede de Atenção Psicossocial (RAPS) é um serviço de base comunitária, que funciona 24 horas e oferece leitos de repouso para observação e manejo de crises?",
+    "options": [
+      { "id": "A", "text": "CAPS I" },
+      { "id": "B", "text": "CAPS II" },
+      { "id": "C", "text": "CAPS III" },
+      { "id": "D", "text": "CAPSad" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O CAPS III é o único tipo de CAPS que funciona 24 horas por dia, sete dias por semana, e possui leitos para acolhimento noturno, sendo um recurso estratégico para o cuidado de pessoas com transtornos mentais graves e persistentes em crise."
+  },
+  {
+    "id": 16,
+    "category": "Procedimentos",
+    "question": "Ao realizar a aferição da Pressão Venosa Central (PVC), o transdutor de pressão deve ser nivelado em qual ponto de referência anatômico?",
+    "options": [
+      { "id": "A", "text": "Linha hemiclavicular, no 3º espaço intercostal." },
+      { "id": "B", "text": "Linha axilar média, no 4º espaço intercostal." },
+      { "id": "C", "text": "Linha axilar anterior, no 5º espaço intercostal." },
+      { "id": "D", "text": "Apêndice xifoide." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O ponto zero de referência para a medida da PVC é o eixo flebostático, localizado na intersecção da linha axilar média com o 4º espaço intercostal, que corresponde aproximadamente ao nível do átrio direito."
+  },
+  {
+    "id": 17,
+    "category": "Segurança do Paciente",
+    "question": "A administração de Sulfato de Magnésio para uma gestante com pré-eclâmpsia grave exige monitoramento rigoroso. Qual é o primeiro sinal de intoxicação por magnésio?",
+    "options": [
+      { "id": "A", "text": "Aumento da frequência cardíaca." },
+      { "id": "B", "text": "Depressão respiratória." },
+      { "id": "C", "text": "Perda do reflexo patelar." },
+      { "id": "D", "text": "Pico hipertensivo." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A toxicidade do magnésio manifesta-se de forma progressiva. A perda (hipoatividade) do reflexo patelar é o sinal clínico mais precoce e deve ser monitorado continuamente. A depressão respiratória é um sinal mais tardio e grave."
+  },
+  {
+    "id": 18,
+    "category": "Ética e Legislação",
+    "question": "Um profissional de enfermagem que realiza um procedimento para o qual não possui habilidade técnica, resultando em dano ao paciente, comete uma infração caracterizada como:",
+    "options": [
+      { "id": "A", "text": "Negligência" },
+      { "id": "B", "text": "Imprudência" },
+      { "id": "C", "text": "Imperícia" },
+      { "id": "D", "text": "Má-fé" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Imperícia é a falta de conhecimento ou habilidade técnica para a realização de um ato profissional. É o 'não saber fazer' ou 'fazer mal feito' por falta de qualificação."
+  },
+  {
+    "id": 19,
+    "category": "Farmacologia",
+    "question": "A 'Síndrome do Homem Vermelho' é uma reação adversa comum associada à infusão rápida de qual antibiótico?",
+    "options": [
+      { "id": "A", "text": "Ceftriaxona" },
+      { "id": "B", "text": "Meropenem" },
+      { "id": "C", "text": "Vancomicina" },
+      { "id": "D", "text": "Ciprofloxacino" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Síndrome do Homem Vermelho é uma reação de hipersensibilidade não alérgica causada pela liberação de histamina, que ocorre com a infusão rápida de Vancomicina. Caracteriza-se por rubor, eritema e prurido na face, pescoço e tronco."
+  },
+  {
+    "id": 20,
+    "category": "Saúde da Criança",
+    "question": "Na avaliação do crescimento infantil, qual parâmetro é o mais sensível para detectar alterações nutricionais agudas (emagrecimento)?",
+    "options": [
+      { "id": "A", "text": "Índice de Peso para a Idade (P/I)" },
+      { "id": "B", "text": "Índice de Estatura para a Idade (E/I)" },
+      { "id": "C", "text": "Índice de Peso para a Estatura (P/E)" },
+      { "id": "D", "text": "Perímetro Cefálico (PC)" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O índice Peso/Estatura (P/E) reflete a harmonia entre o peso e a altura da criança no momento da avaliação, sendo o melhor indicador para diagnosticar desnutrição aguda ou emagrecimento recente."
+  }
+]
