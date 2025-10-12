@@ -1,9 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { semioTechniqueData } from "@/data/assessment";
-import { HandHeart, CheckCircle2, Info, Droplet } from "lucide-react";
+import { HandHeart, CheckCircle2, Droplet } from "lucide-react";
 
 const SemioTechnique = () => {
   const vitalSigns = semioTechniqueData.filter(item => item.id !== 'glycemia');
@@ -76,13 +75,11 @@ const SemioTechnique = () => {
             <CardDescription>Técnica para aferição de glicemia capilar e critérios diagnósticos.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Técnica de Aferição</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-4">
+            <Accordion type="multiple" defaultValue={["technique"]} className="space-y-4">
+              <AccordionItem value="technique" className="border rounded-lg px-4 bg-card shadow-sm">
+                <AccordionTrigger className="font-semibold">Técnica de Aferição</AccordionTrigger>
+                <AccordionContent>
+                  <ul className="space-y-4 pt-4">
                     {glycemiaAssessment.technique.map((step, i) => (
                       <li key={i} className="flex items-start gap-3 text-sm">
                         <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
@@ -90,13 +87,11 @@ const SemioTechnique = () => {
                       </li>
                     ))}
                   </ul>
-                </CardContent>
-              </Card>
-              <Card className="bg-muted/30">
-                <CardHeader>
-                  <CardTitle>Valores de Referência</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="values" className="border rounded-lg px-4 bg-card shadow-sm">
+                <AccordionTrigger className="font-semibold">Valores de Referência</AccordionTrigger>
+                <AccordionContent className="space-y-4 pt-4">
                   {glycemiaAssessment.alterations && (
                     <Table>
                       <TableHeader>
@@ -140,9 +135,9 @@ const SemioTechnique = () => {
                       </Table>
                     </>
                   )}
-                </CardContent>
-              </Card>
-            </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </CardContent>
         </Card>
       )}
