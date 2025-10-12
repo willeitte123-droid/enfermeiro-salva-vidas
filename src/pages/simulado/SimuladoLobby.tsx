@@ -72,16 +72,16 @@ const SimuladoLobby = () => {
               </Select>
             </div>
           </div>
-          <div className="bg-primary/20 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-inner">
-            <h3 className="font-semibold text-lg text-primary-foreground">Resumo do Simulado</h3>
+          <div className="bg-emerald-600 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-inner">
+            <h3 className="font-semibold text-lg text-white">Resumo do Simulado</h3>
             <div className="flex items-baseline gap-4">
                 <div>
                     <p className="text-6xl font-bold text-white my-2">{numQuestions}</p>
-                    <p className="text-primary-foreground/80">Questões</p>
+                    <p className="text-white/80">Questões</p>
                 </div>
                 <div>
                     <p className="text-6xl font-bold text-white my-2">{totalTime}</p>
-                    <p className="text-primary-foreground/80">Minutos</p>
+                    <p className="text-white/80">Minutos</p>
                 </div>
             </div>
           </div>
