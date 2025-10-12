@@ -120,31 +120,6 @@ export const reviewTopics: ReviewTopic[] = [
     ]
   },
   {
-    id: "has-dm",
-    title: "HAS e DM",
-    icon: Users,
-    color: "text-orange-500",
-    summary: "Conceitos e cuidados fundamentais na Hipertensão Arterial Sistêmica e Diabetes Mellitus.",
-    details: [
-      {
-        subtitle: "Hipertensão Arterial (HAS)",
-        points: [
-          "<strong>Classificação:</strong> Normal (&lt;120x80), Pré-Hipertensão (121-139 / 81-89), Estágio 1 (140-159 / 90-99), Estágio 2 (≥160 / ≥100).",
-          "<strong>Cuidado de Enfermagem:</strong> Orientar dieta hipossódica, atividade física, controle de peso, adesão medicamentosa e monitoramento da PA."
-        ]
-      },
-      {
-        subtitle: "Diabetes Mellitus (DM)",
-        points: [
-          "<strong>Tipos:</strong> DM1 (autoimune, insulinodependente), DM2 (resistência à insulina), Gestacional.",
-          "<strong>Diagnóstico:</strong> Glicemia de jejum ≥ 126, HbA1c ≥ 6,5%, ou Glicemia casual ≥ 200 com sintomas.",
-          "<strong>Hipoglicemia (&lt;70 mg/dL):</strong> Se consciente, aplicar a 'Regra dos 15' (15g de carboidrato simples, reavaliar em 15 min). Se inconsciente, Glicose 50% IV ou Glucagon IM.",
-          "<strong>Cuidado de Enfermagem:</strong> Educação em saúde, orientação sobre medicamentos, automonitoramento e exame dos pés."
-        ]
-      }
-    ]
-  },
-  {
     id: "sae",
     title: "Sistematização da Assistência de Enfermagem (SAE)",
     icon: ClipboardList,
