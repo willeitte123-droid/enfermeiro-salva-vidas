@@ -8,8 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, Loader2, Lightbulb, Award, RefreshCw, MessageSquare, Smile } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Lightbulb, Award, RefreshCw, MessageSquare, Smile, Trash2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -40,6 +41,7 @@ interface Profile {
   first_name: string;
   last_name: string;
   avatar_url: string;
+  role: string;
 }
 
 interface Comment {
@@ -76,6 +78,10 @@ const Questions = () => {
   const [isCommentsLoading, setIsCommentsLoading] = useState(false);
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState<string | null>(null);
+  const [isDeletingComment, setIsDeletingComment] = useState(false);
 
   const form = useForm<z.infer<typeof commentSchema>>({
     resolver: zodResolver(commentSchema),
@@ -185,6 +191,22 @@ const Questions = () => {
     }
   }
 
+  const handleDeleteComment = async () => {
+    if (!commentToDelete) return;
+    setIsDeletingComment(true);
+    const { error } = await supabase.from("comments").delete().eq("id", commentToDelete);
+    setIsDeletingComment(false);
+    setIsDeleteDialogOpen(false);
+
+    if (error) {
+      toast.error("Erro ao apagar comentário", { description: error.message });
+    } else {
+      toast.success("Comentário apagado com sucesso.");
+      setComments(prev => prev.filter(c => c.id !== commentToDelete));
+    }
+    setCommentToDelete(null);
+  };
+
   if (loading) return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando...</span></div>;
   if (error) return <Alert variant="destructive"><XCircle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>;
   if (allQuestions.length === 0) return <p>Nenhuma questão encontrada.</p>;
@@ -216,6 +238,24 @@ const Questions = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. O comentário será permanentemente apagado.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteComment} disabled={isDeletingComment}>
+              {isDeletingComment && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Apagar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div><h1 className="text-3xl font-bold text-foreground mb-2">Banca de Questões</h1><p className="text-muted-foreground">Teste seus conhecimentos com questões de concurso comentadas.</p></div>
       <div className="space-y-2">
         <Label htmlFor="category-filter">Filtrar por Categoria</Label>
@@ -270,7 +310,20 @@ const Questions = () => {
                             <Link to={`/user/${comment.profiles?.id}`} className="flex-shrink-0">
                               <Avatar className="h-8 w-8"><AvatarImage src={comment.profiles?.avatar_url} className="object-cover" /><AvatarFallback>{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback></Avatar>
                             </Link>
-                            <div className="flex-1 bg-muted p-3 rounded-lg"><div className="flex justify-between items-center"><Link to={`/user/${comment.profiles?.id}`} className="hover:underline"><p className="text-sm font-semibold">{`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}</p></Link><p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</p></div><p className="text-sm mt-1">{comment.content}</p></div>
+                            <div className="flex-1 bg-muted p-3 rounded-lg">
+                              <div className="flex justify-between items-center">
+                                <Link to={`/user/${comment.profiles?.id}`} className="hover:underline"><p className="text-sm font-semibold">{`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}</p></Link>
+                                <div className="flex items-center gap-2">
+                                  <p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</p>
+                                  {profile?.role === 'admin' && (
+                                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => { setCommentToDelete(comment.id); setIsDeleteDialogOpen(true); }}>
+                                      <Trash2 className="h-3 w-3 text-destructive" />
+                                    </Button>
+                                  )}
+                                </div>
+                              </div>
+                              <p className="text-sm mt-1">{comment.content}</p>
+                            </div>
                           </div>
                         ))}
                       </div>
