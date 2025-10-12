@@ -1,7 +1,7 @@
 import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList, Shield,
-  LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, Scale, FileSearch, HandHeart
+  LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, ListChecks, FileSearch, HandHeart
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -66,7 +66,7 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
                 Gotejamento
               </NavLink>
               <NavLink to="/scales" className={navLinkClass}>
-                <Scale className="h-4 w-4" />
+                <ListChecks className="h-4 w-4" />
                 Escalas Clínicas
               </NavLink>
             </CollapsibleContent>
