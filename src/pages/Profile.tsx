@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { supabase } from "@/lib/supabase";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { AvatarUpload } from "@/components/AvatarUpload";
+import ImageCropperDialog from "@/components/ImageCropperDialog";
 
 interface Profile {
   id: string;
@@ -29,9 +30,12 @@ const profileSchema = z.object({
 
 const ProfilePage = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | Blob | null>(null);
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+  const [isCropperOpen, setIsCropperOpen] = useState(false);
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -56,8 +60,37 @@ const ProfilePage = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      setSelectedFile(file);
-      setAvatarUrl(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageToCrop(reader.result as string);
+        setIsCropperOpen(true);
+      };
+      reader.readAsDataURL(file);
+      event.target.value = ''; // Reset input
+    }
+  };
+
+  const handleCropComplete = (croppedImage: Blob) => {
+    setSelectedFile(croppedImage);
+    setAvatarUrl(URL.createObjectURL(croppedImage));
+    setIsCropperOpen(false);
+  };
+
+  const handleDeleteAvatar = async () => {
+    if (!profile) return;
+    setIsLoading(true);
+    const { error } = await supabase
+      .from('profiles')
+      .update({ avatar_url: null })
+      .eq('id', profile.id);
+    
+    setIsLoading(false);
+    if (error) {
+      toast.error("Erro ao remover a foto", { description: error.message });
+    } else {
+      setAvatarUrl(null);
+      setSelectedFile(null);
+      toast.success("Foto de perfil removida.");
     }
   };
 
@@ -65,15 +98,15 @@ const ProfilePage = () => {
     if (!profile) return;
     setIsLoading(true);
 
-    let newAvatarUrl = profile.avatar_url;
+    let newAvatarUrl = avatarUrl;
 
     if (selectedFile) {
-      const fileExt = selectedFile.name.split('.').pop();
+      const fileExt = 'jpg';
       const filePath = `${profile.id}-${Date.now()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, selectedFile);
+        .upload(filePath, selectedFile, { contentType: 'image/jpeg' });
 
       if (uploadError) {
         toast.error("Erro no upload da foto", { description: uploadError.message });
@@ -102,6 +135,8 @@ const ProfilePage = () => {
     } else {
       toast.success("Perfil atualizado com sucesso!");
       setSelectedFile(null);
+      // Forçar recarregamento para atualizar sidebar
+      window.location.reload();
     }
   }
   
@@ -113,6 +148,12 @@ const ProfilePage = () => {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
+      <ImageCropperDialog
+        imageSrc={imageToCrop}
+        open={isCropperOpen}
+        onOpenChange={setIsCropperOpen}
+        onCropComplete={handleCropComplete}
+      />
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2">Meu Perfil</h1>
         <p className="text-muted-foreground">Atualize suas informações pessoais e sua biografia.</p>
@@ -128,6 +169,7 @@ const ProfilePage = () => {
               <AvatarUpload 
                 avatarUrl={avatarUrl}
                 onFileChange={handleFileChange}
+                onDelete={handleDeleteAvatar}
                 getInitials={getInitials}
               />
             </CardContent>
