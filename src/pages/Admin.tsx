@@ -127,10 +127,10 @@ const Admin = () => {
           <CardContent>
             <Tabs value={statusFilter} onValueChange={setStatusFilter}>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-                <TabsList>
-                  <TabsTrigger value="all">Todos</TabsTrigger>
-                  <TabsTrigger value="pending">Pendentes</TabsTrigger>
-                  <TabsTrigger value="active">Ativos</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-3 bg-black p-1 rounded-lg">
+                  <TabsTrigger value="all" className="text-zinc-400 data-[state=active]:bg-zinc-700 data-[state=active]:text-white">Todos</TabsTrigger>
+                  <TabsTrigger value="pending" className="text-zinc-400 data-[state=active]:bg-zinc-700 data-[state=active]:text-white">Pendentes</TabsTrigger>
+                  <TabsTrigger value="active" className="text-zinc-400 data-[state=active]:bg-zinc-700 data-[state=active]:text-white">Ativos</TabsTrigger>
                 </TabsList>
                 <div className="relative w-full sm:w-auto">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
