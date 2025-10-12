@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import { cn } from "@/lib/utils";
 
 interface Profile {
   id: string;
@@ -119,53 +120,44 @@ const Admin = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 bg-gray-900 text-gray-200 dark:bg-gray-950">
           <CardHeader>
-            <CardTitle>Gerenciamento de Usuários</CardTitle>
-            <CardDescription>Aprove, desative ou gerencie os usuários da plataforma.</CardDescription>
+            <CardTitle className="text-white">Gerenciamento de Usuários</CardTitle>
+            <CardDescription className="text-gray-400">Aprove, desative ou gerencie os usuários da plataforma.</CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs value={statusFilter} onValueChange={setStatusFilter}>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                 <TabsList className="grid w-full grid-cols-3 bg-black p-1 rounded-lg">
-                  <TabsTrigger value="all" className="text-zinc-400 data-[state=active]:bg-zinc-700 data-[state=active]:text-white">Todos</TabsTrigger>
-                  <TabsTrigger value="pending" className="text-zinc-400 data-[state=active]:bg-zinc-700 data-[state=active]:text-white">Pendentes</TabsTrigger>
-                  <TabsTrigger value="active" className="text-zinc-400 data-[state=active]:bg-zinc-700 data-[state=active]:text-white">Ativos</TabsTrigger>
+                  <TabsTrigger value="all" className="text-gray-400 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Todos</TabsTrigger>
+                  <TabsTrigger value="pending" className="text-gray-400 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Pendentes</TabsTrigger>
+                  <TabsTrigger value="active" className="text-gray-400 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Ativos</TabsTrigger>
                 </TabsList>
                 <div className="relative w-full sm:w-auto">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                   <Input
                     placeholder="Buscar por nome..."
-                    className="pl-8 w-full sm:w-[250px]"
+                    className="pl-8 w-full sm:w-[250px] bg-gray-800 border-gray-700 text-white"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
               </div>
-              <TabsContent value="all">
-                {/* Content is handled by filteredProfiles */}
-              </TabsContent>
-              <TabsContent value="pending">
-                {/* Content is handled by filteredProfiles */}
-              </TabsContent>
-              <TabsContent value="active">
-                {/* Content is handled by filteredProfiles */}
-              </TabsContent>
             </Tabs>
-            <div className="border rounded-md">
+            <div className="border border-gray-800 rounded-md">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Usuário</TableHead>
-                    <TableHead className="hidden sm:table-cell">Status</TableHead>
-                    <TableHead className="hidden md:table-cell">Função</TableHead>
-                    <TableHead className="text-right">Ações</TableHead>
+                  <TableRow className="border-gray-800 hover:bg-gray-800/50">
+                    <TableHead className="text-gray-400">Usuário</TableHead>
+                    <TableHead className="hidden sm:table-cell text-gray-400">Status</TableHead>
+                    <TableHead className="hidden md:table-cell text-gray-400">Função</TableHead>
+                    <TableHead className="text-right text-gray-400">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredProfiles.length > 0 ? (
                     filteredProfiles.map((profile) => (
-                      <TableRow key={profile.id}>
+                      <TableRow key={profile.id} className="border-gray-800 hover:bg-gray-800/50">
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <Avatar>
@@ -173,17 +165,24 @@ const Admin = () => {
                               <AvatarFallback>{getInitials(profile.first_name, profile.last_name)}</AvatarFallback>
                             </Avatar>
                             <div>
-                              <p className="font-medium">{`${profile.first_name} ${profile.last_name}`}</p>
-                              <p className="text-xs text-muted-foreground md:hidden">{profile.role}</p>
+                              <p className="font-medium text-white">{`${profile.first_name} ${profile.last_name}`}</p>
+                              <p className="text-xs text-gray-400 md:hidden">{profile.role}</p>
                             </div>
                           </div>
                         </TableCell>
                         <TableCell className="hidden sm:table-cell">
-                          <Badge variant={profile.status === "active" ? "default" : "secondary"}>
+                          <Badge
+                            className={cn(
+                              profile.status === "active"
+                                ? "bg-green-500/20 text-green-400 border-green-500/30"
+                                : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+                            )}
+                            variant="outline"
+                          >
                             {profile.status === "active" ? "Ativo" : "Pendente"}
                           </Badge>
                         </TableCell>
-                        <TableCell className="hidden md:table-cell">{profile.role}</TableCell>
+                        <TableCell className="hidden md:table-cell text-gray-400">{profile.role}</TableCell>
                         <TableCell className="text-right">
                           {profile.status === "pending" ? (
                             <Button variant="outline" size="sm" onClick={() => handleStatusChange(profile.id, "active")}>
@@ -200,8 +199,8 @@ const Admin = () => {
                       </TableRow>
                     ))
                   ) : (
-                    <TableRow>
-                      <TableCell colSpan={4} className="h-24 text-center">Nenhum usuário encontrado.</TableCell>
+                    <TableRow className="border-gray-800 hover:bg-gray-800/50">
+                      <TableCell colSpan={4} className="h-24 text-center text-gray-400">Nenhum usuário encontrado.</TableCell>
                     </TableRow>
                   )}
                 </TableBody>
