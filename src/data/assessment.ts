@@ -185,10 +185,10 @@ export const glycemiaAssessment: VitalSign = {
         "Aguardar a leitura no visor do aparelho e registrar o valor.",
         "Realizar compressão no local da punção com algodão seco."
     ],
-    normalValues: "Jejum: 70-99 mg/dL | Pós-prandial (2h): < 140 mg/dL",
+    normalValues: "<strong>Glicemia de Jejum:</strong> 70-99 mg/dL<br /><strong>Glicemia 2h pós-sobrecarga:</strong> < 140 mg/dL<br /><strong>HbA1c:</strong> < 5,7%",
     alterations: [
         { term: "Hipoglicemia", description: "< 70 mg/dL" },
-        { term: "Normoglicemia", description: "70 a 99 mg/dL (jejum)" },
-        { term: "Hiperglicemia", description: "≥ 100 mg/dL (jejum) ou ≥ 140 mg/dL (pós-prandial)" }
+        { term: "Pré-Diabetes", description: "<strong>Glicemia de Jejum:</strong> 100 a 125 mg/dL<br /><strong>Glicemia 2h pós-sobrecarga:</strong> 140 a 199 mg/dL<br /><strong>HbA1c:</strong> 5,7% a 6,4%" },
+        { term: "Diabetes Mellitus", description: "<strong>Glicemia de Jejum:</strong> ≥ 126 mg/dL<br /><strong>Glicemia 2h pós-sobrecarga:</strong> ≥ 200 mg/dL<br /><strong>HbA1c:</strong> ≥ 6,5%<br /><strong>Glicemia casual com sintomas:</strong> ≥ 200 mg/dL" }
     ]
 };
