@@ -4864,12 +4864,12 @@
   {
     "id": 375,
     "category": "Transfusão Sanguínea",
-    "question": "Qual é a principal função do crioprecipitado?",
+    "question": "Qual é o principal função do crioprecipitado?",
     "options": [
       { "id": "A", "text": "Corrigir a anemia." },
       { "id": "B", "text": "Repor o volume sanguíneo." },
       { "id": "C", "text": "É uma fonte concentrada de Fator VIII, Fator de von Willebrand, Fator XIII e, principalmente, Fibrinogênio." },
-      { "id": "D", "text": "Tratar a plaquetopenia." }
+      { "id":- "D", "text": "Tratar a plaquetopenia." }
     ],
     "correctAnswer": "C",
     "explanation": "O crioprecipitado é usado para repor fibrinogênio em casos de sangramento com hipofibrinogenemia, como na coagulação intravascular disseminada (CIVD) ou em transfusões maciças. Também é usado no tratamento de hemofilia A e doença de von Willebrand quando os fatores específicos não estão disponíveis."
