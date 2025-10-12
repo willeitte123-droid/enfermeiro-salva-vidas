@@ -409,6 +409,38 @@ const Medications = () => {
       contraindication: "Hipersensibilidade a quinolonas, uso concomitante com tizanidina.",
       adverseEffects: "Náusea, diarreia, flebite. <strong>Risco de tendinite e ruptura de tendão</strong> (especialmente em idosos), fotossensibilidade, prolongamento do intervalo QT.",
       category: "Antibiótico Quinolona"
+    },
+    {
+      name: "Prometazina (Fenergan)",
+      activeIngredient: "Cloridrato de Prometazina",
+      indication: "Reações alérgicas, anafilaxia (adjuvante), náuseas/vômitos, sedação. Dose: <strong>25-50mg IM (preferencial)</strong> ou IV lento e diluído.",
+      contraindication: "Hipersensibilidade, coma, depressão do SNC, crianças < 2 anos (risco de depressão respiratória fatal).",
+      adverseEffects: "<strong>Sedação profunda, hipotensão, efeitos anticolinérgicos</strong> (boca seca, visão turva). Risco de necrose tecidual grave com administração IV inadequada (preferir IM profunda).",
+      category: "Anti-histamínico/Sedativo"
+    },
+    {
+      name: "Flumazenil (Lanexat)",
+      activeIngredient: "Flumazenil",
+      indication: "Antídoto para reverter a sedação e/ou depressão respiratória causada por benzodiazepínicos. Dose: <strong>0,2mg IV</strong> em 15s, pode repetir.",
+      contraindication: "Uso de benzodiazepínicos para controle de convulsões, intoxicação por antidepressivos tricíclicos.",
+      adverseEffects: "<strong>Risco de convulsões</strong> (especialmente em usuários crônicos de benzodiazepínicos), agitação, náuseas. Meia-vida curta, requer monitorização para ressedação.",
+      category: "Antídoto/Antagonista BZD"
+    },
+    {
+      name: "Rocurônio (Esmeron)",
+      activeIngredient: "Brometo de Rocurônio",
+      indication: "Bloqueador neuromuscular para facilitar a intubação orotraqueal e o relaxamento muscular em cirurgias/UTI. Dose: <strong>0,6-1,2 mg/kg IV</strong>.",
+      contraindication: "Hipersensibilidade. <strong>SÓ DEVE SER USADO COM PACIENTE SEDADO E COM SUPORTE VENTILATÓRIO GARANTIDO</strong>.",
+      adverseEffects: "Paralisia muscular prolongada, taquicardia, reações anafiláticas. Antídoto: <strong>Sugamadex</strong>.",
+      category: "Bloqueador Neuromuscular"
+    },
+    {
+      name: "Protamina",
+      activeIngredient: "Sulfato de Protamina",
+      indication: "Antídoto para reverter o efeito anticoagulante da heparina não fracionada. Dose: <strong>1mg para cada 100 UI de heparina</strong>, IV lento.",
+      contraindication: "Hipersensibilidade. Cautela em pacientes com alergia a peixe ou vasectomizados.",
+      adverseEffects: "<strong>Hipotensão (infusão rápida)</strong>, bradicardia, reações anafilactoides. Pode ter efeito anticoagulante paradoxal em altas doses.",
+      category: "Antídoto/Alta Vigilância"
     }
   ];
 
