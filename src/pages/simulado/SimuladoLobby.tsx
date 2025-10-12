@@ -9,7 +9,7 @@ import { Timer, FileText, Info, PlayCircle } from "lucide-react";
 
 const SimuladoLobby = () => {
   const [numQuestions, setNumQuestions] = useState("20");
-  const [totalTime, setTotalTime] = useState("40"); // Default time based on 2min/question for 20 questions
+  const [totalTime, setTotalTime] = useState("40");
 
   const navigate = useNavigate();
 
@@ -20,13 +20,6 @@ const SimuladoLobby = () => {
         totalTime: parseInt(totalTime) * 60, // in seconds
       },
     });
-  };
-
-  // Update time automatically when number of questions changes
-  const handleQuestionsChange = (value: string) => {
-    setNumQuestions(value);
-    const newTime = parseInt(value) * 2; // 2 minutes per question
-    setTotalTime(String(newTime));
   };
 
   return (
@@ -50,7 +43,7 @@ const SimuladoLobby = () => {
                 <FileText className="h-5 w-5 text-primary" />
                 Número de Questões
               </Label>
-              <Select value={numQuestions} onValueChange={handleQuestionsChange}>
+              <Select value={numQuestions} onValueChange={setNumQuestions}>
                 <SelectTrigger id="num-questions"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="10">10 Questões (Rápido)</SelectItem>
@@ -63,20 +56,31 @@ const SimuladoLobby = () => {
             <div className="space-y-2">
               <Label htmlFor="total-time" className="flex items-center gap-2 font-semibold">
                 <Timer className="h-5 w-5 text-primary" />
-                Tempo Sugerido
+                Tempo Total (minutos)
               </Label>
-              <div className="p-3 bg-background/70 rounded-md font-semibold text-lg text-center">
-                {totalTime} minutos
-              </div>
-              <p className="text-xs text-muted-foreground text-center">
-                (Baseado em 2 minutos por questão)
-              </p>
+              <Select value={totalTime} onValueChange={setTotalTime}>
+                <SelectTrigger id="total-time"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="20">20 minutos</SelectItem>
+                  <SelectItem value="40">40 minutos</SelectItem>
+                  <SelectItem value="100">100 minutos</SelectItem>
+                  <SelectItem value="200">200 minutos</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <div className="bg-primary/20 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-inner">
             <h3 className="font-semibold text-lg text-primary-foreground">Resumo do Simulado</h3>
-            <p className="text-6xl font-bold text-white my-2">{numQuestions}</p>
-            <p className="text-primary-foreground/80">Questões Selecionadas</p>
+            <div className="flex items-baseline gap-4">
+                <div>
+                    <p className="text-6xl font-bold text-white my-2">{numQuestions}</p>
+                    <p className="text-primary-foreground/80">Questões</p>
+                </div>
+                <div>
+                    <p className="text-6xl font-bold text-white my-2">{totalTime}</p>
+                    <p className="text-primary-foreground/80">Minutos</p>
+                </div>
+            </div>
           </div>
         </CardContent>
         <CardFooter className="flex-col items-start gap-4">
