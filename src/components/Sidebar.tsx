@@ -1,7 +1,7 @@
 import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList, Shield,
-  LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, Scale, ClipboardSearch, HandHeart
+  LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, Scale, FileSearch, HandHeart
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -79,7 +79,7 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
             </CollapsibleTrigger>
             <CollapsibleContent className="space-y-1 pt-2 pl-4">
               <NavLink to="/semiology" className={navLinkClass}>
-                <ClipboardSearch className="h-4 w-4" />
+                <FileSearch className="h-4 w-4" />
                 Semiologia
               </NavLink>
               <NavLink to="/semiotechnique" className={navLinkClass}>
