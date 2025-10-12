@@ -32,6 +32,9 @@ import SemioTechnique from "./pages/Semiotechnique";
 import DoseCalculator from "./pages/tools/DoseCalculator";
 import LabValues from "./pages/tools/LabValues";
 import BlocoDeNotas from "./pages/tools/BlocoDeNotas";
+import SimuladoLobby from "./pages/simulado/SimuladoLobby";
+import Simulado from "./pages/simulado/Simulado";
+import SimuladoResultado from "./pages/simulado/SimuladoResultado";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
@@ -94,8 +97,11 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="tools/dose-calculator" element={<DoseCalculator />} />
         <Route path="tools/lab-values" element={<LabValues />} />
         <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />
+        <Route path="simulado" element={<SimuladoLobby />} />
         <Route path="*" element={<NotFound />} />
       </Route>
+      <Route path="/simulado/start" element={<Simulado />} />
+      <Route path="/simulado/resultado" element={<SimuladoResultado />} />
     </Routes>
   );
 };

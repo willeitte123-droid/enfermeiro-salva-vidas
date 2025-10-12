@@ -2,13 +2,13 @@ import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList, Shield,
   LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, ListChecks, FileSearch, HandHeart,
-  FlaskConical, FileText, NotebookText, Sun, Moon
+  FlaskConical, FileText, NotebookText, Sun, Moon, Timer
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabase";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useTheme } from "./ThemeProvider";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
@@ -97,6 +97,10 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
               <NavLink to="/questions" className={navLinkClass}>
                 <FileQuestion className="h-4 w-4" />
                 Banca de Questões
+              </NavLink>
+              <NavLink to="/simulado" className={navLinkClass}>
+                <Timer className="h-4 w-4" />
+                Área de Simulado
               </NavLink>
               <NavLink to="/procedures" className={navLinkClass}>
                 <ClipboardList className="h-4 w-4" />
