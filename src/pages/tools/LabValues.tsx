@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Search, AlertTriangle } from "lucide-react";
 import { labValuesData } from "@/data/labValues";
@@ -61,25 +60,21 @@ const LabValues = () => {
                     <Icon /> {category.category}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[30%]">Exame</TableHead>
-                        <TableHead className="w-[30%]">Valor de Referência</TableHead>
-                        <TableHead>Notas</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {category.values.map(value => (
-                        <TableRow key={value.name}>
-                          <TableCell className="font-medium">{value.name}</TableCell>
-                          <TableCell>{value.value} {value.unit}</TableCell>
-                          <TableCell className="text-muted-foreground">{value.notes}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                <CardContent className="divide-y">
+                  {category.values.map(value => (
+                    <div key={value.name} className="flex justify-between items-center py-4">
+                      <div>
+                        <p className="font-medium text-foreground">{value.name}</p>
+                        {value.notes && (
+                          <p className="text-sm text-muted-foreground">{value.notes}</p>
+                        )}
+                      </div>
+                      <div className="text-right flex-shrink-0 pl-4">
+                        <p className="font-bold text-lg text-primary">{value.value}</p>
+                        <p className="text-sm text-muted-foreground">{value.unit}</p>
+                      </div>
+                    </div>
+                  ))}
                 </CardContent>
               </Card>
             );
