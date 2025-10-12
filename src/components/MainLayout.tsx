@@ -21,6 +21,7 @@ interface MainLayoutProps {
 
 const MainLayout = ({ session, profile }: MainLayoutProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const isAdmin = profile?.role === 'admin';
   const user = profile ? { 
     first_name: profile.first_name, 
@@ -28,9 +29,13 @@ const MainLayout = ({ session, profile }: MainLayoutProps) => {
     avatar_url: profile.avatar_url 
   } : null;
 
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
   return (
     <div className="flex min-h-screen w-full bg-muted/40">
-      <Sidebar isAdmin={isAdmin} user={user} />
+      <Sidebar isAdmin={isAdmin} user={user} isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
       <main className="flex-1 flex flex-col">
         <Header onSearchClick={() => setIsSearchOpen(true)} />
         <GlobalSearch open={isSearchOpen} setOpen={setIsSearchOpen} />
