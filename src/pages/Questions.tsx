@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, Loader2, Lightbulb, Award, RefreshCw, MessageSquare } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Lightbulb, Award, RefreshCw, MessageSquare, Smile } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +20,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import EmojiPicker from "emoji-picker-react";
 
 interface Question {
   id: number;
@@ -274,14 +276,32 @@ const Questions = () => {
                       </div>
                   }
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onCommentSubmit)} className="flex items-start gap-3">
+                    <form onSubmit={form.handleSubmit(onCommentSubmit)} className="flex items-start gap-2">
                       <FormField control={form.control} name="content" render={({ field }) => (
                         <FormItem className="flex-1">
                           <FormControl><Textarea placeholder="Adicione seu comentário..." {...field} /></FormControl>
                           <FormMessage />
                         </FormItem>
                       )} />
-                      <Button type="submit" disabled={isSubmittingComment}>{isSubmittingComment ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enviar"}</Button>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button type="button" variant="outline" size="icon" className="flex-shrink-0">
+                            <Smile className="h-4 w-4" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="p-0 w-full">
+                          <EmojiPicker
+                            onEmojiClick={(emojiObject) => {
+                              form.setValue('content', form.getValues('content') + emojiObject.emoji);
+                            }}
+                            height={350}
+                            width="100%"
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <Button type="submit" disabled={isSubmittingComment} className="flex-shrink-0">
+                        {isSubmittingComment ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enviar"}
+                      </Button>
                     </form>
                   </Form>
                 </CollapsibleContent>
