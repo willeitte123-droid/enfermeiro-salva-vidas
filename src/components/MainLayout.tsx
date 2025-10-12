@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import Header from "./Header";
+import { GlobalSearch } from "./GlobalSearch";
 import { Session } from "@supabase/supabase-js";
 
 interface Profile {
@@ -17,6 +20,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ session, profile }: MainLayoutProps) => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const isAdmin = profile?.role === 'admin';
   const user = profile ? { 
     first_name: profile.first_name, 
@@ -28,6 +32,8 @@ const MainLayout = ({ session, profile }: MainLayoutProps) => {
     <div className="flex min-h-screen w-full bg-muted/40">
       <Sidebar isAdmin={isAdmin} user={user} />
       <main className="flex-1 flex flex-col">
+        <Header onSearchClick={() => setIsSearchOpen(true)} />
+        <GlobalSearch open={isSearchOpen} setOpen={setIsSearchOpen} />
         <div className="flex-1 overflow-y-auto p-6 md:p-8">
           <Outlet context={{ profile }} />
         </div>

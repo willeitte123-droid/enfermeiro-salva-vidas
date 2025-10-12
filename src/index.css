@@ -20,7 +20,7 @@ All colors MUST be HSL.
     --primary: 210 90% 48%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 152 60% 45%;
+    --secondary: 260 70% 55%; /* Cor roxa vibrante */
     --secondary-foreground: 0 0% 100%;
 
     --muted: 40 40% 95%;
@@ -58,7 +58,7 @@ All colors MUST be HSL.
     --primary: 210 90% 58%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 152 55% 50%;
+    --secondary: 260 65% 60%; /* Roxo vibrante para o modo escuro */
     --secondary-foreground: 0 0% 100%;
 
     --muted: 215 20% 18%;

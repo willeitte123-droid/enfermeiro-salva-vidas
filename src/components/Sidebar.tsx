@@ -1,13 +1,16 @@
 import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList, Shield,
-  LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, ListChecks, FileSearch, HandHeart
+  LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, ListChecks, FileSearch, HandHeart,
+  FlaskConical, FileText, CaseSensitive, Sun, Moon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabase";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTheme } from "./ThemeProvider";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
 interface SidebarProps {
   isAdmin: boolean;
@@ -20,6 +23,7 @@ interface SidebarProps {
 
 const Sidebar = ({ isAdmin, user }: SidebarProps) => {
   const navigate = useNavigate();
+  const { setTheme } = useTheme();
 
   const getInitials = () => {
     const firstName = user?.first_name?.[0] || '';
@@ -68,6 +72,18 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
               <NavLink to="/scales" className={navLinkClass}>
                 <ListChecks className="h-4 w-4" />
                 Escalas Clínicas
+              </NavLink>
+              <NavLink to="/tools/dose-calculator" className={navLinkClass}>
+                <FlaskConical className="h-4 w-4" />
+                Calculadora de Doses
+              </NavLink>
+              <NavLink to="/tools/lab-values" className={navLinkClass}>
+                <FileText className="h-4 w-4" />
+                Valores Laboratoriais
+              </NavLink>
+              <NavLink to="/tools/sae-generator" className={navLinkClass}>
+                <CaseSensitive className="h-4 w-4" />
+                Gerador de Anotações
               </NavLink>
             </CollapsibleContent>
           </Collapsible>
@@ -121,7 +137,22 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
           )}
         </nav>
       </div>
-      <div className="mt-auto border-t border-border/10 p-4">
+      <div className="mt-auto border-t border-border/10 p-4 space-y-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-sidebar-hover hover:text-white">
+              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="text-sm font-medium">Alterar Tema</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setTheme("light")}>Claro</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>Escuro</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("system")}>Sistema</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <Link to="/profile" className="flex items-center justify-between p-2 rounded-md hover:bg-sidebar-hover group">
           <div className="flex items-center gap-3">
             <Avatar className="h-9 w-9">
