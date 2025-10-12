@@ -258,5 +258,395 @@
     ],
     "correctAnswer": "C",
     "explanation": "O índice Peso/Estatura (P/E) reflete a harmonia entre o peso e a altura da criança no momento da avaliação, sendo o melhor indicador para diagnosticar desnutrição aguda ou emagrecimento recente."
+  },
+  {
+    "id": 21,
+    "category": "Emergência",
+    "question": "Em um paciente com suspeita de Infarto Agudo do Miocárdio (IAM), qual é a sequência de atendimento inicial preconizada pelo mnemônico MONA?",
+    "options": [
+      { "id": "A", "text": "Morfina, Oxigênio, Nitrato, AAS" },
+      { "id": "B", "text": "Metoprolol, Oxigênio, Nitroglicerina, Atropina" },
+      { "id": "C", "text": "Morfina, Ondansetrona, Noradrenalina, AAS" },
+      { "id": "D", "text": "Midazolam, Oxigênio, Nifedipina, AAS" }
+    ],
+    "correctAnswer": "A",
+    "explanation": "MONA é um mnemônico clássico para o atendimento inicial do IAM, embora a sequência exata dependa da clínica. M: Morfina (para dor), O: Oxigênio (se SpO2 < 94%), N: Nitrato (vasodilatador), A: AAS (antiagregante plaquetário)."
+  },
+  {
+    "id": 22,
+    "category": "Procedimentos",
+    "question": "Na inserção de um Cateter Central de Inserção Periférica (PICC), qual é o método padrão-ouro para confirmação do seu posicionamento antes do uso?",
+    "options": [
+      { "id": "A", "text": "Ausculta com injeção de ar." },
+      { "id": "B", "text": "Observação do refluxo sanguíneo." },
+      { "id": "C", "text": "Radiografia de tórax." },
+      { "id": "D", "text": "Ultrassonografia no local da inserção." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A radiografia de tórax é o padrão-ouro para confirmar o posicionamento da ponta do PICC na junção cavoatrial. Os outros métodos são auxiliares durante a inserção, mas não confirmatórios para a posição final da ponta."
+  },
+  {
+    "id": 23,
+    "category": "Curativos",
+    "question": "Qual cobertura é contraindicada para feridas secas ou com necrose dura, por necessitar de umidade para sua ativação?",
+    "options": [
+      { "id": "A", "text": "Hidrocoloide" },
+      { "id": "B", "text": "Hidrogel" },
+      { "id": "C", "text": "Alginato de Cálcio" },
+      { "id": "D", "text": "Espuma de Poliuretano" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Alginato de Cálcio é uma fibra derivada de algas marinhas que forma um gel na presença de exsudato. Em feridas secas, ele não gelifica e pode aderir ao leito, causando trauma na remoção. O Hidrogel, por outro lado, é ideal para hidratar feridas secas."
+  },
+  {
+    "id": 24,
+    "category": "Saúde da Mulher",
+    "question": "Durante o pré-natal, a administração da vacina dTpa (tríplice bacteriana acelular do tipo adulto) é recomendada a partir de qual semana de gestação?",
+    "options": [
+      { "id": "A", "text": "A partir da 12ª semana." },
+      { "id": "B", "text": "A partir da 20ª semana." },
+      { "id": "C", "text": "Apenas no primeiro trimestre." },
+      { "id": "D", "text": "Somente após o parto, no puerpério." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A vacina dTpa deve ser administrada em toda gestação a partir da 20ª semana, preferencialmente entre a 27ª e a 36ª semana, para garantir a transferência de anticorpos contra a coqueluche para o feto."
+  },
+  {
+    "id": 25,
+    "category": "ECG",
+    "question": "Um supradesnivelamento do segmento ST em derivações contíguas no ECG é um sinal clássico de:",
+    "options": [
+      { "id": "A", "text": "Pericardite aguda." },
+      { "id": "B", "text": "Bloqueio de ramo esquerdo." },
+      { "id": "C", "text": "Infarto Agudo do Miocárdio com supra de ST (IAMCSST)." },
+      { "id": "D", "text": "Hipercalemia." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O supradesnivelamento do segmento ST indica uma oclusão coronariana aguda e é o principal critério eletrocardiográfico para o diagnóstico de Infarto Agudo do Miocárdio com supra de ST, uma emergência médica que requer reperfusão imediata."
+  },
+  {
+    "id": 26,
+    "category": "Princípios do SUS",
+    "question": "A Lei nº 8.080/90, que dispõe sobre as condições para a promoção, proteção e recuperação da saúde, a organização e o funcionamento dos serviços correspondentes, é conhecida como:",
+    "options": [
+      { "id": "A", "text": "Lei da Reforma Psiquiátrica." },
+      { "id": "B", "text": "Lei Orgânica da Saúde." },
+      { "id": "C", "text": "Norma Operacional Básica (NOB)." },
+      { "id": "D", "text": "Política Nacional de Humanização (PNH)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Lei nº 8.080 de 1990 é a principal lei que regulamenta o Sistema Único de Saúde (SUS) em todo o território nacional, sendo chamada de Lei Orgânica da Saúde."
+  },
+  {
+    "id": 27,
+    "category": "Segurança do Paciente",
+    "question": "A ferramenta SBAR (Situação, Breve histórico, Avaliação, Recomendação) é utilizada para melhorar qual meta de segurança do paciente?",
+    "options": [
+      { "id": "A", "text": "Meta 1: Identificar corretamente os pacientes." },
+      { "id": "B", "text": "Meta 2: Melhorar a comunicação efetiva." },
+      { "id": "C", "text": "Meta 3: Melhorar a segurança de medicamentos." },
+      { "id": "D", "text": "Meta 4: Assegurar cirurgia segura." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O SBAR é uma técnica de comunicação estruturada, projetada para garantir que as informações críticas sejam transmitidas de forma clara e concisa entre os profissionais de saúde, sendo uma estratégia chave para a Meta 2."
+  },
+  {
+    "id": 28,
+    "category": "Saúde do Idoso",
+    "question": "A polifarmácia, uma condição comum em idosos, é definida como o uso concomitante de quantos medicamentos?",
+    "options": [
+      { "id": "A", "text": "2 ou mais." },
+      { "id": "B", "text": "3 ou mais." },
+      { "id": "C", "text": "5 ou mais." },
+      { "id": "D", "text": "10 ou mais." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Embora não haja um consenso universal, a definição mais aceita de polifarmácia é o uso regular de cinco ou mais medicamentos, o que aumenta significativamente o risco de interações medicamentosas e reações adversas."
+  },
+  {
+    "id": 29,
+    "category": "Semiologia",
+    "question": "O Sinal de Godet, pesquisado ao pressionar a pele contra uma superfície óssea, é utilizado para avaliar a presença e a intensidade de:",
+    "options": [
+      { "id": "A", "text": "Turgor da pele." },
+      { "id": "B", "text": "Edema." },
+      { "id": "C", "text": "Cianose." },
+      { "id": "D", "text": "Frêmito." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Sinal de Godet, ou sinal do cacifo, é positivo quando a compressão digital deixa uma depressão (fóvea) na pele, indicando a presença de edema por acúmulo de líquido no espaço intersticial. A profundidade e o tempo de retorno da pele classificam o edema em cruzes (+/4+)."
+  },
+  {
+    "id": 30,
+    "category": "Ética e Legislação",
+    "question": "A Lei nº 7.498/86, que dispõe sobre o exercício profissional da enfermagem, estabelece que a consulta de enfermagem e a prescrição da assistência de enfermagem são atividades:",
+    "options": [
+      { "id": "A", "text": "Privativas do Enfermeiro." },
+      { "id": "B", "text": "Que podem ser delegadas ao Técnico de Enfermagem." },
+      { "id": "C", "text": "Realizadas por qualquer membro da equipe de enfermagem." },
+      { "id": "D", "text": "Exclusivas do Enfermeiro Obstetra." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A Lei do Exercício Profissional da Enfermagem define claramente em seu Art. 11 que a consulta de enfermagem e a prescrição da assistência de enfermagem são atividades privativas do Enfermeiro, não podendo ser delegadas."
+  },
+  {
+    "id": 31,
+    "category": "SAE",
+    "question": "A utilização das taxonomias NANDA-I, NIC e NOC está relacionada a quais etapas da Sistematização da Assistência de Enfermagem (SAE), respectivamente?",
+    "options": [
+      { "id": "A", "text": "Diagnóstico, Avaliação, Planejamento." },
+      { "id": "B", "text": "Planejamento, Implementação, Avaliação." },
+      { "id": "C", "text": "Diagnóstico, Planejamento, Implementação." },
+      { "id": "D", "text": "Diagnóstico, Implementação, Avaliação (Resultados)." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "NANDA-I (North American Nursing Diagnosis Association) é para os Diagnósticos. NIC (Nursing Interventions Classification) é para a Implementação (intervenções). NOC (Nursing Outcomes Classification) é para a Avaliação dos Resultados esperados."
+  },
+  {
+    "id": 32,
+    "category": "Saúde Mental",
+    "question": "A Reforma Psiquiátrica no Brasil, instituída pela Lei nº 10.216/2001, propõe um modelo de atenção em saúde mental baseado em:",
+    "options": [
+      { "id": "A", "text": "Isolamento do paciente em hospitais psiquiátricos para tratamento intensivo." },
+      { "id": "B", "text": "Cuidado centrado no modelo hospitalocêntrico e na medicalização." },
+      { "id": "C", "text": "Tratamento em liberdade, com base em serviços comunitários e na reinserção social." },
+      { "id": "D", "text": "Priorização da terapia eletroconvulsiva como tratamento de primeira linha." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Lei da Reforma Psiquiátrica redireciona o modelo de assistência, priorizando o tratamento em serviços de base comunitária (como os CAPS), a desinstitucionalização e a reinserção social, em detrimento do modelo hospitalocêntrico e asilar."
+  },
+  {
+    "id": 33,
+    "category": "Farmacologia",
+    "question": "A administração de Penicilina G Benzatina (Benzetacil) deve ser feita exclusivamente por qual via, devido ao risco de embolia e parada cardiorrespiratória?",
+    "options": [
+      { "id": "A", "text": "Intravenosa (IV) lenta." },
+      { "id": "B", "text": "Subcutânea (SC)." },
+      { "id": "C", "text": "Intramuscular (IM) profunda." },
+      { "id": "D", "text": "Intradérmica (ID)." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Benzetacil é uma suspensão e NUNCA deve ser administrada por via intravenosa, pois seus cristais podem causar microembolia pulmonar fatal. A via correta é a intramuscular profunda, preferencialmente na região ventroglútea ou dorsoglútea."
+  },
+  {
+    "id": 34,
+    "category": "Emergência",
+    "question": "Na avaliação primária do trauma (ABCDE), a letra 'D' corresponde à avaliação de:",
+    "options": [
+      { "id": "A", "text": "Dificuldade respiratória (Breathing)." },
+      { "id": "B", "text": "Déficit neurológico (Disability)." },
+      { "id": "C", "text": "Drenagem de ferimentos (Drainage)." },
+      { "id": "D", "text": "Desfibrilação (Defibrillation)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "No mnemônico ABCDE do trauma, o 'D' corresponde a 'Disability', que é a avaliação neurológica rápida, utilizando a Escala de Coma de Glasgow e a avaliação das pupilas."
+  },
+  {
+    "id": 35,
+    "category": "Saúde da Criança",
+    "question": "O Teste do Pezinho, realizado entre o 3º e o 5º dia de vida do recém-nascido, tem como objetivo principal:",
+    "options": [
+      { "id": "A", "text": "Identificar o tipo sanguíneo e o fator Rh do bebê." },
+      { "id": "B", "text": "Diagnosticar precocemente doenças metabólicas, genéticas e infecciosas." },
+      { "id": "C", "text": "Avaliar a maturidade pulmonar do recém-nascido." },
+      { "id": "D", "text": "Detectar malformações cardíacas congênitas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Teste do Pezinho é um programa de triagem neonatal que visa detectar precocemente doenças como fenilcetonúria, hipotireoidismo congênito, fibrose cística e outras, permitindo o tratamento precoce e a prevenção de sequelas graves."
+  },
+  {
+    "id": 36,
+    "category": "Procedimentos",
+    "question": "Qual é o cuidado essencial ao administrar uma medicação por Sonda Nasoenteral (SNE) com posicionamento em duodeno ou jejuno?",
+    "options": [
+      { "id": "A", "text": "Administrar a medicação junto com a dieta para melhor absorção." },
+      { "id": "B", "text": "Triturar comprimidos revestidos para facilitar a passagem." },
+      { "id": "C", "text": "Lavar a sonda com 20 mL de água antes e após a medicação." },
+      { "id": "D", "text": "Aspirar o conteúdo para verificar o posicionamento antes de cada dose." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Lavar a sonda com água antes e após a administração de medicamentos é crucial para garantir que a dose completa seja entregue e para prevenir a obstrução da sonda. Comprimidos revestidos ou de liberação lenta não devem ser triturados."
+  },
+  {
+    "id": 37,
+    "category": "Curativos",
+    "question": "Uma lesão por pressão em estágio 3 é caracterizada por:",
+    "options": [
+      { "id": "A", "text": "Pele íntegra com hiperemia que não embranquece." },
+      { "id": "B", "text": "Perda parcial da espessura da pele, apresentando-se como uma abrasão ou bolha." },
+      { "id": "C", "text": "Perda total da espessura da pele, com exposição do tecido subcutâneo (gordura)." },
+      { "id": "D", "text": "Perda total da espessura da pele, com exposição de músculo, tendão ou osso." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "No estágio 3, ocorre a perda total da pele, e o tecido adiposo subcutâneo fica visível, mas os ossos, tendões e músculos não estão expostos. Pode haver necrose e túneis."
+  },
+  {
+    "id": 38,
+    "category": "ECG",
+    "question": "A onda P no eletrocardiograma normal representa:",
+    "options": [
+      { "id": "A", "text": "A repolarização atrial." },
+      { "id": "B", "text": "A despolarização ventricular." },
+      { "id": "C", "text": "A despolarização atrial." },
+      { "id": "D", "text": "A repolarização ventricular." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A onda P é a primeira deflexão do ciclo cardíaco e representa a despolarização dos átrios, que resulta na sua contração."
+  },
+  {
+    "id": 39,
+    "category": "Princípios do SUS",
+    "question": "A participação da comunidade na gestão do SUS, garantida por lei, ocorre principalmente através de quais instâncias?",
+    "options": [
+      { "id": "A", "text": "Associações de moradores e sindicatos." },
+      { "id": "B", "text": "Ouvidorias e secretarias de saúde." },
+      { "id": "C", "text": "Conselhos e Conferências de Saúde." },
+      { "id": "D", "text": "Partidos políticos e ONGs." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Lei 8.142/90 regulamenta a participação social no SUS, que se dá por meio dos Conselhos de Saúde (instâncias permanentes e deliberativas) e das Conferências de Saúde (realizadas a cada 4 anos para avaliar e propor diretrizes)."
+  },
+  {
+    "id": 40,
+    "category": "Semiologia",
+    "question": "A percussão de um abdome com grande quantidade de gases (meteorismo) produzirá qual tipo de som?",
+    "options": [
+      { "id": "A", "text": "Maciço" },
+      { "id": "B", "text": "Submaciço" },
+      { "id": "C", "text": "Timpânico" },
+      { "id": "D", "text": "Claro pulmonar" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O som timpânico é um som de alta tonalidade, semelhante a um tambor, característico da percussão de estruturas ocas ou cheias de ar, como o estômago e o intestino com gases."
+  },
+  {
+    "id": 41,
+    "category": "Saúde do Idoso",
+    "question": "Qual escala é amplamente utilizada para avaliar o risco de quedas em pacientes hospitalizados, especialmente idosos?",
+    "options": [
+      { "id": "A", "text": "Escala de Braden" },
+      { "id": "B", "text": "Escala de Glasgow" },
+      { "id": "C", "text": "Escala de Morse" },
+      { "id": "D", "text": "Escala de RASS" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Escala de Morse avalia fatores de risco como histórico de quedas, diagnóstico secundário, auxílio para deambular, terapia endovenosa, marcha e estado mental para classificar o risco de queda do paciente (baixo, médio ou alto)."
+  },
+  {
+    "id": 42,
+    "category": "Farmacologia",
+    "question": "A heparina não fracionada, um anticoagulante, exige monitoramento laboratorial através de qual exame?",
+    "options": [
+      { "id": "A", "text": "Tempo de Protrombina (TP / INR)" },
+      { "id": "B", "text": "Contagem de plaquetas" },
+      { "id": "C", "text": "Tempo de Tromboplastina Parcial Ativada (TTPa)" },
+      { "id": "D", "text": "Dímero-D" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O TTPa é utilizado para monitorar a terapia com heparina não fracionada, avaliando a via intrínseca da coagulação. O alvo terapêutico geralmente é manter o TTPa entre 1,5 e 2,5 vezes o valor de referência."
+  },
+  {
+    "id": 43,
+    "category": "Emergência",
+    "question": "Um paciente vítima de queimadura de 2º grau em todo o membro superior direito e na face anterior do tórax tem qual percentual de superfície corporal queimada, segundo a Regra dos Nove para adultos?",
+    "options": [
+      { "id": "A", "text": "9%" },
+      { "id": "B", "text": "18%" },
+      { "id": "C", "text": "27%" },
+      { "id": "D", "text": "36%" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Pela Regra dos Nove, cada membro superior corresponde a 9% da superfície corporal, e a face anterior do tórax corresponde a outros 9%. Portanto, 9% (braço) + 9% (tórax) = 18%."
+  },
+  {
+    "id": 44,
+    "category": "Saúde da Mulher",
+    "question": "No puerpério imediato, a principal complicação a ser monitorada pela equipe de enfermagem é:",
+    "options": [
+      { "id": "A", "text": "Infecção puerperal" },
+      { "id": "B", "text": "Trombose venosa profunda" },
+      { "id": "C", "text": "Hemorragia pós-parto" },
+      { "id": "D", "text": "Depressão pós-parto" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A hemorragia pós-parto, causada principalmente por atonia uterina, é a complicação mais grave e de maior risco de mortalidade no puerpério imediato (primeiras 24 horas). A enfermagem deve monitorar rigorosamente o sangramento vaginal, o tônus uterino e os sinais vitais."
+  },
+  {
+    "id": 45,
+    "category": "Procedimentos",
+    "question": "Ao preparar a administração de insulina NPH e Regular na mesma seringa, qual é a sequência correta de aspiração?",
+    "options": [
+      { "id": "A", "text": "Aspirar primeiro a NPH e depois a Regular." },
+      { "id": "B", "text": "Aspirar primeiro a Regular e depois a NPH." },
+      { "id": "C", "text": "A ordem de aspiração não altera o efeito." },
+      { "id": "D", "text": "As duas insulinas não podem ser misturadas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A regra é sempre aspirar a insulina de ação rápida (Regular) antes da insulina de ação intermediária (NPH). Isso evita a contaminação do frasco de insulina Regular com a NPH, o que poderia alterar seu início de ação. Lembre-se: 'O R vem antes do N no alfabeto'."
+  },
+  {
+    "id": 46,
+    "category": "Ética e Legislação",
+    "question": "O registro das ações de enfermagem no prontuário do paciente é:",
+    "options": [
+      { "id": "A", "text": "Opcional, sendo necessário apenas em casos de intercorrências." },
+      { "id": "B", "text": "Um dever legal e ético, que garante a continuidade do cuidado e tem valor jurídico." },
+      { "id": "C", "text": "Uma tarefa administrativa que pode ser delegada a qualquer membro da equipe." },
+      { "id": "D", "text": "Restrito ao enfermeiro, não sendo necessário para técnicos e auxiliares." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O registro de enfermagem é uma responsabilidade de todos os membros da equipe (Enfermeiros, Técnicos e Auxiliares) e é fundamental para a comunicação, a segurança do paciente e a defesa legal do profissional. 'O que não está registrado, não foi feito'."
+  },
+  {
+    "id": 47,
+    "category": "Segurança do Paciente",
+    "question": "Qual das seguintes opções NÃO é considerada uma das 6 Metas Internacionais de Segurança do Paciente?",
+    "options": [
+      { "id": "A", "text": "Assegurar cirurgia em local de intervenção, procedimento e paciente corretos." },
+      { "id": "B", "text": "Reduzir o risco de quedas." },
+      { "id": "C", "text": "Garantir a satisfação do paciente com o atendimento." },
+      { "id": "D", "text": "Reduzir o risco de infecções associadas aos cuidados de saúde." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Embora a satisfação do paciente seja um indicador de qualidade importante, ela não é uma das 6 Metas Internacionais de Segurança do Paciente estabelecidas pela Joint Commission International (JCI) e adotadas pela ANVISA. As metas focam em processos críticos para evitar danos."
+  },
+  {
+    "id": 48,
+    "category": "Saúde Mental",
+    "question": "Um paciente em uso de antipsicóticos apresenta movimentos involuntários da boca e da língua, como protusão lingual e movimentos de mastigação. Esses sinais são característicos de qual efeito adverso?",
+    "options": [
+      { "id": "A", "text": "Acatisia" },
+      { "id": "B", "text": "Distonia aguda" },
+      { "id": "C", "text": "Discinesia tardia" },
+      { "id": "D", "text": "Parkinsonismo induzido por fármacos" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A discinesia tardia é um efeito adverso grave e muitas vezes irreversível, que pode ocorrer com o uso prolongado de antipsicóticos, caracterizado por movimentos orofaciais involuntários e repetitivos."
+  },
+  {
+    "id": 49,
+    "category": "Curativos",
+    "question": "A Bota de Unna é uma terapia compressiva indicada principalmente para o tratamento de qual tipo de ferida?",
+    "options": [
+      { "id": "A", "text": "Lesões por pressão em região sacral." },
+      { "id": "B", "text": "Úlceras arteriais." },
+      { "id": "C", "text": "Pé diabético infectado." },
+      { "id": "D", "text": "Úlceras venosas." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A Bota de Unna é uma bandagem inelástica impregnada com óxido de zinco e calamina, que exerce compressão e auxilia no retorno venoso, sendo o tratamento padrão-ouro para úlceras venosas de estase sem infecção ativa."
+  },
+  {
+    "id": 50,
+    "category": "SAE",
+    "question": "A etapa da SAE que envolve a definição de metas e resultados esperados para o paciente é o(a):",
+    "options": [
+      { "id": "A", "text": "Diagnóstico de Enfermagem" },
+      { "id": "B", "text": "Planejamento de Enfermagem" },
+      { "id": "C", "text": "Implementação" },
+      { "id": "D", "text": "Avaliação" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "No Planejamento, o enfermeiro estabelece as prioridades, define os resultados esperados (metas) utilizando a Classificação dos Resultados de Enfermagem (NOC) e determina as intervenções (NIC) para alcançar esses resultados."
   }
 ]
