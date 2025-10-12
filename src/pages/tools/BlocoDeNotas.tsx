@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useOutletContext } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Profile {
   id: string;
@@ -15,18 +16,16 @@ interface Profile {
 
 const BlocoDeNotas = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const queryClient = useQueryClient();
   const [noteContent, setNoteContent] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (profile) {
-      setIsLoading(true);
-      // O perfil já é carregado no layout principal, então podemos usá-lo diretamente.
-      // Se as anotações não estiverem no perfil inicial, teríamos que buscá-las aqui.
       setNoteContent(profile.notes || "");
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }, [profile]);
 
   const handleSave = async () => {
@@ -44,6 +43,7 @@ const BlocoDeNotas = () => {
       toast.error("Erro ao salvar anotações", { description: error.message });
     } else {
       toast.success("Anotações salvas com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ['profile', profile.id] });
     }
   };
 

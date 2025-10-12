@@ -36,6 +36,8 @@ import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
 import MainLayout from "./components/MainLayout";
+import { useProfile } from "./hooks/useProfile";
+import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -100,14 +102,13 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
 
 const AppContent = () => {
   const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingSession, setLoadingSession] = useState(true);
 
   useEffect(() => {
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
-      setLoading(false);
+      setLoadingSession(false);
     };
 
     getSession();
@@ -119,42 +120,10 @@ const AppContent = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (session?.user) {
-      const fetchProfile = async () => {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-        
-        if (!error) {
-          setProfile(data);
-        }
-      };
-      fetchProfile();
+  const { data: profile, isLoading: isLoadingProfile } = useProfile(session);
 
-      const profileChannel = supabase
-        .channel('public:profiles')
-        .on(
-          'postgres_changes',
-          { event: 'UPDATE', schema: 'public', table: 'profiles', filter: `id=eq.${session.user.id}` },
-          (payload) => {
-            setProfile(payload.new as Profile);
-          }
-        )
-        .subscribe();
-
-      return () => {
-        supabase.removeChannel(profileChannel);
-      };
-    } else {
-      setProfile(null);
-    }
-  }, [session]);
-
-  if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Carregando...</div>;
+  if (loadingSession || (session && isLoadingProfile)) {
+    return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
 
   const isAdmin = profile?.role === 'admin';
@@ -163,7 +132,7 @@ const AppContent = () => {
     <Routes>
       <Route path="/login" element={session ? <Navigate to="/" /> : <Login />} />
       <Route path="/register" element={session ? <Navigate to="/" /> : <Register />} />
-      <Route path="/*" element={<ProtectedRoute session={session} profile={profile} isAdmin={isAdmin} />} />
+      <Route path="/*" element={<ProtectedRoute session={session} profile={profile as Profile | null} isAdmin={isAdmin} />} />
     </Routes>
   );
 };

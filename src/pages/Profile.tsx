@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { supabase } from "@/lib/supabase";
-import { useOutletContext, useNavigate } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { AvatarUpload } from "@/components/AvatarUpload";
 import ImageCropperDialog from "@/components/ImageCropperDialog";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Profile {
   id: string;
@@ -30,7 +31,7 @@ const profileSchema = z.object({
 
 const ProfilePage = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | Blob | null>(null);
@@ -91,6 +92,7 @@ const ProfilePage = () => {
       setAvatarUrl(null);
       setSelectedFile(null);
       toast.success("Foto de perfil removida.");
+      queryClient.invalidateQueries({ queryKey: ['profile', profile.id] });
     }
   };
 
@@ -135,8 +137,7 @@ const ProfilePage = () => {
     } else {
       toast.success("Perfil atualizado com sucesso!");
       setSelectedFile(null);
-      // Forçar recarregamento para atualizar sidebar
-      window.location.reload();
+      queryClient.invalidateQueries({ queryKey: ['profile', profile.id] });
     }
   }
   
