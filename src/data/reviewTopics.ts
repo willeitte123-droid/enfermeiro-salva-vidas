@@ -1,4 +1,4 @@
-import { LucideIcon, Baby, User, Syringe, Heart, Users, ShieldCheck, ShieldAlert, Gavel, Calculator as CalculatorIcon, BrainCircuit, PersonStanding } from "lucide-react";
+import { LucideIcon, Baby, User, Syringe, Heart, Users, ShieldCheck, ShieldAlert, Gavel, Calculator as CalculatorIcon, BrainCircuit, PersonStanding, ClipboardList } from "lucide-react";
 
 export interface ReviewTopic {
   id: string;
@@ -59,10 +59,10 @@ export const reviewTopics: ReviewTopic[] = [
   },
   {
     id: "vaccination-schedule",
-    title: "Calendário Vacinal 2024",
+    title: "Calendário Vacinal (PNI)",
     icon: Syringe,
     color: "text-green-500",
-    summary: "Principais vacinas do PNI para crianças, adolescentes, gestantes e idosos.",
+    summary: "Principais vacinas do PNI para crianças, adolescentes, gestantes e idosos, com base nas diretrizes mais recentes.",
     details: [
       {
         subtitle: "Crianças",
@@ -140,6 +140,25 @@ export const reviewTopics: ReviewTopic[] = [
           "<strong>Diagnóstico:</strong> Glicemia de jejum ≥ 126, HbA1c ≥ 6,5%, ou Glicemia casual ≥ 200 com sintomas.",
           "<strong>Hipoglicemia (&lt;70 mg/dL):</strong> Se consciente, aplicar a 'Regra dos 15' (15g de carboidrato simples, reavaliar em 15 min). Se inconsciente, Glicose 50% IV ou Glucagon IM.",
           "<strong>Cuidado de Enfermagem:</strong> Educação em saúde, orientação sobre medicamentos, automonitoramento e exame dos pés."
+        ]
+      }
+    ]
+  },
+  {
+    id: "sae",
+    title: "Sistematização da Assistência de Enfermagem (SAE)",
+    icon: ClipboardList,
+    color: "text-cyan-500",
+    summary: "Método científico para organizar o cuidado, garantindo uma assistência individualizada e de qualidade.",
+    details: [
+      {
+        subtitle: "As 5 Etapas da SAE",
+        points: [
+          "<strong>1. Coleta de Dados (Histórico):</strong> Anamnese e exame físico para coletar informações abrangentes sobre o estado de saúde do paciente.",
+          "<strong>2. Diagnóstico de Enfermagem:</strong> Julgamento clínico sobre as respostas do indivíduo, família ou comunidade aos problemas de saúde/processos vitais. Utiliza-se a taxonomia da NANDA-I.",
+          "<strong>3. Planejamento de Enfermagem:</strong> Definição de resultados esperados (NOC - Nursing Outcomes Classification) e metas a serem alcançadas para cada diagnóstico.",
+          "<strong>4. Implementação (Prescrição):</strong> Realização das intervenções e ações de enfermagem planejadas para atingir os resultados. Utiliza-se a taxonomia da NIC (Nursing Interventions Classification).",
+          "<strong>5. Avaliação de Enfermagem:</strong> Processo contínuo de verificação dos resultados alcançados, reavaliando o processo e ajustando o plano de cuidados conforme necessário."
         ]
       }
     ]
