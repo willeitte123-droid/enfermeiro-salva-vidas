@@ -50,9 +50,18 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
 
   return (
     <aside className={cn(
-      "hidden md:flex flex-col bg-sidebar text-sidebar-foreground border-r border-border/10 transition-all duration-300",
+      "hidden md:flex flex-col bg-sidebar text-sidebar-foreground border-r border-border/10 transition-all duration-300 relative",
       isCollapsed ? "w-20" : "w-64"
     )}>
+      <Button
+        variant="secondary"
+        size="icon"
+        className="absolute -right-4 top-16 z-10 h-8 w-8 rounded-full shadow-md"
+        onClick={onToggle}
+      >
+        {isCollapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
+      </Button>
+
       <div className="flex h-16 items-center border-b border-border/10 px-6">
         <div className="flex items-center gap-3">
           <Stethoscope className="h-7 w-7 text-primary flex-shrink-0" />
@@ -179,11 +188,6 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
             <LogOut className="h-5 w-5" />
           </Button>
         </Link>
-      </div>
-      <div className="border-t border-border/10 p-2">
-        <Button variant="ghost" size="icon" className="w-full text-sidebar-foreground hover:bg-sidebar-hover hover:text-white" onClick={onToggle}>
-          {isCollapsed ? <ChevronsRight className="h-5 w-5" /> : <ChevronsLeft className="h-5 w-5" />}
-        </Button>
       </div>
     </aside>
   );
