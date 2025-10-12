@@ -54,7 +54,7 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
       isCollapsed ? "w-20" : "w-64"
     )}>
       <Button
-        variant="secondary"
+        variant="primary"
         size="icon"
         className="absolute -right-4 top-16 z-10 h-8 w-8 rounded-full shadow-md"
         onClick={onToggle}
@@ -69,7 +69,14 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
         </div>
       </div>
       <div className="flex-1 overflow-y-auto p-4">
-        <nav className="flex flex-col gap-1">
+        <nav
+          className="flex flex-col gap-1"
+          onClick={() => {
+            if (isCollapsed) {
+              onToggle();
+            }
+          }}
+        >
           <NavLink to="/" end className={navLinkClass}>
             <LayoutDashboard className="h-4 w-4 flex-shrink-0" />
             <span className={cn(isCollapsed && "hidden")}>Dashboard</span>
