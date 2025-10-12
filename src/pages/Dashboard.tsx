@@ -227,7 +227,7 @@ const Dashboard = () => {
                 </p>
                 <Link to={`/user/${currentComment.author.id}`}>
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={currentComment.author.avatar_url} alt={`Avatar de ${currentComment.author.first_name}`} />
+                    <AvatarImage src={currentComment.author.avatar_url} alt={`Avatar de ${currentComment.author.first_name}`} className="object-cover" />
                     <AvatarFallback>{`${currentComment.author.first_name?.[0] || ''}${currentComment.author.last_name?.[0] || ''}`.toUpperCase()}</AvatarFallback>
                   </Avatar>
                 </Link>

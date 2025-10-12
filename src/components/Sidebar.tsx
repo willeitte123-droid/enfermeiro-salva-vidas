@@ -125,7 +125,7 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
         <Link to="/profile" className="flex items-center justify-between p-2 rounded-md hover:bg-sidebar-hover group">
           <div className="flex items-center gap-3">
             <Avatar className="h-9 w-9">
-              <AvatarImage src={user?.avatar_url} alt={`${user?.first_name} ${user?.last_name}`} />
+              <AvatarImage src={user?.avatar_url} alt={`${user?.first_name} ${user?.last_name}`} className="object-cover" />
               <AvatarFallback className="bg-primary text-primary-foreground">{getInitials()}</AvatarFallback>
             </Avatar>
             <div>

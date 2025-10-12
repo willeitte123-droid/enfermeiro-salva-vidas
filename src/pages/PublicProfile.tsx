@@ -74,7 +74,7 @@ const PublicProfile = () => {
       <Card>
         <CardHeader className="items-center text-center">
           <Avatar className="h-32 w-32 mb-4 border-4 border-primary/20">
-            <AvatarImage src={profile.avatar_url} alt={`Avatar de ${profile.first_name}`} />
+            <AvatarImage src={profile.avatar_url} alt={`Avatar de ${profile.first_name}`} className="object-cover" />
             <AvatarFallback className="text-4xl bg-primary/10">{getInitials()}</AvatarFallback>
           </Avatar>
           <CardTitle className="text-3xl">{`${profile.first_name} ${profile.last_name}`}</CardTitle>

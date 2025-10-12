@@ -268,7 +268,7 @@ const Questions = () => {
                         {comments.map(comment => (
                           <div key={comment.id} className="flex items-start gap-3">
                             <Link to={`/user/${comment.profiles?.id}`} className="flex-shrink-0">
-                              <Avatar className="h-8 w-8"><AvatarImage src={comment.profiles?.avatar_url} /><AvatarFallback>{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback></Avatar>
+                              <Avatar className="h-8 w-8"><AvatarImage src={comment.profiles?.avatar_url} className="object-cover" /><AvatarFallback>{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback></Avatar>
                             </Link>
                             <div className="flex-1 bg-muted p-3 rounded-lg"><div className="flex justify-between items-center"><Link to={`/user/${comment.profiles?.id}`} className="hover:underline"><p className="text-sm font-semibold">{`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}</p></Link><p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</p></div><p className="text-sm mt-1">{comment.content}</p></div>
                           </div>
