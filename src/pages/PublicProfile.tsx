@@ -3,11 +3,13 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, ArrowLeft, FileQuestion, Timer, Percent, CheckCircle } from "lucide-react";
+import { Loader2, ArrowLeft, FileQuestion, Percent, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface Profile {
   id: string;
@@ -18,21 +20,32 @@ interface Profile {
 }
 
 interface Simulation {
+  id: string;
   created_at: string;
   percentage: number;
+  score: number;
+  total_questions: number;
+  time_taken_seconds: number;
 }
 
-interface Stats {
-  totalQuestions: number;
-  correctQuestions: number;
-  totalSimulations: number;
+interface Question {
+  id: number;
+  category: string;
+}
+
+interface CategoryStat {
+  name: string;
+  accuracy: number;
+  total: number;
 }
 
 const PublicProfile = () => {
   const { userId } = useParams<{ userId: string }>();
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [stats, setStats] = useState<Stats | null>(null);
   const [simulations, setSimulations] = useState<Simulation[]>([]);
+  const [categoryStats, setCategoryStats] = useState<CategoryStat[]>([]);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [correctQuestions, setCorrectQuestions] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,37 +53,71 @@ const PublicProfile = () => {
       if (!userId) return;
       setLoading(true);
 
-      const profilePromise = supabase.from("profiles").select("*").eq("id", userId).single();
-      const totalQuestionsPromise = supabase.from("user_question_answers").select('*', { count: 'exact', head: true }).eq('user_id', userId);
-      const correctQuestionsPromise = supabase.from("user_question_answers").select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('is_correct', true);
-      const simulationsPromise = supabase.from("user_simulations").select('created_at, percentage').eq('user_id', userId).order('created_at', { ascending: false }).limit(10);
+      try {
+        const profilePromise = supabase.from("profiles").select("*").eq("id", userId).single();
+        const simulationsPromise = supabase.from("user_simulations").select('*').eq('user_id', userId).order('created_at', { ascending: false });
+        const answersPromise = supabase.from("user_question_answers").select('question_id, is_correct').eq('user_id', userId);
+        const questionsPromise = fetch("/questions.json").then(res => res.json());
 
-      const [
-        { data: profileData, error: profileError },
-        { count: totalQuestions, error: totalQuestionsError },
-        { count: correctQuestions, error: correctQuestionsError },
-        { data: simulationsData, error: simulationsError },
-      ] = await Promise.all([profilePromise, totalQuestionsPromise, correctQuestionsPromise, simulationsPromise]);
+        const [
+          { data: profileData, error: profileError },
+          { data: simulationsData, error: simulationsError },
+          { data: answersData, error: answersError },
+          questionsData,
+        ] = await Promise.all([profilePromise, simulationsPromise, answersPromise, questionsPromise]);
 
-      if (profileError) console.error("Error fetching profile:", profileError);
-      else setProfile(profileData);
+        if (profileError) throw profileError;
+        setProfile(profileData);
 
-      if (totalQuestionsError || correctQuestionsError || simulationsError) {
-        console.error("Error fetching stats:", { totalQuestionsError, correctQuestionsError, simulationsError });
-      } else {
-        setStats({
-          totalQuestions: totalQuestions || 0,
-          correctQuestions: correctQuestions || 0,
-          totalSimulations: simulationsData?.length || 0, // This is based on the limited query, for a full count another query would be needed
-        });
+        if (simulationsError) throw simulationsError;
         setSimulations(simulationsData || []);
-      }
 
-      setLoading(false);
+        if (answersError) throw answersError;
+        
+        if (answersData && questionsData) {
+          setTotalQuestions(answersData.length);
+          setCorrectQuestions(answersData.filter(a => a.is_correct).length);
+
+          const performanceByCategory: { [key: string]: { total: number; correct: number } } = {};
+          
+          for (const answer of answersData) {
+            const question = questionsData.find((q: Question) => q.id === answer.question_id);
+            if (question) {
+              const category = question.category;
+              if (!performanceByCategory[category]) {
+                performanceByCategory[category] = { total: 0, correct: 0 };
+              }
+              performanceByCategory[category].total++;
+              if (answer.is_correct) {
+                performanceByCategory[category].correct++;
+              }
+            }
+          }
+
+          const statsArray = Object.keys(performanceByCategory).map(category => ({
+            name: category,
+            accuracy: Math.round((performanceByCategory[category].correct / performanceByCategory[category].total) * 100),
+            total: performanceByCategory[category].total,
+          })).sort((a, b) => b.accuracy - a.accuracy);
+          
+          setCategoryStats(statsArray);
+        }
+
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchProfileData();
   }, [userId]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}m ${secs}s`;
+  };
 
   if (loading) {
     return (
@@ -98,7 +145,7 @@ const PublicProfile = () => {
     return `${firstName}${lastName}`.toUpperCase();
   };
 
-  const questionAccuracy = stats && stats.totalQuestions > 0 ? Math.round((stats.correctQuestions / stats.totalQuestions) * 100) : 0;
+  const questionAccuracy = totalQuestions > 0 ? Math.round((correctQuestions / totalQuestions) * 100) : 0;
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -125,22 +172,22 @@ const PublicProfile = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Estatísticas de Desempenho</CardTitle>
+          <CardTitle>Resumo do Desempenho</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
           <div className="bg-muted/50 p-4 rounded-lg">
             <FileQuestion className="h-8 w-8 text-primary mx-auto mb-2" />
-            <p className="text-2xl font-bold">{stats?.totalQuestions || 0}</p>
+            <p className="text-2xl font-bold">{totalQuestions}</p>
             <p className="text-sm text-muted-foreground">Questões Resolvidas</p>
           </div>
           <div className="bg-muted/50 p-4 rounded-lg">
             <Percent className="h-8 w-8 text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold">{questionAccuracy}%</p>
-            <p className="text-sm text-muted-foreground">Acerto (Questões)</p>
+            <p className="text-sm text-muted-foreground">Acerto Geral</p>
           </div>
           <div className="bg-muted/50 p-4 rounded-lg col-span-2 md:col-span-1">
             <Timer className="h-8 w-8 text-primary mx-auto mb-2" />
-            <p className="text-2xl font-bold">{stats?.totalSimulations || 0}</p>
+            <p className="text-2xl font-bold">{simulations.length}</p>
             <p className="text-sm text-muted-foreground">Simulados Realizados</p>
           </div>
         </CardContent>
@@ -148,27 +195,57 @@ const PublicProfile = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Histórico de Simulados Recentes</CardTitle>
-          <CardDescription>Últimos 10 simulados realizados.</CardDescription>
+          <CardTitle>Desempenho por Categoria</CardTitle>
+          <CardDescription>Seu percentual de acerto nas questões de cada área.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {categoryStats.length > 0 ? (
+            <div className="h-80 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={categoryStats} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" domain={[0, 100]} unit="%" />
+                  <YAxis dataKey="name" type="category" width={120} tick={{ fontSize: 12 }} />
+                  <Tooltip formatter={(value) => `${value}%`} />
+                  <Bar dataKey="accuracy" fill="var(--primary)" background={{ fill: 'hsl(var(--muted))' }} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <p className="text-center text-muted-foreground py-8">Nenhum dado de desempenho por categoria disponível.</p>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Histórico de Simulados</CardTitle>
+          <CardDescription>Todos os seus simulados realizados.</CardDescription>
         </CardHeader>
         <CardContent>
           {simulations.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Data</TableHead>
-                  <TableHead className="text-right">Aproveitamento</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {simulations.map((sim, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{format(new Date(sim.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}</TableCell>
-                    <TableCell className="text-right font-semibold">{sim.percentage}%</TableCell>
+            <ScrollArea className="h-96">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Data</TableHead>
+                    <TableHead>Pontuação</TableHead>
+                    <TableHead>Tempo</TableHead>
+                    <TableHead className="text-right">Aproveitamento</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {simulations.map((sim) => (
+                    <TableRow key={sim.id}>
+                      <TableCell>{format(new Date(sim.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}</TableCell>
+                      <TableCell>{sim.score}/{sim.total_questions}</TableCell>
+                      <TableCell>{formatTime(sim.time_taken_seconds)}</TableCell>
+                      <TableCell className="text-right font-semibold">{sim.percentage}%</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </ScrollArea>
           ) : (
             <p className="text-center text-muted-foreground py-8">Nenhum simulado realizado ainda.</p>
           )}
