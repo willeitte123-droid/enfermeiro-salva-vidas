@@ -95,8 +95,8 @@ const WoundCare = () => {
 
       <Tabs defaultValue="tissues" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="tissues">Avaliação da Ferida</TabsTrigger>
-          <TabsTrigger value="dressings">Tipos de Cobertura</TabsTrigger>
+          <TabsTrigger value="tissues" className="text-green-700 data-[state=active]:bg-green-600 data-[state=active]:text-white font-semibold">Avaliação da Ferida</TabsTrigger>
+          <TabsTrigger value="dressings" className="text-blue-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white font-semibold">Tipos de Cobertura</TabsTrigger>
         </TabsList>
 
         <TabsContent value="tissues" className="space-y-4">
