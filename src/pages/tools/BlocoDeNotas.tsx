@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Save, Loader2, PlusCircle, Trash2, FileText } from "lucide-react";
+import { Save, Loader2, PlusCircle, Trash2, FileText, NotebookPen } from "lucide-react";
 import { toast } from "sonner";
 import { useOutletContext } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
@@ -11,6 +11,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface Profile {
   id: string;
@@ -20,7 +22,7 @@ interface Note {
   id: string;
   title: string;
   content: string;
-  created_at: string;
+  updated_at: string;
 }
 
 const fetchNotes = async (userId: string) => {
@@ -28,7 +30,7 @@ const fetchNotes = async (userId: string) => {
     .from("notes")
     .select("*")
     .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .order("updated_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data;
 };
@@ -54,11 +56,14 @@ const BlocoDeNotas = () => {
     if (selectedNote) {
       setTitle(selectedNote.title);
       setContent(selectedNote.content);
-    } else {
+    } else if (notes.length > 0 && !selectedNoteId) {
+      setSelectedNoteId(notes[0].id);
+    } else if (notes.length === 0) {
+      setSelectedNoteId(null);
       setTitle("");
       setContent("");
     }
-  }, [selectedNote]);
+  }, [notes, selectedNoteId]);
 
   const createNoteMutation = useMutation({
     mutationFn: async (newNote: { title: string; content: string }) => {
@@ -83,9 +88,9 @@ const BlocoDeNotas = () => {
       const { error } = await supabase.from("notes").update({ title: updatedNote.title, content: updatedNote.content }).eq("id", updatedNote.id);
       if (error) throw new Error(error.message);
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["notes", profile?.id] });
-      toast.success("Anotação salva com sucesso!");
+      toast.success(`Anotação "${variables.title}" salva!`);
     },
     onError: (error) => {
       toast.error("Erro ao salvar anotação", { description: error.message });
@@ -130,90 +135,86 @@ const BlocoDeNotas = () => {
         <p className="text-muted-foreground">Suas anotações pessoais, salvas e disponíveis a qualquer momento.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[600px]">
-        <Card className="lg:col-span-1 flex flex-col">
-          <CardHeader className="flex-row items-center justify-between">
-            <CardTitle className="text-lg">Minhas Anotações</CardTitle>
-            <Button size="icon" variant="ghost" onClick={handleNewNote} disabled={createNoteMutation.isPending}>
-              {createNoteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlusCircle className="h-5 w-5" />}
+      <Card className="grid grid-cols-1 lg:grid-cols-4 h-[70vh] min-h-[500px] overflow-hidden">
+        <div className="lg:col-span-1 border-r flex flex-col bg-muted/30">
+          <div className="p-4 border-b flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Minhas Anotações</h2>
+            <Button size="icon" variant="ghost" onClick={handleNewNote} disabled={createNoteMutation.isPending} title="Criar nova anotação">
+              {createNoteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlusCircle className="h-5 w-5 text-primary" />}
             </Button>
-          </CardHeader>
-          <CardContent className="flex-1 p-0">
-            <ScrollArea className="h-full">
-              <div className="p-4 space-y-2">
-                {isLoading ? (
-                  <div className="flex items-center justify-center h-full"><Loader2 className="h-6 w-6 animate-spin" /></div>
-                ) : notes.length === 0 ? (
-                  <p className="text-sm text-muted-foreground text-center p-4">Nenhuma anotação encontrada. Crie uma nova!</p>
-                ) : (
-                  notes.map(note => (
-                    <button
-                      key={note.id}
-                      onClick={() => setSelectedNoteId(note.id)}
-                      className={cn(
-                        "w-full text-left p-3 rounded-md transition-colors flex items-start gap-3",
-                        selectedNoteId === note.id ? "bg-primary/10" : "hover:bg-accent"
-                      )}
-                    >
-                      <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
-                      <div className="flex-1 truncate">
-                        <p className={cn("font-semibold truncate", selectedNoteId === note.id && "text-primary")}>{note.title || "Sem Título"}</p>
-                        <p className="text-xs text-muted-foreground truncate">{note.content || "Nenhum conteúdo"}</p>
-                      </div>
-                    </button>
-                  ))
-                )}
-              </div>
-            </ScrollArea>
-          </CardContent>
-        </Card>
+          </div>
+          <ScrollArea className="flex-1">
+            <div className="p-2 space-y-1">
+              {isLoading ? (
+                <div className="flex items-center justify-center h-full p-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+              ) : notes.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center p-4">Nenhuma anotação. Clique em '+' para criar uma.</p>
+              ) : (
+                notes.map(note => (
+                  <button
+                    key={note.id}
+                    onClick={() => setSelectedNoteId(note.id)}
+                    className={cn(
+                      "w-full text-left p-3 rounded-lg transition-colors flex flex-col gap-1 border-l-4",
+                      selectedNoteId === note.id ? "bg-primary/10 border-primary" : "border-transparent hover:bg-accent"
+                    )}
+                  >
+                    <p className="font-semibold truncate text-foreground">{note.title || "Sem Título"}</p>
+                    <span className="text-xs text-muted-foreground">
+                      {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true, locale: ptBR })}
+                    </span>
+                  </button>
+                ))
+              )}
+            </div>
+          </ScrollArea>
+        </div>
 
-        <Card className="lg:col-span-3 flex flex-col">
-          {selectedNoteId ? (
+        <div className="lg:col-span-3 flex flex-col">
+          {selectedNoteId && !isLoading ? (
             <>
-              <CardHeader>
+              <div className="p-4 border-b flex items-center justify-between gap-4">
                 <Input
                   placeholder="Título da anotação"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="text-xl font-bold border-0 shadow-none focus-visible:ring-0 p-0"
+                  className="text-2xl font-bold border-0 shadow-none focus-visible:ring-0 p-0 h-auto"
                 />
-              </CardHeader>
-              <CardContent className="flex-1">
+                <div className="flex gap-2">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="ghost" size="icon" title="Apagar anotação" disabled={deleteNoteMutation.isPending}>
+                        {deleteNoteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-5 w-5 text-destructive" />}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader><AlertDialogTitle>Apagar Anotação?</AlertDialogTitle><AlertDialogDescription>Esta ação não pode ser desfeita.</AlertDialogDescription></AlertDialogHeader>
+                      <AlertDialogFooter><AlertDialogCancel>Cancelar</AlertDialogCancel><AlertDialogAction onClick={handleDelete}>Apagar</AlertDialogAction></AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                  <Button onClick={handleSave} disabled={updateNoteMutation.isPending} title="Salvar anotação">
+                    {updateNoteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                  </Button>
+                </div>
+              </div>
+              <ScrollArea className="flex-1">
                 <Textarea
                   placeholder="Comece a digitar..."
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="h-full resize-none border-0 shadow-none focus-visible:ring-0 p-0"
+                  className="h-full w-full resize-none border-0 shadow-none focus-visible:ring-0 p-6 text-base leading-relaxed"
                 />
-              </CardContent>
-              <CardFooter className="justify-end gap-2">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive" disabled={deleteNoteMutation.isPending}>
-                      {deleteNoteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader><AlertDialogTitle>Apagar Anotação?</AlertDialogTitle><AlertDialogDescription>Esta ação não pode ser desfeita.</AlertDialogDescription></AlertDialogHeader>
-                    <AlertDialogFooter><AlertDialogCancel>Cancelar</AlertDialogCancel><AlertDialogAction onClick={handleDelete}>Apagar</AlertDialogAction></AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-                <Button onClick={handleSave} disabled={updateNoteMutation.isPending}>
-                  {updateNoteMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-                  Salvar
-                </Button>
-              </CardFooter>
+              </ScrollArea>
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
-              <FileText className="h-12 w-12 mb-4" />
-              <p className="font-semibold">Selecione uma anotação para visualizar</p>
-              <p className="text-sm">Ou crie uma nova clicando no botão <PlusCircle className="inline h-4 w-4 mx-1" />.</p>
+            <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground p-8">
+              <NotebookPen className="h-16 w-16 mb-4 text-primary/30" />
+              <p className="font-semibold text-lg">Selecione uma anotação para visualizar</p>
+              <p className="text-sm max-w-xs">Ou crie uma nova clicando no botão <PlusCircle className="inline h-4 w-4 mx-1" /> na lista de anotações.</p>
             </div>
           )}
-        </Card>
-      </div>
+        </div>
+      </Card>
     </div>
   );
 };
