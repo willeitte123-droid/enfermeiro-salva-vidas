@@ -232,9 +232,15 @@ const Dashboard = () => {
                   </Avatar>
                 </Link>
               </div>
-              <p className="text-xs text-muted-foreground pt-2 border-t">
-                Na questão: "{currentComment.questionText.substring(0, 100)}..."
-              </p>
+              <Link to="/questions" className="block mt-4 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+                  <FileQuestion className="h-4 w-4" />
+                  <span>Referente à questão:</span>
+                </div>
+                <p className="text-sm text-foreground font-medium">
+                  "{currentComment.questionText.substring(0, 120)}..."
+                </p>
+              </Link>
             </div>
           ) : (
             <p className="text-center text-muted-foreground h-32 flex items-center justify-center">
