@@ -1,4 +1,4 @@
-import { LucideIcon, Stethoscope, Hand, Ear, Eye, Brain, Heart, AirVent, CircleDot, Waves, Thermometer, HeartPulse, Wind, Ruler, Smile } from "lucide-react";
+import { LucideIcon, Stethoscope, Hand, Ear, Eye, Brain, Heart, AirVent, CircleDot, Waves, Thermometer, HeartPulse, Wind, Ruler, Smile, Droplet } from "lucide-react";
 
 export interface AnamnesisStep {
   title: string;
@@ -169,3 +169,26 @@ export const vitalSigns: VitalSign[] = [
         ]
     }
 ];
+
+export const glycemiaAssessment: VitalSign = {
+    id: "glycemia",
+    name: "Glicemia Capilar",
+    icon: Droplet,
+    color: "text-orange-500",
+    technique: [
+        "Realizar higiene das mãos e calçar luvas de procedimento.",
+        "Selecionar o local da punção, preferencialmente na <strong>lateral da polpa digital</strong>.",
+        "Realizar antissepsia do local com algodão e álcool 70%, e aguardar secar.",
+        "Inserir a fita reagente no glicosímetro.",
+        "Puncionar o local com lanceta e desprezar a primeira gota de sangue.",
+        "Aproximar a fita reagente da gota de sangue para que ela seja aspirada.",
+        "Aguardar a leitura no visor do aparelho e registrar o valor.",
+        "Realizar compressão no local da punção com algodão seco."
+    ],
+    normalValues: "Jejum: 70-99 mg/dL | Pós-prandial (2h): < 140 mg/dL",
+    alterations: [
+        { term: "Hipoglicemia", description: "< 70 mg/dL" },
+        { term: "Normoglicemia", description: "70 a 99 mg/dL (jejum)" },
+        { term: "Hiperglicemia", description: "≥ 100 mg/dL (jejum) ou ≥ 140 mg/dL (pós-prandial)" }
+    ]
+};
