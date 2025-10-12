@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/command";
 import {
   Calculator, Scale, Syringe, Siren, Bandage, ClipboardList, FileQuestion,
-  BookHeart, FileSearch, HandHeart, FlaskConical, FileText, CaseSensitive
+  BookHeart, FileSearch, HandHeart, FlaskConical, FileText, NotebookText
 } from "lucide-react";
 
 const searchItems = [
@@ -26,7 +26,7 @@ const searchItems = [
   { name: "Guia de Semiotécnica", path: "/semiotechnique", icon: HandHeart },
   { name: "Calculadora de Doses", path: "/tools/dose-calculator", icon: FlaskConical },
   { name: "Valores Laboratoriais", path: "/tools/lab-values", icon: FileText },
-  { name: "Gerador de Anotações (SAE)", path: "/tools/sae-generator", icon: CaseSensitive },
+  { name: "Bloco de Anotações", path: "/tools/bloco-de-notas", icon: NotebookText },
 ];
 
 export function GlobalSearch({ open, setOpen }: { open: boolean; setOpen: (open: boolean) => void }) {

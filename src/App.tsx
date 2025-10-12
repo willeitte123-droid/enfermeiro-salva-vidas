@@ -31,7 +31,7 @@ import Semiology from "./pages/Semiology";
 import SemioTechnique from "./pages/Semiotechnique";
 import DoseCalculator from "./pages/tools/DoseCalculator";
 import LabValues from "./pages/tools/LabValues";
-import SaeGenerator from "./pages/tools/SaeGenerator";
+import BlocoDeNotas from "./pages/tools/BlocoDeNotas";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
@@ -46,6 +46,7 @@ interface Profile {
   first_name?: string;
   last_name?: string;
   avatar_url?: string;
+  notes?: string;
 }
 
 const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null, profile: Profile | null, isAdmin: boolean }) => {
@@ -90,7 +91,7 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="semiotechnique" element={<SemioTechnique />} />
         <Route path="tools/dose-calculator" element={<DoseCalculator />} />
         <Route path="tools/lab-values" element={<LabValues />} />
-        <Route path="tools/sae-generator" element={<SaeGenerator />} />
+        <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

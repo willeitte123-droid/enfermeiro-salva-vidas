@@ -2,7 +2,7 @@ import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList, Shield,
   LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, ListChecks, FileSearch, HandHeart,
-  FlaskConical, FileText, CaseSensitive, Sun, Moon
+  FlaskConical, FileText, NotebookText, Sun, Moon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -81,9 +81,9 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
                 <FileText className="h-4 w-4" />
                 Valores Laboratoriais
               </NavLink>
-              <NavLink to="/tools/sae-generator" className={navLinkClass}>
-                <CaseSensitive className="h-4 w-4" />
-                Gerador de Anotações
+              <NavLink to="/tools/bloco-de-notas" className={navLinkClass}>
+                <NotebookText className="h-4 w-4" />
+                Bloco de Anotações
               </NavLink>
             </CollapsibleContent>
           </Collapsible>
