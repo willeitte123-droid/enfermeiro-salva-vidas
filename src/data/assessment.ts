@@ -1,4 +1,4 @@
-import { LucideIcon, Stethoscope, Hand, Ear, Eye, Brain, Heart, Lungs, CircleDot, Waves, Thermometer, HeartPulse, Wind, Ruler, Smile } from "lucide-react";
+import { LucideIcon, Stethoscope, Hand, Ear, Eye, Brain, Heart, Lung, CircleDot, Waves, Thermometer, HeartPulse, Wind, Ruler, Smile } from "lucide-react";
 
 export interface AnamnesisStep {
   title: string;
@@ -66,7 +66,7 @@ export const systemAssessments: SystemAssessment[] = [
   {
     id: "respiratory",
     name: "Sistema Respiratório",
-    icon: Lungs,
+    icon: Lung,
     color: "text-emerald-500",
     details: [
       { method: "Inspeção", technique: "Observar padrão respiratório (frequência, ritmo, profundidade), uso de musculatura acessória, cianose, formato do tórax.", findings: ["Eupneia", "Taquipneia/Bradipneia", "Tiragem intercostal", "Cianose de extremidades"] },
