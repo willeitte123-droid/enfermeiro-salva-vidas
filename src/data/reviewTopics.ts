@@ -160,18 +160,34 @@ export const reviewTopics: ReviewTopic[] = [
   },
   {
     id: "ethics-legislation",
-    title: "Ética e Legislação",
+    title: "Ética e Legislação Profissional",
     icon: Gavel,
     color: "text-gray-500",
-    summary: "Pilares do Código de Ética dos Profissionais de Enfermagem (CEPE).",
+    summary: "Pilares do Código de Ética (CEPE) e da Lei do Exercício Profissional, abordando direitos, deveres, responsabilidades e sigilo.",
     details: [
       {
-        subtitle: "Direitos, Deveres e Proibições",
+        subtitle: "Direitos, Deveres e Proibições (CEPE)",
         points: [
-          "<strong>Direitos:</strong> Exercer a enfermagem com autonomia, ter acesso a informações para o cuidado, recusar-se a executar atividades que não sejam de sua competência.",
-          "<strong>Deveres:</strong> Assegurar ao paciente uma assistência livre de danos (imprudência, negligência, imperícia), respeitar o pudor e a privacidade, registrar as informações no prontuário.",
-          "<strong>Proibições:</strong> Negar assistência em situação de urgência/emergência, administrar medicamento sem conhecer a ação da droga, assinar ações que não executou.",
-          "<strong>Imperícia:</strong> Falta de habilidade técnica. <strong>Imprudência:</strong> Ação precipitada. <strong>Negligência:</strong> Falta de cuidado, omissão."
+          "<strong>Direitos:</strong> Exercer a enfermagem com autonomia e ser tratado sem discriminação. Recusar-se a executar atividades que não sejam de sua competência técnica, científica, ética e legal.",
+          "<strong>Deveres:</strong> Assegurar ao paciente uma assistência livre de danos por <strong>imperícia, negligência ou imprudência</strong>. Respeitar o pudor, a privacidade e a intimidade. Realizar e registrar no prontuário todas as ações de cuidado.",
+          "<strong>Proibições:</strong> Negar assistência em situação de urgência/emergência. Delegar a outro membro da equipe atribuições exclusivas do enfermeiro. Administrar medicamento sem conhecer a ação da droga e seus riscos."
+        ]
+      },
+      {
+        subtitle: "Responsabilidade Profissional e Penalidades",
+        points: [
+          "<strong>Imperícia:</strong> Falta de habilidade ou conhecimento técnico. Ex: Realizar um procedimento complexo sem ter a devida capacitação.",
+          "<strong>Imprudência:</strong> Ação precipitada, sem cautela. Ex: Administrar um medicamento IV rápido quando a recomendação é de infusão lenta.",
+          "<strong>Negligência:</strong> Omissão, falta de cuidado ou desatenção. Ex: Deixar de checar a identificação do paciente antes de um procedimento, esquecer de levantar as grades do leito.",
+          "<strong>Penalidades (aplicadas pelo COREN):</strong> 1. Advertência verbal; 2. Multa; 3. Censura; 4. Suspensão do exercício profissional (até 90 dias); 5. Cassação do direito ao exercício profissional."
+        ]
+      },
+      {
+        subtitle: "Sigilo Profissional",
+        points: [
+          "<strong>Definição:</strong> É o dever de manter em segredo as informações sobre o paciente obtidas em razão da atividade profissional.",
+          "<strong>Quebra do Sigilo (Exceções):</strong> O sigilo pode ser quebrado em casos de <strong>justa causa</strong> (maus-tratos a menores/incapazes), <strong>dever legal</strong> (notificação compulsória de doenças) ou <strong>autorização expressa do paciente</strong>.",
+          "<strong>Prontuário do Paciente:</strong> É um documento sigiloso, propriedade do paciente. O acesso é restrito ao próprio paciente e aos profissionais diretamente envolvidos no seu cuidado."
         ]
       }
     ]
