@@ -1948,5 +1948,655 @@
     ],
     "correctAnswer": "B",
     "explanation": "O Soro de Reidratação Oral, fornecido pelo SUS, tem a composição ideal de água, sódio, potássio, cloreto e glicose para corrigir a desidratação e os distúrbios eletrolíticos causados pela diarreia. Outras soluções não possuem o balanço adequado e podem piorar o quadro."
+  },
+  {
+    "id": 151,
+    "category": "Vigilância Epidemiológica",
+    "question": "Qual doença de notificação compulsória imediata é transmitida pela picada do mosquito Aedes aegypti e pode causar microcefalia em recém-nascidos quando a infecção ocorre durante a gestação?",
+    "options": [
+        { "id": "A", "text": "Dengue" },
+        { "id": "B", "text": "Chikungunya" },
+        { "id": "C", "text": "Zika" },
+        { "id": "D", "text": "Febre Amarela" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A infecção pelo Zika vírus durante a gestação foi associada a um surto de microcefalia em recém-nascidos no Brasil, tornando-se uma emergência de saúde pública e de notificação imediata."
+  },
+  {
+    "id": 152,
+    "category": "Saúde do Trabalhador",
+    "question": "A LER/DORT (Lesões por Esforços Repetitivos/Distúrbios Osteomusculares Relacionados ao Trabalho) é considerada qual tipo de doença segundo a legislação?",
+    "options": [
+        { "id": "A", "text": "Doença congênita" },
+        { "id": "B", "text": "Doença degenerativa" },
+        { "id": "C", "text": "Doença do trabalho" },
+        { "id": "D", "text": "Doença infecciosa" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A LER/DORT é reconhecida como uma doença do trabalho, pois é desencadeada ou agravada por condições e organização do trabalho, como repetitividade, postura inadequada e sobrecarga."
+  },
+  {
+    "id": 153,
+    "category": "Emergência",
+    "question": "Na Escala de Cincinnati, utilizada para avaliação pré-hospitalar de AVC, quais são os três sinais avaliados?",
+    "options": [
+        { "id": "A", "text": "Nível de consciência, força motora e fala" },
+        { "id": "B", "text": "Queda facial, desvio de rima e fala anormal" },
+        { "id": "C", "text": "Assimetria facial, queda do braço e fala anormal" },
+        { "id": "D", "text": "Pressão arterial, pulso e respiração" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Escala de Cincinnati avalia três achados: 1) Assimetria facial (pedir para o paciente sorrir); 2) Queda do braço (pedir para o paciente estender os braços por 10 segundos); 3) Fala anormal (pedir para o paciente repetir uma frase simples). A presença de um desses sinais indica alta probabilidade de AVC."
+  },
+  {
+    "id": 154,
+    "category": "Centro Cirúrgico",
+    "question": "A classificação de feridas cirúrgicas em 'limpa', 'potencialmente contaminada', 'contaminada' e 'infectada' baseia-se principalmente em qual critério?",
+    "options": [
+        { "id": "A", "text": "No tempo de duração da cirurgia." },
+        { "id": "B", "text": "No potencial de contaminação do sítio cirúrgico." },
+        { "id": "C", "text": "No tipo de anestesia utilizada." },
+        { "id": "D", "text": "Na idade e comorbidades do paciente." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A classificação do sítio cirúrgico avalia o risco de infecção com base na presença de microrganismos no local da cirurgia. Cirurgias em tecidos estéreis sem quebra de técnica são 'limpas', enquanto cirurgias com inflamação aguda ou pus são 'infectadas'."
+  },
+  {
+    "id": 155,
+    "category": "Saúde Coletiva",
+    "question": "O que são 'determinantes sociais da saúde'?",
+    "options": [
+        { "id": "A", "text": "Fatores genéticos que predispõem a doenças." },
+        { "id": "B", "text": "As escolhas de estilo de vida individuais, como dieta e exercício." },
+        { "id": "C", "text": "As condições sociais, econômicas, culturais e ambientais em que as pessoas vivem e trabalham, que afetam sua saúde." },
+        { "id": "D", "text": "A disponibilidade de hospitais e postos de saúde em uma região." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Os Determinantes Sociais da Saúde (DSS) são os fatores que influenciam a ocorrência de problemas de saúde e seus fatores de risco na população, incluindo condições de vida e trabalho, moradia, educação, renda, acesso a serviços, entre outros."
+  },
+  {
+    "id": 156,
+    "category": "Urgência e Emergência",
+    "question": "Qual é a principal diferença entre urgência e emergência?",
+    "options": [
+        { "id": "A", "text": "Não há diferença, os termos são sinônimos." },
+        { "id": "B", "text": "Urgência envolve risco de vida iminente, enquanto emergência não." },
+        { "id": "C", "text": "Emergência envolve risco de vida iminente ou sofrimento intenso, exigindo tratamento imediato, enquanto urgência, embora necessite de atendimento rápido, não possui o mesmo grau de risco." },
+        { "id": "D", "text": "Urgência é atendida no SAMU e emergência no pronto-socorro." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A principal distinção é o grau de risco. Emergência implica em risco iminente de morte ou lesão irreparável (ex: PCR, IAM). Urgência é uma situação que requer atendimento médico em curto prazo, mas sem risco de vida imediato (ex: fratura, cólica renal)."
+  },
+  {
+    "id": 157,
+    "category": "CME",
+    "question": "Artigos críticos, que penetram tecidos estéreis ou o sistema vascular, devem ser submetidos a qual processo de desinfecção ou esterilização?",
+    "options": [
+        { "id": "A", "text": "Limpeza com água e sabão." },
+        { "id": "B", "text": "Desinfecção de baixo nível." },
+        { "id": "C", "text": "Desinfecção de alto nível." },
+        { "id": "D", "text": "Esterilização." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Pela classificação de Spaulding, artigos críticos (ex: instrumental cirúrgico, cateteres) devem ser esterilizados para destruir todas as formas de vida microbiana, incluindo esporos bacterianos, garantindo sua segurança para uso em procedimentos invasivos."
+  },
+  {
+    "id": 158,
+    "category": "Saúde do Adulto",
+    "question": "A Hipertensão Arterial Sistêmica (HAS) é diagnosticada, na maioria dos casos, quando a medição da pressão arterial em consultório é consistentemente:",
+    "options": [
+        { "id": "A", "text": "≥ 120/80 mmHg" },
+        { "id": "B", "text": "≥ 130/85 mmHg" },
+        { "id": "C", "text": "≥ 140/90 mmHg" },
+        { "id": "D", "text": "≥ 160/100 mmHg" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "De acordo com as diretrizes brasileiras, o diagnóstico de HAS é estabelecido quando a média de pelo menos duas medições de pressão arterial, em duas ou mais consultas, é maior ou igual a 140 mmHg para a pressão sistólica e/ou maior ou igual a 90 mmHg para a diastólica."
+  },
+  {
+    "id": 159,
+    "category": "Vigilância Sanitária",
+    "question": "A RDC nº 36/2013 da ANVISA institui ações para a segurança do paciente em serviços de saúde. Qual dos seguintes itens NÃO é um dos protocolos básicos previstos nesta RDC?",
+    "options": [
+        { "id": "A", "text": "Protocolo de identificação do paciente." },
+        { "id": "B", "text": "Protocolo para prevenção de quedas." },
+        { "id": "C", "text": "Protocolo de cirurgia segura." },
+        { "id": "D", "text": "Protocolo de conforto e bem-estar do paciente." }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A RDC 36/2013 estabelece protocolos obrigatórios focados em processos de alto risco, como identificação do paciente, prevenção de quedas, cirurgia segura, higienização das mãos, prevenção de lesão por pressão e segurança na prescrição, uso e administração de medicamentos. Conforto, embora importante, não é um protocolo específico desta RDC."
+  },
+  {
+    "id": 160,
+    "category": "Gerenciamento",
+    "question": "O dimensionamento de pessoal de enfermagem, regulamentado pela Resolução COFEN nº 543/2017, leva em consideração principalmente:",
+    "options": [
+        { "id": "A", "text": "O número de leitos da instituição." },
+        { "id": "B", "text": "A complexidade assistencial dos pacientes e as horas de enfermagem necessárias." },
+        { "id": "C", "text": "O faturamento do hospital." },
+        { "id": "D", "text": "A proporção de um enfermeiro para cada dez técnicos de enfermagem." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O dimensionamento é um processo complexo que se baseia na classificação dos pacientes segundo o grau de dependência da equipe de enfermagem (Sistema de Classificação de Pacientes - SCP). A partir dessa classificação, calculam-se as horas de assistência necessárias por tipo de cuidado (mínimo, intermediário, semi-intensivo, intensivo) para determinar o quantitativo de profissionais."
+  },
+  {
+    "id": 161,
+    "category": "Saúde Coletiva",
+    "question": "Qual a diferença entre prevenção e promoção da saúde?",
+    "options": [
+        { "id": "A", "text": "Prevenção foca em evitar doenças específicas, enquanto promoção busca fortalecer a capacidade dos indivíduos e comunidades de controlar sua saúde." },
+        { "id": "B", "text": "Promoção é realizada por médicos e prevenção por enfermeiros." },
+        { "id": "C", "text": "Prevenção é feita na atenção primária e promoção na atenção secundária." },
+        { "id": "D", "text": "Não há diferença prática entre os dois conceitos." }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A prevenção visa reduzir a incidência de doenças específicas (ex: vacinação, uso de preservativo). A promoção da saúde é um conceito mais amplo, que atua sobre os determinantes sociais da saúde para melhorar a qualidade de vida e a capacidade das pessoas de fazerem escolhas saudáveis (ex: saneamento básico, educação, lazer)."
+  },
+  {
+    "id": 162,
+    "category": "CME",
+    "question": "Qual é o método de esterilização de escolha para artigos termossensíveis, como endoscópios flexíveis?",
+    "options": [
+        { "id": "A", "text": "Autoclave a vapor." },
+        { "id": "B", "text": "Estufa (calor seco)." },
+        { "id": "C", "text": "Esterilização por plasma de peróxido de hidrogênio." },
+        { "id": "D", "text": "Fervura." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Artigos termossensíveis não podem ser submetidos a altas temperaturas como as da autoclave. A esterilização por plasma de peróxido de hidrogênio é um método de baixa temperatura, seguro e eficaz para esses materiais, substituindo métodos mais tóxicos como o óxido de etileno."
+  },
+  {
+    "id": 163,
+    "category": "Saúde do Adulto",
+    "question": "Um paciente diabético tipo 1 apresenta sudorese, tremores, taquicardia e confusão mental. A primeira medida a ser tomada é:",
+    "options": [
+        { "id": "A", "text": "Administrar uma dose extra de insulina NPH." },
+        { "id": "B", "text": "Verificar a glicemia capilar." },
+        { "id": "C", "text": "Oferecer uma refeição completa com proteínas e gorduras." },
+        { "id": "D", "text": "Aferir a pressão arterial e a frequência cardíaca." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Os sintomas são clássicos de hipoglicemia. A primeira e mais importante ação é confirmar o diagnóstico através da glicemia capilar. Se confirmada (<70 mg/dL), a conduta será oferecer carboidrato de rápida absorção (se consciente) ou administrar glicose IV (se inconsciente)."
+  },
+  {
+    "id": 164,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é uma doença endêmica?",
+    "options": [
+        { "id": "A", "text": "Uma doença que se espalha rapidamente por vários países ou continentes." },
+        { "id": "B", "text": "Um aumento súbito e inesperado do número de casos de uma doença em uma área." },
+        { "id": "C", "text": "Uma doença que ocorre com uma frequência constante e esperada em uma determinada população ou região." },
+        { "id": "D", "text": "Uma doença que foi completamente erradicada de uma região." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Endemia refere-se à presença contínua de uma doença dentro de uma área geográfica, com um número de casos relativamente estável ao longo do tempo. Ex: a febre amarela é endêmica na região amazônica."
+  },
+  {
+    "id": 165,
+    "category": "Gerenciamento",
+    "question": "A liderança situacional é um modelo que propõe que o estilo de liderança deve se adaptar:",
+    "options": [
+        { "id": "A", "text": "À personalidade do líder." },
+        { "id": "B", "text": "À cultura organizacional da instituição." },
+        { "id": "C", "text": "Ao nível de maturidade (competência e motivação) dos liderados." },
+        { "id": "D", "text": "Às metas financeiras da empresa." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A teoria da liderança situacional, de Hersey e Blanchard, defende que não existe um único estilo de liderança ideal. O líder eficaz é aquele que adapta seu comportamento (direcionar, persuadir, compartilhar, delegar) de acordo com o nível de desenvolvimento de sua equipe para cada tarefa."
+  },
+  {
+    "id": 166,
+    "category": "Saúde Coletiva",
+    "question": "A visita domiciliar realizada pelo Agente Comunitário de Saúde (ACS) é uma ferramenta fundamental para qual atributo da Atenção Primária?",
+    "options": [
+        { "id": "A", "text": "Acesso de primeiro contato." },
+        { "id": "B", "text": "Longitudinalidade e vínculo." },
+        { "id": "C", "text": "Integralidade." },
+        { "id": "D", "text": "Coordenação do cuidado." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A visita domiciliar regular permite que o ACS e a equipe de saúde da família conheçam a realidade, as necessidades e o contexto de vida das famílias. Esse acompanhamento contínuo fortalece o vínculo e a confiança, sendo a principal expressão da longitudinalidade do cuidado."
+  },
+  {
+    "id": 167,
+    "category": "CME",
+    "question": "O teste de Bowie-Dick é utilizado para avaliar a eficácia de qual tipo de equipamento?",
+    "options": [
+        { "id": "A", "text": "Lavadora ultrassônica." },
+        { "id": "B", "text": "Autoclave de plasma de peróxido de hidrogênio." },
+        { "id": "C", "text": "Autoclave a vapor com sistema de vácuo (pré-vácuo)." },
+        { "id": "D", "text": "Estufa de calor seco." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O teste de Bowie-Dick é um indicador químico utilizado diariamente para verificar a eficácia do sistema de vácuo da autoclave, que é responsável pela remoção do ar da câmara antes da entrada do vapor. A presença de ar residual impede a esterilização correta."
+  },
+  {
+    "id": 168,
+    "category": "Saúde do Adulto",
+    "question": "Qual é a principal orientação de enfermagem para um paciente em uso de anticoagulantes orais, como a Varfarina?",
+    "options": [
+        { "id": "A", "text": "Aumentar a ingestão de alimentos ricos em Vitamina K, como folhas verdes." },
+        { "id": "B", "text": "Tomar o medicamento em jejum para melhor absorção." },
+        { "id": "C", "text": "Monitorar sinais de sangramento (gengival, hematomas, urina escura) e manter a ingestão de Vitamina K estável." },
+        { "id": "D", "text": "Realizar exercícios físicos de alto impacto para melhorar a circulação." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A principal orientação é a vigilância para sinais de sangramento. Além disso, como a Varfarina age inibindo a Vitamina K, o paciente deve ser orientado a manter uma ingestão constante de alimentos ricos nessa vitamina, pois grandes variações na dieta podem desestabilizar o efeito do anticoagulante (INR)."
+  },
+  {
+    "id": 169,
+    "category": "Vigilância Sanitária",
+    "question": "O Plano de Gerenciamento de Resíduos de Serviços de Saúde (PGRSS) é obrigatório para todos os serviços de saúde. Os resíduos perfurocortantes (Grupo E) devem ser descartados em:",
+    "options": [
+        { "id": "A", "text": "Sacos plásticos brancos leitosos." },
+        { "id": "B", "text": "Sacos plásticos vermelhos." },
+        { "id": "C", "text": "Recipientes rígidos, resistentes à punctura, com identificação de risco biológico." },
+        { "id": "D", "text": "Lixo comum (Grupo D)." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Os resíduos do Grupo E (perfurocortantes), como agulhas, lâminas e vidrarias, devem ser descartados em coletores específicos (tipo Descarpack), que são rígidos e resistentes para prevenir acidentes. O descarte inadequado representa um grave risco ocupacional e ambiental."
+  },
+  {
+    "id": 170,
+    "category": "Gerenciamento",
+    "question": "O que é o 'acolhimento com classificação de risco' nos serviços de urgência?",
+    "options": [
+        { "id": "A", "text": "Um sistema de atendimento por ordem de chegada." },
+        { "id": "B", "text": "Uma triagem administrativa para verificar o convênio do paciente." },
+        { "id": "C", "text": "Um processo de escuta qualificada e avaliação, realizado por um enfermeiro, para priorizar o atendimento segundo a gravidade." },
+        { "id": "D", "text": "Uma consulta médica rápida para definir o diagnóstico." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "É uma ferramenta de gestão que visa organizar o fluxo de pacientes. O enfermeiro avalia os sinais e sintomas e classifica o paciente por cores (ex: Protocolo de Manchester), garantindo que os casos mais graves sejam atendidos primeiro, independentemente da ordem de chegada."
+  },
+  {
+    "id": 171,
+    "category": "Saúde Coletiva",
+    "question": "A hanseníase é uma doença infecciosa crônica cujo tratamento no Brasil, pelo SUS, é realizado em regime de:",
+    "options": [
+        { "id": "A", "text": "Monoterapia com Dapsona por 6 meses." },
+        { "id": "B", "text": "Poliquimioterapia (PQT), com diferentes esquemas dependendo da forma clínica." },
+        { "id": "C", "text": "Internação hospitalar prolongada para evitar o contágio." },
+        { "id": "D", "text": "Cirurgia para remoção das lesões." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O tratamento da hanseníase é feito com a Poliquimioterapia (PQT), que associa diferentes antibióticos (Rifampicina, Dapsona e Clofazimina) para evitar a resistência do bacilo. Os esquemas (paucibacilar ou multibacilar) e a duração variam conforme a classificação da doença."
+  },
+  {
+    "id": 172,
+    "category": "CME",
+    "question": "Qual indicador é utilizado para monitorar a eficácia de um ciclo de esterilização em autoclave, sendo o único que comprova a morte dos microrganismos?",
+    "options": [
+        { "id": "A", "text": "Indicador químico de fita (fita zebrada)." },
+        { "id": "B", "text": "Indicador químico de classe 5 (integrador)." },
+        { "id": "C", "text": "Indicador biológico." },
+        { "id": "D", "text": "Registro de tempo, temperatura e pressão do equipamento." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O indicador biológico contém esporos de bactérias altamente resistentes (ex: Geobacillus stearothermophilus). Após o ciclo, ele é incubado. Se não houver crescimento bacteriano, comprova-se que o processo foi eficaz em destruir todas as formas de vida, validando a esterilização."
+  },
+  {
+    "id": 173,
+    "category": "Saúde do Adulto",
+    "question": "A Doença Pulmonar Obstrutiva Crônica (DPOC) é caracterizada por uma limitação do fluxo aéreo que não é totalmente reversível. Qual é o principal fator de risco para o seu desenvolvimento?",
+    "options": [
+        { "id": "A", "text": "Exposição a poeiras minerais (asbestose)." },
+        { "id": "B", "text": "Asma não tratada na infância." },
+        { "id": "C", "text": "Tabagismo." },
+        { "id": "D", "text": "Refluxo gastroesofágico crônico." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O tabagismo é, de longe, o principal fator de risco para a DPOC, sendo responsável por cerca de 80-90% dos casos. A fumaça do cigarro causa uma inflamação crônica nas vias aéreas e a destruição do parênquima pulmonar (enfisema)."
+  },
+  {
+    "id": 174,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que significa o termo 'incidência' em epidemiologia?",
+    "options": [
+        { "id": "A", "text": "O número total de casos (novos e antigos) de uma doença em uma população em um dado momento." },
+        { "id": "B", "text": "O número de casos novos de uma doença que ocorrem em uma população em um determinado período de tempo." },
+        { "id": "C", "text": "O número de óbitos causados por uma doença em uma população." },
+        { "id": "D", "text": "A gravidade de uma doença em uma população." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Incidência mede a frequência de casos novos de uma doença, representando o risco de adoecer em uma população. Prevalência, por outro lado, mede o número total de casos existentes (novos + antigos) em um ponto no tempo, representando a carga da doença."
+  },
+  {
+    "id": 175,
+    "category": "Gerenciamento",
+    "question": "A ferramenta 5S, utilizada na gestão da qualidade, tem como objetivo principal:",
+    "options": [
+        { "id": "A", "text": "Analisar a causa raiz dos problemas." },
+        { "id": "B", "text": "Promover a organização, a limpeza e a padronização do ambiente de trabalho." },
+        { "id": "C", "text": "Mapear o fluxo de valor de um processo." },
+        { "id": "D", "text": "Controlar estatisticamente a qualidade dos processos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O 5S é uma metodologia japonesa baseada em cinco sensos: Seiri (utilização), Seiton (organização), Seiso (limpeza), Seiketsu (padronização/saúde) e Shitsuke (disciplina). Sua aplicação resulta em um ambiente de trabalho mais organizado, seguro e produtivo."
+  },
+  {
+    "id": 176,
+    "category": "Saúde Coletiva",
+    "question": "A Tuberculose é uma doença de notificação compulsória e seu tratamento, no Brasil, é diretamente observado. O que significa Tratamento Diretamente Observado (TDO)?",
+    "options": [
+        { "id": "A", "text": "O paciente deve ser internado para receber a medicação." },
+        { "id": "B", "text": "Um profissional de saúde observa o paciente ingerir a medicação, pelo menos 3 vezes por semana." },
+        { "id": "C", "text": "O paciente é observado por câmeras de segurança ao tomar o remédio." },
+        { "id": "D", "text": "O tratamento é observado apenas pelo médico da unidade." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O TDO é uma estratégia para aumentar a adesão ao tratamento da tuberculose. Consiste na observação da tomada dos medicamentos pelo paciente, realizada por um profissional de saúde ou outro indivíduo treinado, fortalecendo o vínculo e garantindo a conclusão do tratamento."
+  },
+  {
+    "id": 177,
+    "category": "CME",
+    "question": "Qual é a primeira e mais importante etapa no processamento de artigos odonto-médico-hospitalares?",
+    "options": [
+        { "id": "A", "text": "Esterilização." },
+        { "id": "B", "text": "Desinfecção." },
+        { "id": "C", "text": "Limpeza." },
+        { "id": "D", "text": "Embalagem." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A limpeza é a etapa fundamental. Ela consiste na remoção da sujidade visível (matéria orgânica) para reduzir a carga microbiana. Um artigo que não foi limpo adequadamente não pode ser desinfetado ou esterilizado com eficácia, pois a matéria orgânica protege os microrganismos."
+  },
+  {
+    "id": 178,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o valor de referência para a Hemoglobina Glicada (HbA1c) que estabelece o diagnóstico de Diabetes Mellitus?",
+    "options": [
+        { "id": "A", "text": "≥ 5,7%" },
+        { "id": "B", "text": "≥ 6,0%" },
+        { "id": "C", "text": "≥ 6,5%" },
+        { "id": "D", "text": "≥ 7,0%" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Hemoglobina Glicada reflete a média da glicemia nos últimos 2-3 meses. Valores ≥ 6,5% são um dos critérios para o diagnóstico de Diabetes. Valores entre 5,7% e 6,4% indicam pré-diabetes."
+  },
+  {
+    "id": 179,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é um 'contactante' no contexto da vigilância de doenças transmissíveis?",
+    "options": [
+        { "id": "A", "text": "Qualquer pessoa que já teve a doença no passado." },
+        { "id": "B", "text": "Uma pessoa ou animal que teve contato com uma fonte de infecção e que pode estar em período de incubação." },
+        { "id": "C", "text": "O profissional de saúde que atende o caso suspeito." },
+        { "id": "D", "text": "Um portador assintomático da doença." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Contactante é todo indivíduo que teve contato com um caso confirmado ou suspeito de uma doença transmissível, de forma que pudesse ter se infectado. A identificação e o monitoramento dos contactantes são cruciais para o controle de surtos."
+  },
+  {
+    "id": 180,
+    "category": "Gerenciamento",
+    "question": "A auditoria de enfermagem que é realizada durante a internação do paciente, com o prontuário 'aberto', é chamada de:",
+    "options": [
+        { "id": "A", "text": "Auditoria retrospectiva." },
+        { "id": "B", "text": "Auditoria operacional." },
+        { "id": "C", "text": "Auditoria concorrente." },
+        { "id": "D", "text": "Auditoria de contas." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A auditoria concorrente (ou operacional) ocorre em tempo real, enquanto o paciente está recebendo os cuidados. Ela permite identificar não conformidades e corrigi-las imediatamente, focando na qualidade da assistência e na otimização de recursos."
+  },
+  {
+    "id": 181,
+    "category": "Saúde Coletiva",
+    "question": "A Rede Cegonha é uma estratégia do SUS que visa assegurar às mulheres o direito a:",
+    "options": [
+        { "id": "A", "text": "Tratamento para infertilidade." },
+        { "id": "B", "text": "Acesso a todos os métodos contraceptivos." },
+        { "id": "C", "text": "Planejamento reprodutivo, atenção humanizada à gravidez, parto e puerpério, e cuidado integral à criança." },
+        { "id": "D", "text": "Rastreamento e tratamento de câncer de mama e colo de útero." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Rede Cegonha é uma rede de cuidados que busca garantir um atendimento de qualidade, seguro e humanizado para todas as mulheres, desde o planejamento familiar, passando pelo pré-natal, parto e puerpério, até o acompanhamento do desenvolvimento da criança nos seus primeiros dois anos de vida."
+  },
+  {
+    "id": 182,
+    "category": "CME",
+    "question": "Qual a temperatura e o tempo mínimos para um ciclo de esterilização por autoclave a vapor saturado sob pressão?",
+    "options": [
+        { "id": "A", "text": "100°C por 60 minutos." },
+        { "id": "B", "text": "121°C por 15 minutos." },
+        { "id": "C", "text": "150°C por 10 minutos." },
+        { "id": "D", "text": "110°C por 30 minutos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O ciclo padrão de esterilização em autoclave a vapor é de 121°C por 15 a 30 minutos, a uma pressão de 1 atm. Outro ciclo comum é o de 134°C por 4 a 7 minutos, a 2 atm. O tempo exato depende do tipo de material e da validação do equipamento."
+  },
+  {
+    "id": 183,
+    "category": "Saúde do Adulto",
+    "question": "Um paciente com insuficiência renal crônica em hemodiálise apresenta uma fístula arteriovenosa (FAV) no braço esquerdo. Qual cuidado de enfermagem é fundamental em relação a este membro?",
+    "options": [
+        { "id": "A", "text": "Utilizar o membro para verificação da pressão arterial e punções venosas para garantir a perviedade da fístula." },
+        { "id": "B", "text": "Manter o membro elevado e imobilizado para evitar trombose." },
+        { "id": "C", "text": "Evitar a verificação da pressão arterial, punções venosas e uso de garrotes no membro da fístula." },
+        { "id": "D", "text": "Realizar compressas quentes no local da fístula a cada 4 horas." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O membro com a FAV é a 'linha da vida' do paciente. Qualquer procedimento que possa comprimir os vasos (PA, garrote) ou causar infecção/trombose (punções) é estritamente proibido para preservar o acesso vascular. A enfermagem deve também avaliar diariamente a presença de frêmito e sopro na fístula."
+  },
+  {
+    "id": 184,
+    "category": "Vigilância Epidemiológica",
+    "question": "Qual é o principal objetivo da vigilância epidemiológica?",
+    "options": [
+        { "id": "A", "text": "Punir os indivíduos que não seguem as recomendações de saúde." },
+        { "id": "B", "text": "Coletar, analisar e disseminar dados sobre a ocorrência de doenças para planejar e executar ações de controle e prevenção." },
+        { "id": "C", "text": "Realizar o tratamento de todos os casos de doenças infecciosas." },
+        { "id": "D", "text": "Desenvolver novas vacinas e medicamentos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A vigilância epidemiológica é um conjunto de ações que fornecem informações para a tomada de decisão. Seu objetivo é detectar ou prever qualquer mudança nos fatores condicionantes de uma doença, com a finalidade de recomendar e adotar as medidas de prevenção e controle indicadas."
+  },
+  {
+    "id": 185,
+    "category": "Gerenciamento",
+    "question": "O que é 'educação permanente em saúde'?",
+    "options": [
+        { "id": "A", "text": "A formação acadêmica inicial dos profissionais de saúde." },
+        { "id": "B", "text": "Cursos de pós-graduação e especialização." },
+        { "id": "C", "text": "Um processo de aprendizagem que ocorre no cotidiano do trabalho, a partir dos problemas enfrentados, visando transformar as práticas profissionais." },
+        { "id": "D", "text": "Treinamentos pontuais sobre novos equipamentos e protocolos." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Educação Permanente em Saúde (EPS) difere da educação continuada. A EPS parte da problematização do processo de trabalho, sendo uma aprendizagem significativa que ocorre no dia a dia, de forma ascendente e multiprofissional, com o objetivo de qualificar a atenção à saúde."
+  },
+  {
+    "id": 186,
+    "category": "Saúde Coletiva",
+    "question": "A vacina contra o HPV, disponível no SUS, previne principalmente contra qual tipo de câncer?",
+    "options": [
+        { "id": "A", "text": "Câncer de mama." },
+        { "id": "B", "text": "Câncer de próstata." },
+        { "id": "C", "text": "Câncer de colo de útero." },
+        { "id": "D", "text": "Câncer de pele." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Papilomavírus Humano (HPV) é o principal fator de risco para o desenvolvimento do câncer de colo de útero. A vacina quadrivalente, ofertada pelo PNI, protege contra os tipos 6, 11 (causadores de verrugas genitais) e 16, 18 (principais causadores de câncer)."
+  },
+  {
+    "id": 187,
+    "category": "CME",
+    "question": "O que é um indicador químico de classe 5 (integrador)?",
+    "options": [
+        { "id": "A", "text": "Uma fita que muda de cor apenas com a presença de calor." },
+        { "id": "B", "text": "Um teste que comprova a morte de microrganismos." },
+        { "id": "C", "text": "Um indicador que reage a todos os parâmetros críticos da esterilização (tempo, temperatura e vapor)." },
+        { "id": "D", "text": "Um teste para verificar a remoção de ar da autoclave." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O integrador de classe 5 é um indicador químico projetado para reagir a todas as variáveis críticas do ciclo de esterilização a vapor. Ele é colocado dentro dos pacotes e sua mudança de cor indica que os parâmetros para a esterilização foram atingidos naquele ponto."
+  },
+  {
+    "id": 188,
+    "category": "Saúde do Adulto",
+    "question": "Qual é a principal complicação aguda do Diabetes Mellitus tipo 1?",
+    "options": [
+        { "id": "A", "text": "Estado Hiperglicêmico Hiperosmolar (EHH)." },
+        { "id": "B", "text": "Cetoacidose Diabética (CAD)." },
+        { "id": "C", "text": "Nefropatia diabética." },
+        { "id": "D", "text": "Retinopatia diabética." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Cetoacidose Diabética é uma complicação grave e aguda que ocorre principalmente em pacientes com DM1, devido à deficiência absoluta de insulina. Isso leva à hiperglicemia severa, produção de corpos cetônicos e acidose metabólica. O EHH é mais comum no DM2."
+  },
+  {
+    "id": 189,
+    "category": "Vigilância Epidemiológica",
+    "question": "Qual das seguintes doenças é de notificação compulsória IMEDIATA (em até 24 horas)?",
+    "options": [
+        { "id": "A", "text": "Tuberculose" },
+        { "id": "B", "text": "Hanseníase" },
+        { "id": "C", "text": "Doença Meningocócica" },
+        { "id": "D", "text": "Hepatite C" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Doença Meningocócica é uma emergência de saúde pública devido ao seu alto potencial epidêmico e letalidade. A notificação imediata é crucial para desencadear rapidamente as ações de controle, como a quimioprofilaxia dos contatos."
+  },
+  {
+    "id": 190,
+    "category": "Gerenciamento",
+    "question": "O que é o Índice de Segurança Técnica (IST) no contexto do dimensionamento de pessoal de enfermagem?",
+    "options": [
+        { "id": "A", "text": "Um indicador da qualidade da assistência prestada." },
+        { "id": "B", "text": "Um percentual a ser acrescido ao quadro de pessoal para cobrir ausências previstas e não previstas." },
+        { "id": "C", "text": "A proporção entre enfermeiros e técnicos de enfermagem." },
+        { "id": "D", "text": "O número de horas de enfermagem necessárias por paciente/dia." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O IST é um acréscimo de no mínimo 15% sobre o quantitativo de pessoal calculado, destinado a cobrir férias, folgas, licenças e outras ausências, garantindo a cobertura assistencial contínua e segura."
+  },
+  {
+    "id": 191,
+    "category": "Saúde Coletiva",
+    "question": "A Portaria de Consolidação nº 5/2017 do Ministério da Saúde define a lista de Doenças e Agravos de Notificação Compulsória. A violência contra a mulher é um agravo de notificação:",
+    "options": [
+        { "id": "A", "text": "Imediata" },
+        { "id": "B", "text": "Semanal" },
+        { "id": "C", "text": "Mensal" },
+        { "id": "D", "text": "Opcional" }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A violência doméstica, sexual e/ou outras violências são agravos de notificação compulsória semanal. A notificação é sigilosa e fundamental para a vigilância e para a articulação da rede de proteção à vítima."
+  },
+  {
+    "id": 192,
+    "category": "CME",
+    "question": "O processo que elimina a maioria dos microrganismos, exceto esporos bacterianos, de artigos semicríticos (que entram em contato com mucosa íntegra) é chamado de:",
+    "options": [
+        { "id": "A", "text": "Limpeza" },
+        { "id": "B", "text": "Desinfecção de baixo nível" },
+        { "id": "C", "text": "Desinfecção de alto nível" },
+        { "id": "D", "text": "Esterilização" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A desinfecção de alto nível é o processo que destrói todos os microrganismos, com exceção de um alto número de esporos. É o processo mínimo recomendado para artigos semicríticos, como endoscópios e equipamentos de terapia respiratória."
+  },
+  {
+    "id": 193,
+    "category": "Saúde do Adulto",
+    "question": "Qual é a principal orientação para um paciente que irá realizar o exame de escarro para pesquisa de Bacilo Álcool-Ácido Resistente (BAAR) para diagnóstico de tuberculose?",
+    "options": [
+        { "id": "A", "text": "Coletar a amostra à noite, antes de dormir." },
+        { "id": "B", "text": "Coletar a primeira amostra da manhã, em jejum, após tossir profundamente." },
+        { "id": "C", "text": "Coletar apenas a saliva, evitando secreção pulmonar." },
+        { "id": "D", "text": "Realizar bochecho com antisséptico bucal antes da coleta." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A amostra ideal é a primeira da manhã, pois há maior acúmulo de secreção nos pulmões durante a noite. O paciente deve ser orientado a inspirar profundamente e tossir para obter uma amostra de escarro (secreção pulmonar) e não de saliva. O bochecho deve ser feito apenas com água."
+  },
+  {
+    "id": 194,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é 'quarentena'?",
+    "options": [
+        { "id": "A", "text": "Isolamento de pessoas doentes para evitar a transmissão." },
+        { "id": "B", "text": "Restrição de atividades de pessoas sadias que foram expostas a uma doença transmissível, durante o período de incubação." },
+        { "id": "C", "text": "Fechamento de fronteiras para impedir a entrada de uma doença." },
+        { "id": "D", "text": "Desinfecção de ambientes onde houve um caso de doença infecciosa." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Quarentena se aplica a indivíduos saudáveis (assintomáticos) que podem ter sido expostos a uma doença, com o objetivo de monitorá-los e restringir sua circulação para ver se desenvolvem a doença. Isolamento, por outro lado, se aplica a pessoas que já estão doentes."
+  },
+  {
+    "id": 195,
+    "category": "Gerenciamento",
+    "question": "A Teoria da Burocracia, de Max Weber, influenciou a administração hospitalar. Uma de suas principais características é:",
+    "options": [
+        { "id": "A", "text": "Flexibilidade e informalidade nas relações." },
+        { "id": "B", "text": "Ênfase nas relações humanas e na satisfação do trabalhador." },
+        { "id": "C", "text": "Racionalidade, impessoalidade, hierarquia clara e regras formais." },
+        { "id": "D", "text": "Tomada de decisão descentralizada e baseada no consenso." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A teoria burocrática busca a máxima eficiência através da organização racional do trabalho. Suas características incluem a divisão do trabalho, hierarquia de autoridade, formalidade nas comunicações, impessoalidade nas relações e seleção baseada na competência técnica."
+  },
+  {
+    "id": 196,
+    "category": "Saúde Coletiva",
+    "question": "A Política Nacional de Práticas Integrativas e Complementares (PNPIC) no SUS inclui qual das seguintes práticas?",
+    "options": [
+        { "id": "A", "text": "Quimioterapia" },
+        { "id": "B", "text": "Radioterapia" },
+        { "id": "C", "text": "Acupuntura" },
+        { "id": "D", "text": "Hemodiálise" }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A PNPIC incorpora ao SUS abordagens de cuidado que buscam estimular os mecanismos naturais de prevenção e recuperação da saúde. A Acupuntura é uma das práticas mais conhecidas e ofertadas, junto com a homeopatia, fitoterapia, medicina antroposófica, termalismo, entre outras."
+  },
+  {
+    "id": 197,
+    "category": "CME",
+    "question": "Após a limpeza, os materiais devem ser secos completamente antes da esterilização. Por quê?",
+    "options": [
+        { "id": "A", "text": "Para evitar manchas nos instrumentais." },
+        { "id": "B", "text": "Porque a umidade interfere na penetração do agente esterilizante (vapor, gás) e pode causar falha no processo." },
+        { "id": "C", "text": "Para diminuir o peso do material a ser esterilizado." },
+        { "id": "D", "text": "Porque a água pode diluir o agente esterilizante." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A presença de umidade residual nos materiais pode criar bolhas de ar frio que impedem o contato direto do vapor com a superfície do artigo, comprometendo a esterilização. Em métodos de baixa temperatura, a água pode reagir com o agente químico, tornando-o ineficaz."
+  },
+  {
+    "id": 198,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem no pós-operatório imediato de uma tireoidectomia?",
+    "options": [
+        { "id": "A", "text": "Estimular a deambulação precoce." },
+        { "id": "B", "text": "Oferecer dieta líquida fria." },
+        { "id": "C", "text": "Monitorar sinais de insuficiência respiratória (por hematoma ou edema) e de hipocalcemia (Sinal de Chvostek/Trousseau)." },
+        { "id": "D", "text": "Manter o paciente em posição de Trendelenburg." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "As duas complicações mais temidas são: 1) Obstrução de vias aéreas por hematoma compressivo no pescoço; 2) Hipocalcemia aguda devido à remoção ou lesão inadvertida das glândulas paratireoides, que se manifesta com tetania (espasmos), avaliada pelos sinais de Chvostek e Trousseau."
+  },
+  {
+    "id": 199,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é o 'período de incubação' de uma doença?",
+    "options": [
+        { "id": "A", "text": "O tempo entre o início dos sintomas e a cura." },
+        { "id": "B", "text": "O intervalo de tempo entre a exposição a um agente infeccioso e o aparecimento dos primeiros sinais e sintomas." },
+        { "id": "C", "text": "O período em que o indivíduo doente é capaz de transmitir a infecção." },
+        { "id": "D", "text": "O tempo de duração total da doença." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O período de incubação é o tempo que o agente infeccioso leva para se multiplicar no organismo até atingir um nível capaz de produzir sintomas. Conhecer esse período é fundamental para a vigilância e o controle de surtos."
+  },
+  {
+    "id": 200,
+    "category": "Gerenciamento",
+    "question": "Qual é a finalidade da Análise de SWOT (FOFA) no planejamento estratégico em saúde?",
+    "options": [
+        { "id": "A", "text": "Definir o orçamento anual da instituição." },
+        { "id": "B", "text": "Avaliar o desempenho individual dos colaboradores." },
+        { "id": "C", "text": "Analisar os ambientes interno (Forças e Fraquezas) e externo (Oportunidades e Ameaças) para subsidiar a tomada de decisão." },
+        { "id": "D", "text": "Criar um fluxograma dos processos de trabalho." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Análise SWOT (Strengths, Weaknesses, Opportunities, Threats) ou FOFA (Forças, Oportunidades, Fraquezas, Ameaças) é uma ferramenta de diagnóstico que permite à organização identificar seus pontos fortes e fracos internos e as oportunidades e ameaças do ambiente externo, sendo um passo crucial para a formulação de estratégias."
   }
 ]
