@@ -117,10 +117,6 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
               <ChevronsUpDown className={cn("h-4 w-4 text-sidebar-foreground/50", isCollapsed && "hidden")} />
             </CollapsibleTrigger>
             <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
-              <NavLink to="/review-area" className={navLinkClass}>
-                <Library className="h-4 w-4 flex-shrink-0" />
-                <span className={cn(isCollapsed && "hidden")}>Área de Revisão</span>
-              </NavLink>
               <NavLink to="/questions" className={navLinkClass}>
                 <FileQuestion className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Banca de Questões</span>
@@ -128,6 +124,10 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
               <NavLink to="/simulado" className={navLinkClass}>
                 <Timer className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Área de Simulado</span>
+              </NavLink>
+              <NavLink to="/review-area" className={navLinkClass}>
+                <Library className="h-4 w-4 flex-shrink-0" />
+                <span className={cn(isCollapsed && "hidden")}>Área de Revisão</span>
               </NavLink>
               <NavLink to="/procedures" className={navLinkClass}>
                 <ClipboardList className="h-4 w-4 flex-shrink-0" />
