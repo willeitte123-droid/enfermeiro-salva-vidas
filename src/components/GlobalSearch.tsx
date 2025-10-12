@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/command";
 import {
   Calculator, Scale, Syringe, Siren, Bandage, ClipboardList, FileQuestion,
-  BookHeart, FileSearch, HandHeart, FlaskConical, FileText, NotebookText, Timer
+  BookHeart, FileSearch, HandHeart, FlaskConical, FileText, NotebookText, Timer, Library
 } from "lucide-react";
 
 const searchItems = [
@@ -22,6 +22,7 @@ const searchItems = [
   { name: "Guia de Procedimentos", path: "/procedures", icon: ClipboardList },
   { name: "Banca de Questões", path: "/questions", icon: FileQuestion },
   { name: "Área de Simulado", path: "/simulado", icon: Timer },
+  { name: "Área de Revisão", path: "/review-area", icon: Library },
   { name: "Guia de ECG", path: "/ecg", icon: BookHeart },
   { name: "Guia de Semiologia", path: "/semiology", icon: FileSearch },
   { name: "Guia de Semiotécnica", path: "/semiotechnique", icon: HandHeart },

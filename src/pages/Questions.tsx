@@ -91,10 +91,9 @@ const Questions = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch("/questions.json");
-        if (!response.ok) throw new Error("Falha ao carregar as questões.");
-        const data: Question[] = await response.json();
-        setAllQuestions(data);
+        const { data, error } = await supabase.from("questions").select("*");
+        if (error) throw new Error("Falha ao carregar as questões do banco de dados.");
+        setAllQuestions(data as Question[]);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Ocorreu um erro desconhecido.");
       } finally {

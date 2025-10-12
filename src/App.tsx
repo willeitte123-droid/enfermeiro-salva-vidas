@@ -35,6 +35,7 @@ import BlocoDeNotas from "./pages/tools/BlocoDeNotas";
 import SimuladoLobby from "./pages/simulado/SimuladoLobby";
 import Simulado from "./pages/simulado/Simulado";
 import SimuladoResultado from "./pages/simulado/SimuladoResultado";
+import ReviewArea from "./pages/ReviewArea";
 import { supabase } from "./lib/supabase";
 import { Session } from '@supabase/supabase-js';
 import { Button } from "./components/ui/button";
@@ -98,6 +99,7 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="tools/lab-values" element={<LabValues />} />
         <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />
         <Route path="simulado" element={<SimuladoLobby />} />
+        <Route path="review-area" element={<ReviewArea />} />
         <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="/simulado/start" element={<Simulado />} />
