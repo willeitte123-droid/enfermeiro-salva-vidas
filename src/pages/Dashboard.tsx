@@ -5,6 +5,7 @@ import { Link, useOutletContext } from "react-router-dom";
 import { Syringe, Siren, Scale, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Profile {
   id: string;
@@ -21,8 +22,12 @@ interface Question {
 
 interface FeaturedComment {
   content: string;
-  author: string;
-  authorId: string;
+  author: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    avatar_url: string;
+  };
   questionText: string;
   questionId: number;
 }
@@ -108,7 +113,7 @@ const Dashboard = () => {
 
         const { data: latestComments, error } = await supabase
           .from("comments")
-          .select("*, profiles(id, first_name, last_name)")
+          .select("*, profiles(id, first_name, last_name, avatar_url)")
           .order("created_at", { ascending: false })
           .limit(5);
 
@@ -119,8 +124,7 @@ const Dashboard = () => {
               if (relatedQuestion && comment.profiles) {
                 return {
                   content: comment.content,
-                  author: `${comment.profiles.first_name} ${comment.profiles.last_name?.[0] || ''}.`,
-                  authorId: comment.profiles.id,
+                  author: comment.profiles,
                   questionText: relatedQuestion.question,
                   questionId: relatedQuestion.id,
                 };
@@ -215,7 +219,19 @@ const Dashboard = () => {
               <blockquote className="border-l-4 pl-4 italic text-foreground">
                 "{currentComment.content}"
               </blockquote>
-              <p className="text-sm font-semibold text-right">— <Link to={`/user/${currentComment.authorId}`} className="hover:underline text-primary">{currentComment.author}</Link></p>
+              <div className="flex justify-end items-center gap-3 mt-2">
+                <p className="text-sm font-semibold text-right">
+                  — <Link to={`/user/${currentComment.author.id}`} className="hover:underline text-primary">
+                    {`${currentComment.author.first_name} ${currentComment.author.last_name}`}
+                  </Link>
+                </p>
+                <Link to={`/user/${currentComment.author.id}`}>
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={currentComment.author.avatar_url} alt={`Avatar de ${currentComment.author.first_name}`} />
+                    <AvatarFallback>{`${currentComment.author.first_name?.[0] || ''}${currentComment.author.last_name?.[0] || ''}`.toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                </Link>
+              </div>
               <p className="text-xs text-muted-foreground pt-2 border-t">
                 Na questão: "{currentComment.questionText.substring(0, 100)}..."
               </p>
