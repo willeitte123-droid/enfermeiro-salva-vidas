@@ -9,19 +9,19 @@ import { Timer, FileText, Info, PlayCircle } from "lucide-react";
 
 const SimuladoLobby = () => {
   const [numQuestions, setNumQuestions] = useState("20");
-  const [timePerQuestion, setTimePerQuestion] = useState("2"); // in minutes
+  const [totalTime, setTotalTime] = useState("20"); // in minutes
   const navigate = useNavigate();
 
   const handleStart = () => {
     navigate("/simulado/start", {
       state: {
         numQuestions: parseInt(numQuestions),
-        totalTime: parseInt(numQuestions) * parseInt(timePerQuestion) * 60, // in seconds
+        totalTime: parseInt(totalTime) * 60, // in seconds
       },
     });
   };
 
-  const totalTimeMinutes = parseInt(numQuestions) * parseInt(timePerQuestion);
+  const totalTimeMinutes = parseInt(totalTime);
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -53,16 +53,21 @@ const SimuladoLobby = () => {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="time-per-question" className="flex items-center gap-2 font-semibold">
+              <Label htmlFor="total-time" className="flex items-center gap-2 font-semibold">
                 <Timer className="h-5 w-5 text-primary" />
-                Tempo por Questão
+                Tempo Total do Simulado
               </Label>
-              <Select value={timePerQuestion} onValueChange={setTimePerQuestion}>
-                <SelectTrigger id="time-per-question"><SelectValue /></SelectTrigger>
+              <Select value={totalTime} onValueChange={setTotalTime}>
+                <SelectTrigger id="total-time"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1.5">1 minuto e 30 segundos</SelectItem>
-                  <SelectItem value="2">2 minutos</SelectItem>
-                  <SelectItem value="2.5">2 minutos e 30 segundos</SelectItem>
+                  <SelectItem value="20">20 minutos</SelectItem>
+                  <SelectItem value="30">30 minutos</SelectItem>
+                  <SelectItem value="60">1 hora</SelectItem>
+                  <SelectItem value="90">1 hora e 30 minutos</SelectItem>
+                  <SelectItem value="120">2 horas</SelectItem>
+                  <SelectItem value="180">3 horas</SelectItem>
+                  <SelectItem value="240">4 horas</SelectItem>
+                  <SelectItem value="300">5 horas</SelectItem>
                 </SelectContent>
               </Select>
             </div>
