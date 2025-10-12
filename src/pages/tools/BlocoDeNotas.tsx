@@ -62,7 +62,9 @@ const BlocoDeNotas = () => {
 
   const createNoteMutation = useMutation({
     mutationFn: async (newNote: { title: string; content: string }) => {
-      const { data, error } = await supabase.from("notes").insert(newNote).select().single();
+      if (!profile) throw new Error("Usuário não autenticado.");
+      const noteToInsert = { ...newNote, user_id: profile.id };
+      const { data, error } = await supabase.from("notes").insert(noteToInsert).select().single();
       if (error) throw new Error(error.message);
       return data;
     },
@@ -150,12 +152,12 @@ const BlocoDeNotas = () => {
                       onClick={() => setSelectedNoteId(note.id)}
                       className={cn(
                         "w-full text-left p-3 rounded-md transition-colors flex items-start gap-3",
-                        selectedNoteId === note.id ? "bg-primary/10 text-primary-foreground" : "hover:bg-accent"
+                        selectedNoteId === note.id ? "bg-primary/10" : "hover:bg-accent"
                       )}
                     >
                       <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
                       <div className="flex-1 truncate">
-                        <p className="font-semibold truncate">{note.title || "Sem Título"}</p>
+                        <p className={cn("font-semibold truncate", selectedNoteId === note.id && "text-primary")}>{note.title || "Sem Título"}</p>
                         <p className="text-xs text-muted-foreground truncate">{note.content || "Nenhum conteúdo"}</p>
                       </div>
                     </button>
