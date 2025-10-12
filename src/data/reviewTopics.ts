@@ -183,24 +183,6 @@ export const reviewTopics: ReviewTopic[] = [
     ]
   },
   {
-    id: "medication-calculation",
-    title: "Cálculo de Medicação (Teoria)",
-    icon: CalculatorIcon,
-    color: "text-cyan-500",
-    summary: "As fórmulas essenciais para a administração segura de medicamentos.",
-    details: [
-      {
-        subtitle: "Fórmulas Essenciais",
-        points: [
-          "<strong>Dose Simples (Regra de Três):</strong> (Prescrição / Apresentação) x Volume. Ex: Prescrito 500mg, disponível 1g em 10mL. (500mg / 1000mg) x 10mL = 5mL.",
-          "<strong>Gotejamento (Gotas/min):</strong> Volume Total (mL) / (Tempo (h) x 3).",
-          "<strong>Gotejamento (Microgotas/min):</strong> Volume Total (mL) / Tempo (h).",
-          "<strong>Relações Importantes:</strong> 1g = 1000mg; 1mg = 1000mcg; 1mL = 20 gotas; 1mL = 60 microgotas; 1 gota = 3 microgotas."
-        ]
-      }
-    ]
-  },
-  {
     id: "mental-health",
     title: "Saúde Mental (RAPS)",
     icon: BrainCircuit,
