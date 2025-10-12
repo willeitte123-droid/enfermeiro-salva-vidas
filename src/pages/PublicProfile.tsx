@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, User, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, FileQuestion, Timer, Percent, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface Profile {
   id: string;
@@ -14,30 +17,59 @@ interface Profile {
   bio: string;
 }
 
+interface Simulation {
+  created_at: string;
+  percentage: number;
+}
+
+interface Stats {
+  totalQuestions: number;
+  correctQuestions: number;
+  totalSimulations: number;
+}
+
 const PublicProfile = () => {
   const { userId } = useParams<{ userId: string }>();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [simulations, setSimulations] = useState<Simulation[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfileData = async () => {
       if (!userId) return;
       setLoading(true);
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .single();
 
-      if (error) {
-        console.error("Error fetching public profile:", error);
+      const profilePromise = supabase.from("profiles").select("*").eq("id", userId).single();
+      const totalQuestionsPromise = supabase.from("user_question_answers").select('*', { count: 'exact', head: true }).eq('user_id', userId);
+      const correctQuestionsPromise = supabase.from("user_question_answers").select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('is_correct', true);
+      const simulationsPromise = supabase.from("user_simulations").select('created_at, percentage').eq('user_id', userId).order('created_at', { ascending: false }).limit(10);
+
+      const [
+        { data: profileData, error: profileError },
+        { count: totalQuestions, error: totalQuestionsError },
+        { count: correctQuestions, error: correctQuestionsError },
+        { data: simulationsData, error: simulationsError },
+      ] = await Promise.all([profilePromise, totalQuestionsPromise, correctQuestionsPromise, simulationsPromise]);
+
+      if (profileError) console.error("Error fetching profile:", profileError);
+      else setProfile(profileData);
+
+      if (totalQuestionsError || correctQuestionsError || simulationsError) {
+        console.error("Error fetching stats:", { totalQuestionsError, correctQuestionsError, simulationsError });
       } else {
-        setProfile(data);
+        setStats({
+          totalQuestions: totalQuestions || 0,
+          correctQuestions: correctQuestions || 0,
+          totalSimulations: simulationsData?.length || 0, // This is based on the limited query, for a full count another query would be needed
+        });
+        setSimulations(simulationsData || []);
       }
+
       setLoading(false);
     };
 
-    fetchProfile();
+    fetchProfileData();
   }, [userId]);
 
   if (loading) {
@@ -66,6 +98,8 @@ const PublicProfile = () => {
     return `${firstName}${lastName}`.toUpperCase();
   };
 
+  const questionAccuracy = stats && stats.totalQuestions > 0 ? Math.round((stats.correctQuestions / stats.totalQuestions) * 100) : 0;
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
        <Button asChild variant="outline" size="sm" className="mb-4">
@@ -86,6 +120,58 @@ const PublicProfile = () => {
               {profile.bio || "Nenhuma biografia adicionada ainda."}
             </p>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Estatísticas de Desempenho</CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+          <div className="bg-muted/50 p-4 rounded-lg">
+            <FileQuestion className="h-8 w-8 text-primary mx-auto mb-2" />
+            <p className="text-2xl font-bold">{stats?.totalQuestions || 0}</p>
+            <p className="text-sm text-muted-foreground">Questões Resolvidas</p>
+          </div>
+          <div className="bg-muted/50 p-4 rounded-lg">
+            <Percent className="h-8 w-8 text-primary mx-auto mb-2" />
+            <p className="text-2xl font-bold">{questionAccuracy}%</p>
+            <p className="text-sm text-muted-foreground">Acerto (Questões)</p>
+          </div>
+          <div className="bg-muted/50 p-4 rounded-lg col-span-2 md:col-span-1">
+            <Timer className="h-8 w-8 text-primary mx-auto mb-2" />
+            <p className="text-2xl font-bold">{stats?.totalSimulations || 0}</p>
+            <p className="text-sm text-muted-foreground">Simulados Realizados</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Histórico de Simulados Recentes</CardTitle>
+          <CardDescription>Últimos 10 simulados realizados.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {simulations.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Data</TableHead>
+                  <TableHead className="text-right">Aproveitamento</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {simulations.map((sim, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{format(new Date(sim.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}</TableCell>
+                    <TableCell className="text-right font-semibold">{sim.percentage}%</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <p className="text-center text-muted-foreground py-8">Nenhum simulado realizado ainda.</p>
+          )}
         </CardContent>
       </Card>
     </div>

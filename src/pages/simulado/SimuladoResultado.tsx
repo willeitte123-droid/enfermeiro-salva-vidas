@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CheckCircle2, XCircle, Clock, Award, RefreshCw } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { supabase } from "@/lib/supabase";
 
 interface Question {
   id: number;
@@ -35,6 +37,25 @@ const SimuladoResultado = () => {
   }, 0);
 
   const percentage = Math.round((score / questions.length) * 100);
+
+  useEffect(() => {
+    const saveResult = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        const { error } = await supabase.from('user_simulations').insert({
+          user_id: session.user.id,
+          score: score,
+          total_questions: questions.length,
+          percentage: percentage,
+          time_taken_seconds: timeTaken,
+        });
+        if (error) {
+          console.error("Error saving simulation result:", error);
+        }
+      }
+    };
+    saveResult();
+  }, [score, questions.length, percentage, timeTaken]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);

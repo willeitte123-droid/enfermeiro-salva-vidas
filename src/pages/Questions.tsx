@@ -153,14 +153,23 @@ const Questions = () => {
     }
   }, [isCommentsOpen, currentQuestion, filteredQuestions]);
 
-  const handleAnswerSubmit = () => {
+  const handleAnswerSubmit = async () => {
     if (!selectedAnswer) return;
     setShowExplanation(true);
     if (!answeredQuestions.includes(currentQuestion)) {
-      if (selectedAnswer === filteredQuestions[currentQuestion].correctAnswer) {
+      const isCorrect = selectedAnswer === filteredQuestions[currentQuestion].correctAnswer;
+      if (isCorrect) {
         setScore(score + 1);
       }
       setAnsweredQuestions([...answeredQuestions, currentQuestion]);
+
+      if (profile) {
+        await supabase.from('user_question_answers').insert({
+          user_id: profile.id,
+          question_id: filteredQuestions[currentQuestion].id,
+          is_correct: isCorrect,
+        });
+      }
     }
   };
 
