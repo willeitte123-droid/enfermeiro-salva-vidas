@@ -177,7 +177,7 @@ const Dashboard = () => {
                       <div className={cn("p-3 rounded-lg mb-3 transition-colors", link.colorClasses.bg)}>
                         <Icon className={cn("h-6 w-6 transition-colors", link.colorClasses.text)} />
                       </div>
-                      <p className="font-semibold text-sm text-gray-50 break-words">{link.title}</p>
+                      <p className="font-semibold text-sm text-gray-50 break-all">{link.title}</p>
                       <p className="text-xs text-gray-400 break-words">{link.description}</p>
                     </CardContent>
                   </Card>
