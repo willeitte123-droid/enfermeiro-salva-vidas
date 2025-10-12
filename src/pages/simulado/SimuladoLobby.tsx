@@ -63,8 +63,11 @@ const SimuladoLobby = () => {
                 <SelectContent>
                   <SelectItem value="20">20 minutos</SelectItem>
                   <SelectItem value="40">40 minutos</SelectItem>
-                  <SelectItem value="100">1 hora e 40 minutos</SelectItem>
-                  <SelectItem value="200">3 horas e 20 minutos</SelectItem>
+                  <SelectItem value="60">1 hora</SelectItem>
+                  <SelectItem value="120">2 horas</SelectItem>
+                  <SelectItem value="180">3 horas</SelectItem>
+                  <SelectItem value="240">4 horas</SelectItem>
+                  <SelectItem value="300">5 horas</SelectItem>
                 </SelectContent>
               </Select>
             </div>
