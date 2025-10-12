@@ -1255,7 +1255,7 @@
       { "id": "A", "text": "É o tecido de granulação saudável que preenche a ferida." },
       { "id": "B", "text": "É uma camada de fibrina que pode ser facilmente removida com soro fisiológico." },
       { "id": "C", "text": "É uma comunidade complexa de microrganismos aderida ao leito da ferida, protegida por uma matriz polimérica." },
-      { "id":- "D", "text": "É o tecido de epitelização que se forma nas bordas da ferida." }
+      { "id": "D", "text": "É o tecido de epitelização que se forma nas bordas da ferida." }
     ],
     "correctAnswer": "C",
     "explanation": "O biofilme é uma colônia organizada de bactérias que se protege dentro de uma matriz de polissacarídeos, tornando-as altamente resistentes a antibióticos e às defesas do hospedeiro. Ele mantém a ferida em um estado inflamatório crônico, impedindo a cicatrização."
@@ -1749,7 +1749,7 @@
       { "id": "A", "text": "Um: o nome completo do paciente." },
       { "id": "B", "text": "Dois: o nome completo e a data de nascimento." },
       { "id": "C", "text": "Três: o nome, o número do leito e o diagnóstico." },
-      { "id":- "D", "text": "Um: o número do prontuário." }
+      { "id": "D", "text": "Um: o número do prontuário." }
     ],
     "correctAnswer": "B",
     "explanation": "A recomendação é usar pelo menos dois identificadores inequívocos, como o nome completo do paciente e sua data de nascimento ou o número do prontuário. O número do leito ou o diagnóstico NUNCA devem ser usados como identificadores, pois são informações que podem mudar."
@@ -1788,7 +1788,7 @@
       { "id": "A", "text": "Promover o desbridamento enzimático." },
       { "id": "B", "text": "Absorver grandes quantidades de exsudato." },
       { "id": "C", "text": "Manter o meio úmido, promover a quimiotaxia e a angiogênese." },
-      { "id":- "D", "text": "Controlar a infecção e o odor." }
+      { "id": "D", "text": "Controlar a infecção e o odor." }
     ],
     "correctAnswer": "C",
     "explanation": "O AGE (como o óleo de girassol) atua mantendo a umidade no leito da ferida, o que é essencial para a cicatrização. Além disso, ele estimula a migração de células inflamatórias (quimiotaxia) e a formação de novos vasos sanguíneos (angiogênese), processos fundamentais para a reparação tecidual."
