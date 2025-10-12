@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 interface Profile {
   id: string;
@@ -38,6 +38,16 @@ interface CategoryStat {
   accuracy: number;
   total: number;
 }
+
+const getBarColor = (accuracy: number) => {
+  if (accuracy >= 70) {
+    return "#22c55e"; // green-500
+  }
+  if (accuracy >= 40) {
+    return "#eab308"; // yellow-500
+  }
+  return "#ef4444"; // red-500
+};
 
 const PublicProfile = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -207,7 +217,11 @@ const PublicProfile = () => {
                   <XAxis type="number" domain={[0, 100]} unit="%" />
                   <YAxis dataKey="name" type="category" width={120} tick={{ fontSize: 12 }} />
                   <Tooltip formatter={(value) => `${value}%`} />
-                  <Bar dataKey="accuracy" fill="var(--primary)" background={{ fill: 'hsl(var(--muted))' }} />
+                  <Bar dataKey="accuracy" background={{ fill: 'hsl(var(--muted))' }}>
+                    {categoryStats.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={getBarColor(entry.accuracy)} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
