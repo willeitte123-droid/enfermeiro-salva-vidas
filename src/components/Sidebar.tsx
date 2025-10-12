@@ -136,7 +136,7 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
           </Collapsible>
 
           {isAdmin && (
-            <NavLink to="/admin" className={cn(navLinkClass, "mt-4")}>
+            <NavLink to="/admin" className={({ isActive }) => cn(navLinkClass({ isActive }), "mt-4")}>
               <Shield className="h-4 w-4" />
               Painel Admin
             </NavLink>
