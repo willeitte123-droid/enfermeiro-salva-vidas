@@ -3,7 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { CheckCircle2, XCircle, Clock, Award, RefreshCw } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, Award, RefreshCw, LayoutDashboard } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/lib/supabase";
 
@@ -138,6 +138,9 @@ const SimuladoResultado = () => {
       </Card>
       
       <div className="flex justify-center gap-4">
+        <Button asChild variant="outline" size="lg">
+          <Link to="/"><LayoutDashboard className="mr-2 h-4 w-4" />Menu Principal</Link>
+        </Button>
         <Button asChild size="lg">
           <Link to="/simulado"><RefreshCw className="mr-2 h-4 w-4" />Fazer Novo Simulado</Link>
         </Button>
