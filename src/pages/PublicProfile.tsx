@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 
 interface Profile {
   id: string;
@@ -40,13 +40,26 @@ interface CategoryStat {
 }
 
 const getBarColor = (accuracy: number) => {
-  if (accuracy >= 70) {
-    return "#22c55e"; // green-500
-  }
-  if (accuracy >= 40) {
-    return "#eab308"; // yellow-500
-  }
+  if (accuracy >= 70) return "#22c55e"; // green-500
+  if (accuracy >= 40) return "#eab308"; // yellow-500
   return "#ef4444"; // red-500
+};
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-background p-3 border rounded-lg shadow-lg">
+        <p className="font-bold text-foreground">{label}</p>
+        <p className="text-sm" style={{ color: payload[0].fill }}>
+          Aproveitamento: {payload[0].value}%
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Questões respondidas: {payload[0].payload.total}
+        </p>
+      </div>
+    );
+  }
+  return null;
 };
 
 const PublicProfile = () => {
@@ -108,7 +121,7 @@ const PublicProfile = () => {
             name: category,
             accuracy: Math.round((performanceByCategory[category].correct / performanceByCategory[category].total) * 100),
             total: performanceByCategory[category].total,
-          })).sort((a, b) => b.accuracy - a.accuracy);
+          })).sort((a, b) => a.accuracy - b.accuracy);
           
           setCategoryStats(statsArray);
         }
@@ -206,25 +219,33 @@ const PublicProfile = () => {
       <Card>
         <CardHeader>
           <CardTitle>Desempenho por Categoria</CardTitle>
-          <CardDescription>Seu percentual de acerto nas questões de cada área.</CardDescription>
+          <CardDescription>Seu percentual de acerto, ordenado das maiores dificuldades para as maiores facilidades.</CardDescription>
         </CardHeader>
         <CardContent>
           {categoryStats.length > 0 ? (
-            <div className="h-80 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={categoryStats} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" domain={[0, 100]} unit="%" />
-                  <YAxis dataKey="name" type="category" width={120} tick={{ fontSize: 12 }} />
-                  <Tooltip formatter={(value) => `${value}%`} />
-                  <Bar dataKey="accuracy" background={{ fill: 'hsl(var(--muted))' }}>
-                    {categoryStats.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={getBarColor(entry.accuracy)} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            <>
+              <div className="h-96 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={categoryStats} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="name" tick={{ fontSize: 12 }} interval={0} angle={-45} textAnchor="end" height={100} />
+                    <YAxis domain={[0, 100]} unit="%" width={40} />
+                    <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))' }} />
+                    <Bar dataKey="accuracy" radius={[4, 4, 0, 0]}>
+                      <LabelList dataKey="accuracy" position="top" formatter={(value: number) => `${value}%`} fontSize={12} className="fill-foreground" />
+                      {categoryStats.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={getBarColor(entry.accuracy)} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex justify-center items-center gap-4 text-xs text-muted-foreground mt-4">
+                <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-red-500" /><span>Abaixo de 40%</span></div>
+                <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-yellow-500" /><span>Entre 40% e 69%</span></div>
+                <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-green-500" /><span>Acima de 70%</span></div>
+              </div>
+            </>
           ) : (
             <p className="text-center text-muted-foreground py-8">Nenhum dado de desempenho por categoria disponível.</p>
           )}
