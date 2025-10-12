@@ -23,6 +23,7 @@ import WongBakerScale from "./pages/scales/WongBakerScale";
 import FugulinScale from "./pages/scales/FugulinScale";
 import MorseScale from "./pages/scales/MorseScale";
 import AldreteScale from "./pages/scales/AldreteScale";
+import ApgarScale from "./pages/scales/ApgarScale";
 import EcgGuide from "./pages/EcgGuide";
 import ProfilePage from "./pages/Profile";
 import PublicProfile from "./pages/PublicProfile";
@@ -78,6 +79,7 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="scales/fugulin" element={<FugulinScale />} />
         <Route path="scales/morse" element={<MorseScale />} />
         <Route path="scales/aldrete" element={<AldreteScale />} />
+        <Route path="scales/apgar" element={<ApgarScale />} />
         <Route path="ecg" element={<EcgGuide />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="user/:userId" element={<PublicProfile />} />

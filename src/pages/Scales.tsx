@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Brain, User, ShieldAlert, Gauge, Smile, Users, Bed } from "lucide-react";
+import { Brain, User, ShieldAlert, Gauge, Smile, Users, Bed, Baby } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const scales = [
@@ -87,6 +87,18 @@ const scales = [
       bg: "bg-sky-100 dark:bg-sky-900/30",
       text: "text-sky-600 dark:text-sky-400",
       border: "hover:border-sky-300 dark:hover:border-sky-700",
+    },
+  },
+  {
+    title: "Índice de Apgar",
+    description: "Avalia a vitalidade do recém-nascido ao nascer.",
+    icon: Baby,
+    path: "/scales/apgar",
+    status: "available",
+    color: {
+      bg: "bg-pink-100 dark:bg-pink-900/30",
+      text: "text-pink-600 dark:text-pink-400",
+      border: "hover:border-pink-300 dark:hover:border-pink-700",
     },
   },
 ];
