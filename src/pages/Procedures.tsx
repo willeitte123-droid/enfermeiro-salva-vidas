@@ -59,7 +59,7 @@ const Procedures = () => {
       </div>
 
       {filteredProcedures.length > 0 ? (
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="space-y-4">
           {filteredProcedures.map((proc, index) => {
             const Icon = proc.icon;
             return (
