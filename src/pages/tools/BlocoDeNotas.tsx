@@ -25,6 +25,14 @@ interface Note {
   updated_at: string;
 }
 
+const noteColors = [
+  { bg: "bg-sky-50 dark:bg-sky-900/30", border: "border-sky-500" },
+  { bg: "bg-emerald-50 dark:bg-emerald-900/30", border: "border-emerald-500" },
+  { bg: "bg-amber-50 dark:bg-amber-900/30", border: "border-amber-500" },
+  { bg: "bg-rose-50 dark:bg-rose-900/30", border: "border-rose-500" },
+  { bg: "bg-violet-50 dark:bg-violet-900/30", border: "border-violet-500" },
+];
+
 const fetchNotes = async (userId: string) => {
   const { data, error } = await supabase
     .from("notes")
@@ -150,21 +158,27 @@ const BlocoDeNotas = () => {
               ) : notes.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center p-4">Nenhuma anotação. Clique em '+' para criar uma.</p>
               ) : (
-                notes.map(note => (
-                  <button
-                    key={note.id}
-                    onClick={() => setSelectedNoteId(note.id)}
-                    className={cn(
-                      "w-full text-left p-3 rounded-lg transition-colors flex flex-col gap-1 border-l-4",
-                      selectedNoteId === note.id ? "bg-primary/10 border-primary" : "border-transparent hover:bg-accent"
-                    )}
-                  >
-                    <p className="font-semibold truncate text-foreground">{note.title || "Sem Título"}</p>
-                    <span className="text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true, locale: ptBR })}
-                    </span>
-                  </button>
-                ))
+                notes.map((note, index) => {
+                  const colorSet = noteColors[index % noteColors.length];
+                  return (
+                    <button
+                      key={note.id}
+                      onClick={() => setSelectedNoteId(note.id)}
+                      className={cn(
+                        "w-full text-left p-3 rounded-lg transition-all flex flex-col gap-1 border-l-4",
+                        colorSet.bg,
+                        selectedNoteId === note.id
+                          ? `${colorSet.border} ring-2 ring-primary/50`
+                          : `${colorSet.border} opacity-70 hover:opacity-100`
+                      )}
+                    >
+                      <p className="font-semibold truncate text-foreground">{note.title || "Sem Título"}</p>
+                      <span className="text-xs text-muted-foreground">
+                        {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true, locale: ptBR })}
+                      </span>
+                    </button>
+                  );
+                })
               )}
             </div>
           </ScrollArea>
