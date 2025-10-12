@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { UserCheck, UserX, Loader2, Users, Hourglass, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 interface Profile {
@@ -112,44 +112,44 @@ const Admin = () => {
         </Card>
       </div>
 
-      <Card>
+      <Card className="bg-sidebar text-sidebar-foreground">
         <CardHeader>
           <CardTitle>Gerenciamento de Usuários</CardTitle>
-          <CardDescription>Aprove, desative ou gerencie os usuários da plataforma.</CardDescription>
+          <CardDescription className="text-sidebar-foreground/80">Aprove, desative ou gerencie os usuários da plataforma.</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={statusFilter} onValueChange={setStatusFilter}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="all">Todos</TabsTrigger>
-                <TabsTrigger value="pending">Pendentes</TabsTrigger>
-                <TabsTrigger value="active">Ativos</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-3 bg-sidebar-hover">
+                <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Todos</TabsTrigger>
+                <TabsTrigger value="pending" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Pendentes</TabsTrigger>
+                <TabsTrigger value="active" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Ativos</TabsTrigger>
               </TabsList>
               <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Buscar por nome..."
-                  className="pl-8 w-full sm:w-[250px]"
+                  className="pl-8 w-full sm:w-[250px] bg-sidebar-hover border-border/20 focus:bg-sidebar"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
           </Tabs>
-          <div className="border rounded-md">
+          <div className="border rounded-md border-border/20">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Usuário</TableHead>
-                  <TableHead className="hidden sm:table-cell">Status</TableHead>
-                  <TableHead className="hidden md:table-cell">Função</TableHead>
-                  <TableHead className="text-right">Ações</TableHead>
+                <TableRow className="border-border/20 hover:bg-sidebar-hover/50">
+                  <TableHead className="text-white">Usuário</TableHead>
+                  <TableHead className="hidden sm:table-cell text-white">Status</TableHead>
+                  <TableHead className="hidden md:table-cell text-white">Função</TableHead>
+                  <TableHead className="text-right text-white">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredProfiles.length > 0 ? (
                   filteredProfiles.map((profile) => (
-                    <TableRow key={profile.id}>
+                    <TableRow key={profile.id} className="border-border/20 hover:bg-sidebar-hover/50">
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar>
@@ -191,7 +191,7 @@ const Admin = () => {
                     </TableRow>
                   ))
                 ) : (
-                  <TableRow>
+                  <TableRow className="border-border/20 hover:bg-sidebar-hover/50">
                     <TableCell colSpan={4} className="h-24 text-center">Nenhum usuário encontrado.</TableCell>
                   </TableRow>
                 )}
