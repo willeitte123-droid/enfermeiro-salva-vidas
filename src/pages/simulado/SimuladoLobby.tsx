@@ -56,15 +56,15 @@ const SimuladoLobby = () => {
             <div className="space-y-2">
               <Label htmlFor="total-time" className="flex items-center gap-2 font-semibold">
                 <Timer className="h-5 w-5 text-primary" />
-                Tempo Total (minutos)
+                Tempo Total
               </Label>
               <Select value={totalTime} onValueChange={setTotalTime}>
                 <SelectTrigger id="total-time"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="20">20 minutos</SelectItem>
                   <SelectItem value="40">40 minutos</SelectItem>
-                  <SelectItem value="100">100 minutos</SelectItem>
-                  <SelectItem value="200">200 minutos</SelectItem>
+                  <SelectItem value="100">1 hora e 40 minutos</SelectItem>
+                  <SelectItem value="200">3 horas e 20 minutos</SelectItem>
                 </SelectContent>
               </Select>
             </div>
