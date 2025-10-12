@@ -78,14 +78,6 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
               <ChevronsUpDown className="h-4 w-4" />
             </CollapsibleTrigger>
             <CollapsibleContent className="space-y-1 pt-2 pl-4">
-              <NavLink to="/semiology" className={navLinkClass}>
-                <FileSearch className="h-4 w-4" />
-                Semiologia
-              </NavLink>
-              <NavLink to="/semiotechnique" className={navLinkClass}>
-                <HandHeart className="h-4 w-4" />
-                Semiotécnica
-              </NavLink>
               <NavLink to="/questions" className={navLinkClass}>
                 <FileQuestion className="h-4 w-4" />
                 Banca de Questões
@@ -105,6 +97,14 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
               <NavLink to="/wound-care" className={navLinkClass}>
                 <Bandage className="h-4 w-4" />
                 Curativos
+              </NavLink>
+              <NavLink to="/semiology" className={navLinkClass}>
+                <FileSearch className="h-4 w-4" />
+                Semiologia
+              </NavLink>
+              <NavLink to="/semiotechnique" className={navLinkClass}>
+                <HandHeart className="h-4 w-4" />
+                Semiotécnica
               </NavLink>
                <NavLink to="/ecg" className={navLinkClass}>
                 <BookHeart className="h-4 w-4" />
