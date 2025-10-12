@@ -44,6 +44,8 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
       isActive && "bg-sidebar-active text-sidebar-active-foreground hover:bg-sidebar-active/90"
     );
 
+  const sectionHeaderClass = "flex w-full items-center justify-between rounded-md px-3 py-2 text-xs font-bold uppercase tracking-wider text-primary hover:bg-sidebar-hover mt-4";
+
   return (
     <aside className="hidden md:flex w-64 flex-col bg-sidebar text-sidebar-foreground border-r border-border/10">
       <div className="flex h-16 items-center border-b border-border/10 px-6">
@@ -53,18 +55,18 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
         </div>
       </div>
       <div className="flex-1 overflow-y-auto p-4">
-        <nav className="flex flex-col gap-2">
+        <nav className="flex flex-col gap-1">
           <NavLink to="/" end className={navLinkClass}>
             <LayoutDashboard className="h-4 w-4" />
             Dashboard
           </NavLink>
 
           <Collapsible defaultOpen>
-            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-semibold text-white hover:bg-sidebar-hover">
+            <CollapsibleTrigger className={sectionHeaderClass}>
               Ferramentas
-              <ChevronsUpDown className="h-4 w-4" />
+              <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1 pt-2 pl-4">
+            <CollapsibleContent className="space-y-1 pt-1 pl-4">
               <NavLink to="/calculator" className={navLinkClass}>
                 <Calculator className="h-4 w-4" />
                 Gotejamento
@@ -89,11 +91,11 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
           </Collapsible>
 
           <Collapsible defaultOpen>
-            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-semibold text-white hover:bg-sidebar-hover">
+            <CollapsibleTrigger className={sectionHeaderClass}>
               Consulta e Estudo
-              <ChevronsUpDown className="h-4 w-4" />
+              <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1 pt-2 pl-4">
+            <CollapsibleContent className="space-y-1 pt-1 pl-4">
               <NavLink to="/questions" className={navLinkClass}>
                 <FileQuestion className="h-4 w-4" />
                 Banca de Questões
@@ -134,7 +136,7 @@ const Sidebar = ({ isAdmin, user }: SidebarProps) => {
           </Collapsible>
 
           {isAdmin && (
-            <NavLink to="/admin" className={navLinkClass}>
+            <NavLink to="/admin" className={cn(navLinkClass, "mt-4")}>
               <Shield className="h-4 w-4" />
               Painel Admin
             </NavLink>
