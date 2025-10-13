@@ -1,18 +1,35 @@
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { semioTechniqueData } from "@/data/assessment";
 import { HandHeart, CheckCircle2, Droplet } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const SemioTechnique = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const vitalSigns = semioTechniqueData.filter(item => item.id !== 'glycemia');
   const glycemiaAssessment = semioTechniqueData.find(item => item.id === 'glycemia');
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Guia de Semiotécnica</h1>
-        <p className="text-muted-foreground">Aprenda o 'como fazer' das principais técnicas de avaliação de enfermagem.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Guia de Semiotécnica</h1>
+          <p className="text-muted-foreground">Aprenda o 'como fazer' das principais técnicas de avaliação de enfermagem.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/semiotechnique"
+            itemType="Guia"
+            itemTitle="Guia de Semiotécnica"
+          />
+        )}
       </div>
 
       <Card className="bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800">

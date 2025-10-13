@@ -1,12 +1,19 @@
 import { useState, useMemo } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Search, AlertTriangle } from "lucide-react";
 import { labValuesData } from "@/data/labValues";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const LabValues = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredData = useMemo(() => {
@@ -28,9 +35,19 @@ const LabValues = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Guia de Valores Laboratoriais</h1>
-        <p className="text-muted-foreground">Consulte rapidamente os valores de referência para exames laboratoriais.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Guia de Valores Laboratoriais</h1>
+          <p className="text-muted-foreground">Consulte rapidamente os valores de referência para exames laboratoriais.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/tools/lab-values"
+            itemType="Ferramenta"
+            itemTitle="Guia de Valores Laboratoriais"
+          />
+        )}
       </div>
 
       <div className="relative">

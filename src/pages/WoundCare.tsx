@@ -1,10 +1,16 @@
 import { useState, useMemo } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Bandage, Info, Droplet, CheckCircle, Zap, XCircle, Search, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const tissueTypes = [
   {
@@ -75,6 +81,7 @@ const dressingTypes = [
 ];
 
 const WoundCare = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [selectedTissue, setSelectedTissue] = useState(tissueTypes[0]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -88,9 +95,19 @@ const WoundCare = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Curativos e Tratamento de Feridas</h1>
-        <p className="text-muted-foreground">Guia de avaliação de tecidos e seleção de coberturas apropriadas</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Curativos e Tratamento de Feridas</h1>
+          <p className="text-muted-foreground">Guia de avaliação de tecidos e seleção de coberturas apropriadas</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/wound-care"
+            itemType="Guia"
+            itemTitle="Guia de Curativos"
+          />
+        )}
       </div>
 
       <Tabs defaultValue="tissues" className="space-y-4">

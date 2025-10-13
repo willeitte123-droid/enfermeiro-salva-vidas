@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { RefreshCw } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const bradenData = [
   {
@@ -69,6 +75,7 @@ const bradenData = [
 ];
 
 const BradenScale = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [scores, setScores] = useState({
     sensory: 4,
     moisture: 4,
@@ -104,9 +111,19 @@ const BradenScale = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Braden</h1>
-        <p className="text-muted-foreground">Avalie o risco para desenvolvimento de lesão por pressão.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Braden</h1>
+          <p className="text-muted-foreground">Avalie o risco para desenvolvimento de lesão por pressão.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/scales/braden"
+            itemType="Escala"
+            itemTitle="Escala de Braden"
+          />
+        )}
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">

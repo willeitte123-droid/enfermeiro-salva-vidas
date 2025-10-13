@@ -1,16 +1,34 @@
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { anamnesisSteps, propaedeuticMethods, systemAssessments } from "@/data/assessment";
 import { CheckCircle2, BookOpen } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const Semiology = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
+
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Guia de Semiologia</h1>
-        <p className="text-muted-foreground">A arte de identificar sinais e sintomas através do exame clínico.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Guia de Semiologia</h1>
+          <p className="text-muted-foreground">A arte de identificar sinais e sintomas através do exame clínico.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/semiology"
+            itemType="Guia"
+            itemTitle="Guia de Semiologia"
+          />
+        )}
       </div>
 
       <Card className="bg-violet-50 dark:bg-violet-900/20 border-violet-200 dark:border-violet-800">

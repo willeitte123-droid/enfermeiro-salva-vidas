@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { RefreshCw, Baby, HeartPulse, Smile, Armchair, Wind } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const apgarData = [
   { id: "appearance", title: "Aparência (Cor da Pele)", icon: Baby, options: [{ score: 0, text: "Cianótico ou pálido" }, { score: 1, text: "Corpo róseo e extremidades cianóticas (acrocianose)" }, { score: 2, text: "Completamente róseo" }] },
@@ -15,6 +21,7 @@ const apgarData = [
 ];
 
 const ApgarScale = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [scores, setScores] = useState({
     appearance: 2,
     pulse: 2,
@@ -47,9 +54,19 @@ const ApgarScale = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Índice de Apgar</h1>
-        <p className="text-muted-foreground">Avalie a vitalidade do recém-nascido no 1º e 5º minuto de vida.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Índice de Apgar</h1>
+          <p className="text-muted-foreground">Avalie a vitalidade do recém-nascido no 1º e 5º minuto de vida.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/scales/apgar"
+            itemType="Escala"
+            itemTitle="Índice de Apgar"
+          />
+        )}
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">

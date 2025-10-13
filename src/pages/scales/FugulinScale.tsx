@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { RefreshCw } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const fugulinData = [
   { id: "mental", title: "Estado Mental", options: [{ score: 1, text: "Orientado no tempo e espaço" }, { score: 2, text: "Períodos de desorientação" }, { score: 3, text: "Desorientado no tempo e espaço" }, { score: 4, text: "Inconsciente" }] },
@@ -19,6 +25,7 @@ const fugulinData = [
 ];
 
 const FugulinScale = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [scores, setScores] = useState({ mental: 1, oxygenation: 1, vitals: 1, motility: 1, ambulation: 1, feeding: 1, bodyCare: 1, elimination: 1, therapy: 1 });
   const [totalScore, setTotalScore] = useState(9);
 
@@ -47,9 +54,19 @@ const FugulinScale = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Fugulin</h1>
-        <p className="text-muted-foreground">Classifique o paciente quanto ao grau de dependência da equipe de enfermagem.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Fugulin</h1>
+          <p className="text-muted-foreground">Classifique o paciente quanto ao grau de dependência da equipe de enfermagem.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/scales/fugulin"
+            itemType="Escala"
+            itemTitle="Escala de Fugulin"
+          />
+        )}
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">

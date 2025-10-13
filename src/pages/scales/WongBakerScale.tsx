@@ -1,9 +1,15 @@
 import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const facesData = [
   { score: 0, emoji: "😊", description: "Sem dor", color: "bg-green-100 border-green-300" },
@@ -15,6 +21,7 @@ const facesData = [
 ];
 
 const WongBakerScale = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [score, setScore] = useState(0);
 
   const selectedFace = facesData.find(f => f.score === score);
@@ -25,9 +32,19 @@ const WongBakerScale = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Faces de Wong-Baker</h1>
-        <p className="text-muted-foreground">Avalie a intensidade da dor de forma visual.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Faces de Wong-Baker</h1>
+          <p className="text-muted-foreground">Avalie a intensidade da dor de forma visual.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/scales/wong-baker"
+            itemType="Escala"
+            itemTitle="Escala de Faces de Wong-Baker"
+          />
+        )}
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2">

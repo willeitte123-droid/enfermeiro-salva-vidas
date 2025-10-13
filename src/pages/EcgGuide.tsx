@@ -1,10 +1,18 @@
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HeartPulse, AlertTriangle, MapPin, Waves, Clock, Zap, Repeat } from "lucide-react";
 import EcgStrip from "@/components/EcgStrip";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const EcgGuide = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
+
   const lethalRhythms = [
     {
       name: "Fibrilação Ventricular (FV)",
@@ -43,9 +51,19 @@ const EcgGuide = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Guia Rápido de ECG</h1>
-        <p className="text-muted-foreground">Interpretação de eletrocardiograma para enfermagem.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Guia Rápido de ECG</h1>
+          <p className="text-muted-foreground">Interpretação de eletrocardiograma para enfermagem.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/ecg"
+            itemType="Guia"
+            itemTitle="Guia Rápido de ECG"
+          />
+        )}
       </div>
 
       <Tabs defaultValue="fundamentals" className="space-y-4">

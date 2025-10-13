@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useOutletContext, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Star, ListChecks, ClipboardList } from "lucide-react";
+import { Loader2, Star, ListChecks, ClipboardList, Syringe, Siren, BookOpen, Library, FlaskConical, Calculator as CalculatorIcon } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
 interface Profile {
@@ -29,6 +29,11 @@ const fetchFavorites = async (userId: string) => {
 const iconMap: { [key: string]: LucideIcon } = {
   'Escala': ListChecks,
   'Procedimento': ClipboardList,
+  'Medicamento': Syringe,
+  'Protocolo de Emergência': Siren,
+  'Guia': BookOpen,
+  'Tópico de Revisão': Library,
+  'Ferramenta': CalculatorIcon,
 };
 
 const FavoritesPage = () => {

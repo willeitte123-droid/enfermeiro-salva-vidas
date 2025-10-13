@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { RefreshCw } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const aldreteData = [
   { id: "activity", title: "Atividade Motora", options: [{ score: 2, text: "Move 4 membros" }, { score: 1, text: "Move 2 membros" }, { score: 0, text: "Move 0 membros" }] },
@@ -15,6 +21,7 @@ const aldreteData = [
 ];
 
 const AldreteScale = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [scores, setScores] = useState({ activity: 2, respiration: 2, circulation: 2, consciousness: 2, saturation: 2 });
   const [totalScore, setTotalScore] = useState(10);
 
@@ -40,9 +47,19 @@ const AldreteScale = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Índice de Aldrete e Kroulik</h1>
-        <p className="text-muted-foreground">Avalie as condições do paciente para alta da Sala de Recuperação Pós-Anestésica (SRPA).</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Índice de Aldrete e Kroulik</h1>
+          <p className="text-muted-foreground">Avalie as condições do paciente para alta da Sala de Recuperação Pós-Anestésica (SRPA).</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/scales/aldrete"
+            itemType="Escala"
+            itemTitle="Índice de Aldrete e Kroulik"
+          />
+        )}
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">

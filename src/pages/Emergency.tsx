@@ -1,11 +1,18 @@
 import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AlertCircle, Heart, Stethoscope, Siren, CheckCircle, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const Emergency = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
 
   const emergencies = [
@@ -108,9 +115,19 @@ const Emergency = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Urgências e Emergências</h1>
-        <p className="text-muted-foreground">Protocolos rápidos e diretos para atendimento de emergência</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Urgências e Emergências</h1>
+          <p className="text-muted-foreground">Protocolos rápidos e diretos para atendimento de emergência</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/emergency"
+            itemType="Guia"
+            itemTitle="Guia de Emergências"
+          />
+        )}
       </div>
 
       <div className="relative">
@@ -145,9 +162,20 @@ const Emergency = () => {
             <Accordion type="single" collapsible key={index}>
               <AccordionItem value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
                 <AccordionTrigger className="group hover:no-underline">
-                  <div className="flex items-center gap-3">
-                    <Icon className={`h-5 w-5 ${emergency.color} transition-colors group-data-[state=open]:${emergency.openColor}`} />
-                    <span className="font-semibold text-left">{emergency.title}</span>
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-3">
+                      <Icon className={`h-5 w-5 ${emergency.color} transition-colors group-data-[state=open]:${emergency.openColor}`} />
+                      <span className="font-semibold text-left">{emergency.title}</span>
+                    </div>
+                    {profile && (
+                      <FavoriteButton
+                        userId={profile.id}
+                        itemId={`/emergency#${emergency.title.toLowerCase().replace(/\s+/g, '-')}`}
+                        itemType="Protocolo de Emergência"
+                        itemTitle={emergency.title}
+                        className="mr-2"
+                      />
+                    )}
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,8 +7,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FlaskConical, Syringe, Activity, AlertTriangle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const DoseCalculator = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   // State for Simple Dose Calculator
   const [prescribedDose, setPrescribedDose] = useState("");
   const [prescribedUnit, setPrescribedUnit] = useState("mg");
@@ -97,9 +104,19 @@ const DoseCalculator = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Calculadora de Doses</h1>
-        <p className="text-muted-foreground">Calcule doses, diluições e taxas de infusão com precisão.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Calculadora de Doses</h1>
+          <p className="text-muted-foreground">Calcule doses, diluições e taxas de infusão com precisão.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/tools/dose-calculator"
+            itemType="Ferramenta"
+            itemTitle="Calculadora de Doses"
+          />
+        )}
       </div>
 
       <Alert variant="destructive">

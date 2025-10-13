@@ -1,9 +1,15 @@
 import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Syringe, Search, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 interface Medication {
   name: string;
@@ -15,6 +21,7 @@ interface Medication {
 }
 
 const Medications = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
 
   const medications: Medication[] = [
@@ -452,9 +459,19 @@ const Medications = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Guia Rápido de Medicamentos</h1>
-        <p className="text-muted-foreground">Principais medicações injetáveis, indicações e cuidados essenciais</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Guia Rápido de Medicamentos</h1>
+          <p className="text-muted-foreground">Principais medicações injetáveis, indicações e cuidados essenciais</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/medications"
+            itemType="Guia"
+            itemTitle="Guia de Medicamentos"
+          />
+        )}
       </div>
 
       <div className="relative">
@@ -480,7 +497,18 @@ const Medications = () => {
                       <p className="text-sm text-muted-foreground text-left mt-1">{medication.activeIngredient}</p>
                     </div>
                   </div>
-                  <Badge className="ml-4 flex-shrink-0 bg-green-600 text-white hover:bg-green-700">{medication.category}</Badge>
+                  <div className="flex items-center">
+                    <Badge className="ml-4 flex-shrink-0 bg-green-600 text-white hover:bg-green-700">{medication.category}</Badge>
+                    {profile && (
+                      <FavoriteButton
+                        userId={profile.id}
+                        itemId={`/medications#${medication.name.toLowerCase().replace(/\s+/g, '-')}`}
+                        itemType="Medicamento"
+                        itemTitle={medication.name}
+                        className="ml-2"
+                      />
+                    )}
+                  </div>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="pt-4 space-y-4">
