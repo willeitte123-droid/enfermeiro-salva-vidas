@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Scale } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const BMICalculator = () => {
@@ -46,10 +46,13 @@ const BMICalculator = () => {
   };
 
   return (
-    <Card>
+    <Card className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
       <CardHeader>
-        <CardTitle>Cálculo de IMC (Índice de Massa Corporal)</CardTitle>
-        <CardDescription>Insira o peso e a altura para calcular o IMC.</CardDescription>
+        <CardTitle className="flex items-center gap-3 text-blue-700 dark:text-blue-300">
+          <Scale />
+          Cálculo de IMC (Índice de Massa Corporal)
+        </CardTitle>
+        <CardDescription className="text-blue-900/80 dark:text-blue-200/80">Insira o peso e a altura para calcular o IMC.</CardDescription>
       </CardHeader>
       <CardContent className="grid md:grid-cols-2 gap-6">
         <div className="space-y-4">
@@ -66,7 +69,7 @@ const BMICalculator = () => {
             Limpar
           </Button>
         </div>
-        <Card className="bg-primary/10 flex flex-col items-center justify-center p-6 text-center">
+        <Card className="bg-background/70 flex flex-col items-center justify-center p-6 text-center">
           {bmi !== null ? (
             <>
               <p className="text-sm text-muted-foreground">Seu IMC é</p>

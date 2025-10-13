@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
-import { Calendar as CalendarIcon, RefreshCw, Info } from "lucide-react";
+import { Calendar as CalendarIcon, RefreshCw, Info, Baby } from "lucide-react";
 import { format, addDays, addMonths, differenceInDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -47,10 +47,13 @@ const PregnancyCalculator = () => {
 
   return (
     <>
-      <Card>
+      <Card className="bg-pink-50 dark:bg-pink-900/20 border-pink-200 dark:border-pink-800">
         <CardHeader>
-          <CardTitle>Calculadora Gestacional</CardTitle>
-          <CardDescription>Calcule a DPP e a Idade Gestacional (IG) a partir da DUM.</CardDescription>
+          <CardTitle className="flex items-center gap-3 text-pink-700 dark:text-pink-300">
+            <Baby />
+            Calculadora Gestacional
+          </CardTitle>
+          <CardDescription className="text-pink-900/80 dark:text-pink-200/80">Calcule a DPP e a Idade Gestacional (IG) a partir da DUM.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
@@ -67,13 +70,13 @@ const PregnancyCalculator = () => {
           </div>
 
           <div className="space-y-4">
-            <Card className="bg-primary/10 p-6 text-center">
+            <Card className="bg-background/70 p-6 text-center">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="sm:border-r border-primary/20 sm:pr-4">
+                <div className="sm:border-r border-border sm:pr-4">
                   <p className="text-sm text-muted-foreground">Data Provável do Parto (DPP)</p>
                   <p className="text-2xl font-bold text-primary">{dpp || "--"}</p>
                 </div>
-                <div className="sm:border-r border-primary/20 sm:pr-4">
+                <div className="sm:border-r border-border sm:pr-4">
                   <p className="text-sm text-muted-foreground">Idade Gestacional (Hoje)</p>
                   <p className="text-2xl font-bold text-primary">{gestationalAge || "--"}</p>
                 </div>
