@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState, useEffect, useMemo } from "react";
+import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -26,11 +26,11 @@ interface Note {
 }
 
 const noteColors = [
-  { bg: "bg-sky-50 dark:bg-sky-900/30", border: "border-sky-500" },
-  { bg: "bg-emerald-50 dark:bg-emerald-900/30", border: "border-emerald-500" },
-  { bg: "bg-amber-50 dark:bg-amber-900/30", border: "border-amber-500" },
-  { bg: "bg-rose-50 dark:bg-rose-900/30", border: "border-rose-500" },
-  { bg: "bg-violet-50 dark:bg-violet-900/30", border: "border-violet-500" },
+  "border-sky-500",
+  "border-emerald-500",
+  "border-amber-500",
+  "border-rose-500",
+  "border-violet-500",
 ];
 
 const fetchNotes = async (userId: string) => {
@@ -73,7 +73,7 @@ const BlocoDeNotas = () => {
       setTitle("");
       setContent("");
     }
-  }, [notes, selectedNoteId]);
+  }, [notes, selectedNoteId, selectedNote]);
 
   const createNoteMutation = useMutation({
     mutationFn: async (newNote: { title: string; content: string }) => {
@@ -131,7 +131,6 @@ const BlocoDeNotas = () => {
     }
   };
 
-  // Auto-save logic
   useEffect(() => {
     if (!selectedNoteId || (title === selectedNote?.title && content === selectedNote?.content)) {
       setIsSaved(false);
@@ -152,12 +151,12 @@ const BlocoDeNotas = () => {
           setIsSaved(false);
         }
       });
-    }, 1500); // 1.5 second debounce
+    }, 1500);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [title, content, selectedNoteId]);
+  }, [title, content, selectedNoteId, selectedNote]);
 
   return (
     <div className="space-y-6">
@@ -166,57 +165,54 @@ const BlocoDeNotas = () => {
         <p className="text-muted-foreground">Suas anotações pessoais, salvas e disponíveis a qualquer momento.</p>
       </div>
 
-      <Card className="grid grid-cols-1 lg:grid-cols-4 h-[70vh] min-h-[500px] overflow-hidden">
-        <div className="lg:col-span-1 border-r flex flex-col bg-muted/30">
-          <div className="p-4 border-b flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Minhas Anotações</h2>
-            <Button size="icon" variant="ghost" onClick={handleNewNote} disabled={createNoteMutation.isPending} title="Criar nova anotação">
-              {createNoteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlusCircle className="h-5 w-5 text-primary" />}
+      <div className="grid grid-cols-1 lg:grid-cols-4 border rounded-lg h-[70vh] min-h-[500px] overflow-hidden bg-card">
+        <div className="lg:col-span-1 border-r flex flex-col bg-muted/20">
+          <div className="p-3 border-b">
+            <Button variant="outline" className="w-full" onClick={handleNewNote} disabled={createNoteMutation.isPending}>
+              {createNoteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlusCircle className="h-4 w-4 mr-2" />}
+              Nova Anotação
             </Button>
           </div>
           <ScrollArea className="flex-1">
-            <div className="p-2 space-y-1">
-              {isLoading ? (
-                <div className="flex items-center justify-center h-full p-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
-              ) : notes.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center p-4">Nenhuma anotação. Clique em '+' para criar uma.</p>
-              ) : (
-                notes.map((note, index) => {
-                  const colorSet = noteColors[index % noteColors.length];
-                  return (
-                    <button
-                      key={note.id}
-                      onClick={() => setSelectedNoteId(note.id)}
-                      className={cn(
-                        "w-full text-left p-3 rounded-lg transition-all flex flex-col gap-1",
-                        colorSet.bg,
-                        selectedNoteId === note.id
-                          ? `border-2 ${colorSet.border}`
-                          : `border-2 border-transparent opacity-70 hover:opacity-100`
-                      )}
-                    >
-                      <p className="font-semibold truncate text-foreground">{note.title || "Sem Título"}</p>
-                      <p className="text-xs text-muted-foreground truncate">{note.content || "Nenhum conteúdo"}</p>
-                      <span className="text-xs text-muted-foreground mt-1">
-                        {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true, locale: ptBR })}
-                      </span>
-                    </button>
-                  );
-                })
-              )}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full p-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+            ) : notes.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center p-4">Nenhuma anotação. Crie uma para começar.</p>
+            ) : (
+              <div className="p-2 space-y-1">
+                {notes.map((note, index) => (
+                  <button
+                    key={note.id}
+                    onClick={() => setSelectedNoteId(note.id)}
+                    className={cn(
+                      "w-full text-left p-3 rounded-md transition-all border-l-4",
+                      noteColors[index % noteColors.length],
+                      selectedNoteId === note.id
+                        ? "bg-primary/10"
+                        : "bg-transparent hover:bg-muted/50"
+                    )}
+                  >
+                    <p className="font-semibold truncate text-foreground">{note.title || "Sem Título"}</p>
+                    <p className="text-xs text-muted-foreground truncate mt-1">{note.content || "Nenhum conteúdo"}</p>
+                    <span className="text-xs text-muted-foreground/80 mt-2 block">
+                      {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true, locale: ptBR })}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
           </ScrollArea>
         </div>
 
         <div className="lg:col-span-3 flex flex-col">
           {selectedNoteId && !isLoading ? (
             <>
-              <div className="p-4 border-b flex items-center justify-between gap-4">
+              <div className="p-4 border-b flex items-center justify-between gap-4 flex-shrink-0">
                 <Input
                   placeholder="Digite seu título aqui"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="text-2xl font-bold border-0 shadow-none focus-visible:ring-0 p-0 h-auto bg-transparent"
+                  className="text-3xl font-bold border-0 shadow-none focus-visible:ring-0 p-0 h-auto bg-transparent tracking-tight"
                 />
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1 text-xs text-muted-foreground transition-opacity">
@@ -241,7 +237,7 @@ const BlocoDeNotas = () => {
                   placeholder="Comece a digitar..."
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="h-full w-full resize-none border-0 shadow-none focus-visible:ring-0 p-6 text-base leading-relaxed bg-transparent"
+                  className="h-full w-full resize-none border-0 shadow-none focus-visible:ring-0 p-8 text-lg leading-relaxed bg-transparent"
                 />
               </ScrollArea>
             </>
@@ -249,11 +245,11 @@ const BlocoDeNotas = () => {
             <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground p-8">
               <NotebookPen className="h-16 w-16 mb-4 text-primary/30" />
               <p className="font-semibold text-lg">Selecione uma anotação para visualizar</p>
-              <p className="text-sm max-w-xs">Ou crie uma nova clicando no botão <PlusCircle className="inline h-4 w-4 mx-1" /> na lista de anotações.</p>
+              <p className="text-sm max-w-xs">Ou crie uma nova para começar a escrever.</p>
             </div>
           )}
         </div>
-      </Card>
+      </div>
     </div>
   );
 };
