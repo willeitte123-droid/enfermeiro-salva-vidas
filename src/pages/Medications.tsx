@@ -480,7 +480,7 @@ const Medications = () => {
                       <p className="text-sm text-muted-foreground text-left mt-1">{medication.activeIngredient}</p>
                     </div>
                   </div>
-                  <Badge variant="secondary" className="ml-4 flex-shrink-0">{medication.category}</Badge>
+                  <Badge className="ml-4 flex-shrink-0 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">{medication.category}</Badge>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="pt-4 space-y-4">
