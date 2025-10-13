@@ -62,8 +62,8 @@ const BMICalculator = () => {
             <Input id="weight" type="number" placeholder="Ex: 70" value={weight} onChange={(e) => setWeight(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="height">Altura (cm)</Label>
-            <Input id="height" type="number" placeholder="Ex: 175 ou 1,75" value={height} onChange={(e) => setHeight(e.target.value)} />
+            <Label htmlFor="height">Altura (m ou cm)</Label>
+            <Input id="height" type="number" placeholder="Ex: 175 ou 1.75" value={height} onChange={(e) => setHeight(e.target.value)} />
           </div>
           <Button variant="outline" onClick={resetCalculator} className="w-full">
             <RefreshCw className="h-4 w-4 mr-2" />
@@ -80,7 +80,8 @@ const BMICalculator = () => {
           ) : (
             <p className="text-muted-foreground">Aguardando dados...</p>
           )}
-        </CardContent>
+        </Card>
+      </CardContent>
     </Card>
   );
 };
