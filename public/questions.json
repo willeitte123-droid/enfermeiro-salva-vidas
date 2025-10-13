@@ -2199,7 +2199,7 @@
   {
     "id": 170,
     "category": "Gerenciamento",
-    "question": "O que é o 'acolhimento com classificação de risco' nos serviços de urgência?",
+    "question": "O que é 'acolhimento com classificação de risco' nos serviços de urgência?",
     "options": [
         { "id": "A", "text": "Um sistema de atendimento por ordem de chegada." },
         { "id": "B", "text": "Uma triagem administrativa para verificar o convênio do paciente." },
@@ -2598,5 +2598,1305 @@
     ],
     "correctAnswer": "C",
     "explanation": "A Análise SWOT (Strengths, Weaknesses, Opportunities, Threats) ou FOFA (Forças, Oportunidades, Fraquezas, Ameaças) é uma ferramenta de diagnóstico que permite à organização identificar seus pontos fortes e fracos internos e as oportunidades e ameaças do ambiente externo, sendo um passo crucial para a formulação de estratégias."
+  },
+  {
+    "id": 201,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é um 'fômite' no contexto da transmissão de doenças?",
+    "options": [
+      { "id": "A", "text": "Um inseto que transmite um agente infeccioso." },
+      { "id": "B", "text": "Um objeto ou material inanimado contaminado que pode transmitir um agente infeccioso." },
+      { "id": "C", "text": "Um indivíduo que hospeda um agente infeccioso sem apresentar sintomas." },
+      { "id": "D", "text": "A fonte original de um surto epidêmico." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Fômite é qualquer objeto inanimado que, quando contaminado, pode transferir um patógeno para um hospedeiro. Exemplos comuns incluem maçanetas, equipamentos médicos não esterilizados e roupas de cama."
+  },
+  {
+    "id": 202,
+    "category": "Saúde do Trabalhador",
+    "question": "A Comunicação de Acidente de Trabalho (CAT) deve ser emitida pela empresa em qual prazo?",
+    "options": [
+      { "id": "A", "text": "Até o final do mês em que ocorreu o acidente." },
+      { "id": "B", "text": "Em até 7 dias úteis após o acidente." },
+      { "id": "C", "text": "Até o primeiro dia útil seguinte ao da ocorrência e, em caso de morte, de imediato." },
+      { "id": "D", "text": "Apenas quando o trabalhador solicitar." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A legislação previdenciária estabelece que a empresa é obrigada a emitir a CAT até o primeiro dia útil após o acidente. Em caso de falecimento do trabalhador, a comunicação deve ser imediata para garantir os direitos dos dependentes."
+  },
+  {
+    "id": 203,
+    "category": "Centro Cirúrgico",
+    "question": "Qual é a principal função do enfermeiro circulante de sala operatória?",
+    "options": [
+      { "id": "A", "text": "Realizar a instrumentação cirúrgica, passando os instrumentos ao cirurgião." },
+      { "id": "B", "text": "Administrar os anestésicos e monitorar os sinais vitais do paciente." },
+      { "id": "C", "text": "Prover os materiais e equipamentos necessários, garantir a segurança do ambiente e do paciente, e realizar os registros." },
+      { "id": "D", "text": "Auxiliar diretamente o cirurgião no campo operatório." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O circulante de sala é o gerente do ambiente cirúrgico. Ele não participa do campo estéril, mas é responsável por todo o suporte à equipe, provendo materiais, posicionando o paciente, controlando o ambiente e documentando o procedimento, sendo uma peça chave para a segurança."
+  },
+  {
+    "id": 204,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'e-SUS Atenção Primária' (e-SUS AP)?",
+    "options": [
+      { "id": "A", "text": "Um aplicativo para agendamento de consultas online." },
+      { "id": "B", "text": "Um sistema de prontuário eletrônico para hospitais de alta complexidade." },
+      { "id": "C", "text": "Uma estratégia do Ministério da Saúde para reestruturar e informatizar a coleta de dados da Atenção Primária." },
+      { "id": "D", "text": "Uma plataforma de telemedicina para atendimento à distância." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O e-SUS AP é um sistema de informação que visa unificar e qualificar os dados da Atenção Primária, substituindo sistemas antigos. Ele pode ser usado com Prontuário Eletrônico do Cidadão (PEC) ou com Coleta de Dados Simplificada (CDS)."
+  },
+  {
+    "id": 205,
+    "category": "CME",
+    "question": "Qual é a diferença fundamental entre desinfecção e esterilização?",
+    "options": [
+      { "id": "A", "text": "Desinfecção usa produtos químicos e esterilização usa calor." },
+      { "id": "B", "text": "Desinfecção é para superfícies e esterilização é para instrumentos." },
+      { "id": "C", "text": "Esterilização destrói todas as formas de vida microbiana, incluindo esporos, enquanto a desinfecção não." },
+      { "id": "D", "text": "Esterilização é um processo mais rápido que a desinfecção." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A esterilização é um processo absoluto que elimina ou destrói completamente todos os microrganismos, incluindo os esporos bacterianos, que são as formas mais resistentes. A desinfecção, mesmo a de alto nível, não garante a eliminação de todos os esporos."
+  },
+  {
+    "id": 206,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com cateter de diálise peritoneal?",
+    "options": [
+      { "id": "A", "text": "Manter o curativo do óstio do cateter sempre úmido." },
+      { "id": "B", "text": "Realizar a troca do curativo com técnica asséptica rigorosa e monitorar sinais de peritonite." },
+      { "id": "C", "text": "Rodar o cateter diariamente para evitar aderências." },
+      { "id": "D", "text": "Lavar o cateter com soro fisiológico antes de cada troca." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A peritonite é a complicação mais grave da diálise peritoneal. A prevenção se baseia na manipulação asséptica do cateter e do sistema, e na realização do curativo do óstio (local de saída) com técnica estéril. Sinais de peritonite incluem dor abdominal, febre e efluente peritoneal turvo."
+  },
+  {
+    "id": 207,
+    "category": "Gerenciamento",
+    "question": "O que é um Protocolo Operacional Padrão (POP) em enfermagem?",
+    "options": [
+      { "id": "A", "text": "Um resumo do histórico clínico do paciente." },
+      { "id": "B", "text": "Uma descrição detalhada e sequencial de como executar uma tarefa ou procedimento." },
+      { "id": "C", "text": "A escala de trabalho mensal da equipe de enfermagem." },
+      { "id": "D", "text": "Um formulário para registro de eventos adversos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O POP é um documento que padroniza a execução de tarefas rotineiras para garantir a qualidade, a segurança e a consistência dos cuidados, independentemente de quem executa a tarefa. Ele serve como um guia de 'como fazer'."
+  },
+  {
+    "id": 208,
+    "category": "Vigilância Sanitária",
+    "question": "A sigla RDC, frequentemente vista em normas da área da saúde, significa:",
+    "options": [
+      { "id": "A", "text": "Regulamento de Diretrizes Clínicas." },
+      { "id": "B", "text": "Resolução da Diretoria Colegiada." },
+      { "id": "C", "text": "Recomendação de Cuidado Diário." },
+      { "id": "D", "text": "Registro de Doenças Compulsórias." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "RDC é a sigla para Resolução da Diretoria Colegiada, que é o tipo de ato normativo emitido pela Agência Nacional de Vigilância Sanitária (ANVISA) para regulamentar produtos e serviços sujeitos à vigilância sanitária no Brasil."
+  },
+  {
+    "id": 209,
+    "category": "Urgência e Emergência",
+    "question": "Um paciente com suspeita de Tamponamento Cardíaco pode apresentar a Tríade de Beck. Quais são seus componentes?",
+    "options": [
+      { "id": "A", "text": "Hipertensão, bradicardia e respiração irregular." },
+      { "id": "B", "text": "Febre, calafrios e dor torácica." },
+      { "id": "C", "text": "Hipotensão, turgência jugular e abafamento de bulhas cardíacas." },
+      { "id": "D", "text": "Desvio de traqueia, enfisema subcutâneo e ausência de murmúrio vesicular." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Tríade de Beck descreve os sinais clássicos do tamponamento cardíaco, que é o acúmulo de líquido no saco pericárdico. A hipotensão ocorre pela restrição ao enchimento do coração, a turgência jugular pelo aumento da pressão venosa e o abafamento das bulhas pelo líquido que isola o som."
+  },
+  {
+    "id": 210,
+    "category": "Saúde Coletiva",
+    "question": "O que é o Programa Bolsa Família e qual sua relação com a saúde?",
+    "options": [
+      { "id": "A", "text": "Um programa de financiamento de hospitais." },
+      { "id": "B", "text": "Um programa de transferência de renda que exige condicionalidades na área da saúde e educação." },
+      { "id": "C", "text": "Um plano de saúde popular oferecido pelo governo." },
+      { "id": "D", "text": "Um programa de distribuição de medicamentos gratuitos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Bolsa Família é um programa de transferência de renda para famílias em situação de pobreza e extrema pobreza. Para receber o benefício, as famílias precisam cumprir condicionalidades, como manter a vacinação das crianças em dia, realizar o acompanhamento do crescimento e desenvolvimento e, para as gestantes, fazer o pré-natal."
+  },
+  {
+    "id": 211,
+    "category": "CME",
+    "question": "Qual a finalidade de embalar os materiais antes da esterilização?",
+    "options": [
+      { "id": "A", "text": "Apenas para facilitar o transporte e o armazenamento." },
+      { "id": "B", "text": "Para permitir a penetração do agente esterilizante e manter a esterilidade do material até o seu uso." },
+      { "id": "C", "text": "Para proteger o material contra danos físicos durante o ciclo." },
+      { "id": "D", "text": "Para identificar o material com o nome do paciente." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A embalagem tem uma dupla função crucial: deve ser permeável ao agente esterilizante (vapor, gás) para que o processo ocorra, mas impermeável a microrganismos após o ciclo, funcionando como uma barreira que mantém o artigo estéril até o momento de sua utilização."
+  },
+  {
+    "id": 212,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal sintoma da Trombose Venosa Profunda (TVP) em membros inferiores?",
+    "options": [
+      { "id": "A", "text": "Dor intensa e pulsátil no pé." },
+      { "id": "B", "text": "Edema, dor e aumento da temperatura em uma das pernas (geralmente unilateral)." },
+      { "id": "C", "text": "Formigamento e perda de força em ambas as pernas." },
+      { "id": "D", "text": "Pele fria, pálida e ausência de pulso no membro." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A TVP é a formação de um trombo em uma veia profunda. Os sinais e sintomas clássicos na perna incluem edema (inchaço), dor (principalmente na panturrilha), calor e rubor (vermelhidão). O Sinal de Homans (dor à dorsiflexão do pé) é inespecífico e não mais recomendado."
+  },
+  {
+    "id": 213,
+    "category": "Vigilância Sanitária",
+    "question": "A RDC nº 15/2012 da ANVISA dispõe sobre os requisitos de boas práticas para o processamento de produtos para saúde. Ela se aplica a qual setor de um hospital?",
+    "options": [
+      { "id": "A", "text": "Farmácia Hospitalar." },
+      { "id": "B", "text": "Serviço de Nutrição e Dietética." },
+      { "id": "C", "text": "Centro de Material e Esterilização (CME)." },
+      { "id": "D", "text": "Laboratório de Análises Clínicas." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A RDC 15/2012 é a principal legislação que regulamenta o funcionamento dos Centros de Material e Esterilização (CME) e das empresas processadoras, estabelecendo os requisitos para limpeza, desinfecção, preparo, esterilização, armazenamento e distribuição de produtos para saúde."
+  },
+  {
+    "id": 214,
+    "category": "Gerenciamento",
+    "question": "O que é um 'evento sentinela' em segurança do paciente?",
+    "options": [
+      { "id": "A", "text": "Qualquer erro que ocorre durante a assistência, sem causar dano." },
+      { "id": "B", "text": "Um evento adverso que resulta em morte, dano grave ou risco de dano grave ao paciente." },
+      { "id":- "C", "text": "Uma queixa ou reclamação feita pelo paciente ou familiar." },
+      { "id": "D", "text": "Um indicador de qualidade que atingiu a meta estabelecida." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Um evento sentinela é um incidente inesperado e grave que sinaliza a necessidade de investigação imediata e resposta para identificar as causas e prevenir sua recorrência. Exemplos: cirurgia em local errado, queda com dano grave, erro de medicação com óbito."
+  },
+  {
+    "id": 215,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'SINAN'?",
+    "options": [
+      { "id": "A", "text": "Sistema de Informação sobre Nascidos Vivos." },
+      { "id": "B", "text": "Sistema de Informação de Agravos de Notificação." },
+      { "id": "C", "text": "Sistema Nacional de Auditoria." },
+      { "id": "D", "text": "Sistema de Informações Ambulatoriais." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O SINAN (Sistema de Informação de Agravos de Notificação) é o principal sistema do Ministério da Saúde para coletar e processar os dados sobre as doenças e agravos de notificação compulsória em todo o território nacional, sendo fundamental para a vigilância epidemiológica."
+  },
+  {
+    "id": 216,
+    "category": "CME",
+    "question": "Artigos semicríticos, como lâminas de laringoscópio e equipamentos de terapia respiratória, devem ser submetidos, no mínimo, a qual processo?",
+    "options": [
+      { "id": "A", "text": "Limpeza com água e sabão." },
+      { "id": "B", "text": "Desinfecção de nível intermediário." },
+      { "id": "C", "text": "Desinfecção de alto nível." },
+      { "id": "D", "text": "Esterilização." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Artigos semicríticos são aqueles que entram em contato com mucosas íntegras ou pele não intacta. Eles exigem, no mínimo, desinfecção de alto nível para eliminar todos os microrganismos, com exceção de um alto número de esporos bacterianos."
+  },
+  {
+    "id": 217,
+    "category": "Saúde do Adulto",
+    "question": "Qual é a principal complicação da Trombose Venosa Profunda (TVP)?",
+    "options": [
+      { "id": "A", "text": "Insuficiência arterial periférica." },
+      { "id": "B", "text": "Tromboembolismo Pulmonar (TEP)." },
+      { "id": "C", "text": "Acidente Vascular Cerebral (AVC)." },
+      { "id": "D", "text": "Infarto Agudo do Miocárdio (IAM)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O TEP é a complicação mais temida da TVP. Ocorre quando um fragmento do trombo se desprende da veia profunda (geralmente da perna), viaja pela corrente sanguínea e obstrui uma artéria pulmonar, causando uma emergência com alta mortalidade."
+  },
+  {
+    "id": 218,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é 'letalidade'?",
+    "options": [
+      { "id": "A", "text": "A proporção de pessoas que morrem em uma população em um determinado período." },
+      { "id": "B", "text": "O número de casos novos de uma doença." },
+      { "id": "C", "text": "A proporção de óbitos entre os casos de uma determinada doença." },
+      { "id": "D", "text": "A capacidade de um agente infeccioso de causar doença." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A letalidade é uma medida da gravidade de uma doença. É calculada dividindo-se o número de óbitos por uma doença pelo número total de casos dessa mesma doença, em um mesmo período e local. Ex: (Nº de óbitos por Covid-19 / Nº de casos de Covid-19) x 100."
+  },
+  {
+    "id": 219,
+    "category": "Gerenciamento",
+    "question": "A escala de trabalho da equipe de enfermagem é uma atividade privativa de qual profissional?",
+    "options": [
+      { "id": "A", "text": "Do chefe do setor de Recursos Humanos." },
+      { "id": "B", "text": "Do diretor administrativo do hospital." },
+      { "id": "C", "text": "Do Enfermeiro." },
+      { "id": "D", "text": "Pode ser feita por qualquer membro da equipe com mais tempo de serviço." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A Lei do Exercício Profissional (Lei nº 7.498/86) e as resoluções do COFEN estabelecem que a elaboração da escala de serviço e o planejamento, organização, coordenação, execução e avaliação dos serviços de assistência de enfermagem são atividades privativas do Enfermeiro."
+  },
+  {
+    "id": 220,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'NASF-AB' (Núcleo Ampliado de Saúde da Família e Atenção Básica)?",
+    "options": [
+      { "id": "A", "text": "Uma nova modalidade de equipe de Saúde da Família." },
+      { "id": "B", "text": "Um centro de especialidades médicas." },
+      { "id": "C", "text": "Uma equipe multiprofissional que atua de forma integrada para dar suporte às equipes de Saúde da Família." },
+      { "id": "D", "text": "Um programa de informatização das Unidades Básicas de Saúde." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O NASF-AB é composto por profissionais de diferentes áreas (fisioterapeuta, psicólogo, nutricionista, etc.) que não fazem parte da equipe mínima da ESF. Eles atuam de forma matricial, oferecendo suporte técnico e realizando ações conjuntas com as equipes de referência para ampliar a resolutividade da Atenção Básica."
+  },
+  {
+    "id": 221,
+    "category": "CME",
+    "question": "Qual é o objetivo da lavadora termodesinfectadora?",
+    "options": [
+      { "id": "A", "text": "Realizar a esterilização final dos instrumentais cirúrgicos." },
+      { "id": "B", "text": "Apenas secar os materiais após a limpeza manual." },
+      { "id": "C", "text": "Realizar a limpeza automatizada e a desinfecção térmica (de alto nível) dos artigos." },
+      { "id":- "D", "text": "Embalar os materiais em grau cirúrgico." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A termodesinfectadora é um equipamento que automatiza o processo de limpeza e realiza a desinfecção por meio de água quente (geralmente a 90°C), garantindo um processo padronizado e mais seguro para os profissionais, pois reduz a manipulação de material contaminado."
+  },
+  {
+    "id": 222,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem com o dreno de tórax?",
+    "options": [
+      { "id": "A", "text": "Manter o frasco de drenagem sempre acima do nível do tórax do paciente." },
+      { "id": "B", "text": "Clampear o dreno durante o transporte do paciente." },
+      { "id":- "C", "text": "Manter o selo d'água, avaliar o débito e a oscilação, e garantir que não haja pinçamentos." },
+      { "id": "D", "text": "Realizar a ordenha do dreno rotineiramente para garantir a perviedade." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Os cuidados essenciais são: 1) Manter o frasco sempre abaixo do nível do tórax; 2) Garantir que o selo d'água esteja preenchido e oscilando com a respiração (sinal de perviedade); 3) Avaliar o aspecto e o volume do débito; 4) Não clampear o dreno (risco de pneumotórax hipertensivo), exceto em situações específicas e breves."
+  },
+  {
+    "id": 223,
+    "category": "Vigilância Sanitária",
+    "question": "A sigla 'CCIH' em um hospital refere-se a:",
+    "options": [
+      { "id": "A", "text": "Comissão de Cuidados Intensivos Hospitalares." },
+      { "id": "B", "text": "Centro Cirúrgico e de Intervenções Hemodinâmicas." },
+      { "id": "C", "text": "Comissão de Controle de Infecção Hospitalar." },
+      { "id": "D", "text": "Comitê de Conduta e Integridade Hospitalar." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A CCIH é um órgão de assessoria à direção do hospital, obrigatório por lei, responsável pela elaboração, implementação e supervisão das ações de prevenção e controle das Infecções Relacionadas à Assistência à Saúde (IRAS)."
+  },
+  {
+    "id": 224,
+    "category": "Gerenciamento",
+    "question": "O que é 'empowerment' (empoderamento) no contexto da gestão de equipes de enfermagem?",
+    "options": [
+      { "id": "A", "text": "Um sistema de punição para erros cometidos pela equipe." },
+      { "id": "B", "text": "A delegação de tarefas com autonomia, responsabilidade e autoridade para a tomada de decisão." },
+      { "id": "C", "text": "A centralização de todas as decisões na figura do enfermeiro-chefe." },
+      { "id": "D", "text": "A realização de reuniões diárias para repassar ordens." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Empowerment é uma ferramenta de gestão que visa descentralizar o poder, dando aos colaboradores mais autonomia e responsabilidade sobre seu trabalho. Isso aumenta a motivação, a agilidade na resolução de problemas e o comprometimento da equipe."
+  },
+  {
+    "id": 225,
+    "category": "Saúde Coletiva",
+    "question": "O que é a 'transição demográfica'?",
+    "options": [
+      { "id": "A", "text": "A migração de populações da zona rural para a zona urbana." },
+      { "id": "B", "text": "A mudança de um perfil de mortalidade por doenças infecciosas para um perfil por doenças crônicas." },
+      { "id": "C", "text": "A passagem de um cenário de altas taxas de mortalidade e natalidade para um de baixas taxas, resultando no envelhecimento da população." },
+      { "id": "D", "text": "O aumento da expectativa de vida devido a novas tecnologias médicas." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A transição demográfica descreve a evolução das taxas de mortalidade e natalidade de uma população. Com a melhoria das condições de vida, a mortalidade cai, seguida por uma queda na natalidade. O resultado é uma diminuição do crescimento populacional e uma mudança na estrutura etária, com um número maior de idosos."
+  },
+  {
+    "id": 226,
+    "category": "CME",
+    "question": "Qual a função do indicador químico de fita (fita zebrada) na esterilização?",
+    "options": [
+      { "id": "A", "text": "Comprovar que o material está estéril." },
+      { "id": "B", "text": "Indicar que o pacote passou por um processo de esterilização, diferenciando-o dos não processados." },
+      { "id": "C", "text": "Monitorar o tempo e a temperatura dentro do pacote." },
+      { "id": "D", "text": "Verificar a presença de umidade residual no pacote." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A fita zebrada é um indicador de processo (Classe 1). Sua mudança de cor apenas confirma que o pacote foi exposto a um ciclo de esterilização, mas NÃO garante que os parâmetros necessários para a esterilidade foram atingidos. Ela serve para diferenciar visualmente os pacotes processados dos não processados."
+  },
+  {
+    "id": 227,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal objetivo da terapia com pressão positiva contínua nas vias aéreas (CPAP) em pacientes com Apneia Obstrutiva do Sono?",
+    "options": [
+      { "id": "A", "text": "Aumentar a oferta de oxigênio para o cérebro." },
+      { "id": "B", "text": "Manter as vias aéreas superiores abertas durante o sono, prevenindo os episódios de apneia." },
+      { "id": "C", "text": "Induzir um sono mais profundo e reparador." },
+      { "id": "D", "text": "Reduzir a frequência cardíaca e a pressão arterial." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O CPAP fornece um fluxo de ar contínuo que gera uma pressão positiva, atuando como uma 'tala pneumática' que impede o colapso da faringe durante o sono. Isso previne a obstrução, a queda da saturação de oxigênio e os microdespertares, melhorando a qualidade do sono e a saúde cardiovascular."
+  },
+  {
+    "id": 228,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é uma 'pandemia'?",
+    "options": [
+      { "id": "A", "text": "Um surto de doença restrito a uma pequena comunidade." },
+      { "id": "B", "text": "Uma epidemia que ocorre em vários municípios de um mesmo estado." },
+      { "id": "C", "text": "Uma epidemia de grandes proporções, que se espalha por vários países ou continentes, afetando um grande número de pessoas." },
+      { "id": "D", "text": "Uma doença que existe constantemente em uma determinada região." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Pandemia é o termo usado quando uma epidemia se dissemina em escala global. A principal característica é a distribuição geográfica ampla, e não necessariamente a gravidade da doença. Ex: Pandemia de COVID-19, Pandemia de H1N1 em 2009."
+  },
+  {
+    "id": 229,
+    "category": "Gerenciamento",
+    "question": "O que é a 'dupla checagem' no preparo e administração de medicamentos?",
+    "options": [
+      { "id": "A", "text": "Checar a prescrição duas vezes antes de preparar o medicamento." },
+      { "id": "B", "text": "Dois profissionais de saúde checarem de forma independente os 'certos' da medicação antes da administração." },
+      { "id": "C", "text": "Administrar o medicamento e depois checar se a dose estava correta." },
+      { "id": "D", "text": "Checar a validade do medicamento e a do diluente." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A dupla checagem é uma barreira de segurança crucial, especialmente para medicamentos de alta vigilância. Envolve dois profissionais (ex: dois enfermeiros ou um enfermeiro e um técnico) conferindo de forma independente a prescrição, o cálculo, o preparo e a identificação do medicamento antes que ele seja administrado ao paciente."
+  },
+  {
+    "id": 230,
+    "category": "Saúde Coletiva",
+    "question": "Qual é o objetivo do Programa Nacional de Controle do Tabagismo?",
+    "options": [
+      { "id": "A", "text": "Apenas proibir a venda de cigarros para menores de 18 anos." },
+      { "id": "B", "text": "Reduzir a prevalência de fumantes e a morbimortalidade relacionada ao consumo de derivados do tabaco." },
+      { "id": "C", "text": "Aumentar os impostos sobre os cigarros para financiar o SUS." },
+      { "id": "D", "text": "Oferecer tratamento gratuito apenas para os casos de câncer de pulmão." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O programa atua em várias frentes, incluindo ações educativas, de comunicação e de atenção à saúde (como o tratamento do tabagismo na Atenção Básica), além de ações legislativas e econômicas para proteger a população dos riscos do tabagismo ativo e passivo."
+  },
+  {
+    "id": 231,
+    "category": "CME",
+    "question": "O que é 'rastreabilidade' no contexto do processamento de produtos para saúde?",
+    "options": [
+      { "id": "A", "text": "A capacidade de limpar completamente um artigo." },
+      { "id": "B", "text": "A capacidade de monitorar o histórico de um artigo, desde o seu processamento até o uso no paciente." },
+      { "id": "C", "text": "A velocidade com que um artigo pode ser esterilizado." },
+      { "id": "D", "text": "A compatibilidade do artigo com diferentes métodos de esterilização." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A rastreabilidade permite saber qual artigo foi usado em qual paciente, em qual data e qual foi o lote de esterilização. Isso é fundamental para a segurança do paciente, permitindo o recolhimento de materiais em caso de falha no processo e para investigações epidemiológicas."
+  },
+  {
+    "id": 232,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com Sonda Vesical de Demora (SVD) para prevenir infecção do trato urinário (ITU)?",
+    "options": [
+      { "id": "A", "text": "Realizar a troca da sonda a cada 48 horas." },
+      { "id": "B", "text": "Manter o sistema de drenagem fechado e a bolsa coletora sempre abaixo do nível da bexiga." },
+      { "id": "C", "text": "Lavar a bexiga com solução antisséptica diariamente." },
+      { "id": "D", "text": "Desconectar a sonda da bolsa coletora para facilitar a deambulação do paciente." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A manutenção de um sistema de drenagem fechado é a medida mais importante para prevenir a entrada de bactérias. Manter a bolsa abaixo do nível da bexiga previne o refluxo de urina, que também é um fator de risco para ITU associada ao cateter."
+  },
+  {
+    "id": 233,
+    "category": "Vigilância Sanitária",
+    "question": "O que é 'farmacovigilância'?",
+    "options": [
+      { "id": "A", "text": "A fiscalização de preços de medicamentos em farmácias." },
+      { "id": "B", "text": "O controle de estoque de medicamentos psicotrópicos." },
+      { "id": "C", "text": "A ciência e atividades relativas à detecção, avaliação, compreensão e prevenção de efeitos adversos ou quaisquer outros problemas relacionados a medicamentos." },
+      { "id":- "D", "text": "O processo de desenvolvimento e aprovação de novos medicamentos." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A farmacovigilância é o monitoramento de medicamentos que já estão no mercado. Seu objetivo é identificar reações adversas não detectadas nos ensaios clínicos e garantir a segurança contínua do uso de medicamentos pela população."
+  },
+  {
+    "id": 234,
+    "category": "Gerenciamento",
+    "question": "O que é um 'near miss' ou 'quase erro'?",
+    "options": [
+      { "id": "A", "text": "Um erro que atingiu o paciente e causou um dano leve." },
+      { "id": "B", "text": "Um erro que não atingiu o paciente porque foi interceptado antes." },
+      { "id": "C", "text": "Um erro que atingiu o paciente, mas não causou dano." },
+      { "id": "D", "text": "Um erro intencional cometido por um profissional." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Um 'near miss' é um incidente que tinha o potencial de causar dano, mas não o fez porque foi descoberto e corrigido a tempo. A análise desses eventos é crucial para a segurança do paciente, pois revela falhas no sistema que precisam ser corrigidas."
+  },
+  {
+    "id": 235,
+    "category": "Saúde Coletiva",
+    "question": "O que é a 'transição epidemiológica'?",
+    "options": [
+      { "id": "A", "text": "A mudança na faixa etária de uma população." },
+      { "id": "B", "text": "A mudança nos padrões de morbimortalidade, de um perfil dominado por doenças infecciosas para um dominado por doenças crônico-degenerativas." },
+      { "id": "C", "text": "O processo de notificação de uma doença para a vigilância epidemiológica." },
+      { "id": "D", "text": "A migração de pessoas entre diferentes regiões, alterando o perfil de doenças." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A transição epidemiológica descreve a mudança no perfil de saúde de uma população. Com a melhoria do saneamento e o desenvolvimento de vacinas, as doenças infecciosas diminuem, enquanto as doenças crônicas (como diabetes, hipertensão, câncer) e as causas externas (acidentes, violências) se tornam as principais causas de morte."
+  },
+  {
+    "id": 236,
+    "category": "CME",
+    "question": "Qual é o tempo de validade da esterilização de um material?",
+    "options": [
+      { "id": "A", "text": "7 dias para todos os materiais." },
+      { "id": "B", "text": "30 dias se embalado em tecido de algodão." },
+      { "id": "C", "text": "A validade é determinada pelas condições de armazenamento e pela integridade da embalagem, não por um prazo fixo." },
+      { "id": "D", "text": "6 meses se embalado em grau cirúrgico." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O conceito moderno de validade da esterilização é 'evento-relacionado'. O material é considerado estéril enquanto a embalagem estiver íntegra, seca e protegida. Um evento como um rasgo, umidade ou queda compromete a esterilidade, independentemente da data do processamento."
+  },
+  {
+    "id": 237,
+    "category": "Saúde do Adulto",
+    "question": "Qual é a principal característica da dor na pancreatite aguda?",
+    "options": [
+      { "id": "A", "text": "Dor em cólica no quadrante inferior direito." },
+      { "id": "B", "text": "Dor em queimação retroesternal que piora ao deitar." },
+      { "id": "C", "text": "Dor súbita e intensa no epigástrio, que irradia 'em faixa' para o dorso." },
+      { "id": "D", "text": "Dor surda e contínua na região lombar." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A dor da pancreatite aguda é tipicamente severa, de início súbito, localizada no andar superior do abdome (epigástrio) e com uma irradiação característica para as costas, descrita como 'em faixa' ou 'em barra'."
+  },
+  {
+    "id": 238,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é um 'vetor' em epidemiologia?",
+    "options": [
+      { "id": "A", "text": "O primeiro caso de uma doença em um surto." },
+      { "id": "B", "text": "Um ser vivo, geralmente um artrópode, que transmite um agente infeccioso." },
+      { "id": "C", "text": "Um objeto inanimado que transmite uma infecção." },
+      { "id": "D", "text": "O local onde um agente infeccioso vive e se multiplica." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Vetor é um organismo (geralmente um inseto, como mosquito, ou um carrapato) que carrega e transmite um patógeno de um hospedeiro para outro. Ex: o mosquito Aedes aegypti é o vetor da dengue, zika e chikungunya."
+  },
+  {
+    "id": 239,
+    "category": "Gerenciamento",
+    "question": "O que é 'liderança transformacional'?",
+    "options": [
+      { "id": "A", "text": "Um estilo de liderança baseado em recompensas e punições." },
+      { "id": "B", "text": "Um estilo que foca em inspirar e motivar a equipe a superar suas expectativas e a se desenvolver." },
+      { "id": "C", "text": "Um estilo que deixa a equipe tomar todas as decisões (laissez-faire)." },
+      { "id": "D", "text": "Um estilo autoritário que foca apenas na execução de tarefas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O líder transformacional inspira a equipe através de uma visão clara, carisma e estímulo intelectual. Ele eleva o nível de motivação e moral dos liderados, incentivando-os a ir além do interesse próprio em prol dos objetivos do grupo e do seu próprio crescimento."
+  },
+  {
+    "id": 240,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'Programa Melhor em Casa'?",
+    "options": [
+      { "id": "A", "text": "Um programa de financiamento para reforma de moradias." },
+      { "id": "B", "text": "Um serviço de atenção domiciliar do SUS para pacientes que necessitam de cuidados mais intensivos." },
+      { "id": "C", "text": "Um programa de distribuição de cestas básicas." },
+      { "id": "D", "text": "Um serviço de teleatendimento para tirar dúvidas de saúde." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Melhor em Casa é a estratégia do SUS para a desospitalização e o cuidado em domicílio. Ele oferece atendimento por equipes multiprofissionais (EMAD e EMAP) para pacientes que, de outra forma, estariam internados, promovendo um cuidado mais humanizado e no conforto do lar."
+  },
+  {
+    "id": 241,
+    "category": "CME",
+    "question": "Qual é o objetivo da lavadora ultrassônica?",
+    "options": [
+      { "id": "A", "text": "Esterilizar materiais termossensíveis." },
+      { "id": "B", "text": "Realizar a desinfecção de alto nível de endoscópios." },
+      { "id": "C", "text": "Auxiliar na limpeza de artigos com lúmens e ranhuras, através do processo de cavitação." },
+      { "id": "D", "text": "Secar os instrumentais com jatos de ar quente." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A lavadora ultrassônica utiliza ondas sonoras de alta frequência para criar microbolhas em uma solução de limpeza (processo de cavitação). A implosão dessas bolhas gera uma força que remove a sujidade de áreas de difícil acesso, como o interior de cânulas e as articulações de instrumentos."
+  },
+  {
+    "id": 242,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal sinal de alerta para o desenvolvimento de pé diabético?",
+    "options": [
+      { "id": "A", "text": "Dor intensa e contínua nos pés." },
+      { "id": "B", "text": "Perda de sensibilidade (neuropatia periférica)." },
+      { "id": "C", "text": "Inchaço (edema) nos tornozelos." },
+      { "id": "D", "text": "Pele seca e com descamação." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A neuropatia diabética, que causa a perda da sensibilidade protetora dos pés, é o principal fator de risco. O paciente pode sofrer traumas (cortes, bolhas, queimaduras) e não perceber, o que leva ao desenvolvimento de úlceras que podem infeccionar e levar à amputação."
+  },
+  {
+    "id": 243,
+    "category": "Vigilância Sanitária",
+    "question": "A 'cadeia de frio' ou 'rede de frio' é um sistema essencial para garantir a qualidade de qual tipo de produto?",
+    "options": [
+      { "id": "A", "text": "Medicamentos psicotrópicos." },
+      { "id": "B", "text": "Materiais perfurocortantes." },
+      { "id": "C", "text": "Imunobiológicos (vacinas e soros)." },
+      { "id": "D", "text": "Produtos de quimioterapia." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A cadeia de frio é um sistema logístico que inclui o armazenamento, transporte e manipulação de produtos termolábeis (sensíveis à temperatura) em condições adequadas, desde o laboratório produtor até o momento da aplicação. A quebra dessa cadeia pode inativar as vacinas."
+  },
+  {
+    "id": 244,
+    "category": "Gerenciamento",
+    "question": "O que é o 'Diagrama de Ishikawa' (Espinha de Peixe)?",
+    "options": [
+      { "id": "A", "text": "Uma ferramenta para priorizar tarefas." },
+      { "id": "B", "text": "Um gráfico para monitorar a variação de um processo ao longo do tempo." },
+      { "id": "C", "text": "Uma ferramenta gráfica para identificar as possíveis causas de um problema (efeito)." },
+      { "id": "D", "text": "Um fluxograma para mapear as etapas de um processo." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O Diagrama de Ishikawa é uma ferramenta da qualidade que organiza as potenciais causas de um problema em categorias (geralmente os 6Ms: Método, Mão de obra, Material, Máquina, Meio ambiente, Medida), ajudando a equipe a visualizar e analisar a causa raiz de um efeito indesejado."
+  },
+  {
+    "id": 245,
+    "category": "Saúde Coletiva",
+    "question": "O que é 'territorialização' na Atenção Primária à Saúde?",
+    "options": [
+      { "id": "A", "text": "A construção de muros ao redor da Unidade Básica de Saúde." },
+      { "id": "B", "text": "A divisão da cidade em distritos sanitários." },
+      { "id": "C", "text": "O processo de reconhecimento do território de atuação da equipe, incluindo suas características demográficas, sociais e de saúde." },
+      { "id": "D", "text": "A definição de quais especialidades médicas estarão disponíveis em cada território." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A territorialização (ou adscrição) é o primeiro passo para o planejamento das ações de uma equipe de Saúde da Família. Envolve mapear a área, conhecer a população, seus problemas de saúde, seus recursos sociais e suas vulnerabilidades, para poder atuar de forma mais efetiva."
+  },
+  {
+    "id": 246,
+    "category": "CME",
+    "question": "Qual é o método de esterilização mais seguro, eficaz e de baixo custo para artigos termorresistentes?",
+    "options": [
+      { "id": "A", "text": "Estufa (calor seco)." },
+      { "id": "B", "text": "Autoclave a vapor saturado sob pressão." },
+      { "id": "C", "text": "Plasma de peróxido de hidrogênio." },
+      { "id": "D", "text": "Óxido de etileno (ETO)." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A autoclave a vapor é o método de escolha para materiais que suportam calor e umidade (a maioria dos instrumentais cirúrgicos). É rápido, eficaz, atóxico, de baixo custo e fácil de monitorar, sendo considerado o padrão-ouro para esterilização hospitalar."
+  },
+  {
+    "id": 247,
+    "category": "Saúde do Adulto",
+    "question": "Qual é a principal orientação de enfermagem para um paciente que realizou uma biópsia hepática percutânea?",
+    "options": [
+      { "id": "A", "text": "Manter o paciente em decúbito lateral esquerdo por 6 horas." },
+      { "id": "B", "text": "Manter o paciente em repouso no leito, em decúbito lateral direito, por algumas horas para comprimir o local da punção." },
+      { "id": "C", "text": "Estimular a tosse e a respiração profunda imediatamente após o procedimento." },
+      { "id": "D", "text": "Oferecer uma dieta rica em gorduras para estimular a função hepática." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A principal complicação da biópsia hepática é a hemorragia. Manter o paciente em decúbito lateral direito posiciona o fígado contra a parede torácica, aplicando uma compressão interna no local da punção e ajudando a prevenir sangramentos."
+  },
+  {
+    "id": 248,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é um 'reservatório' de um agente infeccioso?",
+    "options": [
+      { "id": "A", "text": "O local onde o agente foi descoberto pela primeira vez." },
+      { "id": "B", "text": "O ser humano, animal, planta ou matéria inanimada onde o agente infeccioso vive e se multiplica, e do qual depende para sua sobrevivência." },
+      { "id": "C", "text": "O período de tempo em que uma pessoa pode transmitir a doença." },
+      { "id": "D", "text": "O equipamento de laboratório usado para cultivar o agente infeccioso." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O reservatório é o 'habitat' natural do agente infeccioso. Por exemplo, o ser humano é o único reservatório do vírus do sarampo, enquanto roedores silvestres são reservatórios da bactéria da peste."
+  },
+  {
+    "id": 249,
+    "category": "Gerenciamento",
+    "question": "O que é 'feedback' no contexto da avaliação de desempenho?",
+    "options": [
+      { "id": "A", "text": "Uma crítica negativa sobre o trabalho de um colega." },
+      { "id": "B", "text": "Um processo de comunicação em que se fornece a uma pessoa informações sobre seu desempenho, visando seu desenvolvimento." },
+      { "id": "C", "text": "A nota final atribuída em uma avaliação anual." },
+      { "id": "D", "text": "Uma reunião para discutir problemas da equipe." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O feedback é uma ferramenta de desenvolvimento. Um feedback eficaz deve ser específico, descritivo (não julgador), oportuno e focado em comportamentos que podem ser mudados. Ele pode ser tanto de reconhecimento (positivo) quanto de desenvolvimento (construtivo)."
+  },
+  {
+    "id": 250,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'Programa Saúde na Escola' (PSE)?",
+    "options": [
+      { "id": "A", "text": "Um programa que oferece merenda escolar saudável." },
+      { "id": "B", "text": "A construção de postos de saúde dentro das escolas." },
+      { "id": "C", "text": "Uma política intersetorial entre saúde e educação para promover a saúde e a prevenção de doenças no ambiente escolar." },
+      { "id": "D", "text": "Um programa de vacinação exclusivo para professores." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O PSE articula as equipes de Saúde da Família com as escolas públicas para realizar ações como avaliação da saúde bucal, ocular e auditiva, verificação da situação vacinal, promoção da alimentação saudável e prevenção do uso de álcool e drogas, entre outras."
+  },
+  {
+    "id": 251,
+    "category": "CME",
+    "question": "Qual é a principal vantagem do óxido de etileno (ETO) como método de esterilização?",
+    "options": [
+      { "id": "A", "text": "É um processo rápido e de baixo custo." },
+      { "id": "B", "text": "Não deixa resíduos tóxicos nos materiais." },
+      { "id": "C", "text": "É altamente eficaz para esterilizar materiais termossensíveis e tem alta penetrabilidade." },
+      { "id": "D", "text": "Pode ser instalado em qualquer sala do hospital, sem necessidade de estrutura especial." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O ETO é um gás que esteriliza a baixas temperaturas, sendo ideal para artigos que não podem ser autoclavados. Sua alta capacidade de penetração o torna eficaz para materiais com lúmens longos e estreitos. Sua principal desvantagem é a toxicidade e a necessidade de um longo período de aeração."
+  },
+  {
+    "id": 252,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem no pós-operatório de uma artroplastia total de quadril?",
+    "options": [
+      { "id": "A", "text": "Manter o paciente em repouso absoluto no leito por 72 horas." },
+      { "id": "B", "text": "Evitar a flexão do quadril acima de 90 graus, a adução e a rotação interna da perna operada." },
+      { "id": "C", "text": "Aplicar compressas quentes no local da incisão para aliviar a dor." },
+      { "id": "D", "text": "Posicionar o paciente sentado em uma cadeira baixa o mais rápido possível." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Essas três restrições de movimento (não flexionar > 90º, não cruzar as pernas, não girar o pé para dentro) são cruciais para prevenir a luxação da prótese, que é a complicação mais comum no pós-operatório imediato. O uso de um coxim de abdução entre as pernas ajuda a manter o posicionamento correto."
+  },
+  {
+    "id": 253,
+    "category": "Vigilância Sanitária",
+    "question": "O que é o 'tecnicovigilância'?",
+    "options": [
+      { "id": "A", "text": "A vigilância de reações adversas a medicamentos." },
+      { "id": "B", "text": "O monitoramento de surtos de doenças infecciosas." },
+      { "id": "C", "text": "O sistema de vigilância de eventos adversos e queixas técnicas relacionadas ao uso de produtos para a saúde (equipamentos, materiais, artigos médico-hospitalares)." },
+      { "id": "D", "text": "A fiscalização das condições de trabalho dos profissionais de saúde." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Enquanto a farmacovigilância monitora os medicamentos, a tecnovigilância foca nos 'produtos para a saúde', que incluem desde uma luva ou seringa até um ventilador mecânico ou tomógrafo. O objetivo é identificar problemas e falhas que possam comprometer a segurança do paciente."
+  },
+  {
+    "id": 254,
+    "category": "Gerenciamento",
+    "question": "O que é o 'Processo de Enfermagem'?",
+    "options": [
+      { "id": "A", "text": "A rotina de passagem de plantão." },
+      { "id": "B", "text": "Um método sistemático e deliberado de prestar cuidados de enfermagem, organizado em cinco etapas." },
+      { "id": "C", "text": "O processo de admissão de um paciente na unidade." },
+      { "id": "D", "text": "A forma como os medicamentos são distribuídos na unidade." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Processo de Enfermagem é a principal ferramenta metodológica do enfermeiro. Ele é composto por cinco etapas inter-relacionadas: Coleta de Dados, Diagnóstico de Enfermagem, Planejamento, Implementação e Avaliação. A Sistematização da Assistência de Enfermagem (SAE) é a organização do serviço para que o Processo de Enfermagem possa ser aplicado."
+  },
+  {
+    "id": 255,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'Índice de Gini'?",
+    "options": [
+      { "id": "A", "text": "Um indicador da qualidade da água." },
+      { "id": "B", "text": "Uma medida da desigualdade de renda em uma população." },
+      { "id": "C", "text": "Um índice que mede a prevalência de obesidade." },
+      { "id":- "D", "text": "Uma medida da taxa de mortalidade infantil." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O Índice de Gini é um instrumento usado para medir o grau de concentração de renda. Ele varia de 0 (perfeita igualdade) a 1 (perfeita desigualdade). É um importante indicador social, pois a desigualdade de renda é um dos principais determinantes da saúde."
+  },
+  {
+    "id": 256,
+    "category": "CME",
+    "question": "Qual é a principal desvantagem da esterilização por estufa (calor seco)?",
+    "options": [
+      { "id": "A", "text": "Não é eficaz contra esporos bacterianos." },
+      { "id": "B", "text": "Requer longos tempos de exposição e altas temperaturas, danificando muitos materiais." },
+      { "id": "C", "text": "Deixa resíduos tóxicos nos materiais." },
+      { "id": "D", "text": "Não pode ser usada para materiais de vidro." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A esterilização por calor seco é menos eficiente que o calor úmido (autoclave). Ela exige temperaturas muito mais altas (ex: 170°C) e por um tempo muito maior (ex: 60 minutos), o que pode danificar instrumentais delicados e materiais como tecidos e borrachas. Hoje, seu uso é muito restrito."
+  },
+  {
+    "id": 257,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com uma fístula arteriovenosa (FAV) para hemodiálise?",
+    "options": [
+      { "id": "A", "text": "Verificar a pressão arterial no membro da fístula para garantir bom fluxo." },
+      { "id": "B", "text": "Realizar compressas frias no local para reduzir o inchaço." },
+      { "id": "C", "text": "Avaliar diariamente a presença de frêmito (vibração) e sopro (som) na fístula." },
+      { "id": "D", "text": "Manter o membro da fístula imobilizado e em posição elevada." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A presença de frêmito palpável e sopro audível são os principais sinais de que a fístula está pérvia e funcionando adequadamente. A ausência desses sinais é uma emergência e deve ser comunicada imediatamente, pois pode indicar trombose da fístula."
+  },
+  {
+    "id": 258,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é 'imunidade de rebanho' (ou coletiva)?",
+    "options": [
+      { "id": "A", "text": "A imunidade adquirida através da amamentação." },
+      { "id": "B", "text": "A proteção indireta contra uma doença infecciosa que ocorre quando uma grande porcentagem da população se torna imune." },
+      { "id": "C", "text": "A resistência natural de uma espécie a uma determinada doença." },
+      { "id": "D", "text": "A imunidade obtida através do uso de soros." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Quando uma alta proporção de indivíduos em uma população está imune (seja por vacinação ou infecção prévia), a cadeia de transmissão da doença é interrompida, o que confere proteção indireta aos indivíduos suscetíveis (não imunes) daquela comunidade."
+  },
+  {
+    "id": 259,
+    "category": "Gerenciamento",
+    "question": "O que é 'gestão de conflitos'?",
+    "options": [
+      { "id": "A", "text": "O processo de identificar e punir os culpados por um conflito." },
+      { "id": "B", "text": "A habilidade de ignorar os conflitos para manter a paz na equipe." },
+      { "id": "C", "text": "O processo de identificar e administrar os conflitos de forma construtiva, buscando uma solução que beneficie as partes e a organização." },
+      { "id": "D", "text": "A transferência de funcionários conflitantes para outros setores." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A gestão de conflitos não busca eliminar os conflitos, mas sim administrá-los de maneira produtiva. Envolve habilidades de comunicação, negociação e mediação para transformar uma situação de confronto em uma oportunidade de crescimento e melhoria."
+  },
+  {
+    "id": 260,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'Índice de Desenvolvimento Humano' (IDH)?",
+    "options": [
+      { "id": "A", "text": "Uma medida do crescimento econômico de um país (PIB per capita)." },
+      { "id": "B", "text": "Uma medida composta que avalia o progresso de um país em três dimensões: saúde (expectativa de vida), educação (anos de estudo) e renda." },
+      { "id": "C", "text": "Um ranking de países com base na qualidade de seus sistemas de saúde." },
+      { "id": "D", "text": "Um índice que mede a felicidade e o bem-estar da população." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O IDH é um indicador mais abrangente que o PIB, pois considera que o desenvolvimento vai além da economia. Ele combina indicadores de longevidade, educação e padrão de vida para fornecer uma visão mais completa do desenvolvimento humano de um país."
+  },
+  {
+    "id": 261,
+    "category": "CME",
+    "question": "Qual é a principal função do enxágue final com água de osmose reversa no processamento de artigos?",
+    "options": [
+      { "id": "A", "text": "Realizar uma desinfecção de baixo nível." },
+      { "id": "B", "text": "Remover resíduos de minerais e prevenir a formação de manchas e corrosão nos instrumentais." },
+      { "id":- "C", "text": "Acelerar o processo de secagem." },
+      { "id": "D", "text": "Lubrificar as articulações dos instrumentos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A água da rede de abastecimento contém minerais (cálcio, magnésio) que, ao secarem, podem deixar manchas nos instrumentos, danificar seu acabamento e interferir no processo de esterilização. A água tratada (por osmose reversa ou deionização) remove esses minerais, garantindo um enxágue de qualidade."
+  },
+  {
+    "id": 262,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal sinal clínico da embolia gasosa venosa, uma complicação rara mas grave da inserção ou remoção de cateteres venosos centrais?",
+    "options": [
+      { "id": "A", "text": "Hipertensão arterial súbita." },
+      { "id": "B", "text": "Surgimento de um 'sopro de moinho' na ausculta cardíaca e colapso cardiovascular súbito." },
+      { "id": "C", "text": "Febre alta e calafrios." },
+      { "id": "D", "text": "Dor intensa no local da inserção do cateter." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A entrada de ar no sistema venoso pode levar à formação de uma bolha na saída do ventrículo direito, obstruindo o fluxo para a artéria pulmonar. Isso gera um som característico na ausculta, semelhante a uma roda d'água ('sopro de moinho'), e causa hipotensão súbita e grave. A conduta é posicionar o paciente em Trendelenburg e decúbito lateral esquerdo."
+  },
+  {
+    "id": 263,
+    "category": "Vigilância Sanitária",
+    "question": "O que é a 'rastreabilidade' de medicamentos?",
+    "options": [
+      { "id": "A", "text": "O estudo de como o medicamento é absorvido e eliminado pelo corpo." },
+      { "id": "B", "text": "A capacidade de acompanhar o caminho de um medicamento desde a sua produção até o consumidor final." },
+      { "id": "C", "text": "A lista de efeitos adversos de um medicamento." },
+      { "id": "D", "text": "O processo de definição do preço de um medicamento." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A rastreabilidade, implementada no Brasil pelo Sistema Nacional de Controle de Medicamentos (SNCM), utiliza um código de barras bidimensional único em cada embalagem para permitir o monitoramento de todo o seu trajeto na cadeia logística, visando combater a falsificação e o roubo de medicamentos."
+  },
+  {
+    "id": 264,
+    "category": "Gerenciamento",
+    "question": "O que é o 'ciclo PDCA'?",
+    "options": [
+      { "id": "A", "text": "Um método para dimensionamento de pessoal de enfermagem." },
+      { "id": "B", "text": "As etapas do processo de enfermagem." },
+      { "id": "C", "text": "Um método interativo de gestão de quatro passos para o controle e melhoria contínua de processos e produtos." },
+      { "id": "D", "text": "Um sistema de classificação de pacientes." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O ciclo PDCA (Plan, Do, Check, Act - Planejar, Fazer, Checar, Agir) é uma ferramenta fundamental da gestão da qualidade. Consiste em: 1) Planejar uma melhoria; 2) Executar o plano; 3) Verificar os resultados; 4) Agir para corrigir, padronizar ou definir um novo plano."
+  },
+  {
+    "id": 265,
+    "category": "Saúde Coletiva",
+    "question": "O que é a 'Política Nacional de Saúde Integral da População Negra'?",
+    "options": [
+      { "id": "A", "text": "Uma política que cria hospitais exclusivos para a população negra." },
+      { "id": "B", "text": "Uma política que visa promover a equidade em saúde, reconhecendo o racismo como um determinante social da saúde e combatendo as desigualdades." },
+      { "id": "C", "text": "Um programa de distribuição de protetor solar para a população negra." },
+      { "id": "D", "text": "Uma política focada apenas no tratamento da anemia falciforme." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Esta política reconhece que o racismo institucional e as desigualdades sociais impactam negativamente a saúde da população negra. Ela propõe ações para ampliar o acesso, qualificar o cuidado e promover a equidade, considerando as especificidades de saúde dessa população (ex: anemia falciforme, hipertensão)."
+  },
+  {
+    "id": 266,
+    "category": "CME",
+    "question": "Qual é a principal função da barreira microbiana de uma embalagem para esterilização?",
+    "options": [
+      { "id": "A", "text": "Ser resistente a rasgos e perfurações." },
+      { "id": "B", "text": "Permitir a visualização do conteúdo." },
+      { "id": "C", "text": "Impedir a entrada de microrganismos após a esterilização, mantendo a esterilidade." },
+      { "id": "D", "text": "Facilitar a abertura asséptica do pacote." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A função primordial da embalagem é atuar como uma barreira eficaz contra a contaminação microbiana do ambiente externo, preservando a esterilidade do artigo desde a saída da autoclave até o momento do uso no paciente."
+  },
+  {
+    "id": 267,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com diagnóstico de Diverticulite aguda?",
+    "options": [
+      { "id": "A", "text": "Administrar uma dieta rica em fibras e laxantes." },
+      { "id": "B", "text": "Manter o paciente em repouso intestinal (jejum), administrar antibióticos e analgésicos conforme prescrito." },
+      { "id": "C", "text": "Realizar lavagens intestinais (enemas) para limpar o cólon." },
+      { "id": "D", "text": "Estimular a deambulação e a ingestão de grandes volumes de líquidos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Na fase aguda da diverticulite (inflamação dos divertículos), o tratamento visa 'descansar' o intestino. Isso inclui jejum ou dieta líquida restrita, hidratação venosa e antibioticoterapia para controlar a infecção. A dieta rica em fibras é recomendada para prevenção, mas não na crise aguda."
+  },
+  {
+    "id": 268,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é 'profilaxia pós-exposição' (PEP)?",
+    "options": [
+      { "id": "A", "text": "O tratamento de uma doença já estabelecida." },
+      { "id": "B", "text": "A vacinação de rotina para prevenir doenças." },
+      { "id": "C", "text": "Uma medida de prevenção (com medicamentos ou imunobiológicos) iniciada após uma exposição de risco a um agente infeccioso." },
+      { "id": "D", "text": "O isolamento de um paciente doente." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A PEP é uma urgência médica que visa reduzir o risco de infecção após uma exposição. Exemplos clássicos incluem a PEP para o HIV após exposição sexual ou acidente com perfurocortante, e a profilaxia da raiva após mordida de animal."
+  },
+  {
+    "id": 269,
+    "category": "Gerenciamento",
+    "question": "O que é a 'Teoria das Relações Humanas' na administração?",
+    "options": [
+      { "id": "A", "text": "Uma teoria que foca na eficiência máxima através da padronização de tarefas." },
+      { "id": "B", "text": "Uma teoria que enfatiza a importância dos aspectos sociais e psicológicos, da motivação e da satisfação dos trabalhadores para a produtividade." },
+      { "id": "C", "text": "Uma teoria que defende uma estrutura hierárquica rígida e impessoal." },
+      { "id": "D", "text": "Uma teoria que vê a organização como um sistema aberto em interação com o ambiente." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Surgida em oposição à Administração Científica (Taylorismo), a Teoria das Relações Humanas, a partir dos experimentos de Hawthorne, descobriu que fatores sociais, como a interação no grupo e a atenção da gerência, tinham um impacto maior na produtividade do que os fatores físicos."
+  },
+  {
+    "id": 270,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'Programa Nacional de Triagem Neonatal' (PNTN)?",
+    "options": [
+      { "id": "A", "text": "O programa que realiza o teste da orelhinha em todos os recém-nascidos." },
+      { "id": "B", "text": "O programa que organiza e financia a realização do Teste do Pezinho no SUS." },
+      { "id": "C", "text": "O programa que acompanha o crescimento e desenvolvimento infantil (puericultura)." },
+      { "id": "D", "text": "O programa de vacinação para recém-nascidos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O PNTN é o programa do Ministério da Saúde que estrutura a triagem, o diagnóstico e o tratamento de diversas doenças congênitas através do Teste do Pezinho, que é obrigatório e gratuito. O programa é organizado em fases de implantação, com um número crescente de doenças triadas."
+  },
+  {
+    "id": 271,
+    "category": "CME",
+    "question": "Qual é a principal diferença entre um desinfetante e um antisséptico?",
+    "options": [
+      { "id": "A", "text": "Desinfetantes são mais potentes que antissépticos." },
+      { "id": "B", "text": "Desinfetantes são usados em superfícies e artigos inanimados, enquanto antissépticos são usados em tecidos vivos (pele, mucosas)." },
+      { "id": "C", "text": "Antissépticos matam esporos e desinfetantes não." },
+      { "id": "D", "text": "Não há diferença, os termos são intercambiáveis." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A distinção fundamental é o local de uso. Desinfetantes (ex: hipoclorito) são para objetos e ambientes. Antissépticos (ex: clorexidina, álcool 70%) são formulados para serem seguros para aplicação em pele e mucosas, reduzindo a carga microbiana."
+  },
+  {
+    "id": 272,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal sinal de alerta para uma reação transfusional hemolítica aguda?",
+    "options": [
+      { "id": "A", "text": "Urticária e prurido." },
+      { "id": "B", "text": "Febre, calafrios, dor lombar e hemoglobinúria (urina escura) nos primeiros minutos da transfusão." },
+      { "id": "C", "text": "Tosse seca e dispneia leve." },
+      { "id": "D", "text": "Aumento gradual da pressão arterial." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A reação hemolítica aguda é a complicação mais grave, causada por incompatibilidade ABO. A destruição das hemácias transfundidas leva a uma resposta inflamatória sistêmica com febre, calafrios, dor lombar (pela deposição de hemoglobina nos rins) e urina escura. A conduta é interromper a transfusão imediatamente."
+  },
+  {
+    "id": 273,
+    "category": "Vigilância Sanitária",
+    "question": "O que é a 'quarentena' de medicamentos em uma farmácia hospitalar?",
+    "options": [
+      { "id": "A", "text": "A área onde ficam armazenados os medicamentos vencidos." },
+      { "id": "B", "text": "A área onde os medicamentos recém-chegados são armazenados até serem conferidos e liberados para o estoque." },
+      { "id": "C", "text": "A área de armazenamento de medicamentos controlados." },
+      { "id": "D", "text": "A área onde ficam os medicamentos que precisam de refrigeração." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A área de quarentena é um espaço físico delimitado onde os produtos ficam segregados após o recebimento, aguardando a inspeção, a conferência da nota fiscal e da documentação, e a liberação pelo farmacêutico antes de serem integrados ao estoque principal."
+  },
+  {
+    "id": 274,
+    "category": "Gerenciamento",
+    "question": "O que é 'brainstorming' (tempestade de ideias)?",
+    "options": [
+      { "id": "A", "text": "Uma técnica de entrevista para seleção de pessoal." },
+      { "id": "B", "text": "Uma reunião para apresentar os resultados financeiros." },
+      { "id": "C", "text": "Uma técnica de grupo para gerar um grande número de ideias sobre um tema, sem críticas ou julgamentos." },
+      { "id": "D", "text": "Um método para avaliar o desempenho da equipe." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O brainstorming é uma ferramenta de criatividade em grupo. A regra principal é que, na fase de geração de ideias, nenhuma ideia pode ser criticada, por mais absurda que pareça. O objetivo é a quantidade, não a qualidade, para depois filtrar e desenvolver as melhores sugestões."
+  },
+  {
+    "id": 275,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'SIAB' (Sistema de Informação da Atenção Básica)?",
+    "options": [
+      { "id": "A", "text": "O sistema atual de prontuário eletrônico da Atenção Básica." },
+      { "id": "B", "text": "Um sistema de informação antigo, que foi substituído pelo e-SUS AB." },
+      { "id": "C", "text": "O sistema de agendamento de consultas da Atenção Básica." },
+      { "id": "D", "text": "O sistema de controle de estoque de vacinas." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O SIAB foi o sistema de informação utilizado por muitos anos para coletar os dados das equipes de Saúde da Família, baseado em fichas de papel. Ele foi gradualmente substituído pelo e-SUS AB, que modernizou e informatizou esse processo."
+  },
+  {
+    "id": 276,
+    "category": "CME",
+    "question": "Qual é a principal função do teste de integridade (teste da bolha) em luvas cirúrgicas?",
+    "options": [
+      { "id": "A", "text": "Verificar o tamanho correto da luva." },
+      { "id": "B", "text": "Garantir que a luva foi esterilizada corretamente." },
+      { "id": "C", "text": "Detectar microfuros ou rasgos na luva antes do uso." },
+      { "id": "D", "text": "Remover o talco da parte interna da luva." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Mesmo as luvas estéreis podem ter microfuros imperceptíveis que comprometem a barreira de proteção. O teste consiste em encher a luva com ar ou água e pressioná-la para verificar se há vazamentos, garantindo sua integridade antes de um procedimento asséptico."
+  },
+  {
+    "id": 277,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com fratura de fêmur no atendimento inicial?",
+    "options": [
+      { "id": "A", "text": "Tentar realinhar o membro para a posição anatômica." },
+      { "id": "B", "text": "Imobilizar a articulação acima e abaixo da fratura e avaliar o status neurovascular distal." },
+      { "id": "C", "text": "Aplicar gelo diretamente sobre a pele para reduzir o inchaço." },
+      { "id": "D", "text": "Estimular o paciente a movimentar o membro para evitar rigidez." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A imobilização adequada (incluindo quadril e joelho) previne a movimentação dos fragmentos ósseos, o que alivia a dor e reduz o risco de lesões em vasos e nervos. A avaliação do pulso, da perfusão, da sensibilidade e da motricidade distal (no pé) é crucial para detectar comprometimento vascular ou neurológico."
+  },
+  {
+    "id": 278,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é um 'surto'?",
+    "options": [
+      { "id": "A", "text": "A ocorrência de uma doença em escala mundial." },
+      { "id": "B", "text": "O aumento inesperado do número de casos de uma doença em uma área delimitada (escola, bairro) ou entre uma população específica." },
+      { "id": "C", "text": "A presença constante de uma doença em uma região." },
+      { "id": "D", "text": "O primeiro caso de uma nova doença." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Surto é o termo usado para uma epidemia de proporções reduzidas. Refere-se a um aumento de casos acima do esperado em um espaço e tempo delimitados. Vários surtos em diferentes áreas podem caracterizar uma epidemia."
+  },
+  {
+    "id": 279,
+    "category": "Gerenciamento",
+    "question": "O que é a 'escala de Likert'?",
+    "options": [
+      { "id": "A", "text": "Uma escala para medir o nível de dor." },
+      { "id": "B", "text": "Uma escala psicométrica usada em questionários para medir atitudes e opiniões." },
+      { "id": "C", "text": "Uma escala para classificar o risco de lesão por pressão." },
+      { "id": "D", "text": "Uma escala para avaliar o nível de sedação." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A escala de Likert é muito usada em pesquisas de satisfação e de opinião. Ela apresenta uma afirmação e pede ao respondente que indique seu nível de concordância, geralmente em uma escala de 5 pontos (ex: Discordo totalmente, Discordo, Neutro, Concordo, Concordo totalmente)."
+  },
+  {
+    "id": 280,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'Programa de Volta para Casa'?",
+    "options": [
+      { "id": "A", "text": "Um programa que financia o transporte de pacientes que receberam alta hospitalar." },
+      { "id": "B", "text": "Um auxílio-reabilitação para pessoas com longo histórico de internação psiquiátrica, visando sua reinserção social." },
+      { "id": "C", "text": "Um programa de acompanhamento de idosos que moram sozinhos." },
+      { "id": "D", "text": "Um serviço de busca por familiares de pacientes sem identificação." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Criado no âmbito da Reforma Psiquiátrica, o Programa de Volta para Casa é um benefício financeiro (um auxílio-reabilitação) pago a egressos de longas internações em hospitais psiquiátricos para auxiliar em sua desinstitucionalização e na reconstrução de seus laços sociais e autonomia."
+  },
+  {
+    "id": 281,
+    "category": "CME",
+    "question": "Qual é a principal função do enxágue em um processo de limpeza de instrumentais?",
+    "options": [
+      { "id": "A", "text": "Remover a sujidade grosseira." },
+      { "id": "B", "text": "Remover completamente os resíduos de detergente e sujidade solta." },
+      { "id": "C", "text": "Realizar a desinfecção dos instrumentos." },
+      { "id": "D", "text": "Lubrificar os instrumentos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O enxágue é uma etapa crítica. Resíduos de detergente podem inativar desinfetantes, interferir na esterilização e causar reações tóxicas no paciente. O enxágue abundante, preferencialmente com água tratada, garante a remoção completa desses resíduos."
+  },
+  {
+    "id": 282,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente em uso de nutrição parenteral total (NPT)?",
+    "options": [
+      { "id": "A", "text": "Administrar a NPT em um acesso venoso periférico." },
+      { "id": "B", "text": "Acelerar a infusão se a bolsa estiver atrasada." },
+      { "id": "C", "text": "Monitorar rigorosamente a glicemia capilar e os sinais de infecção do cateter." },
+      { "id":- "D", "text": "Misturar medicamentos na bolsa de NPT para facilitar a administração." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A NPT é uma solução hipertônica e rica em glicose, o que a torna um excelente meio de cultura para microrganismos. Por isso, os cuidados são rigorosos: manipulação asséptica, uso de cateter venoso central exclusivo, e monitoramento da glicemia (risco de hiperglicemia) e de sinais de infecção."
+  },
+  {
+    "id": 283,
+    "category": "Vigilância Sanitária",
+    "question": "O que é o 'Programa Nacional de Segurança do Paciente' (PNSP)?",
+    "options": [
+      { "id": "A", "text": "Um programa de segurança do trabalho para profissionais de saúde." },
+      { "id": "B", "text": "Um programa do Ministério da Saúde que visa qualificar o cuidado em saúde, prevenindo e reduzindo a incidência de eventos adversos." },
+      { "id": "C", "text": "Um sistema de vigilância de fronteiras para evitar a entrada de doenças." },
+      { "id": "D", "text": "Um programa de certificação de qualidade para hospitais privados." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Instituído pela Portaria MS/GM nº 529/2013, o PNSP tem como objetivo geral contribuir para a qualificação do cuidado em todos os estabelecimentos de saúde do país, através da implementação de práticas de segurança e da gestão de riscos."
+  },
+  {
+    "id": 284,
+    "category": "Gerenciamento",
+    "question": "O que é 'turnover' ou rotatividade de pessoal?",
+    "options": [
+      { "id": "A", "text": "A troca de funcionários entre diferentes turnos de trabalho." },
+      { "id": "B", "text": "O fluxo de entradas (admissões) e saídas (desligamentos) de funcionários de uma organização." },
+      { "id": "C", "text": "A promoção de funcionários para cargos mais altos." },
+      { "id": "D", "text": "O período de férias dos funcionários." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O turnover é um indicador de gestão de pessoas que mede a taxa de substituição de funcionários. Altas taxas de rotatividade podem indicar problemas no clima organizacional, na liderança ou nas condições de trabalho, e geram altos custos com recrutamento e treinamento."
+  },
+  {
+    "id": 285,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'PMAQ-AB' (Programa Nacional de Melhoria do Acesso e da Qualidade da Atenção Básica)?",
+    "options": [
+      { "id": "A", "text": "Um programa de construção de novas Unidades Básicas de Saúde." },
+      { "id": "B", "text": "Um programa de avaliação e incentivo financeiro que busca induzir a melhoria do acesso e da qualidade da Atenção Básica." },
+      { "id": "C", "text": "Um curso de especialização para profissionais da Atenção Básica." },
+      { "id": "D", "text": "Um sistema de agendamento de consultas online." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O PMAQ-AB foi um programa que, através de um processo de avaliação externa e autoavaliação, certificava as equipes de Saúde da Família e gerava um repasse de recursos financeiros (incentivo) com base no desempenho alcançado, estimulando a melhoria contínua."
+  },
+  {
+    "id": 286,
+    "category": "CME",
+    "question": "Qual é a principal função da embalagem de grau cirúrgico?",
+    "options": [
+      { "id": "A", "text": "Ser totalmente impermeável a qualquer substância." },
+      { "id": "B", "text": "Permitir a penetração do vapor e do ar, mas impedir a do óxido de etileno." },
+      { "id": "C", "text": "Ser porosa para permitir a penetração do agente esterilizante, mas atuar como barreira microbiana após o processo." },
+      { "id": "D", "text": "Ser reutilizável por até 10 ciclos de esterilização." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "O papel grau cirúrgico é um tipo de embalagem que possui uma face de papel poroso e outra de filme plástico. A porosidade do papel permite a entrada e saída do agente esterilizante (como o vapor), enquanto sua estrutura atua como uma barreira que impede a entrada de microrganismos após a esterilização."
+  },
+  {
+    "id": 287,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com diagnóstico de Apendicite aguda?",
+    "options": [
+      { "id": "A", "text": "Administrar laxantes para aliviar a dor." },
+      { "id": "B", "text": "Aplicar uma bolsa de água quente no abdome." },
+      { "id": "C", "text": "Manter o paciente em jejum, monitorar sinais de peritonite e prepará-lo para cirurgia." },
+      { "id": "D", "text": "Oferecer uma dieta leve e analgésicos potentes." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A apendicite é uma emergência cirúrgica. Os cuidados de enfermagem pré-operatórios incluem manter o paciente em jejum absoluto, obter acesso venoso, administrar analgésicos e antibióticos prescritos, e monitorar atentamente os sinais vitais e a dor abdominal para detectar sinais de perfuração e peritonite (abdome em tábua, febre alta)."
+  },
+  {
+    "id": 288,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é 'zoonose'?",
+    "options": [
+      { "id": "A", "text": "Qualquer doença que afeta animais." },
+      { "id": "B", "text": "Uma doença ou infecção que é naturalmente transmissível de animais vertebrados para seres humanos." },
+      { "id": "C", "text": "Uma doença transmitida por insetos." },
+      { "id": "D", "text": "Uma doença exclusiva de animais de zoológico." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Zoonoses são doenças em que o animal é o reservatório do agente infeccioso, e o ser humano pode se infectar acidentalmente. Exemplos clássicos incluem a raiva, a leptospirose e a toxoplasmose."
+  },
+  {
+    "id": 289,
+    "category": "Gerenciamento",
+    "question": "O que é o 'fluxograma'?",
+    "options": [
+      { "id": "A", "text": "A escala de trabalho da equipe." },
+      { "id": "B", "text": "Uma representação gráfica da sequência de etapas de um processo." },
+      { "id": "C", "text": "Um gráfico que mostra a relação entre duas variáveis." },
+      { "id": "D", "text": "Um diagrama para identificar as causas de um problema." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O fluxograma utiliza símbolos padronizados para desenhar o fluxo de um processo, mostrando as etapas, os pontos de decisão e a sequência das atividades. É uma ferramenta poderosa para entender, analisar e melhorar os processos de trabalho."
+  },
+  {
+    "id": 290,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'Consultório na Rua'?",
+    "options": [
+      { "id": "A", "text": "Uma ambulância para atendimento de emergências." },
+      { "id": "B", "text": "Uma equipe multiprofissional itinerante que presta cuidados de saúde à população em situação de rua." },
+      { "id": "C", "text": "Um ônibus que realiza exames de imagem." },
+      { "id": "D", "text": "Um ponto de vacinação móvel." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "As equipes do Consultório na Rua são um componente da Atenção Básica, voltadas para a população em situação de rua. Elas realizam ações de saúde de forma itinerante, buscando criar vínculo e garantir o acesso dessa população vulnerável ao SUS."
+  },
+  {
+    "id": 291,
+    "category": "CME",
+    "question": "Qual é a principal função da seladora térmica no CME?",
+    "options": [
+      { "id": "A", "text": "Esterilizar pequenos instrumentos." },
+      { "id": "B", "text": "Realizar o fechamento hermético de embalagens de grau cirúrgico." },
+      { "id": "C", "text": "Imprimir a data de validade nos pacotes." },
+      { "id": "D", "text": "Detectar furos na embalagem." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A seladora térmica é usada para fechar as embalagens tipo envelope (papel grau cirúrgico). Ela cria uma selagem uniforme e resistente, com temperatura e pressão controladas, o que é essencial para garantir a integridade da barreira microbiana da embalagem."
+  },
+  {
+    "id": 292,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com AVC e disfagia?",
+    "options": [
+      { "id": "A", "text": "Oferecer líquidos em grande quantidade para garantir a hidratação." },
+      { "id": "B", "text": "Manter o paciente em decúbito dorsal durante as refeições." },
+      { "id": "C", "text": "Manter a cabeceira elevada a 90 graus durante e após a alimentação e oferecer alimentos na consistência adequada." },
+      { "id": "D", "text": "Estimular o paciente a comer rapidamente para evitar o cansaço." }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A disfagia (dificuldade de engolir) aumenta muito o risco de broncoaspiração. Os cuidados essenciais são: posicionar o paciente sentado, oferecer alimentos em consistência segura (pastosa, espessada), em pequenos volumes, e manter a cabeceira elevada por pelo menos 30 minutos após a refeição."
+  },
+  {
+    "id": 293,
+    "category": "Vigilância Sanitária",
+    "question": "O que é o 'Certificado de Boas Práticas de Fabricação' (CBPF)?",
+    "options": [
+      { "id": "A", "text": "Um certificado de qualidade para hospitais." },
+      { "id": "B", "text": "Um documento emitido pela ANVISA que atesta que um fabricante de produtos para a saúde cumpre os requisitos de qualidade." },
+      { "id": "C", "text": "Um selo de aprovação para alimentos orgânicos." },
+      { "id": "D", "text": "A licença de funcionamento de uma farmácia." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O CBPF é um documento essencial para a regularização de empresas que fabricam medicamentos, produtos para a saúde, cosméticos e alimentos. Ele comprova que a empresa segue um conjunto de normas e procedimentos que garantem a qualidade e a segurança de seus produtos."
+  },
+  {
+    "id": 294,
+    "category": "Gerenciamento",
+    "question": "O que é a 'matriz de GUT'?",
+    "options": [
+      { "id": "A", "text": "Uma ferramenta para análise de causa raiz." },
+      { "id": "B", "text": "Uma ferramenta para priorização de problemas com base na Gravidade, Urgência e Tendência." },
+      { "id": "C", "text": "Um método para dimensionamento de pessoal." },
+      { "id": "D", "text": "Um diagrama para mapear processos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Matriz de GUT é uma ferramenta de gestão que ajuda a priorizar a resolução de problemas. Cada problema é pontuado em três critérios: Gravidade (o impacto do problema), Urgência (o tempo para resolvê-lo) e Tendência (se o problema vai piorar). A multiplicação dos pontos indica a prioridade."
+  },
+  {
+    "id": 295,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'Programa Nacional de Controle da Dengue' (PNCD)?",
+    "options": [
+      { "id": "A", "text": "Um programa focado no desenvolvimento de uma vacina contra a dengue." },
+      { "id": "B", "text": "Um programa que organiza as ações de vigilância e controle do vetor (Aedes aegypti) e de assistência aos pacientes." },
+      { "id":- "C", "text": "Um programa de distribuição de repelentes para a população." },
+      { "id": "D", "text": "Um sistema de informação para notificação de casos de dengue." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O PNCD estrutura as ações de combate à dengue em vários componentes, incluindo a vigilância epidemiológica, o combate ao vetor (visitas domiciliares, controle de criadouros), a assistência aos pacientes (organização da rede de saúde) e a mobilização social."
+  },
+  {
+    "id": 296,
+    "category": "CME",
+    "question": "Qual é a principal função do detergente enzimático na limpeza de artigos?",
+    "options": [
+      { "id": "A", "text": "Desinfetar os artigos." },
+      { "id": "B", "text": "Quebrar e remover a matéria orgânica (sangue, secreções) aderida aos artigos." },
+      { "id": "C", "text": "Lubrificar as articulações dos instrumentais." },
+      { "id": "D", "text": "Criar uma película protetora contra a corrosão." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O detergente enzimático contém enzimas (proteases, lipases, amilases) que agem especificamente na quebra de proteínas, gorduras e carboidratos, que compõem a matéria orgânica. Isso facilita a remoção do biofilme e da sujidade, sendo essencial na limpeza de artigos complexos."
+  },
+  {
+    "id": 297,
+    "category": "Saúde do Adulto",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente com Insuficiência Cardíaca Congestiva (ICC) descompensada?",
+    "options": [
+      { "id": "A", "text": "Estimular a ingestão de líquidos para melhorar a função renal." },
+      { "id":- "B", "text": "Manter o paciente em repouso, com cabeceira elevada, realizar balanço hídrico rigoroso e monitorar o peso diário." },
+      { "id": "C", "text": "Administrar uma dieta rica em sódio para aumentar a pressão arterial." },
+      { "id": "D", "text": "Manter o paciente em decúbito dorsal para melhorar o retorno venoso." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Na ICC descompensada, o coração não consegue bombear o sangue adequadamente, levando à congestão (acúmulo de líquido). Os cuidados visam reduzir o trabalho cardíaco (repouso, cabeceira elevada para aliviar a dispneia) e monitorar a sobrecarga de volume (balanço hídrico, peso diário)."
+  },
+  {
+    "id": 298,
+    "category": "Vigilância Epidemiológica",
+    "question": "O que é o 'diagrama de controle' em epidemiologia?",
+    "options": [
+      { "id": "A", "text": "Um mapa que mostra a distribuição geográfica de uma doença." },
+      { "id": "B", "text": "Um gráfico usado para monitorar a ocorrência de uma doença ao longo do tempo, identificando surtos ou epidemias." },
+      { "id": "C", "text": "Um fluxograma das etapas de investigação de um surto." },
+      { "id": "D", "text": "Um diagrama que mostra as relações entre os casos de uma doença." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O diagrama de controle (ou corredor endêmico) é uma ferramenta gráfica que plota o número de casos de uma doença ao longo do tempo sobre uma curva que representa a média histórica esperada para aquele período. Casos acima do limite superior do corredor indicam um surto ou epidemia."
+  },
+  {
+    "id": 299,
+    "category": "Gerenciamento",
+    "question": "O que é 'auditoria de contas hospitalares'?",
+    "options": [
+      { "id": "A", "text": "A verificação da qualidade dos registros de enfermagem." },
+      { "id": "B", "text": "A análise da conta do paciente para verificar se todos os procedimentos, materiais e medicamentos utilizados foram registrados e cobrados corretamente." },
+      { "id": "C", "text": "A avaliação do desempenho financeiro do hospital." },
+      { "id": "D", "text": "A investigação de fraudes no sistema de saúde." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "A auditoria de contas, realizada pelo enfermeiro auditor, é a conferência minuciosa da conta hospitalar, cruzando as informações com o prontuário do paciente. O objetivo é garantir que a cobrança (geralmente para operadoras de saúde) seja justa e corresponda à assistência prestada."
+  },
+  {
+    "id": 300,
+    "category": "Saúde Coletiva",
+    "question": "O que é o 'Programa HiperDia'?",
+    "options": [
+      { "id": "A", "text": "Um programa de tratamento para pacientes com hiperatividade." },
+      { "id": "B", "text": "Um sistema de cadastramento e acompanhamento de portadores de Hipertensão Arterial e/ou Diabetes Mellitus na Atenção Básica." },
+      { "id": "C", "text": "Um programa de distribuição de medicamentos para dislipidemia." },
+      { "id": "D", "text": "Um programa de atividade física para idosos." }
+    ],
+    "correctAnswer": "B",
+    "explanation": "O HiperDia é um sistema do Ministério da Saúde que permite o cadastramento e o acompanhamento dos pacientes com hipertensão e/ou diabetes atendidos na rede ambulatorial do SUS. Ele gera informações para a gestão e para a garantia do cuidado e do fornecimento de medicamentos."
   }
 ]
