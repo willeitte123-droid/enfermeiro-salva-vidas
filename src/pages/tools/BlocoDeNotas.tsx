@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Save, Loader2, PlusCircle, Trash2, FileText, NotebookPen } from "lucide-react";
+import { Loader2, PlusCircle, Trash2, NotebookPen, Check } from "lucide-react";
 import { toast } from "sonner";
 import { useOutletContext } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
@@ -49,6 +49,8 @@ const BlocoDeNotas = () => {
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const { data: notes = [], isLoading } = useQuery<Note[]>({
     queryKey: ["notes", profile?.id],
@@ -96,9 +98,8 @@ const BlocoDeNotas = () => {
       const { error } = await supabase.from("notes").update({ title: updatedNote.title, content: updatedNote.content }).eq("id", updatedNote.id);
       if (error) throw new Error(error.message);
     },
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes", profile?.id] });
-      toast.success(`Anotação "${variables.title}" salva!`);
     },
     onError: (error) => {
       toast.error("Erro ao salvar anotação", { description: error.message });
@@ -124,17 +125,39 @@ const BlocoDeNotas = () => {
     createNoteMutation.mutate({ title: "Nova Anotação", content: "" });
   };
 
-  const handleSave = () => {
-    if (selectedNoteId) {
-      updateNoteMutation.mutate({ id: selectedNoteId, title, content });
-    }
-  };
-
   const handleDelete = () => {
     if (selectedNoteId) {
       deleteNoteMutation.mutate(selectedNoteId);
     }
   };
+
+  // Auto-save logic
+  useEffect(() => {
+    if (!selectedNoteId || (title === selectedNote?.title && content === selectedNote?.content)) {
+      setIsSaved(false);
+      return;
+    }
+
+    setIsSaving(true);
+    setIsSaved(false);
+    const handler = setTimeout(() => {
+      updateNoteMutation.mutate({ id: selectedNoteId, title, content }, {
+        onSuccess: () => {
+          setIsSaving(false);
+          setIsSaved(true);
+          setTimeout(() => setIsSaved(false), 2000);
+        },
+        onError: () => {
+          setIsSaving(false);
+          setIsSaved(false);
+        }
+      });
+    }, 1500); // 1.5 second debounce
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [title, content, selectedNoteId]);
 
   return (
     <div className="space-y-6">
@@ -165,15 +188,16 @@ const BlocoDeNotas = () => {
                       key={note.id}
                       onClick={() => setSelectedNoteId(note.id)}
                       className={cn(
-                        "w-full text-left p-3 rounded-lg transition-all flex flex-col gap-1 border-l-4",
+                        "w-full text-left p-3 rounded-lg transition-all flex flex-col gap-1",
                         colorSet.bg,
                         selectedNoteId === note.id
-                          ? `${colorSet.border} ring-2 ring-primary/50`
-                          : `${colorSet.border} opacity-70 hover:opacity-100`
+                          ? `border-2 ${colorSet.border}`
+                          : `border-2 border-transparent opacity-70 hover:opacity-100`
                       )}
                     >
                       <p className="font-semibold truncate text-foreground">{note.title || "Sem Título"}</p>
-                      <span className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground truncate">{note.content || "Nenhum conteúdo"}</p>
+                      <span className="text-xs text-muted-foreground mt-1">
                         {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true, locale: ptBR })}
                       </span>
                     </button>
@@ -192,9 +216,13 @@ const BlocoDeNotas = () => {
                   placeholder="Título da anotação"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="text-2xl font-bold border-0 shadow-none focus-visible:ring-0 p-0 h-auto"
+                  className="text-2xl font-bold border-0 shadow-none focus-visible:ring-0 p-0 h-auto bg-transparent"
                 />
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground transition-opacity">
+                    {isSaving && <><Loader2 className="h-3 w-3 animate-spin" /> Salvando...</>}
+                    {isSaved && <><Check className="h-3 w-3 text-green-500" /> Salvo</>}
+                  </div>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="ghost" size="icon" title="Apagar anotação" disabled={deleteNoteMutation.isPending}>
@@ -206,9 +234,6 @@ const BlocoDeNotas = () => {
                       <AlertDialogFooter><AlertDialogCancel>Cancelar</AlertDialogCancel><AlertDialogAction onClick={handleDelete}>Apagar</AlertDialogAction></AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
-                  <Button onClick={handleSave} disabled={updateNoteMutation.isPending} title="Salvar anotação">
-                    {updateNoteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                  </Button>
                 </div>
               </div>
               <ScrollArea className="flex-1">
@@ -216,7 +241,7 @@ const BlocoDeNotas = () => {
                   placeholder="Comece a digitar..."
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="h-full w-full resize-none border-0 shadow-none focus-visible:ring-0 p-6 text-base leading-relaxed"
+                  className="h-full w-full resize-none border-0 shadow-none focus-visible:ring-0 p-6 text-base leading-relaxed bg-transparent"
                 />
               </ScrollArea>
             </>
