@@ -153,7 +153,7 @@ const Admin = () => {
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar>
-                            <AvatarImage src={profile.avatar_url || undefined} />
+                            <AvatarImage src={profile.avatar_url || undefined} className="object-cover" />
                             <AvatarFallback>{getInitials(profile.first_name, profile.last_name)}</AvatarFallback>
                           </Avatar>
                           <div>
