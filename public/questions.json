@@ -3411,7 +3411,7 @@
     "question": "O que é a 'rastreabilidade' de medicamentos?",
     "options": [
       { "id": "A", "text": "O estudo de como o medicamento é absorvido e eliminado pelo corpo." },
-      { "id": "B", "text": "A capacidade de acompanhar o caminho de um medicamento desde a sua produção até o consumidor final." },
+      { "id":- "B", "text": "A capacidade de acompanhar o caminho de um medicamento desde a sua produção até o consumidor final." },
       { "id": "C", "text": "A lista de efeitos adversos de um medicamento." },
       { "id": "D", "text": "O processo de definição do preço de um medicamento." }
     ],
