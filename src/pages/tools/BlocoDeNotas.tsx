@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
-import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, PlusCircle, Trash2, NotebookPen, Check } from "lucide-react";
+import { Loader2, PlusCircle, Trash2, NotebookPen, Check, Edit, Search } from "lucide-react";
 import { toast } from "sonner";
 import { useOutletContext } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
@@ -13,6 +12,8 @@ import { cn } from "@/lib/utils";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Profile {
   id: string;
@@ -51,12 +52,22 @@ const BlocoDeNotas = () => {
   const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [noteSearchTerm, setNoteSearchTerm] = useState("");
 
   const { data: notes = [], isLoading } = useQuery<Note[]>({
     queryKey: ["notes", profile?.id],
     queryFn: () => fetchNotes(profile!.id),
     enabled: !!profile,
   });
+
+  const filteredNotes = useMemo(() => {
+    if (!noteSearchTerm) return notes;
+    return notes.filter(note =>
+      note.title.toLowerCase().includes(noteSearchTerm.toLowerCase()) ||
+      note.content.toLowerCase().includes(noteSearchTerm.toLowerCase())
+    );
+  }, [notes, noteSearchTerm]);
 
   const selectedNote = useMemo(() => {
     return notes.find(note => note.id === selectedNoteId);
@@ -66,14 +77,16 @@ const BlocoDeNotas = () => {
     if (selectedNote) {
       setTitle(selectedNote.title);
       setContent(selectedNote.content);
-    } else if (notes.length > 0 && !selectedNoteId) {
-      setSelectedNoteId(notes[0].id);
-    } else if (notes.length === 0) {
+      setIsEditing(false);
+    } else if (filteredNotes.length > 0 && !selectedNoteId) {
+      setSelectedNoteId(filteredNotes[0].id);
+    } else if (filteredNotes.length === 0) {
       setSelectedNoteId(null);
       setTitle("");
       setContent("");
+      setIsEditing(false);
     }
-  }, [notes, selectedNoteId, selectedNote]);
+  }, [notes, selectedNoteId, selectedNote, filteredNotes]);
 
   const createNoteMutation = useMutation({
     mutationFn: async (newNote: { title: string; content: string }) => {
@@ -86,6 +99,7 @@ const BlocoDeNotas = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["notes", profile?.id] });
       setSelectedNoteId(data.id);
+      setIsEditing(true);
       toast.success("Anotação criada com sucesso!");
     },
     onError: (error) => {
@@ -132,7 +146,7 @@ const BlocoDeNotas = () => {
   };
 
   useEffect(() => {
-    if (!selectedNoteId || (title === selectedNote?.title && content === selectedNote?.content)) {
+    if (!isEditing || !selectedNoteId || (title === selectedNote?.title && content === selectedNote?.content)) {
       setIsSaved(false);
       return;
     }
@@ -156,7 +170,7 @@ const BlocoDeNotas = () => {
     return () => {
       clearTimeout(handler);
     };
-  }, [title, content, selectedNoteId, selectedNote]);
+  }, [title, content, selectedNoteId, selectedNote, isEditing]);
 
   return (
     <div className="space-y-6">
@@ -167,29 +181,38 @@ const BlocoDeNotas = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 border rounded-lg h-[70vh] min-h-[500px] overflow-hidden bg-card">
         <div className="lg:col-span-1 border-r flex flex-col bg-muted/20">
-          <div className="p-3 border-b">
+          <div className="p-3 border-b space-y-2">
             <Button variant="outline" className="w-full" onClick={handleNewNote} disabled={createNoteMutation.isPending}>
               {createNoteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlusCircle className="h-4 w-4 mr-2" />}
               Nova Anotação
             </Button>
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar anotações..."
+                className="pl-8"
+                value={noteSearchTerm}
+                onChange={(e) => setNoteSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
           <ScrollArea className="flex-1">
             {isLoading ? (
               <div className="flex items-center justify-center h-full p-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
-            ) : notes.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center p-4">Nenhuma anotação. Crie uma para começar.</p>
+            ) : filteredNotes.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center p-4">Nenhuma anotação encontrada.</p>
             ) : (
               <div className="p-2 space-y-1">
-                {notes.map((note, index) => (
+                {filteredNotes.map((note, index) => (
                   <button
                     key={note.id}
                     onClick={() => setSelectedNoteId(note.id)}
                     className={cn(
-                      "w-full text-left p-3 rounded-md transition-all border-l-4",
+                      "w-full text-left p-3 rounded-md transition-all border-t-4",
                       noteColors[index % noteColors.length],
                       selectedNoteId === note.id
                         ? "bg-primary/10"
-                        : "bg-transparent hover:bg-muted/50"
+                        : "bg-card hover:bg-muted/50"
                     )}
                   >
                     <p className="font-semibold truncate text-foreground">{note.title || "Sem Título"}</p>
@@ -204,21 +227,32 @@ const BlocoDeNotas = () => {
           </ScrollArea>
         </div>
 
-        <div className="lg:col-span-3 flex flex-col">
+        <div className="lg:col-span-3 flex flex-col bg-stone-50 dark:bg-stone-900/50">
           {selectedNoteId && !isLoading ? (
             <>
-              <div className="p-4 border-b flex items-center justify-between gap-4 flex-shrink-0">
-                <Input
-                  placeholder="Digite seu título aqui"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="text-3xl font-bold border-0 shadow-none focus-visible:ring-0 p-0 h-auto bg-transparent tracking-tight"
-                />
+              <div className="p-4 border-b flex items-center justify-between gap-4 flex-shrink-0 bg-card">
+                <div className="flex-1">
+                  {isEditing ? (
+                    <Input
+                      placeholder="Título da anotação"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="text-2xl font-bold border-0 shadow-none focus-visible:ring-0 p-0 h-auto bg-transparent tracking-tight"
+                    />
+                  ) : (
+                    <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+                  )}
+                </div>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1 text-xs text-muted-foreground transition-opacity">
                     {isSaving && <><Loader2 className="h-3 w-3 animate-spin" /> Salvando...</>}
                     {isSaved && <><Check className="h-3 w-3 text-green-500" /> Salvo</>}
                   </div>
+                  {isEditing ? (
+                    <Button onClick={() => setIsEditing(false)}>Concluído</Button>
+                  ) : (
+                    <Button variant="outline" onClick={() => setIsEditing(true)}><Edit className="h-4 w-4 mr-2" />Editar</Button>
+                  )}
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="ghost" size="icon" title="Apagar anotação" disabled={deleteNoteMutation.isPending}>
@@ -233,12 +267,20 @@ const BlocoDeNotas = () => {
                 </div>
               </div>
               <ScrollArea className="flex-1">
-                <Textarea
-                  placeholder="Comece a digitar..."
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  className="h-full w-full resize-none border-0 shadow-none focus-visible:ring-0 p-8 text-lg leading-relaxed bg-transparent"
-                />
+                {isEditing ? (
+                  <Textarea
+                    placeholder="Comece a digitar... Você pode usar formatação Markdown."
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    className="h-full w-full resize-none border-0 shadow-none focus-visible:ring-0 p-8 text-base leading-relaxed bg-transparent font-serif"
+                  />
+                ) : (
+                  <div className="prose prose-stone dark:prose-invert max-w-none p-8 font-serif">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {content || "*Clique em 'Editar' para começar a escrever.*"}
+                    </ReactMarkdown>
+                  </div>
+                )}
               </ScrollArea>
             </>
           ) : (
