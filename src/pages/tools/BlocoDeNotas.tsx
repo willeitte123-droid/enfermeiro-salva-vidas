@@ -249,7 +249,7 @@ const BlocoDeNotas = () => {
                     {isSaved && <><Check className="h-3 w-3 text-green-500" /> Salvo</>}
                   </div>
                   {isEditing ? (
-                    <Button onClick={() => setIsEditing(false)}>Concluído</Button>
+                    <Button onClick={() => setIsEditing(false)}>Concluir</Button>
                   ) : (
                     <Button variant="outline" onClick={() => setIsEditing(true)}><Edit className="h-4 w-4 mr-2" />Editar</Button>
                   )}
