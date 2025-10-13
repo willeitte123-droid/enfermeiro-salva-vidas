@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
-import { Calendar as CalendarIcon, RefreshCw, Info, Baby } from "lucide-react";
+import { Calendar as CalendarIcon, RefreshCw, Info, Baby, BookOpen, ClipboardList } from "lucide-react";
 import { format, addDays, addMonths, differenceInDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const PregnancyCalculator = () => {
   const [dum, setDum] = useState<Date | undefined>(undefined);
@@ -93,17 +95,72 @@ const PregnancyCalculator = () => {
           </div>
         </CardContent>
       </Card>
+      
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2"><Info className="h-5 w-5 text-primary"/> Observações Importantes</CardTitle>
+          <CardTitle className="flex items-center gap-2"><BookOpen className="h-5 w-5 text-primary"/> Informações Clínicas Relevantes</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm text-muted-foreground">
-          <p>• O cálculo por DUM (Regra de Naegele) assume um ciclo menstrual regular de 28 dias. Para ciclos irregulares, o cálculo por USG é mais confiável.</p>
-          <p>• O ultrassom do <strong>primeiro trimestre</strong> (idealmente entre 7 e 12 semanas) é o método mais acurado para datar a gestação.</p>
-          <p>• <strong>1º Trimestre:</strong> até 13 semanas e 6 dias.</p>
-          <p>• <strong>2º Trimestre:</strong> de 14 semanas a 27 semanas e 6 dias.</p>
-          <p>• <strong>3º Trimestre:</strong> a partir de 28 semanas.</p>
-          <p>• <strong>Termo:</strong> Uma gestação é considerada 'a termo' entre 39 semanas e 40 semanas e 6 dias.</p>
+        <CardContent className="space-y-4 text-sm text-muted-foreground">
+          <p>• O cálculo por DUM (Regra de Naegele) assume um ciclo menstrual regular de 28 dias.</p>
+          <p>• O ultrassom do <strong>primeiro trimestre</strong> (idealmente entre 7 e 12 semanas, usando o Comprimento Cabeça-Nádega - CCN) é o método mais acurado para datar a gestação e deve ser usado para corrigir a DUM se a discrepância for > 7 dias.</p>
+          
+          <h3 className="font-semibold text-foreground pt-4 flex items-center gap-2"><ClipboardList className="h-4 w-4 text-primary"/> Marcos Gestacionais por Trimestre</h3>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>1º Trimestre (até 13s 6d)</AccordionTrigger>
+              <AccordionContent>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li><strong>Exames Iniciais:</strong> Tipagem/Rh, Coombs Indireto, Hemograma, Glicemia de Jejum, Sorologias (HIV, VDRL, HBsAg, Toxo, Rubéola, CMV), Urina I e Urocultura.</li>
+                  <li><strong>Orientação:</strong> Iniciar <strong>Ácido fólico</strong> para prevenção de defeitos do tubo neural.</li>
+                  <li><strong>USG Obstétrico:</strong> Confirma gestação tópica, datação e avaliação da translucência nucal (11-14s).</li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>2º Trimestre (14s a 27s 6d)</AccordionTrigger>
+              <AccordionContent>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li><strong>Teste de Glicose (TOTG 75g):</strong> Rastreio de Diabetes Gestacional, realizado entre 24 e 28 semanas.</li>
+                  <li><strong>USG Morfológico:</strong> Avaliação detalhada da anatomia fetal, realizado entre 20 e 24 semanas.</li>
+                  <li><strong>Vacinação:</strong> Iniciar esquema com dT e Hepatite B se não imunizada. dTpa a partir de 20 semanas.</li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>3º Trimestre (a partir de 28s)</AccordionTrigger>
+              <AccordionContent>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li><strong>Repetir Sorologias:</strong> VDRL, HIV, HBsAg conforme protocolo.</li>
+                  <li><strong>Pesquisa de Streptococo B:</strong> Coleta de swab vaginal e retal entre 35 e 37 semanas.</li>
+                  <li><strong>Monitoramento:</strong> Avaliação da vitalidade fetal (mobilograma, cardiotocografia), altura uterina e pressão arterial.</li>
+                  <li><strong>Orientação:</strong> Sinais de trabalho de parto, plano de parto e aleitamento materno.</li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </CardContent>
+      </Card>
+
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle>Classificação da Idade Gestacional ao Nascer</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Classificação</TableHead>
+                <TableHead>Idade Gestacional</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow><TableCell>Pré-termo</TableCell><TableCell>&lt; 37 semanas</TableCell></TableRow>
+              <TableRow><TableCell>Termo Precoce</TableCell><TableCell>37s 0d a 38s 6d</TableCell></TableRow>
+              <TableRow className="bg-green-50 dark:bg-green-900/30"><TableCell className="font-semibold">Termo Completo</TableCell><TableCell className="font-semibold">39s 0d a 40s 6d</TableCell></TableRow>
+              <TableRow><TableCell>Termo Tardio</TableCell><TableCell>41s 0d a 41s 6d</TableCell></TableRow>
+              <TableRow><TableCell>Pós-termo</TableCell><TableCell>≥ 42 semanas</TableCell></TableRow>
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </>
