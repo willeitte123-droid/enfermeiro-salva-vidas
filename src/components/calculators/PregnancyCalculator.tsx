@@ -102,7 +102,7 @@ const PregnancyCalculator = () => {
         </CardHeader>
         <CardContent className="space-y-4 text-sm text-muted-foreground">
           <p>• O cálculo por DUM (Regra de Naegele) assume um ciclo menstrual regular de 28 dias.</p>
-          <p>• O ultrassom do <strong>primeiro trimestre</strong> (idealmente entre 7 e 12 semanas, usando o Comprimento Cabeça-Nádega - CCN) é o método mais acurado para datar a gestação e deve ser usado para corrigir a DUM se a discrepância for > 7 dias.</p>
+          <p>• O ultrassom do <strong>primeiro trimestre</strong> (idealmente entre 7 e 12 semanas, usando o Comprimento Cabeça-Nádega - CCN) é o método mais acurado para datar a gestação e deve ser usado para corrigir a DUM se a discrepância for {'>'} 7 dias.</p>
           
           <h3 className="font-semibold text-foreground pt-4 flex items-center gap-2"><ClipboardList className="h-4 w-4 text-primary"/> Marcos Gestacionais por Trimestre</h3>
           <Accordion type="single" collapsible className="w-full">
