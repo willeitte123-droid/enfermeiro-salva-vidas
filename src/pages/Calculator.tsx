@@ -39,8 +39,8 @@ const Calculator = () => {
         <p className="text-muted-foreground">Calcule velocidades de infusão para diferentes tipos de equipo</p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card>
+      <div className="grid lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Droplet className="h-5 w-5 text-primary" />
