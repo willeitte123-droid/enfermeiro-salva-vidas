@@ -32,6 +32,7 @@ import SemioTechnique from "./pages/Semiotechnique";
 import DoseCalculator from "./pages/tools/DoseCalculator";
 import LabValues from "./pages/tools/LabValues";
 import BlocoDeNotas from "./pages/tools/BlocoDeNotas";
+import IntegratedCalculators from "./pages/tools/IntegratedCalculators";
 import SimuladoLobby from "./pages/simulado/SimuladoLobby";
 import Simulado from "./pages/simulado/Simulado";
 import SimuladoResultado from "./pages/simulado/SimuladoResultado";
@@ -99,6 +100,7 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
         <Route path="tools/dose-calculator" element={<DoseCalculator />} />
         <Route path="tools/lab-values" element={<LabValues />} />
         <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />
+        <Route path="tools/integrated-calculators" element={<IntegratedCalculators />} />
         <Route path="simulado" element={<SimuladoLobby />} />
         <Route path="review-area" element={<ReviewArea />} />
         <Route path="favorites" element={<FavoritesPage />} />
