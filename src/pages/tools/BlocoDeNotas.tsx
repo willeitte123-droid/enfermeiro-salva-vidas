@@ -213,7 +213,7 @@ const BlocoDeNotas = () => {
             <>
               <div className="p-4 border-b flex items-center justify-between gap-4">
                 <Input
-                  placeholder="Título da anotação"
+                  placeholder="Digite seu título aqui"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="text-2xl font-bold border-0 shadow-none focus-visible:ring-0 p-0 h-auto bg-transparent"
