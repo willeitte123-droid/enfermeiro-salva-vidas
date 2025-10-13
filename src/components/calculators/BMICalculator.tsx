@@ -13,11 +13,12 @@ const BMICalculator = () => {
   const [interpretation, setInterpretation] = useState({ text: "", color: "" });
 
   useEffect(() => {
-    const w = parseFloat(weight);
-    const h = parseFloat(height);
+    const w = parseFloat(weight.replace(",", "."));
+    const h = parseFloat(height.replace(",", "."));
 
     if (w > 0 && h > 0) {
-      const heightInMeters = h / 100;
+      // Heurística: se a altura for menor que 3, assume-se que está em metros. Caso contrário, em cm.
+      const heightInMeters = h < 3 ? h : h / 100;
       const calculatedBmi = w / (heightInMeters * heightInMeters);
       setBmi(calculatedBmi);
 
@@ -62,7 +63,7 @@ const BMICalculator = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="height">Altura (cm)</Label>
-            <Input id="height" type="number" placeholder="Ex: 175" value={height} onChange={(e) => setHeight(e.target.value)} />
+            <Input id="height" type="number" placeholder="Ex: 175 ou 1,75" value={height} onChange={(e) => setHeight(e.target.value)} />
           </div>
           <Button variant="outline" onClick={resetCalculator} className="w-full">
             <RefreshCw className="h-4 w-4 mr-2" />
@@ -79,8 +80,7 @@ const BMICalculator = () => {
           ) : (
             <p className="text-muted-foreground">Aguardando dados...</p>
           )}
-        </Card>
-      </CardContent>
+        </CardContent>
     </Card>
   );
 };
