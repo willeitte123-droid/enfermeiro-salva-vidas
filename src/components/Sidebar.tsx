@@ -2,7 +2,7 @@ import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, LogOut, ClipboardList, Shield,
   LayoutDashboard, ChevronsUpDown, Stethoscope, BookHeart, ListChecks, FileSearch, HandHeart,
-  FlaskConical, FileText, NotebookText, Sun, Moon, Timer, ChevronsLeft, ChevronsRight, Library
+  FlaskConical, FileText, NotebookText, Sun, Moon, Timer, ChevronsLeft, ChevronsRight, Library, Star
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -80,6 +80,10 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
           <NavLink to="/" end className={navLinkClass}>
             <LayoutDashboard className="h-4 w-4 flex-shrink-0" />
             <span className={cn(isCollapsed && "hidden")}>Dashboard</span>
+          </NavLink>
+          <NavLink to="/favorites" className={navLinkClass}>
+            <Star className="h-4 w-4 flex-shrink-0" />
+            <span className={cn(isCollapsed && "hidden")}>Meus Favoritos</span>
           </NavLink>
 
           <Collapsible defaultOpen>

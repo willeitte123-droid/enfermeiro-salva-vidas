@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useOutletContext } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -12,8 +13,14 @@ import { procedures } from "@/data/procedures";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const Procedures = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
 
@@ -62,13 +69,25 @@ const Procedures = () => {
         <div className="space-y-4">
           {filteredProcedures.map((proc, index) => {
             const Icon = proc.icon;
+            const slug = `/procedures#${proc.title.toLowerCase().replace(/\s+/g, '-')}`;
             return (
               <Accordion type="single" collapsible key={index}>
                 <AccordionItem value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
                   <AccordionTrigger className="group hover:no-underline text-left">
-                    <div className="flex items-center gap-3">
-                      <Icon className={`h-5 w-5 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
-                      <span className="font-semibold text-left">{proc.title}</span>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-3">
+                        <Icon className={`h-5 w-5 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
+                        <span className="font-semibold text-left">{proc.title}</span>
+                      </div>
+                      {profile && (
+                        <FavoriteButton
+                          userId={profile.id}
+                          itemId={slug}
+                          itemType="Procedimento"
+                          itemTitle={proc.title}
+                          className="mr-2"
+                        />
+                      )}
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="pt-4 space-y-6">

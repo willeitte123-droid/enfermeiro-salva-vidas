@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { RefreshCw } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
+
+interface Profile {
+  id: string;
+}
 
 const glasgowData = {
   ocular: [
@@ -36,6 +42,7 @@ const glasgowData = {
 };
 
 const GlasgowScale = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [ocularScore, setOcularScore] = useState(4);
   const [verbalScore, setVerbalScore] = useState(5);
   const [motorScore, setMotorScore] = useState(6);
@@ -64,9 +71,19 @@ const GlasgowScale = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Coma de Glasgow (ECG-P)</h1>
-        <p className="text-muted-foreground">Avalie o nível de consciência e a reatividade pupilar.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Coma de Glasgow (ECG-P)</h1>
+          <p className="text-muted-foreground">Avalie o nível de consciência e a reatividade pupilar.</p>
+        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/scales/glasgow"
+            itemType="Escala"
+            itemTitle="Escala de Coma de Glasgow"
+          />
+        )}
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">

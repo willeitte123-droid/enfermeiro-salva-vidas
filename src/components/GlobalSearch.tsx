@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/command";
 import {
   Calculator, Scale, Syringe, Siren, Bandage, ClipboardList, FileQuestion,
-  BookHeart, FileSearch, HandHeart, FlaskConical, FileText, NotebookText, Timer, Library
+  BookHeart, FileSearch, HandHeart, FlaskConical, FileText, NotebookText, Timer, Library, Star
 } from "lucide-react";
 
 const searchItems = [
+  { name: "Meus Favoritos", path: "/favorites", icon: Star },
   { name: "Calculadora de Gotejamento", path: "/calculator", icon: Calculator },
   { name: "Escalas Clínicas", path: "/scales", icon: Scale },
   { name: "Guia de Medicamentos", path: "/medications", icon: Syringe },
