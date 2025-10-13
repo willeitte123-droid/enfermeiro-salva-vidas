@@ -30,12 +30,12 @@ const IntegratedCalculators = () => {
       </div>
 
       <Tabs defaultValue="imc" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="imc">
+        <TabsList className="grid w-full grid-cols-2 gap-2">
+          <TabsTrigger value="imc" className="py-2 font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-md">
             <Scale className="mr-2 h-4 w-4" />
             Calculadora de IMC
           </TabsTrigger>
-          <TabsTrigger value="pregnancy">
+          <TabsTrigger value="pregnancy" className="py-2 font-semibold text-pink-700 bg-pink-50 hover:bg-pink-100 data-[state=active]:bg-pink-600 data-[state=active]:text-white rounded-md">
             <Baby className="mr-2 h-4 w-4" />
             Calculadora Gestacional
           </TabsTrigger>
