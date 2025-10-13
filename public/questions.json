@@ -2775,7 +2775,7 @@
     "options": [
       { "id": "A", "text": "Qualquer erro que ocorre durante a assistência, sem causar dano." },
       { "id": "B", "text": "Um evento adverso que resulta em morte, dano grave ou risco de dano grave ao paciente." },
-      { "id":- "C", "text": "Uma queixa ou reclamação feita pelo paciente ou familiar." },
+      { "id": "C", "text": "Uma queixa ou reclamação feita pelo paciente ou familiar." },
       { "id": "D", "text": "Um indicador de qualidade que atingiu a meta estabelecida." }
     ],
     "correctAnswer": "B",
