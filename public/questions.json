@@ -2867,7 +2867,7 @@
       { "id": "A", "text": "Realizar a esterilização final dos instrumentais cirúrgicos." },
       { "id": "B", "text": "Apenas secar os materiais após a limpeza manual." },
       { "id": "C", "text": "Realizar a limpeza automatizada e a desinfecção térmica (de alto nível) dos artigos." },
-      { "id":- "D", "text": "Embalar os materiais em grau cirúrgico." }
+      { "id": "D", "text": "Embalar os materiais em grau cirúrgico." }
     ],
     "correctAnswer": "C",
     "explanation": "A termodesinfectadora é um equipamento que automatiza o processo de limpeza e realiza a desinfecção por meio de água quente (geralmente a 90°C), garantindo um processo padronizado e mais seguro para os profissionais, pois reduz a manipulação de material contaminado."
@@ -2879,7 +2879,7 @@
     "options": [
       { "id": "A", "text": "Manter o frasco de drenagem sempre acima do nível do tórax do paciente." },
       { "id": "B", "text": "Clampear o dreno durante o transporte do paciente." },
-      { "id":- "C", "text": "Manter o selo d'água, avaliar o débito e a oscilação, e garantir que não haja pinçamentos." },
+      { "id": "C", "text": "Manter o selo d'água, avaliar o débito e a oscilação, e garantir que não haja pinçamentos." },
       { "id": "D", "text": "Realizar a ordenha do dreno rotineiramente para garantir a perviedade." }
     ],
     "correctAnswer": "C",
@@ -3023,7 +3023,7 @@
       { "id": "A", "text": "A fiscalização de preços de medicamentos em farmácias." },
       { "id": "B", "text": "O controle de estoque de medicamentos psicotrópicos." },
       { "id": "C", "text": "A ciência e atividades relativas à detecção, avaliação, compreensão e prevenção de efeitos adversos ou quaisquer outros problemas relacionados a medicamentos." },
-      { "id":- "D", "text": "O processo de desenvolvimento e aprovação de novos medicamentos." }
+      { "id": "D", "text": "O processo de desenvolvimento e aprovação de novos medicamentos." }
     ],
     "correctAnswer": "C",
     "explanation": "A farmacovigilância é o monitoramento de medicamentos que já estão no mercado. Seu objetivo é identificar reações adversas não detectadas nos ensaios clínicos e garantir a segurança contínua do uso de medicamentos pela população."
@@ -3309,7 +3309,7 @@
       { "id": "A", "text": "Um indicador da qualidade da água." },
       { "id": "B", "text": "Uma medida da desigualdade de renda em uma população." },
       { "id": "C", "text": "Um índice que mede a prevalência de obesidade." },
-      { "id":- "D", "text": "Uma medida da taxa de mortalidade infantil." }
+      { "id": "D", "text": "Uma medida da taxa de mortalidade infantil." }
     ],
     "correctAnswer": "B",
     "explanation": "O Índice de Gini é um instrumento usado para medir o grau de concentração de renda. Ele varia de 0 (perfeita igualdade) a 1 (perfeita desigualdade). É um importante indicador social, pois a desigualdade de renda é um dos principais determinantes da saúde."
@@ -3386,7 +3386,7 @@
     "options": [
       { "id": "A", "text": "Realizar uma desinfecção de baixo nível." },
       { "id": "B", "text": "Remover resíduos de minerais e prevenir a formação de manchas e corrosão nos instrumentais." },
-      { "id":- "C", "text": "Acelerar o processo de secagem." },
+      { "id": "C", "text": "Acelerar o processo de secagem." },
       { "id": "D", "text": "Lubrificar as articulações dos instrumentos." }
     ],
     "correctAnswer": "B",
@@ -3660,7 +3660,7 @@
       { "id": "A", "text": "Administrar a NPT em um acesso venoso periférico." },
       { "id": "B", "text": "Acelerar a infusão se a bolsa estiver atrasada." },
       { "id": "C", "text": "Monitorar rigorosamente a glicemia capilar e os sinais de infecção do cateter." },
-      { "id":- "D", "text": "Misturar medicamentos na bolsa de NPT para facilitar a administração." }
+      { "id": "D", "text": "Misturar medicamentos na bolsa de NPT para facilitar a administração." }
     ],
     "correctAnswer": "C",
     "explanation": "A NPT é uma solução hipertônica e rica em glicose, o que a torna um excelente meio de cultura para microrganismos. Por isso, os cuidados são rigorosos: manipulação asséptica, uso de cateter venoso central exclusivo, e monitoramento da glicemia (risco de hiperglicemia) e de sinais de infecção."
@@ -3828,7 +3828,7 @@
     "options": [
       { "id": "A", "text": "Um programa focado no desenvolvimento de uma vacina contra a dengue." },
       { "id": "B", "text": "Um programa que organiza as ações de vigilância e controle do vetor (Aedes aegypti) e de assistência aos pacientes." },
-      { "id":- "C", "text": "Um programa de distribuição de repelentes para a população." },
+      { "id": "C", "text": "Um programa de distribuição de repelentes para a população." },
       { "id": "D", "text": "Um sistema de informação para notificação de casos de dengue." }
     ],
     "correctAnswer": "B",
@@ -3853,7 +3853,7 @@
     "question": "Qual é o principal cuidado de enfermagem para um paciente com Insuficiência Cardíaca Congestiva (ICC) descompensada?",
     "options": [
       { "id": "A", "text": "Estimular a ingestão de líquidos para melhorar a função renal." },
-      { "id":- "B", "text": "Manter o paciente em repouso, com cabeceira elevada, realizar balanço hídrico rigoroso e monitorar o peso diário." },
+      { "id": "B", "text": "Manter o paciente em repouso, com cabeceira elevada, realizar balanço hídrico rigoroso e monitorar o peso diário." },
       { "id": "C", "text": "Administrar uma dieta rica em sódio para aumentar a pressão arterial." },
       { "id": "D", "text": "Manter o paciente em decúbito dorsal para melhorar o retorno venoso." }
     ],
