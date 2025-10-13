@@ -107,7 +107,7 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
               </NavLink>
               <NavLink to="/tools/integrated-calculators" className={navLinkClass}>
                 <CalculatorIcon className="h-4 w-4 flex-shrink-0" />
-                <span className={cn(isCollapsed && "hidden")}>Calculadoras Integradas</span>
+                <span className={cn(isCollapsed && "hidden")}>DUM e IMC</span>
               </NavLink>
               <NavLink to="/tools/lab-values" className={navLinkClass}>
                 <FileText className="h-4 w-4 flex-shrink-0" />
