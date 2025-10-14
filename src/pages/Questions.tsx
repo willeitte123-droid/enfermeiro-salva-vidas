@@ -229,7 +229,28 @@ const Questions = () => {
     else if (percentage >= 50) feedbackMessage = "Bom esforço! Continue estudando para melhorar.";
 
     return (
-      <div className="max-w-4xl mx-auto"><Card className="text-center"><CardHeader><div className="mx-auto h-12 w-12 rounded-full bg-amber-100 flex items-center justify-center mb-4"><Award className="h-8 w-8 text-amber-500" /></div><CardTitle className="text-2xl">Quiz Finalizado!</CardTitle><CardDescription>{feedbackMessage}</CardDescription></CardHeader><CardContent className="space-y-6"><div className="text-4xl font-bold text-primary">{score} / {filteredQuestions.length}</div><div className="space-y-2"><Progress value={percentage} className="w-full" /><p className="text-lg font-semibold">{percentage}% de acerto</p></div><Button onClick={() => window.location.reload()} className="w-full md:w-auto"><RefreshCw className="mr-2 h-4 w-4" />Reiniciar Quiz</Button></CardContent></Card>
+      <div className="max-w-4xl mx-auto">
+        <Card className="text-center">
+          <CardHeader>
+            <div className="mx-auto h-12 w-12 rounded-full bg-amber-100 flex items-center justify-center mb-4">
+              <Award className="h-8 w-8 text-amber-500" />
+            </div>
+            <CardTitle className="text-2xl">Quiz Finalizado!</CardTitle>
+            <CardDescription>{feedbackMessage}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="text-4xl font-bold text-primary">{score} / {filteredQuestions.length}</div>
+            <div className="space-y-2">
+              <Progress value={percentage} className="w-full" />
+              <p className="text-lg font-semibold">{percentage}% de acerto</p>
+            </div>
+            <Button onClick={() => window.location.reload()} className="w-full md:w-auto">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Reiniciar Quiz
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
