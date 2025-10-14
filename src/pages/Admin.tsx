@@ -93,26 +93,26 @@ const Admin = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
+        <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-blue-800 dark:text-blue-200">Total de Usuários</CardTitle>
+            <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           </CardHeader>
-          <CardContent><div className="text-2xl font-bold">{totalUsers}</div></CardContent>
+          <CardContent><div className="text-2xl font-bold text-blue-700 dark:text-blue-300">{totalUsers}</div></CardContent>
         </Card>
-        <Card>
+        <Card className="bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Usuários Ativos</CardTitle>
-            <UserCheck className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-emerald-800 dark:text-emerald-200">Usuários Ativos</CardTitle>
+            <UserCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           </CardHeader>
-          <CardContent><div className="text-2xl font-bold">{activeUsers}</div></CardContent>
+          <CardContent><div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">{activeUsers}</div></CardContent>
         </Card>
-        <Card>
+        <Card className="bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Aprovações Pendentes</CardTitle>
-            <Hourglass className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-amber-800 dark:text-amber-200">Aprovações Pendentes</CardTitle>
+            <Hourglass className="h-4 w-4 text-amber-600 dark:text-amber-400" />
           </CardHeader>
-          <CardContent><div className="text-2xl font-bold">{pendingUsers}</div></CardContent>
+          <CardContent><div className="text-2xl font-bold text-amber-700 dark:text-amber-300">{pendingUsers}</div></CardContent>
         </Card>
       </div>
 
