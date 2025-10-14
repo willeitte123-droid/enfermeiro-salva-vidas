@@ -4,18 +4,30 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Droplets, Info } from "lucide-react";
+import { RefreshCw, Droplets } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { InteractiveBody } from "@/components/InteractiveBody";
 
 interface Profile {
   id: string;
 }
 
+const bodyPartValues: Record<string, number> = {
+    head: 9,
+    torsoFront: 18,
+    torsoBack: 18,
+    leftArm: 9,
+    rightArm: 9,
+    genitalia: 1,
+    leftLeg: 18,
+    rightLeg: 18,
+};
+
 const ParklandScale = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [weight, setWeight] = useState("");
   const [surfaceArea, setSurfaceArea] = useState("");
+  const [selectedParts, setSelectedParts] = useState<Record<string, boolean>>({});
   const [results, setResults] = useState({
     totalVolume: 0,
     first8hVolume: 0,
@@ -40,9 +52,24 @@ const ParklandScale = () => {
     }
   }, [weight, surfaceArea]);
 
+  useEffect(() => {
+    const totalPercentage = Object.keys(selectedParts).reduce((sum, partId) => {
+      return selectedParts[partId] ? sum + bodyPartValues[partId] : sum;
+    }, 0);
+    setSurfaceArea(String(totalPercentage));
+  }, [selectedParts]);
+
+  const handlePartSelect = (partId: string) => {
+    setSelectedParts(prev => ({
+      ...prev,
+      [partId]: !prev[partId],
+    }));
+  };
+
   const resetScale = () => {
     setWeight("");
     setSurfaceArea("");
+    setSelectedParts({});
   };
 
   return (
@@ -74,27 +101,17 @@ const ParklandScale = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="surfaceArea">Superfície Corporal Queimada (%)</Label>
-                <Input id="surfaceArea" type="number" placeholder="Ex: 36" value={surfaceArea} onChange={(e) => setSurfaceArea(e.target.value)} />
+                <Input id="surfaceArea" type="number" placeholder="Clique no diagrama ou digite" value={surfaceArea} onChange={(e) => setSurfaceArea(e.target.value)} />
               </div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2"><Info className="h-4 w-4"/> Regra dos Nove (Adultos)</CardTitle>
-              <CardDescription>Referência rápida para estimar a %SCQ.</CardDescription>
+              <CardTitle>Regra dos Nove (Interativo)</CardTitle>
+              <CardDescription>Clique nas áreas do corpo para somar a Superfície Corporal Queimada (SCQ).</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader><TableRow><TableHead>Área do Corpo</TableHead><TableHead className="text-right">%</TableHead></TableRow></TableHeader>
-                <TableBody>
-                  <TableRow><TableCell>Cabeça e Pescoço</TableCell><TableCell className="text-right">9%</TableCell></TableRow>
-                  <TableRow><TableCell>Tronco Anterior</TableCell><TableCell className="text-right">18%</TableCell></TableRow>
-                  <TableRow><TableCell>Tronco Posterior</TableCell><TableCell className="text-right">18%</TableCell></TableRow>
-                  <TableRow><TableCell>Cada Membro Superior</TableCell><TableCell className="text-right">9%</TableCell></TableRow>
-                  <TableRow><TableCell>Cada Membro Inferior</TableCell><TableCell className="text-right">18%</TableCell></TableRow>
-                  <TableRow><TableCell>Genitália</TableCell><TableCell className="text-right">1%</TableCell></TableRow>
-                </TableBody>
-              </Table>
+              <InteractiveBody selectedParts={selectedParts} onSelectPart={handlePartSelect} />
             </CardContent>
           </Card>
         </div>
