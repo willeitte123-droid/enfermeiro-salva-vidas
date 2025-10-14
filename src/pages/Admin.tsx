@@ -162,7 +162,7 @@ const Admin = () => {
                           </Avatar>
                           <div>
                             <p className="font-medium">{`${profile.first_name || ''} ${profile.last_name || ''}`}</p>
-                            <p className="text-xs text-sidebar-foreground/70">{profile.email}</p>
+                            <p className="text-xs text-sidebar-foreground/70">{profile.email || 'E-mail não disponível'}</p>
                             <p className="text-xs text-muted-foreground md:hidden">{profile.role}</p>
                           </div>
                         </div>
