@@ -1466,7 +1466,7 @@
       { "id": "D", "text": "Soma-se 15 dias à DUM e contam-se 8 meses." }
     ],
     "correctAnswer": "B",
-    "explanation": "A Regra de Naegele consiste em somar 7 dias ao primeiro dia da Data da Última Menstruação (DUM) e subtrair 3 meses do mês correspondente (ou somar 9 meses, se for mais fácil). Ex: DUM 10/03/2023 -> (10+7)=17; (3-3)=0, que corresponde a 12 do ano anterior, mas como somamos 9 meses, o ano vira. Então, 17/12/2023. Ou, 10/03 + 7 dias = 17/03. Mês 3 + 9 meses = mês 12. DPP: 17/12/2023."
+    "explanation": "A Regra de Naegele consiste em somar 7 dias ao primeiro dia da Data da Última Menstruação (DUM) e subtrair 3 meses. Ex: DUM 10/03/2023, o cálculo seria (10+7)=17 e (3-3)=0. Como não existe mês 0, usamos o mês 12 do ano anterior, mas como a gestação avança, o ano é ajustado. Uma forma mais simples é somar 7 dias à DUM e 9 meses ao mês. Ex: 10/03 + 7 dias = 17/03. Mês 3 + 9 meses = mês 12. DPP: 17/12/2023."
   },
   {
     "id": 114,
@@ -1900,7 +1900,7 @@
   {
     "id": 147,
     "category": "Emergência",
-    "question": "Um paciente apresenta um ferimento por arma de fogo no abdome. Qual é a conduta correta em relação ao objeto empalado?",
+    "question": "Um paciente com um ferimento por arma de fogo no abdome. Qual é a conduta correta em relação ao objeto empalado?",
     "options": [
       { "id": "A", "text": "Remover o objeto imediatamente para avaliar a profundidade da lesão." },
       { "id": "B", "text": "Movimentar o objeto para verificar se há lesão de grandes vasos." },
@@ -2563,7 +2563,7 @@
   {
     "id": 198,
     "category": "Saúde do Adulto",
-    "question": "Qual é o principal cuidado de enfermagem no pós-operatório imediato de uma tireoidectomia?",
+    "question": "Qual é o principal cuidado de enfermagem no pós-operatório de uma tireoidectomia?",
     "options": [
         { "id": "A", "text": "Estimular a deambulação precoce." },
         { "id": "B", "text": "Oferecer dieta líquida fria." },
@@ -2927,7 +2927,7 @@
   {
     "id": 226,
     "category": "CME",
-    "question": "Qual a função do indicador químico de fita (fita zebrada) na esterilização?",
+    "question": "Qual é a principal função da fita zebrada na esterilização?",
     "options": [
       { "id": "A", "text": "Comprovar que o material está estéril." },
       { "id": "B", "text": "Indicar que o pacote passou por um processo de esterilização, diferenciando-o dos não processados." },
@@ -3005,15 +3005,15 @@
   {
     "id": 232,
     "category": "Saúde do Adulto",
-    "question": "Qual é o principal cuidado de enfermagem para um paciente com Sonda Vesical de Demora (SVD) para prevenir infecção do trato urinário (ITU)?",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente em uso de nutrição parenteral total (NPT)?",
     "options": [
-      { "id": "A", "text": "Realizar a troca da sonda a cada 48 horas." },
-      { "id": "B", "text": "Manter o sistema de drenagem fechado e a bolsa coletora sempre abaixo do nível da bexiga." },
-      { "id": "C", "text": "Lavar a bexiga com solução antisséptica diariamente." },
-      { "id": "D", "text": "Desconectar a sonda da bolsa coletora para facilitar a deambulação do paciente." }
+      { "id": "A", "text": "Administrar a NPT em um acesso venoso periférico." },
+      { "id": "B", "text": "Acelerar a infusão se a bolsa estiver atrasada." },
+      { "id": "C", "text": "Monitorar rigorosamente a glicemia capilar e os sinais de infecção do cateter." },
+      { "id": "D", "text": "Misturar medicamentos na bolsa de NPT para facilitar a administração." }
     ],
-    "correctAnswer": "B",
-    "explanation": "A manutenção de um sistema de drenagem fechado é a medida mais importante para prevenir a entrada de bactérias. Manter a bolsa abaixo do nível da bexiga previne o refluxo de urina, que também é um fator de risco para ITU associada ao cateter."
+    "correctAnswer": "C",
+    "explanation": "A NPT é uma solução hipertônica e rica em glicose, o que a torna um excelente meio de cultura para microrganismos. Por isso, os cuidados são rigorosos: manipulação asséptica, uso de cateter venoso central exclusivo, e monitoramento da glicemia (risco de hiperglicemia) e de sinais de infecção."
   },
   {
     "id": 233,
@@ -3200,7 +3200,7 @@
   {
     "id": 247,
     "category": "Saúde do Adulto",
-    "question": "Qual é a principal orientação de enfermagem para um paciente que realizou uma biópsia hepática percutânea?",
+    "question": "Qual é o principal cuidado de enfermagem para um paciente que realizou uma biópsia hepática percutânea?",
     "options": [
       { "id": "A", "text": "Manter o paciente em decúbito lateral esquerdo por 6 horas." },
       { "id": "B", "text": "Manter o paciente em repouso no leito, em decúbito lateral direito, por algumas horas para comprimir o local da punção." },
@@ -3411,7 +3411,7 @@
     "question": "O que é a 'rastreabilidade' de medicamentos?",
     "options": [
       { "id": "A", "text": "O estudo de como o medicamento é absorvido e eliminado pelo corpo." },
-      { "id":- "B", "text": "A capacidade de acompanhar o caminho de um medicamento desde a sua produção até o consumidor final." },
+      { "id": "B", "text": "A capacidade de acompanhar o caminho de um medicamento desde a sua produção até o consumidor final." },
       { "id": "C", "text": "A lista de efeitos adversos de um medicamento." },
       { "id": "D", "text": "O processo de definição do preço de um medicamento." }
     ],
