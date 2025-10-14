@@ -4,9 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Droplets } from "lucide-react";
+import { RefreshCw, Droplets, Info } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { InteractiveBody } from "@/components/InteractiveBody";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface Profile {
   id: string;
@@ -108,9 +109,14 @@ const ParklandScale = () => {
           <Card>
             <CardHeader>
               <CardTitle>Regra dos Nove (Interativo)</CardTitle>
-              <CardDescription>Clique nas áreas do corpo para somar a Superfície Corporal Queimada (SCQ).</CardDescription>
             </CardHeader>
             <CardContent>
+              <Alert className="mb-4 bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+                <Info className="h-4 w-4 text-blue-600" />
+                <AlertDescription className="text-blue-800 dark:text-blue-300">
+                  Clique nas áreas do corpo para somar a Superfície Corporal Queimada (SCQ).
+                </AlertDescription>
+              </Alert>
               <InteractiveBody selectedParts={selectedParts} onSelectPart={handlePartSelect} />
             </CardContent>
           </Card>
