@@ -49,15 +49,15 @@ const Login = () => {
   }
 
   return (
-    <div className="w-full min-h-screen lg:grid lg:grid-cols-2 bg-muted/40">
-      <div className="hidden lg:flex flex-col items-center justify-center bg-primary text-primary-foreground p-8 text-center">
-        <Stethoscope className="h-24 w-24 mb-6" />
-        <h1 className="text-4xl font-bold">Enfermagem Pro</h1>
-        <p className="mt-4 text-lg text-primary-foreground/80">
+    <div className="w-full min-h-screen flex flex-col bg-muted/40">
+      <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground p-6 text-center shadow-md">
+        <Stethoscope className="h-16 w-16 mb-4" />
+        <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
+        <p className="mt-2 text-md text-primary-foreground/80 max-w-md">
           Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
         </p>
       </div>
-      <div className="flex items-center justify-center py-12 px-4">
+      <div className="flex-1 flex items-center justify-center py-12 px-4">
         <div className="mx-auto w-full max-w-md space-y-6">
           <div className="space-y-2 text-center">
             <h1 className="text-3xl font-bold">Acesse sua conta</h1>
