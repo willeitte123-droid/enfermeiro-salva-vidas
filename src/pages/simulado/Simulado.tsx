@@ -28,7 +28,6 @@ const Simulado = () => {
   const navigate = useNavigate();
   const { numQuestions, totalTime } = location.state || { numQuestions: 20, totalTime: 20 * 2 * 60 };
 
-  const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [simuladoQuestions, setSimuladoQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -39,10 +38,10 @@ const Simulado = () => {
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      setLoading(true);
       try {
         const response = await fetch("/questions.json");
         const data: Question[] = await response.json();
-        setAllQuestions(data);
         const shuffled = [...data].sort(() => 0.5 - Math.random());
         setSimuladoQuestions(shuffled.slice(0, numQuestions));
       } catch (err) {
@@ -55,6 +54,7 @@ const Simulado = () => {
   }, [numQuestions]);
 
   useEffect(() => {
+    if (loading) return;
     if (timeLeft <= 0) {
       setShowTimeUpDialog(true);
       return;
@@ -63,7 +63,7 @@ const Simulado = () => {
       setTimeLeft((prevTime) => prevTime - 1);
     }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, [timeLeft, loading]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -99,7 +99,7 @@ const Simulado = () => {
   };
 
   if (loading || simuladoQuestions.length === 0) {
-    return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+    return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
   }
 
   const currentQuestion = simuladoQuestions[currentQuestionIndex];

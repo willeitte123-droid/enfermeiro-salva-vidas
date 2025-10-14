@@ -67,6 +67,8 @@ const Questions = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [selectedCategory, setSelectedCategory] = useState("Todas");
+  const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
+  
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [showExplanation, setShowExplanation] = useState(false);
@@ -111,27 +113,25 @@ const Questions = () => {
     return ["Todas", ...uniqueCategories.sort()];
   }, [allQuestions]);
 
-  const filteredQuestions = useMemo(() => {
+  useEffect(() => {
+    if (allQuestions.length === 0) return;
+
     const questionsToFilter = selectedCategory === "Todas"
       ? allQuestions
       : allQuestions.filter(q => q.category === selectedCategory);
-    return [...questionsToFilter].sort(() => Math.random() - 0.5);
-  }, [selectedCategory, allQuestions]);
-
-  const resetQuizState = () => {
-    setIsFinished(false);
+    
+    const shuffled = [...questionsToFilter].sort(() => Math.random() - 0.5);
+    setFilteredQuestions(shuffled);
+    
     setCurrentQuestion(0);
     setSelectedAnswer("");
     setShowExplanation(false);
     setScore(0);
     setAnsweredQuestions([]);
+    setIsFinished(false);
     setIsCommentsOpen(false);
     setComments([]);
-  };
-
-  useEffect(() => {
-    resetQuizState();
-  }, [selectedCategory, filteredQuestions]);
+  }, [selectedCategory, allQuestions]);
 
   const fetchComments = async (questionId: number) => {
     setIsCommentsLoading(true);
@@ -220,8 +220,7 @@ const Questions = () => {
 
   if (loading) return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando...</span></div>;
   if (error) return <Alert variant="destructive"><XCircle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>;
-  if (allQuestions.length === 0) return <p>Nenhuma questão encontrada.</p>;
-
+  
   if (isFinished) {
     const percentage = Math.round((score / filteredQuestions.length) * 100);
     let feedbackMessage = "Não desanime! A prática leva à perfeição.";
@@ -230,11 +229,11 @@ const Questions = () => {
     else if (percentage >= 50) feedbackMessage = "Bom esforço! Continue estudando para melhorar.";
 
     return (
-      <div className="max-w-4xl mx-auto"><Card className="text-center"><CardHeader><div className="mx-auto h-12 w-12 rounded-full bg-amber-100 flex items-center justify-center mb-4"><Award className="h-8 w-8 text-amber-500" /></div><CardTitle className="text-2xl">Quiz Finalizado!</CardTitle><CardDescription>{feedbackMessage}</CardDescription></CardHeader><CardContent className="space-y-6"><div className="text-4xl font-bold text-primary">{score} / {filteredQuestions.length}</div><div className="space-y-2"><Progress value={percentage} className="w-full" /><p className="text-lg font-semibold">{percentage}% de acerto</p></div><Button onClick={resetQuizState} className="w-full md:w-auto"><RefreshCw className="mr-2 h-4 w-4" />Reiniciar Quiz</Button></CardContent></Card></div>
+      <div className="max-w-4xl mx-auto"><Card className="text-center"><CardHeader><div className="mx-auto h-12 w-12 rounded-full bg-amber-100 flex items-center justify-center mb-4"><Award className="h-8 w-8 text-amber-500" /></div><CardTitle className="text-2xl">Quiz Finalizado!</CardTitle><CardDescription>{feedbackMessage}</CardDescription></CardHeader><CardContent className="space-y-6"><div className="text-4xl font-bold text-primary">{score} / {filteredQuestions.length}</div><div className="space-y-2"><Progress value={percentage} className="w-full" /><p className="text-lg font-semibold">{percentage}% de acerto</p></div><Button onClick={() => window.location.reload()} className="w-full md:w-auto"><RefreshCw className="mr-2 h-4 w-4" />Reiniciar Quiz</Button></CardContent></Card>
     );
   }
 
-  if (filteredQuestions.length === 0) {
+  if (filteredQuestions.length === 0 && !loading) {
     return (
       <div className="max-w-4xl mx-auto space-y-6">
         <div><h1 className="text-3xl font-bold text-foreground mb-2">Banca de Questões</h1><p className="text-muted-foreground">Teste seus conhecimentos com questões de concurso comentadas.</p></div>
@@ -242,6 +241,10 @@ const Questions = () => {
         <Card><CardContent className="py-12 text-center text-muted-foreground">Nenhuma questão encontrada para a categoria selecionada.</CardContent></Card>
       </div>
     );
+  }
+  
+  if (filteredQuestions.length === 0) {
+     return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando questões...</span></div>;
   }
 
   const isCorrect = selectedAnswer === filteredQuestions[currentQuestion].correctAnswer;
