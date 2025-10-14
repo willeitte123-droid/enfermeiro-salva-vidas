@@ -264,7 +264,7 @@ const Questions = () => {
           <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
             Banca de Questões
           </h1>
-          <p className="text-muted-foreground">Teste seus conhecimentos com questões de concurso comentadas.</p>
+          <p className="text-muted-foreground">Afie seu raciocínio clínico. Desafie-se com questões de concurso e residência.</p>
         </div>
         <div className="space-y-2"><Label htmlFor="category-filter">Filtrar por Categoria</Label><Select value={selectedCategory} onValueChange={setSelectedCategory}><SelectTrigger id="category-filter" className="w-full md:w-[300px]"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger><SelectContent>{categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent></Select></div>
         <Card><CardContent className="py-12 text-center text-muted-foreground">{loading ? <Loader2 className="h-6 w-6 animate-spin mx-auto" /> : "Nenhuma questão encontrada para a categoria selecionada."}</CardContent></Card>
@@ -299,7 +299,7 @@ const Questions = () => {
         <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
           Banca de Questões
         </h1>
-        <p className="text-muted-foreground">Teste seus conhecimentos com questões de concurso comentadas.</p>
+        <p className="text-muted-foreground">Afie seu raciocínio clínico. Desafie-se com questões de concurso e residência.</p>
       </div>
       <div className="space-y-2">
         <Label htmlFor="category-filter">Filtrar por Categoria</Label>
