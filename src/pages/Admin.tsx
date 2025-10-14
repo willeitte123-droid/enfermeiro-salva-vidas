@@ -13,9 +13,9 @@ import { cn } from "@/lib/utils";
 
 interface Profile {
   id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
   role: string;
   status: string;
   avatar_url: string | null;
@@ -53,22 +53,24 @@ const Admin = () => {
     }
   };
 
-  const getInitials = (firstName?: string, lastName?: string) => {
+  const getInitials = (firstName?: string | null, lastName?: string | null) => {
     const first = firstName?.[0] || '';
     const last = lastName?.[0] || '';
     return `${first}${last}`.toUpperCase();
   };
 
   const filteredProfiles = useMemo(() => {
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
     return profiles
       .filter(profile => {
         if (statusFilter === "all") return true;
         return profile.status === statusFilter;
       })
-      .filter(profile =>
-        `${profile.first_name} ${profile.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        profile.email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      .filter(profile => {
+        const fullName = `${profile.first_name || ''} ${profile.last_name || ''}`.toLowerCase();
+        const email = (profile.email || '').toLowerCase();
+        return fullName.includes(lowercasedSearchTerm) || email.includes(lowercasedSearchTerm);
+      });
   }, [profiles, searchTerm, statusFilter]);
 
   const totalUsers = profiles.length;
@@ -159,7 +161,7 @@ const Admin = () => {
                             <AvatarFallback>{getInitials(profile.first_name, profile.last_name)}</AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="font-medium">{`${profile.first_name} ${profile.last_name}`}</p>
+                            <p className="font-medium">{`${profile.first_name || ''} ${profile.last_name || ''}`}</p>
                             <p className="text-xs text-sidebar-foreground/70">{profile.email}</p>
                             <p className="text-xs text-muted-foreground md:hidden">{profile.role}</p>
                           </div>
