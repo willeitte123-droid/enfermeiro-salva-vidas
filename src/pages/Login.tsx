@@ -53,7 +53,7 @@ const Login = () => {
       <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground p-6 text-center shadow-md">
         <Stethoscope className="h-16 w-16 mb-4" />
         <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
-        <p className="mt-2 text-md text-primary-foreground/80 max-w-md">
+        <p className="mt-4 text-lg font-medium text-primary-foreground max-w-lg">
           Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
         </p>
       </div>
