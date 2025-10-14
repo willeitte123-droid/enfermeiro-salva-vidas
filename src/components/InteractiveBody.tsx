@@ -1,14 +1,45 @@
 import { cn } from "@/lib/utils";
 
 const interactiveParts = [
-  { id: 'head', name: 'Cabeça (9%)', paths: ["M62.8,5.3c-9.5,0-17.2,7.7-17.2,17.2s7.7,17.2,17.2,17.2s17.2-7.7,17.2-17.2S72.3,5.3,62.8,5.3z", "M137.2,5.3c-9.5,0-17.2,7.7-17.2,17.2s7.7,17.2,17.2,17.2s17.2-7.7,17.2-17.2S146.7,5.3,137.2,5.3z"] },
-  { id: 'torsoFront', name: 'Tronco Anterior (18%)', paths: ["M45,42.5h35.5v65H45z"] },
-  { id: 'torsoBack', name: 'Tronco Posterior (18%)', paths: ["M120,42.5h35.5v65H120z"] },
-  { id: 'leftArm', name: 'Braço Esquerdo (9%)', paths: ["M42,45.5c-4.5,1.8-8.8,4-12.7,6.7c-4,2.7-7.2,5.9-9.7,9.5c-2.5,3.6-4.3,7.5-5,11.7c-0.7,4.2-0.2,8.6,1.5,12.7c1.7,4.1,4.4,7.9,8,11c3.6,3.2,8,5.6,12.8,7.3l-1.4,2.8c-5.1-1.8-9.8-4.4-13.7-7.8c-3.9-3.4-6.8-7.4-8.5-11.8c-1.7-4.4-2.3-9.2-1.5-13.9c0.8-4.7,2.6-9.2,5.4-13.2c2.8-4,6.2-7.5,10.5-10.4c4.3-2.9,9-5.3,13.8-7.2L42,45.5z", "M117,45.5c-4.5,1.8-8.8,4-12.7,6.7c-4,2.7-7.2,5.9-9.7,9.5c-2.5,3.6-4.3,7.5-5,11.7c-0.7,4.2-0.2,8.6,1.5,12.7c1.7,4.1,4.4,7.9,8,11c3.6,3.2,8,5.6,12.8,7.3l-1.4,2.8c-5.1-1.8-9.8-4.4-13.7-7.8c-3.9-3.4-6.8-7.4-8.5-11.8c-1.7-4.4-2.3-9.2-1.5-13.9c0.8-4.7,2.6-9.2,5.4-13.2c2.8-4,6.2-7.5,10.5-10.4c4.3-2.9,9-5.3,13.8-7.2L117,45.5z"] },
-  { id: 'rightArm', name: 'Braço Direito (9%)', paths: ["M83.5,45.5c4.5,1.8,8.8,4,12.7,6.7c4,2.7,7.2,5.9,9.7,9.5c2.5,3.6,4.3,7.5,5,11.7c0.7,4.2,0.2,8.6-1.5,12.7c-1.7,4.1-4.4,7.9-8,11c-3.6,3.2-8,5.6-12.8,7.3l1.4,2.8c5.1-1.8,9.8-4.4,13.7-7.8c3.9-3.4,6.8-7.4,8.5-11.8c1.7-4.4,2.3-9.2,1.5-13.9c-0.8-4.7-2.6-9.2-5.4-13.2c-2.8-4-6.2-7.5-10.5-10.4c-4.3-2.9,9-5.3,13.8-7.2L83.5,45.5z", "M158.5,45.5c4.5,1.8,8.8,4,12.7,6.7c4,2.7,7.2,5.9,9.7,9.5c2.5,3.6,4.3,7.5,5,11.7c0.7,4.2,0.2,8.6-1.5,12.7c-1.7,4.1-4.4,7.9-8,11c-3.6,3.2-8,5.6-12.8,7.3l1.4,2.8c5.1-1.8,9.8-4.4,13.7-7.8c3.9-3.4,6.8-7.4,8.5-11.8c1.7-4.4,2.3-9.2,1.5-13.9c-0.8-4.7-2.6-9.2-5.4-13.2c-2.8-4,6.2-7.5,10.5-10.4c4.3-2.9,9-5.3,13.8-7.2L158.5,45.5z"] },
-  { id: 'genitalia', name: 'Genitália (1%)', paths: ["M58,107.5l5,10l5-10H58z"] },
-  { id: 'leftLeg', name: 'Perna Esquerda (18%)', paths: ["M45,110.5h15.5v90H45z", "M120,110.5h15.5v90H120z"] },
-  { id: 'rightLeg', name: 'Perna Direita (18%)', paths: ["M65,110.5h15.5v90H65z", "M140,110.5h15.5v90H140z"] },
+  { id: 'head', name: 'Cabeça (9%)', paths: [
+    // Front head
+    "M 50,35 C 50,15 70,15 70,35 C 70,45 65,48 60,48 C 55,48 50,45 50,35 Z",
+    // Back head
+    "M 130,35 C 130,15 150,15 150,35 C 150,45 145,48 140,48 C 135,48 130,45 130,35 Z"
+  ]},
+  { id: 'torsoFront', name: 'Tronco Anterior (18%)', paths: [
+    "M 45,50 L 75,50 L 80,110 L 40,110 Z"
+  ]},
+  { id: 'torsoBack', name: 'Tronco Posterior (18%)', paths: [
+    "M 125,50 L 155,50 L 160,110 L 120,110 Z"
+  ]},
+  { id: 'leftArm', name: 'Braço Esquerdo (9%)', paths: [
+    // Front left arm
+    "M 45,52 L 30,60 L 25,105 L 40,108 Z",
+    // Back left arm
+    "M 125,52 L 110,60 L 105,105 L 120,108 Z"
+  ]},
+  { id: 'rightArm', name: 'Braço Direito (9%)', paths: [
+    // Front right arm
+    "M 75,52 L 90,60 L 95,105 L 80,108 Z",
+    // Back right arm
+    "M 155,52 L 170,60 L 175,105 L 160,108 Z"
+  ]},
+  { id: 'genitalia', name: 'Genitália (1%)', paths: [
+    "M 57,110 L 63,110 L 60,120 Z"
+  ]},
+  { id: 'leftLeg', name: 'Perna Esquerda (18%)', paths: [
+    // Front left leg
+    "M 40,112 L 58,112 L 55,200 L 35,200 Z",
+    // Back left leg
+    "M 120,112 L 138,112 L 135,200 L 115,200 Z"
+  ]},
+  { id: 'rightLeg', name: 'Perna Direita (18%)', paths: [
+    // Front right leg
+    "M 62,112 L 80,112 L 85,200 L 65,200 Z",
+    // Back right leg
+    "M 142,112 L 160,112 L 165,200 L 145,200 Z"
+  ]}
 ];
 
 interface InteractiveBodyProps {
@@ -19,7 +50,7 @@ interface InteractiveBodyProps {
 export const InteractiveBody = ({ selectedParts, onSelectPart }: InteractiveBodyProps) => {
   return (
     <div className="w-full max-w-xs mx-auto">
-      <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
         {interactiveParts.map(part => (
           <g key={part.id} onClick={() => onSelectPart(part.id)} className="cursor-pointer group">
             {part.paths.map((pathData, index) => (
@@ -34,8 +65,8 @@ export const InteractiveBody = ({ selectedParts, onSelectPart }: InteractiveBody
             ))}
           </g>
         ))}
-        <text x="62.5" y="235" textAnchor="middle" className="text-sm font-semibold fill-foreground">Frente</text>
-        <text x="137.5" y="235" textAnchor="middle" className="text-sm font-semibold fill-foreground">Costas</text>
+        <text x="60" y="215" textAnchor="middle" className="text-sm font-semibold fill-foreground">Frente</text>
+        <text x="140" y="215" textAnchor="middle" className="text-sm font-semibold fill-foreground">Costas</text>
       </svg>
     </div>
   );
