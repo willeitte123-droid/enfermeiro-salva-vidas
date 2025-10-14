@@ -162,12 +162,12 @@ const Dashboard = () => {
               return (
                 <Link to={link.path} key={link.title}>
                   <Card className={cn("h-full bg-gray-800 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 transition-all group border-2 border-transparent", link.colorClasses.hoverBorder)}>
-                    <CardContent className="flex flex-col items-center justify-center text-center p-4">
-                      <div className={cn("p-3 rounded-lg mb-3 transition-colors", link.colorClasses.bg)}>
-                        <Icon className={cn("h-6 w-6 transition-colors", link.colorClasses.text)} />
+                    <CardContent className="flex flex-col items-center justify-center text-center p-3 sm:p-4">
+                      <div className={cn("p-2 sm:p-3 rounded-lg mb-2 sm:mb-3 transition-colors", link.colorClasses.bg)}>
+                        <Icon className={cn("h-5 w-5 sm:h-6 sm:w-6 transition-colors", link.colorClasses.text)} />
                       </div>
-                      <p className="font-semibold text-sm text-gray-50 break-words">{link.title}</p>
-                      <p className="text-xs text-gray-400 break-words">{link.description}</p>
+                      <p className="font-semibold text-xs sm:text-sm text-gray-50">{link.title}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-400">{link.description}</p>
                     </CardContent>
                   </Card>
                 </Link>
