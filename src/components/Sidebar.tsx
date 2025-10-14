@@ -41,6 +41,12 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
     navigate('/login');
   };
 
+  const handleLinkClick = () => {
+    if (isCollapsed) {
+      onToggle();
+    }
+  };
+
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     cn(
       "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors text-sidebar-foreground hover:bg-sidebar-hover",
@@ -70,19 +76,12 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
         </div>
       </div>
       <div className="flex-1 overflow-y-auto p-4">
-        <nav
-          className="flex flex-col gap-1"
-          onClick={() => {
-            if (isCollapsed) {
-              onToggle();
-            }
-          }}
-        >
-          <NavLink to="/" end className={navLinkClass}>
+        <nav className="flex flex-col gap-1">
+          <NavLink to="/" end className={navLinkClass} onClick={handleLinkClick}>
             <LayoutDashboard className="h-4 w-4 flex-shrink-0" />
             <span className={cn(isCollapsed && "hidden")}>Dashboard</span>
           </NavLink>
-          <NavLink to="/favorites" className={navLinkClass}>
+          <NavLink to="/favorites" className={navLinkClass} onClick={handleLinkClick}>
             <Star className="h-4 w-4 flex-shrink-0" />
             <span className={cn(isCollapsed && "hidden")}>Meus Favoritos</span>
           </NavLink>
@@ -93,27 +92,27 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
               <ChevronsUpDown className={cn("h-4 w-4 text-sidebar-foreground/50", isCollapsed && "hidden")} />
             </CollapsibleTrigger>
             <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
-              <NavLink to="/calculator" className={navLinkClass}>
+              <NavLink to="/calculator" className={navLinkClass} onClick={handleLinkClick}>
                 <Calculator className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Gotejamento</span>
               </NavLink>
-              <NavLink to="/scales" className={navLinkClass}>
+              <NavLink to="/scales" className={navLinkClass} onClick={handleLinkClick}>
                 <ListChecks className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Escalas Clínicas</span>
               </NavLink>
-              <NavLink to="/tools/dose-calculator" className={navLinkClass}>
+              <NavLink to="/tools/dose-calculator" className={navLinkClass} onClick={handleLinkClick}>
                 <FlaskConical className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Calculadora de Doses</span>
               </NavLink>
-              <NavLink to="/tools/integrated-calculators" className={navLinkClass}>
+              <NavLink to="/tools/integrated-calculators" className={navLinkClass} onClick={handleLinkClick}>
                 <CalculatorIcon className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>DUM e IMC</span>
               </NavLink>
-              <NavLink to="/tools/lab-values" className={navLinkClass}>
+              <NavLink to="/tools/lab-values" className={navLinkClass} onClick={handleLinkClick}>
                 <FileText className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Valores Laboratoriais</span>
               </NavLink>
-              <NavLink to="/tools/bloco-de-notas" className={navLinkClass}>
+              <NavLink to="/tools/bloco-de-notas" className={navLinkClass} onClick={handleLinkClick}>
                 <NotebookText className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Bloco de Anotações</span>
               </NavLink>
@@ -126,43 +125,43 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
               <ChevronsUpDown className={cn("h-4 w-4 text-sidebar-foreground/50", isCollapsed && "hidden")} />
             </CollapsibleTrigger>
             <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
-              <NavLink to="/questions" className={navLinkClass}>
+              <NavLink to="/questions" className={navLinkClass} onClick={handleLinkClick}>
                 <FileQuestion className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Banca de Questões</span>
               </NavLink>
-              <NavLink to="/simulado" className={navLinkClass}>
+              <NavLink to="/simulado" className={navLinkClass} onClick={handleLinkClick}>
                 <Timer className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Área de Simulado</span>
               </NavLink>
-              <NavLink to="/review-area" className={navLinkClass}>
+              <NavLink to="/review-area" className={navLinkClass} onClick={handleLinkClick}>
                 <Library className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Área de Revisão</span>
               </NavLink>
-              <NavLink to="/procedures" className={navLinkClass}>
+              <NavLink to="/procedures" className={navLinkClass} onClick={handleLinkClick}>
                 <ClipboardList className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Procedimentos</span>
               </NavLink>
-              <NavLink to="/medications" className={navLinkClass}>
+              <NavLink to="/medications" className={navLinkClass} onClick={handleLinkClick}>
                 <Syringe className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Medicamentos</span>
               </NavLink>
-              <NavLink to="/emergency" className={navLinkClass}>
+              <NavLink to="/emergency" className={navLinkClass} onClick={handleLinkClick}>
                 <Siren className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Emergências</span>
               </NavLink>
-              <NavLink to="/wound-care" className={navLinkClass}>
+              <NavLink to="/wound-care" className={navLinkClass} onClick={handleLinkClick}>
                 <Bandage className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Curativos</span>
               </NavLink>
-              <NavLink to="/semiology" className={navLinkClass}>
+              <NavLink to="/semiology" className={navLinkClass} onClick={handleLinkClick}>
                 <FileSearch className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Semiologia</span>
               </NavLink>
-              <NavLink to="/semiotechnique" className={navLinkClass}>
+              <NavLink to="/semiotechnique" className={navLinkClass} onClick={handleLinkClick}>
                 <HandHeart className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Semiotécnica</span>
               </NavLink>
-               <NavLink to="/ecg" className={navLinkClass}>
+               <NavLink to="/ecg" className={navLinkClass} onClick={handleLinkClick}>
                 <BookHeart className="h-4 w-4 flex-shrink-0" />
                 <span className={cn(isCollapsed && "hidden")}>Guia de ECG</span>
               </NavLink>
@@ -170,7 +169,7 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
           </Collapsible>
 
           {isAdmin && (
-            <NavLink to="/admin" className={({ isActive }) => cn(navLinkClass({ isActive }), "mt-4")}>
+            <NavLink to="/admin" className={({ isActive }) => cn(navLinkClass({ isActive }), "mt-4")} onClick={handleLinkClick}>
               <Shield className="h-4 w-4 flex-shrink-0" />
               <span className={cn(isCollapsed && "hidden")}>Painel Admin</span>
             </NavLink>
