@@ -4283,7 +4283,7 @@
     "options": [
       { "id": "A", "text": "Uma penalidade aplicada a um profissional que cometeu uma infração." },
       { "id": "B", "text": "Um ato de defesa do profissional de enfermagem que foi ofendido no exercício de sua profissão." },
-      { "id":- "C", "text": "Uma audiência de conciliação entre o profissional e o paciente." },
+      { "id": "C", "text": "Uma audiência de conciliação entre o profissional e o paciente." },
       { "id": "D", "text": "A publicação de uma nota de retratação por parte do profissional." }
     ],
     "correctAnswer": "B",
@@ -4296,7 +4296,7 @@
     "options": [
       { "id": "A", "text": "Aumentar a dose do medicamento liberada." },
       { "id": "B", "text": "Facilitar o transporte do inalador." },
-      { "id":- "C", "text": "Melhorar a coordenação entre o disparo e a inspiração, e aumentar a deposição do fármaco nos pulmões." },
+      { "id": "C", "text": "Melhorar a coordenação entre o disparo e a inspiração, e aumentar a deposição do fármaco nos pulmões." },
       { "id": "D", "text": "Reduzir o sabor desagradável do medicamento." }
     ],
     "correctAnswer": "C",
@@ -4440,7 +4440,7 @@
       { "id": "A", "text": "Um documento que o paciente assina para receber alta hospitalar." },
       { "id": "B", "text": "Um documento que autoriza a cobrança do procedimento pelo convênio." },
       { "id": "C", "text": "Um processo de comunicação e um documento que garante que o paciente autorizou um procedimento de forma voluntária, após receber todas as informações relevantes." },
-      { "id":- "D", "text": "Um formulário para o paciente avaliar a qualidade do atendimento." }
+      { "id": "D", "text": "Um formulário para o paciente avaliar a qualidade do atendimento." }
     ],
     "correctAnswer": "C",
     "explanation": "O TCLE é a expressão máxima da autonomia do paciente. Ele assegura que o paciente compreendeu os objetivos, riscos, benefícios e alternativas de um procedimento ou pesquisa e consentiu livremente com sua realização. É um processo, não apenas a assinatura de um papel."
@@ -4452,7 +4452,7 @@
     "options": [
       { "id": "A", "text": "A HNF é administrada por via oral e a HBPM por via subcutânea." },
       { "id": "B", "text": "A HBPM tem uma resposta anticoagulante mais previsível e geralmente não requer monitoramento laboratorial de rotina." },
-      { "id":- "C", "text": "A HNF tem um risco menor de sangramento." },
+      { "id": "C", "text": "A HNF tem um risco menor de sangramento." },
       { "id": "D", "text": "A HBPM tem um antídoto específico, enquanto a HNF não." }
     ],
     "correctAnswer": "B",
@@ -4634,7 +4634,7 @@
     "options": [
       { "id": "A", "text": "A lista de medicamentos que podem ser vendidos sem receita." },
       { "id": "B", "text": "A lista de medicamentos que devem ser padronizados e disponibilizados no âmbito do SUS." },
-      { "id":- "C", "text": "A relação de todos os medicamentos registrados na ANVISA." },
+      { "id": "C", "text": "A relação de todos os medicamentos registrados na ANVISA." },
       { "id": "D", "text": "A lista de medicamentos de alto custo fornecidos pelo Estado." }
     ],
     "correctAnswer": "B",
@@ -4686,7 +4686,7 @@
     "options": [
       { "id": "A", "text": "Introduzir uma sonda no ferimento para drenar o ar." },
       { "id": "B", "text": "Realizar um curativo oclusivo em três pontas." },
-      { "id":- "C", "text": "Fazer uma sutura de emergência para fechar o ferimento." },
+      { "id": "C", "text": "Fazer uma sutura de emergência para fechar o ferimento." },
       { "id": "D", "text": "Cobrir o ferimento com um curativo seco e compressivo." }
     ],
     "correctAnswer": "B",
