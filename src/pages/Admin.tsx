@@ -15,6 +15,7 @@ interface Profile {
   id: string;
   first_name: string;
   last_name: string;
+  email: string;
   role: string;
   status: string;
   avatar_url: string | null;
@@ -28,9 +29,9 @@ const Admin = () => {
 
   const fetchProfiles = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("profiles").select("*").order("first_name", { ascending: true });
+    const { data, error } = await supabase.rpc('get_all_user_details');
     if (error) {
-      toast.error("Erro ao buscar usuários", { description: error.message });
+      toast.error("Acesso Negado", { description: "Apenas administradores podem visualizar esta página." });
     } else {
       setProfiles(data || []);
     }
@@ -65,7 +66,8 @@ const Admin = () => {
         return profile.status === statusFilter;
       })
       .filter(profile =>
-        `${profile.first_name} ${profile.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
+        `${profile.first_name} ${profile.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        profile.email.toLowerCase().includes(searchTerm.toLowerCase())
       );
   }, [profiles, searchTerm, statusFilter]);
 
@@ -128,7 +130,7 @@ const Admin = () => {
               <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar por nome..."
+                  placeholder="Buscar por nome ou e-mail..."
                   className="pl-8 w-full sm:w-[250px] bg-sidebar-hover border-border/20 focus:bg-sidebar"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -158,6 +160,7 @@ const Admin = () => {
                           </Avatar>
                           <div>
                             <p className="font-medium">{`${profile.first_name} ${profile.last_name}`}</p>
+                            <p className="text-xs text-sidebar-foreground/70">{profile.email}</p>
                             <p className="text-xs text-muted-foreground md:hidden">{profile.role}</p>
                           </div>
                         </div>
