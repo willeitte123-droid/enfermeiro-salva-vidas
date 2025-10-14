@@ -72,6 +72,7 @@ const Simulado = () => {
   };
 
   const handleNext = () => {
+    if (!simuladoQuestions[currentQuestionIndex]) return;
     const newAnswer = {
       questionId: simuladoQuestions[currentQuestionIndex].id,
       selectedAnswer: selectedAnswer,
@@ -98,11 +99,16 @@ const Simulado = () => {
     });
   };
 
-  if (loading || simuladoQuestions.length === 0) {
+  if (loading) {
     return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
   }
 
   const currentQuestion = simuladoQuestions[currentQuestionIndex];
+  
+  if (!currentQuestion) {
+    return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Carregando questão...</span></div>;
+  }
+
   const progress = ((currentQuestionIndex + 1) / simuladoQuestions.length) * 100;
 
   return (

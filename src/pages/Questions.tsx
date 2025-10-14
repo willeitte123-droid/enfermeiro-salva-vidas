@@ -92,6 +92,7 @@ const Questions = () => {
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      setLoading(true);
       try {
         const response = await fetch("/questions.json");
         if (!response.ok) {
@@ -150,13 +151,13 @@ const Questions = () => {
   };
 
   useEffect(() => {
-    if (isCommentsOpen && filteredQuestions.length > 0) {
+    if (isCommentsOpen && filteredQuestions.length > 0 && filteredQuestions[currentQuestion]) {
       fetchComments(filteredQuestions[currentQuestion].id);
     }
   }, [isCommentsOpen, currentQuestion, filteredQuestions]);
 
   const handleAnswerSubmit = async () => {
-    if (!selectedAnswer) return;
+    if (!selectedAnswer || !filteredQuestions[currentQuestion]) return;
     setShowExplanation(true);
     if (!answeredQuestions.includes(currentQuestion)) {
       const isCorrect = selectedAnswer === filteredQuestions[currentQuestion].correctAnswer;
@@ -186,7 +187,7 @@ const Questions = () => {
   };
 
   async function onCommentSubmit(values: z.infer<typeof commentSchema>) {
-    if (!profile) return;
+    if (!profile || !filteredQuestions[currentQuestion]) return;
     setIsSubmittingComment(true);
     const { error } = await supabase.from("comments").insert({
       question_id: filteredQuestions[currentQuestion].id,
@@ -254,21 +255,19 @@ const Questions = () => {
     );
   }
 
-  if (filteredQuestions.length === 0 && !loading) {
+  const question = filteredQuestions[currentQuestion];
+
+  if (!question) {
     return (
       <div className="max-w-4xl mx-auto space-y-6">
         <div><h1 className="text-3xl font-bold text-foreground mb-2">Banca de Questões</h1><p className="text-muted-foreground">Teste seus conhecimentos com questões de concurso comentadas.</p></div>
-        <div className="space-y-4"><Label htmlFor="category-filter">Filtrar por Categoria</Label><Select value={selectedCategory} onValueChange={setSelectedCategory}><SelectTrigger id="category-filter"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger><SelectContent>{categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent></Select></div>
+        <div className="space-y-2"><Label htmlFor="category-filter">Filtrar por Categoria</Label><Select value={selectedCategory} onValueChange={setSelectedCategory}><SelectTrigger id="category-filter" className="w-full md:w-[300px]"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger><SelectContent>{categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent></Select></div>
         <Card><CardContent className="py-12 text-center text-muted-foreground">Nenhuma questão encontrada para a categoria selecionada.</CardContent></Card>
       </div>
     );
   }
-  
-  if (filteredQuestions.length === 0) {
-     return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando questões...</span></div>;
-  }
 
-  const isCorrect = selectedAnswer === filteredQuestions[currentQuestion].correctAnswer;
+  const isCorrect = selectedAnswer === question.correctAnswer;
   const progress = ((currentQuestion + 1) / filteredQuestions.length) * 100;
 
   return (
@@ -305,20 +304,20 @@ const Questions = () => {
       </div>
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center mb-2"><Badge variant="secondary">{filteredQuestions[currentQuestion].category}</Badge><CardDescription>Pontuação: <strong>{score} / {answeredQuestions.length}</strong></CardDescription></div>
+          <div className="flex justify-between items-center mb-2"><Badge variant="secondary">{question.category}</Badge><CardDescription>Pontuação: <strong>{score} / {answeredQuestions.length}</strong></CardDescription></div>
           <CardTitle className="text-lg">Questão {currentQuestion + 1} de {filteredQuestions.length}</CardTitle>
           <Progress value={progress} className="mt-2" />
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <h3 className="text-base font-semibold text-foreground mb-4">{filteredQuestions[currentQuestion].question}</h3>
+            <h3 className="text-base font-semibold text-foreground mb-4">{question.question}</h3>
             <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer} disabled={showExplanation} className="space-y-3">
-              {filteredQuestions[currentQuestion].options.map((option) => (
-                <Label key={option.id} htmlFor={`${option.id}-${filteredQuestions[currentQuestion].id}`} className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer ${showExplanation ? (option.id === filteredQuestions[currentQuestion].correctAnswer ? "border-green-500 bg-green-50 dark:bg-green-950 font-semibold" : (option.id === selectedAnswer ? "border-red-500 bg-red-50 dark:bg-red-950" : "border-border")) : "border-border hover:border-primary hover:bg-accent"}`}>
-                  <RadioGroupItem value={option.id} id={`${option.id}-${filteredQuestions[currentQuestion].id}`} />
+              {question.options.map((option) => (
+                <Label key={option.id} htmlFor={`${option.id}-${question.id}`} className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer ${showExplanation ? (option.id === question.correctAnswer ? "border-green-500 bg-green-50 dark:bg-green-950 font-semibold" : (option.id === selectedAnswer ? "border-red-500 bg-red-50 dark:bg-red-950" : "border-border")) : "border-border hover:border-primary hover:bg-accent"}`}>
+                  <RadioGroupItem value={option.id} id={`${option.id}-${question.id}`} />
                   <span className="flex-1 text-foreground"><span className="font-bold">{option.id})</span> {option.text}</span>
-                  {showExplanation && option.id === filteredQuestions[currentQuestion].correctAnswer && <CheckCircle2 className="h-5 w-5 text-green-600" />}
-                  {showExplanation && option.id === selectedAnswer && option.id !== filteredQuestions[currentQuestion].correctAnswer && <XCircle className="h-5 w-5 text-red-600" />}
+                  {showExplanation && option.id === question.correctAnswer && <CheckCircle2 className="h-5 w-5 text-green-600" />}
+                  {showExplanation && option.id === selectedAnswer && option.id !== question.correctAnswer && <XCircle className="h-5 w-5 text-red-600" />}
                 </Label>
               ))}
             </RadioGroup>
@@ -329,7 +328,7 @@ const Questions = () => {
               <Alert className={`border-2 ${isCorrect ? "border-green-500" : "border-red-500"}`}>
                 <Lightbulb className="h-4 w-4" />
                 <AlertTitle className="font-semibold">{isCorrect ? "Resposta Correta!" : "Resposta Incorreta"}</AlertTitle>
-                <AlertDescription><strong>Gabarito: {filteredQuestions[currentQuestion].correctAnswer}.</strong> {filteredQuestions[currentQuestion].explanation}</AlertDescription>
+                <AlertDescription><strong>Gabarito: {question.correctAnswer}.</strong> {question.explanation}</AlertDescription>
               </Alert>
 
               <Collapsible open={isCommentsOpen} onOpenChange={setIsCommentsOpen}>
