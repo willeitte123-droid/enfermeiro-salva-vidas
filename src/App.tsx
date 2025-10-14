@@ -32,6 +32,9 @@ const FugulinScale = lazy(() => import("./pages/scales/FugulinScale"));
 const MorseScale = lazy(() => import("./pages/scales/MorseScale"));
 const AldreteScale = lazy(() => import("./pages/scales/AldreteScale"));
 const ApgarScale = lazy(() => import("./pages/scales/ApgarScale"));
+const ManchesterScale = lazy(() => import("./pages/scales/ManchesterScale"));
+const ParklandScale = lazy(() => import("./pages/scales/ParklandScale"));
+const AsaScale = lazy(() => import("./pages/scales/AsaScale"));
 const EcgGuide = lazy(() => import("./pages/EcgGuide"));
 const ProfilePage = lazy(() => import("./pages/Profile"));
 const PublicProfile = lazy(() => import("./pages/PublicProfile"));
@@ -126,6 +129,9 @@ const AppContent = () => {
           <Route path="scales/morse" element={<MorseScale />} />
           <Route path="scales/aldrete" element={<AldreteScale />} />
           <Route path="scales/apgar" element={<ApgarScale />} />
+          <Route path="scales/manchester" element={<ManchesterScale />} />
+          <Route path="scales/parkland" element={<ParklandScale />} />
+          <Route path="scales/asa" element={<AsaScale />} />
           <Route path="ecg" element={<EcgGuide />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="user/:userId" element={<PublicProfile />} />
