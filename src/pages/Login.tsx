@@ -4,14 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Form,
   FormControl,
   FormField,
@@ -57,97 +49,98 @@ const Login = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mx-auto h-12 w-12 rounded-lg bg-primary flex items-center justify-center mb-4">
-            <Stethoscope className="h-6 w-6 text-primary-foreground" />
+    <div className="w-full min-h-screen lg:grid lg:grid-cols-2 bg-muted/40">
+      <div className="hidden lg:flex flex-col items-center justify-center bg-primary text-primary-foreground p-8 text-center">
+        <Stethoscope className="h-24 w-24 mb-6" />
+        <h1 className="text-4xl font-bold">Enfermagem Pro</h1>
+        <p className="mt-4 text-lg text-primary-foreground/80">
+          Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
+        </p>
+      </div>
+      <div className="flex items-center justify-center py-12 px-4">
+        <div className="mx-auto w-full max-w-md space-y-6">
+          <div className="space-y-2 text-center">
+            <h1 className="text-3xl font-bold">Acesse sua conta</h1>
+            <p className="text-muted-foreground">
+              Bem-vindo de volta! Insira seus dados para continuar.
+            </p>
           </div>
-          <CardTitle className="text-2xl">Acesse sua conta</CardTitle>
-          <CardDescription>
-            Bem-vindo de volta! Insira seus dados para continuar.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="seu@email.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center justify-between">
-                      <FormLabel>Senha</FormLabel>
-                      <Link
-                        to="#"
-                        className="text-sm text-primary hover:underline"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toast.info("Função não implementada", {
-                            description: "A recuperação de senha será adicionada em breve.",
-                          });
-                        }}
-                      >
-                        Esqueceu a senha?
-                      </Link>
-                    </div>
-                    <div className="relative">
+          <div className="bg-background p-6 rounded-lg shadow-sm border">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input
-                          type={showPassword ? "text" : "password"}
-                          placeholder="********"
-                          {...field}
-                        />
+                        <Input placeholder="seu@email.com" {...field} />
                       </FormControl>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute top-0 right-0 h-full px-3"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
-                        ) : (
-                          <Eye className="h-4 w-4 text-muted-foreground" />
-                        )}
-                      </Button>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Entrando..." : "Entrar"}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm text-muted-foreground">
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Senha</FormLabel>
+                        <Link
+                          to="#"
+                          className="text-sm text-primary hover:underline"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toast.info("Função não implementada", {
+                              description: "A recuperação de senha será adicionada em breve.",
+                            });
+                          }}
+                        >
+                          Esqueceu a senha?
+                        </Link>
+                      </div>
+                      <div className="relative">
+                        <FormControl>
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="********"
+                            {...field}
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="absolute top-0 right-0 h-full px-3"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4 text-muted-foreground" />
+                          ) : (
+                            <Eye className="h-4 w-4 text-muted-foreground" />
+                          )}
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Entrando..." : "Entrar"}
+                </Button>
+              </form>
+            </Form>
+          </div>
+          <div className="mt-4 text-center text-sm">
             Não tem uma conta?{" "}
-            <Link
-              to="/register"
-              className="text-primary hover:underline"
-            >
+            <Link to="/register" className="underline text-primary">
               Cadastre-se
             </Link>
-          </p>
-        </CardFooter>
-      </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
