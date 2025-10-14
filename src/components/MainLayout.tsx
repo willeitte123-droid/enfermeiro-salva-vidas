@@ -37,9 +37,9 @@ const MainLayout = ({ session, profile }: MainLayoutProps) => {
     <div className="flex min-h-screen w-full bg-muted/40">
       <Sidebar isAdmin={isAdmin} user={user} isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
       <main className="flex-1 flex flex-col">
-        <Header onSearchClick={() => setIsSearchOpen(true)} />
+        <Header onSearchClick={() => setIsSearchOpen(true)} isAdmin={isAdmin} user={user} />
         <GlobalSearch open={isSearchOpen} setOpen={setIsSearchOpen} />
-        <div className="flex-1 overflow-y-auto p-6 md:p-8">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
           <Outlet context={{ profile }} />
         </div>
       </main>

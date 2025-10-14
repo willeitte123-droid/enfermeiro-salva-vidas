@@ -1,9 +1,19 @@
 import { Menu, Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { GlobalSearch } from "./GlobalSearch";
+import MobileSidebar from "./MobileSidebar";
 
-const Header = ({ onSearchClick }: { onSearchClick: () => void }) => {
+interface HeaderProps {
+  onSearchClick: () => void;
+  isAdmin: boolean;
+  user: {
+    first_name?: string;
+    last_name?: string;
+    avatar_url?: string;
+  } | null;
+}
+
+const Header = ({ onSearchClick, isAdmin, user }: HeaderProps) => {
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6 sticky top-0 z-30">
       <Sheet>
@@ -13,8 +23,8 @@ const Header = ({ onSearchClick }: { onSearchClick: () => void }) => {
             <span className="sr-only">Abrir menu de navegação</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col p-0">
-          {/* O conteúdo do Sidebar para mobile pode ser inserido aqui no futuro */}
+        <SheetContent side="left" className="flex flex-col p-0 w-72">
+          <MobileSidebar isAdmin={isAdmin} user={user} />
         </SheetContent>
       </Sheet>
       <div className="w-full flex-1">
