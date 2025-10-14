@@ -1,7 +1,7 @@
 import { Menu, Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import MobileSidebar from "./MobileSidebar";
+import Sidebar from "./Sidebar";
 
 interface HeaderProps {
   onSearchClick: () => void;
@@ -24,7 +24,7 @@ const Header = ({ onSearchClick, isAdmin, user }: HeaderProps) => {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col p-0 w-72">
-          <MobileSidebar isAdmin={isAdmin} user={user} />
+          <Sidebar isAdmin={isAdmin} user={user} isMobile={true} />
         </SheetContent>
       </Sheet>
       <div className="w-full flex-1">

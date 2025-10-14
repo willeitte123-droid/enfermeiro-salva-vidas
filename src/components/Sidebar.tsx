@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useTheme } from "./ThemeProvider";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import SidebarNav from "./SidebarNav";
+import { SheetClose } from "./ui/sheet";
 
 interface SidebarProps {
   isAdmin: boolean;
@@ -17,11 +18,12 @@ interface SidebarProps {
     last_name?: string;
     avatar_url?: string;
   } | null;
-  isCollapsed: boolean;
-  onToggle: () => void;
+  isCollapsed?: boolean;
+  onToggle?: () => void;
+  isMobile?: boolean;
 }
 
-const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
+const Sidebar = ({ isAdmin, user, isCollapsed = false, onToggle, isMobile = false }: SidebarProps) => {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
 
@@ -38,19 +40,42 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
     navigate('/login');
   };
 
+  const UserProfileLink = (
+    <Link to="/profile" className={cn("flex items-center justify-between p-2 rounded-md hover:bg-sidebar-hover group", isCollapsed && "justify-center")}>
+      <div className="flex items-center gap-3">
+        <Avatar className="h-9 w-9 flex-shrink-0">
+          <AvatarImage src={user?.avatar_url} alt={`${user?.first_name} ${user?.last_name}`} className="object-cover" />
+          <AvatarFallback className="bg-primary text-primary-foreground">{getInitials()}</AvatarFallback>
+        </Avatar>
+        <div className={cn(isCollapsed && "hidden")}>
+          <p className="text-sm font-medium text-white">{`${user?.first_name || 'Usuário'} ${user?.last_name || ''}`}</p>
+          <p className="text-xs text-sidebar-foreground">{isAdmin ? 'Administrador' : 'Usuário'}</p>
+        </div>
+      </div>
+      {!isMobile && (
+        <Button variant="ghost" size="icon" onClick={handleLogout} className={cn("text-sidebar-foreground transition-opacity hover:bg-sidebar-hover hover:text-white", isCollapsed ? "opacity-0 group-hover:opacity-100" : "opacity-0 group-hover:opacity-100")} title="Sair">
+          <LogOut className="h-5 w-5" />
+        </Button>
+      )}
+    </Link>
+  );
+
   return (
     <aside className={cn(
-      "hidden md:flex flex-col bg-sidebar text-sidebar-foreground border-r border-border/10 transition-all duration-300 relative",
+      "flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300",
+      isMobile ? "h-full" : "hidden md:flex border-r border-border/10 relative",
       isCollapsed ? "w-20" : "w-64"
     )}>
-      <Button
-        variant="primary"
-        size="icon"
-        className="absolute -right-4 top-16 z-10 h-8 w-8 rounded-full shadow-md"
-        onClick={onToggle}
-      >
-        {isCollapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
-      </Button>
+      {!isMobile && onToggle && (
+        <Button
+          variant="primary"
+          size="icon"
+          className="absolute -right-4 top-16 z-10 h-8 w-8 rounded-full shadow-md"
+          onClick={onToggle}
+        >
+          {isCollapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
+        </Button>
+      )}
 
       <div className="flex h-16 items-center border-b border-border/10 px-6">
         <div className="flex items-center gap-3">
@@ -59,7 +84,7 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
         </div>
       </div>
       <div className="flex-1 overflow-y-auto p-4">
-        <SidebarNav isAdmin={isAdmin} isCollapsed={isCollapsed} />
+        <SidebarNav isAdmin={isAdmin} isCollapsed={isCollapsed} isMobile={isMobile} />
       </div>
       <div className="mt-auto border-t border-border/10 p-4 space-y-2">
         <DropdownMenu>
@@ -77,21 +102,14 @@ const Sidebar = ({ isAdmin, user, isCollapsed, onToggle }: SidebarProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Link to="/profile" className={cn("flex items-center justify-between p-2 rounded-md hover:bg-sidebar-hover group", isCollapsed && "justify-center")}>
-          <div className="flex items-center gap-3">
-            <Avatar className="h-9 w-9 flex-shrink-0">
-              <AvatarImage src={user?.avatar_url} alt={`${user?.first_name} ${user?.last_name}`} className="object-cover" />
-              <AvatarFallback className="bg-primary text-primary-foreground">{getInitials()}</AvatarFallback>
-            </Avatar>
-            <div className={cn(isCollapsed && "hidden")}>
-              <p className="text-sm font-medium text-white">{`${user?.first_name || 'Usuário'} ${user?.last_name || ''}`}</p>
-              <p className="text-xs text-sidebar-foreground">{isAdmin ? 'Administrador' : 'Usuário'}</p>
-            </div>
-          </div>
-          <Button variant="ghost" size="icon" onClick={handleLogout} className={cn("text-sidebar-foreground transition-opacity hover:bg-sidebar-hover hover:text-white", isCollapsed ? "opacity-0 group-hover:opacity-100" : "opacity-0 group-hover:opacity-100")} title="Sair">
+        {isMobile ? <SheetClose asChild>{UserProfileLink}</SheetClose> : UserProfileLink}
+        
+        {isMobile && (
+          <Button variant="ghost" onClick={handleLogout} className="w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-sidebar-hover hover:text-white">
             <LogOut className="h-5 w-5" />
+            Sair
           </Button>
-        </Link>
+        )}
       </div>
     </aside>
   );
