@@ -47,19 +47,40 @@ import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient();
 
-interface Profile {
-  id: string;
-  role: string;
-  status: string;
-  first_name?: string;
-  last_name?: string;
-  avatar_url?: string;
-  notes?: string;
-}
+const AppContent = () => {
+  const [session, setSession] = useState<Session | null>(null);
+  const [loadingSession, setLoadingSession] = useState(true);
 
-const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null, profile: Profile | null, isAdmin: boolean }) => {
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
+      setLoadingSession(false);
+    };
+
+    getSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const { data: profile, isLoading: isLoadingProfile } = useProfile(session);
+
+  if (loadingSession || (session && isLoadingProfile)) {
+    return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+  }
+
   if (!session) {
-    return <Navigate to="/login" />;
+    return (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    );
   }
 
   if (profile?.status === 'pending') {
@@ -71,6 +92,8 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
       </div>
     );
   }
+
+  const isAdmin = profile?.role === 'admin';
 
   return (
     <Routes>
@@ -108,43 +131,8 @@ const ProtectedRoute = ({ session, profile, isAdmin }: { session: Session | null
       </Route>
       <Route path="/simulado/start" element={<Simulado />} />
       <Route path="/simulado/resultado" element={<SimuladoResultado />} />
-    </Routes>
-  );
-};
-
-const AppContent = () => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [loadingSession, setLoadingSession] = useState(true);
-
-  useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      setLoadingSession(false);
-    };
-
-    getSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const { data: profile, isLoading: isLoadingProfile } = useProfile(session);
-
-  if (loadingSession || (session && isLoadingProfile)) {
-    return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /></div>;
-  }
-
-  const isAdmin = profile?.role === 'admin';
-
-  return (
-    <Routes>
-      <Route path="/login" element={session ? <Navigate to="/" /> : <Login />} />
-      <Route path="/register" element={session ? <Navigate to="/" /> : <Register />} />
-      <Route path="/*" element={<ProtectedRoute session={session} profile={profile as Profile | null} isAdmin={isAdmin} />} />
+      <Route path="/login" element={<Navigate to="/" replace />} />
+      <Route path="/register" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };
