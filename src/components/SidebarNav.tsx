@@ -8,11 +8,20 @@ import {
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { SheetClose } from "./ui/sheet";
+import { Badge } from "./ui/badge";
 
 interface SidebarNavProps {
   isAdmin: boolean;
   isCollapsed?: boolean;
   isMobile?: boolean;
+}
+
+interface NavItem {
+  to: string;
+  end?: boolean;
+  icon: React.ElementType;
+  label: string;
+  disabled?: boolean;
 }
 
 const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarNavProps) => {
@@ -24,13 +33,13 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
 
   const sectionHeaderClass = "flex w-full items-center justify-between rounded-md px-3 py-2 text-xs font-bold uppercase tracking-wider text-primary mt-4";
   
-  const navItems = {
+  const navItems: { [key: string]: NavItem[] } = {
     main: [
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
     ],
     management: [
-      { to: "/plantao", icon: Users, label: "Gerenciador de Plantão" },
+      { to: "/plantao", icon: Users, label: "Gerenciador de Plantão", disabled: true },
     ],
     tools: [
       { to: "/calculator", icon: Calculator, label: "Gotejamento" },
@@ -58,14 +67,28 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     ]
   };
 
-  const renderNavLink = (item: { to: string; end?: boolean; icon: React.ElementType; label: string }) => {
+  const renderNavLink = (item: NavItem) => {
     const Icon = item.icon;
     const linkContent = (
       <>
         <Icon className="h-4 w-4 flex-shrink-0" />
         <span className={cn(isCollapsed && !isMobile && "hidden")}>{item.label}</span>
+        {item.disabled && (!isCollapsed || isMobile) && (
+          <Badge variant="outline" className="ml-auto text-xs bg-sidebar-hover border-sidebar-foreground/20 text-sidebar-foreground/80">Em Breve</Badge>
+        )}
       </>
     );
+
+    if (item.disabled) {
+      const disabledElement = (
+        <div className={cn(
+          "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/50 cursor-not-allowed",
+        )}>
+          {linkContent}
+        </div>
+      );
+      return <div key={item.to}>{disabledElement}</div>;
+    }
 
     const link = (
       <NavLink to={item.to} end={item.end} className={navLinkClass}>
