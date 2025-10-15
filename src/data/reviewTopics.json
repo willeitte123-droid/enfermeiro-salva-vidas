@@ -265,6 +265,15 @@
         ]
       },
       {
+        "subtitle": "Tempos Cirúrgicos (Fases da Cirurgia)",
+        "points": [
+          "<strong>1. Diérese:</strong> É o tempo de dividir, cortar ou separar os tecidos. Inicia a cirurgia. Ex: Incisão com bisturi.",
+          "<strong>2. Hemostasia:</strong> É o controle do sangramento, que pode ser temporário ou definitivo, preventivo ou corretivo. Ex: Pinçamento de vasos, eletrocauterização.",
+          "<strong>3. Exérese (ou Cirurgia Propriamente Dita):</strong> É o tempo cirúrgico fundamental, onde o objetivo principal é realizado (remover, reparar, corrigir). Ex: Remoção do apêndice (apendicectomia).",
+          "<strong>4. Síntese (ou Sutura):</strong> É a união dos tecidos separados, visando restabelecer a continuidade anatômica e funcional. Ex: Sutura da pele e planos subjacentes."
+        ]
+      },
+      {
         "subtitle": "Classificação das Cirurgias",
         "points": [
           "<strong>Quanto ao Potencial de Contaminação:</strong><ul><li><strong>Limpas:</strong> Sem contato com TGI, respiratório ou geniturinário. Ex: artroplastia.</li><li><strong>Potencialmente Contaminadas:</strong> Contato com TGI/respiratório/geniturinário em condições controladas. Ex: colecistectomia.</li><li><strong>Contaminadas:</strong> Feridas traumáticas recentes, contaminação grosseira do TGI. Ex: apendicectomia supurada.</li><li><strong>Infectadas:</strong> Presença de pus, vísceras perfuradas. Ex: cirurgia de abscesso.</li></ul>",
