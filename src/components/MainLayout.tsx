@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { GlobalSearch } from "./GlobalSearch";
 import { Session } from "@supabase/supabase-js";
+import { Loader2 } from "lucide-react";
 
 interface Profile {
   id: string;
@@ -18,6 +19,12 @@ interface MainLayoutProps {
   session: Session;
   profile: Profile | null;
 }
+
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center h-full w-full">
+    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+  </div>
+);
 
 const MainLayout = ({ session, profile }: MainLayoutProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -40,7 +47,9 @@ const MainLayout = ({ session, profile }: MainLayoutProps) => {
         <Header onSearchClick={() => setIsSearchOpen(true)} isAdmin={isAdmin} user={user} />
         <GlobalSearch open={isSearchOpen} setOpen={setIsSearchOpen} />
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
-          <Outlet context={{ profile }} />
+          <Suspense fallback={<LoadingFallback />}>
+            <Outlet context={{ profile }} />
+          </Suspense>
         </div>
       </main>
     </div>
