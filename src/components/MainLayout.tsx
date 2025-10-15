@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { GlobalSearch } from "./GlobalSearch";
@@ -22,6 +22,7 @@ interface MainLayoutProps {
 const MainLayout = ({ session, profile }: MainLayoutProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const location = useLocation();
   const isAdmin = profile?.role === 'admin';
   const user = profile ? { 
     first_name: profile.first_name, 
@@ -40,7 +41,7 @@ const MainLayout = ({ session, profile }: MainLayoutProps) => {
         <Header onSearchClick={() => setIsSearchOpen(true)} isAdmin={isAdmin} user={user} />
         <GlobalSearch open={isSearchOpen} setOpen={setIsSearchOpen} />
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
-          <Outlet context={{ profile }} />
+          <Outlet key={location.pathname} context={{ profile }} />
         </div>
       </main>
     </div>
