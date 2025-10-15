@@ -135,16 +135,24 @@
     "title": "Sistematização da Assistência de Enfermagem (SAE)",
     "icon": "ClipboardList",
     "color": "text-cyan-500",
-    "summary": "Método científico para organizar o cuidado, garantindo uma assistência individualizada e de qualidade.",
+    "summary": "Método científico e obrigatório para organizar o cuidado, garantindo uma assistência individualizada, segura e de qualidade.",
     "details": [
+      {
+        "subtitle": "SAE, Processo de Enfermagem e Legislação",
+        "points": [
+          "O <strong>Processo de Enfermagem (PE)</strong> é o método de trabalho; a SAE é a organização e documentação desse método.",
+          "A implementação da SAE é <strong>obrigatória</strong> por lei (Resolução COFEN 358/2009) em todos os ambientes, públicos ou privados, onde ocorre o cuidado profissional de enfermagem.",
+          "A SAE organiza o cuidado em 5 etapas inter-relacionadas, sendo uma atividade <strong>privativa do Enfermeiro</strong>."
+        ]
+      },
       {
         "subtitle": "As 5 Etapas da SAE",
         "points": [
-          "<strong>1. Coleta de Dados (Histórico):</strong> Anamnese e exame físico para coletar informações abrangentes sobre o estado de saúde do paciente.",
-          "<strong>2. Diagnóstico de Enfermagem:</strong> Julgamento clínico sobre as respostas do indivíduo, família ou comunidade aos problemas de saúde/processos vitais. Utiliza-se a taxonomia da NANDA-I.",
-          "<strong>3. Planejamento de Enfermagem:</strong> Definição de resultados esperados (NOC - Nursing Outcomes Classification) e metas a serem alcançadas para cada diagnóstico.",
-          "<strong>4. Implementação (Prescrição):</strong> Realização das intervenções e ações de enfermagem planejadas para atingir os resultados. Utiliza-se a taxonomia da NIC (Nursing Interventions Classification).",
-          "<strong>5. Avaliação de Enfermagem:</strong> Processo contínuo de verificação dos resultados alcançados, reavaliando o processo e ajustando o plano de cuidados conforme necessário."
+          "<strong>1. Coleta de Dados (Histórico):</strong> Coleta de informações através de anamnese e exame físico. Fontes podem ser primárias (paciente) ou secundárias (família, prontuário).",
+          "<strong>2. Diagnóstico de Enfermagem (DE):</strong> Julgamento clínico sobre as respostas do paciente. Utiliza-se a taxonomia da NANDA-I, estruturada no formato <strong>P.E.S.</strong> (Problema, Etiologia, Sinais e Sintomas).",
+          "<strong>3. Planejamento de Enfermagem:</strong> Definição de <strong>Resultados Esperados (NOC)</strong>, que são as metas mensuráveis para o paciente, e seleção das <strong>Intervenções de Enfermagem (NIC)</strong>, que são as ações a serem realizadas.",
+          "<strong>4. Implementação (Prescrição):</strong> Execução do plano de cuidados. A prescrição de enfermagem detalha as ações que a equipe realizará, sendo fundamental o registro (checagem) de tudo que foi feito.",
+          "<strong>5. Avaliação de Enfermagem:</strong> Processo contínuo para verificar se os resultados foram alcançados. A avaliação direciona a continuidade do plano, podendo gerar novos diagnósticos ou a alta do paciente do processo de cuidado."
         ]
       }
     ]
