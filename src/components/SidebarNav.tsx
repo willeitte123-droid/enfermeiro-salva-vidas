@@ -3,12 +3,11 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook, Users
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook, Users, Construction
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { SheetClose } from "./ui/sheet";
-import { Badge } from "./ui/badge";
 
 interface SidebarNavProps {
   isAdmin: boolean;
@@ -74,7 +73,7 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
         <Icon className="h-4 w-4 flex-shrink-0" />
         <span className={cn(isCollapsed && !isMobile && "hidden")}>{item.label}</span>
         {item.disabled && (!isCollapsed || isMobile) && (
-          <Badge variant="outline" className="ml-auto text-xs bg-sidebar-hover border-sidebar-foreground/20 text-sidebar-foreground/80">Em Breve</Badge>
+          <Construction className="ml-auto h-4 w-4 text-amber-400" title="Em desenvolvimento" />
         )}
       </>
     );
