@@ -87,17 +87,15 @@ serve(async (req: Request) => {
 
     if (existingUser.users.length === 0) {
       if (isApprovedEvent) {
-        const { data: newUser, error: creationError } = await supabaseAdmin.auth.admin.createUser({
-          email: email,
-          email_confirm: true,
-        });
+        // Alterado de createUser para inviteUserByEmail para enviar o e-mail de convite
+        const { data: newUser, error: creationError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
 
         if (creationError) {
-          await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao criar novo usuário: ${creationError.message}` });
+          await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao convidar novo usuário: ${creationError.message}` });
           throw creationError;
         }
         userId = newUser.user.id;
-        detailsLog = 'Novo usuário criado. ';
+        detailsLog = 'Novo usuário convidado. ';
       } else {
         await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: 'Usuário não encontrado para evento de cancelamento/atraso. Nenhuma ação tomada.' });
         return new Response('User not found for this event.', { status: 200, headers: corsHeaders });
