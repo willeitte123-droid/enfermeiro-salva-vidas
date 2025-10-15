@@ -2,20 +2,51 @@ import { useState, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { AlertCircle, Search } from "lucide-react";
+import { AlertCircle, Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import FavoriteButton from "@/components/FavoriteButton";
-import { emergencyProtocols } from "@/data/emergencies";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import * as LucideIcons from "lucide-react";
 
 interface Profile {
   id: string;
 }
 
+interface ContentLine {
+  text: string;
+}
+
+interface EmergencyItem {
+  title: string;
+  icon: keyof typeof LucideIcons;
+  color: string;
+  openColor: string;
+  content: ContentLine[];
+}
+
+interface EmergencyCategory {
+  category: string;
+  color: string;
+  items: EmergencyItem[];
+}
+
+const fetchEmergencyProtocols = async (): Promise<EmergencyCategory[]> => {
+  const response = await fetch('/data/emergencies.json');
+  if (!response.ok) {
+    throw new Error('Não foi possível carregar os protocolos.');
+  }
+  return response.json();
+};
+
 const Emergency = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: emergencyProtocols = [], isLoading: isLoadingProtocols } = useQuery({
+    queryKey: ['emergencyProtocols'],
+    queryFn: fetchEmergencyProtocols,
+  });
 
   const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
     queryKey: ['favorites', profile?.id, 'Protocolo de Emergência'],
@@ -49,7 +80,7 @@ const Emergency = () => {
         return { ...category, items: filteredItems };
       })
       .filter(category => category.items.length > 0);
-  }, [searchTerm]);
+  }, [searchTerm, emergencyProtocols]);
 
   return (
     <div className="space-y-6">
@@ -95,7 +126,11 @@ const Emergency = () => {
         </CardContent>
       </Card>
 
-      {filteredProtocols.length > 0 ? (
+      {isLoadingProtocols ? (
+        <div className="flex justify-center items-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : filteredProtocols.length > 0 ? (
         <div className="space-y-6">
           {filteredProtocols.map((category) => (
             <Card key={category.category}>
@@ -105,14 +140,14 @@ const Emergency = () => {
               <CardContent>
                 <Accordion type="single" collapsible className="w-full space-y-4">
                   {category.items.map((item) => {
-                    const Icon = item.icon;
+                    const Icon = LucideIcons[item.icon] as LucideIcons.LucideIcon;
                     const itemId = `/emergency#${item.title.toLowerCase().replace(/\s+/g, '-')}`;
                     return (
                       <AccordionItem value={item.title} key={item.title} className="border rounded-lg px-4 bg-card shadow-sm">
                         <div className="flex items-center">
                           <AccordionTrigger className="flex-1 group hover:no-underline text-left py-0">
                             <div className="flex items-center gap-3 py-4">
-                              <Icon className={`h-5 w-5 ${item.color} transition-colors group-data-[state=open]:${item.openColor}`} />
+                              {Icon && <Icon className={`h-5 w-5 ${item.color} transition-colors group-data-[state=open]:${item.openColor}`} />}
                               <span className="font-semibold text-left">{item.title}</span>
                             </div>
                           </AccordionTrigger>
