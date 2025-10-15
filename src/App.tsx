@@ -45,9 +45,7 @@ const DoseCalculator = React.lazy(() => import("./pages/tools/DoseCalculator"));
 const LabValues = React.lazy(() => import("./pages/tools/LabValues"));
 const BlocoDeNotas = React.lazy(() => import("./pages/tools/BlocoDeNotas"));
 const IntegratedCalculators = React.lazy(() => import("./pages/tools/IntegratedCalculators"));
-const SimuladoLobby = React.lazy(() => import("./pages/simulado/SimuladoLobby"));
-const Simulado = React.lazy(() => import("./pages/simulado/Simulado"));
-const SimuladoResultado = React.lazy(() => import("./pages/simulado/SimuladoResultado"));
+const SimuladoPage = React.lazy(() => import("./pages/SimuladoPage"));
 const ReviewArea = React.lazy(() => import("./pages/ReviewArea"));
 const FavoritesPage = React.lazy(() => import("./pages/FavoritesPage"));
 
@@ -139,9 +137,7 @@ const AppContent = () => {
         <Route path="tools/lab-values" element={<LabValues />} />
         <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />
         <Route path="tools/integrated-calculators" element={<IntegratedCalculators />} />
-        <Route path="simulado" element={<SimuladoLobby />} />
-        <Route path="simulado/start" element={<Simulado />} />
-        <Route path="simulado/resultado" element={<SimuladoResultado />} />
+        <Route path="simulado" element={<SimuladoPage />} />
         <Route path="review-area" element={<ReviewArea />} />
         <Route path="favorites" element={<FavoritesPage />} />
         <Route path="*" element={<NotFound />} />

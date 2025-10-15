@@ -1,34 +1,26 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
 import { Loader2, Timer, AlertTriangle } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import { useQuestions } from "@/context/QuestionsContext";
-
-interface Question {
-  id: number;
-  category: string;
-  question: string;
-  options: { id: string; text: string }[];
-  correctAnswer: string;
-  explanation: string;
-}
+import { Question } from "@/context/QuestionsContext";
 
 interface UserAnswer {
   questionId: number;
   selectedAnswer: string;
 }
 
-const Simulado = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { numQuestions, totalTime } = location.state || { numQuestions: 20, totalTime: 20 * 2 * 60 };
+interface SimuladoQuizProps {
+  numQuestions: number;
+  totalTime: number;
+  onFinish: (results: { userAnswers: UserAnswer[]; questions: Question[]; timeTaken: number }) => void;
+}
 
+const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) => {
   const { questions: allQuestions, isLoading: isLoadingQuestions } = useQuestions();
   const [simuladoQuestions, setSimuladoQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
@@ -82,12 +74,10 @@ const Simulado = () => {
   };
 
   const finishSimulado = (finalAnswers: UserAnswer[]) => {
-    navigate("/simulado/resultado", {
-      state: {
-        userAnswers: finalAnswers,
-        questions: simuladoQuestions,
-        timeTaken: totalTime - timeLeft,
-      },
+    onFinish({
+      userAnswers: finalAnswers,
+      questions: simuladoQuestions,
+      timeTaken: totalTime - timeLeft,
     });
   };
 
@@ -152,4 +142,4 @@ const Simulado = () => {
   );
 };
 
-export default Simulado;
+export default SimuladoQuiz;

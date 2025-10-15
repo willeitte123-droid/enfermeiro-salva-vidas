@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/lib/supabase';
 
-interface Question {
+export interface Question {
   id: number;
   category: string;
   question: string;
