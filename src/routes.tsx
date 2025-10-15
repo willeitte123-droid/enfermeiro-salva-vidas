@@ -16,6 +16,7 @@ import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Admin from './pages/Admin';
+import KiwifyAdmin from './pages/admin/KiwifyAdmin';
 import Scales from './pages/Scales';
 import GlasgowScale from './pages/scales/GlasgowScale';
 import BradenScale from './pages/scales/BradenScale';
@@ -67,6 +68,7 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
         <Route path="procedures" element={<Procedures />} />
         <Route path="questions" element={<Questions />} />
         <Route path="admin" element={<Admin />} />
+        <Route path="admin/kiwify" element={<KiwifyAdmin />} />
         <Route path="scales" element={<Scales />} />
         <Route path="scales/glasgow" element={<GlasgowScale />} />
         <Route path="scales/braden" element={<BradenScale />} />

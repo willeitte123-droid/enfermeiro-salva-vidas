@@ -3,11 +3,11 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { SheetClose } from "@/components/ui/sheet";
+import { SheetClose } from "./ui/sheet";
 
 interface SidebarNavProps {
   isAdmin: boolean;
@@ -51,6 +51,7 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     ],
     admin: [
       { to: "/admin", icon: Shield, label: "Painel Admin" },
+      { to: "/admin/kiwify", icon: Webhook, label: "Kiwify Webhook" },
     ]
   };
 
