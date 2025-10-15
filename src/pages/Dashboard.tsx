@@ -18,13 +18,13 @@ interface Profile {
 
 interface FeaturedComment {
   content: string;
-  author: {
+  profiles: {
     id: string;
     first_name: string;
     last_name: string;
     avatar_url: string;
   };
-  question: {
+  questions: {
     id: number;
     question: string;
   };
@@ -183,14 +183,14 @@ const Dashboard = () => {
               </blockquote>
               <div className="flex justify-end items-center gap-3 mt-2">
                 <p className="text-sm font-semibold text-right">
-                  — <Link to={`/user/${currentComment.author.id}`} className="hover:underline text-primary">
-                    {`${currentComment.author.first_name} ${currentComment.author.last_name}`}
+                  — <Link to={`/user/${currentComment.profiles.id}`} className="hover:underline text-primary">
+                    {`${currentComment.profiles.first_name} ${currentComment.profiles.last_name}`}
                   </Link>
                 </p>
-                <Link to={`/user/${currentComment.author.id}`}>
+                <Link to={`/user/${currentComment.profiles.id}`}>
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={currentComment.author.avatar_url} alt={`Avatar de ${currentComment.author.first_name}`} className="object-cover" />
-                    <AvatarFallback>{`${currentComment.author.first_name?.[0] || ''}${currentComment.author.last_name?.[0] || ''}`.toUpperCase()}</AvatarFallback>
+                    <AvatarImage src={currentComment.profiles.avatar_url} alt={`Avatar de ${currentComment.profiles.first_name}`} className="object-cover" />
+                    <AvatarFallback>{`${currentComment.profiles.first_name?.[0] || ''}${currentComment.profiles.last_name?.[0] || ''}`.toUpperCase()}</AvatarFallback>
                   </Avatar>
                 </Link>
               </div>
@@ -200,7 +200,7 @@ const Dashboard = () => {
                   <span>Referente à questão:</span>
                 </div>
                 <p className="text-sm text-foreground font-medium">
-                  "{currentComment.question.question.substring(0, 120)}..."
+                  "{currentComment.questions.question.substring(0, 120)}..."
                 </p>
               </Link>
             </div>
