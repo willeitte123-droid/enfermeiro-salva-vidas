@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Loader2, Timer, AlertTriangle } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
-import { useQuestions } from "@/context/QuestionsContext";
 import { Question } from "@/context/QuestionsContext";
+import { supabase } from "@/lib/supabase";
+import { useQuery } from "@tanstack/react-query";
 
 interface UserAnswer {
   questionId: number;
@@ -20,10 +21,22 @@ interface SimuladoQuizProps {
   onFinish: (results: { userAnswers: UserAnswer[]; questions: Question[]; timeTaken: number }) => void;
 }
 
+const fetchSimuladoQuestions = async (numQuestions: number) => {
+  const { data, error } = await supabase.rpc('get_random_questions', { limit_count: numQuestions });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as Question[];
+};
+
 const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) => {
-  const { questions: allQuestions, isLoading: isLoadingQuestions } = useQuestions();
-  const [simuladoQuestions, setSimuladoQuestions] = useState<Question[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: simuladoQuestions = [], isLoading: isLoadingQuestions } = useQuery({
+    queryKey: ['simuladoQuestions', numQuestions],
+    queryFn: () => fetchSimuladoQuestions(numQuestions),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -31,15 +44,7 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
   const [showTimeUpDialog, setShowTimeUpDialog] = useState(false);
 
   useEffect(() => {
-    if (!isLoadingQuestions && allQuestions.length > 0) {
-      const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-      setSimuladoQuestions(shuffled.slice(0, numQuestions));
-      setLoading(false);
-    }
-  }, [numQuestions, isLoadingQuestions, allQuestions]);
-
-  useEffect(() => {
-    if (loading) return;
+    if (isLoadingQuestions) return;
     if (timeLeft <= 0) {
       setShowTimeUpDialog(true);
       return;
@@ -48,7 +53,7 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
       setTimeLeft((prevTime) => prevTime - 1);
     }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft, loading]);
+  }, [timeLeft, isLoadingQuestions]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -81,7 +86,7 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
     });
   };
 
-  if (loading || simuladoQuestions.length === 0) {
+  if (isLoadingQuestions || simuladoQuestions.length === 0) {
     return <div className="flex items-center justify-center h-full"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
   }
 

@@ -6,7 +6,7 @@ import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useQuestions } from "@/context/QuestionsContext";
+import { useQuery } from "@tanstack/react-query";
 
 interface Profile {
   id: string;
@@ -14,11 +14,6 @@ interface Profile {
   status: string;
   first_name?: string;
   last_name?: string;
-}
-
-interface Question {
-  id: number;
-  question: string;
 }
 
 interface FeaturedComment {
@@ -29,8 +24,10 @@ interface FeaturedComment {
     last_name: string;
     avatar_url: string;
   };
-  questionText: string;
-  questionId: number;
+  question: {
+    id: number;
+    question: string;
+  };
 }
 
 const quickAccessLinks = [
@@ -88,51 +85,27 @@ const clinicalTips = [
   "O antídoto para intoxicação por opioides é a Naloxona. Para benzodiazepínicos, é o Flumazenil.",
 ];
 
+const fetchFeaturedComments = async () => {
+  const { data, error } = await supabase
+    .from("comments")
+    .select("content, profiles(id, first_name, last_name, avatar_url), questions(id, question)")
+    .order("created_at", { ascending: false })
+    .limit(5);
+
+  if (error) throw error;
+
+  // Filtrar comentários onde o perfil ou a questão associada são nulos
+  return data.filter(comment => comment.profiles && comment.questions) as FeaturedComment[];
+};
+
 const Dashboard = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
-  const { questions: allQuestions, isLoading: isLoadingQuestions } = useQuestions();
-  const [featuredComments, setFeaturedComments] = useState<FeaturedComment[]>([]);
   const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
-  const [isLoadingComment, setIsLoadingComment] = useState(true);
 
-  useEffect(() => {
-    const fetchFeaturedComments = async () => {
-      if (isLoadingQuestions || allQuestions.length === 0) return;
-      setIsLoadingComment(true);
-      try {
-        const { data: latestComments, error } = await supabase
-          .from("comments")
-          .select("*, profiles(id, first_name, last_name, avatar_url)")
-          .order("created_at", { ascending: false })
-          .limit(5);
-
-        if (latestComments && !error) {
-          const formattedComments = latestComments
-            .map(comment => {
-              const relatedQuestion = allQuestions.find(q => q.id === comment.question_id);
-              if (relatedQuestion && comment.profiles) {
-                return {
-                  content: comment.content,
-                  author: comment.profiles,
-                  questionText: relatedQuestion.question,
-                  questionId: relatedQuestion.id,
-                };
-              }
-              return null;
-            })
-            .filter((c): c is FeaturedComment => c !== null);
-          
-          setFeaturedComments(formattedComments);
-        }
-      } catch (err) {
-        console.error("Failed to fetch featured comments:", err);
-      } finally {
-        setIsLoadingComment(false);
-      }
-    };
-
-    fetchFeaturedComments();
-  }, [isLoadingQuestions, allQuestions]);
+  const { data: featuredComments = [], isLoading: isLoadingComment } = useQuery({
+    queryKey: ['featuredComments'],
+    queryFn: fetchFeaturedComments,
+  });
 
   useEffect(() => {
     if (featuredComments.length > 1) {
@@ -227,7 +200,7 @@ const Dashboard = () => {
                   <span>Referente à questão:</span>
                 </div>
                 <p className="text-sm text-foreground font-medium">
-                  "{currentComment.questionText.substring(0, 120)}..."
+                  "{currentComment.question.question.substring(0, 120)}..."
                 </p>
               </Link>
             </div>

@@ -8,10 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, Loader2, Lightbulb, Award, RefreshCw, MessageSquare, Smile, Trash2 } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Lightbulb, Award, RefreshCw, MessageSquare, Smile, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,19 +22,8 @@ import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import EmojiPicker from "emoji-picker-react";
-import { useQuestions } from "@/context/QuestionsContext";
-
-interface Question {
-  id: number;
-  category: string;
-  question: string;
-  options: {
-    id: string;
-    text: string;
-  }[];
-  correctAnswer: string;
-  explanation: string;
-}
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Question } from "@/context/QuestionsContext";
 
 interface Profile {
   id: string;
@@ -61,19 +49,18 @@ const commentSchema = z.object({
   content: z.string().min(1, { message: "O comentário não pode estar vazio." }).max(500, { message: "O comentário não pode ter mais de 500 caracteres." }),
 });
 
+const QUESTIONS_PER_PAGE = 1;
+
 const Questions = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
-  const { questions: allQuestions, isLoading: loading, error } = useQuestions();
+  const queryClient = useQueryClient();
 
   const [selectedCategory, setSelectedCategory] = useState("Todas");
-  const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
   
-  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [showExplanation, setShowExplanation] = useState(false);
-  const [score, setScore] = useState(0);
-  const [answeredQuestions, setAnsweredQuestions] = useState<number[]>([]);
-  const [isFinished, setIsFinished] = useState(false);
+  const [answeredCorrectly, setAnsweredCorrectly] = useState<boolean | null>(null);
 
   const [comments, setComments] = useState<Comment[]>([]);
   const [isCommentsLoading, setIsCommentsLoading] = useState(false);
@@ -89,30 +76,46 @@ const Questions = () => {
     defaultValues: { content: "" },
   });
 
-  const categories = useMemo(() => {
-    const uniqueCategories = [...new Set(allQuestions.map(q => q.category))];
-    return ["Todas", ...uniqueCategories.sort()];
-  }, [allQuestions]);
+  const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
+    queryKey: ['questionCategories'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('questions').select('category');
+      if (error) throw error;
+      const uniqueCategories = [...new Set(data.map(q => q.category))];
+      return ["Todas", ...uniqueCategories.sort()];
+    }
+  });
+
+  const { data, isLoading, isFetching, error } = useQuery({
+    queryKey: ['questions', selectedCategory, currentPage],
+    queryFn: async () => {
+      const from = currentPage * QUESTIONS_PER_PAGE;
+      const to = from + QUESTIONS_PER_PAGE - 1;
+
+      let query = supabase.from('questions').select('*', { count: 'exact' });
+      if (selectedCategory !== "Todas") {
+        query = query.eq('category', selectedCategory);
+      }
+      query = query.range(from, to);
+
+      const { data, error, count } = await query;
+      if (error) throw error;
+      return { questions: data as Question[], count };
+    },
+    keepPreviousData: true,
+  });
+
+  const currentQuestion = data?.questions?.[0];
+  const totalQuestions = data?.count ?? 0;
+  const totalPages = Math.ceil(totalQuestions / QUESTIONS_PER_PAGE);
 
   useEffect(() => {
-    if (allQuestions.length === 0) return;
-
-    const questionsToFilter = selectedCategory === "Todas"
-      ? allQuestions
-      : allQuestions.filter(q => q.category === selectedCategory);
-    
-    const shuffled = [...questionsToFilter].sort(() => Math.random() - 0.5);
-    setFilteredQuestions(shuffled);
-    
-    setCurrentQuestion(0);
     setSelectedAnswer("");
     setShowExplanation(false);
-    setScore(0);
-    setAnsweredQuestions([]);
-    setIsFinished(false);
+    setAnsweredCorrectly(null);
     setIsCommentsOpen(false);
     setComments([]);
-  }, [selectedCategory, allQuestions]);
+  }, [currentPage, selectedCategory, currentQuestion]);
 
   const fetchComments = async (questionId: number) => {
     setIsCommentsLoading(true);
@@ -122,55 +125,43 @@ const Questions = () => {
       .eq("question_id", questionId)
       .order("created_at", { ascending: false });
 
-    if (error) {
-      toast.error("Erro ao buscar comentários", { description: error.message });
-    } else {
-      setComments(data || []);
-    }
+    if (error) toast.error("Erro ao buscar comentários", { description: error.message });
+    else setComments(data || []);
     setIsCommentsLoading(false);
   };
 
   useEffect(() => {
-    if (isCommentsOpen && filteredQuestions.length > 0 && filteredQuestions[currentQuestion]) {
-      fetchComments(filteredQuestions[currentQuestion].id);
+    if (isCommentsOpen && currentQuestion) {
+      fetchComments(currentQuestion.id);
     }
-  }, [isCommentsOpen, currentQuestion, filteredQuestions]);
+  }, [isCommentsOpen, currentQuestion]);
 
   const handleAnswerSubmit = async () => {
-    if (!selectedAnswer || !filteredQuestions[currentQuestion]) return;
+    if (!selectedAnswer || !currentQuestion) return;
     setShowExplanation(true);
-    if (!answeredQuestions.includes(currentQuestion)) {
-      const isCorrect = selectedAnswer === filteredQuestions[currentQuestion].correctAnswer;
-      if (isCorrect) {
-        setScore(score + 1);
-      }
-      setAnsweredQuestions([...answeredQuestions, currentQuestion]);
+    const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+    setAnsweredCorrectly(isCorrect);
 
-      if (profile) {
-        await supabase.from('user_question_answers').insert({
-          user_id: profile.id,
-          question_id: filteredQuestions[currentQuestion].id,
-          is_correct: isCorrect,
-        });
-      }
+    if (profile) {
+      await supabase.from('user_question_answers').insert({
+        user_id: profile.id,
+        question_id: currentQuestion.id,
+        is_correct: isCorrect,
+      });
     }
   };
 
   const handleNextQuestion = () => {
-    setSelectedAnswer("");
-    setShowExplanation(false);
-    setIsCommentsOpen(false);
-    setComments([]);
-    if (currentQuestion < filteredQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
   async function onCommentSubmit(values: z.infer<typeof commentSchema>) {
-    if (!profile || !filteredQuestions[currentQuestion]) return;
+    if (!profile || !currentQuestion) return;
     setIsSubmittingComment(true);
     const { error } = await supabase.from("comments").insert({
-      question_id: filteredQuestions[currentQuestion].id,
+      question_id: currentQuestion.id,
       content: values.content,
     });
     setIsSubmittingComment(false);
@@ -179,7 +170,7 @@ const Questions = () => {
     } else {
       toast.success("Comentário enviado!");
       form.reset();
-      fetchComments(filteredQuestions[currentQuestion].id);
+      fetchComments(currentQuestion.id);
     }
   }
 
@@ -190,209 +181,100 @@ const Questions = () => {
     setIsDeletingComment(false);
     setIsDeleteDialogOpen(false);
 
-    if (error) {
-      toast.error("Erro ao apagar comentário", { description: error.message });
-    } else {
+    if (error) toast.error("Erro ao apagar comentário", { description: error.message });
+    else {
       toast.success("Comentário apagado com sucesso.");
       setComments(prev => prev.filter(c => c.id !== commentToDelete));
     }
     setCommentToDelete(null);
   };
 
-  if (loading) return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando...</span></div>;
-  if (error) return <Alert variant="destructive"><XCircle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>;
-  
-  if (isFinished) {
-    const percentage = Math.round((score / filteredQuestions.length) * 100);
-    let feedbackMessage = "Não desanime! A prática leva à perfeição.";
-    if (percentage >= 90) feedbackMessage = "Excelente desempenho! Você é um expert!";
-    else if (percentage >= 70) feedbackMessage = "Ótimo trabalho! Continue assim.";
-    else if (percentage >= 50) feedbackMessage = "Bom esforço! Continue estudando para melhorar.";
-
-    return (
-      <div className="max-w-4xl mx-auto">
-        <Card className="text-center">
-          <CardHeader>
-            <div className="mx-auto h-12 w-12 rounded-full bg-amber-100 flex items-center justify-center mb-4">
-              <Award className="h-8 w-8 text-amber-500" />
-            </div>
-            <CardTitle className="text-2xl">Quiz Finalizado!</CardTitle>
-            <CardDescription>{feedbackMessage}</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="text-4xl font-bold text-primary">{score} / {filteredQuestions.length}</div>
-            <div className="space-y-2">
-              <Progress value={percentage} className="w-full" />
-              <p className="text-lg font-semibold">{percentage}% de acerto</p>
-            </div>
-            <Button onClick={() => window.location.reload()} className="w-full md:w-auto">
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Reiniciar Quiz
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  const question = filteredQuestions[currentQuestion];
-
-  if (!question) {
-    return (
-      <div className="max-w-4xl mx-auto space-y-6">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-            Banca de Questões
-          </h1>
-          <p className="text-muted-foreground">Afie seu raciocínio clínico. Desafie-se com questões de concurso e residência.</p>
-        </div>
-        <div className="space-y-2"><Label htmlFor="category-filter">Filtrar por Categoria</Label><Select value={selectedCategory} onValueChange={setSelectedCategory}><SelectTrigger id="category-filter" className="w-full md:w-[300px]"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger><SelectContent>{categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent></Select></div>
-        <Card><CardContent className="py-12 text-center text-muted-foreground">{loading ? <Loader2 className="h-6 w-6 animate-spin mx-auto" /> : "Nenhuma questão encontrada para a categoria selecionada."}</CardContent></Card>
-      </div>
-    );
-  }
-
-  const isCorrect = selectedAnswer === question.correctAnswer;
-  const progress = ((currentQuestion + 1) / filteredQuestions.length) * 100;
-
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta ação não pode ser desfeita. O comentário será permanentemente apagado.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteComment} disabled={isDeletingComment}>
-              {isDeletingComment && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Apagar
-            </AlertDialogAction>
-          </AlertDialogFooter>
+          <AlertDialogHeader><AlertDialogTitle>Você tem certeza?</AlertDialogTitle><AlertDialogDescription>Esta ação não pode ser desfeita. O comentário será permanentemente apagado.</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter><AlertDialogCancel>Cancelar</AlertDialogCancel><AlertDialogAction onClick={handleDeleteComment} disabled={isDeletingComment}>{isDeletingComment && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Apagar</AlertDialogAction></AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-          Banca de Questões
-        </h1>
+        <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Banca de Questões</h1>
         <p className="text-muted-foreground">Afie seu raciocínio clínico. Desafie-se com questões de concurso e residência.</p>
       </div>
       <div className="space-y-2">
         <Label htmlFor="category-filter">Filtrar por Categoria</Label>
-        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-          <SelectTrigger id="category-filter" className="w-full md:w-[300px]">
-            <SelectValue placeholder="Selecione uma categoria" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
-          </SelectContent>
+        <Select value={selectedCategory} onValueChange={(value) => { setSelectedCategory(value); setCurrentPage(0); }}>
+          <SelectTrigger id="category-filter" className="w-full md:w-[300px]"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger>
+          <SelectContent>{isLoadingCategories ? <div className="p-2"><Loader2 className="h-4 w-4 animate-spin"/></div> : categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent>
         </Select>
       </div>
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-center mb-2"><Badge variant="secondary">{question.category}</Badge><CardDescription>Pontuação: <strong>{score} / {answeredQuestions.length}</strong></CardDescription></div>
-          <CardTitle className="text-lg">Questão {currentQuestion + 1} de {filteredQuestions.length}</CardTitle>
-          <Progress value={progress} className="mt-2" />
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div>
-            <h3 className="text-base font-semibold text-foreground mb-4">{question.question}</h3>
-            <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer} disabled={showExplanation} className="space-y-3">
-              {question.options.map((option) => (
-                <Label key={option.id} htmlFor={`${option.id}-${question.id}`} className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer ${showExplanation ? (option.id === question.correctAnswer ? "border-green-500 bg-green-50 dark:bg-green-950 font-semibold" : (option.id === selectedAnswer ? "border-red-500 bg-red-50 dark:bg-red-950" : "border-border")) : "border-border hover:border-primary hover:bg-accent"}`}>
-                  <RadioGroupItem value={option.id} id={`${option.id}-${question.id}`} />
-                  <span className="flex-1 text-foreground"><span className="font-bold">{option.id})</span> {option.text}</span>
-                  {showExplanation && option.id === question.correctAnswer && <CheckCircle2 className="h-5 w-5 text-green-600" />}
-                  {showExplanation && option.id === selectedAnswer && option.id !== question.correctAnswer && <XCircle className="h-5 w-5 text-red-600" />}
-                </Label>
-              ))}
-            </RadioGroup>
-          </div>
 
-          {showExplanation && (
-            <>
-              <Alert className={`border-2 ${isCorrect ? "border-green-500" : "border-red-500"}`}>
-                <Lightbulb className="h-4 w-4" />
-                <AlertTitle className="font-semibold">{isCorrect ? "Resposta Correta!" : "Resposta Incorreta"}</AlertTitle>
-                <AlertDescription><strong>Gabarito: {question.correctAnswer}.</strong> {question.explanation}</AlertDescription>
-              </Alert>
+      {isLoading ? <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando...</span></div> :
+       error ? <Alert variant="destructive"><XCircle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{(error as Error).message}</AlertDescription></Alert> :
+       !currentQuestion ? <Card><CardContent className="py-12 text-center text-muted-foreground">Nenhuma questão encontrada para a categoria selecionada.</CardContent></Card> :
+      (
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between items-center mb-2"><Badge variant="secondary">{currentQuestion.category}</Badge><CardDescription>Questão <strong>{currentPage + 1}</strong> de <strong>{totalQuestions}</strong></CardDescription></div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div>
+              <h3 className="text-base font-semibold text-foreground mb-4">{currentQuestion.question}</h3>
+              <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer} disabled={showExplanation} className="space-y-3">
+                {currentQuestion.options.map((option) => (
+                  <Label key={option.id} htmlFor={`${option.id}-${currentQuestion.id}`} className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer ${showExplanation ? (option.id === currentQuestion.correctAnswer ? "border-green-500 bg-green-50 dark:bg-green-950 font-semibold" : (option.id === selectedAnswer ? "border-red-500 bg-red-50 dark:bg-red-950" : "border-border")) : "border-border hover:border-primary hover:bg-accent"}`}>
+                    <RadioGroupItem value={option.id} id={`${option.id}-${currentQuestion.id}`} />
+                    <span className="flex-1 text-foreground"><span className="font-bold">{option.id})</span> {option.text}</span>
+                    {showExplanation && option.id === currentQuestion.correctAnswer && <CheckCircle2 className="h-5 w-5 text-green-600" />}
+                    {showExplanation && option.id === selectedAnswer && option.id !== currentQuestion.correctAnswer && <XCircle className="h-5 w-5 text-red-600" />}
+                  </Label>
+                ))}
+              </RadioGroup>
+            </div>
 
-              <Collapsible open={isCommentsOpen} onOpenChange={setIsCommentsOpen}>
-                <CollapsibleTrigger asChild>
-                  <Button variant="outline" className="w-full"><MessageSquare className="mr-2 h-4 w-4" />Ver Comentários da Comunidade <Badge variant="secondary" className="ml-2">{comments.length}</Badge></Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="space-y-4 pt-4">
-                  {isCommentsLoading ? <div className="flex justify-center"><Loader2 className="h-6 w-6 animate-spin" /></div> :
-                    comments.length === 0 ? <p className="text-sm text-center text-muted-foreground">Nenhum comentário ainda. Seja o primeiro!</p> :
-                      <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
-                        {comments.map(comment => (
-                          <div key={comment.id} className="flex items-start gap-3">
-                            <Link to={`/user/${comment.profiles?.id}`} className="flex-shrink-0">
-                              <Avatar className="h-8 w-8"><AvatarImage src={comment.profiles?.avatar_url} className="object-cover" /><AvatarFallback>{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback></Avatar>
-                            </Link>
-                            <div className="flex-1 bg-muted p-3 rounded-lg">
-                              <div className="flex justify-between items-center">
-                                <Link to={`/user/${comment.profiles?.id}`} className="hover:underline"><p className="text-sm font-semibold">{`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}</p></Link>
-                                <div className="flex items-center gap-2">
-                                  <p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</p>
-                                  {profile?.role === 'admin' && (
-                                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => { setCommentToDelete(comment.id); setIsDeleteDialogOpen(true); }}>
-                                      <Trash2 className="h-3 w-3 text-destructive" />
-                                    </Button>
-                                  )}
+            {showExplanation && (
+              <>
+                <Alert className={`border-2 ${answeredCorrectly ? "border-green-500" : "border-red-500"}`}>
+                  <Lightbulb className="h-4 w-4" />
+                  <AlertTitle className="font-semibold">{answeredCorrectly ? "Resposta Correta!" : "Resposta Incorreta"}</AlertTitle>
+                  <AlertDescription><strong>Gabarito: {currentQuestion.correctAnswer}.</strong> {currentQuestion.explanation}</AlertDescription>
+                </Alert>
+
+                <Collapsible open={isCommentsOpen} onOpenChange={setIsCommentsOpen}>
+                  <CollapsibleTrigger asChild><Button variant="outline" className="w-full"><MessageSquare className="mr-2 h-4 w-4" />Ver Comentários da Comunidade <Badge variant="secondary" className="ml-2">{comments.length}</Badge></Button></CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 pt-4">
+                    {isCommentsLoading ? <div className="flex justify-center"><Loader2 className="h-6 w-6 animate-spin" /></div> :
+                      comments.length === 0 ? <p className="text-sm text-center text-muted-foreground">Nenhum comentário ainda. Seja o primeiro!</p> :
+                        <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
+                          {comments.map(comment => (
+                            <div key={comment.id} className="flex items-start gap-3">
+                              <Link to={`/user/${comment.profiles?.id}`} className="flex-shrink-0"><Avatar className="h-8 w-8"><AvatarImage src={comment.profiles?.avatar_url} className="object-cover" /><AvatarFallback>{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback></Avatar></Link>
+                              <div className="flex-1 bg-muted p-3 rounded-lg">
+                                <div className="flex justify-between items-center"><Link to={`/user/${comment.profiles?.id}`} className="hover:underline"><p className="text-sm font-semibold">{`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}</p></Link>
+                                  <div className="flex items-center gap-2"><p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</p>
+                                    {profile?.role === 'admin' && (<Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => { setCommentToDelete(comment.id); setIsDeleteDialogOpen(true); }}><Trash2 className="h-3 w-3 text-destructive" /></Button>)}
+                                  </div>
                                 </div>
+                                <p className="text-sm mt-1">{comment.content}</p>
                               </div>
-                              <p className="text-sm mt-1">{comment.content}</p>
                             </div>
-                          </div>
-                        ))}
-                      </div>
-                  }
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onCommentSubmit)} className="flex items-start gap-2">
-                      <FormField control={form.control} name="content" render={({ field }) => (
-                        <FormItem className="flex-1">
-                          <FormControl><Textarea placeholder="Adicione seu comentário..." {...field} /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button type="button" variant="outline" size="icon" className="flex-shrink-0">
-                            <Smile className="h-4 w-4" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="p-0 w-full">
-                          <EmojiPicker
-                            onEmojiClick={(emojiObject) => {
-                              form.setValue('content', form.getValues('content') + emojiObject.emoji);
-                            }}
-                            height={350}
-                            width="100%"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <Button type="submit" disabled={isSubmittingComment} className="flex-shrink-0">
-                        {isSubmittingComment ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enviar"}
-                      </Button>
-                    </form>
-                  </Form>
-                </CollapsibleContent>
-              </Collapsible>
-            </>
-          )}
+                          ))}
+                        </div>
+                    }
+                    <Form {...form}><form onSubmit={form.handleSubmit(onCommentSubmit)} className="flex items-start gap-2"><FormField control={form.control} name="content" render={({ field }) => (<FormItem className="flex-1"><FormControl><Textarea placeholder="Adicione seu comentário..." {...field} /></FormControl><FormMessage /></FormItem>)} /><Popover><PopoverTrigger asChild><Button type="button" variant="outline" size="icon" className="flex-shrink-0"><Smile className="h-4 w-4" /></Button></PopoverTrigger><PopoverContent className="p-0 w-full"><EmojiPicker onEmojiClick={(emojiObject) => {form.setValue('content', form.getValues('content') + emojiObject.emoji);}} height={350} width="100%" /></PopoverContent></Popover><Button type="submit" disabled={isSubmittingComment} className="flex-shrink-0">{isSubmittingComment ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enviar"}</Button></form></Form>
+                  </CollapsibleContent>
+                </Collapsible>
+              </>
+            )}
 
-          <div className="flex justify-end">
-            {!showExplanation ? <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer} className="w-full md:w-auto">Responder</Button> :
-              (currentQuestion < filteredQuestions.length - 1 ? <Button onClick={handleNextQuestion} className="w-full md:w-auto">Próxima Questão</Button> :
-                <Button onClick={() => setIsFinished(true)} className="w-full md:w-auto">Ver Resultados</Button>)}
-          </div>
-        </CardContent>
-      </Card>
+            <div className="flex justify-between items-center">
+              <Button variant="outline" onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 0 || isFetching}><ChevronLeft className="h-4 w-4 mr-2" />Anterior</Button>
+              {!showExplanation ? <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer || isFetching}>Responder</Button> : <Button onClick={handleNextQuestion} disabled={currentPage >= totalPages - 1 || isFetching}>Próxima Questão<ChevronRight className="h-4 w-4 ml-2" /></Button>}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

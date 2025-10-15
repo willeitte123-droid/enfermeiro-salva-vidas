@@ -18,38 +18,15 @@ interface QuestionsContextType {
 
 const QuestionsContext = createContext<QuestionsContextType | undefined>(undefined);
 
+// Este provedor será removido, mas o hook e a interface ainda podem ser úteis temporariamente.
+// A lógica de fetch será movida para os componentes individuais.
 export const QuestionsProvider = ({ children }: { children: ReactNode }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const { data, error: dbError } = await supabase
-          .from('questions')
-          .select('*')
-          .order('id', { ascending: true });
-
-        if (dbError) {
-          throw dbError;
-        }
-        
-        // A coluna 'options' é JSONB, o Supabase client já faz o parse.
-        setQuestions(data || []);
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Ocorreu um erro desconhecido ao buscar as questões.";
-        setError(errorMessage);
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchQuestions();
-  }, []);
+  // A lógica de fetch foi removida para evitar o carregamento em massa.
+  // Os componentes agora buscarão seus próprios dados.
 
   return (
     <QuestionsContext.Provider value={{ questions, isLoading, error }}>
