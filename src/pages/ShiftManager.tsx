@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2, PlusCircle, Trash2, Users, BedDouble, Printer } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -20,6 +21,7 @@ export interface Shift {
   id: string;
   title: string;
   shift_date: string;
+  period: string;
   team_members: TeamMember[];
 }
 
@@ -41,6 +43,7 @@ const fetchShifts = async (userId: string) => {
       id,
       title,
       shift_date,
+      period,
       team_members (
         id,
         name,
@@ -63,6 +66,8 @@ const ShiftManager = () => {
   const [newTeamMemberName, setNewTeamMemberName] = useState("");
   const [newBedAssignments, setNewBedAssignments] = useState<Record<string, string>>({});
   const printableComponentRef = useRef<HTMLDivElement>(null);
+  const [newShiftTitle, setNewShiftTitle] = useState("");
+  const [newShiftPeriod, setNewShiftPeriod] = useState("Matutino");
 
   const { data: shifts = [], isLoading } = useQuery({
     queryKey: ["shifts", profile?.id],
@@ -88,8 +93,8 @@ const ShiftManager = () => {
   };
 
   const createShiftMutation = useMutation({
-    mutationFn: async (title: string) => {
-      const { data, error } = await supabase.from("shifts").insert({ title, user_id: profile!.id }).select().single();
+    mutationFn: async ({ title, period }: { title: string; period: string }) => {
+      const { data, error } = await supabase.from("shifts").insert({ title, period, user_id: profile!.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -97,6 +102,8 @@ const ShiftManager = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["shifts", profile?.id] });
       setSelectedShiftId(data.id);
+      setNewShiftTitle("");
+      setNewShiftPeriod("Matutino");
       toast.success("Plantão criado com sucesso!");
     },
   });
@@ -163,18 +170,34 @@ const ShiftManager = () => {
               <Select value={selectedShiftId || ""} onValueChange={setSelectedShiftId}>
                 <SelectTrigger className="w-full sm:w-[250px]"><SelectValue placeholder="Selecione um plantão" /></SelectTrigger>
                 <SelectContent>
-                  {shifts.map(shift => <SelectItem key={shift.id} value={shift.id}>{shift.title}</SelectItem>)}
+                  {shifts.map(shift => <SelectItem key={shift.id} value={shift.id}>{shift.period} - {shift.title}</SelectItem>)}
                 </SelectContent>
               </Select>
               <Button variant="outline" onClick={handlePrint} disabled={!selectedShift}><Printer className="h-4 w-4 mr-2" />Imprimir</Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild><Button><PlusCircle className="h-4 w-4 mr-2" />Novo</Button></AlertDialogTrigger>
                 <AlertDialogContent>
-                  <AlertDialogHeader><AlertDialogTitle>Criar Novo Plantão</AlertDialogTitle><AlertDialogDescription>Dê um nome para o seu plantão (ex: Noturno 25/12, Diurno A - UTI).</AlertDialogDescription></AlertDialogHeader>
-                  <Input id="new-shift-title" placeholder="Título do Plantão" />
+                  <AlertDialogHeader><AlertDialogTitle>Criar Novo Plantão</AlertDialogTitle><AlertDialogDescription>Dê um nome e selecione o período do seu plantão.</AlertDialogDescription></AlertDialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="new-shift-title">Título do Plantão</Label>
+                      <Input id="new-shift-title" placeholder="Ex: UTI Geral, Clínica Médica" value={newShiftTitle} onChange={(e) => setNewShiftTitle(e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="new-shift-period">Período</Label>
+                      <Select value={newShiftPeriod} onValueChange={setNewShiftPeriod}>
+                        <SelectTrigger id="new-shift-period"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Matutino">Matutino</SelectItem>
+                          <SelectItem value="Vespertino">Vespertino</SelectItem>
+                          <SelectItem value="Noturno">Noturno</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => createShiftMutation.mutate((document.getElementById("new-shift-title") as HTMLInputElement).value)}>Criar</AlertDialogAction>
+                    <AlertDialogAction onClick={() => createShiftMutation.mutate({ title: newShiftTitle, period: newShiftPeriod })}>Criar</AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
