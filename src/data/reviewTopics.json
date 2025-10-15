@@ -329,5 +329,52 @@
         ]
       }
     ]
+  },
+  {
+    "id": "pharmacology-fundamentals",
+    "title": "Fundamentos de Farmacologia",
+    "icon": "FlaskConical",
+    "color": "text-rose-500",
+    "summary": "Princípios essenciais para a administração segura de medicamentos, desde os '9 Certos' até os conceitos de diluição.",
+    "details": [
+      {
+        "subtitle": "Os 9 Certos da Administração de Medicamentos",
+        "points": [
+          "<strong>1. Paciente Certo:</strong> Confirme a identidade com no mínimo dois identificadores.",
+          "<strong>2. Medicamento Certo:</strong> Cheque o nome do medicamento 3 vezes (ao pegar, ao preparar, antes de administrar).",
+          "<strong>3. Via Certa:</strong> Verifique se a via de administração prescrita é a correta.",
+          "<strong>4. Hora Certa:</strong> Administre na hora programada, respeitando a janela de tempo da instituição.",
+          "<strong>5. Dose Certa:</strong> Realize o cálculo da dose com atenção e, se necessário, peça dupla checagem.",
+          "<strong>6. Registro Certo:</strong> Documente a administração imediatamente após a realização, nunca antes.",
+          "<strong>7. Ação Certa (Orientação):</strong> Oriente o paciente sobre o medicamento, sua indicação e principais efeitos.",
+          "<strong>8. Forma Certa:</strong> Verifique se a forma farmacêutica (comprimido, solução, etc.) está correta.",
+          "<strong>9. Resposta Certa (Monitoramento):</strong> Monitore o paciente para avaliar a eficácia do medicamento e a presença de efeitos adversos."
+        ]
+      },
+      {
+        "subtitle": "Farmacocinética vs. Farmacodinâmica",
+        "points": [
+          "<strong>Farmacocinética:</strong> É o caminho que o medicamento faz no corpo, ou 'o que o corpo faz com o fármaco'. Envolve as etapas de <strong>LADME</strong>: Liberação, Absorção, Distribuição, Metabolismo e Excreção.",
+          "<strong>Farmacodinâmica:</strong> É como o medicamento age no corpo, ou 'o que o fármaco faz com o corpo'. Envolve o mecanismo de ação, a interação com receptores (agonistas/antagonistas) e os efeitos terapêuticos."
+        ]
+      },
+      {
+        "subtitle": "Principais Vias de Administração e Cuidados",
+        "points": [
+          "<strong>Endovenosa (EV):</strong> Ação mais rápida. Risco de flebite, infecção e reações adversas graves. Nunca administrar soluções oleosas ou suspensões.",
+          "<strong>Intramuscular (IM):</strong> Absorção mais rápida que a subcutânea. Locais: Deltoide (até 2-3mL), Ventroglúteo (preferencial, até 4-5mL), Dorsoglúteo (risco de lesão no nervo ciático, até 4mL).",
+          "<strong>Subcutânea (SC):</strong> Absorção lenta e gradual. Locais: abdome, face externa dos braços e coxas. Comum para Insulina e Heparina. Realizar rodízio dos locais de aplicação.",
+          "<strong>Via Oral (VO):</strong> Mais segura e comum. Avaliar a capacidade de deglutição do paciente. Considerar interações com alimentos e a necessidade de jejum."
+        ]
+      },
+      {
+        "subtitle": "Guia Rápido de Diluição e Rediluição",
+        "points": [
+          "<strong>Diluição (ou Reconstituição):</strong> É o processo de transformar um medicamento em pó (liofilizado) em uma solução líquida, utilizando o diluente especificado pelo fabricante (ex: Água Destilada).",
+          "<strong>Rediluição:</strong> É o processo de pegar a solução já reconstituída e adicioná-la a um volume maior de soro (ex: Soro Fisiológico 100mL) para infusão contínua ou intermitente.",
+          "<strong>Cuidado Essencial:</strong> Sempre verifique a compatibilidade do medicamento com a solução (SF 0,9% ou SG 5%), o tempo de estabilidade após o preparo e a velocidade de infusão recomendada."
+        ]
+      }
+    ]
   }
 ]
