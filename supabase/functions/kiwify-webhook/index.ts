@@ -19,9 +19,10 @@ async function verifyKiwifySignature(req: Request, secret: string) {
   }
 
   const encoder = new TextEncoder();
+  // Corrigido para usar SHA-1, que corresponde à assinatura da Kiwify
   const key = await crypto.subtle.importKey("raw", encoder.encode(secret), {
     name: "HMAC",
-    hash: "SHA-256"
+    hash: "SHA-1"
   }, false, ["sign"]);
 
   const mac = await crypto.subtle.sign("HMAC", key, encoder.encode(bodyText));
@@ -59,15 +60,23 @@ serve(async (req: Request) => {
       return new Response('Assinatura inválida.', { status: 403, headers: corsHeaders });
     }
 
-    const { email, evento, produto } = body;
+    // Corrigido para ler a estrutura de dados aninhada enviada pela Kiwify
+    const email = body.Customer?.email;
+    const evento = body.webhook_event_type;
+    const produto = body.Product?.product_name;
+    const orderStatus = body.order?.order_status;
 
     if (!email || !evento) {
-      return new Response('Campos obrigatórios ausentes: email e evento', { status: 400, headers: corsHeaders });
+      return new Response('Campos obrigatórios ausentes no payload: Customer.email e webhook_event_type', { status: 400, headers: corsHeaders });
     }
 
-    const canceledEvents = ["assinatura cancelada", "assinatura atrasada"];
-    const approvedEvents = ["assinatura renovada", "assinatura aprovada", "compra aprovada"];
-    const isApprovedEvent = approvedEvents.includes(evento.toLowerCase());
+    // Usando os nomes de eventos em inglês, que são os enviados pela API
+    const canceledEvents = ["subscription_canceled", "subscription_late"];
+    const approvedEvents = ["order_approved", "subscription_activated", "subscription_renewed"];
+    
+    // Adicionando uma verificação extra pelo status do pedido para mais robustez
+    const isApprovedEvent = approvedEvents.includes(evento.toLowerCase()) || orderStatus === 'paid';
+    const isCanceledEvent = canceledEvents.includes(evento.toLowerCase()) || orderStatus === 'refunded' || orderStatus === 'expired';
 
     let userId;
     let detailsLog = '';
@@ -77,12 +86,10 @@ serve(async (req: Request) => {
     if (findUserError) throw findUserError;
 
     if (existingUser.users.length === 0) {
-      // Usuário não existe
       if (isApprovedEvent) {
-        // Se for um evento de aprovação, cria o usuário
         const { data: newUser, error: creationError } = await supabaseAdmin.auth.admin.createUser({
           email: email,
-          email_confirm: true, // Envia email de confirmação/convite para definir senha
+          email_confirm: true,
         });
 
         if (creationError) {
@@ -92,12 +99,10 @@ serve(async (req: Request) => {
         userId = newUser.user.id;
         detailsLog = 'Novo usuário criado. ';
       } else {
-        // Se não for um evento de aprovação e o usuário não existe, não há o que fazer.
         await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: 'Usuário não encontrado para evento de cancelamento/atraso. Nenhuma ação tomada.' });
         return new Response('User not found for this event.', { status: 200, headers: corsHeaders });
       }
     } else {
-      // Usuário já existe
       userId = existingUser.users[0].id;
     }
 
@@ -105,7 +110,7 @@ serve(async (req: Request) => {
     let status = 'pending';
     let access_expires_at = new Date().toISOString();
 
-    if (canceledEvents.includes(evento.toLowerCase())) {
+    if (isCanceledEvent) {
       plan = 'free';
       status = 'pending';
       access_expires_at = new Date().toISOString();
