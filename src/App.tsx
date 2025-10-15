@@ -41,8 +41,8 @@ const AppContent = () => {
     return <LoadingFallback />;
   }
 
-  // Passa a sessão para as rotas, que decidirão o que renderizar.
-  // Não espera mais pelo perfil aqui.
+  // A lógica de perfil e status foi movida para dentro do MainLayout.
+  // AppContent agora apenas decide se mostra as rotas públicas ou privadas.
   return <SuspendedAppRoutes session={session} />;
 };
 

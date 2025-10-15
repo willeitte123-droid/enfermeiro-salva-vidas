@@ -23,7 +23,7 @@ const MainLayout = ({ session }: MainLayoutProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  // O perfil agora é carregado AQUI, dentro do layout.
+  // O perfil é carregado aqui, dentro do layout que já está visível.
   const { data: profile, isLoading: isLoadingProfile } = useProfile(session);
 
   const toggleSidebar = () => {
@@ -37,28 +37,8 @@ const MainLayout = ({ session }: MainLayoutProps) => {
     avatar_url: profile.avatar_url 
   } : null;
 
-  const renderContent = () => {
-    if (isLoadingProfile) {
-      return <ContentLoader />;
-    }
-
-    if (profile?.status === 'pending') {
-      return (
-        <div className="flex flex-col items-center justify-center h-full text-center p-4">
-          <h1 className="text-2xl font-bold mb-4">Aguardando Aprovação</h1>
-          <p className="text-muted-foreground mb-6 max-w-md">Sua conta foi criada e está aguardando a aprovação de um administrador.</p>
-          <Button onClick={() => supabase.auth.signOut()}>Sair</Button>
-        </div>
-      );
-    }
-
-    return (
-      <Suspense fallback={<ContentLoader />}>
-        <Outlet context={{ profile }} />
-      </Suspense>
-    );
-  };
-
+  // A "casca" do aplicativo (Sidebar, Header) é renderizada imediatamente.
+  // Apenas a área de conteúdo principal (main) aguarda os dados.
   return (
     <div className="flex min-h-screen w-full bg-muted/40">
       <Sidebar isAdmin={isAdmin} user={user} isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
@@ -66,7 +46,20 @@ const MainLayout = ({ session }: MainLayoutProps) => {
         <Header onSearchClick={() => setIsSearchOpen(true)} isAdmin={isAdmin} user={user} />
         <GlobalSearch open={isSearchOpen} setOpen={setIsSearchOpen} />
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
-          {renderContent()}
+          {isLoadingProfile ? (
+            <ContentLoader />
+          ) : profile?.status === 'pending' ? (
+            <div className="flex flex-col items-center justify-center h-full text-center p-4">
+              <h1 className="text-2xl font-bold mb-4">Aguardando Aprovação</h1>
+              <p className="text-muted-foreground mb-6 max-w-md">Sua conta foi criada e está aguardando a aprovação de um administrador.</p>
+              <Button onClick={() => supabase.auth.signOut()}>Sair</Button>
+            </div>
+          ) : (
+            // Suspense garante que o código da página e os dados carreguem em paralelo.
+            <Suspense fallback={<ContentLoader />}>
+              <Outlet context={{ profile }} />
+            </Suspense>
+          )}
         </div>
       </main>
     </div>
