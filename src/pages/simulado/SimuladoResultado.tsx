@@ -1,26 +1,33 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { CheckCircle2, XCircle, Award, RefreshCw, LayoutDashboard } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, Award, RefreshCw, LayoutDashboard } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/lib/supabase";
-import { Question } from "@/context/QuestionsContext";
+
+interface Question {
+  id: number;
+  question: string;
+  options: { id: string; text: string }[];
+  correctAnswer: string;
+  explanation: string;
+}
 
 interface UserAnswer {
   questionId: number;
   selectedAnswer: string;
 }
 
-interface SimuladoResultadoProps {
-  userAnswers: UserAnswer[];
-  questions: Question[];
-  timeTaken: number;
-  onRestart: () => void;
-}
+const SimuladoResultado = () => {
+  const location = useLocation();
+  const { userAnswers, questions, timeTaken } = location.state as {
+    userAnswers: UserAnswer[];
+    questions: Question[];
+    timeTaken: number;
+  };
 
-const SimuladoResultado = ({ userAnswers, questions, timeTaken, onRestart }: SimuladoResultadoProps) => {
   const score = userAnswers.reduce((acc, answer) => {
     const question = questions.find(q => q.id === answer.questionId);
     if (question && question.correctAnswer === answer.selectedAnswer) {
@@ -29,7 +36,7 @@ const SimuladoResultado = ({ userAnswers, questions, timeTaken, onRestart }: Sim
     return acc;
   }, 0);
 
-  const percentage = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
+  const percentage = Math.round((score / questions.length) * 100);
 
   useEffect(() => {
     const saveResult = async () => {
@@ -47,9 +54,7 @@ const SimuladoResultado = ({ userAnswers, questions, timeTaken, onRestart }: Sim
         }
       }
     };
-    if (questions.length > 0) {
-      saveResult();
-    }
+    saveResult();
   }, [score, questions.length, percentage, timeTaken]);
 
   const formatTime = (seconds: number) => {
@@ -136,8 +141,8 @@ const SimuladoResultado = ({ userAnswers, questions, timeTaken, onRestart }: Sim
         <Button asChild variant="outline" size="lg">
           <Link to="/"><LayoutDashboard className="mr-2 h-4 w-4" />Menu Principal</Link>
         </Button>
-        <Button onClick={onRestart} size="lg">
-          <RefreshCw className="mr-2 h-4 w-4" />Fazer Novo Simulado
+        <Button asChild size="lg">
+          <Link to="/simulado"><RefreshCw className="mr-2 h-4 w-4" />Fazer Novo Simulado</Link>
         </Button>
       </div>
     </div>

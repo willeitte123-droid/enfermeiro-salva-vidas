@@ -4,30 +4,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Search, AlertTriangle } from "lucide-react";
+import { labValuesData } from "@/data/labValues";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import FavoriteButton from "@/components/FavoriteButton";
-import * as LucideIcons from "lucide-react";
-import labValuesData from "@/data/labValues.json";
 
 interface Profile {
   id: string;
 }
-
-interface LabValue {
-  name: string;
-  value: string;
-  unit: string;
-  notes?: string;
-}
-
-interface LabCategory {
-  category: string;
-  icon: keyof typeof LucideIcons;
-  color: string;
-  values: LabValue[];
-}
-
-const labValues: LabCategory[] = labValuesData;
 
 const LabValues = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
@@ -35,10 +18,10 @@ const LabValues = () => {
 
   const filteredData = useMemo(() => {
     if (!searchTerm) {
-      return labValues;
+      return labValuesData;
     }
     const lowercasedFilter = searchTerm.toLowerCase();
-    return labValues
+    return labValuesData
       .map(category => {
         const filteredValues = category.values.filter(
           value =>
@@ -48,7 +31,7 @@ const LabValues = () => {
         return { ...category, values: filteredValues };
       })
       .filter(category => category.values.length > 0);
-  }, [searchTerm, labValues]);
+  }, [searchTerm]);
 
   return (
     <div className="space-y-6">
@@ -87,12 +70,12 @@ const LabValues = () => {
       {filteredData.length > 0 ? (
         <div className="space-y-6">
           {filteredData.map(category => {
-            const Icon = LucideIcons[category.icon] as LucideIcons.LucideIcon;
+            const Icon = category.icon;
             return (
               <Card key={category.category}>
                 <CardHeader>
                   <CardTitle className={`flex items-center gap-3 ${category.color}`}>
-                    {Icon && <Icon />} {category.category}
+                    <Icon /> {category.category}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

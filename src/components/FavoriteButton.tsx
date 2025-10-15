@@ -1,33 +1,47 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { Button } from "@/components/ui/button";
 import { Star, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { useQueryClient } from "@tanstack/react-query";
 
 interface FavoriteButtonProps {
   userId: string;
   itemId: string;
   itemType: string;
   itemTitle: string;
-  isInitiallyFavorited: boolean;
-  isLoading: boolean;
   className?: string;
 }
 
-const FavoriteButton = ({ userId, itemId, itemType, itemTitle, isInitiallyFavorited, isLoading, className }: FavoriteButtonProps) => {
-  const [isFavorited, setIsFavorited] = useState(isInitiallyFavorited);
-  const [isMutating, setIsMutating] = useState(false);
-  const queryClient = useQueryClient();
+const FavoriteButton = ({ userId, itemId, itemType, itemTitle, className }: FavoriteButtonProps) => {
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsFavorited(isInitiallyFavorited);
-  }, [isInitiallyFavorited]);
+    const checkFavorite = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from("user_favorites")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("item_id", itemId)
+        .single();
+      
+      if (data && !error) {
+        setIsFavorited(true);
+      } else {
+        setIsFavorited(false);
+      }
+      setIsLoading(false);
+    };
 
-  const toggleFavorite = async (e: React.MouseEvent | React.KeyboardEvent) => {
+    checkFavorite();
+  }, [userId, itemId]);
+
+  const toggleFavorite = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsMutating(true);
+    setIsLoading(true);
 
     if (isFavorited) {
       const { error } = await supabase
@@ -54,37 +68,24 @@ const FavoriteButton = ({ userId, itemId, itemType, itemTitle, isInitiallyFavori
         setIsFavorited(true);
       }
     }
-    // Invalidate queries to refetch favorites data on relevant pages
-    queryClient.invalidateQueries({ queryKey: ['favorites', userId] });
-    setIsMutating(false);
+    setIsLoading(false);
   };
 
-  const displayLoading = isLoading || isMutating;
-
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-pressed={isFavorited}
+    <Button
+      variant="ghost"
+      size="icon"
       onClick={toggleFavorite}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          toggleFavorite(e);
-        }
-      }}
-      className={cn(
-        "inline-flex items-center justify-center rounded-full h-10 w-10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-        "text-amber-400 hover:bg-accent hover:text-amber-500",
-        className
-      )}
+      disabled={isLoading}
+      className={cn("text-amber-400 hover:text-amber-500", className)}
       title={isFavorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
     >
-      {displayLoading ? (
+      {isLoading ? (
         <Loader2 className="h-5 w-5 animate-spin" />
       ) : (
         <Star className={cn("h-5 w-5 transition-all", isFavorited && "fill-current")} />
       )}
-    </div>
+    </Button>
   );
 };
 

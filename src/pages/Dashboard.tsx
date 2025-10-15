@@ -2,11 +2,10 @@ import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2 } from "lucide-react";
+import { Syringe, Siren, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useQuery } from "@tanstack/react-query";
 
 interface Profile {
   id: string;
@@ -16,18 +15,21 @@ interface Profile {
   last_name?: string;
 }
 
+interface Question {
+  id: number;
+  question: string;
+}
+
 interface FeaturedComment {
   content: string;
-  profiles: {
+  author: {
     id: string;
     first_name: string;
     last_name: string;
     avatar_url: string;
   };
-  question: {
-    id: number;
-    question: string;
-  };
+  questionText: string;
+  questionId: number;
 }
 
 const quickAccessLinks = [
@@ -85,33 +87,58 @@ const clinicalTips = [
   "O antídoto para intoxicação por opioides é a Naloxona. Para benzodiazepínicos, é o Flumazenil.",
 ];
 
-const fetchFeaturedComments = async () => {
-  const { data, error } = await supabase
-    .from("comments")
-    .select("content, profiles(id, first_name, last_name, avatar_url), questions(id, question)")
-    .order("created_at", { ascending: false })
-    .limit(5);
-
-  if (error) throw error;
-
-  // Filtrar comentários onde o perfil ou a questão associada são nulos
-  return data.filter(comment => comment.profiles && comment.questions) as FeaturedComment[];
-};
-
 const Dashboard = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const [featuredComments, setFeaturedComments] = useState<FeaturedComment[]>([]);
   const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
+  const [isLoadingComment, setIsLoadingComment] = useState(true);
 
-  const { data: featuredComments = [], isLoading: isLoadingComment } = useQuery({
-    queryKey: ['featuredComments'],
-    queryFn: fetchFeaturedComments,
-  });
+  useEffect(() => {
+    const fetchFeaturedComments = async () => {
+      setIsLoadingComment(true);
+      try {
+        const questionsRes = await fetch("/questions.json");
+        const questionsData: Question[] = await questionsRes.json();
+
+        const { data: latestComments, error } = await supabase
+          .from("comments")
+          .select("*, profiles(id, first_name, last_name, avatar_url)")
+          .order("created_at", { ascending: false })
+          .limit(5);
+
+        if (latestComments && !error) {
+          const formattedComments = latestComments
+            .map(comment => {
+              const relatedQuestion = questionsData.find(q => q.id === comment.question_id);
+              if (relatedQuestion && comment.profiles) {
+                return {
+                  content: comment.content,
+                  author: comment.profiles,
+                  questionText: relatedQuestion.question,
+                  questionId: relatedQuestion.id,
+                };
+              }
+              return null;
+            })
+            .filter((c): c is FeaturedComment => c !== null);
+          
+          setFeaturedComments(formattedComments);
+        }
+      } catch (err) {
+        console.error("Failed to fetch featured comments:", err);
+      } finally {
+        setIsLoadingComment(false);
+      }
+    };
+
+    fetchFeaturedComments();
+  }, []);
 
   useEffect(() => {
     if (featuredComments.length > 1) {
       const timer = setInterval(() => {
         setCurrentCommentIndex(prevIndex => (prevIndex + 1) % featuredComments.length);
-      }, 7000);
+      }, 7000); // Rotate every 7 seconds
       return () => clearInterval(timer);
     }
   }, [featuredComments]);
@@ -134,13 +161,13 @@ const Dashboard = () => {
               const Icon = link.icon;
               return (
                 <Link to={link.path} key={link.title}>
-                  <Card className={cn("h-full bg-card hover:bg-accent transition-all group border-2 border-transparent", link.colorClasses.hoverBorder)}>
+                  <Card className={cn("h-full bg-gray-800 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 transition-all group border-2 border-transparent", link.colorClasses.hoverBorder)}>
                     <CardContent className="flex flex-col items-center justify-center text-center p-3 sm:p-4">
                       <div className={cn("p-2 sm:p-3 rounded-lg mb-2 sm:mb-3 transition-colors", link.colorClasses.bg)}>
                         <Icon className={cn("h-5 w-5 sm:h-6 sm:w-6 transition-colors", link.colorClasses.text)} />
                       </div>
-                      <p className="font-semibold text-xs sm:text-sm text-foreground">{link.title}</p>
-                      <p className="text-[10px] sm:text-xs text-muted-foreground">{link.description}</p>
+                      <p className="font-semibold text-xs sm:text-sm text-gray-50">{link.title}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-400">{link.description}</p>
                     </CardContent>
                   </Card>
                 </Link>
@@ -183,14 +210,14 @@ const Dashboard = () => {
               </blockquote>
               <div className="flex justify-end items-center gap-3 mt-2">
                 <p className="text-sm font-semibold text-right">
-                  — <Link to={`/user/${currentComment.profiles.id}`} className="hover:underline text-primary">
-                    {`${currentComment.profiles.first_name} ${currentComment.profiles.last_name}`}
+                  — <Link to={`/user/${currentComment.author.id}`} className="hover:underline text-primary">
+                    {`${currentComment.author.first_name} ${currentComment.author.last_name}`}
                   </Link>
                 </p>
-                <Link to={`/user/${currentComment.profiles.id}`}>
+                <Link to={`/user/${currentComment.author.id}`}>
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={currentComment.profiles.avatar_url} alt={`Avatar de ${currentComment.profiles.first_name}`} className="object-cover" />
-                    <AvatarFallback>{`${currentComment.profiles.first_name?.[0] || ''}${currentComment.profiles.last_name?.[0] || ''}`.toUpperCase()}</AvatarFallback>
+                    <AvatarImage src={currentComment.author.avatar_url} alt={`Avatar de ${currentComment.author.first_name}`} className="object-cover" />
+                    <AvatarFallback>{`${currentComment.author.first_name?.[0] || ''}${currentComment.author.last_name?.[0] || ''}`.toUpperCase()}</AvatarFallback>
                   </Avatar>
                 </Link>
               </div>
@@ -200,7 +227,7 @@ const Dashboard = () => {
                   <span>Referente à questão:</span>
                 </div>
                 <p className="text-sm text-foreground font-medium">
-                  "{currentComment.question.question.substring(0, 120)}..."
+                  "{currentComment.questionText.substring(0, 120)}..."
                 </p>
               </Link>
             </div>

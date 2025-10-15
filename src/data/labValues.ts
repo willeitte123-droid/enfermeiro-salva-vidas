@@ -1,0 +1,160 @@
+import { TestTube, Droplet, Wind, Clock, Beaker, HeartPulse, Activity, Shield, Zap, BrainCircuit } from "lucide-react";
+import { LucideIcon } from "lucide-react";
+
+export interface LabValue {
+  name: string;
+  value: string;
+  unit: string;
+  notes?: string;
+}
+
+export interface LabCategory {
+  category: string;
+  icon: LucideIcon;
+  color: string;
+  values: LabValue[];
+}
+
+export const labValuesData: LabCategory[] = [
+  {
+    category: "Hemograma",
+    icon: Droplet,
+    color: "text-red-500",
+    values: [
+      { name: "Hemácias (H)", value: "4,5 - 5,5 (H) / 4,0 - 5,0 (M)", unit: "milhões/mm³", notes: "↓ Anemia / ↑ Policitemia" },
+      { name: "Hemoglobina (Hb)", value: "13 - 18 (H) / 12 - 16 (M)", unit: "g/dL", notes: "Principal indicador de anemia" },
+      { name: "Hematócrito (Ht)", value: "40 - 50 (H) / 35 - 45 (M)", unit: "%", notes: "Relação entre hemácias e volume sanguíneo" },
+      { name: "VCM (Volume Corpuscular Médio)", value: "80 - 100", unit: "fL", notes: "Tamanho da hemácia (micro/normo/macrocítica)" },
+      { name: "HCM (Hemoglobina Corpuscular Média)", value: "27 - 32", unit: "pg", notes: "Peso da Hb na hemácia (hipo/normocrômica)" },
+      { name: "Leucócitos Totais", value: "4.000 - 11.000", unit: "/mm³", notes: "↑ Leucocitose (infecção) / ↓ Leucopenia" },
+      { name: "Neutrófilos (Segmentados)", value: "40 - 70%", unit: "", notes: "↑ Infecção bacteriana aguda ('desvio à esquerda')" },
+      { name: "Linfócitos", value: "20 - 40%", unit: "", notes: "↑ Infecções virais" },
+      { name: "Monócitos", value: "2 - 10%", unit: "", notes: "↑ Infecções crônicas, tuberculose" },
+      { name: "Eosinófilos", value: "1 - 5%", unit: "", notes: "↑ Alergias, parasitoses" },
+      { name: "Plaquetas", value: "150.000 - 450.000", unit: "/mm³", notes: "↓ Plaquetopenia (risco de sangramento)" },
+    ],
+  },
+  {
+    category: "Bioquímica Sanguínea",
+    icon: TestTube,
+    color: "text-blue-500",
+    values: [
+      { name: "Glicose (jejum)", value: "70 - 99", unit: "mg/dL", notes: "↑ Hiperglicemia / ↓ Hipoglicemia" },
+      { name: "Hemoglobina Glicada (HbA1c)", value: "< 5,7%", unit: "", notes: "Média da glicemia dos últimos 3 meses. ≥ 6,5% = Diabetes" },
+      { name: "Ureia", value: "10 - 50", unit: "mg/dL", notes: "↑ Função renal diminuída, desidratação" },
+      { name: "Creatinina", value: "0,7 - 1,3 (H) / 0,6 - 1,1 (M)", unit: "mg/dL", notes: "Principal marcador da função renal" },
+      { name: "Sódio (Na+)", value: "135 - 145", unit: "mEq/L", notes: "Distúrbios hidroeletrolíticos" },
+      { name: "Potássio (K+)", value: "3,5 - 5,0", unit: "mEq/L", notes: "Crítico para a função cardíaca. Alterações causam arritmias." },
+      { name: "Cálcio Total", value: "8,5 - 10,2", unit: "mg/dL", notes: "Regula contração muscular e coagulação" },
+      { name: "Cálcio Iônico", value: "4,5 - 5,5", unit: "mg/dL", notes: "Forma biologicamente ativa do cálcio" },
+      { name: "Magnésio (Mg++)", value: "1,8 - 2,4", unit: "mg/dL", notes: "Importante para função neuromuscular" },
+      { name: "Fósforo (P)", value: "2,5 - 4,5", unit: "mg/dL", notes: "Inversamente relacionado ao cálcio" },
+      { name: "Cloro (Cl-)", value: "98 - 107", unit: "mEq/L", notes: "Principal ânion extracelular" },
+      { name: "Ácido Úrico", value: "3,4 - 7,0 (H) / 2,4 - 5,7 (M)", unit: "mg/dL", notes: "↑ Risco de gota" },
+    ],
+  },
+  {
+    category: "Gasometria Arterial",
+    icon: Wind,
+    color: "text-emerald-500",
+    values: [
+      { name: "pH", value: "7,35 - 7,45", unit: "", notes: "Equilíbrio ácido-básico (↓ Acidose / ↑ Alcalose)" },
+      { name: "pCO₂ (Pressão de CO₂)", value: "35 - 45", unit: "mmHg", notes: "Componente respiratório (↑ Acidose / ↓ Alcalose)" },
+      { name: "pO₂ (Pressão de O₂)", value: "80 - 100", unit: "mmHg", notes: "Oxigenação do sangue (↓ Hipoxemia)" },
+      { name: "HCO₃⁻ (Bicarbonato)", value: "22 - 26", unit: "mEq/L", notes: "Componente metabólico (↓ Acidose / ↑ Alcalose)" },
+      { name: "BE (Excesso de Base)", value: "-2 a +2", unit: "mEq/L", notes: "Avaliação do componente metabólico" },
+      { name: "Saturação de O₂ (SaO₂)", value: "> 95", unit: "%", notes: "Saturação arterial de oxigênio" },
+      { name: "Lactato", value: "< 2", unit: "mmol/L", notes: "Marcador de hipoperfusão tecidual (choque)" },
+    ],
+  },
+  {
+    category: "Coagulação",
+    icon: Clock,
+    color: "text-amber-500",
+    values: [
+      { name: "Tempo de Protrombina (TP)", value: "10 - 14", unit: "segundos", notes: "Avalia via extrínseca" },
+      { name: "INR (RNI)", value: "0,8 - 1,2 (normal) / 2,0 - 3,0 (alvo terapêutico)", unit: "", notes: "Monitoramento de anticoagulantes orais (Varfarina)" },
+      { name: "TTPa (Tempo de Tromboplastina Parcial Ativada)", value: "25 - 35", unit: "segundos", notes: "Avalia via intrínseca, monitoramento de heparina" },
+      { name: "Dímero-D", value: "< 500", unit: "ng/mL", notes: "Produto da degradação da fibrina, ↑ em tromboses (TEP, TVP)" },
+      { name: "Fibrinogênio", value: "200 - 400", unit: "mg/dL", notes: "Fator de coagulação, ↑ em inflamação" },
+    ],
+  },
+  {
+    category: "Função Hepática e Pâncreas",
+    icon: Activity,
+    color: "text-orange-500",
+    values: [
+      { name: "TGO (AST)", value: "5 - 40", unit: "U/L", notes: "Enzima hepática, muscular e cardíaca. Marcador de lesão." },
+      { name: "TGP (ALT)", value: "7 - 56", unit: "U/L", notes: "Enzima hepática, mais específica que TGO para lesão no fígado." },
+      { name: "Fosfatase Alcalina (FA)", value: "40 - 130", unit: "U/L", notes: "↑ em doenças hepáticas colestáticas e doenças ósseas." },
+      { name: "Gama GT (GGT)", value: "8 - 61 (H) / 5 - 36 (M)", unit: "U/L", notes: "Marcador sensível de doença hepatobiliar, ↑ com uso de álcool." },
+      { name: "Bilirrubinas Totais", value: "0,2 - 1,2", unit: "mg/dL", notes: "↑ Icterícia, problemas hepáticos/biliares" },
+      { name: "Bilirrubina Direta", value: "0 - 0,3", unit: "mg/dL", notes: "↑ em obstrução biliar" },
+      { name: "Albumina", value: "3,5 - 5,0", unit: "g/dL", notes: "Principal proteína sérica, avalia função de síntese do fígado e estado nutricional." },
+      { name: "Amilase", value: "30 - 110", unit: "U/L", notes: "↑ em pancreatite aguda" },
+      { name: "Lipase", value: "10 - 140", unit: "U/L", notes: "Mais específica que a amilase para pancreatite aguda" },
+    ],
+  },
+  {
+    category: "Perfil Lipídico",
+    icon: HeartPulse,
+    color: "text-pink-500",
+    values: [
+      { name: "Colesterol Total", value: "< 190", unit: "mg/dL", notes: "Desejável" },
+      { name: "HDL ('Bom')", value: "> 40", unit: "mg/dL", notes: "Desejável" },
+      { name: "LDL ('Ruim')", value: "< 130 (baixo risco) / < 100 (médio) / < 70 (alto) / < 50 (muito alto)", unit: "mg/dL", notes: "Meta varia com o risco cardiovascular" },
+      { name: "Triglicerídeos", value: "< 150", unit: "mg/dL", notes: "Desejável (jejum)" },
+    ],
+  },
+  {
+    category: "Marcadores Cardíacos e Inflamatórios",
+    icon: Zap,
+    color: "text-yellow-500",
+    values: [
+      { name: "Troponina I ou T (ultrassensível)", value: "Varia (ex: < 14 ng/L)", unit: "", notes: "Marcador mais sensível e específico de lesão miocárdica (infarto)." },
+      { name: "CK-MB", value: "< 5", unit: "ng/mL", notes: "Enzima cardíaca, marcador de infarto (menos específico que troponina)." },
+      { name: "BNP (Peptídeo Natriurético Cerebral)", value: "< 100", unit: "pg/mL", notes: "↑ em insuficiência cardíaca descompensada." },
+      { name: "Proteína C Reativa (PCR)", value: "< 5", unit: "mg/L", notes: "Marcador de inflamação aguda. ↑ em infecções, trauma." },
+      { name: "VHS (Velocidade de Hemossedimentação)", value: "0 - 15 (H) / 0 - 20 (M)", unit: "mm/h", notes: "Marcador inespecífico de inflamação." },
+    ],
+  },
+  {
+    category: "Função Tireoidiana",
+    icon: Shield,
+    color: "text-indigo-500",
+    values: [
+      { name: "TSH (Hormônio Tireoestimulante)", value: "0,4 - 4,5", unit: "µUI/mL", notes: "Principal exame de triagem. ↑ Hipotireoidismo / ↓ Hipertireoidismo." },
+      { name: "T4 Livre", value: "0,8 - 1,8", unit: "ng/dL", notes: "Mede a fração ativa do hormônio tireoidiano." },
+    ],
+  },
+  {
+    category: "Urinálise (EAS / Urina Tipo 1)",
+    icon: Beaker,
+    color: "text-cyan-500",
+    values: [
+      { name: "Cor", value: "Amarelo-claro", unit: "", notes: "Escura: desidratação. Vermelha: hematúria." },
+      { name: "Aspecto", value: "Límpido", unit: "", notes: "Turvo: presença de células, cristais, bactérias." },
+      { name: "Densidade", value: "1.010 - 1.030", unit: "", notes: "Avalia a capacidade de concentração renal." },
+      { name: "pH", value: "5,0 - 7,5", unit: "", notes: "Pode variar com a dieta e condições metabólicas." },
+      { name: "Proteínas", value: "Ausente", unit: "", notes: "Positivo (proteinúria) pode indicar lesão renal." },
+      { name: "Glicose", value: "Ausente", unit: "", notes: "Positivo (glicosúria) quando a glicemia > 180 mg/dL." },
+      { name: "Cetonas", value: "Ausente", unit: "", notes: "Positivo em jejum prolongado, cetoacidose diabética." },
+      { name: "Nitrito", value: "Negativo", unit: "", notes: "Positivo sugere infecção por bactérias gram-negativas." },
+      { name: "Leucócitos (Sedimento)", value: "< 5", unit: "/campo", notes: "↑ (piúria) sugere infecção do trato urinário (ITU)." },
+      { name: "Hemácias (Sedimento)", value: "< 3", unit: "/campo", notes: "↑ (hematúria) pode indicar ITU, cálculo, lesão renal." },
+      { name: "Cilindros", value: "Ausentes (hialinos raros)", unit: "", notes: "Presença de cilindros (hemáticos, leucocitários) indica doença renal." },
+    ],
+  },
+  {
+    category: "Líquido Cefalorraquidiano (LCR / Líquor)",
+    icon: BrainCircuit,
+    color: "text-purple-500",
+    values: [
+      { name: "Aspecto", value: "Límpido e incolor ('água de rocha')", unit: "", notes: "Turvo: meningite bacteriana. Xantocrômico: hemorragia prévia." },
+      { name: "Células (Leucócitos)", value: "Até 4", unit: "/mm³", notes: "↑ com predomínio de neutrófilos: meningite bacteriana. ↑ com linfócitos: meningite viral." },
+      { name: "Proteínas", value: "15 - 45", unit: "mg/dL", notes: "↑ em processos inflamatórios/infecciosos." },
+      { name: "Glicose", value: "50 - 80 (ou 2/3 da glicemia)", unit: "mg/dL", notes: "↓ (hipoglicorraquia) é característica de meningite bacteriana." },
+      { name: "Lactato", value: "< 2,1", unit: "mmol/L", notes: "↑ em meningite bacteriana." },
+    ],
+  },
+];

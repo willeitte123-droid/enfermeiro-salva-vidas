@@ -2,43 +2,16 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { semioTechniqueData } from "@/data/assessment";
 import { HandHeart, CheckCircle2, Droplet } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
-import * as LucideIcons from "lucide-react";
-import assessmentData from "@/data/assessment.json";
 
 interface Profile {
   id: string;
 }
 
-interface Alteration {
-  term: string;
-  description: string;
-}
-
-interface GlycemiaCriteria {
-  criterion: string;
-  normal: string;
-  preDiabetes: string;
-  diabetes: string;
-}
-
-interface SemioTechniqueItem {
-  id: string;
-  name: string;
-  icon: keyof typeof LucideIcons;
-  color: string;
-  technique: string[];
-  normalValues?: string;
-  alterations?: Alteration[];
-  glycemiaCriteria?: GlycemiaCriteria[];
-}
-
-const semioTechniqueData: SemioTechniqueItem[] = assessmentData.semioTechniqueData;
-
 const SemioTechnique = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
-
   const vitalSigns = semioTechniqueData.filter(item => item.id !== 'glycemia');
   const glycemiaAssessment = semioTechniqueData.find(item => item.id === 'glycemia');
 
@@ -69,12 +42,12 @@ const SemioTechnique = () => {
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {vitalSigns.map(sign => {
-            const Icon = LucideIcons[sign.icon] as LucideIcons.LucideIcon;
+            const Icon = sign.icon;
             return (
               <Card key={sign.id}>
                 <CardHeader>
                   <CardTitle className={`flex items-center gap-3 ${sign.color}`}>
-                    {Icon && <Icon />} {sign.name}
+                    <Icon /> {sign.name}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

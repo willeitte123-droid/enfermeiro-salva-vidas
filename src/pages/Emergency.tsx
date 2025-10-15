@@ -4,56 +4,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AlertCircle, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import FavoriteButton from "@/components/FavoriteButton";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import * as LucideIcons from "lucide-react";
-import emergencyProtocolsData from "@/data/emergencies.json";
+import { emergencyProtocols } from "@/data/emergencies";
 
 interface Profile {
   id: string;
 }
 
-interface ContentLine {
-  text: string;
-}
-
-interface EmergencyItem {
-  title: string;
-  icon: keyof typeof LucideIcons;
-  color: string;
-  openColor: string;
-  content: ContentLine[];
-}
-
-interface EmergencyCategory {
-  category: string;
-  color: string;
-  items: EmergencyItem[];
-}
-
-const emergencyProtocols: EmergencyCategory[] = emergencyProtocolsData;
-
 const Emergency = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
-
-  const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
-    queryKey: ['favorites', profile?.id, 'Protocolo de Emergência'],
-    queryFn: async () => {
-      if (!profile) return [];
-      const { data, error } = await supabase
-        .from('user_favorites')
-        .select('item_id')
-        .eq('user_id', profile.id)
-        .eq('item_type', 'Protocolo de Emergência');
-      if (error) throw error;
-      return data.map(f => f.item_id);
-    },
-    enabled: !!profile,
-  });
-
-  const favoriteSet = useMemo(() => new Set(favoritesData || []), [favoritesData]);
 
   const filteredProtocols = useMemo(() => {
     if (!searchTerm) {
@@ -70,7 +31,7 @@ const Emergency = () => {
         return { ...category, items: filteredItems };
       })
       .filter(category => category.items.length > 0);
-  }, [searchTerm, emergencyProtocols]);
+  }, [searchTerm]);
 
   return (
     <div className="space-y-6">
@@ -85,8 +46,6 @@ const Emergency = () => {
             itemId="/emergency"
             itemType="Guia"
             itemTitle="Guia de Emergências"
-            isInitiallyFavorited={favoriteSet.has("/emergency")}
-            isLoading={isLoadingFavorites}
           />
         )}
       </div>
@@ -126,30 +85,26 @@ const Emergency = () => {
               <CardContent>
                 <Accordion type="single" collapsible className="w-full space-y-4">
                   {category.items.map((item) => {
-                    const Icon = LucideIcons[item.icon] as LucideIcons.LucideIcon;
-                    const itemId = `/emergency#${item.title.toLowerCase().replace(/\s+/g, '-')}`;
+                    const Icon = item.icon;
                     return (
                       <AccordionItem value={item.title} key={item.title} className="border rounded-lg px-4 bg-card shadow-sm">
-                        <div className="flex items-center">
-                          <AccordionTrigger className="flex-1 group hover:no-underline text-left py-0">
-                            <div className="flex items-center gap-3 py-4">
-                              {Icon && <Icon className={`h-5 w-5 ${item.color} transition-colors group-data-[state=open]:${item.openColor}`} />}
+                        <AccordionTrigger className="group hover:no-underline text-left">
+                          <div className="flex items-center justify-between w-full">
+                            <div className="flex items-center gap-3">
+                              <Icon className={`h-5 w-5 ${item.color} transition-colors group-data-[state=open]:${item.openColor}`} />
                               <span className="font-semibold text-left">{item.title}</span>
                             </div>
-                          </AccordionTrigger>
-                          <div className="pl-4">
                             {profile && (
                               <FavoriteButton
                                 userId={profile.id}
-                                itemId={itemId}
+                                itemId={`/emergency#${item.title.toLowerCase().replace(/\s+/g, '-')}`}
                                 itemType="Protocolo de Emergência"
                                 itemTitle={item.title}
-                                isInitiallyFavorited={favoriteSet.has(itemId)}
-                                isLoading={isLoadingFavorites}
+                                className="mr-2"
                               />
                             )}
                           </div>
-                        </div>
+                        </AccordionTrigger>
                         <AccordionContent className="pt-4 space-y-3">
                           {item.content.map((line, index) => (
                             <div key={index} className="flex items-start gap-3 text-sm" dangerouslySetInnerHTML={{ __html: line.text }} />

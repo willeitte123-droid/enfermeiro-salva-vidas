@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -6,18 +7,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Timer, FileText, Info, PlayCircle } from "lucide-react";
 
-interface SimuladoLobbyProps {
-  onStart: (config: { numQuestions: number; totalTime: number }) => void;
-}
-
-const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
+const SimuladoLobby = () => {
   const [numQuestions, setNumQuestions] = useState("20");
   const [totalTime, setTotalTime] = useState("40");
 
+  const navigate = useNavigate();
+
   const handleStart = () => {
-    onStart({
-      numQuestions: parseInt(numQuestions),
-      totalTime: parseInt(totalTime) * 60, // in seconds
+    navigate("/simulado/start", {
+      state: {
+        numQuestions: parseInt(numQuestions),
+        totalTime: parseInt(totalTime) * 60, // in seconds
+      },
     });
   };
 

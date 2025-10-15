@@ -1,28 +1,13 @@
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { reviewTopics } from "@/data/reviewTopics";
 import { Library, CheckCircle2 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
-import * as LucideIcons from "lucide-react";
-import reviewTopicsData from "@/data/reviewTopics.json";
 
 interface Profile {
   id: string;
 }
-
-interface ReviewTopic {
-  id: string;
-  title: string;
-  icon: keyof typeof LucideIcons;
-  color: string;
-  summary: string;
-  details: {
-    subtitle: string;
-    points: string[];
-  }[];
-}
-
-const reviewTopics: ReviewTopic[] = reviewTopicsData;
 
 const ReviewArea = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
@@ -46,13 +31,13 @@ const ReviewArea = () => {
 
       <div className="space-y-4">
         {reviewTopics.map((topic) => {
-          const Icon = LucideIcons[topic.icon] as LucideIcons.LucideIcon;
+          const Icon = topic.icon;
           return (
             <Card key={topic.id} className="shadow-sm">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle className={`flex items-center gap-3 ${topic.color}`}>
-                    {Icon && <Icon />} {topic.title}
+                    <Icon /> {topic.title}
                   </CardTitle>
                   {profile && (
                     <FavoriteButton
