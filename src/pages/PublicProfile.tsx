@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
+import { useQuestions } from "@/context/QuestionsContext";
 
 interface Profile {
   id: string;
@@ -64,6 +65,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 const PublicProfile = () => {
   const { userId } = useParams<{ userId: string }>();
+  const { questions: allQuestions, isLoading: isLoadingQuestions } = useQuestions();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [simulations, setSimulations] = useState<Simulation[]>([]);
   const [categoryStats, setCategoryStats] = useState<CategoryStat[]>([]);
@@ -73,21 +75,19 @@ const PublicProfile = () => {
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      if (!userId) return;
+      if (!userId || isLoadingQuestions) return;
       setLoading(true);
 
       try {
         const profilePromise = supabase.from("profiles").select("*").eq("id", userId).single();
         const simulationsPromise = supabase.from("user_simulations").select('*').eq('user_id', userId).order('created_at', { ascending: false });
         const answersPromise = supabase.from("user_question_answers").select('question_id, is_correct').eq('user_id', userId);
-        const questionsPromise = fetch("/questions.json").then(res => res.json());
 
         const [
           { data: profileData, error: profileError },
           { data: simulationsData, error: simulationsError },
           { data: answersData, error: answersError },
-          questionsData,
-        ] = await Promise.all([profilePromise, simulationsPromise, answersPromise, questionsPromise]);
+        ] = await Promise.all([profilePromise, simulationsPromise, answersPromise]);
 
         if (profileError) throw profileError;
         setProfile(profileData);
@@ -97,14 +97,14 @@ const PublicProfile = () => {
 
         if (answersError) throw answersError;
         
-        if (answersData && questionsData) {
+        if (answersData && allQuestions) {
           setTotalQuestions(answersData.length);
           setCorrectQuestions(answersData.filter(a => a.is_correct).length);
 
           const performanceByCategory: { [key: string]: { total: number; correct: number } } = {};
           
           for (const answer of answersData) {
-            const question = questionsData.find((q: Question) => q.id === answer.question_id);
+            const question = allQuestions.find((q: Question) => q.id === answer.question_id);
             if (question) {
               const category = question.category;
               if (!performanceByCategory[category]) {
@@ -134,7 +134,7 @@ const PublicProfile = () => {
     };
 
     fetchProfileData();
-  }, [userId]);
+  }, [userId, isLoadingQuestions, allQuestions]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -142,7 +142,7 @@ const PublicProfile = () => {
     return `${minutes}m ${secs}s`;
   };
 
-  if (loading) {
+  if (loading || isLoadingQuestions) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />

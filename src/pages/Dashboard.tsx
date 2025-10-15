@@ -2,10 +2,11 @@ import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { Syringe, Siren, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2 } from "lucide-react";
+import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useQuestions } from "@/context/QuestionsContext";
 
 interface Profile {
   id: string;
@@ -89,17 +90,16 @@ const clinicalTips = [
 
 const Dashboard = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const { questions: allQuestions, isLoading: isLoadingQuestions } = useQuestions();
   const [featuredComments, setFeaturedComments] = useState<FeaturedComment[]>([]);
   const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
   const [isLoadingComment, setIsLoadingComment] = useState(true);
 
   useEffect(() => {
     const fetchFeaturedComments = async () => {
+      if (isLoadingQuestions) return;
       setIsLoadingComment(true);
       try {
-        const questionsRes = await fetch("/questions.json");
-        const questionsData: Question[] = await questionsRes.json();
-
         const { data: latestComments, error } = await supabase
           .from("comments")
           .select("*, profiles(id, first_name, last_name, avatar_url)")
@@ -109,7 +109,7 @@ const Dashboard = () => {
         if (latestComments && !error) {
           const formattedComments = latestComments
             .map(comment => {
-              const relatedQuestion = questionsData.find(q => q.id === comment.question_id);
+              const relatedQuestion = allQuestions.find(q => q.id === comment.question_id);
               if (relatedQuestion && comment.profiles) {
                 return {
                   content: comment.content,
@@ -132,7 +132,7 @@ const Dashboard = () => {
     };
 
     fetchFeaturedComments();
-  }, []);
+  }, [isLoadingQuestions, allQuestions]);
 
   useEffect(() => {
     if (featuredComments.length > 1) {
@@ -161,13 +161,13 @@ const Dashboard = () => {
               const Icon = link.icon;
               return (
                 <Link to={link.path} key={link.title}>
-                  <Card className={cn("h-full bg-gray-800 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 transition-all group border-2 border-transparent", link.colorClasses.hoverBorder)}>
+                  <Card className={cn("h-full bg-card hover:bg-accent transition-all group border-2 border-transparent", link.colorClasses.hoverBorder)}>
                     <CardContent className="flex flex-col items-center justify-center text-center p-3 sm:p-4">
                       <div className={cn("p-2 sm:p-3 rounded-lg mb-2 sm:mb-3 transition-colors", link.colorClasses.bg)}>
                         <Icon className={cn("h-5 w-5 sm:h-6 sm:w-6 transition-colors", link.colorClasses.text)} />
                       </div>
-                      <p className="font-semibold text-xs sm:text-sm text-gray-50">{link.title}</p>
-                      <p className="text-[10px] sm:text-xs text-gray-400">{link.description}</p>
+                      <p className="font-semibold text-xs sm:text-sm text-foreground">{link.title}</p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground">{link.description}</p>
                     </CardContent>
                   </Card>
                 </Link>

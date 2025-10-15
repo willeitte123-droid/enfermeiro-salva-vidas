@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import EmojiPicker from "emoji-picker-react";
+import { useQuestions } from "@/context/QuestionsContext";
 
 interface Question {
   id: number;
@@ -62,9 +63,7 @@ const commentSchema = z.object({
 
 const Questions = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
-  const [allQuestions, setAllQuestions] = useState<Question[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { questions: allQuestions, isLoading: loading, error } = useQuestions();
 
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
@@ -89,25 +88,6 @@ const Questions = () => {
     resolver: zodResolver(commentSchema),
     defaultValues: { content: "" },
   });
-
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("/questions.json");
-        if (!response.ok) {
-          throw new Error("Falha ao carregar o arquivo de questões.");
-        }
-        const data: Question[] = await response.json();
-        setAllQuestions(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Ocorreu um erro desconhecido ao carregar as questões.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuestions();
-  }, []);
 
   const categories = useMemo(() => {
     const uniqueCategories = [...new Set(allQuestions.map(q => q.category))];

@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Loader2, Timer, AlertTriangle } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
+import { useQuestions } from "@/context/QuestionsContext";
 
 interface Question {
   id: number;
@@ -28,6 +29,7 @@ const Simulado = () => {
   const navigate = useNavigate();
   const { numQuestions, totalTime } = location.state || { numQuestions: 20, totalTime: 20 * 2 * 60 };
 
+  const { questions: allQuestions, isLoading: isLoadingQuestions } = useQuestions();
   const [simuladoQuestions, setSimuladoQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -37,21 +39,12 @@ const Simulado = () => {
   const [showTimeUpDialog, setShowTimeUpDialog] = useState(false);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("/questions.json");
-        const data: Question[] = await response.json();
-        const shuffled = [...data].sort(() => 0.5 - Math.random());
-        setSimuladoQuestions(shuffled.slice(0, numQuestions));
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuestions();
-  }, [numQuestions]);
+    if (!isLoadingQuestions && allQuestions.length > 0) {
+      const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+      setSimuladoQuestions(shuffled.slice(0, numQuestions));
+      setLoading(false);
+    }
+  }, [numQuestions, isLoadingQuestions, allQuestions]);
 
   useEffect(() => {
     if (loading) return;

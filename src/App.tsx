@@ -10,6 +10,7 @@ import { Button } from "./components/ui/button";
 import MainLayout from "./components/MainLayout";
 import { useProfile } from "./hooks/useProfile";
 import { Loader2 } from "lucide-react";
+import { QuestionsProvider } from "./context/QuestionsContext";
 
 // Dynamic Imports for Code Splitting
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
@@ -158,7 +159,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Suspense fallback={<LoadingFallback />}>
-          <AppContent />
+          <QuestionsProvider>
+            <AppContent />
+          </QuestionsProvider>
         </Suspense>
       </BrowserRouter>
     </TooltipProvider>
