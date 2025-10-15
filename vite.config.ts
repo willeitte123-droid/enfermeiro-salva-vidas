@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['logo.svg'],
+      includeAssets: ['logo.svg', 'logo-192.png', 'logo-512.png'],
       manifest: {
         name: 'Enfermagem Pro',
         short_name: 'EnfermagemPro',
