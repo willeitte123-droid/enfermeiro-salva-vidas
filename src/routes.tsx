@@ -41,7 +41,6 @@ import IntegratedCalculators from './pages/tools/IntegratedCalculators';
 import SimuladoPage from './pages/SimuladoPage';
 import ReviewArea from './pages/ReviewArea';
 import FavoritesPage from './pages/FavoritesPage';
-import ShiftManager from './pages/ShiftManager';
 
 interface AppRoutesProps {
   session: any;
@@ -94,7 +93,6 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
         <Route path="simulado" element={<SimuladoPage />} />
         <Route path="review-area" element={<ReviewArea />} />
         <Route path="favorites" element={<FavoritesPage />} />
-        <Route path="plantao" element={<ShiftManager />} />
         <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="/login" element={<Navigate to="/" replace />} />

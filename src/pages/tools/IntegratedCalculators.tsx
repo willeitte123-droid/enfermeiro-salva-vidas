@@ -14,19 +14,19 @@ const IntegratedCalculators = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <div className="flex justify-center items-center gap-4 mb-2">
-          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Calculadoras Integradas</h1>
-          {profile && (
-            <FavoriteButton
-              userId={profile.id}
-              itemId="/tools/integrated-calculators"
-              itemType="Ferramenta"
-              itemTitle="Calculadoras Integradas"
-            />
-          )}
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Calculadoras Integradas</h1>
+          <p className="text-muted-foreground">Ferramentas rápidas para cálculos de IMC e gestacionais.</p>
         </div>
-        <p className="text-muted-foreground">Ferramentas rápidas para cálculos de IMC e gestacionais.</p>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/tools/integrated-calculators"
+            itemType="Ferramenta"
+            itemTitle="Calculadoras Integradas"
+          />
+        )}
       </div>
 
       <Tabs defaultValue="pregnancy" className="w-full">

@@ -51,19 +51,19 @@ const EcgGuide = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <div className="flex justify-center items-center gap-4 mb-2">
-          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Guia Rápido de ECG</h1>
-          {profile && (
-            <FavoriteButton
-              userId={profile.id}
-              itemId="/ecg"
-              itemType="Guia"
-              itemTitle="Guia Rápido de ECG"
-            />
-          )}
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Guia Rápido de ECG</h1>
+          <p className="text-muted-foreground">Interpretação de eletrocardiograma para enfermagem.</p>
         </div>
-        <p className="text-muted-foreground">Interpretação de eletrocardiograma para enfermagem.</p>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/ecg"
+            itemType="Guia"
+            itemTitle="Guia Rápido de ECG"
+          />
+        )}
       </div>
 
       <Tabs defaultValue="fundamentals" className="space-y-4">

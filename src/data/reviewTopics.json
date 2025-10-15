@@ -84,7 +84,7 @@
     "title": "Saúde da Mulher",
     "icon": "Heart",
     "color": "text-purple-500",
-    "summary": "Cuidados essenciais no pré-natal, parto, puerpério e na prevenção de agravos.",
+    "summary": "Cuidados essenciais no pré-natal e na prevenção de cânceres ginecológicos.",
     "details": [
       {
         "subtitle": "Pré-Natal de Baixo Risco",
@@ -97,35 +97,10 @@
         ]
       },
       {
-        "subtitle": "Trabalho de Parto e Parto",
-        "points": [
-          "<strong>Períodos Clínicos do Parto:</strong><ul><li><strong>1º - Dilatação:</strong> Início das contrações regulares até a dilatação total (10cm).</li><li><strong>2º - Expulsivo:</strong> Da dilatação total até a saída completa do feto.</li><li><strong>3º - Secundamento/Dequitação:</strong> Saída da placenta e membranas.</li><li><strong>4º - Período de Greenberg:</strong> A primeira hora pós-parto, crucial para vigilância de hemorragias.</li></ul>",
-          "<strong>Mecanismo do Parto (Movimentos Cardinais):</strong> Sequência de movimentos do feto para passar pelo canal de parto: <strong>1.</strong> Insinuação, <strong>2.</strong> Descida, <strong>3.</strong> Flexão, <strong>4.</strong> Rotação Interna, <strong>5.</strong> Deflexão, <strong>6.</strong> Rotação Externa, <strong>7.</strong> Desprendimento dos ombros.",
-          "<strong>Partograma:</strong> Ferramenta gráfica para monitorar a evolução do trabalho de parto, identificando distócias. Registra dilatação, descida, contrações e BCF."
-        ]
-      },
-      {
-        "subtitle": "Puerpério (Pós-parto)",
-        "points": [
-          "<strong>Classificação:</strong> Imediato (1º ao 10º dia), Tardio (11º ao 45º dia), Remoto (após 45º dia).",
-          "<strong>Cuidados de Enfermagem:</strong> Avaliar involução uterina (altura do fundo uterino), características dos lóquios, mamas (ingurgitamento, fissuras), períneo/ferida operatória e estado emocional.",
-          "<strong>Sinais de Alerta:</strong> Febre, hemorragia excessiva (mais de 1 absorvente/hora), dor/edema em membros inferiores (risco de TVP), mastite."
-        ]
-      },
-      {
-        "subtitle": "Prevenção de Câncer Ginecológico",
+        "subtitle": "Prevenção de Câncer",
         "points": [
           "<strong>Câncer de Colo de Útero:</strong> Rastreamento com Papanicolau em mulheres de 25 a 64 anos. Início aos 25 anos, os dois primeiros anuais, se normais, a cada 3 anos.",
           "<strong>Câncer de Mama:</strong> Rastreamento com mamografia bienal para mulheres de 50 a 69 anos. Exame clínico anual a partir dos 40 anos."
-        ]
-      },
-      {
-        "subtitle": "Planejamento Familiar e Contracepção",
-        "points": [
-          "<strong>Métodos de Barreira:</strong> Preservativos (masculino/feminino), diafragma. Únicos que protegem contra ISTs.",
-          "<strong>Métodos Hormonais:</strong> Pílulas (combinadas/progestágeno), injetáveis (mensal/trimestral), adesivo, anel vaginal, implante.",
-          "<strong>Dispositivos Intrauterinos (DIU):</strong> DIU de Cobre (não hormonal, dura até 10 anos) e DIU Hormonal (Mirena/Kyleena, dura até 5 anos).",
-          "<strong>Métodos Definitivos:</strong> Laqueadura tubária e Vasectomia (requerem critérios da Lei de Planejamento Familiar)."
         ]
       }
     ]
@@ -135,24 +110,16 @@
     "title": "Sistematização da Assistência de Enfermagem (SAE)",
     "icon": "ClipboardList",
     "color": "text-cyan-500",
-    "summary": "Método científico e obrigatório para organizar o cuidado, garantindo uma assistência individualizada, segura e de qualidade.",
+    "summary": "Método científico para organizar o cuidado, garantindo uma assistência individualizada e de qualidade.",
     "details": [
-      {
-        "subtitle": "SAE, Processo de Enfermagem e Legislação",
-        "points": [
-          "O <strong>Processo de Enfermagem (PE)</strong> é o método de trabalho; a SAE é a organização e documentação desse método.",
-          "A implementação da SAE é <strong>obrigatória</strong> por lei (Resolução COFEN 358/2009) em todos os ambientes, públicos ou privados, onde ocorre o cuidado profissional de enfermagem.",
-          "A SAE organiza o cuidado em 5 etapas inter-relacionadas, sendo uma atividade <strong>privativa do Enfermeiro</strong>."
-        ]
-      },
       {
         "subtitle": "As 5 Etapas da SAE",
         "points": [
-          "<strong>1. Coleta de Dados (Histórico):</strong> Coleta de informações através de anamnese e exame físico. Fontes podem ser primárias (paciente) ou secundárias (família, prontuário).",
-          "<strong>2. Diagnóstico de Enfermagem (DE):</strong> Julgamento clínico sobre as respostas do paciente. Utiliza-se a taxonomia da NANDA-I, estruturada no formato <strong>P.E.S.</strong> (Problema, Etiologia, Sinais e Sintomas).",
-          "<strong>3. Planejamento de Enfermagem:</strong> Definição de <strong>Resultados Esperados (NOC)</strong>, que são as metas mensuráveis para o paciente, e seleção das <strong>Intervenções de Enfermagem (NIC)</strong>, que são as ações a serem realizadas.",
-          "<strong>4. Implementação (Prescrição):</strong> Execução do plano de cuidados. A prescrição de enfermagem detalha as ações que a equipe realizará, sendo fundamental o registro (checagem) de tudo que foi feito.",
-          "<strong>5. Avaliação de Enfermagem:</strong> Processo contínuo para verificar se os resultados foram alcançados. A avaliação direciona a continuidade do plano, podendo gerar novos diagnósticos ou a alta do paciente do processo de cuidado."
+          "<strong>1. Coleta de Dados (Histórico):</strong> Anamnese e exame físico para coletar informações abrangentes sobre o estado de saúde do paciente.",
+          "<strong>2. Diagnóstico de Enfermagem:</strong> Julgamento clínico sobre as respostas do indivíduo, família ou comunidade aos problemas de saúde/processos vitais. Utiliza-se a taxonomia da NANDA-I.",
+          "<strong>3. Planejamento de Enfermagem:</strong> Definição de resultados esperados (NOC - Nursing Outcomes Classification) e metas a serem alcançadas para cada diagnóstico.",
+          "<strong>4. Implementação (Prescrição):</strong> Realização das intervenções e ações de enfermagem planejadas para atingir os resultados. Utiliza-se a taxonomia da NIC (Nursing Interventions Classification).",
+          "<strong>5. Avaliação de Enfermagem:</strong> Processo contínuo de verificação dos resultados alcançados, reavaliando o processo e ajustando o plano de cuidados conforme necessário."
         ]
       }
     ]
@@ -181,7 +148,7 @@
     "id": "ethics-legislation",
     "title": "Ética e Legislação Profissional",
     "icon": "Gavel",
-    "color": "text-slate-600",
+    "color": "text-gray-500",
     "summary": "Pilares do Código de Ética (CEPE) e da Lei do Exercício Profissional, abordando direitos, deveres, responsabilidades e sigilo.",
     "details": [
       {
@@ -278,101 +245,6 @@
           "<strong>Longitudinalidade:</strong> Acompanhamento do paciente ao longo do tempo.",
           "<strong>Integralidade:</strong> Oferta de uma gama de serviços que atendam às necessidades mais comuns.",
           "<strong>Coordenação do Cuidado:</strong> Organizar o fluxo do paciente pela rede de atenção."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "surgical-center",
-    "title": "Centro Cirúrgico",
-    "icon": "Scissors",
-    "color": "text-orange-500",
-    "summary": "Atuação da enfermagem nos períodos pré, intra e pós-operatório, garantindo a segurança e o cuidado ao paciente cirúrgico.",
-    "details": [
-      {
-        "subtitle": "Períodos Cirúrgicos e Atuação da Enfermagem",
-        "points": [
-          "<strong>Pré-operatório:</strong> Inicia na decisão pela cirurgia e termina com a transferência para o CC. Cuidados: preparo físico e psicológico, jejum, administração de pré-anestésicos, verificação de exames e consentimento.",
-          "<strong>Intraoperatório:</strong> Inicia com a recepção no CC e termina com a transferência para a SRPA. Cuidados: montagem da sala, recepção do paciente, posicionamento cirúrgico, controle de materiais (compressas, agulhas), auxílio à equipe.",
-          "<strong>Pós-operatório:</strong> Inicia na SRPA e se estende até a alta. Cuidados: monitoramento de sinais vitais, avaliação do nível de consciência, controle da dor, prevenção de complicações (TVP, infecção, deiscência)."
-        ]
-      },
-      {
-        "subtitle": "Tempos Cirúrgicos (Fases da Cirurgia)",
-        "points": [
-          "<strong>1. Diérese:</strong> É o tempo de dividir, cortar ou separar os tecidos. Inicia a cirurgia. Ex: Incisão com bisturi.",
-          "<strong>2. Hemostasia:</strong> É o controle do sangramento, que pode ser temporário ou definitivo, preventivo ou corretivo. Ex: Pinçamento de vasos, eletrocauterização.",
-          "<strong>3. Exérese (ou Cirurgia Propriamente Dita):</strong> É o tempo cirúrgico fundamental, onde o objetivo principal é realizado (remover, reparar, corrigir). Ex: Remoção do apêndice (apendicectomia).",
-          "<strong>4. Síntese (ou Sutura):</strong> É a união dos tecidos separados, visando restabelecer a continuidade anatômica e funcional. Ex: Sutura da pele e planos subjacentes."
-        ]
-      },
-      {
-        "subtitle": "Classificação das Cirurgias",
-        "points": [
-          "<strong>Quanto ao Potencial de Contaminação:</strong><ul><li><strong>Limpas:</strong> Sem contato com TGI, respiratório ou geniturinário. Ex: artroplastia.</li><li><strong>Potencialmente Contaminadas:</strong> Contato com TGI/respiratório/geniturinário em condições controladas. Ex: colecistectomia.</li><li><strong>Contaminadas:</strong> Feridas traumáticas recentes, contaminação grosseira do TGI. Ex: apendicectomia supurada.</li><li><strong>Infectadas:</strong> Presença de pus, vísceras perfuradas. Ex: cirurgia de abscesso.</li></ul>",
-          "<strong>Quanto à Urgência:</strong><ul><li><strong>Eletiva:</strong> Programada, sem risco iminente.</li><li><strong>Urgência:</strong> Requer atenção rápida, mas pode aguardar algumas horas.</li><li><strong>Emergência:</strong> Requer atenção imediata, risco de vida.</li></ul>"
-        ]
-      },
-      {
-        "subtitle": "Funções da Equipe de Enfermagem no CC",
-        "points": [
-          "<strong>Enfermeiro Circulante:</strong> Gerencia a sala operatória, provê materiais, posiciona o paciente, realiza anotações, garante a segurança e o bem-estar do paciente.",
-          "<strong>Técnico/Auxiliar Instrumentador:</strong> Prepara e fornece os instrumentos cirúrgicos à equipe médica de forma asséptica, realiza a contagem de instrumentais e compressas junto ao circulante."
-        ]
-      },
-      {
-        "subtitle": "Segurança do Paciente: Checklist de Cirurgia Segura",
-        "points": [
-          "<strong>1. Sign In (Antes da Indução Anestésica):</strong> Confirmação da identidade do paciente, sítio cirúrgico, procedimento, consentimento. Checagem de alergias e risco de via aérea/aspiração.",
-          "<strong>2. Time Out (Antes da Incisão Cirúrgica):</strong> Pausa para confirmação verbal de todos os membros da equipe sobre o paciente, procedimento e sítio corretos. Revisão de etapas críticas.",
-          "<strong>3. Sign Out (Antes do Paciente Sair da Sala):</strong> Confirmação do procedimento realizado, contagem final de compressas, agulhas e instrumentos. Identificação de amostras patológicas e revisão dos cuidados pós-operatórios."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "pharmacology-fundamentals",
-    "title": "Fundamentos de Farmacologia",
-    "icon": "FlaskConical",
-    "color": "text-rose-500",
-    "summary": "Princípios essenciais para a administração segura de medicamentos, desde os '9 Certos' até os conceitos de diluição.",
-    "details": [
-      {
-        "subtitle": "Os 9 Certos da Administração de Medicamentos",
-        "points": [
-          "<strong>1. Paciente Certo:</strong> Confirme a identidade com no mínimo dois identificadores.",
-          "<strong>2. Medicamento Certo:</strong> Cheque o nome do medicamento 3 vezes (ao pegar, ao preparar, antes de administrar).",
-          "<strong>3. Via Certa:</strong> Verifique se a via de administração prescrita é a correta.",
-          "<strong>4. Hora Certa:</strong> Administre na hora programada, respeitando a janela de tempo da instituição.",
-          "<strong>5. Dose Certa:</strong> Realize o cálculo da dose com atenção e, se necessário, peça dupla checagem.",
-          "<strong>6. Registro Certo:</strong> Documente a administração imediatamente após a realização, nunca antes.",
-          "<strong>7. Ação Certa (Orientação):</strong> Oriente o paciente sobre o medicamento, sua indicação e principais efeitos.",
-          "<strong>8. Forma Certa:</strong> Verifique se a forma farmacêutica (comprimido, solução, etc.) está correta.",
-          "<strong>9. Resposta Certa (Monitoramento):</strong> Monitore o paciente para avaliar a eficácia do medicamento e a presença de efeitos adversos."
-        ]
-      },
-      {
-        "subtitle": "Farmacocinética vs. Farmacodinâmica",
-        "points": [
-          "<strong>Farmacocinética:</strong> É o caminho que o medicamento faz no corpo, ou 'o que o corpo faz com o fármaco'. Envolve as etapas de <strong>LADME</strong>: Liberação, Absorção, Distribuição, Metabolismo e Excreção.",
-          "<strong>Farmacodinâmica:</strong> É como o medicamento age no corpo, ou 'o que o fármaco faz com o corpo'. Envolve o mecanismo de ação, a interação com receptores (agonistas/antagonistas) e os efeitos terapêuticos."
-        ]
-      },
-      {
-        "subtitle": "Principais Vias de Administração e Cuidados",
-        "points": [
-          "<strong>Endovenosa (EV):</strong> Ação mais rápida. Risco de flebite, infecção e reações adversas graves. Nunca administrar soluções oleosas ou suspensões.",
-          "<strong>Intramuscular (IM):</strong> Absorção mais rápida que a subcutânea. Locais: Deltoide (até 2-3mL), Ventroglúteo (preferencial, até 4-5mL), Dorsoglúteo (risco de lesão no nervo ciático, até 4mL).",
-          "<strong>Subcutânea (SC):</strong> Absorção lenta e gradual. Locais: abdome, face externa dos braços e coxas. Comum para Insulina e Heparina. Realizar rodízio dos locais de aplicação.",
-          "<strong>Via Oral (VO):</strong> Mais segura e comum. Avaliar a capacidade de deglutição do paciente. Considerar interações com alimentos e a necessidade de jejum."
-        ]
-      },
-      {
-        "subtitle": "Guia Rápido de Diluição e Rediluição",
-        "points": [
-          "<strong>Diluição (ou Reconstituição):</strong> É o processo de transformar um medicamento em pó (liofilizado) em uma solução líquida, utilizando o diluente especificado pelo fabricante (ex: Água Destilada).",
-          "<strong>Rediluição:</strong> É o processo de pegar a solução já reconstituída e adicioná-la a um volume maior de soro (ex: Soro Fisiológico 100mL) para infusão contínua ou intermitente.",
-          "<strong>Cuidado Essencial:</strong> Sempre verifique a compatibilidade do medicamento com a solução (SF 0,9% ou SG 5%), o tempo de estabilidade após o preparo e a velocidade de infusão recomendada."
         ]
       }
     ]

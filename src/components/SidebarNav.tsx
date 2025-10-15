@@ -3,7 +3,7 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook, Users, Construction
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -15,14 +15,6 @@ interface SidebarNavProps {
   isMobile?: boolean;
 }
 
-interface NavItem {
-  to: string;
-  end?: boolean;
-  icon: React.ElementType;
-  label: string;
-  disabled?: boolean;
-}
-
 const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarNavProps) => {
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     cn(
@@ -32,13 +24,10 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
 
   const sectionHeaderClass = "flex w-full items-center justify-between rounded-md px-3 py-2 text-xs font-bold uppercase tracking-wider text-primary mt-4";
   
-  const navItems: { [key: string]: NavItem[] } = {
+  const navItems = {
     main: [
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
-    ],
-    management: [
-      { to: "/plantao", icon: Users, label: "Gerenciador de Plantão", disabled: true },
     ],
     tools: [
       { to: "/calculator", icon: Calculator, label: "Gotejamento" },
@@ -66,28 +55,14 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     ]
   };
 
-  const renderNavLink = (item: NavItem) => {
+  const renderNavLink = (item: { to: string; end?: boolean; icon: React.ElementType; label: string }) => {
     const Icon = item.icon;
     const linkContent = (
       <>
         <Icon className="h-4 w-4 flex-shrink-0" />
         <span className={cn(isCollapsed && !isMobile && "hidden")}>{item.label}</span>
-        {item.disabled && (!isCollapsed || isMobile) && (
-          <Construction className="ml-auto h-4 w-4 text-amber-400" title="Em desenvolvimento" />
-        )}
       </>
     );
-
-    if (item.disabled) {
-      const disabledElement = (
-        <div className={cn(
-          "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/50 cursor-not-allowed",
-        )}>
-          {linkContent}
-        </div>
-      );
-      return <div key={item.to}>{disabledElement}</div>;
-    }
 
     const link = (
       <NavLink to={item.to} end={item.end} className={navLinkClass}>
@@ -101,18 +76,6 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
   return (
     <nav className="flex flex-col gap-1">
       {navItems.main.map(renderNavLink)}
-
-      {isAdmin && (
-        <Collapsible defaultOpen>
-          <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
-            <span className={cn(isCollapsed && "hidden")}>Gestão</span>
-            {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
-          </CollapsibleTrigger>
-          <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
-            {navItems.management.map(renderNavLink)}
-          </CollapsibleContent>
-        </Collapsible>
-      )}
 
       <Collapsible defaultOpen>
         <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
