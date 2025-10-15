@@ -18,6 +18,7 @@ interface Profile {
   email: string | null;
   role: string;
   status: string;
+  plan: string;
   avatar_url: string | null;
 }
 
@@ -146,6 +147,7 @@ const Admin = () => {
                 <TableRow className="border-border/20 hover:bg-sidebar-hover/50">
                   <TableHead className="text-white">Usuário</TableHead>
                   <TableHead className="hidden sm:table-cell text-white">Status</TableHead>
+                  <TableHead className="hidden md:table-cell text-white">Plano</TableHead>
                   <TableHead className="hidden md:table-cell text-white">Função</TableHead>
                   <TableHead className="text-right text-white">Ações</TableHead>
                 </TableRow>
@@ -179,6 +181,9 @@ const Admin = () => {
                           {profile.status === "active" ? "Ativo" : "Pendente"}
                         </Badge>
                       </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        <Badge variant="default">{profile.plan}</Badge>
+                      </TableCell>
                       <TableCell className="hidden md:table-cell">{profile.role}</TableCell>
                       <TableCell className="text-right">
                         {profile.status === "pending" ? (
@@ -197,7 +202,7 @@ const Admin = () => {
                   ))
                 ) : (
                   <TableRow className="border-border/20 hover:bg-sidebar-hover/50">
-                    <TableCell colSpan={4} className="h-24 text-center">Nenhum usuário encontrado.</TableCell>
+                    <TableCell colSpan={5} className="h-24 text-center">Nenhum usuário encontrado.</TableCell>
                   </TableRow>
                 )}
               </TableBody>
