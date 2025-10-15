@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor, insira um email válido." }),
