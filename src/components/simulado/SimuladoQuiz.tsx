@@ -42,20 +42,20 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [timeLeft, setTimeLeft] = useState(totalTime);
   const [showTimeUpDialog, setShowTimeUpDialog] = useState(false);
+  const [isFinishingOnTimeUp, setIsFinishingOnTimeUp] = useState(false);
 
   useEffect(() => {
     if (isLoadingQuestions) return;
-    if (timeLeft <= 0) {
-      if (!showTimeUpDialog) {
-        setShowTimeUpDialog(true);
-      }
+    if (timeLeft <= 0 && !isFinishingOnTimeUp) {
+      setIsFinishingOnTimeUp(true);
+      setShowTimeUpDialog(true);
       return;
     }
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
+      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
     }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft, isLoadingQuestions, showTimeUpDialog]);
+  }, [timeLeft, isLoadingQuestions, isFinishingOnTimeUp]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -88,13 +88,12 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
     });
   };
 
-  const handleFinishFromDialog = () => {
-    setShowTimeUpDialog(false);
-    // Adiciona um pequeno atraso para permitir que a animação de fechamento do diálogo seja concluída
-    // antes que o componente seja desmontado, evitando o erro de 'removeChild'.
-    setTimeout(() => {
+  const handleDialogClose = (open: boolean) => {
+    setShowTimeUpDialog(open);
+    if (!open && isFinishingOnTimeUp) {
+      // Apenas finaliza o simulado DEPOIS que o diálogo for completamente fechado.
       finishSimulado(userAnswers);
-    }, 150);
+    }
   };
 
   if (isLoadingQuestions || simuladoQuestions.length === 0) {
@@ -106,14 +105,14 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
-      <AlertDialog open={showTimeUpDialog} onOpenChange={setShowTimeUpDialog}>
+      <AlertDialog open={showTimeUpDialog} onOpenChange={handleDialogClose}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2"><AlertTriangle className="text-destructive"/> Tempo Esgotado!</AlertDialogTitle>
             <AlertDialogDescription>Seu tempo para o simulado acabou. Vamos ver seus resultados.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={handleFinishFromDialog}>Ver Resultados</AlertDialogAction>
+            <AlertDialogAction>Ver Resultados</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
