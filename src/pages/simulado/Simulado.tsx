@@ -8,15 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Loader2, Timer, AlertTriangle } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
-
-interface Question {
-  id: number;
-  category: string;
-  question: string;
-  options: { id: string; text: string }[];
-  correctAnswer: string;
-  explanation: string;
-}
+import { useQuestions, Question } from "@/context/QuestionsContext";
 
 interface UserAnswer {
   questionId: number;
@@ -28,8 +20,9 @@ const Simulado = () => {
   const navigate = useNavigate();
   const { numQuestions, totalTime } = location.state || { numQuestions: 20, totalTime: 20 * 2 * 60 };
 
+  const { questions: allQuestions, isLoading: loading } = useQuestions();
   const [simuladoQuestions, setSimuladoQuestions] = useState<Question[]>([]);
-  const [loading, setLoading] = useState(true);
+  
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -37,24 +30,14 @@ const Simulado = () => {
   const [showTimeUpDialog, setShowTimeUpDialog] = useState(false);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("/questions.json");
-        const data: Question[] = await response.json();
-        const shuffled = [...data].sort(() => 0.5 - Math.random());
-        setSimuladoQuestions(shuffled.slice(0, numQuestions));
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuestions();
-  }, [numQuestions]);
+    if (!loading && allQuestions.length > 0) {
+      const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+      setSimuladoQuestions(shuffled.slice(0, numQuestions));
+    }
+  }, [numQuestions, allQuestions, loading]);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || simuladoQuestions.length === 0) return;
     if (timeLeft <= 0) {
       setShowTimeUpDialog(true);
       return;
@@ -63,7 +46,7 @@ const Simulado = () => {
       setTimeLeft((prevTime) => prevTime - 1);
     }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft, loading]);
+  }, [timeLeft, loading, simuladoQuestions]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -107,7 +90,7 @@ const Simulado = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-primary/10 p-4">
-      <AlertDialog open={showTimeUpDialog}>
+      <AlertDialog open={showTimeUpDialog} onOpenChange={(open) => { if (!open) finishSimulado(userAnswers); }}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2"><AlertTriangle className="text-destructive"/> Tempo Esgotado!</AlertDialogTitle>

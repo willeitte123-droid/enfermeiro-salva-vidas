@@ -44,6 +44,7 @@ import { Button } from "./components/ui/button";
 import MainLayout from "./components/MainLayout";
 import { useProfile } from "./hooks/useProfile";
 import { Loader2 } from "lucide-react";
+import { QuestionsProvider } from "./context/QuestionsContext";
 
 const queryClient = new QueryClient();
 
@@ -143,7 +144,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AppContent />
+        <QuestionsProvider>
+          <AppContent />
+        </QuestionsProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
