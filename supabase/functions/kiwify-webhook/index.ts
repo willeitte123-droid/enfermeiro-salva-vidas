@@ -19,7 +19,6 @@ async function verifyKiwifySignature(req: Request, secret: string) {
   }
 
   const encoder = new TextEncoder();
-  // Corrigido para usar SHA-1, que corresponde à assinatura da Kiwify
   const key = await crypto.subtle.importKey("raw", encoder.encode(secret), {
     name: "HMAC",
     hash: "SHA-1"
@@ -60,7 +59,6 @@ serve(async (req: Request) => {
       return new Response('Assinatura inválida.', { status: 403, headers: corsHeaders });
     }
 
-    // Corrigido para ler a estrutura de dados aninhada enviada pela Kiwify
     const email = body.Customer?.email;
     const evento = body.webhook_event_type;
     const produto = body.Product?.product_name;
@@ -70,11 +68,9 @@ serve(async (req: Request) => {
       return new Response('Campos obrigatórios ausentes no payload: Customer.email e webhook_event_type', { status: 400, headers: corsHeaders });
     }
 
-    // Usando os nomes de eventos em inglês, que são os enviados pela API
     const canceledEvents = ["subscription_canceled", "subscription_late"];
     const approvedEvents = ["order_approved", "subscription_activated", "subscription_renewed"];
     
-    // Adicionando uma verificação extra pelo status do pedido para mais robustez
     const isApprovedEvent = approvedEvents.includes(evento.toLowerCase()) || orderStatus === 'paid';
     const isCanceledEvent = canceledEvents.includes(evento.toLowerCase()) || orderStatus === 'refunded' || orderStatus === 'expired';
 
@@ -87,7 +83,6 @@ serve(async (req: Request) => {
 
     if (existingUser.users.length === 0) {
       if (isApprovedEvent) {
-        // Alterado de createUser para inviteUserByEmail para enviar o e-mail de convite
         const { data: newUser, error: creationError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
 
         if (creationError) {
@@ -115,13 +110,15 @@ serve(async (req: Request) => {
       detailsLog += `Acesso removido. Status do usuário alterado para pendente.`;
     } else if (isApprovedEvent) {
       status = 'active';
-      if (produto === 'Plano PRO Anual') {
+      const lowerCaseProduto = produto?.toLowerCase() || '';
+
+      if (lowerCaseProduto.includes('anual') || lowerCaseProduto === 'plataforma enfermagempro') {
         plan = 'Plano PRO Anual';
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 365);
         access_expires_at = expiryDate.toISOString();
         detailsLog += `Plano PRO Anual ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
-      } else if (produto === 'Plano PRO Mensal') {
+      } else if (lowerCaseProduto.includes('mensal')) {
         plan = 'Plano PRO Mensal';
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 30);
@@ -134,14 +131,17 @@ serve(async (req: Request) => {
       detailsLog += `Evento '${evento}' não reconhecido. Nenhuma alteração realizada.`;
     }
 
-    const { error: updateError } = await supabaseAdmin
-      .from('profiles')
-      .update({ plan, status, access_expires_at })
-      .eq('id', userId);
+    // Apenas atualize o perfil se um plano foi reconhecido
+    if (!detailsLog.includes("não reconhecido")) {
+      const { error: updateError } = await supabaseAdmin
+        .from('profiles')
+        .update({ plan, status, access_expires_at })
+        .eq('id', userId);
 
-    if (updateError) {
-      await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao atualizar perfil: ${updateError.message}` });
-      throw updateError;
+      if (updateError) {
+        await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao atualizar perfil: ${updateError.message}` });
+        throw updateError;
+      }
     }
 
     await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: detailsLog });
