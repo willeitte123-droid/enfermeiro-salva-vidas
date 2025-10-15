@@ -165,9 +165,9 @@
       "name": "Diazepam",
       "activeIngredient": "Diazepam",
       "indication": "Benzodiazepínico para estado de mal epiléptico, sedação, ansiedade aguda. Dose: <strong>5-10mg IV lento</strong> (não exceder 5mg/min).",
-      "administration": "<strong>IV:</strong> Administrar lentamente (máx. 5mg/min) diretamente na veia (não em equipo). Usar veia calibrosa para minimizar dor e flebite.",
+      "administration": "<strong>IV:</strong> Solução oleosa. <strong>NÃO DILUIR.</strong> Administrar lentamente (máx. 5mg/min) diretamente em veia calibrosa para minimizar dor e flebite. Não infundir em equipo de soro devido ao risco de precipitação.",
       "contraindication": "Miastenia gravis, insuficiência respiratória grave, apneia do sono.",
-      "adverseEffects": "<strong>Depressão respiratória, hipotensão</strong>, sonolência, tontura. Risco de flebite.",
+      "adverseEffects": "<strong>Depressão respiratória, hipotensão</strong>, sonolência, tontura. Risco de flebite e dor no local da injeção.",
       "category": "Benzodiazepínico/Anticonvulsivante"
     },
     {
@@ -437,14 +437,14 @@
       "indication": "Antibiótico (quinolona) para infecções do trato urinário, respiratórias, pele, ossos. Dose: <strong>400mg IV</strong> a cada 8-12h.",
       "administration": "<strong>IV:</strong> Diluir e infundir lentamente em 60 minutos em veia calibrosa para reduzir o risco de flebite.",
       "contraindication": "Hipersensibilidade a quinolonas, uso concomitante com tizanidina.",
-      "adverseEffects": "Náusea, diarreia, flebite. <strong>Risco de tendinite e ruptura de tendão</strong>, fotossensibilidade, prolongamento do intervalo QT.",
+      "adverseEffects": "<strong>Risco de tendinite e ruptura de tendão</strong>, fotossensibilidade, prolongamento do intervalo QT.",
       "category": "Antibiótico Quinolona"
     },
     {
       "name": "Prometazina (Fenergan)",
       "activeIngredient": "Cloridrato de Prometazina",
       "indication": "Reações alérgicas, anafilaxia (adjuvante), náuseas/vômitos, sedação. Dose: <strong>25-50mg IM (preferencial)</strong> ou IV lento e diluído.",
-      "administration": "<strong>IM:</strong> Via preferencial, aplicação profunda. <strong>IV:</strong> <strong>ALTO RISCO DE NECROSE TECIDUAL.</strong> Se indispensável, diluir 25mg em 10-20mL de SF 0,9% e administrar muito lentamente em acesso venoso central ou veia periférica de grande calibre.",
+      "administration": "<strong>IM:</strong> Via preferencial, aplicação profunda. <strong>IV:</strong> <strong>ALTO RISCO DE NECROSE TECIDUAL.</strong> Se indispensável, diluir 25mg em no mínimo 10-20mL de SF 0,9% e administrar muito lentamente (em 10-15 min) em acesso venoso central ou veia periférica de grande calibre, monitorando o sítio de infusão.",
       "contraindication": "Hipersensibilidade, coma, depressão do SNC, crianças < 2 anos.",
       "adverseEffects": "<strong>Sedação profunda, hipotensão, efeitos anticolinérgicos</strong>. Risco de necrose tecidual grave com administração IV inadequada.",
       "category": "Anti-histamínico/Sedativo"
