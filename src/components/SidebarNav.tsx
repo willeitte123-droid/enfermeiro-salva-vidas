@@ -1,4 +1,4 @@
-import { NavLink, NavLinkProps } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
@@ -14,11 +14,6 @@ interface SidebarNavProps {
   isCollapsed?: boolean;
   isMobile?: boolean;
 }
-
-const NavItem: React.FC<React.PropsWithChildren<NavLinkProps & { isMobile: boolean }>> = ({ isMobile, children, ...props }) => {
-  const LinkComponent = <NavLink {...props}>{children}</NavLink>;
-  return isMobile ? <SheetClose asChild>{LinkComponent}</SheetClose> : LinkComponent;
-};
 
 const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarNavProps) => {
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -59,79 +54,52 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     ]
   };
 
-  if (isMobile) {
-    return (
-      <nav className="flex flex-col gap-1">
-        {navItems.main.map(item => {
-          const Icon = item.icon;
-          return <NavItem key={item.to} to={item.to} end={item.end} className={navLinkClass} isMobile={true}><Icon className="h-4 w-4 flex-shrink-0" /><span>{item.label}</span></NavItem>
-        })}
-
-        <div className={sectionHeaderClass}><span>Ferramentas</span></div>
-        {navItems.tools.map(item => {
-          const Icon = item.icon;
-          return <NavItem key={item.to} to={item.to} className={navLinkClass} isMobile={true}><Icon className="h-4 w-4 flex-shrink-0" /><span>{item.label}</span></NavItem>
-        })}
-
-        <div className={sectionHeaderClass}><span>Consulta e Estudo</span></div>
-        {navItems.study.map(item => {
-          const Icon = item.icon;
-          return <NavItem key={item.to} to={item.to} className={navLinkClass} isMobile={true}><Icon className="h-4 w-4 flex-shrink-0" /><span>{item.label}</span></NavItem>
-        })}
-
-        {isAdmin && (
-          <>
-            <div className="my-4 border-t border-border/10"></div>
-            {navItems.admin.map(item => {
-              const Icon = item.icon;
-              return <NavItem key={item.to} to={item.to} className={navLinkClass} isMobile={true}><Icon className="h-4 w-4 flex-shrink-0" /><span>{item.label}</span></NavItem>
-            })}
-          </>
-        )}
-      </nav>
+  const renderNavLink = (item: { to: string; end?: boolean; icon: React.ElementType; label: string }) => {
+    const Icon = item.icon;
+    const linkContent = (
+      <>
+        <Icon className="h-4 w-4 flex-shrink-0" />
+        <span className={cn(isCollapsed && !isMobile && "hidden")}>{item.label}</span>
+      </>
     );
-  }
+
+    const link = (
+      <NavLink to={item.to} end={item.end} className={navLinkClass}>
+        {linkContent}
+      </NavLink>
+    );
+
+    return isMobile ? <SheetClose asChild key={item.to}>{link}</SheetClose> : <div key={item.to}>{link}</div>;
+  };
 
   return (
     <nav className="flex flex-col gap-1">
-      {navItems.main.map(item => {
-        const Icon = item.icon;
-        return <NavItem key={item.to} to={item.to} end={item.end} className={navLinkClass} isMobile={false}><Icon className="h-4 w-4 flex-shrink-0" /><span className={cn(isCollapsed && "hidden")}>{item.label}</span></NavItem>
-      })}
+      {navItems.main.map(renderNavLink)}
 
       <Collapsible defaultOpen>
-        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover")} disabled={isCollapsed}>
+        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
           <span className={cn(isCollapsed && "hidden")}>Ferramentas</span>
           {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
         </CollapsibleTrigger>
         <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
-          {navItems.tools.map(item => {
-            const Icon = item.icon;
-            return <NavItem key={item.to} to={item.to} className={navLinkClass} isMobile={false}><Icon className="h-4 w-4 flex-shrink-0" /><span className={cn(isCollapsed && "hidden")}>{item.label}</span></NavItem>
-          })}
+          {navItems.tools.map(renderNavLink)}
         </CollapsibleContent>
       </Collapsible>
 
       <Collapsible defaultOpen>
-        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover")} disabled={isCollapsed}>
+        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
           <span className={cn(isCollapsed && "hidden")}>Consulta e Estudo</span>
           {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
         </CollapsibleTrigger>
         <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
-          {navItems.study.map(item => {
-            const Icon = item.icon;
-            return <NavItem key={item.to} to={item.to} className={navLinkClass} isMobile={false}><Icon className="h-4 w-4 flex-shrink-0" /><span className={cn(isCollapsed && "hidden")}>{item.label}</span></NavItem>
-          })}
+          {navItems.study.map(renderNavLink)}
         </CollapsibleContent>
       </Collapsible>
 
       {isAdmin && (
         <>
           <div className="my-4 border-t border-border/10"></div>
-          {navItems.admin.map(item => {
-            const Icon = item.icon;
-            return <NavItem key={item.to} to={item.to} className={navLinkClass} isMobile={false}><Icon className="h-4 w-4 flex-shrink-0" /><span className={cn(isCollapsed && "hidden")}>{item.label}</span></NavItem>
-          })}
+          {navItems.admin.map(renderNavLink)}
         </>
       )}
     </nav>
