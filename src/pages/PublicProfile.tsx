@@ -61,55 +61,26 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const fetchPublicProfileData = async (userId: string) => {
   const profilePromise = supabase.from("profiles").select("*").eq("id", userId).single();
   const simulationsPromise = supabase.from("user_simulations").select('*').eq('user_id', userId).order('created_at', { ascending: false });
-  const answersPromise = supabase
-    .from("user_question_answers")
-    .select('is_correct, questions(category)')
-    .eq('user_id', userId);
+  const statsPromise = supabase.rpc('get_user_performance_stats', { p_user_id: userId });
 
   const [
     { data: profileData, error: profileError },
     { data: simulationsData, error: simulationsError },
-    { data: answersData, error: answersError },
-  ] = await Promise.all([profilePromise, simulationsPromise, answersPromise]);
+    { data: statsData, error: statsError },
+  ] = await Promise.all([profilePromise, simulationsPromise, statsPromise]);
 
   if (profileError) throw profileError;
   if (simulationsError) throw simulationsError;
-  if (answersError) throw answersError;
+  if (statsError) throw statsError;
 
-  let categoryStats: CategoryStat[] = [];
-  let totalQuestions = 0;
-  let correctQuestions = 0;
+  const { totalQuestions, correctQuestions, categoryStats } = statsData;
 
-  if (answersData) {
-    totalQuestions = answersData.length;
-    correctQuestions = answersData.filter(a => a.is_correct).length;
-
-    const performanceByCategory: { [key: string]: { total: number; correct: number } } = {};
-    
-    for (const answer of answersData) {
-      if (answer.questions) {
-        const category = answer.questions.category;
-        if (!performanceByCategory[category]) {
-          performanceByCategory[category] = { total: 0, correct: 0 };
-        }
-        performanceByCategory[category].total++;
-        if (answer.is_correct) {
-          performanceByCategory[category].correct++;
-        }
-      }
-    }
-
-    categoryStats = Object.keys(performanceByCategory).map(category => ({
-      name: category,
-      accuracy: Math.round((performanceByCategory[category].correct / performanceByCategory[category].total) * 100),
-      total: performanceByCategory[category].total,
-    })).sort((a, b) => a.accuracy - b.accuracy);
-  }
+  const sortedCategoryStats = categoryStats.sort((a: CategoryStat, b: CategoryStat) => a.accuracy - b.accuracy);
 
   return {
     profile: profileData,
     simulations: simulationsData || [],
-    categoryStats,
+    categoryStats: sortedCategoryStats,
     totalQuestions,
     correctQuestions,
   };
