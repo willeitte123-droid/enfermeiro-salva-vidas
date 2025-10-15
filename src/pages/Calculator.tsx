@@ -1,15 +1,41 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Droplet, Activity, Info, FlaskConical, BookOpen, CheckSquare } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import FavoriteButton from "@/components/FavoriteButton";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+
+interface Profile {
+  id: string;
+}
 
 const Calculator = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [volume, setVolume] = useState("");
   const [time, setTime] = useState("");
   const [dropFactor, setDropFactor] = useState("20");
+
+  const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
+    queryKey: ['favorites', profile?.id, '/calculator'],
+    queryFn: async () => {
+      if (!profile) return [];
+      const { data, error } = await supabase
+        .from('user_favorites')
+        .select('item_id')
+        .eq('user_id', profile.id)
+        .eq('item_id', '/calculator');
+      if (error) throw error;
+      return data.map(f => f.item_id);
+    },
+    enabled: !!profile,
+  });
+
+  const isFavorited = useMemo(() => new Set(favoritesData || []).has('/calculator'), [favoritesData]);
 
   const calculateDropRate = () => {
     const v = parseFloat(volume);
@@ -39,6 +65,16 @@ const Calculator = () => {
           <h1 className="text-3xl font-bold text-foreground mb-2">Calculadora de Gotejamento</h1>
           <p className="text-muted-foreground">Calcule velocidades de infusão para diferentes tipos de equipo</p>
         </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/calculator"
+            itemType="Ferramenta"
+            itemTitle="Calculadora de Gotejamento"
+            isInitiallyFavorited={isFavorited}
+            isLoading={isLoadingFavorites}
+          />
+        )}
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">

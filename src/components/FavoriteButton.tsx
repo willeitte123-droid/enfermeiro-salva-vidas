@@ -6,16 +6,16 @@ import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface FavoriteButtonProps {
-  userId: string;
+  userId?: string;
   itemId: string;
   itemType: string;
   itemTitle: string;
-  isInitiallyFavorited: boolean;
-  isLoading: boolean;
+  isInitiallyFavorited?: boolean;
+  isLoading?: boolean;
   className?: string;
 }
 
-const FavoriteButton = ({ userId, itemId, itemType, itemTitle, isInitiallyFavorited, isLoading, className }: FavoriteButtonProps) => {
+const FavoriteButton = ({ userId, itemId, itemType, itemTitle, isInitiallyFavorited = false, isLoading = false, className }: FavoriteButtonProps) => {
   const [isFavorited, setIsFavorited] = useState(isInitiallyFavorited);
   const [isMutating, setIsMutating] = useState(false);
   const queryClient = useQueryClient();
@@ -27,6 +27,12 @@ const FavoriteButton = ({ userId, itemId, itemType, itemTitle, isInitiallyFavori
   const toggleFavorite = async (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    if (!userId) {
+      toast.error("Você precisa estar logado para adicionar aos favoritos.");
+      return;
+    }
+
     setIsMutating(true);
 
     if (isFavorited) {
@@ -58,6 +64,10 @@ const FavoriteButton = ({ userId, itemId, itemType, itemTitle, isInitiallyFavori
     queryClient.invalidateQueries({ queryKey: ['favorites', userId] });
     setIsMutating(false);
   };
+
+  if (!userId) {
+    return null; // Não renderiza o botão se não houver usuário
+  }
 
   const displayLoading = isLoading || isMutating;
 
