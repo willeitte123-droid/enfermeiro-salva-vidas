@@ -1,32 +1,35 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useReactToPrint } from "react-to-print";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, PlusCircle, Trash2, Users, BedDouble, Save } from "lucide-react";
+import { Loader2, PlusCircle, Trash2, Users, BedDouble, Printer } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { PrintableShift } from "@/components/PrintableShift";
 
 interface Profile {
   id: string;
 }
 
-interface Shift {
+export interface Shift {
   id: string;
   title: string;
+  shift_date: string;
   team_members: TeamMember[];
 }
 
-interface TeamMember {
+export interface TeamMember {
   id: string;
   name: string;
   patient_assignments: PatientAssignment[];
 }
 
-interface PatientAssignment {
+export interface PatientAssignment {
   id: string;
   bed_number: string;
 }
@@ -37,6 +40,7 @@ const fetchShifts = async (userId: string) => {
     .select(`
       id,
       title,
+      shift_date,
       team_members (
         id,
         name,
@@ -58,6 +62,7 @@ const ShiftManager = () => {
   const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
   const [newTeamMemberName, setNewTeamMemberName] = useState("");
   const [newBedAssignments, setNewBedAssignments] = useState<Record<string, string>>({});
+  const printableComponentRef = useRef<HTMLDivElement>(null);
 
   const { data: shifts = [], isLoading } = useQuery({
     queryKey: ["shifts", profile?.id],
@@ -71,6 +76,11 @@ const ShiftManager = () => {
   });
 
   const selectedShift = useMemo(() => shifts.find(s => s.id === selectedShiftId), [shifts, selectedShiftId]);
+
+  const handlePrint = useReactToPrint({
+    content: () => printableComponentRef.current,
+    documentTitle: `Escala - ${selectedShift?.title || 'Plantão'}`,
+  });
 
   const mutationOptions = {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["shifts", profile?.id] }),
@@ -134,6 +144,9 @@ const ShiftManager = () => {
 
   return (
     <div className="space-y-6">
+      <div style={{ display: "none" }}>
+        <PrintableShift ref={printableComponentRef} shift={selectedShift || null} />
+      </div>
       <div className="text-center">
         <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Gerenciador de Plantão</h1>
         <p className="text-muted-foreground">Organize sua equipe e distribua os pacientes de forma clara e rápida.</p>
@@ -153,8 +166,9 @@ const ShiftManager = () => {
                   {shifts.map(shift => <SelectItem key={shift.id} value={shift.id}>{shift.title}</SelectItem>)}
                 </SelectContent>
               </Select>
+              <Button variant="outline" onClick={handlePrint} disabled={!selectedShift}><Printer className="h-4 w-4 mr-2" />Imprimir</Button>
               <AlertDialog>
-                <AlertDialogTrigger asChild><Button><PlusCircle className="h-4 w-4 mr-2" />Novo Plantão</Button></AlertDialogTrigger>
+                <AlertDialogTrigger asChild><Button><PlusCircle className="h-4 w-4 mr-2" />Novo</Button></AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader><AlertDialogTitle>Criar Novo Plantão</AlertDialogTitle><AlertDialogDescription>Dê um nome para o seu plantão (ex: Noturno 25/12, Diurno A - UTI).</AlertDialogDescription></AlertDialogHeader>
                   <Input id="new-shift-title" placeholder="Título do Plantão" />
