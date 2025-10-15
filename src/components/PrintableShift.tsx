@@ -25,7 +25,7 @@ export const PrintableShift = React.forwardRef<HTMLDivElement, PrintableShiftPro
       </header>
 
       <main>
-        <h3 className="text-3xl font-bold text-center mb-2">{shift.title}</h3>
+        <h3 className="text-3xl font-bold text-center mb-2">{shift.period} - {shift.title}</h3>
         <p className="text-center text-lg mb-8">{format(new Date(shift.shift_date), "EEEE, dd 'de' MMMM 'de' yyyy", { locale: ptBR })}</p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
