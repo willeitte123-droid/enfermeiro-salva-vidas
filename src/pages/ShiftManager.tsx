@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useReactToPrint } from "react-to-print";
+import ReactToPrint from "react-to-print";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -81,11 +81,6 @@ const ShiftManager = () => {
   });
 
   const selectedShift = useMemo(() => shifts.find(s => s.id === selectedShiftId), [shifts, selectedShiftId]);
-
-  const handlePrint = useReactToPrint({
-    content: () => printableComponentRef.current,
-    documentTitle: `Escala - ${selectedShift?.title || 'Plantão'}`,
-  });
 
   const mutationOptions = {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["shifts", profile?.id] }),
@@ -173,7 +168,15 @@ const ShiftManager = () => {
                   {shifts.map(shift => <SelectItem key={shift.id} value={shift.id}>{shift.period} - {shift.title}</SelectItem>)}
                 </SelectContent>
               </Select>
-              <Button variant="outline" onClick={handlePrint} disabled={!selectedShift}><Printer className="h-4 w-4 mr-2" />Imprimir</Button>
+              <ReactToPrint
+                trigger={() => (
+                  <Button variant="outline" disabled={!selectedShift}>
+                    <Printer className="h-4 w-4 mr-2" />Imprimir
+                  </Button>
+                )}
+                content={() => printableComponentRef.current}
+                documentTitle={`Escala - ${selectedShift?.title || 'Plantão'}`}
+              />
               <AlertDialog>
                 <AlertDialogTrigger asChild><Button><PlusCircle className="h-4 w-4 mr-2" />Novo</Button></AlertDialogTrigger>
                 <AlertDialogContent>
