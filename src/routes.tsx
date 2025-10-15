@@ -99,7 +99,7 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
   );
 };
 
-// O Suspense foi removido pois não usamos mais React.lazy
+// O Suspense não é mais necessário aqui para as rotas, então renomeamos para simplificar.
 export const SuspendedAppRoutes = (props: AppRoutesProps) => (
   <AppRoutes {...props} />
 );

@@ -42,20 +42,18 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [timeLeft, setTimeLeft] = useState(totalTime);
   const [showTimeUpDialog, setShowTimeUpDialog] = useState(false);
-  const [isFinishingOnTimeUp, setIsFinishingOnTimeUp] = useState(false);
 
   useEffect(() => {
     if (isLoadingQuestions) return;
-    if (timeLeft <= 0 && !isFinishingOnTimeUp) {
-      setIsFinishingOnTimeUp(true);
+    if (timeLeft <= 0) {
       setShowTimeUpDialog(true);
       return;
     }
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      setTimeLeft((prevTime) => prevTime - 1);
     }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft, isLoadingQuestions, isFinishingOnTimeUp]);
+  }, [timeLeft, isLoadingQuestions]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -88,14 +86,6 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
     });
   };
 
-  const handleDialogClose = (open: boolean) => {
-    setShowTimeUpDialog(open);
-    if (!open && isFinishingOnTimeUp) {
-      // Apenas finaliza o simulado DEPOIS que o diálogo for completamente fechado.
-      finishSimulado(userAnswers);
-    }
-  };
-
   if (isLoadingQuestions || simuladoQuestions.length === 0) {
     return <div className="flex items-center justify-center h-full"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
   }
@@ -105,14 +95,14 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
-      <AlertDialog open={showTimeUpDialog} onOpenChange={handleDialogClose}>
+      <AlertDialog open={showTimeUpDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2"><AlertTriangle className="text-destructive"/> Tempo Esgotado!</AlertDialogTitle>
             <AlertDialogDescription>Seu tempo para o simulado acabou. Vamos ver seus resultados.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction>Ver Resultados</AlertDialogAction>
+            <AlertDialogAction onClick={() => finishSimulado(userAnswers)}>Ver Resultados</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

@@ -23,6 +23,7 @@ const MainLayout = ({ session }: MainLayoutProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
+  // O perfil é carregado aqui, dentro do layout que já está visível.
   const { data: profile, isLoading: isLoadingProfile } = useProfile(session);
 
   const toggleSidebar = () => {
@@ -36,6 +37,8 @@ const MainLayout = ({ session }: MainLayoutProps) => {
     avatar_url: profile.avatar_url 
   } : null;
 
+  // A "casca" do aplicativo (Sidebar, Header) é renderizada imediatamente.
+  // Apenas a área de conteúdo principal (main) aguarda os dados.
   return (
     <div className="flex min-h-screen w-full bg-muted/40">
       <Sidebar isAdmin={isAdmin} user={user} isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
@@ -52,7 +55,10 @@ const MainLayout = ({ session }: MainLayoutProps) => {
               <Button onClick={() => supabase.auth.signOut()}>Sair</Button>
             </div>
           ) : (
-            <Outlet context={{ profile }} />
+            // Suspense garante que o código da página e os dados carreguem em paralelo.
+            <Suspense fallback={<ContentLoader />}>
+              <Outlet context={{ profile }} />
+            </Suspense>
           )}
         </div>
       </main>
