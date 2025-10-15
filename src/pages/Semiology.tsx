@@ -2,10 +2,10 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { CheckCircle2, BookOpen, Loader2 } from "lucide-react";
+import { CheckCircle2, BookOpen } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
-import { useQuery } from "@tanstack/react-query";
 import * as LucideIcons from "lucide-react";
+import assessmentData from "@/data/assessment.json";
 
 interface Profile {
   id: string;
@@ -36,42 +36,14 @@ interface SystemAssessment {
   details: AssessmentDetail[];
 }
 
-interface AssessmentData {
+const { anamnesisSteps, propaedeuticMethods, systemAssessments }: {
   anamnesisSteps: AnamnesisStep[];
   propaedeuticMethods: PropaedeuticMethod[];
   systemAssessments: SystemAssessment[];
-}
-
-const fetchAssessmentData = async (): Promise<AssessmentData> => {
-  const response = await fetch('/data/assessment.json');
-  if (!response.ok) {
-    throw new Error('Não foi possível carregar os dados de semiologia.');
-  }
-  const data = await response.json();
-  return {
-    anamnesisSteps: data.anamnesisSteps,
-    propaedeuticMethods: data.propaedeuticMethods,
-    systemAssessments: data.systemAssessments,
-  };
-};
+} = assessmentData;
 
 const Semiology = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['assessmentData'],
-    queryFn: fetchAssessmentData,
-  });
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  const { anamnesisSteps, propaedeuticMethods, systemAssessments } = data || { anamnesisSteps: [], propaedeuticMethods: [], systemAssessments: [] };
 
   return (
     <div className="space-y-8">

@@ -3,11 +3,12 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Syringe, Search, CheckCircle, XCircle, AlertTriangle, Loader2 } from "lucide-react";
+import { Syringe, Search, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import medicationsData from "@/data/medications.json";
 
 interface Profile {
   id: string;
@@ -22,22 +23,11 @@ interface Medication {
   category: string;
 }
 
-const fetchMedications = async (): Promise<Medication[]> => {
-  const response = await fetch('/data/medications.json');
-  if (!response.ok) {
-    throw new Error('Não foi possível carregar os medicamentos.');
-  }
-  return response.json();
-};
+const medications: Medication[] = medicationsData;
 
 const Medications = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
-
-  const { data: medications = [], isLoading: isLoadingMedications } = useQuery({
-    queryKey: ['medications'],
-    queryFn: fetchMedications,
-  });
 
   const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
     queryKey: ['favorites', profile?.id, 'Medicamento'],
@@ -93,11 +83,7 @@ const Medications = () => {
         />
       </div>
 
-      {isLoadingMedications ? (
-        <div className="flex justify-center items-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      ) : filteredMedications.length > 0 ? (
+      {filteredMedications.length > 0 ? (
         <div className="space-y-4">
           {filteredMedications.map((medication, index) => {
             const itemId = `/medications#${medication.name.toLowerCase().replace(/\s+/g, '-')}`;

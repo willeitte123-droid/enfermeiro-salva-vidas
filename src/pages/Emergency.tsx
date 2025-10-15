@@ -2,12 +2,13 @@ import { useState, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { AlertCircle, Search, Loader2 } from "lucide-react";
+import { AlertCircle, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import * as LucideIcons from "lucide-react";
+import emergencyProtocolsData from "@/data/emergencies.json";
 
 interface Profile {
   id: string;
@@ -31,22 +32,11 @@ interface EmergencyCategory {
   items: EmergencyItem[];
 }
 
-const fetchEmergencyProtocols = async (): Promise<EmergencyCategory[]> => {
-  const response = await fetch('/data/emergencies.json');
-  if (!response.ok) {
-    throw new Error('Não foi possível carregar os protocolos.');
-  }
-  return response.json();
-};
+const emergencyProtocols: EmergencyCategory[] = emergencyProtocolsData;
 
 const Emergency = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
-
-  const { data: emergencyProtocols = [], isLoading: isLoadingProtocols } = useQuery({
-    queryKey: ['emergencyProtocols'],
-    queryFn: fetchEmergencyProtocols,
-  });
 
   const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
     queryKey: ['favorites', profile?.id, 'Protocolo de Emergência'],
@@ -126,11 +116,7 @@ const Emergency = () => {
         </CardContent>
       </Card>
 
-      {isLoadingProtocols ? (
-        <div className="flex justify-center items-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      ) : filteredProtocols.length > 0 ? (
+      {filteredProtocols.length > 0 ? (
         <div className="space-y-6">
           {filteredProtocols.map((category) => (
             <Card key={category.category}>

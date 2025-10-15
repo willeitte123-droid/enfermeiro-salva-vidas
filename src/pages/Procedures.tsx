@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Info, CheckSquare, Search, Loader2 } from "lucide-react";
+import { Info, CheckSquare, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +16,7 @@ import FavoriteButton from "@/components/FavoriteButton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import * as LucideIcons from "lucide-react";
+import proceduresData from "@/data/procedures.json";
 
 interface Profile {
   id: string;
@@ -33,23 +34,12 @@ interface Procedure {
   category: "Acessos e Punções" | "Sondagens e Drenagem" | "Vias Aéreas" | "Monitoramento e Emergência" | "Cuidados Gerais";
 }
 
-const fetchProcedures = async (): Promise<Procedure[]> => {
-  const response = await fetch('/data/procedures.json');
-  if (!response.ok) {
-    throw new Error('Não foi possível carregar os procedimentos.');
-  }
-  return response.json();
-};
+const procedures: Procedure[] = proceduresData;
 
 const Procedures = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
-
-  const { data: procedures = [], isLoading: isLoadingProcedures } = useQuery({
-    queryKey: ['procedures'],
-    queryFn: fetchProcedures,
-  });
 
   const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
     queryKey: ['favorites', profile?.id, 'Procedimento'],
@@ -69,10 +59,9 @@ const Procedures = () => {
   const favoriteSet = useMemo(() => new Set(favoritesData || []), [favoritesData]);
 
   const categories = useMemo(() => {
-    if (isLoadingProcedures || procedures.length === 0) return ["Todos"];
     const allCategories = procedures.map(p => p.category);
     return ["Todos", ...Array.from(new Set(allCategories))];
-  }, [procedures, isLoadingProcedures]);
+  }, [procedures]);
 
   const filteredProcedures = useMemo(() => {
     return procedures
@@ -110,11 +99,7 @@ const Procedures = () => {
         </Tabs>
       </div>
 
-      {isLoadingProcedures ? (
-        <div className="flex justify-center items-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      ) : filteredProcedures.length > 0 ? (
+      {filteredProcedures.length > 0 ? (
         <div className="space-y-4">
           {filteredProcedures.map((proc, index) => {
             const Icon = LucideIcons[proc.icon] as LucideIcons.LucideIcon;

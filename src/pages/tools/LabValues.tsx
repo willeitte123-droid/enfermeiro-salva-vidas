@@ -3,11 +3,11 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Search, AlertTriangle, Loader2 } from "lucide-react";
+import { Search, AlertTriangle } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import FavoriteButton from "@/components/FavoriteButton";
-import { useQuery } from "@tanstack/react-query";
 import * as LucideIcons from "lucide-react";
+import labValuesData from "@/data/labValues.json";
 
 interface Profile {
   id: string;
@@ -27,29 +27,18 @@ interface LabCategory {
   values: LabValue[];
 }
 
-const fetchLabValues = async (): Promise<LabCategory[]> => {
-  const response = await fetch('/data/labValues.json');
-  if (!response.ok) {
-    throw new Error('Não foi possível carregar os valores laboratoriais.');
-  }
-  return response.json();
-};
+const labValues: LabCategory[] = labValuesData;
 
 const LabValues = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: labValuesData = [], isLoading } = useQuery({
-    queryKey: ['labValues'],
-    queryFn: fetchLabValues,
-  });
-
   const filteredData = useMemo(() => {
     if (!searchTerm) {
-      return labValuesData;
+      return labValues;
     }
     const lowercasedFilter = searchTerm.toLowerCase();
-    return labValuesData
+    return labValues
       .map(category => {
         const filteredValues = category.values.filter(
           value =>
@@ -59,7 +48,7 @@ const LabValues = () => {
         return { ...category, values: filteredValues };
       })
       .filter(category => category.values.length > 0);
-  }, [searchTerm, labValuesData]);
+  }, [searchTerm, labValues]);
 
   return (
     <div className="space-y-6">
@@ -95,11 +84,7 @@ const LabValues = () => {
         </AlertDescription>
       </Alert>
 
-      {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      ) : filteredData.length > 0 ? (
+      {filteredData.length > 0 ? (
         <div className="space-y-6">
           {filteredData.map(category => {
             const Icon = LucideIcons[category.icon] as LucideIcons.LucideIcon;
