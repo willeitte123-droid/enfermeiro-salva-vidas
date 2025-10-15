@@ -3,7 +3,7 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook, Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -28,6 +28,9 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     main: [
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
+    ],
+    management: [
+      { to: "/plantao", icon: Users, label: "Gerenciador de Plantão" },
     ],
     tools: [
       { to: "/calculator", icon: Calculator, label: "Gotejamento" },
@@ -76,6 +79,16 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
   return (
     <nav className="flex flex-col gap-1">
       {navItems.main.map(renderNavLink)}
+
+      <Collapsible defaultOpen>
+        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
+          <span className={cn(isCollapsed && "hidden")}>Gestão</span>
+          {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
+        </CollapsibleTrigger>
+        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
+          {navItems.management.map(renderNavLink)}
+        </CollapsibleContent>
+      </Collapsible>
 
       <Collapsible defaultOpen>
         <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
