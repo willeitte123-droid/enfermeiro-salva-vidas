@@ -44,8 +44,6 @@ const FavoritesPage = React.lazy(() => import('./pages/FavoritesPage'));
 
 interface AppRoutesProps {
   session: any;
-  profile: any;
-  isAdmin: boolean;
 }
 
 const LoadingFallback = () => (
@@ -54,7 +52,7 @@ const LoadingFallback = () => (
   </div>
 );
 
-export const AppRoutes = ({ session, profile, isAdmin }: AppRoutesProps) => {
+export const AppRoutes = ({ session }: AppRoutesProps) => {
   if (!session) {
     return (
       <Routes>
@@ -65,9 +63,10 @@ export const AppRoutes = ({ session, profile, isAdmin }: AppRoutesProps) => {
     );
   }
 
+  // O MainLayout agora gerencia o perfil e o status de pendente internamente
   return (
     <Routes>
-      <Route path="/" element={<MainLayout session={session} profile={profile} />}>
+      <Route path="/" element={<MainLayout session={session} />}>
         <Route index element={<Dashboard />} />
         <Route path="calculator" element={<Calculator />} />
         <Route path="emergency" element={<Emergency />} />
@@ -75,7 +74,7 @@ export const AppRoutes = ({ session, profile, isAdmin }: AppRoutesProps) => {
         <Route path="wound-care" element={<WoundCare />} />
         <Route path="procedures" element={<Procedures />} />
         <Route path="questions" element={<Questions />} />
-        <Route path="admin" element={isAdmin ? <Admin /> : <Navigate to="/" />} />
+        <Route path="admin" element={<Admin />} /> {/* A lógica de admin será tratada internamente */}
         <Route path="scales" element={<Scales />} />
         <Route path="scales/glasgow" element={<GlasgowScale />} />
         <Route path="scales/braden" element={<BradenScale />} />
