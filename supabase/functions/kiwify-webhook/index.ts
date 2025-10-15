@@ -60,6 +60,7 @@ serve(async (req: Request) => {
     }
 
     const email = body.Customer?.email;
+    const fullName = body.Customer?.full_name || '';
     const evento = body.webhook_event_type;
     const produto = body.Product?.product_name;
     const orderStatus = body.order?.order_status;
@@ -83,10 +84,17 @@ serve(async (req: Request) => {
 
     if (existingUser.users.length === 0) {
       if (isApprovedEvent) {
-        // Alterado de inviteUserByEmail para createUser para criação direta
+        const nameParts = fullName.split(' ');
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(' ');
+
         const { data: newUser, error: creationError } = await supabaseAdmin.auth.admin.createUser({
           email: email,
-          email_confirm: true, // Marca o e-mail como confirmado, já que o pagamento foi feito
+          email_confirm: true,
+          user_metadata: {
+            first_name: firstName,
+            last_name: lastName,
+          }
         });
 
         if (creationError) {
