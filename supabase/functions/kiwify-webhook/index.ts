@@ -65,45 +65,70 @@ serve(async (req: Request) => {
       return new Response('Campos obrigatórios ausentes: email e evento', { status: 400, headers: corsHeaders });
     }
 
-    const { data: authUserData, error: authUserError } = await supabaseAdmin.auth.admin.listUsers({ email: email });
-    if (authUserError || !authUserData || authUserData.users.length === 0) {
-      await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro: Usuário não encontrado com o email ${email}` });
-      return new Response('User not found', { status: 404, headers: corsHeaders });
+    const canceledEvents = ["assinatura cancelada", "assinatura atrasada"];
+    const approvedEvents = ["assinatura renovada", "assinatura aprovada", "compra aprovada"];
+    const isApprovedEvent = approvedEvents.includes(evento.toLowerCase());
+
+    let userId;
+    let detailsLog = '';
+
+    const { data: existingUser, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email: email });
+
+    if (findUserError) throw findUserError;
+
+    if (existingUser.users.length === 0) {
+      // Usuário não existe
+      if (isApprovedEvent) {
+        // Se for um evento de aprovação, cria o usuário
+        const { data: newUser, error: creationError } = await supabaseAdmin.auth.admin.createUser({
+          email: email,
+          email_confirm: true, // Envia email de confirmação/convite para definir senha
+        });
+
+        if (creationError) {
+          await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao criar novo usuário: ${creationError.message}` });
+          throw creationError;
+        }
+        userId = newUser.user.id;
+        detailsLog = 'Novo usuário criado. ';
+      } else {
+        // Se não for um evento de aprovação e o usuário não existe, não há o que fazer.
+        await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: 'Usuário não encontrado para evento de cancelamento/atraso. Nenhuma ação tomada.' });
+        return new Response('User not found for this event.', { status: 200, headers: corsHeaders });
+      }
+    } else {
+      // Usuário já existe
+      userId = existingUser.users[0].id;
     }
-    const userId = authUserData.users[0].id;
 
     let plan = 'free';
     let status = 'pending';
     let access_expires_at = new Date().toISOString();
-    let detailsLog = '';
-
-    const canceledEvents = ["assinatura cancelada", "assinatura atrasada"];
-    const approvedEvents = ["assinatura renovada", "assinatura aprovada", "compra aprovada"];
 
     if (canceledEvents.includes(evento.toLowerCase())) {
       plan = 'free';
       status = 'pending';
       access_expires_at = new Date().toISOString();
-      detailsLog = `Acesso removido. Status do usuário alterado para pendente.`;
-    } else if (approvedEvents.includes(evento.toLowerCase())) {
+      detailsLog += `Acesso removido. Status do usuário alterado para pendente.`;
+    } else if (isApprovedEvent) {
       status = 'active';
       if (produto === 'Plano PRO Anual') {
         plan = 'Plano PRO Anual';
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 365);
         access_expires_at = expiryDate.toISOString();
-        detailsLog = `Plano PRO Anual ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
+        detailsLog += `Plano PRO Anual ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
       } else if (produto === 'Plano PRO Mensal') {
         plan = 'Plano PRO Mensal';
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 30);
         access_expires_at = expiryDate.toISOString();
-        detailsLog = `Plano PRO Mensal ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
+        detailsLog += `Plano PRO Mensal ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
       } else {
-        detailsLog = `Produto '${produto}' não reconhecido. Nenhuma alteração de plano realizada.`;
+        detailsLog += `Produto '${produto}' não reconhecido. Nenhuma alteração de plano realizada.`;
       }
     } else {
-      detailsLog = `Evento '${evento}' não reconhecido. Nenhuma alteração realizada.`;
+      detailsLog += `Evento '${evento}' não reconhecido. Nenhuma alteração realizada.`;
     }
 
     const { error: updateError } = await supabaseAdmin
