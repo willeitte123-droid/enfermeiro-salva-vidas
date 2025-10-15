@@ -102,15 +102,17 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     <nav className="flex flex-col gap-1">
       {navItems.main.map(renderNavLink)}
 
-      <Collapsible defaultOpen>
-        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
-          <span className={cn(isCollapsed && "hidden")}>Gestão</span>
-          {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
-        </CollapsibleTrigger>
-        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
-          {navItems.management.map(renderNavLink)}
-        </CollapsibleContent>
-      </Collapsible>
+      {isAdmin && (
+        <Collapsible defaultOpen>
+          <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
+            <span className={cn(isCollapsed && "hidden")}>Gestão</span>
+            {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
+          </CollapsibleTrigger>
+          <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
+            {navItems.management.map(renderNavLink)}
+          </CollapsibleContent>
+        </Collapsible>
+      )}
 
       <Collapsible defaultOpen>
         <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
