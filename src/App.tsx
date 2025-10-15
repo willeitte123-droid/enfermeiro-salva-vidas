@@ -140,12 +140,12 @@ const AppContent = () => {
         <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />
         <Route path="tools/integrated-calculators" element={<IntegratedCalculators />} />
         <Route path="simulado" element={<SimuladoLobby />} />
+        <Route path="simulado/start" element={<Simulado />} />
+        <Route path="simulado/resultado" element={<SimuladoResultado />} />
         <Route path="review-area" element={<ReviewArea />} />
         <Route path="favorites" element={<FavoritesPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="/simulado/start" element={<Simulado />} />
-      <Route path="/simulado/resultado" element={<SimuladoResultado />} />
       <Route path="/login" element={<Navigate to="/" replace />} />
       <Route path="/register" element={<Navigate to="/" replace />} />
     </Routes>

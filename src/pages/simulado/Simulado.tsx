@@ -92,14 +92,14 @@ const Simulado = () => {
   };
 
   if (loading || simuladoQuestions.length === 0) {
-    return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
+    return <div className="flex items-center justify-center h-full"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
   }
 
   const currentQuestion = simuladoQuestions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / simuladoQuestions.length) * 100;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-primary/10 p-4">
+    <div className="flex flex-col items-center justify-center w-full h-full">
       <AlertDialog open={showTimeUpDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
