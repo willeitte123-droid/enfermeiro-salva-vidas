@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,19 +12,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Loader2, Copy } from "lucide-react";
+import { Loader2, Copy, Save, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const webhookUrl = "https://hbokiayvlbywxuwsgzlj.supabase.co/functions/v1/kiwify-webhook";
-const webhookToken = "qvohpes8b0r";
 
-const simulatorSchema = z.object({
-  email: z.string().email({ message: "Por favor, insira um email válido." }),
-  evento: z.string().min(1, { message: "Selecione um evento." }),
-  produto: z.string().min(1, { message: "Selecione um produto." }),
+const secretSchema = z.object({
+  secret: z.string().min(10, { message: "O segredo deve ter pelo menos 10 caracteres." }),
 });
 
 interface WebhookLog {
@@ -35,49 +33,44 @@ interface WebhookLog {
 }
 
 const fetchWebhookLogs = async () => {
-  const { data, error } = await supabase
-    .from("webhook_logs")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(10);
+  const { data, error } = await supabase.from("webhook_logs").select("*").order("created_at", { ascending: false }).limit(10);
   if (error) throw error;
   return data;
 };
 
+const fetchKiwifySecret = async () => {
+  const { data, error } = await supabase.from("settings").select("value").eq("key", "kiwify_secret").single();
+  if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows found, which is fine
+  return data?.value || "";
+};
+
 const KiwifyAdmin = () => {
   const queryClient = useQueryClient();
-  const { data: logs, isLoading: isLoadingLogs } = useQuery<WebhookLog[]>({
-    queryKey: ["webhook_logs"],
-    queryFn: fetchWebhookLogs,
+  const { data: logs, isLoading: isLoadingLogs } = useQuery<WebhookLog[]>({ queryKey: ["webhook_logs"], queryFn: fetchWebhookLogs });
+  const { data: currentSecret, isLoading: isLoadingSecret } = useQuery<string>({ queryKey: ["kiwify_secret"], queryFn: fetchKiwifySecret });
+
+  const form = useForm<z.infer<typeof secretSchema>>({
+    resolver: zodResolver(secretSchema),
+    defaultValues: { secret: "" },
   });
 
-  const form = useForm<z.infer<typeof simulatorSchema>>({
-    resolver: zodResolver(simulatorSchema),
-    defaultValues: {
-      email: "",
-      evento: "assinatura aprovada",
-      produto: "Plano PRO Mensal",
-    },
-  });
+  useEffect(() => {
+    if (currentSecret) {
+      form.setValue("secret", currentSecret);
+    }
+  }, [currentSecret, form]);
 
-  const { mutate: simulateWebhook, isPending: isSimulating } = useMutation({
-    mutationFn: async (values: z.infer<typeof simulatorSchema>) => {
-      const { data, error } = await supabase.functions.invoke("kiwify-webhook", {
-        body: { ...values, token: webhookToken },
-      });
-      if (error) throw new Error(error.message);
-      return data;
+  const { mutate: saveSecret, isPending: isSaving } = useMutation({
+    mutationFn: async (values: z.infer<typeof secretSchema>) => {
+      const { error } = await supabase.from("settings").upsert({ key: "kiwify_secret", value: values.secret });
+      if (error) throw error;
     },
-    onSuccess: (data) => {
-      toast.success("Webhook simulado com sucesso!", {
-        description: data.message,
-      });
-      queryClient.invalidateQueries({ queryKey: ["webhook_logs"] });
+    onSuccess: () => {
+      toast.success("Segredo do webhook salvo com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["kiwify_secret"] });
     },
     onError: (error) => {
-      toast.error("Erro ao simular webhook", {
-        description: error.message,
-      });
+      toast.error("Erro ao salvar o segredo", { description: error.message });
     },
   });
 
@@ -96,83 +89,47 @@ const KiwifyAdmin = () => {
       <Card>
         <CardHeader>
           <CardTitle>1. Configuração do Webhook</CardTitle>
-          <CardDescription>Use esta URL e o Token para configurar o webhook na sua conta Kiwify.</CardDescription>
+          <CardDescription>Siga os passos abaixo para configurar a integração.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div>
-            <Label>URL do Webhook (POST)</Label>
+            <Label>Passo 1: Copie a URL do Webhook</Label>
             <div className="flex items-center gap-2">
               <Input readOnly value={webhookUrl} />
               <Button variant="outline" size="icon" onClick={() => handleCopy(webhookUrl)}><Copy className="h-4 w-4" /></Button>
             </div>
+            <p className="text-xs text-muted-foreground mt-1">Cole esta URL no campo "URL de Webhook" na sua conta Kiwify.</p>
           </div>
           <div>
-            <Label>Token Secreto</Label>
-            <div className="flex items-center gap-2">
-              <Input readOnly value={webhookToken} type="password" />
-              <Button variant="outline" size="icon" onClick={() => handleCopy(webhookToken)}><Copy className="h-4 w-4" /></Button>
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">Este token deve ser enviado no corpo da requisição do webhook no campo "token".</p>
+            <Label>Passo 2: Salve o Segredo do Webhook</Label>
+            <p className="text-xs text-muted-foreground mb-2">Gere um "Segredo de Webhook" na Kiwify, cole-o abaixo e salve.</p>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit((d) => saveSecret(d))} className="flex items-start gap-2">
+                <FormField control={form.control} name="secret" render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl><Input type="password" placeholder="Cole o segredo gerado na Kiwify aqui..." {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <Button type="submit" disabled={isSaving || isLoadingSecret}>
+                  {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />} Salvar
+                </Button>
+              </form>
+            </Form>
           </div>
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Passo 3 (Importante):</strong> Após salvar o segredo acima, você <strong>DEVE</strong> adicioná-lo como um "Secret" nas configurações da sua Edge Function no painel da Supabase. O nome do segredo deve ser <strong>KIWIFY_WEBHOOK_SECRET</strong> e o valor deve ser o mesmo que você salvou.
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>2. Simulador de Webhook</CardTitle>
-          <CardDescription>Teste a lógica do webhook manualmente com dados de exemplo.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit((d) => simulateWebhook(d))} className="grid md:grid-cols-4 gap-4 items-end">
-              <FormField control={form.control} name="email" render={({ field }) => (
-                <FormItem className="md:col-span-2">
-                  <FormLabel>Email do usuário</FormLabel>
-                  <FormControl><Input placeholder="cliente@exemplo.com" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField control={form.control} name="evento" render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Evento</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                    <SelectContent>
-                      <SelectItem value="assinatura aprovada">Assinatura Aprovada</SelectItem>
-                      <SelectItem value="assinatura renovada">Assinatura Renovada</SelectItem>
-                      <SelectItem value="assinatura cancelada">Assinatura Cancelada</SelectItem>
-                      <SelectItem value="assinatura atrasada">Assinatura Atrasada</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField control={form.control} name="produto" render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Produto</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                    <SelectContent>
-                      <SelectItem value="Plano PRO Mensal">Plano PRO Mensal</SelectItem>
-                      <SelectItem value="Plano PRO Anual">Plano PRO Anual</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <Button type="submit" disabled={isSimulating} className="md:col-span-4">
-                {isSimulating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Simular Webhook
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>3. Últimos Eventos Recebidos (Logs)</CardTitle>
-          <CardDescription>Os 10 eventos mais recentes processados pelo webhook.</CardDescription>
+          <CardTitle>2. Últimos Eventos Recebidos (Logs)</CardTitle>
+          <CardDescription>Os 10 eventos mais recentes processados pelo webhook. Use isso para verificar se a integração está funcionando.</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -181,7 +138,7 @@ const KiwifyAdmin = () => {
                 <TableHead>Data/Hora</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Evento Recebido</TableHead>
-                <TableHead>Detalhes (Plano Aplicado)</TableHead>
+                <TableHead>Detalhes</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
