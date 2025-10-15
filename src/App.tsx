@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -52,12 +52,6 @@ import FavoritesPage from "./pages/FavoritesPage";
 
 const queryClient = new QueryClient();
 
-const PageLoader = () => (
-  <div className="flex-1 flex items-center justify-center">
-    <Loader2 className="h-8 w-8 animate-spin text-primary" />
-  </div>
-);
-
 const AppContent = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [loadingSession, setLoadingSession] = useState(true);
@@ -86,13 +80,11 @@ const AppContent = () => {
 
   if (!session) {
     return (
-      <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /></div>}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </Suspense>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
     );
   }
 
@@ -109,49 +101,47 @@ const AppContent = () => {
   const isAdmin = profile?.role === 'admin';
 
   return (
-    <Suspense fallback={<PageLoader />}>
-      <Routes>
-        <Route path="/" element={<MainLayout session={session} profile={profile} />}>
-          <Route index element={<Dashboard />} />
-          <Route path="calculator" element={<Calculator />} />
-          <Route path="emergency" element={<Emergency />} />
-          <Route path="medications" element={<Medications />} />
-          <Route path="wound-care" element={<WoundCare />} />
-          <Route path="procedures" element={<Procedures />} />
-          <Route path="questions" element={<Questions />} />
-          <Route path="admin" element={isAdmin ? <Admin /> : <Navigate to="/" />} />
-          <Route path="scales" element={<Scales />} />
-          <Route path="scales/glasgow" element={<GlasgowScale />} />
-          <Route path="scales/braden" element={<BradenScale />} />
-          <Route path="scales/rass" element={<RassScale />} />
-          <Route path="scales/wong-baker" element={<WongBakerScale />} />
-          <Route path="scales/fugulin" element={<FugulinScale />} />
-          <Route path="scales/morse" element={<MorseScale />} />
-          <Route path="scales/aldrete" element={<AldreteScale />} />
-          <Route path="scales/apgar" element={<ApgarScale />} />
-          <Route path="scales/manchester" element={<ManchesterScale />} />
-          <Route path="scales/parkland" element={<ParklandScale />} />
-          <Route path="scales/asa" element={<AsaScale />} />
-          <Route path="ecg" element={<EcgGuide />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="user/:userId" element={<PublicProfile />} />
-          <Route path="semiology" element={<Semiology />} />
-          <Route path="semiotechnique" element={<SemioTechnique />} />
-          <Route path="tools/dose-calculator" element={<DoseCalculator />} />
-          <Route path="tools/lab-values" element={<LabValues />} />
-          <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />
-          <Route path="tools/integrated-calculators" element={<IntegratedCalculators />} />
-          <Route path="simulado" element={<SimuladoLobby />} />
-          <Route path="review-area" element={<ReviewArea />} />
-          <Route path="favorites" element={<FavoritesPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-        <Route path="/simulado/start" element={<Simulado />} />
-        <Route path="/simulado/resultado" element={<SimuladoResultado />} />
-        <Route path="/login" element={<Navigate to="/" replace />} />
-        <Route path="/register" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Suspense>
+    <Routes>
+      <Route path="/" element={<MainLayout session={session} profile={profile} />}>
+        <Route index element={<Dashboard />} />
+        <Route path="calculator" element={<Calculator />} />
+        <Route path="emergency" element={<Emergency />} />
+        <Route path="medications" element={<Medications />} />
+        <Route path="wound-care" element={<WoundCare />} />
+        <Route path="procedures" element={<Procedures />} />
+        <Route path="questions" element={<Questions />} />
+        <Route path="admin" element={isAdmin ? <Admin /> : <Navigate to="/" />} />
+        <Route path="scales" element={<Scales />} />
+        <Route path="scales/glasgow" element={<GlasgowScale />} />
+        <Route path="scales/braden" element={<BradenScale />} />
+        <Route path="scales/rass" element={<RassScale />} />
+        <Route path="scales/wong-baker" element={<WongBakerScale />} />
+        <Route path="scales/fugulin" element={<FugulinScale />} />
+        <Route path="scales/morse" element={<MorseScale />} />
+        <Route path="scales/aldrete" element={<AldreteScale />} />
+        <Route path="scales/apgar" element={<ApgarScale />} />
+        <Route path="scales/manchester" element={<ManchesterScale />} />
+        <Route path="scales/parkland" element={<ParklandScale />} />
+        <Route path="scales/asa" element={<AsaScale />} />
+        <Route path="ecg" element={<EcgGuide />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="user/:userId" element={<PublicProfile />} />
+        <Route path="semiology" element={<Semiology />} />
+        <Route path="semiotechnique" element={<SemioTechnique />} />
+        <Route path="tools/dose-calculator" element={<DoseCalculator />} />
+        <Route path="tools/lab-values" element={<LabValues />} />
+        <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />
+        <Route path="tools/integrated-calculators" element={<IntegratedCalculators />} />
+        <Route path="simulado" element={<SimuladoLobby />} />
+        <Route path="review-area" element={<ReviewArea />} />
+        <Route path="favorites" element={<FavoritesPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+      <Route path="/simulado/start" element={<Simulado />} />
+      <Route path="/simulado/resultado" element={<SimuladoResultado />} />
+      <Route path="/login" element={<Navigate to="/" replace />} />
+      <Route path="/register" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 };
 
