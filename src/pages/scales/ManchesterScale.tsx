@@ -22,19 +22,19 @@ const ManchesterScale = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Protocolo de Manchester</h1>
-          <p className="text-muted-foreground">Guia de referência para classificação de risco em serviços de urgência.</p>
+      <div className="text-center">
+        <div className="flex justify-center items-center gap-4 mb-2">
+          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Protocolo de Manchester</h1>
+          {profile && (
+            <FavoriteButton
+              userId={profile.id}
+              itemId="/scales/manchester"
+              itemType="Escala"
+              itemTitle="Protocolo de Manchester"
+            />
+          )}
         </div>
-        {profile && (
-          <FavoriteButton
-            userId={profile.id}
-            itemId="/scales/manchester"
-            itemType="Escala"
-            itemTitle="Protocolo de Manchester"
-          />
-        )}
+        <p className="text-muted-foreground">Guia de referência para classificação de risco em serviços de urgência.</p>
       </div>
 
       <Card>

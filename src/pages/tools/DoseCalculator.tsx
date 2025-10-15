@@ -104,19 +104,19 @@ const DoseCalculator = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Calculadora de Doses</h1>
-          <p className="text-muted-foreground">Calcule doses, diluições e taxas de infusão com precisão.</p>
+      <div className="text-center">
+        <div className="flex justify-center items-center gap-4 mb-2">
+          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Calculadora de Doses</h1>
+          {profile && (
+            <FavoriteButton
+              userId={profile.id}
+              itemId="/tools/dose-calculator"
+              itemType="Ferramenta"
+              itemTitle="Calculadora de Doses"
+            />
+          )}
         </div>
-        {profile && (
-          <FavoriteButton
-            userId={profile.id}
-            itemId="/tools/dose-calculator"
-            itemType="Ferramenta"
-            itemTitle="Calculadora de Doses"
-          />
-        )}
+        <p className="text-muted-foreground">Calcule doses, diluições e taxas de infusão com precisão.</p>
       </div>
 
       <Alert variant="destructive">
