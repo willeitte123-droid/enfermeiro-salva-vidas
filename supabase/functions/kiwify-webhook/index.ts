@@ -83,14 +83,18 @@ serve(async (req: Request) => {
 
     if (existingUser.users.length === 0) {
       if (isApprovedEvent) {
-        const { data: newUser, error: creationError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+        // Alterado de inviteUserByEmail para createUser para criação direta
+        const { data: newUser, error: creationError } = await supabaseAdmin.auth.admin.createUser({
+          email: email,
+          email_confirm: true, // Marca o e-mail como confirmado, já que o pagamento foi feito
+        });
 
         if (creationError) {
-          await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao convidar novo usuário: ${creationError.message}` });
+          await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao criar novo usuário: ${creationError.message}` });
           throw creationError;
         }
         userId = newUser.user.id;
-        detailsLog = 'Novo usuário convidado. ';
+        detailsLog = 'Novo usuário criado com sucesso. O usuário deve usar "Esqueceu a senha" para definir a senha. ';
       } else {
         await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: 'Usuário não encontrado para evento de cancelamento/atraso. Nenhuma ação tomada.' });
         return new Response('User not found for this event.', { status: 200, headers: corsHeaders });
@@ -131,7 +135,6 @@ serve(async (req: Request) => {
       detailsLog += `Evento '${evento}' não reconhecido. Nenhuma alteração realizada.`;
     }
 
-    // Apenas atualize o perfil se um plano foi reconhecido
     if (!detailsLog.includes("não reconhecido")) {
       const { error: updateError } = await supabaseAdmin
         .from('profiles')
