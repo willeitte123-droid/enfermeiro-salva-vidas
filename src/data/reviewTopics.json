@@ -84,7 +84,7 @@
     "title": "Saúde da Mulher",
     "icon": "Heart",
     "color": "text-purple-500",
-    "summary": "Cuidados essenciais no pré-natal e na prevenção de cânceres ginecológicos.",
+    "summary": "Cuidados essenciais no pré-natal, parto, puerpério e na prevenção de agravos.",
     "details": [
       {
         "subtitle": "Pré-Natal de Baixo Risco",
@@ -97,10 +97,35 @@
         ]
       },
       {
-        "subtitle": "Prevenção de Câncer",
+        "subtitle": "Trabalho de Parto e Parto",
+        "points": [
+          "<strong>Períodos Clínicos do Parto:</strong><ul><li><strong>1º - Dilatação:</strong> Início das contrações regulares até a dilatação total (10cm).</li><li><strong>2º - Expulsivo:</strong> Da dilatação total até a saída completa do feto.</li><li><strong>3º - Secundamento/Dequitação:</strong> Saída da placenta e membranas.</li><li><strong>4º - Período de Greenberg:</strong> A primeira hora pós-parto, crucial para vigilância de hemorragias.</li></ul>",
+          "<strong>Mecanismo do Parto (Movimentos Cardinais):</strong> Sequência de movimentos do feto para passar pelo canal de parto: <strong>1.</strong> Insinuação, <strong>2.</strong> Descida, <strong>3.</strong> Flexão, <strong>4.</strong> Rotação Interna, <strong>5.</strong> Deflexão, <strong>6.</strong> Rotação Externa, <strong>7.</strong> Desprendimento dos ombros.",
+          "<strong>Partograma:</strong> Ferramenta gráfica para monitorar a evolução do trabalho de parto, identificando distócias. Registra dilatação, descida, contrações e BCF."
+        ]
+      },
+      {
+        "subtitle": "Puerpério (Pós-parto)",
+        "points": [
+          "<strong>Classificação:</strong> Imediato (1º ao 10º dia), Tardio (11º ao 45º dia), Remoto (após 45º dia).",
+          "<strong>Cuidados de Enfermagem:</strong> Avaliar involução uterina (altura do fundo uterino), características dos lóquios, mamas (ingurgitamento, fissuras), períneo/ferida operatória e estado emocional.",
+          "<strong>Sinais de Alerta:</strong> Febre, hemorragia excessiva (mais de 1 absorvente/hora), dor/edema em membros inferiores (risco de TVP), mastite."
+        ]
+      },
+      {
+        "subtitle": "Prevenção de Câncer Ginecológico",
         "points": [
           "<strong>Câncer de Colo de Útero:</strong> Rastreamento com Papanicolau em mulheres de 25 a 64 anos. Início aos 25 anos, os dois primeiros anuais, se normais, a cada 3 anos.",
           "<strong>Câncer de Mama:</strong> Rastreamento com mamografia bienal para mulheres de 50 a 69 anos. Exame clínico anual a partir dos 40 anos."
+        ]
+      },
+      {
+        "subtitle": "Planejamento Familiar e Contracepção",
+        "points": [
+          "<strong>Métodos de Barreira:</strong> Preservativos (masculino/feminino), diafragma. Únicos que protegem contra ISTs.",
+          "<strong>Métodos Hormonais:</strong> Pílulas (combinadas/progestágeno), injetáveis (mensal/trimestral), adesivo, anel vaginal, implante.",
+          "<strong>Dispositivos Intrauterinos (DIU):</strong> DIU de Cobre (não hormonal, dura até 10 anos) e DIU Hormonal (Mirena/Kyleena, dura até 5 anos).",
+          "<strong>Métodos Definitivos:</strong> Laqueadura tubária e Vasectomia (requerem critérios da Lei de Planejamento Familiar)."
         ]
       }
     ]
