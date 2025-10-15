@@ -46,14 +46,16 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
   useEffect(() => {
     if (isLoadingQuestions) return;
     if (timeLeft <= 0) {
-      setShowTimeUpDialog(true);
+      if (!showTimeUpDialog) {
+        setShowTimeUpDialog(true);
+      }
       return;
     }
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => prevTime - 1);
     }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft, isLoadingQuestions]);
+  }, [timeLeft, isLoadingQuestions, showTimeUpDialog]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -86,6 +88,15 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
     });
   };
 
+  const handleFinishFromDialog = () => {
+    setShowTimeUpDialog(false);
+    // Adiciona um pequeno atraso para permitir que a animação de fechamento do diálogo seja concluída
+    // antes que o componente seja desmontado, evitando o erro de 'removeChild'.
+    setTimeout(() => {
+      finishSimulado(userAnswers);
+    }, 150);
+  };
+
   if (isLoadingQuestions || simuladoQuestions.length === 0) {
     return <div className="flex items-center justify-center h-full"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
   }
@@ -95,14 +106,14 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
-      <AlertDialog open={showTimeUpDialog}>
+      <AlertDialog open={showTimeUpDialog} onOpenChange={setShowTimeUpDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2"><AlertTriangle className="text-destructive"/> Tempo Esgotado!</AlertDialogTitle>
             <AlertDialogDescription>Seu tempo para o simulado acabou. Vamos ver seus resultados.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={() => finishSimulado(userAnswers)}>Ver Resultados</AlertDialogAction>
+            <AlertDialogAction onClick={handleFinishFromDialog}>Ver Resultados</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
