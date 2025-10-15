@@ -102,12 +102,17 @@ const KiwifyAdmin = () => {
           </div>
           <div>
             <Label>Passo 2: Salve o Segredo do Webhook</Label>
-            <p className="text-xs text-muted-foreground mb-2">Gere um "Segredo de Webhook" na Kiwify, cole-o abaixo e salve.</p>
+            <Alert variant="default" className="mb-2 bg-blue-50 border-blue-200 text-blue-800">
+              <AlertTriangle className="h-4 w-4 !text-blue-800" />
+              <AlertDescription>
+                Procure pelo campo **"Segredo do Webhook"** na Kiwify, não o campo "Token". O segredo é uma chave longa e complexa.
+              </AlertDescription>
+            </Alert>
             <Form {...form}>
               <form onSubmit={form.handleSubmit((d) => saveSecret(d))} className="flex items-start gap-2">
                 <FormField control={form.control} name="secret" render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormControl><Input type="password" placeholder="Cole o segredo gerado na Kiwify aqui..." {...field} /></FormControl>
+                    <FormControl><Input type="password" placeholder="Cole o 'Segredo do Webhook' gerado na Kiwify aqui..." {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )} />
