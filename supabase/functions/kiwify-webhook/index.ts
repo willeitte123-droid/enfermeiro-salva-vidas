@@ -102,7 +102,19 @@ serve(async (req: Request) => {
           throw creationError;
         }
         userId = newUser.user.id;
-        detailsLog = 'Novo usuário criado com sucesso. O usuário deve usar "Esqueceu a senha" para definir a senha. ';
+
+        // Gera e envia o e-mail para definição de senha
+        const { error: linkError } = await supabaseAdmin.auth.admin.generateLink({
+          type: 'recovery',
+          email: newUser.user.email,
+        });
+
+        if (linkError) {
+          detailsLog = `Usuário criado, mas falha ao enviar e-mail de definição de senha: ${linkError.message}`;
+        } else {
+          detailsLog = 'Novo usuário criado. Um e-mail para definição de senha foi enviado.';
+        }
+
       } else {
         await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: 'Usuário não encontrado para evento de cancelamento/atraso. Nenhuma ação tomada.' });
         return new Response('User not found for this event.', { status: 200, headers: corsHeaders });
@@ -119,7 +131,7 @@ serve(async (req: Request) => {
       plan = 'free';
       status = 'pending';
       access_expires_at = new Date().toISOString();
-      detailsLog += `Acesso removido. Status do usuário alterado para pendente.`;
+      detailsLog += ` Acesso removido. Status do usuário alterado para pendente.`;
     } else if (isApprovedEvent) {
       status = 'active';
       const lowerCaseProduto = produto?.toLowerCase() || '';
@@ -129,18 +141,18 @@ serve(async (req: Request) => {
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 365);
         access_expires_at = expiryDate.toISOString();
-        detailsLog += `Plano PRO Anual ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
+        detailsLog += ` Plano PRO Anual ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
       } else if (lowerCaseProduto.includes('mensal')) {
         plan = 'Plano PRO Mensal';
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 30);
         access_expires_at = expiryDate.toISOString();
-        detailsLog += `Plano PRO Mensal ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
+        detailsLog += ` Plano PRO Mensal ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
       } else {
-        detailsLog += `Produto '${produto}' não reconhecido. Nenhuma alteração de plano realizada.`;
+        detailsLog += ` Produto '${produto}' não reconhecido. Nenhuma alteração de plano realizada.`;
       }
     } else {
-      detailsLog += `Evento '${evento}' não reconhecido. Nenhuma alteração realizada.`;
+      detailsLog += ` Evento '${evento}' não reconhecido. Nenhuma alteração realizada.`;
     }
 
     if (!detailsLog.includes("não reconhecido")) {

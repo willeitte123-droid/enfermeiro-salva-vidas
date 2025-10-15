@@ -13,9 +13,20 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { Stethoscope, Eye, EyeOff } from "lucide-react";
+import { Stethoscope, Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor, insira um email válido." }),
@@ -24,7 +35,11 @@ const formSchema = z.object({
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,8 +63,57 @@ const Login = () => {
     }
   }
 
+  async function handlePasswordReset() {
+    if (!resetEmail) {
+      toast.error("Por favor, insira um e-mail.");
+      return;
+    }
+    setIsResetting(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+      redirectTo: `${window.location.origin}/`,
+    });
+    setIsResetting(false);
+
+    if (error) {
+      toast.error("Erro ao enviar e-mail", { description: error.message });
+    } else {
+      toast.success("E-mail de recuperação enviado!", {
+        description: "Verifique sua caixa de entrada para redefinir sua senha.",
+      });
+      setIsResetDialogOpen(false);
+    }
+  }
+
   return (
     <div className="w-full min-h-screen flex flex-col bg-muted/40">
+      <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Redefinir sua senha</AlertDialogTitle>
+            <AlertDialogDescription>
+              Digite seu e-mail abaixo. Se ele estiver em nosso sistema, enviaremos um link para você redefinir sua senha.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-2">
+            <Label htmlFor="reset-email">E-mail</Label>
+            <Input
+              id="reset-email"
+              type="email"
+              placeholder="seu@email.com"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+            />
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handlePasswordReset} disabled={isResetting}>
+              {isResetting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Enviar E-mail
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground p-6 text-center shadow-md">
         <Stethoscope className="h-16 w-16 mb-4" />
         <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
@@ -88,18 +152,11 @@ const Login = () => {
                     <FormItem>
                       <div className="flex items-center justify-between">
                         <FormLabel>Senha</FormLabel>
-                        <Link
-                          to="#"
-                          className="text-sm text-primary hover:underline"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            toast.info("Função não implementada", {
-                              description: "A recuperação de senha será adicionada em breve.",
-                            });
-                          }}
-                        >
-                          Esqueceu a senha?
-                        </Link>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="link" className="text-sm text-primary hover:underline p-0 h-auto">
+                            Esqueceu a senha?
+                          </Button>
+                        </AlertDialogTrigger>
                       </div>
                       <div className="relative">
                         <FormControl>
