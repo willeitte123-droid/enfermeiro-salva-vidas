@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Droplet, Activity, Info, FlaskConical, BookOpen, CheckSquare } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import FavoriteButton from "@/components/FavoriteButton";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
 
 interface Profile {
   id: string;
@@ -17,6 +19,23 @@ const Calculator = () => {
   const [volume, setVolume] = useState("");
   const [time, setTime] = useState("");
   const [dropFactor, setDropFactor] = useState("20");
+
+  const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
+    queryKey: ['favorites', profile?.id, '/calculator'],
+    queryFn: async () => {
+      if (!profile) return [];
+      const { data, error } = await supabase
+        .from('user_favorites')
+        .select('item_id')
+        .eq('user_id', profile.id)
+        .eq('item_id', '/calculator');
+      if (error) throw error;
+      return data.map(f => f.item_id);
+    },
+    enabled: !!profile,
+  });
+
+  const isFavorited = useMemo(() => new Set(favoritesData || []).has('/calculator'), [favoritesData]);
 
   const calculateDropRate = () => {
     const v = parseFloat(volume);
@@ -52,6 +71,8 @@ const Calculator = () => {
             itemId="/calculator"
             itemType="Ferramenta"
             itemTitle="Calculadora de Gotejamento"
+            isInitiallyFavorited={isFavorited}
+            isLoading={isLoadingFavorites}
           />
         )}
       </div>
