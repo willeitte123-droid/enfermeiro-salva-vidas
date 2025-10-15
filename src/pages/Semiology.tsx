@@ -2,17 +2,76 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
-import { anamnesisSteps, propaedeuticMethods, systemAssessments } from "@/data/assessment";
-import { CheckCircle2, BookOpen } from "lucide-react";
+import { CheckCircle2, BookOpen, Loader2 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
+import { useQuery } from "@tanstack/react-query";
+import * as LucideIcons from "lucide-react";
 
 interface Profile {
   id: string;
 }
 
+interface AnamnesisStep {
+  title: string;
+  description: string;
+}
+
+interface PropaedeuticMethod {
+  name: string;
+  icon: keyof typeof LucideIcons;
+  description: string;
+}
+
+interface AssessmentDetail {
+  method: string;
+  technique: string;
+  findings: string[];
+}
+
+interface SystemAssessment {
+  id: string;
+  name: string;
+  icon: keyof typeof LucideIcons;
+  color: string;
+  details: AssessmentDetail[];
+}
+
+interface AssessmentData {
+  anamnesisSteps: AnamnesisStep[];
+  propaedeuticMethods: PropaedeuticMethod[];
+  systemAssessments: SystemAssessment[];
+}
+
+const fetchAssessmentData = async (): Promise<AssessmentData> => {
+  const response = await fetch('/data/assessment.json');
+  if (!response.ok) {
+    throw new Error('Não foi possível carregar os dados de semiologia.');
+  }
+  const data = await response.json();
+  return {
+    anamnesisSteps: data.anamnesisSteps,
+    propaedeuticMethods: data.propaedeuticMethods,
+    systemAssessments: data.systemAssessments,
+  };
+};
+
 const Semiology = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['assessmentData'],
+    queryFn: fetchAssessmentData,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  const { anamnesisSteps, propaedeuticMethods, systemAssessments } = data || { anamnesisSteps: [], propaedeuticMethods: [], systemAssessments: [] };
 
   return (
     <div className="space-y-8">
@@ -57,10 +116,10 @@ const Semiology = () => {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             {propaedeuticMethods.map(method => {
-              const Icon = method.icon;
+              const Icon = LucideIcons[method.icon] as LucideIcons.LucideIcon;
               return (
                 <div key={method.name} className="p-4 bg-muted rounded-lg text-center">
-                  <Icon className="h-8 w-8 text-primary mx-auto mb-2" />
+                  {Icon && <Icon className="h-8 w-8 text-primary mx-auto mb-2" />}
                   <h4 className="font-semibold">{method.name}</h4>
                   <p className="text-xs text-muted-foreground">{method.description}</p>
                 </div>
@@ -75,13 +134,13 @@ const Semiology = () => {
               ))}
             </TabsList>
             {systemAssessments.map(system => {
-              const Icon = system.icon;
+              const Icon = LucideIcons[system.icon] as LucideIcons.LucideIcon;
               return (
                 <TabsContent key={system.id} value={system.id} className="mt-6">
                   <Card>
                     <CardHeader>
                       <CardTitle className={`flex items-center gap-3 ${system.color}`}>
-                        <Icon /> {system.name}
+                        {Icon && <Icon />} {system.name}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>

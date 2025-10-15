@@ -3,18 +3,46 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Search, AlertTriangle } from "lucide-react";
-import { labValuesData } from "@/data/labValues";
+import { Search, AlertTriangle, Loader2 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import FavoriteButton from "@/components/FavoriteButton";
+import { useQuery } from "@tanstack/react-query";
+import * as LucideIcons from "lucide-react";
 
 interface Profile {
   id: string;
 }
 
+interface LabValue {
+  name: string;
+  value: string;
+  unit: string;
+  notes?: string;
+}
+
+interface LabCategory {
+  category: string;
+  icon: keyof typeof LucideIcons;
+  color: string;
+  values: LabValue[];
+}
+
+const fetchLabValues = async (): Promise<LabCategory[]> => {
+  const response = await fetch('/data/labValues.json');
+  if (!response.ok) {
+    throw new Error('Não foi possível carregar os valores laboratoriais.');
+  }
+  return response.json();
+};
+
 const LabValues = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: labValuesData = [], isLoading } = useQuery({
+    queryKey: ['labValues'],
+    queryFn: fetchLabValues,
+  });
 
   const filteredData = useMemo(() => {
     if (!searchTerm) {
@@ -31,7 +59,7 @@ const LabValues = () => {
         return { ...category, values: filteredValues };
       })
       .filter(category => category.values.length > 0);
-  }, [searchTerm]);
+  }, [searchTerm, labValuesData]);
 
   return (
     <div className="space-y-6">
@@ -67,15 +95,19 @@ const LabValues = () => {
         </AlertDescription>
       </Alert>
 
-      {filteredData.length > 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : filteredData.length > 0 ? (
         <div className="space-y-6">
           {filteredData.map(category => {
-            const Icon = category.icon;
+            const Icon = LucideIcons[category.icon] as LucideIcons.LucideIcon;
             return (
               <Card key={category.category}>
                 <CardHeader>
                   <CardTitle className={`flex items-center gap-3 ${category.color}`}>
-                    <Icon /> {category.category}
+                    {Icon && <Icon />} {category.category}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

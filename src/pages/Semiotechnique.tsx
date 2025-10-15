@@ -2,16 +2,63 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { semioTechniqueData } from "@/data/assessment";
-import { HandHeart, CheckCircle2, Droplet } from "lucide-react";
+import { HandHeart, CheckCircle2, Droplet, Loader2 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
+import { useQuery } from "@tanstack/react-query";
+import * as LucideIcons from "lucide-react";
 
 interface Profile {
   id: string;
 }
 
+interface Alteration {
+  term: string;
+  description: string;
+}
+
+interface GlycemiaCriteria {
+  criterion: string;
+  normal: string;
+  preDiabetes: string;
+  diabetes: string;
+}
+
+interface SemioTechniqueItem {
+  id: string;
+  name: string;
+  icon: keyof typeof LucideIcons;
+  color: string;
+  technique: string[];
+  normalValues?: string;
+  alterations?: Alteration[];
+  glycemiaCriteria?: GlycemiaCriteria[];
+}
+
+const fetchSemioTechniqueData = async (): Promise<SemioTechniqueItem[]> => {
+  const response = await fetch('/data/assessment.json');
+  if (!response.ok) {
+    throw new Error('Não foi possível carregar os dados de semiotécnica.');
+  }
+  const data = await response.json();
+  return data.semioTechniqueData;
+};
+
 const SemioTechnique = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+
+  const { data: semioTechniqueData = [], isLoading } = useQuery({
+    queryKey: ['semioTechniqueData'],
+    queryFn: fetchSemioTechniqueData,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   const vitalSigns = semioTechniqueData.filter(item => item.id !== 'glycemia');
   const glycemiaAssessment = semioTechniqueData.find(item => item.id === 'glycemia');
 
@@ -42,12 +89,12 @@ const SemioTechnique = () => {
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {vitalSigns.map(sign => {
-            const Icon = sign.icon;
+            const Icon = LucideIcons[sign.icon] as LucideIcons.LucideIcon;
             return (
               <Card key={sign.id}>
                 <CardHeader>
                   <CardTitle className={`flex items-center gap-3 ${sign.color}`}>
-                    <Icon /> {sign.name}
+                    {Icon && <Icon />} {sign.name}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
