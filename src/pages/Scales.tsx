@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Brain, User, ShieldAlert, Gauge, Smile, Users, Bed, Baby, Siren, Droplets, ShieldCheck } from "lucide-react";
+import { Brain, User, ShieldAlert, Gauge, Smile, Users, Bed, Baby } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const scales = [
@@ -99,42 +99,6 @@ const scales = [
       bg: "bg-pink-100 dark:bg-pink-900/30",
       text: "text-pink-600 dark:text-pink-400",
       border: "hover:border-pink-300 dark:hover:border-pink-700",
-    },
-  },
-  {
-    title: "Protocolo de Manchester",
-    description: "Sistema de triagem para classificar a urgência em serviços de emergência.",
-    icon: Siren,
-    path: "/scales/manchester",
-    status: "available",
-    color: {
-      bg: "bg-orange-100 dark:bg-orange-900/30",
-      text: "text-orange-600 dark:text-orange-400",
-      border: "hover:border-orange-300 dark:hover:border-orange-700",
-    },
-  },
-  {
-    title: "Fórmula de Parkland",
-    description: "Calcula a reposição volêmica para pacientes grandes queimados.",
-    icon: Droplets,
-    path: "/scales/parkland",
-    status: "available",
-    color: {
-      bg: "bg-red-100 dark:bg-red-900/30",
-      text: "text-red-600 dark:text-red-400",
-      border: "hover:border-red-300 dark:hover:border-red-700",
-    },
-  },
-  {
-    title: "Classificação ASA",
-    description: "Avalia o estado físico do paciente para o risco cirúrgico-anestésico.",
-    icon: ShieldCheck,
-    path: "/scales/asa",
-    status: "available",
-    color: {
-      bg: "bg-teal-100 dark:bg-teal-900/30",
-      text: "text-teal-600 dark:text-teal-400",
-      border: "hover:border-teal-300 dark:hover:border-teal-700",
     },
   },
 ];
