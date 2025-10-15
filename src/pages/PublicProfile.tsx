@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
+import { useQuery } from "@tanstack/react-query";
 
 interface Profile {
   id: string;
@@ -26,11 +27,6 @@ interface Simulation {
   score: number;
   total_questions: number;
   time_taken_seconds: number;
-}
-
-interface Question {
-  id: number;
-  category: string;
 }
 
 interface CategoryStat {
@@ -62,79 +58,44 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+const fetchPublicProfileData = async (userId: string) => {
+  const profilePromise = supabase.from("profiles").select("*").eq("id", userId).single();
+  const simulationsPromise = supabase.from("user_simulations").select('*').eq('user_id', userId).order('created_at', { ascending: false });
+  const statsPromise = supabase.rpc('get_user_performance_stats', { p_user_id: userId });
+
+  const [
+    { data: profileData, error: profileError },
+    { data: simulationsData, error: simulationsError },
+    { data: statsData, error: statsError },
+  ] = await Promise.all([profilePromise, simulationsPromise, statsPromise]);
+
+  if (profileError) throw profileError;
+  if (simulationsError) throw simulationsError;
+  if (statsError) throw statsError;
+
+  const { totalQuestions, correctQuestions, categoryStats } = statsData;
+
+  const sortedCategoryStats = categoryStats.sort((a: CategoryStat, b: CategoryStat) => a.accuracy - b.accuracy);
+
+  return {
+    profile: profileData,
+    simulations: simulationsData || [],
+    categoryStats: sortedCategoryStats,
+    totalQuestions,
+    correctQuestions,
+  };
+};
+
 const PublicProfile = () => {
   const { userId } = useParams<{ userId: string }>();
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [simulations, setSimulations] = useState<Simulation[]>([]);
-  const [categoryStats, setCategoryStats] = useState<CategoryStat[]>([]);
-  const [totalQuestions, setTotalQuestions] = useState(0);
-  const [correctQuestions, setCorrectQuestions] = useState(0);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      if (!userId) return;
-      setLoading(true);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['publicProfile', userId],
+    queryFn: () => fetchPublicProfileData(userId!),
+    enabled: !!userId,
+  });
 
-      try {
-        const profilePromise = supabase.from("profiles").select("*").eq("id", userId).single();
-        const simulationsPromise = supabase.from("user_simulations").select('*').eq('user_id', userId).order('created_at', { ascending: false });
-        const answersPromise = supabase.from("user_question_answers").select('question_id, is_correct').eq('user_id', userId);
-        const questionsPromise = fetch("/questions.json").then(res => res.json());
-
-        const [
-          { data: profileData, error: profileError },
-          { data: simulationsData, error: simulationsError },
-          { data: answersData, error: answersError },
-          questionsData,
-        ] = await Promise.all([profilePromise, simulationsPromise, answersPromise, questionsPromise]);
-
-        if (profileError) throw profileError;
-        setProfile(profileData);
-
-        if (simulationsError) throw simulationsError;
-        setSimulations(simulationsData || []);
-
-        if (answersError) throw answersError;
-        
-        if (answersData && questionsData) {
-          setTotalQuestions(answersData.length);
-          setCorrectQuestions(answersData.filter(a => a.is_correct).length);
-
-          const performanceByCategory: { [key: string]: { total: number; correct: number } } = {};
-          
-          for (const answer of answersData) {
-            const question = questionsData.find((q: Question) => q.id === answer.question_id);
-            if (question) {
-              const category = question.category;
-              if (!performanceByCategory[category]) {
-                performanceByCategory[category] = { total: 0, correct: 0 };
-              }
-              performanceByCategory[category].total++;
-              if (answer.is_correct) {
-                performanceByCategory[category].correct++;
-              }
-            }
-          }
-
-          const statsArray = Object.keys(performanceByCategory).map(category => ({
-            name: category,
-            accuracy: Math.round((performanceByCategory[category].correct / performanceByCategory[category].total) * 100),
-            total: performanceByCategory[category].total,
-          })).sort((a, b) => a.accuracy - b.accuracy);
-          
-          setCategoryStats(statsArray);
-        }
-
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfileData();
-  }, [userId]);
+  const { profile, simulations, categoryStats, totalQuestions, correctQuestions } = data || {};
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -142,7 +103,7 @@ const PublicProfile = () => {
     return `${minutes}m ${secs}s`;
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -150,7 +111,7 @@ const PublicProfile = () => {
     );
   }
 
-  if (!profile) {
+  if (isError || !profile) {
     return (
       <div className="text-center">
         <h2 className="text-2xl font-bold">Usuário não encontrado</h2>
@@ -168,7 +129,7 @@ const PublicProfile = () => {
     return `${firstName}${lastName}`.toUpperCase();
   };
 
-  const questionAccuracy = totalQuestions > 0 ? Math.round((correctQuestions / totalQuestions) * 100) : 0;
+  const questionAccuracy = totalQuestions && totalQuestions > 0 ? Math.round((correctQuestions / totalQuestions) * 100) : 0;
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -200,7 +161,7 @@ const PublicProfile = () => {
         <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
           <div className="bg-muted/50 p-4 rounded-lg">
             <FileQuestion className="h-8 w-8 text-primary mx-auto mb-2" />
-            <p className="text-2xl font-bold">{totalQuestions}</p>
+            <p className="text-2xl font-bold">{totalQuestions || 0}</p>
             <p className="text-sm text-muted-foreground">Questões Resolvidas</p>
           </div>
           <div className="bg-muted/50 p-4 rounded-lg">
@@ -210,7 +171,7 @@ const PublicProfile = () => {
           </div>
           <div className="bg-muted/50 p-4 rounded-lg col-span-2 md:col-span-1">
             <Timer className="h-8 w-8 text-primary mx-auto mb-2" />
-            <p className="text-2xl font-bold">{simulations.length}</p>
+            <p className="text-2xl font-bold">{simulations?.length || 0}</p>
             <p className="text-sm text-muted-foreground">Simulados Realizados</p>
           </div>
         </CardContent>
@@ -222,7 +183,7 @@ const PublicProfile = () => {
           <CardDescription>Seu percentual de acerto, ordenado das maiores dificuldades para as maiores facilidades.</CardDescription>
         </CardHeader>
         <CardContent>
-          {categoryStats.length > 0 ? (
+          {categoryStats && categoryStats.length > 0 ? (
             <>
               <div className="h-96 w-full">
                 <ResponsiveContainer width="100%" height="100%">
@@ -258,7 +219,7 @@ const PublicProfile = () => {
           <CardDescription>Todos os seus simulados realizados.</CardDescription>
         </CardHeader>
         <CardContent>
-          {simulations.length > 0 ? (
+          {simulations && simulations.length > 0 ? (
             <ScrollArea className="h-96">
               <Table>
                 <TableHeader>

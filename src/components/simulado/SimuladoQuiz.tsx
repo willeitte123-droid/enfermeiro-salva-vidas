@@ -1,69 +1,61 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
 import { Loader2, Timer, AlertTriangle } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
-
-interface Question {
-  id: number;
-  category: string;
-  question: string;
-  options: { id: string; text: string }[];
-  correctAnswer: string;
-  explanation: string;
-}
+import { Question } from "@/context/QuestionsContext";
+import { supabase } from "@/lib/supabase";
+import { useQuery } from "@tanstack/react-query";
 
 interface UserAnswer {
   questionId: number;
   selectedAnswer: string;
 }
 
-const Simulado = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { numQuestions, totalTime } = location.state || { numQuestions: 20, totalTime: 20 * 2 * 60 };
+interface SimuladoQuizProps {
+  numQuestions: number;
+  totalTime: number;
+  onFinish: (results: { userAnswers: UserAnswer[]; questions: Question[]; timeTaken: number }) => void;
+}
 
-  const [simuladoQuestions, setSimuladoQuestions] = useState<Question[]>([]);
-  const [loading, setLoading] = useState(true);
+const fetchSimuladoQuestions = async (numQuestions: number) => {
+  const { data, error } = await supabase.rpc('get_random_questions', { limit_count: numQuestions });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as Question[];
+};
+
+const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) => {
+  const { data: simuladoQuestions = [], isLoading: isLoadingQuestions } = useQuery({
+    queryKey: ['simuladoQuestions', numQuestions],
+    queryFn: () => fetchSimuladoQuestions(numQuestions),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [timeLeft, setTimeLeft] = useState(totalTime);
   const [showTimeUpDialog, setShowTimeUpDialog] = useState(false);
+  const [isFinishingOnTimeUp, setIsFinishingOnTimeUp] = useState(false);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("/questions.json");
-        const data: Question[] = await response.json();
-        const shuffled = [...data].sort(() => 0.5 - Math.random());
-        setSimuladoQuestions(shuffled.slice(0, numQuestions));
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuestions();
-  }, [numQuestions]);
-
-  useEffect(() => {
-    if (loading) return;
-    if (timeLeft <= 0) {
+    if (isLoadingQuestions) return;
+    if (timeLeft <= 0 && !isFinishingOnTimeUp) {
+      setIsFinishingOnTimeUp(true);
       setShowTimeUpDialog(true);
       return;
     }
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
+      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
     }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft, loading]);
+  }, [timeLeft, isLoadingQuestions, isFinishingOnTimeUp]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -89,32 +81,38 @@ const Simulado = () => {
   };
 
   const finishSimulado = (finalAnswers: UserAnswer[]) => {
-    navigate("/simulado/resultado", {
-      state: {
-        userAnswers: finalAnswers,
-        questions: simuladoQuestions,
-        timeTaken: totalTime - timeLeft,
-      },
+    onFinish({
+      userAnswers: finalAnswers,
+      questions: simuladoQuestions,
+      timeTaken: totalTime - timeLeft,
     });
   };
 
-  if (loading || simuladoQuestions.length === 0) {
-    return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
+  const handleDialogClose = (open: boolean) => {
+    setShowTimeUpDialog(open);
+    if (!open && isFinishingOnTimeUp) {
+      // Apenas finaliza o simulado DEPOIS que o diálogo for completamente fechado.
+      finishSimulado(userAnswers);
+    }
+  };
+
+  if (isLoadingQuestions || simuladoQuestions.length === 0) {
+    return <div className="flex items-center justify-center h-full"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
   }
 
   const currentQuestion = simuladoQuestions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / simuladoQuestions.length) * 100;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-primary/10 p-4">
-      <AlertDialog open={showTimeUpDialog}>
+    <div className="flex flex-col items-center justify-center w-full h-full">
+      <AlertDialog open={showTimeUpDialog} onOpenChange={handleDialogClose}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2"><AlertTriangle className="text-destructive"/> Tempo Esgotado!</AlertDialogTitle>
             <AlertDialogDescription>Seu tempo para o simulado acabou. Vamos ver seus resultados.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={() => finishSimulado(userAnswers)}>Ver Resultados</AlertDialogAction>
+            <AlertDialogAction>Ver Resultados</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -159,4 +157,4 @@ const Simulado = () => {
   );
 };
 
-export default Simulado;
+export default SimuladoQuiz;

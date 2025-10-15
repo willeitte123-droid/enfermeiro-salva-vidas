@@ -9,25 +9,59 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Info, CheckSquare, Search } from "lucide-react";
-import { procedures } from "@/data/procedures";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import FavoriteButton from "@/components/FavoriteButton";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import * as LucideIcons from "lucide-react";
+import proceduresData from "@/data/procedures.json";
 
 interface Profile {
   id: string;
 }
+
+interface Procedure {
+  title: string;
+  icon: keyof typeof LucideIcons;
+  color: string;
+  openColor: string;
+  description: string;
+  materials: string[];
+  steps: string[];
+  observations: string;
+  category: "Acessos e Punções" | "Sondagens e Drenagem" | "Vias Aéreas" | "Monitoramento e Emergência" | "Cuidados Gerais";
+}
+
+const procedures: Procedure[] = proceduresData;
 
 const Procedures = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
 
+  const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
+    queryKey: ['favorites', profile?.id, 'Procedimento'],
+    queryFn: async () => {
+      if (!profile) return [];
+      const { data, error } = await supabase
+        .from('user_favorites')
+        .select('item_id')
+        .eq('user_id', profile.id)
+        .eq('item_type', 'Procedimento');
+      if (error) throw error;
+      return data.map(f => f.item_id);
+    },
+    enabled: !!profile,
+  });
+
+  const favoriteSet = useMemo(() => new Set(favoritesData || []), [favoritesData]);
+
   const categories = useMemo(() => {
     const allCategories = procedures.map(p => p.category);
     return ["Todos", ...Array.from(new Set(allCategories))];
-  }, []);
+  }, [procedures]);
 
   const filteredProcedures = useMemo(() => {
     return procedures
@@ -36,7 +70,7 @@ const Procedures = () => {
         proc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         proc.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
-  }, [searchTerm, activeCategory]);
+  }, [searchTerm, activeCategory, procedures]);
 
   return (
     <div className="space-y-6">
@@ -68,28 +102,31 @@ const Procedures = () => {
       {filteredProcedures.length > 0 ? (
         <div className="space-y-4">
           {filteredProcedures.map((proc, index) => {
-            const Icon = proc.icon;
-            const slug = `/procedures#${proc.title.toLowerCase().replace(/\s+/g, '-')}`;
+            const Icon = LucideIcons[proc.icon] as LucideIcons.LucideIcon;
+            const itemId = `/procedures#${proc.title.toLowerCase().replace(/\s+/g, '-')}`;
             return (
               <Accordion type="single" collapsible key={index}>
                 <AccordionItem value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
-                  <AccordionTrigger className="group hover:no-underline text-left">
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-3">
-                        <Icon className={`h-5 w-5 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
+                  <div className="flex items-center">
+                    <AccordionTrigger className="flex-1 group hover:no-underline text-left py-0">
+                      <div className="flex items-center gap-3 py-4">
+                        {Icon && <Icon className={`h-5 w-5 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />}
                         <span className="font-semibold text-left">{proc.title}</span>
                       </div>
+                    </AccordionTrigger>
+                    <div className="pl-4">
                       {profile && (
                         <FavoriteButton
                           userId={profile.id}
-                          itemId={slug}
+                          itemId={itemId}
                           itemType="Procedimento"
                           itemTitle={proc.title}
-                          className="mr-2"
+                          isInitiallyFavorited={favoriteSet.has(itemId)}
+                          isLoading={isLoadingFavorites}
                         />
                       )}
                     </div>
-                  </AccordionTrigger>
+                  </div>
                   <AccordionContent className="pt-4 space-y-6">
                     <p className="text-sm text-muted-foreground">{proc.description}</p>
                     <div>
