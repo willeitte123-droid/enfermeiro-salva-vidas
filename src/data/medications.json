@@ -3,6 +3,7 @@
       "name": "Dipirona Sódica (Metamizol)",
       "activeIngredient": "Dipirona Sódica",
       "indication": "Analgésico e antipirético. Dor leve a moderada, febre. Dose: <strong>500mg-1g IV/IM</strong> a cada 6-8h.",
+      "administration": "<strong>IV:</strong> Administrar lentamente (mínimo 3-5 minutos). Pode ser diluída em 100mL de SF 0,9% ou SG 5%. <strong>IM:</strong> Aplicação profunda no glúteo.",
       "contraindication": "Hipersensibilidade a pirazolonas, porfiria, deficiência de G6PD, discrasias sanguíneas.",
       "adverseEffects": "<strong>Hipotensão (infusão IV rápida)</strong>, reações alérgicas, agranulocitose (rara mas grave).",
       "category": "Analgésico/Antipirético"
@@ -11,6 +12,7 @@
       "name": "Tramadol",
       "activeIngredient": "Cloridrato de Tramadol",
       "indication": "Analgésico opioide para dor moderada a intensa. Dose: <strong>50-100mg IV/IM</strong> a cada 6-8h.",
+      "administration": "<strong>IV:</strong> Administrar lentamente (2-3 minutos) ou diluir em 100mL de SF 0,9% ou SG 5% e infundir em 20-30 minutos. <strong>IM:</strong> Aplicação profunda.",
       "contraindication": "Uso de IMAOs, epilepsia não controlada, intoxicação aguda por depressores do SNC.",
       "adverseEffects": "Náuseas, vômitos, tontura, sonolência. <strong>Reduz o limiar convulsivo</strong>.",
       "category": "Analgésico Opioide"
@@ -19,6 +21,7 @@
       "name": "Metoclopramida (Plasil)",
       "activeIngredient": "Cloridrato de Metoclopramida",
       "indication": "Antiemético e procinético. Náuseas e vômitos. Dose: <strong>10mg IV/IM</strong> a cada 8h.",
+      "administration": "<strong>IV:</strong> Administrar lentamente (mínimo 3 minutos) para reduzir o risco de reações extrapiramidais. <strong>IM:</strong> Aplicação profunda.",
       "contraindication": "Obstrução/perfuração GI, hemorragia digestiva, feocromocitoma.",
       "adverseEffects": "<strong>Sintomas extrapiramidais</strong> (distonias, acatisia), sonolência. Risco de discinesia tardia.",
       "category": "Antiemético/Procinético"
@@ -27,6 +30,7 @@
       "name": "Dramin B6 DL",
       "activeIngredient": "Dimenidrinato + Piridoxina",
       "indication": "Antiemético e antivertiginoso. Náuseas, vômitos, cinetose. Dose: <strong>1 mL (50mg de dimenidrinato) IV/IM</strong> a cada 6h.",
+      "administration": "<strong>IV:</strong> Diluir 1mL em 10mL de SF 0,9% e administrar lentamente (2-3 minutos). <strong>IM:</strong> Aplicação profunda no glúteo.",
       "contraindication": "Hipersensibilidade aos componentes, crise asmática aguda, glaucoma de ângulo fechado.",
       "adverseEffects": "<strong>Sonolência acentuada</strong>, boca seca, visão turva, tontura. Potencializa o efeito de depressores do SNC (álcool, benzodiazepínicos).",
       "category": "Antiemético/Anti-histamínico"
@@ -34,7 +38,8 @@
     {
       "name": "Omeprazol",
       "activeIngredient": "Omeprazol",
-      "indication": "Inibidor de bomba de prótons (IBP). Úlcera, DRGE, profilaxia. Dose: <strong>40mg IV/dia</strong> (infundir em 20-30 min).",
+      "indication": "Inibidor de bomba de prótons (IBP). Úlcera, DRGE, profilaxia. Dose: <strong>40mg IV/dia</strong>.",
+      "administration": "<strong>IV:</strong> Reconstituir o pó com o diluente próprio (10mL). A solução reconstituída deve ser diluída em 100mL de SF 0,9% ou SG 5% e infundida em 20-30 minutos. <strong>Não administrar em bolus.</strong>",
       "contraindication": "Hipersensibilidade a IBPs.",
       "adverseEffects": "Cefaleia, diarreia. Uso prolongado: deficiência de B12, Mg, Ca, risco de fraturas.",
       "category": "Inibidor Bomba Prótons"
@@ -43,6 +48,7 @@
       "name": "Furosemida (Lasix)",
       "activeIngredient": "Furosemida",
       "indication": "Diurético de alça. Edema agudo de pulmão, ICC, HAS grave. Dose: <strong>20-40mg IV</strong> em bolus lento.",
+      "administration": "<strong>IV:</strong> Administrar lentamente, a uma velocidade não superior a 4mg/min. Doses altas devem ser infundidas em Bomba de Infusão Contínua (BIC).",
       "contraindication": "Anúria, depleção grave de eletrólitos, desidratação severa.",
       "adverseEffects": "<strong>Hipocalemia</strong>, hiponatremia, desidratação, hipotensão, ototoxicidade (doses altas IV rápido).",
       "category": "Diurético de Alça"
@@ -51,6 +57,7 @@
       "name": "Adrenalina (Epinefrina)",
       "activeIngredient": "Cloridrato de Epinefrina",
       "indication": "<strong>PCR (1mg IV a cada 3-5min)</strong>, choque anafilático (0,3-0,5mg IM), choque séptico.",
+      "administration": "<strong>PCR:</strong> 1mg (1 ampola) IV em bolus rápido. <strong>Anafilaxia:</strong> 0,3-0,5mg IM no músculo vasto lateral. <strong>BIC (choque):</strong> Diluir em SF 0,9% ou SG 5% e administrar em acesso central.",
       "contraindication": "Contraindicações relativas em emergências. Cuidado em cardiopatas.",
       "adverseEffects": "Taquicardia, arritmias, hipertensão, isquemia miocárdica, necrose tecidual (extravasamento).",
       "category": "Catecolamina/Vasopressor"
@@ -58,7 +65,8 @@
     {
       "name": "Amiodarona",
       "activeIngredient": "Cloridrato de Amiodarona",
-      "indication": "Antiarrítmico. <strong>TV/FV refratária (PCR: 300mg IV bolus)</strong>, taquiarritmias. Diluir em SG 5%.",
+      "indication": "Antiarrítmico. <strong>TV/FV refratária (PCR: 300mg IV bolus)</strong>, taquiarritmias.",
+      "administration": "<strong>PCR:</strong> 300mg em bolus IV. <strong>Taquiarritmias:</strong> Dose de ataque de 150mg diluída em 100mL de <strong>SG 5%</strong> e infundir em 10-30 min, seguida de BIC. <strong>Sempre diluir em Soro Glicosado 5%.</strong>",
       "contraindication": "Bloqueio AV, bradicardia sinusal grave, disfunção tireoidiana, hipersensibilidade a iodo.",
       "adverseEffects": "Agudos: hipotensão, bradicardia. Crônicos: disfunção tireoidiana, fibrose pulmonar, fotossensibilidade.",
       "category": "Antiarrítmico"
@@ -67,6 +75,7 @@
       "name": "Morfina",
       "activeIngredient": "Sulfato de Morfina",
       "indication": "Analgésico opioide potente para dor intensa (IAM, pós-op). Dose: <strong>2-10mg IV lento</strong> a cada 4h.",
+      "administration": "<strong>IV:</strong> Diluir a dose prescrita em 9mL de Água Destilada (AD) e administrar lentamente (4-5 minutos), observando o padrão respiratório e a PA.",
       "contraindication": "Depressão respiratória, asma aguda, trauma craniano com ↑PIC.",
       "adverseEffects": "<strong>Depressão respiratória (antídoto: Naloxona)</strong>, náusea, constipação, sonolência, hipotensão.",
       "category": "Analgésico Opioide"
@@ -75,6 +84,7 @@
       "name": "Midazolam",
       "activeIngredient": "Midazolam",
       "indication": "Benzodiazepínico para sedação, convulsões. Dose: <strong>1-5mg IV lento</strong> (titular).",
+      "administration": "<strong>IV:</strong> Administrar lentamente (1mg por minuto) para titular o efeito e minimizar o risco de depressão respiratória e hipotensão.",
       "contraindication": "Hipersensibilidade, glaucoma de ângulo fechado, depressão respiratória grave.",
       "adverseEffects": "<strong>Depressão respiratória (antídoto: Flumazenil)</strong>, hipotensão, amnésia anterógrada.",
       "category": "Benzodiazepínico/Sedativo"
@@ -83,6 +93,7 @@
       "name": "Ceftriaxona",
       "activeIngredient": "Ceftriaxona Sódica",
       "indication": "Cefalosporina 3ª geração. Infecções graves (meningite, pneumonia, sepse). Dose: <strong>1-2g IV/IM</strong> a cada 12-24h.",
+      "administration": "<strong>IV:</strong> Reconstituir 1g com 10mL de AD. Rediluir em 50-100mL de SF 0,9% ou SG 5% e infundir em 30 minutos. <strong>IM:</strong> Reconstituir 1g com 3,5mL de Lidocaína 1% (para reduzir a dor) e aplicar profundamente no glúteo.",
       "contraindication": "Hipersensibilidade a cefalosporinas. Neonatos com hiperbilirrubinemia.",
       "adverseEffects": "Diarreia, rash. Pseudolitíase biliar. Não administrar com soluções contendo cálcio.",
       "category": "Antibiótico Cefalosporina"
@@ -90,7 +101,8 @@
     {
       "name": "Vancomicina",
       "activeIngredient": "Cloridrato de Vancomicina",
-      "indication": "Glicopeptídeo para gram+ resistentes (MRSA). Dose: <strong>15-20mg/kg IV</strong> a cada 8-12h (infundir em ≥60min).",
+      "indication": "Glicopeptídeo para gram+ resistentes (MRSA). Dose: <strong>15-20mg/kg IV</strong> a cada 8-12h.",
+      "administration": "<strong>IV:</strong> <strong>SEMPRE DILUÍDO E EM INFUSÃO LENTA.</strong> Diluir 500mg em no mínimo 100mL de SF 0,9% ou SG 5%. Infundir em <strong>pelo menos 60 minutos</strong> para evitar a Síndrome do Homem Vermelho.",
       "contraindication": "Hipersensibilidade. Cuidado em insuficiência renal.",
       "adverseEffects": "<strong>Síndrome do Homem Vermelho (infusão rápida)</strong>, nefrotoxicidade, ototoxicidade. Monitorar nível sérico.",
       "category": "Antibiótico Glicopeptídeo"
@@ -99,6 +111,7 @@
       "name": "Noradrenalina (Norepinefrina)",
       "activeIngredient": "Bitartarato de Noradrenalina",
       "indication": "Vasopressor de escolha no choque séptico. Dose: <strong>0,05-0,5 mcg/kg/min</strong> IV contínuo (titular para PAM ≥65 mmHg).",
+      "administration": "<strong>IV:</strong> <strong>SEMPRE em BIC e em acesso venoso central.</strong> Diluir em SG 5% (preferencial) ou SF 0,9%. Proteger da luz.",
       "contraindication": "Hipovolemia não corrigida.",
       "adverseEffects": "Isquemia periférica, necrose tecidual (extravasamento), arritmias, bradicardia reflexa.",
       "category": "Catecolamina/Vasopressor"
@@ -107,6 +120,7 @@
       "name": "Dobutamina",
       "activeIngredient": "Cloridrato de Dobutamina",
       "indication": "Suporte inotrópico para descompensação cardíaca (ICC, choque cardiogênico). Dose: <strong>2-20 mcg/kg/min</strong> em bomba de infusão contínua (BIC).",
+      "administration": "<strong>IV:</strong> <strong>SEMPRE em BIC.</strong> Diluir em 250mL de SG 5% ou SF 0,9%. A solução pode ficar rosada, o que não indica perda de potência.",
       "contraindication": "Estenose subaórtica hipertrófica idiopática, feocromocitoma.",
       "adverseEffects": "Taquicardia, arritmias, hipertensão, dor torácica. <strong>Monitorização cardíaca e de PA contínua é essencial</strong>.",
       "category": "Inotrópico/Simpaticomimético"
@@ -115,6 +129,7 @@
       "name": "Heparina Sódica",
       "activeIngredient": "Heparina Sódica",
       "indication": "Anticoagulante para TVP, TEP, IAM. Dose: Bolus de <strong>5.000 UI IV</strong>, seguido de infusão contínua (BIC) ajustada por TTPa.",
+      "administration": "<strong>IV:</strong> Administrar dose de ataque em bolus direto. Para infusão contínua, diluir em SF 0,9% ou SG 5% e administrar em BIC, com controle rigoroso do TTPa.",
       "contraindication": "Hemorragia ativa, plaquetopenia grave, cirurgia recente do SNC/olhos.",
       "adverseEffects": "<strong>Hemorragia (antídoto: Protamina)</strong>, trombocitopenia induzida por heparina (TIH). Monitorar TTPa e plaquetas.",
       "category": "Anticoagulante"
@@ -123,6 +138,7 @@
       "name": "Dexametasona (Decadron)",
       "activeIngredient": "Fosfato de Dexametasona",
       "indication": "Corticosteroide potente com ação anti-inflamatória e imunossupressora. Edema cerebral, reações alérgicas graves. Dose: <strong>4-20mg IV/IM</strong>.",
+      "administration": "<strong>IV:</strong> Pode ser administrada em bolus lento (1-3 minutos). <strong>IM:</strong> Aplicação profunda.",
       "contraindication": "Infecções fúngicas sistêmicas. Cautela em diabéticos e hipertensos.",
       "adverseEffects": "Hiperglicemia, hipertensão, retenção de líquidos, insônia, aumento do risco de infecção.",
       "category": "Corticosteroide"
@@ -131,6 +147,7 @@
       "name": "Ondansetrona (Vonau)",
       "activeIngredient": "Cloridrato de Ondansetrona",
       "indication": "Antiemético para náuseas e vômitos induzidos por quimio/radioterapia ou pós-operatório. Dose: <strong>4-8mg IV lento</strong>.",
+      "administration": "<strong>IV:</strong> Administrar lentamente (2-5 minutos). Pode ser diluída em 50mL de SF 0,9% ou SG 5% e infundida em 15 minutos.",
       "contraindication": "Uso concomitante com apomorfina.",
       "adverseEffects": "Cefaleia, constipação. <strong>Risco de prolongamento do intervalo QT</strong>, especialmente em doses altas.",
       "category": "Antiemético (Antagonista 5-HT3)"
@@ -138,7 +155,8 @@
     {
       "name": "Cetoprofeno (Profenid)",
       "activeIngredient": "Cetoprofeno",
-      "indication": "Anti-inflamatório não esteroide (AINE) para dor e inflamação. Dose: <strong>100mg IV/IM</strong> a cada 12-24h. Infundir IV em 20 min.",
+      "indication": "Anti-inflamatório não esteroide (AINE) para dor e inflamação. Dose: <strong>100mg IV/IM</strong> a cada 12-24h.",
+      "administration": "<strong>IV:</strong> Reconstituir o pó com o diluente próprio. Diluir em 100mL de SF 0,9% e infundir em 20 minutos. <strong>IM:</strong> Aplicação profunda no glúteo.",
       "contraindication": "Hipersensibilidade a AINEs, úlcera péptica ativa, insuficiência renal/hepática/cardíaca grave.",
       "adverseEffects": "Dor no local da injeção, dispepsia, náusea. <strong>Risco de lesão renal e sangramento gastrointestinal</strong>.",
       "category": "Anti-inflamatório (AINE)"
@@ -147,22 +165,25 @@
       "name": "Diazepam",
       "activeIngredient": "Diazepam",
       "indication": "Benzodiazepínico para estado de mal epiléptico, sedação, ansiedade aguda. Dose: <strong>5-10mg IV lento</strong> (não exceder 5mg/min).",
+      "administration": "<strong>IV:</strong> Administrar lentamente (máx. 5mg/min) diretamente na veia (não em equipo). Usar veia calibrosa para minimizar dor e flebite.",
       "contraindication": "Miastenia gravis, insuficiência respiratória grave, apneia do sono.",
-      "adverseEffects": "<strong>Depressão respiratória, hipotensão</strong>, sonolência, tontura. Risco de flebite (administrar em veia calibrosa).",
+      "adverseEffects": "<strong>Depressão respiratória, hipotensão</strong>, sonolência, tontura. Risco de flebite.",
       "category": "Benzodiazepínico/Anticonvulsivante"
     },
     {
       "name": "Haloperidol (Haldol)",
       "activeIngredient": "Haloperidol",
       "indication": "Antipsicótico para agitação psicomotora aguda, delirium. Dose: <strong>2-5mg IM</strong> (preferencial) ou IV lento.",
+      "administration": "<strong>IM:</strong> Via preferencial para agitação aguda, aplicação profunda. <strong>IV:</strong> Administrar lentamente. Requer monitorização cardíaca (ECG) devido ao risco de arritmias.",
       "contraindication": "Doença de Parkinson, depressão grave do SNC, coma.",
-      "adverseEffects": "<strong>Sintomas extrapiramidais</strong>, sedação. Risco de <strong>prolongamento do intervalo QT</strong> e Torsades de Pointes (monitorar ECG).",
+      "adverseEffects": "<strong>Sintomas extrapiramidais</strong>, sedação. Risco de <strong>prolongamento do intervalo QT</strong> e Torsades de Pointes.",
       "category": "Antipsicótico"
     },
     {
       "name": "Insulina Regular Humana",
       "activeIngredient": "Insulina Humana Regular",
       "indication": "Tratamento de hiperglicemia e cetoacidose diabética. Única insulina que pode ser usada <strong>IV</strong>. Dose variável, geralmente em BIC.",
+      "administration": "<strong>IV:</strong> Pode ser administrada em bolus ou, mais comumente, em infusão contínua (BIC) diluída em SF 0,9%. <strong>SC:</strong> Administrar 15-30 minutos antes das refeições.",
       "contraindication": "Hipoglicemia.",
       "adverseEffects": "<strong>Hipoglicemia</strong> (principal efeito adverso), hipocalemia (quando em infusão contínua). Monitorização glicêmica rigorosa.",
       "category": "Hormônio/Antidiabético"
@@ -171,14 +192,16 @@
       "name": "Glicose 50%",
       "activeIngredient": "Glicose Anidra",
       "indication": "Tratamento de hipoglicemia grave em pacientes com acesso venoso. Dose: <strong>25-50 mL (1-2 ampolas) IV lento</strong>.",
+      "administration": "<strong>IV:</strong> Solução hipertônica. Administrar lentamente em <strong>acesso venoso calibroso</strong> para evitar flebite e necrose tecidual em caso de extravasamento.",
       "contraindication": "Hiperglicemia, anúria, hemorragia intracraniana.",
-      "adverseEffects": "Hiperglicemia de rebote, flebite, esclerose venosa (solução hipertônica). <strong>Administrar em veia calibrosa</strong>.",
+      "adverseEffects": "Hiperglicemia de rebote, flebite, esclerose venosa.",
       "category": "Solução Hipertônica/Glicose"
     },
     {
       "name": "Hidrocortisona (Solu-Cortef)",
       "activeIngredient": "Succinato Sódico de Hidrocortisona",
       "indication": "Corticosteroide para insuficiência adrenal, reações alérgicas graves, asma. Dose: <strong>100-500mg IV/IM</strong> a cada 2-6h.",
+      "administration": "<strong>IV:</strong> Reconstituir o pó. Administrar em bolus lento (3-5 minutos) ou diluir e infundir. <strong>IM:</strong> Aplicação profunda.",
       "contraindication": "Infecções fúngicas sistêmicas, hipersensibilidade.",
       "adverseEffects": "Hiperglicemia, hipertensão, retenção de sódio e água, hipocalemia.",
       "category": "Corticosteroide"
@@ -187,14 +210,16 @@
       "name": "Fenitoína (Hidantal)",
       "activeIngredient": "Fenitoína Sódica",
       "indication": "Anticonvulsivante para estado de mal epiléptico. Dose de ataque: <strong>15-20mg/kg IV</strong>, infusão lenta (≤50mg/min).",
-      "contraindication": "Bradicardia sinusal, bloqueio AV. <strong>Incompatível com soro glicosado</strong> (usar SF 0,9%).",
-      "adverseEffects": "Hipotensão, arritmias (infusão rápida), flebite, nistagmo, ataxia. <strong>Requer monitorização cardíaca</strong>.",
+      "administration": "<strong>IV:</strong> <strong>NUNCA EM BOLUS.</strong> Diluir <strong>APENAS em SF 0,9%</strong> (incompatível com soro glicosado). Infundir lentamente (máx. 50mg/min) com monitorização cardíaca. Usar equipo com filtro.",
+      "contraindication": "Bradicardia sinusal, bloqueio AV.",
+      "adverseEffects": "Hipotensão, arritmias (infusão rápida), flebite, nistagmo, ataxia.",
       "category": "Anticonvulsivante"
     },
     {
       "name": "Atropina",
       "activeIngredient": "Sulfato de Atropina",
       "indication": "Anticolinérgico para bradicardia sinusal sintomática. Dose: <strong>1mg IV em bolus</strong>, repetir a cada 3-5min (máx 3mg).",
+      "administration": "<strong>IV:</strong> Administrar em bolus rápido. Doses menores que 0,5mg podem causar bradicardia paradoxal.",
       "contraindication": "Glaucoma de ângulo fechado, taquicardia, obstrução GI/urinária.",
       "adverseEffects": "Taquicardia, boca seca, visão turva, retenção urinária, agitação.",
       "category": "Anticolinérgico/Antiarrítmico"
@@ -203,14 +228,16 @@
       "name": "Enoxaparina (Clexane)",
       "activeIngredient": "Enoxaparina Sódica",
       "indication": "Heparina de baixo peso molecular (HBPM) para profilaxia e tratamento de TVP/TEP. Dose profilática: <strong>40mg SC 1x/dia</strong>.",
+      "administration": "<strong>SC:</strong> Aplicação subcutânea profunda, preferencialmente na região abdominal. <strong>Não expelir a bolha de ar da seringa pré-preenchida.</strong> Realizar rodízio dos locais.",
       "contraindication": "Hemorragia ativa, plaquetopenia grave, hipersensibilidade à heparina.",
-      "adverseEffects": "Hemorragia, hematoma no local da injeção, trombocitopenia. <strong>Não expelir a bolha de ar da seringa</strong>.",
+      "adverseEffects": "Hemorragia, hematoma no local da injeção, trombocitopenia.",
       "category": "Anticoagulante (HBPM)"
     },
     {
       "name": "Meropenem (Meronem)",
       "activeIngredient": "Meropenem Tri-hidratado",
-      "indication": "Antibiótico carbapenêmico de amplo espectro para infecções hospitalares graves. Dose: <strong>1-2g IV</strong> a cada 8h (infundir em 30 min).",
+      "indication": "Antibiótico carbapenêmico de amplo espectro para infecções hospitalares graves. Dose: <strong>1-2g IV</strong> a cada 8h.",
+      "administration": "<strong>IV:</strong> Reconstituir com AD. Pode ser administrado em bolus lento (3-5 minutos) ou diluído em 50-100mL de SF 0,9% e infundido em 15-30 minutos.",
       "contraindication": "Hipersensibilidade a carbapenêmicos ou beta-lactâmicos.",
       "adverseEffects": "Náusea, vômito, diarreia, rash. Risco de convulsões em pacientes com histórico ou disfunção do SNC.",
       "category": "Antibiótico Carbapenêmico"
@@ -219,6 +246,7 @@
       "name": "Fentanil",
       "activeIngredient": "Citrato de Fentanila",
       "indication": "Analgésico opioide potente para dor intensa, sedação. Dose: <strong>25-100mcg IV lento</strong>. 100x mais potente que a morfina.",
+      "administration": "<strong>IV:</strong> Administrar lentamente (1-2 minutos) para evitar rigidez torácica. Para sedação contínua, usar em BIC.",
       "contraindication": "Depressão respiratória grave, uso de IMAOs.",
       "adverseEffects": "<strong>Depressão respiratória, rigidez torácica (infusão rápida)</strong>, bradicardia, hipotensão. Antídoto: Naloxona.",
       "category": "Analgésico Opioide"
@@ -227,14 +255,16 @@
       "name": "Clonazepam (Rivotril)",
       "activeIngredient": "Clonazepam",
       "indication": "Benzodiazepínico para estado de mal epiléptico, crises de pânico. Dose: <strong>1mg IV lento</strong>, diluído.",
+      "administration": "<strong>IV:</strong> Diluir 1mg em no mínimo 1mL de AD e administrar lentamente. Requer monitorização respiratória.",
       "contraindication": "Insuficiência respiratória grave, miastenia gravis, glaucoma de ângulo fechado.",
-      "adverseEffects": "Sonolência, depressão respiratória, hipotensão. <strong>Requer monitorização respiratória</strong>.",
+      "adverseEffects": "Sonolência, depressão respiratória, hipotensão.",
       "category": "Benzodiazepínico/Anticonvulsivante"
     },
     {
       "name": "Tenoxicam (Tilatil)",
       "activeIngredient": "Tenoxicam",
       "indication": "AINE para dor e inflamação, especialmente em doenças reumáticas. Dose: <strong>20mg IV/IM</strong> 1x/dia.",
+      "administration": "<strong>IV/IM:</strong> Reconstituir o pó com 2mL do diluente próprio. Administrar IV lentamente ou IM profundo.",
       "contraindication": "Hipersensibilidade a AINEs, úlcera péptica ativa, insuficiência renal/hepática/cardíaca grave.",
       "adverseEffects": "Dor no local da injeção, dispepsia. <strong>Risco de lesão renal e sangramento gastrointestinal</strong>.",
       "category": "Anti-inflamatório (AINE)"
@@ -242,23 +272,26 @@
     {
       "name": "Benzetacil (Penicilina G Benzatina)",
       "activeIngredient": "Penicilina G Benzatina",
-      "indication": "Antibiótico para infecções por estreptococos (faringite, febre reumática, sífilis). Dose: <strong>1.200.000 UI IM profundo</strong> (glúteo).",
+      "indication": "Antibiótico para infecções por estreptococos (faringite, febre reumática, sífilis). Dose: <strong>1.200.000 UI IM profundo</strong>.",
+      "administration": "<strong>SOMENTE IM PROFUNDO.</strong> Administrar na região ventroglútea ou dorsoglútea. A aplicação é dolorosa. <strong>NUNCA administrar IV (risco de embolia e PCR)</strong>.",
       "contraindication": "Hipersensibilidade a penicilinas ou cefalosporinas.",
-      "adverseEffects": "<strong>Dor intensa no local da aplicação</strong>. Reações alérgicas, incluindo anafilaxia (rara mas grave). <strong>NUNCA administrar IV (risco de embolia e PCR)</strong>.",
+      "adverseEffects": "<strong>Dor intensa no local da aplicação</strong>. Reações alérgicas, incluindo anafilaxia (rara mas grave).",
       "category": "Antibiótico Penicilina"
     },
     {
       "name": "Buscopan Simples",
       "activeIngredient": "Butilbrometo de Escopolamina",
       "indication": "Antiespasmódico para cólicas gastrointestinais, biliares e geniturinárias. Dose: <strong>20mg IV/IM</strong> a cada 6-8h.",
+      "administration": "<strong>IV:</strong> Administrar lentamente. <strong>IM:</strong> Aplicação profunda.",
       "contraindication": "Glaucoma de ângulo fechado, miastenia gravis, megacólon.",
-      "adverseEffects": "Boca seca, taquicardia, visão turva, retenção urinária. Administrar IV lentamente.",
+      "adverseEffects": "Boca seca, taquicardia, visão turva, retenção urinária.",
       "category": "Antiespasmódico"
     },
     {
       "name": "Buscopan Composto",
       "activeIngredient": "Butilbrometo de Escopolamina + Dipirona Sódica",
       "indication": "Dor e cólica intensa (abdominal, renal, biliar). Dose: <strong>1 ampola IV lento (≥5 min)</strong> a cada 6-8h.",
+      "administration": "<strong>IV:</strong> Diluir em 100mL de SF 0,9% e infundir em 15-30 minutos, ou administrar lentamente (mínimo 5 minutos) para evitar hipotensão pela dipirona.",
       "contraindication": "Mesmas da Dipirona e Buscopan Simples.",
       "adverseEffects": "<strong>Hipotensão (infusão IV rápida)</strong>, boca seca, taquicardia. Risco de agranulocitose (raro).",
       "category": "Antiespasmódico/Analgésico"
@@ -267,14 +300,16 @@
       "name": "Hidralazina (Apresolina)",
       "activeIngredient": "Cloridrato de Hidralazina",
       "indication": "Vasodilatador para crises hipertensivas, especialmente na gestação (pré-eclâmpsia). Dose: <strong>5-10mg IV lento</strong>, pode repetir.",
+      "administration": "<strong>IV:</strong> Administrar lentamente. Requer monitorização contínua da PA para evitar hipotensão abrupta.",
       "contraindication": "Doença arterial coronariana, dissecção de aorta.",
-      "adverseEffects": "Taquicardia reflexa, cefaleia, hipotensão, flushing. Requer monitorização contínua da PA.",
+      "adverseEffects": "Taquicardia reflexa, cefaleia, hipotensão, flushing.",
       "category": "Anti-hipertensivo/Vasodilatador"
     },
     {
       "name": "Complexo B",
       "activeIngredient": "Vitaminas B1, B2, B3, B5, B6",
       "indication": "Reposição vitamínica em etilistas, desnutridos, neuropatias. Dose: <strong>1-2 ampolas IM/IV lento</strong>.",
+      "administration": "<strong>IV:</strong> Administrar lentamente ou diluído em soro. <strong>IM:</strong> Aplicação profunda.",
       "contraindication": "Hipersensibilidade a qualquer componente.",
       "adverseEffects": "Reações alérgicas (principalmente à Tiamina - B1), dor no local da injeção IM.",
       "category": "Vitamina"
@@ -283,6 +318,7 @@
       "name": "Vitamina C (Ácido Ascórbico)",
       "activeIngredient": "Ácido Ascórbico",
       "indication": "Deficiência de Vitamina C (escorbuto), auxiliar na cicatrização, antioxidante. Dose: <strong>500mg-1g IV/IM</strong> 1x/dia.",
+      "administration": "<strong>IV:</strong> Administrar lentamente. <strong>IM:</strong> Aplicação profunda.",
       "contraindication": "Litíase renal por oxalato.",
       "adverseEffects": "Doses elevadas podem causar diarreia e formação de cálculos renais de oxalato.",
       "category": "Vitamina"
@@ -290,31 +326,35 @@
     {
       "name": "Piperacilina + Tazobactam (Tazocin®)",
       "activeIngredient": "Piperacilina Sódica + Tazobactam Sódico",
-      "indication": "Antibiótico de amplo espectro para infecções hospitalares graves (pneumonia, sepse, infecções intra-abdominais). Dose: <strong>4,5g IV</strong> a cada 6-8h (infundir em 30 min).",
+      "indication": "Antibiótico de amplo espectro para infecções hospitalares graves. Dose: <strong>4,5g IV</strong> a cada 6-8h.",
+      "administration": "<strong>IV:</strong> Reconstituir com 20mL de diluente. Rediluir em 50-100mL de SF 0,9% ou SG 5% e infundir em 30 minutos.",
       "contraindication": "Hipersensibilidade a penicilinas, cefalosporinas ou inibidores de beta-lactamase.",
-      "adverseEffects": "Diarreia, rash, flebite. Pode causar neurotoxicidade (convulsões) em altas doses ou em pacientes com insuficiência renal.",
+      "adverseEffects": "Diarreia, rash, flebite. Pode causar neurotoxicidade em altas doses ou em pacientes com insuficiência renal.",
       "category": "Antibiótico Penicilina"
     },
     {
       "name": "Propofol (Diprivan®)",
       "activeIngredient": "Propofol",
-      "indication": "Anestésico geral de curta duração para indução e manutenção de sedação em UTI ou procedimentos. Dose: <strong>Infusão contínua (BIC)</strong> titulada conforme o nível de sedação desejado.",
+      "indication": "Anestésico geral de curta duração para indução e manutenção de sedação em UTI ou procedimentos. Dose: <strong>Infusão contínua (BIC)</strong>.",
+      "administration": "<strong>IV:</strong> Administrar em veia calibrosa. Para sedação contínua, usar em BIC. A emulsão lipídica favorece o crescimento bacteriano; técnica asséptica rigorosa e troca de equipo a cada 12h são essenciais.",
       "contraindication": "Hipersensibilidade a ovo ou soja (presentes na emulsão lipídica).",
-      "adverseEffects": "<strong>Hipotensão, depressão respiratória, apneia</strong>. Dor no local da injeção. Risco de Síndrome da Infusão do Propofol (PRIS) em altas doses/longo tempo.",
+      "adverseEffects": "<strong>Hipotensão, depressão respiratória, apneia</strong>. Dor no local da injeção. Risco de Síndrome da Infusão do Propofol (PRIS).",
       "category": "Anestésico/Sedativo"
     },
     {
       "name": "Cloreto de Potássio (KCl)",
       "activeIngredient": "Cloreto de Potássio",
       "indication": "Reposição de potássio em casos de hipocalemia. Dose variável, <strong>SEMPRE diluído</strong> e em infusão lenta.",
+      "administration": "<strong>IV:</strong> <strong>NUNCA ADMINISTRAR EM BOLUS (RISCO DE PARADA CARDÍACA).</strong> Deve ser diluído e infundido em BIC. Velocidade máxima em acesso periférico: 10 mEq/h. Concentração máxima: 40 mEq/L.",
       "contraindication": "Hipercalemia, insuficiência renal grave.",
-      "adverseEffects": "<strong>NUNCA administrar em bolus IV (risco de parada cardíaca)</strong>. Flebite, dor no local da infusão. A velocidade de infusão não deve exceder 10-20 mEq/h em acesso periférico.",
+      "adverseEffects": "Flebite, dor no local da infusão. Hipercalemia se a infusão for rápida ou a dose excessiva.",
       "category": "Eletrólito/Alta Vigilância"
     },
     {
       "name": "Sulfato de Magnésio",
       "activeIngredient": "Sulfato de Magnésio",
       "indication": "Prevenção e tratamento de convulsões na pré-eclâmpsia/eclâmpsia. Tratamento de Torsades de Pointes, crises asmáticas graves. Dose de ataque na eclâmpsia: <strong>4-6g IV</strong> em 20 min.",
+      "administration": "<strong>IV:</strong> Administrar em BIC. A dose de ataque deve ser infundida em 15-20 minutos, seguida de uma dose de manutenção. Monitorar reflexos, frequência respiratória e diurese.",
       "contraindication": "Bloqueio cardíaco, insuficiência renal grave.",
       "adverseEffects": "Rubor, sudorese, hipotensão. Sinais de toxicidade: <strong>perda do reflexo patelar, depressão respiratória</strong>. Antídoto: <strong>Gluconato de Cálcio</strong>.",
       "category": "Eletrólito/Anticonvulsivante"
@@ -323,62 +363,70 @@
       "name": "Gluconato de Cálcio 10%",
       "activeIngredient": "Gluconato de Cálcio",
       "indication": "Tratamento de hipocalcemia sintomática, toxicidade por sulfato de magnésio, proteção miocárdica na hipercalemia grave. Dose: <strong>10-20 mL IV lento</strong>.",
-      "contraindication": "Hipercalcemia, uso concomitante com digitálicos (risco de arritmias).",
-      "adverseEffects": "Bradicardia, hipotensão (infusão rápida). Irritante para as veias, risco de necrose tecidual com extravasamento. <strong>Administrar em veia calibrosa</strong>.",
+      "administration": "<strong>IV:</strong> Administrar lentamente (1,5 mL/min) em veia calibrosa para evitar arritmias e necrose tecidual por extravasamento.",
+      "contraindication": "Hipercalcemia, uso concomitante com digitálicos.",
+      "adverseEffects": "Bradicardia, hipotensão (infusão rápida). Irritante para as veias.",
       "category": "Eletrólito"
     },
     {
       "name": "Bicarbonato de Sódio 8,4%",
       "activeIngredient": "Bicarbonato de Sódio",
       "indication": "Tratamento de acidose metabólica grave, hipercalemia, intoxicação por antidepressivos tricíclicos. Dose guiada pela gasometria arterial.",
+      "administration": "<strong>IV:</strong> Administrar lentamente ou em BIC. <strong>Incompatível com muitas drogas (ex: catecolaminas, cálcio)</strong> - lavar o acesso antes e depois da administração.",
       "contraindication": "Alcalose metabólica ou respiratória, hipocalcemia.",
-      "adverseEffects": "Alcalose metabólica, hipocalemia, sobrecarga de sódio. Extravasamento pode causar necrose tecidual. <strong>Incompatível com muitas drogas (ex: catecolaminas)</strong>.",
+      "adverseEffects": "Alcalose metabólica, hipocalemia, sobrecarga de sódio. Extravasamento pode causar necrose tecidual.",
       "category": "Solução Alcalinizante"
     },
     {
       "name": "Manitol 20%",
       "activeIngredient": "Manitol",
       "indication": "Diurético osmótico para redução da pressão intracraniana (HIC) e tratamento de oligúria na insuficiência renal aguda. Dose: <strong>0,25-1 g/kg IV</strong>.",
+      "administration": "<strong>IV:</strong> Infundir em 30-60 minutos. <strong>Usar equipo com filtro</strong> para reter possíveis cristais. Inspecionar o frasco contra a luz antes do uso.",
       "contraindication": "Anúria estabelecida, congestão pulmonar grave, sangramento intracraniano ativo.",
-      "adverseEffects": "Distúrbios hidroeletrolíticos, desidratação, edema pulmonar de rebote. <strong>Pode cristalizar em baixas temperaturas (inspecionar frasco)</strong>. Usar equipo com filtro.",
+      "adverseEffects": "Distúrbios hidroeletrolíticos, desidratação, edema pulmonar de rebote.",
       "category": "Diurético Osmótico"
     },
     {
       "name": "Nitroprussiato de Sódio (Nipride®)",
       "activeIngredient": "Nitroprussiato de Sódio",
-      "indication": "Vasodilatador potente para emergências hipertensivas e redução da pós-carga na ICC aguda. Dose: <strong>0,3-10 mcg/kg/min</strong> em BIC, titular para o efeito desejado.",
-      "contraindication": "Hipertensão compensatória (ex: shunt arteriovenoso), insuficiência hepática/renal grave.",
-      "adverseEffects": "Hipotensão profunda, taquicardia reflexa. <strong>Fotossensível (proteger frasco e equipo da luz)</strong>. Risco de toxicidade por cianeto em infusões prolongadas/altas doses.",
+      "indication": "Vasodilatador potente para emergências hipertensivas e redução da pós-carga na ICC aguda. Dose: <strong>0,3-10 mcg/kg/min</strong> em BIC.",
+      "administration": "<strong>IV:</strong> <strong>SEMPRE em BIC e com proteção da luz (frasco e equipo fotossensíveis).</strong> Diluir em SG 5%. Requer monitorização contínua e invasiva da PA.",
+      "contraindication": "Hipertensão compensatória, insuficiência hepática/renal grave.",
+      "adverseEffects": "Hipotensão profunda, taquicardia reflexa. Risco de toxicidade por cianeto em infusões prolongadas/altas doses.",
       "category": "Anti-hipertensivo/Vasodilatador"
     },
     {
       "name": "Naloxona (Narcan)",
       "activeIngredient": "Cloridrato de Naloxona",
-      "indication": "Antagonista opioide para reversão da depressão respiratória e sedação causadas por opioides. Dose: <strong>0,4-2mg IV/IM/SC</strong>, pode repetir a cada 2-3 min.",
-      "contraindication": "Hipersensibilidade. Usar com cautela em pacientes com dependência física de opioides (risco de síndrome de abstinência aguda).",
-      "adverseEffects": "Náusea, vômito, taquicardia, hipertensão, agitação. <strong>Sua meia-vida é mais curta que a da maioria dos opioides, exigindo monitorização contínua do paciente</strong>.",
+      "indication": "Antagonista opioide para reversão da depressão respiratória e sedação causadas por opioides. Dose: <strong>0,4-2mg IV/IM/SC</strong>.",
+      "administration": "<strong>IV:</strong> Administrar em bolus. A dose pode ser repetida a cada 2-3 minutos. A meia-vida é curta, então o paciente deve ser monitorado para ressedação.",
+      "contraindication": "Hipersensibilidade. Cautela em pacientes com dependência física de opioides.",
+      "adverseEffects": "Náusea, vômito, taquicardia, hipertensão, agitação. Pode precipitar síndrome de abstinência aguda.",
       "category": "Antídoto/Antagonista Opioide"
     },
     {
       "name": "Vitamina K1 (Fitomenadiona)",
       "activeIngredient": "Fitomenadiona",
       "indication": "Prevenção e tratamento de hemorragias por hipoprotrombinemia. Reversão de anticoagulantes cumarínicos (Varfarina). Dose: <strong>10mg IV lento/IM/SC</strong>.",
+      "administration": "<strong>IV:</strong> <strong>Administrar MUITO LENTAMENTE.</strong> Diluir em 50mL de SF 0,9% ou SG 5% e infundir em pelo menos 30 minutos para minimizar o risco de reações anafilactoides.",
       "contraindication": "Hipersensibilidade.",
-      "adverseEffects": "Reações anafilactoides com a administração IV (rara, mas grave). <strong>Administrar IV muito lentamente (diluído, em pelo menos 30 min)</strong>. Dor no local da injeção IM.",
+      "adverseEffects": "Reações anafilactoides com a administração IV (rara, mas grave). Dor no local da injeção IM.",
       "category": "Vitamina/Antídoto"
     },
     {
       "name": "Ketamina (Ketamin)",
       "activeIngredient": "Cloridrato de Cetamina",
       "indication": "Anestésico dissociativo para sedação e analgesia em procedimentos. Indução anestésica. Dose: <strong>1-2mg/kg IV</strong> para indução.",
+      "administration": "<strong>IV:</strong> Administrar lentamente (durante 60 segundos) para reduzir o risco de apneia.",
       "contraindication": "Hipertensão grave, IAM, AVC. Condições em que o aumento da pressão arterial seria perigoso.",
-      "adverseEffects": "Aumento da PA, FC e PIC. <strong>Reações de emergência (alucinações, delírio)</strong>, que podem ser minimizadas com o uso de benzodiazepínicos. Laringoespasmo, sialorreia.",
+      "adverseEffects": "Aumento da PA, FC e PIC. <strong>Reações de emergência (alucinações, delírio)</strong>, que podem ser minimizadas com o uso de benzodiazepínicos.",
       "category": "Anestésico Dissociativo"
     },
     {
       "name": "Pantoprazol (Pantozol)",
       "activeIngredient": "Pantoprazol Sódico Sesqui-hidratado",
-      "indication": "Inibidor de bomba de prótons (IBP). Tratamento de DRGE, úlceras, profilaxia de úlcera de estresse em pacientes críticos. Dose: <strong>40mg IV 1x/dia</strong>.",
+      "indication": "Inibidor de bomba de prótons (IBP). Tratamento de DRGE, úlceras, profilaxia de úlcera de estresse. Dose: <strong>40mg IV 1x/dia</strong>.",
+      "administration": "<strong>IV:</strong> Reconstituir com 10mL de SF 0,9%. Pode ser administrado em bolus lento (2 minutos) ou diluído em 100mL de SF 0,9% e infundido em 15 minutos.",
       "contraindication": "Hipersensibilidade a IBPs.",
       "adverseEffects": "Cefaleia, diarreia, flebite. Uso prolongado associado a risco de fraturas, hipomagnesemia e infecções entéricas.",
       "category": "Inibidor Bomba Prótons"
@@ -386,41 +434,46 @@
     {
       "name": "Ciprofloxacino (Cipro)",
       "activeIngredient": "Cloridrato de Ciprofloxacino",
-      "indication": "Antibiótico (quinolona) para infecções do trato urinário, respiratórias, pele, ossos. Dose: <strong>400mg IV</strong> a cada 8-12h (infundir em 60 min).",
+      "indication": "Antibiótico (quinolona) para infecções do trato urinário, respiratórias, pele, ossos. Dose: <strong>400mg IV</strong> a cada 8-12h.",
+      "administration": "<strong>IV:</strong> Diluir e infundir lentamente em 60 minutos em veia calibrosa para reduzir o risco de flebite.",
       "contraindication": "Hipersensibilidade a quinolonas, uso concomitante com tizanidina.",
-      "adverseEffects": "Náusea, diarreia, flebite. <strong>Risco de tendinite e ruptura de tendão</strong> (especialmente em idosos), fotossensibilidade, prolongamento do intervalo QT.",
+      "adverseEffects": "Náusea, diarreia, flebite. <strong>Risco de tendinite e ruptura de tendão</strong>, fotossensibilidade, prolongamento do intervalo QT.",
       "category": "Antibiótico Quinolona"
     },
     {
       "name": "Prometazina (Fenergan)",
       "activeIngredient": "Cloridrato de Prometazina",
       "indication": "Reações alérgicas, anafilaxia (adjuvante), náuseas/vômitos, sedação. Dose: <strong>25-50mg IM (preferencial)</strong> ou IV lento e diluído.",
-      "contraindication": "Hipersensibilidade, coma, depressão do SNC, crianças < 2 anos (risco de depressão respiratória fatal).",
-      "adverseEffects": "<strong>Sedação profunda, hipotensão, efeitos anticolinérgicos</strong> (boca seca, visão turva). Risco de necrose tecidual grave com administração IV inadequada (preferir IM profunda).",
+      "administration": "<strong>IM:</strong> Via preferencial, aplicação profunda. <strong>IV:</strong> <strong>ALTO RISCO DE NECROSE TECIDUAL.</strong> Se indispensável, diluir 25mg em 10-20mL de SF 0,9% e administrar muito lentamente em acesso venoso central ou veia periférica de grande calibre.",
+      "contraindication": "Hipersensibilidade, coma, depressão do SNC, crianças < 2 anos.",
+      "adverseEffects": "<strong>Sedação profunda, hipotensão, efeitos anticolinérgicos</strong>. Risco de necrose tecidual grave com administração IV inadequada.",
       "category": "Anti-histamínico/Sedativo"
     },
     {
       "name": "Flumazenil (Lanexat)",
       "activeIngredient": "Flumazenil",
       "indication": "Antídoto para reverter a sedação e/ou depressão respiratória causada por benzodiazepínicos. Dose: <strong>0,2mg IV</strong> em 15s, pode repetir.",
+      "administration": "<strong>IV:</strong> Administrar em bolus. A meia-vida é curta, monitorar para ressedação.",
       "contraindication": "Uso de benzodiazepínicos para controle de convulsões, intoxicação por antidepressivos tricíclicos.",
-      "adverseEffects": "<strong>Risco de convulsões</strong> (especialmente em usuários crônicos de benzodiazepínicos), agitação, náuseas. Meia-vida curta, requer monitorização para ressedação.",
+      "adverseEffects": "<strong>Risco de convulsões</strong> (especialmente em usuários crônicos de benzodiazepínicos), agitação, náuseas.",
       "category": "Antídoto/Antagonista BZD"
     },
     {
       "name": "Rocurônio (Esmeron)",
       "activeIngredient": "Brometo de Rocurônio",
-      "indication": "Bloqueador neuromuscular para facilitar a intubação orotraqueal e o relaxamento muscular em cirurgias/UTI. Dose: <strong>0,6-1,2 mg/kg IV</strong>.",
-      "contraindication": "Hipersensibilidade. <strong>SÓ DEVE SER USADO COM PACIENTE SEDADO E COM SUPORTE VENTILATÓRIO GARANTIDO</strong>.",
-      "adverseEffects": "Paralisia muscular prolongada, taquicardia, reações anafiláticas. Antídoto: <strong>Sugamadex</strong>.",
+      "indication": "Bloqueador neuromuscular para facilitar a intubação orotraqueal e o relaxamento muscular. Dose: <strong>0,6-1,2 mg/kg IV</strong>.",
+      "administration": "<strong>IV:</strong> Administrar em bolus. <strong>SÓ DEVE SER USADO COM PACIENTE SEDADO E COM SUPORTE VENTILATÓRIO GARANTIDO</strong>. Antídoto: <strong>Sugamadex</strong>.",
+      "contraindication": "Hipersensibilidade.",
+      "adverseEffects": "Paralisia muscular prolongada, taquicardia, reações anafiláticas.",
       "category": "Bloqueador Neuromuscular"
     },
     {
       "name": "Protamina",
       "activeIngredient": "Sulfato de Protamina",
       "indication": "Antídoto para reverter o efeito anticoagulante da heparina não fracionada. Dose: <strong>1mg para cada 100 UI de heparina</strong>, IV lento.",
+      "administration": "<strong>IV:</strong> Administrar lentamente (não exceder 50mg em 10 minutos) para evitar hipotensão e reações anafilactoides.",
       "contraindication": "Hipersensibilidade. Cautela em pacientes com alergia a peixe ou vasectomizados.",
-      "adverseEffects": "<strong>Hipotensão (infusão rápida)</strong>, bradicardia, reações anafilactoides. Pode ter efeito anticoagulante paradoxal em altas doses.",
+      "adverseEffects": "<strong>Hipotensão (infusão rápida)</strong>, bradicardia, reações anafilactoides.",
       "category": "Antídoto/Alta Vigilância"
     }
 ]
