@@ -1,56 +1,49 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
 
 // Layout
 import MainLayout from './components/MainLayout';
 
-// Dynamic Imports for Code Splitting
-const Dashboard = React.lazy(() => import('./pages/Dashboard'));
-const Calculator = React.lazy(() => import('./pages/Calculator'));
-const Emergency = React.lazy(() => import('./pages/Emergency'));
-const Medications = React.lazy(() => import('./pages/Medications'));
-const WoundCare = React.lazy(() => import('./pages/WoundCare'));
-const Procedures = React.lazy(() => import('./pages/Procedures'));
-const Questions = React.lazy(() => import('./pages/Questions'));
-const NotFound = React.lazy(() => import('./pages/NotFound'));
-const Login = React.lazy(() => import('./pages/Login'));
-const Register = React.lazy(() => import('./pages/Register'));
-const Admin = React.lazy(() => import('./pages/Admin'));
-const Scales = React.lazy(() => import('./pages/Scales'));
-const GlasgowScale = React.lazy(() => import('./pages/scales/GlasgowScale'));
-const BradenScale = React.lazy(() => import('./pages/scales/BradenScale'));
-const RassScale = React.lazy(() => import('./pages/scales/RassScale'));
-const WongBakerScale = React.lazy(() => import('./pages/scales/WongBakerScale'));
-const FugulinScale = React.lazy(() => import('./pages/scales/FugulinScale'));
-const MorseScale = React.lazy(() => import('./pages/scales/MorseScale'));
-const AldreteScale = React.lazy(() => import('./pages/scales/AldreteScale'));
-const ApgarScale = React.lazy(() => import('./pages/scales/ApgarScale'));
-const ManchesterScale = React.lazy(() => import('./pages/scales/ManchesterScale'));
-const ParklandScale = React.lazy(() => import('./pages/scales/ParklandScale'));
-const AsaScale = React.lazy(() => import('./pages/scales/AsaScale'));
-const EcgGuide = React.lazy(() => import('./pages/EcgGuide'));
-const ProfilePage = React.lazy(() => import('./pages/Profile'));
-const PublicProfile = React.lazy(() => import('./pages/PublicProfile'));
-const Semiology = React.lazy(() => import('./pages/Semiology'));
-const SemioTechnique = React.lazy(() => import('./pages/Semiotechnique'));
-const DoseCalculator = React.lazy(() => import('./pages/tools/DoseCalculator'));
-const LabValues = React.lazy(() => import('./pages/tools/LabValues'));
-const BlocoDeNotas = React.lazy(() => import('./pages/tools/BlocoDeNotas'));
-const IntegratedCalculators = React.lazy(() => import('./pages/tools/IntegratedCalculators'));
-const SimuladoPage = React.lazy(() => import('./pages/SimuladoPage'));
-const ReviewArea = React.lazy(() => import('./pages/ReviewArea'));
-const FavoritesPage = React.lazy(() => import('./pages/FavoritesPage'));
+// Importações diretas para pré-carregamento
+import Dashboard from './pages/Dashboard';
+import Calculator from './pages/Calculator';
+import Emergency from './pages/Emergency';
+import Medications from './pages/Medications';
+import WoundCare from './pages/WoundCare';
+import Procedures from './pages/Procedures';
+import Questions from './pages/Questions';
+import NotFound from './pages/NotFound';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Admin from './pages/Admin';
+import Scales from './pages/Scales';
+import GlasgowScale from './pages/scales/GlasgowScale';
+import BradenScale from './pages/scales/BradenScale';
+import RassScale from './pages/scales/RassScale';
+import WongBakerScale from './pages/scales/WongBakerScale';
+import FugulinScale from './pages/scales/FugulinScale';
+import MorseScale from './pages/scales/MorseScale';
+import AldreteScale from './pages/scales/AldreteScale';
+import ApgarScale from './pages/scales/ApgarScale';
+import ManchesterScale from './pages/scales/ManchesterScale';
+import ParklandScale from './pages/scales/ParklandScale';
+import AsaScale from './pages/scales/AsaScale';
+import EcgGuide from './pages/EcgGuide';
+import ProfilePage from './pages/Profile';
+import PublicProfile from './pages/PublicProfile';
+import Semiology from './pages/Semiology';
+import SemioTechnique from './pages/Semiotechnique';
+import DoseCalculator from './pages/tools/DoseCalculator';
+import LabValues from './pages/tools/LabValues';
+import BlocoDeNotas from './pages/tools/BlocoDeNotas';
+import IntegratedCalculators from './pages/tools/IntegratedCalculators';
+import SimuladoPage from './pages/SimuladoPage';
+import ReviewArea from './pages/ReviewArea';
+import FavoritesPage from './pages/FavoritesPage';
 
 interface AppRoutesProps {
   session: any;
 }
-
-const LoadingFallback = () => (
-  <div className="flex items-center justify-center h-full w-full p-8">
-    <Loader2 className="h-8 w-8 animate-spin text-primary" />
-  </div>
-);
 
 export const AppRoutes = ({ session }: AppRoutesProps) => {
   if (!session) {
@@ -63,7 +56,6 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
     );
   }
 
-  // O MainLayout agora gerencia o perfil e o status de pendente internamente
   return (
     <Routes>
       <Route path="/" element={<MainLayout session={session} />}>
@@ -74,7 +66,7 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
         <Route path="wound-care" element={<WoundCare />} />
         <Route path="procedures" element={<Procedures />} />
         <Route path="questions" element={<Questions />} />
-        <Route path="admin" element={<Admin />} /> {/* A lógica de admin será tratada internamente */}
+        <Route path="admin" element={<Admin />} />
         <Route path="scales" element={<Scales />} />
         <Route path="scales/glasgow" element={<GlasgowScale />} />
         <Route path="scales/braden" element={<BradenScale />} />
@@ -107,8 +99,7 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
   );
 };
 
+// O Suspense não é mais necessário aqui para as rotas, então renomeamos para simplificar.
 export const SuspendedAppRoutes = (props: AppRoutesProps) => (
-  <Suspense fallback={<LoadingFallback />}>
-    <AppRoutes {...props} />
-  </Suspense>
+  <AppRoutes {...props} />
 );
