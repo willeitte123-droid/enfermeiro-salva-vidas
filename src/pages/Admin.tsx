@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { UserCheck, UserX, Loader2, Users, Hourglass, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface Profile {
   id: string;
@@ -20,6 +21,9 @@ interface Profile {
   status: string;
   plan: string;
   avatar_url: string | null;
+  location: string | null;
+  last_ip: string | null;
+  access_expires_at: string | null;
 }
 
 const Admin = () => {
@@ -54,12 +58,6 @@ const Admin = () => {
     }
   };
 
-  const getInitials = (firstName?: string | null, lastName?: string | null) => {
-    const first = firstName?.[0] || '';
-    const last = lastName?.[0] || '';
-    return `${first}${last}`.toUpperCase();
-  };
-
   const filteredProfiles = useMemo(() => {
     const lowercasedSearchTerm = searchTerm.toLowerCase();
     return profiles
@@ -70,7 +68,9 @@ const Admin = () => {
       .filter(profile => {
         const fullName = `${profile.first_name || ''} ${profile.last_name || ''}`.toLowerCase();
         const email = (profile.email || '').toLowerCase();
-        return fullName.includes(lowercasedSearchTerm) || email.includes(lowercasedSearchTerm);
+        const location = (profile.location || '').toLowerCase();
+        const lastIp = (profile.last_ip || '').toLowerCase();
+        return fullName.includes(lowercasedSearchTerm) || email.includes(lowercasedSearchTerm) || location.includes(lowercasedSearchTerm) || lastIp.includes(lowercasedSearchTerm);
       });
   }, [profiles, searchTerm, statusFilter]);
 
@@ -94,116 +94,61 @@ const Admin = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-800 dark:text-blue-200">Total de Usuários</CardTitle>
-            <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-          </CardHeader>
-          <CardContent><div className="text-2xl font-bold text-blue-700 dark:text-blue-300">{totalUsers}</div></CardContent>
-        </Card>
-        <Card className="bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-emerald-800 dark:text-emerald-200">Usuários Ativos</CardTitle>
-            <UserCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-          </CardHeader>
-          <CardContent><div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">{activeUsers}</div></CardContent>
-        </Card>
-        <Card className="bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-amber-800 dark:text-amber-200">Aprovações Pendentes</CardTitle>
-            <Hourglass className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-          </CardHeader>
-          <CardContent><div className="text-2xl font-bold text-amber-700 dark:text-amber-300">{pendingUsers}</div></CardContent>
-        </Card>
+        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Total de Usuários</CardTitle><Users className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">{totalUsers}</div></CardContent></Card>
+        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Usuários Ativos</CardTitle><UserCheck className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">{activeUsers}</div></CardContent></Card>
+        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Aprovações Pendentes</CardTitle><Hourglass className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">{pendingUsers}</div></CardContent></Card>
       </div>
 
-      <Card className="bg-sidebar text-sidebar-foreground">
+      <Card>
         <CardHeader>
           <CardTitle>Gerenciamento de Usuários</CardTitle>
-          <CardDescription className="text-sidebar-foreground/80">Aprove, desative ou gerencie os usuários da plataforma.</CardDescription>
+          <CardDescription>Aprove, desative ou gerencie os usuários da plataforma.</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={statusFilter} onValueChange={setStatusFilter}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-              <TabsList className="grid w-full grid-cols-3 bg-sidebar-hover">
-                <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Todos</TabsTrigger>
-                <TabsTrigger value="pending" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Pendentes</TabsTrigger>
-                <TabsTrigger value="active" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Ativos</TabsTrigger>
-              </TabsList>
-              <div className="relative w-full sm:w-auto">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Buscar por nome ou e-mail..."
-                  className="pl-8 w-full sm:w-[250px] bg-sidebar-hover border-border/20 focus:bg-sidebar"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
+              <TabsList className="grid w-full grid-cols-3"><TabsTrigger value="all">Todos</TabsTrigger><TabsTrigger value="pending">Pendentes</TabsTrigger><TabsTrigger value="active">Ativos</TabsTrigger></TabsList>
+              <div className="relative w-full sm:w-auto"><Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar..." className="pl-8 w-full sm:w-[250px]" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /></div>
             </div>
           </Tabs>
-          <div className="border rounded-md border-border/20">
+          <div className="border rounded-md">
             <Table>
               <TableHeader>
-                <TableRow className="border-border/20 hover:bg-sidebar-hover/50">
-                  <TableHead className="text-white">Usuário</TableHead>
-                  <TableHead className="hidden sm:table-cell text-white">Status</TableHead>
-                  <TableHead className="hidden md:table-cell text-white">Plano</TableHead>
-                  <TableHead className="hidden md:table-cell text-white">Função</TableHead>
-                  <TableHead className="text-right text-white">Ações</TableHead>
+                <TableRow>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Plano</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Localização</TableHead>
+                  <TableHead>Último IP</TableHead>
+                  <TableHead>Expira em</TableHead>
+                  <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredProfiles.length > 0 ? (
                   filteredProfiles.map((profile) => (
-                    <TableRow key={profile.id} className="border-border/20 hover:bg-sidebar-hover/50">
+                    <TableRow key={profile.id}>
+                      <TableCell className="font-medium">{profile.email}</TableCell>
+                      <TableCell><Badge variant="secondary">{profile.plan}</Badge></TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-3">
-                          <Avatar>
-                            <AvatarImage src={profile.avatar_url || undefined} className="object-cover" />
-                            <AvatarFallback>{getInitials(profile.first_name, profile.last_name)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium">{`${profile.first_name || ''} ${profile.last_name || ''}`}</p>
-                            <p className="text-xs text-sidebar-foreground/70">{profile.email || 'E-mail não disponível'}</p>
-                            <p className="text-xs text-muted-foreground md:hidden">{profile.role}</p>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge
-                          className={cn(
-                            profile.status === "active"
-                              ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                              : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                          )}
-                          variant="outline"
-                        >
+                        <Badge className={cn(profile.status === "active" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800")} variant="outline">
                           {profile.status === "active" ? "Ativo" : "Pendente"}
                         </Badge>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        <Badge variant="default">{profile.plan}</Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">{profile.role}</TableCell>
+                      <TableCell>{profile.location || "-"}</TableCell>
+                      <TableCell>{profile.last_ip || "-"}</TableCell>
+                      <TableCell>{profile.access_expires_at ? format(new Date(profile.access_expires_at), "dd/MM/yyyy", { locale: ptBR }) : "-"}</TableCell>
                       <TableCell className="text-right">
                         {profile.status === "pending" ? (
-                          <Button variant="outline" size="sm" onClick={() => handleStatusChange(profile.id, "active")}>
-                            <UserCheck className="h-4 w-4" />
-                            <span className="sr-only sm:not-sr-only sm:ml-2">Aprovar</span>
-                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => handleStatusChange(profile.id, "active")}><UserCheck className="h-4 w-4 mr-2" />Aprovar</Button>
                         ) : (
-                          <Button variant="destructive" size="sm" onClick={() => handleStatusChange(profile.id, "pending")}>
-                            <UserX className="h-4 w-4" />
-                            <span className="sr-only sm:not-sr-only sm:ml-2">Desativar</span>
-                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => handleStatusChange(profile.id, "pending")}><UserX className="h-4 w-4 mr-2" />Desativar</Button>
                         )}
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
-                  <TableRow className="border-border/20 hover:bg-sidebar-hover/50">
-                    <TableCell colSpan={5} className="h-24 text-center">Nenhum usuário encontrado.</TableCell>
-                  </TableRow>
+                  <TableRow><TableCell colSpan={7} className="h-24 text-center">Nenhum usuário encontrado.</TableCell></TableRow>
                 )}
               </TableBody>
             </Table>
