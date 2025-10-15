@@ -8,23 +8,48 @@ import {
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Info, CheckSquare, Search } from "lucide-react";
-import { procedures } from "@/data/procedures";
+import { Info, CheckSquare, Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import * as LucideIcons from "lucide-react";
 
 interface Profile {
   id: string;
 }
 
+interface Procedure {
+  title: string;
+  icon: keyof typeof LucideIcons;
+  color: string;
+  openColor: string;
+  description: string;
+  materials: string[];
+  steps: string[];
+  observations: string;
+  category: "Acessos e Punções" | "Sondagens e Drenagem" | "Vias Aéreas" | "Monitoramento e Emergência" | "Cuidados Gerais";
+}
+
+const fetchProcedures = async (): Promise<Procedure[]> => {
+  const response = await fetch('/data/procedures.json');
+  if (!response.ok) {
+    throw new Error('Não foi possível carregar os procedimentos.');
+  }
+  return response.json();
+};
+
 const Procedures = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
+
+  const { data: procedures = [], isLoading: isLoadingProcedures } = useQuery({
+    queryKey: ['procedures'],
+    queryFn: fetchProcedures,
+  });
 
   const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
     queryKey: ['favorites', profile?.id, 'Procedimento'],
@@ -44,9 +69,10 @@ const Procedures = () => {
   const favoriteSet = useMemo(() => new Set(favoritesData || []), [favoritesData]);
 
   const categories = useMemo(() => {
+    if (isLoadingProcedures || procedures.length === 0) return ["Todos"];
     const allCategories = procedures.map(p => p.category);
     return ["Todos", ...Array.from(new Set(allCategories))];
-  }, []);
+  }, [procedures, isLoadingProcedures]);
 
   const filteredProcedures = useMemo(() => {
     return procedures
@@ -55,7 +81,7 @@ const Procedures = () => {
         proc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         proc.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
-  }, [searchTerm, activeCategory]);
+  }, [searchTerm, activeCategory, procedures]);
 
   return (
     <div className="space-y-6">
@@ -84,10 +110,14 @@ const Procedures = () => {
         </Tabs>
       </div>
 
-      {filteredProcedures.length > 0 ? (
+      {isLoadingProcedures ? (
+        <div className="flex justify-center items-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : filteredProcedures.length > 0 ? (
         <div className="space-y-4">
           {filteredProcedures.map((proc, index) => {
-            const Icon = proc.icon;
+            const Icon = LucideIcons[proc.icon] as LucideIcons.LucideIcon;
             const itemId = `/procedures#${proc.title.toLowerCase().replace(/\s+/g, '-')}`;
             return (
               <Accordion type="single" collapsible key={index}>
@@ -95,7 +125,7 @@ const Procedures = () => {
                   <div className="flex items-center">
                     <AccordionTrigger className="flex-1 group hover:no-underline text-left py-0">
                       <div className="flex items-center gap-3 py-4">
-                        <Icon className={`h-5 w-5 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />
+                        {Icon && <Icon className={`h-5 w-5 ${proc.color} flex-shrink-0 transition-colors group-data-[state=open]:${proc.openColor}`} />}
                         <span className="font-semibold text-left">{proc.title}</span>
                       </div>
                     </AccordionTrigger>
