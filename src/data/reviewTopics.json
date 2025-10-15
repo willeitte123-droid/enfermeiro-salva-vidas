@@ -248,5 +248,44 @@
         ]
       }
     ]
+  },
+  {
+    "id": "surgical-center",
+    "title": "Centro Cirúrgico",
+    "icon": "Scissors",
+    "color": "text-gray-500",
+    "summary": "Atuação da enfermagem nos períodos pré, intra e pós-operatório, garantindo a segurança e o cuidado ao paciente cirúrgico.",
+    "details": [
+      {
+        "subtitle": "Períodos Cirúrgicos e Atuação da Enfermagem",
+        "points": [
+          "<strong>Pré-operatório:</strong> Inicia na decisão pela cirurgia e termina com a transferência para o CC. Cuidados: preparo físico e psicológico, jejum, administração de pré-anestésicos, verificação de exames e consentimento.",
+          "<strong>Intraoperatório:</strong> Inicia com a recepção no CC e termina com a transferência para a SRPA. Cuidados: montagem da sala, recepção do paciente, posicionamento cirúrgico, controle de materiais (compressas, agulhas), auxílio à equipe.",
+          "<strong>Pós-operatório:</strong> Inicia na SRPA e se estende até a alta. Cuidados: monitoramento de sinais vitais, avaliação do nível de consciência, controle da dor, prevenção de complicações (TVP, infecção, deiscência)."
+        ]
+      },
+      {
+        "subtitle": "Classificação das Cirurgias",
+        "points": [
+          "<strong>Quanto ao Potencial de Contaminação:</strong><ul><li><strong>Limpas:</strong> Sem contato com TGI, respiratório ou geniturinário. Ex: artroplastia.</li><li><strong>Potencialmente Contaminadas:</strong> Contato com TGI/respiratório/geniturinário em condições controladas. Ex: colecistectomia.</li><li><strong>Contaminadas:</strong> Feridas traumáticas recentes, contaminação grosseira do TGI. Ex: apendicectomia supurada.</li><li><strong>Infectadas:</strong> Presença de pus, vísceras perfuradas. Ex: cirurgia de abscesso.</li></ul>",
+          "<strong>Quanto à Urgência:</strong><ul><li><strong>Eletiva:</strong> Programada, sem risco iminente.</li><li><strong>Urgência:</strong> Requer atenção rápida, mas pode aguardar algumas horas.</li><li><strong>Emergência:</strong> Requer atenção imediata, risco de vida.</li></ul>"
+        ]
+      },
+      {
+        "subtitle": "Funções da Equipe de Enfermagem no CC",
+        "points": [
+          "<strong>Enfermeiro Circulante:</strong> Gerencia a sala operatória, provê materiais, posiciona o paciente, realiza anotações, garante a segurança e o bem-estar do paciente.",
+          "<strong>Técnico/Auxiliar Instrumentador:</strong> Prepara e fornece os instrumentos cirúrgicos à equipe médica de forma asséptica, realiza a contagem de instrumentais e compressas junto ao circulante."
+        ]
+      },
+      {
+        "subtitle": "Segurança do Paciente: Checklist de Cirurgia Segura",
+        "points": [
+          "<strong>1. Sign In (Antes da Indução Anestésica):</strong> Confirmação da identidade do paciente, sítio cirúrgico, procedimento, consentimento. Checagem de alergias e risco de via aérea/aspiração.",
+          "<strong>2. Time Out (Antes da Incisão Cirúrgica):</strong> Pausa para confirmação verbal de todos os membros da equipe sobre o paciente, procedimento e sítio corretos. Revisão de etapas críticas.",
+          "<strong>3. Sign Out (Antes do Paciente Sair da Sala):</strong> Confirmação do procedimento realizado, contagem final de compressas, agulhas e instrumentos. Identificação de amostras patológicas e revisão dos cuidados pós-operatórios."
+        ]
+      }
+    ]
   }
 ]
