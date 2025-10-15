@@ -181,7 +181,7 @@
     "id": "ethics-legislation",
     "title": "Ética e Legislação Profissional",
     "icon": "Gavel",
-    "color": "text-gray-500",
+    "color": "text-slate-600",
     "summary": "Pilares do Código de Ética (CEPE) e da Lei do Exercício Profissional, abordando direitos, deveres, responsabilidades e sigilo.",
     "details": [
       {
@@ -286,7 +286,7 @@
     "id": "surgical-center",
     "title": "Centro Cirúrgico",
     "icon": "Scissors",
-    "color": "text-gray-500",
+    "color": "text-orange-500",
     "summary": "Atuação da enfermagem nos períodos pré, intra e pós-operatório, garantindo a segurança e o cuidado ao paciente cirúrgico.",
     "details": [
       {
