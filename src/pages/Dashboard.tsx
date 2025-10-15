@@ -2,11 +2,12 @@ import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2 } from "lucide-react";
+import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2, Database } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuestions } from "@/context/QuestionsContext";
+import { toast } from "sonner";
 
 interface Profile {
   id: string;
@@ -94,6 +95,30 @@ const Dashboard = () => {
   const [featuredComments, setFeaturedComments] = useState<FeaturedComment[]>([]);
   const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
   const [isLoadingComment, setIsLoadingComment] = useState(true);
+  const [isSeeding, setIsSeeding] = useState(false);
+  const [seedingDone, setSeedingDone] = useState(false);
+
+  const handleSeedDatabase = async () => {
+    setIsSeeding(true);
+    toast.loading("Populando o banco de dados... Isso pode levar um minuto.");
+
+    const { error } = await supabase.functions.invoke('seed-questions');
+
+    toast.dismiss();
+
+    if (error) {
+      toast.error("Falha ao popular o banco de dados.", {
+        description: error.message,
+      });
+    } else {
+      toast.success("Banco de dados populado com sucesso!", {
+        description: "As questões agora estão disponíveis. A página será recarregada.",
+      });
+      setSeedingDone(true);
+      setTimeout(() => window.location.reload(), 2000);
+    }
+    setIsSeeding(false);
+  };
 
   useEffect(() => {
     const fetchFeaturedComments = async () => {
@@ -138,7 +163,7 @@ const Dashboard = () => {
     if (featuredComments.length > 1) {
       const timer = setInterval(() => {
         setCurrentCommentIndex(prevIndex => (prevIndex + 1) % featuredComments.length);
-      }, 7000); // Rotate every 7 seconds
+      }, 7000);
       return () => clearInterval(timer);
     }
   }, [featuredComments]);
@@ -148,6 +173,24 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-8">
+      {!seedingDone && (
+        <Card className="bg-amber-50 dark:bg-amber-950 border-amber-300">
+          <CardHeader>
+            <CardTitle className="text-amber-800 dark:text-amber-200">Ação Necessária: Popular Banco de Dados</CardTitle>
+            <CardDescription>
+              A tabela de questões está vazia. Clique no botão abaixo para inserir as questões no banco de dados.
+              <strong> Esta ação só precisa ser executada uma vez.</strong>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={handleSeedDatabase} disabled={isSeeding}>
+              {isSeeding ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Database className="mr-2 h-4 w-4" />}
+              Popular Banco de Questões
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
       <div>
         <h1 className="text-3xl font-bold text-foreground">Olá, {profile?.first_name || 'Profissional'}!</h1>
         <p className="text-muted-foreground mt-2">Bem-vindo(a) de volta ao seu ambiente de estudo e trabalho.</p>

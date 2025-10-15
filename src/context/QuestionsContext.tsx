@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@/lib/supabase';
 
 interface Question {
   id: number;
@@ -24,15 +25,24 @@ export const QuestionsProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        const response = await fetch("/questions.json");
-        if (!response.ok) {
-          throw new Error("Falha ao carregar o banco de questões.");
+        const { data, error: dbError } = await supabase
+          .from('questions')
+          .select('*')
+          .order('id', { ascending: true });
+
+        if (dbError) {
+          throw dbError;
         }
-        const data: Question[] = await response.json();
-        setQuestions(data);
+        
+        // A coluna 'options' é JSONB, o Supabase client já faz o parse.
+        setQuestions(data || []);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Ocorreu um erro desconhecido.");
+        const errorMessage = err instanceof Error ? err.message : "Ocorreu um erro desconhecido ao buscar as questões.";
+        setError(errorMessage);
+        console.error(err);
       } finally {
         setIsLoading(false);
       }
