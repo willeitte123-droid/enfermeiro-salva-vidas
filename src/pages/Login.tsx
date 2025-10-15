@@ -86,8 +86,8 @@ const Login = () => {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-muted/40">
-      <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+    <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+      <div className="w-full min-h-screen flex flex-col bg-muted/40">
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Redefinir sua senha</AlertDialogTitle>
@@ -113,93 +113,93 @@ const Login = () => {
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
 
-      <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground p-6 text-center shadow-md">
-        <Stethoscope className="h-16 w-16 mb-4" />
-        <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
-        <p className="mt-4 text-base font-medium text-primary-foreground max-w-lg">
-          Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
-        </p>
-      </div>
-      <div className="flex-1 flex items-center justify-center py-12 px-4">
-        <div className="mx-auto w-full max-w-md space-y-6">
-          <div className="space-y-2 text-center">
-            <h1 className="text-3xl font-bold">Acesse sua conta</h1>
-            <p className="text-muted-foreground">
-              Bem-vindo de volta! Insira seus dados para continuar.
-            </p>
-          </div>
-          <div className="bg-background p-6 rounded-lg shadow-sm border">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="seu@email.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex items-center justify-between">
-                        <FormLabel>Senha</FormLabel>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="link" className="text-sm text-primary hover:underline p-0 h-auto">
-                            Esqueceu a senha?
-                          </Button>
-                        </AlertDialogTrigger>
-                      </div>
-                      <div className="relative">
+        <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground p-6 text-center shadow-md">
+          <Stethoscope className="h-16 w-16 mb-4" />
+          <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
+          <p className="mt-4 text-base font-medium text-primary-foreground max-w-lg">
+            Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
+          </p>
+        </div>
+        <div className="flex-1 flex items-center justify-center py-12 px-4">
+          <div className="mx-auto w-full max-w-md space-y-6">
+            <div className="space-y-2 text-center">
+              <h1 className="text-3xl font-bold">Acesse sua conta</h1>
+              <p className="text-muted-foreground">
+                Bem-vindo de volta! Insira seus dados para continuar.
+              </p>
+            </div>
+            <div className="bg-background p-6 rounded-lg shadow-sm border">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="********"
-                            {...field}
-                          />
+                          <Input placeholder="seu@email.com" {...field} />
                         </FormControl>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="absolute top-0 right-0 h-full px-3"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? (
-                            <EyeOff className="h-4 w-4 text-muted-foreground" />
-                          ) : (
-                            <Eye className="h-4 w-4 text-muted-foreground" />
-                          )}
-                        </Button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Entrando..." : "Entrar"}
-                </Button>
-              </form>
-            </Form>
-          </div>
-          <div className="mt-4 text-center text-sm">
-            Não tem uma conta?{" "}
-            <Link to="/register" className="underline text-primary">
-              Cadastre-se
-            </Link>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center justify-between">
+                          <FormLabel>Senha</FormLabel>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="link" className="text-sm text-primary hover:underline p-0 h-auto">
+                              Esqueceu a senha?
+                            </Button>
+                          </AlertDialogTrigger>
+                        </div>
+                        <div className="relative">
+                          <FormControl>
+                            <Input
+                              type={showPassword ? "text" : "password"}
+                              placeholder="********"
+                              {...field}
+                            />
+                          </FormControl>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute top-0 right-0 h-full px-3"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4 text-muted-foreground" />
+                            ) : (
+                              <Eye className="h-4 w-4 text-muted-foreground" />
+                            )}
+                          </Button>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? "Entrando..." : "Entrar"}
+                  </Button>
+                </form>
+              </Form>
+            </div>
+            <div className="mt-4 text-center text-sm">
+              Não tem uma conta?{" "}
+              <Link to="/register" className="underline text-primary">
+                Cadastre-se
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </AlertDialog>
   );
 };
 
