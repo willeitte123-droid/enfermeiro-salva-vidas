@@ -75,20 +75,25 @@ const Emergency = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Urgências e Emergências</h1>
+        <div className="w-10 flex-shrink-0" /> {/* Spacer */}
+        <div className="flex-1 text-center">
+          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+            Urgências e Emergências
+          </h1>
           <p className="text-muted-foreground">Protocolos rápidos e diretos para atendimento de emergência</p>
         </div>
-        {profile && (
-          <FavoriteButton
-            userId={profile.id}
-            itemId="/emergency"
-            itemType="Guia"
-            itemTitle="Guia de Emergências"
-            isInitiallyFavorited={favoriteSet.has("/emergency")}
-            isLoading={isLoadingFavorites}
-          />
-        )}
+        <div className="w-10 flex-shrink-0">
+          {profile && (
+            <FavoriteButton
+              userId={profile.id}
+              itemId="/emergency"
+              itemType="Guia"
+              itemTitle="Guia de Emergências"
+              isInitiallyFavorited={favoriteSet.has("/emergency")}
+              isLoading={isLoadingFavorites}
+            />
+          )}
+        </div>
       </div>
 
       <div className="relative">

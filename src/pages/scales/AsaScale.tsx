@@ -36,18 +36,23 @@ const AsaScale = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Classificação do Estado Físico (ASA)</h1>
+        <div className="w-10 flex-shrink-0" /> {/* Spacer */}
+        <div className="flex-1 text-center">
+          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+            Classificação do Estado Físico (ASA)
+          </h1>
           <p className="text-muted-foreground">Avalie o risco pré-operatório do paciente.</p>
         </div>
-        {profile && (
-          <FavoriteButton
-            userId={profile.id}
-            itemId="/scales/asa"
-            itemType="Escala"
-            itemTitle="Classificação ASA"
-          />
-        )}
+        <div className="w-10 flex-shrink-0">
+          {profile && (
+            <FavoriteButton
+              userId={profile.id}
+              itemId="/scales/asa"
+              itemType="Escala"
+              itemTitle="Classificação ASA"
+            />
+          )}
+        </div>
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2">

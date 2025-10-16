@@ -33,18 +33,23 @@ const WongBakerScale = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Faces de Wong-Baker</h1>
+        <div className="w-10 flex-shrink-0" /> {/* Spacer */}
+        <div className="flex-1 text-center">
+          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+            Escala de Faces de Wong-Baker
+          </h1>
           <p className="text-muted-foreground">Avalie a intensidade da dor de forma visual.</p>
         </div>
-        {profile && (
-          <FavoriteButton
-            userId={profile.id}
-            itemId="/scales/wong-baker"
-            itemType="Escala"
-            itemTitle="Escala de Faces de Wong-Baker"
-          />
-        )}
+        <div className="w-10 flex-shrink-0">
+          {profile && (
+            <FavoriteButton
+              userId={profile.id}
+              itemId="/scales/wong-baker"
+              itemType="Escala"
+              itemTitle="Escala de Faces de Wong-Baker"
+            />
+          )}
+        </div>
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
