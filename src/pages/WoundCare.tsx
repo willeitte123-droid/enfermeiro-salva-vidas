@@ -96,18 +96,23 @@ const WoundCare = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Curativos e Tratamento de Feridas</h1>
+        <div className="w-10 flex-shrink-0" /> {/* Spacer */}
+        <div className="flex-1 text-center">
+          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+            Curativos e Tratamento de Feridas
+          </h1>
           <p className="text-muted-foreground">Guia de avaliação de tecidos e seleção de coberturas apropriadas</p>
         </div>
-        {profile && (
-          <FavoriteButton
-            userId={profile.id}
-            itemId="/wound-care"
-            itemType="Guia"
-            itemTitle="Guia de Curativos"
-          />
-        )}
+        <div className="w-10 flex-shrink-0">
+          {profile && (
+            <FavoriteButton
+              userId={profile.id}
+              itemId="/wound-care"
+              itemType="Guia"
+              itemTitle="Guia de Curativos"
+            />
+          )}
+        </div>
       </div>
 
       <Tabs defaultValue="tissues" className="space-y-4">
