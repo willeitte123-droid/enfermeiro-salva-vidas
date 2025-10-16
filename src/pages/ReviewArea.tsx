@@ -30,23 +30,18 @@ const ReviewArea = () => {
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-start">
-        <div className="w-10 flex-shrink-0" /> {/* Spacer */}
-        <div className="flex-1 text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-            Área de Revisão
-          </h1>
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Área de Revisão</h1>
           <p className="text-muted-foreground">Resumos rápidos e diretos dos principais temas para seus estudos e prática clínica.</p>
         </div>
-        <div className="w-10 flex-shrink-0">
-          {profile && (
-            <FavoriteButton
-              userId={profile.id}
-              itemId="/review-area"
-              itemType="Guia"
-              itemTitle="Área de Revisão"
-            />
-          )}
-        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/review-area"
+            itemType="Guia"
+            itemTitle="Área de Revisão"
+          />
+        )}
       </div>
 
       <div className="space-y-4">

@@ -64,10 +64,8 @@ const FavoritesPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-          Meus Favoritos
-        </h1>
+      <div>
+        <h1 className="text-3xl font-bold text-foreground mb-2">Meus Favoritos</h1>
         <p className="text-muted-foreground">Acesse rapidamente suas ferramentas e conteúdos mais importantes.</p>
       </div>
 
