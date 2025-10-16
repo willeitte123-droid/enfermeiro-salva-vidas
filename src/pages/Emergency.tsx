@@ -74,15 +74,9 @@ const Emergency = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-start">
-        <div className="w-10 flex-shrink-0" /> {/* Spacer */}
-        <div className="flex-1 text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-            Urgências e Emergências
-          </h1>
-          <p className="text-muted-foreground">Protocolos rápidos e diretos para atendimento de emergência</p>
-        </div>
-        <div className="w-10 flex-shrink-0">
+      <div className="text-center">
+        <div className="flex justify-center items-center gap-4 mb-2">
+          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Urgências e Emergências</h1>
           {profile && (
             <FavoriteButton
               userId={profile.id}
@@ -94,6 +88,7 @@ const Emergency = () => {
             />
           )}
         </div>
+        <p className="text-muted-foreground">Protocolos rápidos e diretos para atendimento de emergência</p>
       </div>
 
       <div className="relative">

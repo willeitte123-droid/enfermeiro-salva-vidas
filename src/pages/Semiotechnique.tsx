@@ -44,15 +44,9 @@ const SemioTechnique = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-start">
-        <div className="w-10 flex-shrink-0" /> {/* Spacer */}
-        <div className="flex-1 text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-            Guia de Semiotécnica
-          </h1>
-          <p className="text-muted-foreground">Aprenda o 'como fazer' das principais técnicas de avaliação de enfermagem.</p>
-        </div>
-        <div className="w-10 flex-shrink-0">
+      <div className="text-center">
+        <div className="flex justify-center items-center gap-4 mb-2">
+          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Guia de Semiotécnica</h1>
           {profile && (
             <FavoriteButton
               userId={profile.id}
@@ -62,6 +56,7 @@ const SemioTechnique = () => {
             />
           )}
         </div>
+        <p className="text-muted-foreground">Aprenda o 'como fazer' das principais técnicas de avaliação de enfermagem.</p>
       </div>
 
       <Card className="bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800">
