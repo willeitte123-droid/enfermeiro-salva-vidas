@@ -159,6 +159,16 @@
         ]
       },
       {
+        "subtitle": "Principais Instrumentais Cirúrgicos",
+        "points": [
+          "<strong>Diérese (Corte):</strong> <ul><li><strong>Bisturi:</strong> Cabo e lâmina para incisões.</li><li><strong>Tesouras:</strong> Mayo (retas/curvas) para tecidos robustos; Metzenbaum (curvas) para tecidos delicados.</li></ul>",
+          "<strong>Hemostasia (Controle de Sangramento):</strong> <ul><li><strong>Pinças Hemostáticas:</strong> Kelly (ranhuras na metade distal), Crile (ranhuras em toda a extensão), Halsted/Mosquito (delicadas).</li></ul>",
+          "<strong>Preensão (Segurar/Apreender):</strong> <ul><li><strong>Pinça Anatômica:</strong> Para tecidos delicados, sem dentes.</li><li><strong>Pinça Dente de Rato:</strong> Para aponeuroses e pele.</li><li><strong>Pinça de Allis:</strong> Traumática, para tecidos a serem removidos.</li><li><strong>Pinça de Babcock:</strong> Atraumática, para vísceras (intestino, apêndice).</li><li><strong>Pinça de Backhaus:</strong> Para fixação dos campos cirúrgicos.</li></ul>",
+          "<strong>Síntese (Sutura):</strong> <ul><li><strong>Porta-agulha:</strong> Mayo-Hegar ou Mathieu, para segurar a agulha.</li><li><strong>Agulhas e Fios:</strong> Para unir os tecidos.</li></ul>",
+          "<strong>Auxiliares e Especiais:</strong> <ul><li><strong>Afastadores:</strong> Farabeuf (manual), Doyen (abdominal), Finochietto (autoestático de tórax).</li><li><strong>Cânula de Aspiração:</strong> Yankauer, para aspirar secreções e líquidos.</li></ul>"
+        ]
+      },
+      {
         "subtitle": "Período Pós-operatório",
         "points": [
           "<strong>Recuperação Pós-Anestésica (SRPA):</strong> Monitorização contínua dos sinais vitais, nível de consciência, padrão respiratório e saturação de O₂.",
