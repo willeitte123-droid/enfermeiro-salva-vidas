@@ -75,19 +75,19 @@ const ParklandScale = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Fórmula de Parkland</h1>
-          <p className="text-muted-foreground">Calcule a reposição volêmica com Ringer Lactato para grandes queimados.</p>
+      <div className="text-center">
+        <div className="flex justify-center items-center gap-4 mb-2">
+          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Fórmula de Parkland</h1>
+          {profile && (
+            <FavoriteButton
+              userId={profile.id}
+              itemId="/scales/parkland"
+              itemType="Escala"
+              itemTitle="Fórmula de Parkland"
+            />
+          )}
         </div>
-        {profile && (
-          <FavoriteButton
-            userId={profile.id}
-            itemId="/scales/parkland"
-            itemType="Escala"
-            itemTitle="Fórmula de Parkland"
-          />
-        )}
+        <p className="text-muted-foreground">Calcule a reposição volêmica com Ringer Lactato para grandes queimados.</p>
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">

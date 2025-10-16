@@ -54,19 +54,19 @@ const FugulinScale = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Escala de Fugulin</h1>
-          <p className="text-muted-foreground">Classifique o paciente quanto ao grau de dependência da equipe de enfermagem.</p>
+      <div className="text-center">
+        <div className="flex justify-center items-center gap-4 mb-2">
+          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Escala de Fugulin</h1>
+          {profile && (
+            <FavoriteButton
+              userId={profile.id}
+              itemId="/scales/fugulin"
+              itemType="Escala"
+              itemTitle="Escala de Fugulin"
+            />
+          )}
         </div>
-        {profile && (
-          <FavoriteButton
-            userId={profile.id}
-            itemId="/scales/fugulin"
-            itemType="Escala"
-            itemTitle="Escala de Fugulin"
-          />
-        )}
+        <p className="text-muted-foreground">Classifique o paciente quanto ao grau de dependência da equipe de enfermagem.</p>
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">

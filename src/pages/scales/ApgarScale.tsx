@@ -54,19 +54,19 @@ const ApgarScale = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Índice de Apgar</h1>
-          <p className="text-muted-foreground">Avalie a vitalidade do recém-nascido no 1º e 5º minuto de vida.</p>
+      <div className="text-center">
+        <div className="flex justify-center items-center gap-4 mb-2">
+          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Índice de Apgar</h1>
+          {profile && (
+            <FavoriteButton
+              userId={profile.id}
+              itemId="/scales/apgar"
+              itemType="Escala"
+              itemTitle="Índice de Apgar"
+            />
+          )}
         </div>
-        {profile && (
-          <FavoriteButton
-            userId={profile.id}
-            itemId="/scales/apgar"
-            itemType="Escala"
-            itemTitle="Índice de Apgar"
-          />
-        )}
+        <p className="text-muted-foreground">Avalie a vitalidade do recém-nascido no 1º e 5º minuto de vida.</p>
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">
