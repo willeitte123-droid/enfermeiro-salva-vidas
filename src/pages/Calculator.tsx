@@ -61,25 +61,20 @@ const Calculator = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-start">
-        <div className="w-10 flex-shrink-0" /> {/* Spacer to balance the favorite button */}
-        <div className="flex-1 text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-            Calculadora de Gotejamento
-          </h1>
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Calculadora de Gotejamento</h1>
           <p className="text-muted-foreground">Calcule velocidades de infusão para diferentes tipos de equipo</p>
         </div>
-        <div className="w-10 flex-shrink-0">
-          {profile && (
-            <FavoriteButton
-              userId={profile.id}
-              itemId="/calculator"
-              itemType="Ferramenta"
-              itemTitle="Calculadora de Gotejamento"
-              isInitiallyFavorited={isFavorited}
-              isLoading={isLoadingFavorites}
-            />
-          )}
-        </div>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/calculator"
+            itemType="Ferramenta"
+            itemTitle="Calculadora de Gotejamento"
+            isInitiallyFavorited={isFavorited}
+            isLoading={isLoadingFavorites}
+          />
+        )}
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">

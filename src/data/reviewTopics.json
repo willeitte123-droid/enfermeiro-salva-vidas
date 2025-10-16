@@ -125,61 +125,6 @@
     ]
   },
   {
-    "id": "surgical-center",
-    "title": "Centro Cirúrgico",
-    "icon": "Scissors",
-    "color": "text-sky-500",
-    "summary": "Cuidados de enfermagem no pré, intra e pós-operatório, abrangendo a segurança do paciente e a instrumentação.",
-    "details": [
-      {
-        "subtitle": "Período Pré-operatório",
-        "points": [
-          "<strong>Visita Pré-operatória:</strong> Acolhimento, orientação e esclarecimento de dúvidas para reduzir a ansiedade.",
-          "<strong>Conferência do Checklist:</strong> Verificação de jejum, retirada de adornos e próteses, preparo intestinal/pele (se indicado).",
-          "<strong>Documentação:</strong> Checagem do prontuário, exames e assinatura do Termo de Consentimento Informado.",
-          "<strong>Medicação Pré-Anestésica (MPA):</strong> Administração de medicamentos (ansiolíticos, analgésicos) conforme prescrição para promover conforto e sedação."
-        ]
-      },
-      {
-        "subtitle": "Período Intraoperatório",
-        "points": [
-          "<strong>Segurança do Paciente:</strong> Implementação do checklist de Cirurgia Segura (antes da indução, antes da incisão, antes da saída da sala).",
-          "<strong>Posicionamento Cirúrgico:</strong> Garantir o posicionamento correto do paciente na mesa cirúrgica para evitar lesões por pressão, nervosas e musculares.",
-          "<strong>Atuação da Equipe:</strong> O enfermeiro <strong>circulante</strong> gerencia a sala, provê materiais e auxilia a equipe. O <strong>instrumentador</strong> organiza e fornece os instrumentais estéreis ao cirurgião.",
-          "<strong>Contagem de Compressas e Instrumentais:</strong> Realização da contagem de segurança (antes do início, antes do fechamento de cavidades e antes do fechamento da pele) para prevenir a retenção de corpos estranhos."
-        ]
-      },
-      {
-        "subtitle": "Tempos Cirúrgicos (Fases da Cirurgia)",
-        "points": [
-          "<strong>1. Diérese:</strong> Abertura e divisão dos tecidos para acessar o órgão. Envolve incisão (bisturi) e divulsão (tesoura, pinça).",
-          "<strong>2. Hemostasia:</strong> Controle do sangramento. Pode ser preventiva (antes do sangramento) ou corretiva (após). Métodos: compressão, pinçamento, ligadura, cauterização.",
-          "<strong>3. Exérese (Cirurgia Propriamente Dita):</strong> O objetivo principal da cirurgia, como a remoção de um órgão (ex: apendicectomia) ou a correção de uma lesão.",
-          "<strong>4. Síntese (Sutura):</strong> Fechamento e união dos tecidos para facilitar a cicatrização. Realizada por planos anatômicos, do mais profundo para o mais superficial."
-        ]
-      },
-      {
-        "subtitle": "Principais Instrumentais Cirúrgicos",
-        "points": [
-          "<strong>Diérese (Corte):</strong> <ul><li><strong>Bisturi:</strong> Cabo e lâmina para incisões.</li><li><strong>Tesouras:</strong> Mayo (retas/curvas) para tecidos robustos; Metzenbaum (curvas) para tecidos delicados.</li></ul>",
-          "<strong>Hemostasia (Controle de Sangramento):</strong> <ul><li><strong>Pinças Hemostáticas:</strong> Kelly (ranhuras na metade distal), Crile (ranhuras em toda a extensão), Halsted/Mosquito (delicadas).</li></ul>",
-          "<strong>Preensão (Segurar/Apreender):</strong> <ul><li><strong>Pinça Anatômica:</strong> Para tecidos delicados, sem dentes.</li><li><strong>Pinça Dente de Rato:</strong> Para aponeuroses e pele.</li><li><strong>Pinça de Allis:</strong> Traumática, para tecidos a serem removidos.</li><li><strong>Pinça de Babcock:</strong> Atraumática, para vísceras (intestino, apêndice).</li><li><strong>Pinça de Backhaus:</strong> Para fixação dos campos cirúrgicos.</li></ul>",
-          "<strong>Síntese (Sutura):</strong> <ul><li><strong>Porta-agulha:</strong> Mayo-Hegar ou Mathieu, para segurar a agulha.</li><li><strong>Agulhas e Fios:</strong> Para unir os tecidos.</li></ul>",
-          "<strong>Auxiliares e Especiais:</strong> <ul><li><strong>Afastadores:</strong> Farabeuf (manual), Doyen (abdominal), Finochietto (autoestático de tórax).</li><li><strong>Cânula de Aspiração:</strong> Yankauer, para aspirar secreções e líquidos.</li></ul>"
-        ]
-      },
-      {
-        "subtitle": "Período Pós-operatório",
-        "points": [
-          "<strong>Recuperação Pós-Anestésica (SRPA):</strong> Monitorização contínua dos sinais vitais, nível de consciência, padrão respiratório e saturação de O₂.",
-          "<strong>Índice de Aldrete e Kroulik:</strong> Escala utilizada para avaliar as condições do paciente para alta da SRPA (pontuação ≥ 9). Avalia atividade, respiração, circulação, consciência e saturação.",
-          "<strong>Manejo da Dor e Náuseas:</strong> Avaliação e tratamento da dor e de náuseas/vômitos (NVPO), que são as complicações mais comuns.",
-          "<strong>Avaliação do Sítio Cirúrgico:</strong> Inspeção do curativo para identificar sangramentos ativos ou formação de hematomas."
-        ]
-      }
-    ]
-  },
-  {
     "id": "patient-safety",
     "title": "Segurança do Paciente",
     "icon": "ShieldAlert",
