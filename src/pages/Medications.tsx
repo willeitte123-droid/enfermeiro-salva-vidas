@@ -56,21 +56,21 @@ const Medications = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <div className="flex justify-center items-center gap-4 mb-2">
-          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Guia Rápido de Medicamentos</h1>
-          {profile && (
-            <FavoriteButton
-              userId={profile.id}
-              itemId="/medications"
-              itemType="Guia"
-              itemTitle="Guia de Medicamentos"
-              isInitiallyFavorited={favoriteSet.has("/medications")}
-              isLoading={isLoadingFavorites}
-            />
-          )}
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Guia Rápido de Medicamentos</h1>
+          <p className="text-muted-foreground">Principais medicações injetáveis, indicações e cuidados essenciais</p>
         </div>
-        <p className="text-muted-foreground">Principais medicações injetáveis, indicações e cuidados essenciais</p>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/medications"
+            itemType="Guia"
+            itemTitle="Guia de Medicamentos"
+            isInitiallyFavorited={favoriteSet.has("/medications")}
+            isLoading={isLoadingFavorites}
+          />
+        )}
       </div>
 
       <div className="relative">

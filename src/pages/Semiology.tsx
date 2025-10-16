@@ -47,19 +47,19 @@ const Semiology = () => {
 
   return (
     <div className="space-y-8">
-      <div className="text-center">
-        <div className="flex justify-center items-center gap-4 mb-2">
-          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Guia de Semiologia</h1>
-          {profile && (
-            <FavoriteButton
-              userId={profile.id}
-              itemId="/semiology"
-              itemType="Guia"
-              itemTitle="Guia de Semiologia"
-            />
-          )}
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Guia de Semiologia</h1>
+          <p className="text-muted-foreground">A arte de identificar sinais e sintomas através do exame clínico.</p>
         </div>
-        <p className="text-muted-foreground">A arte de identificar sinais e sintomas através do exame clínico.</p>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/semiology"
+            itemType="Guia"
+            itemTitle="Guia de Semiologia"
+          />
+        )}
       </div>
 
       <Card className="bg-violet-50 dark:bg-violet-900/20 border-violet-200 dark:border-violet-800">

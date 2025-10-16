@@ -174,8 +174,8 @@ const BlocoDeNotas = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Bloco de Anotações</h1>
+      <div>
+        <h1 className="text-3xl font-bold text-foreground mb-2">Bloco de Anotações</h1>
         <p className="text-muted-foreground">Suas anotações pessoais, salvas e disponíveis a qualquer momento.</p>
       </div>
 

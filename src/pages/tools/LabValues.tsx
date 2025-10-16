@@ -52,19 +52,19 @@ const LabValues = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <div className="flex justify-center items-center gap-4 mb-2">
-          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Guia de Valores Laboratoriais</h1>
-          {profile && (
-            <FavoriteButton
-              userId={profile.id}
-              itemId="/tools/lab-values"
-              itemType="Ferramenta"
-              itemTitle="Guia de Valores Laboratoriais"
-            />
-          )}
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Guia de Valores Laboratoriais</h1>
+          <p className="text-muted-foreground">Consulte rapidamente os valores de referência para exames laboratoriais.</p>
         </div>
-        <p className="text-muted-foreground">Consulte rapidamente os valores de referência para exames laboratoriais.</p>
+        {profile && (
+          <FavoriteButton
+            userId={profile.id}
+            itemId="/tools/lab-values"
+            itemType="Ferramenta"
+            itemTitle="Guia de Valores Laboratoriais"
+          />
+        )}
       </div>
 
       <div className="relative">
