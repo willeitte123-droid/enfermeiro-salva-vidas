@@ -22,7 +22,6 @@ interface Profile {
   plan: string;
   avatar_url: string | null;
   location: string | null;
-  last_ip: string | null;
   access_expires_at: string | null;
 }
 
@@ -69,8 +68,7 @@ const Admin = () => {
         const fullName = `${profile.first_name || ''} ${profile.last_name || ''}`.toLowerCase();
         const email = (profile.email || '').toLowerCase();
         const location = (profile.location || '').toLowerCase();
-        const lastIp = (profile.last_ip || '').toLowerCase();
-        return fullName.includes(lowercasedSearchTerm) || email.includes(lowercasedSearchTerm) || location.includes(lowercasedSearchTerm) || lastIp.includes(lowercasedSearchTerm);
+        return fullName.includes(lowercasedSearchTerm) || email.includes(lowercasedSearchTerm) || location.includes(lowercasedSearchTerm);
       });
   }, [profiles, searchTerm, statusFilter]);
 
@@ -120,6 +118,7 @@ const Admin = () => {
                   <TableHead>Status</TableHead>
                   <TableHead>Localização</TableHead>
                   <TableHead>Último IP</TableHead>
+                  <TableHead>Armazenamento</TableHead>
                   <TableHead>Expira em</TableHead>
                   <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
@@ -136,7 +135,8 @@ const Admin = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>{profile.location || "-"}</TableCell>
-                      <TableCell>{profile.last_ip || "-"}</TableCell>
+                      <TableCell>{"-"}</TableCell>
+                      <TableCell>{"-"}</TableCell>
                       <TableCell>{profile.access_expires_at ? format(new Date(profile.access_expires_at), "dd/MM/yyyy", { locale: ptBR }) : "-"}</TableCell>
                       <TableCell className="text-right">
                         {profile.status === "pending" ? (
@@ -148,7 +148,7 @@ const Admin = () => {
                     </TableRow>
                   ))
                 ) : (
-                  <TableRow><TableCell colSpan={7} className="h-24 text-center">Nenhum usuário encontrado.</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={8} className="h-24 text-center">Nenhum usuário encontrado.</TableCell></TableRow>
                 )}
               </TableBody>
             </Table>
