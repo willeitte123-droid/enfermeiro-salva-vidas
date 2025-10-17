@@ -104,11 +104,23 @@ const Dashboard = () => {
   const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
   const { activities } = useActivityTracker();
   const recentActivities = activities.slice(0, 3);
+  const [randomTip, setRandomTip] = useState("");
 
   const { data: featuredComments = [], isLoading: isLoadingComment } = useQuery({
     queryKey: ['featuredComments'],
     queryFn: fetchFeaturedComments,
   });
+
+  useEffect(() => {
+    // Set initial tip
+    setRandomTip(clinicalTips[Math.floor(Math.random() * clinicalTips.length)]);
+
+    const intervalId = setInterval(() => {
+      setRandomTip(clinicalTips[Math.floor(Math.random() * clinicalTips.length)]);
+    }, 15000); // Change tip every 15 seconds
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     if (featuredComments.length > 1) {
@@ -119,7 +131,6 @@ const Dashboard = () => {
     }
   }, [featuredComments]);
 
-  const randomTip = useMemo(() => clinicalTips[Math.floor(Math.random() * clinicalTips.length)], []);
   const currentComment = featuredComments[currentCommentIndex];
 
   return (
