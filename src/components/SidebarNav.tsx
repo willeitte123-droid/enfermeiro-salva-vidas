@@ -79,21 +79,21 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
 
       <Collapsible defaultOpen>
         <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
-          <span className={cn(isCollapsed && "hidden")}>Ferramentas</span>
-          {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
-        </CollapsibleTrigger>
-        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && !isMobile && "pl-4")}>
-          {navItems.tools.map(renderNavLink)}
-        </CollapsibleContent>
-      </Collapsible>
-
-      <Collapsible defaultOpen>
-        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
           <span className={cn(isCollapsed && "hidden")}>Consulta e Estudo</span>
           {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
         </CollapsibleTrigger>
         <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && !isMobile && "pl-4")}>
           {navItems.study.map(renderNavLink)}
+        </CollapsibleContent>
+      </Collapsible>
+
+      <Collapsible defaultOpen>
+        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
+          <span className={cn(isCollapsed && "hidden")}>Ferramentas</span>
+          {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
+        </CollapsibleTrigger>
+        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && !isMobile && "pl-4")}>
+          {navItems.tools.map(renderNavLink)}
         </CollapsibleContent>
       </Collapsible>
 
