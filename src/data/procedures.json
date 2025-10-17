@@ -190,8 +190,7 @@
       "Fixar a sonda e registrar o procedimento."
     ],
     "observations": "Se o paciente tossir ou apresentar dispneia, retire a sonda imediatamente. O método de ausculta com injeção de ar é inseguro e não recomendado.",
-    "category": "Sondagens e Drenagem",
-    "diagramComponent": "SngMeasurementDiagram"
+    "category": "Sondagens e Drenagem"
   },
   {
     "title": "Aspiração de Vias Aéreas",

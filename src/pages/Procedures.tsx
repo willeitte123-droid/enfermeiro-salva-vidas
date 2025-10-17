@@ -19,7 +19,6 @@ import * as LucideIcons from "lucide-react";
 import proceduresData from "@/data/procedures.json";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import EcgPlacementDiagram from "@/components/diagrams/EcgPlacementDiagram";
-import SngMeasurementDiagram from "@/components/diagrams/SngMeasurementDiagram";
 import AvpSitesDiagram from "@/components/diagrams/AvpSitesDiagram";
 
 interface Profile {
@@ -43,7 +42,6 @@ const procedures: Procedure[] = proceduresData;
 
 const diagramMap: { [key: string]: React.ComponentType } = {
   EcgPlacementDiagram,
-  SngMeasurementDiagram,
   AvpSitesDiagram,
 };
 
