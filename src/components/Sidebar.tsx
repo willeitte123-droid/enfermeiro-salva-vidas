@@ -10,6 +10,7 @@ import { useTheme } from "./ThemeProvider";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import SidebarNav from "./SidebarNav";
 import { SheetClose } from "./ui/sheet";
+import { useThemeCustomization } from "@/context/ThemeCustomizationContext";
 
 interface SidebarProps {
   isAdmin: boolean;
@@ -26,6 +27,7 @@ interface SidebarProps {
 const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, onToggle, isMobile = false }: SidebarProps) => {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
+  const { themeSettings } = useThemeCustomization();
   
   // Garante que o menu nunca esteja no estado "colapsado" em dispositivos móveis.
   const isCollapsed = isMobile ? false : isCollapsedProp;
@@ -82,7 +84,11 @@ const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, onToggle
 
       <div className="flex h-16 items-center border-b border-border/10 px-6">
         <div className="flex items-center gap-3">
-          <Stethoscope className="h-7 w-7 text-primary flex-shrink-0" />
+          {themeSettings.logo_url && themeSettings.logo_url !== '/logo.svg' ? (
+            <img src={themeSettings.logo_url} alt="Logo" className={cn("h-8 transition-all", isCollapsed ? "w-8" : "w-auto")} />
+          ) : (
+            <Stethoscope className="h-7 w-7 text-primary flex-shrink-0" />
+          )}
           <h1 className={cn("text-xl font-bold text-white", isCollapsed && "hidden")}>Enfermagem Pro</h1>
         </div>
       </div>
