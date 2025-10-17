@@ -60,7 +60,8 @@
       "Descartar perfurocortante adequadamente."
     ],
     "observations": "Evitar articulações. Não puncionar membros com fístula, esvaziamento ganglionar ou lesões. Trocar apenas com indicação clínica.",
-    "category": "Acessos e Punções"
+    "category": "Acessos e Punções",
+    "diagramComponent": "AvpSitesDiagram"
   },
   {
     "title": "Inserção de Cateter Central de Inserção Periférica (PICC)",
@@ -189,7 +190,8 @@
       "Fixar a sonda e registrar o procedimento."
     ],
     "observations": "Se o paciente tossir ou apresentar dispneia, retire a sonda imediatamente. O método de ausculta com injeção de ar é inseguro e não recomendado.",
-    "category": "Sondagens e Drenagem"
+    "category": "Sondagens e Drenagem",
+    "diagramComponent": "SngMeasurementDiagram"
   },
   {
     "title": "Aspiração de Vias Aéreas",
@@ -275,7 +277,8 @@
       "Identificar o traçado com nome completo do paciente, data e hora."
     ],
     "observations": "O posicionamento correto dos eletrodos é crucial para um diagnóstico preciso. A troca de cabos gera alterações que podem simular patologias graves. Em mulheres, os eletrodos V3-V6 devem ser colocados abaixo da mama.",
-    "category": "Monitoramento e Emergência"
+    "category": "Monitoramento e Emergência",
+    "diagramComponent": "EcgPlacementDiagram"
   },
   {
     "title": "Coleta de Hemoculturas",

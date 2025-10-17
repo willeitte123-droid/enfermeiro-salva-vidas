@@ -18,6 +18,9 @@ import { supabase } from "@/lib/supabase";
 import * as LucideIcons from "lucide-react";
 import proceduresData from "@/data/procedures.json";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import EcgPlacementDiagram from "@/components/diagrams/EcgPlacementDiagram";
+import SngMeasurementDiagram from "@/components/diagrams/SngMeasurementDiagram";
+import AvpSitesDiagram from "@/components/diagrams/AvpSitesDiagram";
 
 interface Profile {
   id: string;
@@ -33,9 +36,16 @@ interface Procedure {
   steps: string[];
   observations: string;
   category: "Acessos e Punções" | "Sondagens e Drenagem" | "Vias Aéreas" | "Monitoramento e Emergência" | "Cuidados Gerais";
+  diagramComponent?: string;
 }
 
 const procedures: Procedure[] = proceduresData;
+
+const diagramMap: { [key: string]: React.ComponentType } = {
+  EcgPlacementDiagram,
+  SngMeasurementDiagram,
+  AvpSitesDiagram,
+};
 
 const Procedures = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
@@ -110,6 +120,7 @@ const Procedures = () => {
           {filteredProcedures.map((proc, index) => {
             const Icon = LucideIcons[proc.icon] as LucideIcons.LucideIcon;
             const itemId = `/procedures#${proc.title.toLowerCase().replace(/\s+/g, '-')}`;
+            const DiagramComponent = proc.diagramComponent ? diagramMap[proc.diagramComponent] : null;
             return (
               <Accordion type="single" collapsible key={index}>
                 <AccordionItem value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
@@ -163,6 +174,8 @@ const Procedures = () => {
                         {proc.observations}
                       </AlertDescription>
                     </Alert>
+
+                    {DiagramComponent && <DiagramComponent />}
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
