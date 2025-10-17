@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, Loader2, Lightbulb, RefreshCw, MessageSquare, Smile, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Lightbulb, Award, RefreshCw, MessageSquare, Smile, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import EmojiPicker from "emoji-picker-react";
-import allQuestions from "@/data/questions.json";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Question } from "@/context/QuestionsContext";
 
 interface Profile {
@@ -53,6 +53,7 @@ const QUESTIONS_PER_PAGE = 1;
 
 const Questions = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const queryClient = useQueryClient();
 
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [currentPage, setCurrentPage] = useState(0);
@@ -75,21 +76,38 @@ const Questions = () => {
     defaultValues: { content: "" },
   });
 
-  const categories = useMemo(() => {
-    const uniqueCategories = [...new Set(allQuestions.map(q => q.category))];
-    return ["Todas", ...uniqueCategories.sort()];
-  }, []);
-
-  const filteredQuestions = useMemo(() => {
-    if (selectedCategory === "Todas") {
-      return allQuestions;
+  const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
+    queryKey: ['questionCategories'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('questions').select('category');
+      if (error) throw error;
+      const uniqueCategories = [...new Set(data.map(q => q.category))];
+      return ["Todas", ...uniqueCategories.sort()];
     }
-    return allQuestions.filter(q => q.category === selectedCategory);
-  }, [selectedCategory]);
+  });
 
-  const totalQuestions = filteredQuestions.length;
+  const { data, isLoading, isFetching, error } = useQuery({
+    queryKey: ['questions', selectedCategory, currentPage],
+    queryFn: async () => {
+      const from = currentPage * QUESTIONS_PER_PAGE;
+      const to = from + QUESTIONS_PER_PAGE - 1;
+
+      let query = supabase.from('questions').select('*', { count: 'exact' });
+      if (selectedCategory !== "Todas") {
+        query = query.eq('category', selectedCategory);
+      }
+      query = query.range(from, to);
+
+      const { data, error, count } = await query;
+      if (error) throw error;
+      return { questions: data as Question[], count };
+    },
+    keepPreviousData: true,
+  });
+
+  const currentQuestion = data?.questions?.[0];
+  const totalQuestions = data?.count ?? 0;
   const totalPages = Math.ceil(totalQuestions / QUESTIONS_PER_PAGE);
-  const currentQuestion = filteredQuestions[currentPage];
 
   useEffect(() => {
     setSelectedAnswer("");
@@ -97,7 +115,7 @@ const Questions = () => {
     setAnsweredCorrectly(null);
     setIsCommentsOpen(false);
     setComments([]);
-  }, [currentPage, selectedCategory]);
+  }, [currentPage, selectedCategory, currentQuestion]);
 
   const fetchComments = async (questionId: number) => {
     setIsCommentsLoading(true);
@@ -188,11 +206,13 @@ const Questions = () => {
         <Label htmlFor="category-filter">Filtrar por Categoria</Label>
         <Select value={selectedCategory} onValueChange={(value) => { setSelectedCategory(value); setCurrentPage(0); }}>
           <SelectTrigger id="category-filter" className="w-full md:w-[300px]"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger>
-          <SelectContent>{categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent>
+          <SelectContent>{isLoadingCategories ? <div className="p-2"><Loader2 className="h-4 w-4 animate-spin"/></div> : categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent>
         </Select>
       </div>
 
-      {!currentQuestion ? <Card><CardContent className="py-12 text-center text-muted-foreground">Nenhuma questão encontrada para a categoria selecionada.</CardContent></Card> :
+      {isLoading ? <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando...</span></div> :
+       error ? <Alert variant="destructive"><XCircle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{(error as Error).message}</AlertDescription></Alert> :
+       !currentQuestion ? <Card><CardContent className="py-12 text-center text-muted-foreground">Nenhuma questão encontrada para a categoria selecionada.</CardContent></Card> :
       (
         <Card>
           <CardHeader>
@@ -249,8 +269,8 @@ const Questions = () => {
             )}
 
             <div className="flex justify-between items-center">
-              <Button variant="outline" onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 0}><ChevronLeft className="h-4 w-4 mr-2" />Anterior</Button>
-              {!showExplanation ? <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer}>Responder</Button> : <Button onClick={handleNextQuestion} disabled={currentPage >= totalPages - 1}>Próxima Questão<ChevronRight className="h-4 w-4 ml-2" /></Button>}
+              <Button variant="outline" onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 0 || isFetching}><ChevronLeft className="h-4 w-4 mr-2" />Anterior</Button>
+              {!showExplanation ? <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer || isFetching}>Responder</Button> : <Button onClick={handleNextQuestion} disabled={currentPage >= totalPages - 1 || isFetching}>Próxima Questão<ChevronRight className="h-4 w-4 ml-2" /></Button>}
             </div>
           </CardContent>
         </Card>
