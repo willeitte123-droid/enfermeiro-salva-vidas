@@ -60,7 +60,7 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     const linkContent = (
       <>
         <Icon className="h-4 w-4 flex-shrink-0" />
-        <span className={cn(isCollapsed && !isMobile && "hidden")}>{item.label}</span>
+        <span className={cn(isCollapsed && "hidden")}>{item.label}</span>
       </>
     );
 
@@ -82,7 +82,7 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
           <span className={cn(isCollapsed && "hidden")}>Ferramentas</span>
           {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
         </CollapsibleTrigger>
-        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
+        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && !isMobile && "pl-4")}>
           {navItems.tools.map(renderNavLink)}
         </CollapsibleContent>
       </Collapsible>
@@ -92,7 +92,7 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
           <span className={cn(isCollapsed && "hidden")}>Consulta e Estudo</span>
           {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
         </CollapsibleTrigger>
-        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && "pl-4")}>
+        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && !isMobile && "pl-4")}>
           {navItems.study.map(renderNavLink)}
         </CollapsibleContent>
       </Collapsible>
