@@ -130,7 +130,7 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card>
+        <Card className="bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <History className="h-5 w-5 text-primary" />
@@ -143,7 +143,7 @@ const Dashboard = () => {
                 {recentActivities.map((activity) => {
                   const Icon = LucideIcons[activity.icon] as LucideIcons.LucideIcon;
                   return (
-                    <Link to={activity.path} key={activity.path} className="block p-3 rounded-md hover:bg-accent transition-colors">
+                    <Link to={activity.path} key={activity.path} className="block p-3 rounded-md bg-background/50 hover:bg-background/70 transition-colors">
                       <div className="flex items-center gap-4">
                         {Icon && <Icon className="h-5 w-5 text-muted-foreground" />}
                         <div>
