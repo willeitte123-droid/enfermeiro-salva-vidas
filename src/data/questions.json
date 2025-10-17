@@ -1,0 +1,262 @@
+[
+  {
+    "id": 1001,
+    "category": "Terapia Intensiva",
+    "question": "Um paciente em ventilação mecânica com PEEP de 12 cmH₂O apresenta queda súbita da saturação, hipotensão e desvio da traqueia. Qual é a complicação mais provável?",
+    "options": [
+      {"id": "A", "text": "Embolia pulmonar"},
+      {"id": "B", "text": "Pneumotórax hipertensivo"},
+      {"id": "C", "text": "Tamponamento cardíaco"},
+      {"id": "D", "text": "Infarto agudo do miocárdio"}
+    ],
+    "correctAnswer": "B",
+    "explanation": "A combinação de ventilação com pressão positiva (PEEP elevada), hipoxemia súbita, instabilidade hemodinâmica e desvio da traqueia é a apresentação clássica de pneumotórax hipertensivo, uma emergência médica que requer descompressão torácica imediata."
+  },
+  {
+    "id": 1002,
+    "category": "Cardiologia",
+    "question": "No ECG de um paciente com dor torácica, você observa um supradesnivelamento do segmento ST nas derivações DII, DIII e aVF. Qual parede do miocárdio está provavelmente sofrendo o infarto?",
+    "options": [
+      {"id": "A", "text": "Parede anterior"},
+      {"id": "B", "text": "Parede lateral"},
+      {"id": "C", "text": "Parede inferior"},
+      {"id": "D", "text": "Parede septal"}
+    ],
+    "correctAnswer": "C",
+    "explanation": "As derivações DII, DIII e aVF visualizam a parede inferior do coração. Um supradesnivelamento de ST nessas derivações é o sinal característico de um Infarto Agudo do Miocárdio com Supradesnível do Segmento ST (IAMCSST) de parede inferior."
+  },
+  {
+    "id": 1003,
+    "category": "Farmacologia",
+    "question": "Qual é o principal risco associado à administração intravenosa rápida de Furosemida em altas doses?",
+    "options": [
+      {"id": "A", "text": "Hipercalemia"},
+      {"id": "B", "text": "Ototoxicidade"},
+      {"id": "C", "text": "Hipertensão de rebote"},
+      {"id": "D", "text": "Bradicardia severa"}
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Furosemida, um diurético de alça, é conhecida por seu potencial de ototoxicidade (dano ao ouvido), especialmente quando administrada em altas doses por via intravenosa e de forma rápida (velocidade > 4mg/min)."
+  },
+  {
+    "id": 1004,
+    "category": "Emergência",
+    "question": "Na avaliação primária de um paciente politraumatizado (ABCDE), em qual etapa é abordado o controle de uma hemorragia externa exsanguinante?",
+    "options": [
+      {"id": "A", "text": "A - Vias Aéreas"},
+      {"id": "B", "text": "B - Respiração"},
+      {"id": "C", "text": "C - Circulação"},
+      {"id": "D", "text": "A abordagem inicial, antes mesmo do A (XABCDE)"}
+    ],
+    "correctAnswer": "D",
+    "explanation": "As diretrizes mais recentes do PHTLS e ATLS preconizam o mnemônico XABCDE, onde o 'X' representa o controle de hemorragias externas exsanguinantes como a prioridade máxima, a ser realizada antes mesmo da avaliação das vias aéreas."
+  },
+  {
+    "id": 1005,
+    "category": "Nefrologia",
+    "question": "Um paciente com insuficiência renal crônica em hemodiálise apresenta no ECG ondas T apiculadas e complexo QRS alargado. Qual distúrbio eletrolítico é o mais provável?",
+    "options": [
+      {"id": "A", "text": "Hipocalcemia"},
+      {"id": "B", "text": "Hipercalemia"},
+      {"id": "C", "text": "Hiponatremia"},
+      {"id": "D", "text": "Hipermagnesemia"}
+    ],
+    "correctAnswer": "B",
+    "explanation": "A hipercalemia (excesso de potássio) é uma complicação comum em pacientes renais e causa alterações características no ECG, incluindo ondas T altas e apiculadas, achatamento da onda P e alargamento do complexo QRS, podendo evoluir para arritmias letais."
+  },
+  {
+    "id": 1006,
+    "category": "Oncologia",
+    "question": "Durante a infusão de Doxorrubicina, um quimioterápico vesicante, o paciente queixa-se de dor e queimação no local do acesso venoso periférico. Qual é a primeira ação da enfermagem?",
+    "options": [
+      {"id": "A", "text": "Aumentar a velocidade de infusão para terminar mais rápido."},
+      {"id": "B", "text": "Administrar um analgésico e continuar a infusão."},
+      {"id": "C", "text": "Parar a infusão imediatamente e aspirar qualquer resíduo do cateter."},
+      {"id": "D", "text": "Aplicar compressas quentes no local."}
+    ],
+    "correctAnswer": "C",
+    "explanation": "A suspeita de extravasamento de um agente vesicante exige a interrupção imediata da infusão. A tentativa de aspirar o medicamento residual pode minimizar o dano tecidual. A aplicação de compressas frias (na maioria dos casos, exceto alcaloides da vinca) e a notificação médica são os passos seguintes."
+  },
+  {
+    "id": 1007,
+    "category": "Terapia Intensiva",
+    "question": "Qual parâmetro da ventilação mecânica é o principal responsável pela melhora da oxigenação ao recrutar alvéolos colapsados?",
+    "options": [
+      {"id": "A", "text": "Frequência Respiratória (FR)"},
+      {"id": "B", "text": "Volume Corrente (VC)"},
+      {"id": "C", "text": "Pressão Positiva Expiratória Final (PEEP)"},
+      {"id": "D", "text": "Relação Inspiração:Expiração (I:E)"}
+    ],
+    "correctAnswer": "C",
+    "explanation": "A PEEP mantém uma pressão positiva nos alvéolos ao final da expiração, prevenindo o colapso alveolar e melhorando a área de troca gasosa, o que resulta em uma melhor oxigenação (aumento da PaO₂/SatO₂)."
+  },
+  {
+    "id": 1008,
+    "category": "Farmacologia",
+    "question": "Um paciente está recebendo Vancomicina IV e desenvolve eritema intenso no pescoço e tronco, prurido e hipotensão. Qual é o nome dessa reação e qual a principal causa?",
+    "options": [
+      {"id": "A", "text": "Síndrome de Stevens-Johnson, causada por alergia."},
+      {"id": "B", "text": "Síndrome do Homem Vermelho, causada por infusão rápida."},
+      {"id": "C", "text": "Choque anafilático, causado por reação IgE mediada."},
+      {"id": "D", "text": "Síndrome de Lyell, causada por toxicidade."}
+    ],
+    "correctAnswer": "B",
+    "explanation": "A Síndrome do Homem Vermelho (ou Red Man Syndrome) é uma reação de hipersensibilidade não alérgica causada pela liberação de histamina devido à infusão rápida de Vancomicina. O tratamento envolve a interrupção, administração de anti-histamínicos e reinício da infusão em uma velocidade mais lenta (mínimo de 60 minutos)."
+  },
+  {
+    "id": 1009,
+    "category": "Cardiologia",
+    "question": "Qual é o tratamento de primeira linha para uma Taquicardia Supraventricular (TSV) estável com complexo QRS estreito?",
+    "options": [
+      {"id": "A", "text": "Cardioversão elétrica sincronizada imediata."},
+      {"id": "B", "text": "Manobras vagais seguidas de Adenosina IV."},
+      {"id": "C", "text": "Amiodarona 300mg em bolus."},
+      {"id": "D", "text": "Massagem do seio carotídeo bilateralmente."}
+    ],
+    "correctAnswer": "B",
+    "explanation": "Para TSV estável, a abordagem inicial é tentar reverter o ritmo com manobras vagais (Valsalva, massagem do seio carotídeo unilateral). Se ineficaz, a droga de escolha é a Adenosina (6mg em bolus IV rápido), que tem uma meia-vida ultracurta e bloqueia temporariamente o nó AV."
+  },
+  {
+    "id": 1010,
+    "category": "Emergência",
+    "question": "Um paciente chega à emergência com rebaixamento do nível de consciência, hálito cetônico e respiração de Kussmaul. A glicemia capilar é de 450 mg/dL. Qual é o pilar inicial do tratamento?",
+    "options": [
+      {"id": "A", "text": "Administração de Bicarbonato de Sódio."},
+      {"id": "B", "text": "Insulinoterapia em bolus IV."},
+      {"id": "C", "text": "Hidratação venosa vigorosa com Soro Fisiológico 0,9%."},
+      {"id": "D", "text": "Reposição de potássio."}
+    ],
+    "correctAnswer": "C",
+    "explanation": "No tratamento da Cetoacidose Diabética (CAD), a prioridade inicial é a expansão volêmica com SF 0,9% para corrigir a desidratação severa e melhorar a perfusão renal. A insulinoterapia só deve ser iniciada após a hidratação inicial e a verificação do nível de potássio."
+  },
+  {
+    "id": 1101,
+    "category": "Legislação do SUS",
+    "question": "De acordo com a Lei 8.080/90, qual dos seguintes NÃO é um princípio doutrinário do SUS?",
+    "options": [
+      {"id": "A", "text": "Universalidade"},
+      {"id": "B", "text": "Equidade"},
+      {"id": "C", "text": "Integralidade"},
+      {"id": "D", "text": "Regionalização"}
+    ],
+    "correctAnswer": "D",
+    "explanation": "A Regionalização é um princípio organizativo (ou diretriz) do SUS, juntamente com a Hierarquização, Descentralização e Participação Social. Os princípios doutrinários são Universalidade, Equidade e Integralidade."
+  },
+  {
+    "id": 1102,
+    "category": "Ética Profissional",
+    "question": "Segundo a Lei 7.498/86 (Lei do Exercício Profissional da Enfermagem), qual das seguintes atividades é privativa do Enfermeiro?",
+    "options": [
+      {"id": "A", "text": "Administração de medicamentos por via intramuscular."},
+      {"id": "B", "text": "Realização de curativos em feridas complexas."},
+      {"id": "C", "text": "Consulta de enfermagem e prescrição da assistência de enfermagem."},
+      {"id": "D", "text": "Aferição de sinais vitais em pacientes graves."}
+    ],
+    "correctAnswer": "C",
+    "explanation": "A consulta de enfermagem e a prescrição da assistência são atividades privativas do enfermeiro, representando o ápice de sua autonomia profissional e do processo de enfermagem (SAE)."
+  },
+  {
+    "id": 1103,
+    "category": "Imunização (PNI)",
+    "question": "A vacina BCG, que protege contra as formas graves de tuberculose, deve ser administrada por qual via e qual a evolução esperada no local da aplicação?",
+    "options": [
+      {"id": "A", "text": "Via subcutânea; formação de pápula imediata."},
+      {"id": "B", "text": "Via intramuscular; ausência de reação local."},
+      {"id": "C", "text": "Via oral; pode causar febre baixa."},
+      {"id": "D", "text": "Via intradérmica; evolução para mácula, pápula, pústula e cicatriz."}
+    ],
+    "correctAnswer": "D",
+    "explanation": "A BCG é administrada por via intradérmica (ID) no músculo deltoide direito. A reação local esperada evolui de uma mácula para pápula, pústula que ulcera e, finalmente, deixa uma cicatriz característica, indicando o sucesso da vacinação."
+  },
+  {
+    "id": 1104,
+    "category": "SAE",
+    "question": "O Processo de Enfermagem, conforme a Resolução COFEN 358/2009, é organizado em cinco etapas inter-relacionadas. Qual é a sequência correta dessas etapas?",
+    "options": [
+      {"id": "A", "text": "Planejamento, Diagnóstico, Coleta de Dados, Implementação, Avaliação."},
+      {"id": "B", "text": "Coleta de Dados, Diagnóstico, Planejamento, Implementação, Avaliação."},
+      {"id": "C", "text": "Diagnóstico, Planejamento, Coleta de Dados, Avaliação, Implementação."},
+      {"id": "D", "text": "Coleta de Dados, Planejamento, Diagnóstico, Implementação, Avaliação."}
+    ],
+    "correctAnswer": "B",
+    "explanation": "A sequência lógica e metodológica do Processo de Enfermagem é: 1º Coleta de Dados (Histórico), 2º Diagnóstico de Enfermagem, 3º Planejamento, 4º Implementação (Prescrição) e 5º Avaliação."
+  },
+  {
+    "id": 1105,
+    "category": "Segurança do Paciente",
+    "question": "A Meta Internacional de Segurança do Paciente nº 1 preconiza a identificação correta dos pacientes. Qual é a recomendação para essa identificação?",
+    "options": [
+      {"id": "A", "text": "Perguntar o nome do paciente e verificar o número do leito."},
+      {"id": "B", "text": "Usar no mínimo dois identificadores, como nome completo e data de nascimento."},
+      {"id": "C", "text": "Verificar a pulseira de identificação e o diagnóstico médico."},
+      {"id": "D", "text": "Confirmar o nome do paciente com o acompanhante."}
+    ],
+    "correctAnswer": "B",
+    "explanation": "A recomendação é usar pelo menos dois identificadores inequívocos, como nome completo e data de nascimento, antes de qualquer procedimento, administração de medicamentos ou transfusão. O número do leito ou o diagnóstico não são considerados identificadores seguros."
+  },
+  {
+    "id": 1106,
+    "category": "Saúde da Mulher",
+    "question": "De acordo com as diretrizes do Ministério da Saúde, o rastreamento do câncer de colo de útero com o exame Papanicolau deve ser realizado em qual população e com qual periodicidade?",
+    "options": [
+      {"id": "A", "text": "Mulheres de 18 a 59 anos, anualmente."},
+      {"id": "B", "text": "Mulheres de 25 a 64 anos, a cada três anos após dois exames anuais negativos."},
+      {"id": "C", "text": "Mulheres a partir do início da atividade sexual, a cada seis meses."},
+      {"id": "D", "text": "Mulheres de 40 a 69 anos, bienalmente."}
+    ],
+    "correctAnswer": "B",
+    "explanation": "A diretriz atual preconiza o início da coleta aos 25 anos para mulheres que já tiveram atividade sexual. Os dois primeiros exames devem ser anuais. Se ambos forem negativos, o rastreamento passa a ser a cada três anos, até os 64 anos."
+  },
+  {
+    "id": 1107,
+    "category": "Fundamentos de Enfermagem",
+    "question": "Para administrar 500 mL de Soro Fisiológico 0,9% em 6 horas, utilizando um equipo de macrogotas (20 gotas/mL), qual será o gotejamento em gotas por minuto?",
+    "options": [
+      {"id": "A", "text": "14 gotas/min"},
+      {"id": "B", "text": "28 gotas/min"},
+      {"id": "C", "text": "42 gotas/min"},
+      {"id": "D", "text": "83 gotas/min"}
+    ],
+    "correctAnswer": "B",
+    "explanation": "A fórmula é: Gotejamento = Volume (mL) / (Tempo (h) x 3). Portanto, 500 / (6 x 3) = 500 / 18 ≈ 27,7. O valor mais próximo é 28 gotas/min."
+  },
+  {
+    "id": 1108,
+    "category": "Urgência e Emergência",
+    "question": "Na reanimação cardiopulmonar (RCP) de um adulto, qual é a frequência e a profundidade corretas das compressões torácicas?",
+    "options": [
+      {"id": "A", "text": "80-100 compressões/min; profundidade de 4-5 cm."},
+      {"id": "B", "text": "100-120 compressões/min; profundidade de 5-6 cm."},
+      {"id": "C", "text": "120-140 compressões/min; profundidade de 6-7 cm."},
+      {"id": "D", "text": "Pelo menos 100 compressões/min; profundidade de pelo menos 5 cm."}
+    ],
+    "correctAnswer": "B",
+    "explanation": "As diretrizes da American Heart Association (AHA) recomendam uma frequência de compressão entre 100 e 120 por minuto e uma profundidade de 5 a 6 centímetros no adulto, permitindo o retorno completo do tórax entre as compressões."
+  },
+  {
+    "id": 1109,
+    "category": "Políticas de Saúde (PNAB)",
+    "question": "Segundo a Política Nacional de Atenção Básica (PNAB), qual dos seguintes é um atributo essencial da Atenção Primária à Saúde (APS)?",
+    "options": [
+      {"id": "A", "text": "Alta complexidade tecnológica."},
+      {"id": "B", "text": "Foco em procedimentos cirúrgicos."},
+      {"id": "C", "text": "Acesso de primeiro contato, longitudinalidade e integralidade."},
+      {"id": "D", "text": "Atendimento exclusivo por especialistas."}
+    ],
+    "correctAnswer": "C",
+    "explanation": "Os atributos essenciais da APS são: Acesso de Primeiro Contato (ser a porta de entrada do sistema), Longitudinalidade (acompanhamento ao longo do tempo), Integralidade (abordagem integral do indivíduo) e Coordenação do Cuidado. A orientação familiar e comunitária e a competência cultural são atributos derivados."
+  },
+  {
+    "id": 1110,
+    "category": "Vigilância Epidemiológica",
+    "question": "A Tuberculose é uma doença de notificação compulsória. Qual é o principal esquema de tratamento para casos novos de tuberculose pulmonar em adultos?",
+    "options": [
+      {"id": "A", "text": "Esquema de 12 meses com 3 drogas."},
+      {"id": "B", "text": "Esquema de 9 meses com 4 drogas."},
+      {"id": "C", "text": "Esquema de 6 meses, sendo 2 meses de fase intensiva (RIPE) e 4 meses de manutenção (RI)."},
+      {"id": "D", "text": "Esquema de 4 meses com Rifampicina e Isoniazida."}
+    ],
+    "correctAnswer": "C",
+    "explanation": "O esquema básico (ou esquema RIPE) para tratamento da tuberculose dura 6 meses. A fase intensiva (2 meses) usa Rifampicina, Isoniazida, Pirazinamida e Etambutol. A fase de manutenção (4 meses) usa Rifampicina e Isoniazida."
+  }
+]
