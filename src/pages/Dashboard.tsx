@@ -210,13 +210,13 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <Card className="w-full max-w-4xl mx-auto shadow-lg">
+      <Card className="w-full max-w-4xl mx-auto shadow-lg bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-3">
-            <MessageSquare className="h-6 w-6 text-primary" />
+          <CardTitle className="flex items-center gap-3 text-blue-700 dark:text-blue-400">
+            <MessageSquare className="h-6 w-6" />
             Comentários em Destaque
           </CardTitle>
-          <CardDescription>Veja o que a comunidade está discutindo.</CardDescription>
+          <CardDescription className="text-blue-900/80 dark:text-blue-200/80">Veja o que a comunidade está discutindo.</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoadingComment ? (
@@ -225,7 +225,7 @@ const Dashboard = () => {
             </div>
           ) : currentComment ? (
             <div key={currentCommentIndex} className="space-y-4 animate-in fade-in-50 duration-500">
-              <blockquote className="border-l-4 pl-4 italic text-foreground">
+              <blockquote className="border-l-4 pl-4 italic text-blue-900 dark:text-blue-200">
                 "{currentComment.content}"
               </blockquote>
               <div className="flex justify-end items-center gap-3 mt-2">
@@ -257,7 +257,7 @@ const Dashboard = () => {
             </p>
           )}
         </CardContent>
-        <CardFooter className="bg-muted/30 p-4 flex justify-end">
+        <CardFooter className="p-4 flex justify-end">
           <Button asChild>
             <Link to="/questions">
               Participar da Discussão <ArrowRight className="ml-2 h-4 w-4" />
