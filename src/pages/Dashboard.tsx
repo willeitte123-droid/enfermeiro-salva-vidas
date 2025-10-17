@@ -132,8 +132,8 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card className="bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/20">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <History className="h-5 w-5 text-primary" />
+            <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
+              <History className="h-6 w-6" />
               Continue de onde parou
             </CardTitle>
           </CardHeader>
