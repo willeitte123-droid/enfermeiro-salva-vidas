@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Syringe, Search, CheckCircle, XCircle, AlertTriangle, FlaskConical } from "lucide-react";
+import { Syringe, Search, CheckCircle, XCircle, AlertTriangle, FlaskConical, Pill } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useQuery } from "@tanstack/react-query";
@@ -18,10 +18,11 @@ interface Medication {
   name: string;
   activeIngredient: string;
   indication: string;
+  dose: string;
+  administration: string;
   contraindication: string;
   adverseEffects: string;
   category: string;
-  dilution: string;
 }
 
 const medications: Medication[] = medicationsData;
@@ -125,10 +126,17 @@ const Medications = () => {
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
+                      <Pill className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="font-semibold text-sm text-cyan-700 mb-1">Dose Usual</h4>
+                        <p className="text-sm" dangerouslySetInnerHTML={{ __html: medication.dose }} />
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
                       <FlaskConical className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <h4 className="font-semibold text-sm text-blue-700 mb-1">Diluição e Administração</h4>
-                        <p className="text-sm" dangerouslySetInnerHTML={{ __html: medication.dilution }} />
+                        <h4 className="font-semibold text-sm text-blue-700 mb-1">Administração e Cuidados de Enfermagem</h4>
+                        <p className="text-sm" dangerouslySetInnerHTML={{ __html: medication.administration }} />
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
