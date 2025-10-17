@@ -106,3 +106,6 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
       )}
     </nav>
   );
+};
+
+export default SidebarNav;
