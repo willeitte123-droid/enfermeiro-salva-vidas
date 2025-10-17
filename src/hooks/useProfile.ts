@@ -23,6 +23,7 @@ export const useProfile = (session: Session | null) => {
         queryKey: ['profile', session?.user?.id],
         queryFn: () => fetchProfile(session),
         enabled: !!session?.user,
-        staleTime: 1000 * 60 * 5, // Cache por 5 minutos
+        staleTime: 0, // Força a revalidação dos dados do perfil a cada visita
+        refetchOnWindowFocus: true, // Garante que os dados sejam atualizados ao focar na janela
     });
 };
