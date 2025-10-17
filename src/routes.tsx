@@ -30,6 +30,7 @@ import ApgarScale from './pages/scales/ApgarScale';
 import ManchesterScale from './pages/scales/ManchesterScale';
 import ParklandScale from './pages/scales/ParklandScale';
 import AsaScale from './pages/scales/AsaScale';
+import KatzScale from './pages/scales/KatzScale';
 import EcgGuide from './pages/EcgGuide';
 import ProfilePage from './pages/Profile';
 import PublicProfile from './pages/PublicProfile';
@@ -83,6 +84,7 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
         <Route path="scales/manchester" element={<ManchesterScale />} />
         <Route path="scales/parkland" element={<ParklandScale />} />
         <Route path="scales/asa" element={<AsaScale />} />
+        <Route path="scales/katz" element={<KatzScale />} />
         <Route path="ecg" element={<EcgGuide />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="user/:userId" element={<PublicProfile />} />
