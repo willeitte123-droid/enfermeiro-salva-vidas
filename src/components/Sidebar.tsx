@@ -23,9 +23,12 @@ interface SidebarProps {
   isMobile?: boolean;
 }
 
-const Sidebar = ({ isAdmin, user, isCollapsed = false, onToggle, isMobile = false }: SidebarProps) => {
+const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, onToggle, isMobile = false }: SidebarProps) => {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
+  
+  // Garante que o menu nunca esteja no estado "colapsado" em dispositivos móveis.
+  const isCollapsed = isMobile ? false : isCollapsedProp;
 
   const getInitials = () => {
     const firstName = user?.first_name?.[0] || '';
