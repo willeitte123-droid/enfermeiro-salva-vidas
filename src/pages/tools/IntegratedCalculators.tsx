@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Scale, Baby } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import BMICalculator from "@/components/calculators/BMICalculator";
 import PregnancyCalculator from "@/components/calculators/PregnancyCalculator";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -11,6 +13,11 @@ interface Profile {
 
 const IntegratedCalculators = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Ferramenta', title: 'Calculadoras Integradas', path: '/tools/integrated-calculators', icon: 'Calculator' });
+  }, [addActivity]);
 
   return (
     <div className="space-y-6">

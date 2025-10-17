@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -5,6 +6,7 @@ import { Library, CheckCircle2 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import * as LucideIcons from "lucide-react";
 import reviewTopicsData from "@/data/reviewTopics.json";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -26,6 +28,11 @@ const reviewTopics: ReviewTopic[] = reviewTopicsData;
 
 const ReviewArea = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Estudo', title: 'Área de Revisão', path: '/review-area', icon: 'Library' });
+  }, [addActivity]);
 
   return (
     <div className="space-y-8">

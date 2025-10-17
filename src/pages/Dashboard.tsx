@@ -2,11 +2,13 @@ import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2 } from "lucide-react";
+import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
+import * as LucideIcons from "lucide-react";
 
 interface Profile {
   id: string;
@@ -94,13 +96,14 @@ const fetchFeaturedComments = async () => {
 
   if (error) throw error;
 
-  // Filtrar comentários onde o perfil ou a questão associada são nulos
   return data.filter(comment => comment.profiles && comment.questions) as FeaturedComment[];
 };
 
 const Dashboard = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
+  const { activities } = useActivityTracker();
+  const recentActivities = activities.slice(0, 3);
 
   const { data: featuredComments = [], isLoading: isLoadingComment } = useQuery({
     queryKey: ['featuredComments'],
@@ -126,40 +129,73 @@ const Dashboard = () => {
         <p className="text-muted-foreground">Bem-vindo(a) de volta ao seu ambiente de estudo e trabalho.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <h2 className="text-2xl font-semibold text-foreground mb-4">Acesso Rápido</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {quickAccessLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <Link to={link.path} key={link.title}>
-                  <Card className={cn("h-full bg-card hover:bg-accent transition-all group border-2 border-transparent", link.colorClasses.hoverBorder)}>
-                    <CardContent className="flex flex-col items-center justify-center text-center p-3 sm:p-4">
-                      <div className={cn("p-2 sm:p-3 rounded-lg mb-2 sm:mb-3 transition-colors", link.colorClasses.bg)}>
-                        <Icon className={cn("h-5 w-5 sm:h-6 sm:w-6 transition-colors", link.colorClasses.text)} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <History className="h-5 w-5 text-primary" />
+              Continue de onde parou
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {recentActivities.length > 0 ? (
+              <div className="space-y-3">
+                {recentActivities.map((activity) => {
+                  const Icon = LucideIcons[activity.icon] as LucideIcons.LucideIcon;
+                  return (
+                    <Link to={activity.path} key={activity.path} className="block p-3 rounded-md hover:bg-accent transition-colors">
+                      <div className="flex items-center gap-4">
+                        {Icon && <Icon className="h-5 w-5 text-muted-foreground" />}
+                        <div>
+                          <p className="font-semibold text-sm">{activity.title}</p>
+                          <p className="text-xs text-muted-foreground">{activity.type}</p>
+                        </div>
+                        <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground" />
                       </div>
-                      <p className="font-semibold text-xs sm:text-sm text-foreground">{link.title}</p>
-                      <p className="text-[10px] sm:text-xs text-muted-foreground">{link.description}</p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-        <div className="lg:col-span-1">
-          <Card className="h-full bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
-                <Lightbulb className="h-5 w-5" />
-                Dica Clínica
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-blue-900 dark:text-blue-200 italic">"{randomTip}"</p>
-            </CardContent>
-          </Card>
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-8">
+                Sua atividade recente aparecerá aqui conforme você navega pela plataforma.
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="h-full bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
+              <Lightbulb className="h-5 w-5" />
+              Dica Clínica
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-blue-900 dark:text-blue-200 italic">"{randomTip}"</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-semibold text-foreground mb-4">Acesso Rápido</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {quickAccessLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <Link to={link.path} key={link.title}>
+                <Card className={cn("h-full bg-card hover:bg-accent transition-all group border-2 border-transparent", link.colorClasses.hoverBorder)}>
+                  <CardContent className="flex flex-col items-center justify-center text-center p-3 sm:p-4">
+                    <div className={cn("p-2 sm:p-3 rounded-lg mb-2 sm:mb-3 transition-colors", link.colorClasses.bg)}>
+                      <Icon className={cn("h-5 w-5 sm:h-6 sm:w-6 transition-colors", link.colorClasses.text)} />
+                    </div>
+                    <p className="font-semibold text-xs sm:text-sm text-foreground">{link.title}</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">{link.description}</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       </div>
 

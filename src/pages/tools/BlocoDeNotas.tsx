@@ -14,6 +14,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -47,6 +48,7 @@ const fetchNotes = async (userId: string) => {
 const BlocoDeNotas = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const queryClient = useQueryClient();
+  const { addActivity } = useActivityTracker();
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -54,6 +56,10 @@ const BlocoDeNotas = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [noteSearchTerm, setNoteSearchTerm] = useState("");
+
+  useEffect(() => {
+    addActivity({ type: 'Ferramenta', title: 'Bloco de Anotações', path: '/tools/bloco-de-notas', icon: 'NotebookText' });
+  }, [addActivity]);
 
   const { data: notes = [], isLoading } = useQuery<Note[]>({
     queryKey: ["notes", profile?.id],

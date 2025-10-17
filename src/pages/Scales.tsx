@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import * as LucideIcons from "lucide-react";
 import scalesData from "@/data/scales.json";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Scale {
   title: string;
@@ -21,6 +23,12 @@ interface Scale {
 const scales: Scale[] = scalesData;
 
 const Scales = () => {
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Ferramenta', title: 'Escalas Clínicas', path: '/scales', icon: 'ListChecks' });
+  }, [addActivity]);
+
   return (
     <div className="space-y-6">
       <div className="text-center">

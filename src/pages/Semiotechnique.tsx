@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -6,6 +7,7 @@ import { HandHeart, CheckCircle2, Droplet } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import * as LucideIcons from "lucide-react";
 import assessmentData from "@/data/assessment.json";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -38,6 +40,11 @@ const semioTechniqueData: SemioTechniqueItem[] = assessmentData.semioTechniqueDa
 
 const SemioTechnique = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Guia', title: 'Guia de Semiotécnica', path: '/semiotechnique', icon: 'HandHeart' });
+  }, [addActivity]);
 
   const vitalSigns = semioTechniqueData.filter(item => item.id !== 'glycemia');
   const glycemiaAssessment = semioTechniqueData.find(item => item.id === 'glycemia');

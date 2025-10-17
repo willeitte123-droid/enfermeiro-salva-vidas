@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import {
   Accordion,
@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import * as LucideIcons from "lucide-react";
 import proceduresData from "@/data/procedures.json";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -40,6 +41,11 @@ const Procedures = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Guia', title: 'Guia de Procedimentos', path: '/procedures', icon: 'ClipboardList' });
+  }, [addActivity]);
 
   const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
     queryKey: ['favorites', profile?.id, 'Procedimento'],

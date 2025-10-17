@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SimuladoLobby from "@/components/simulado/SimuladoLobby";
 import SimuladoQuiz from "@/components/simulado/SimuladoQuiz";
 import SimuladoResultado from "@/components/simulado/SimuladoResultado";
 import { Question } from "@/context/QuestionsContext";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface UserAnswer {
   questionId: number;
@@ -24,6 +25,11 @@ const SimuladoPage = () => {
   const [gameState, setGameState] = useState<"lobby" | "quiz" | "results">("lobby");
   const [quizConfig, setQuizConfig] = useState<QuizConfig | null>(null);
   const [quizResults, setQuizResults] = useState<QuizResults | null>(null);
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Estudo', title: 'Área de Simulado', path: '/simulado', icon: 'Timer' });
+  }, [addActivity]);
 
   const handleStart = (config: QuizConfig) => {
     setQuizConfig(config);

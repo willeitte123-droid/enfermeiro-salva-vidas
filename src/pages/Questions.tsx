@@ -24,6 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import EmojiPicker from "emoji-picker-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Question } from "@/context/QuestionsContext";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -54,6 +55,7 @@ const QUESTIONS_PER_PAGE = 1;
 const Questions = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const queryClient = useQueryClient();
+  const { addActivity } = useActivityTracker();
 
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [currentPage, setCurrentPage] = useState(0);
@@ -75,6 +77,10 @@ const Questions = () => {
     resolver: zodResolver(commentSchema),
     defaultValues: { content: "" },
   });
+
+  useEffect(() => {
+    addActivity({ type: 'Estudo', title: 'Banca de Questões', path: '/questions', icon: 'FileQuestion' });
+  }, [addActivity]);
 
   const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
     queryKey: ['questionCategories'],

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import FavoriteButton from "@/components/FavoriteButton";
 import * as LucideIcons from "lucide-react";
 import labValuesData from "@/data/labValues.json";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -32,6 +33,11 @@ const labValues: LabCategory[] = labValuesData;
 const LabValues = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Ferramenta', title: 'Guia de Valores Laboratoriais', path: '/tools/lab-values', icon: 'FileText' });
+  }, [addActivity]);
 
   const filteredData = useMemo(() => {
     if (!searchTerm) {

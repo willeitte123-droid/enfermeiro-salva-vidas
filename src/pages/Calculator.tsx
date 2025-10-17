@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import FavoriteButton from "@/components/FavoriteButton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -19,6 +20,11 @@ const Calculator = () => {
   const [volume, setVolume] = useState("");
   const [time, setTime] = useState("");
   const [dropFactor, setDropFactor] = useState("20");
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Ferramenta', title: 'Calculadora de Gotejamento', path: '/calculator', icon: 'Calculator' });
+  }, [addActivity]);
 
   const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
     queryKey: ['favorites', profile?.id, '/calculator'],

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Bandage, Info, Droplet, CheckCircle, Zap, XCircle, Search, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FavoriteButton from "@/components/FavoriteButton";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -84,6 +85,11 @@ const WoundCare = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [selectedTissue, setSelectedTissue] = useState(tissueTypes[0]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Guia', title: 'Curativos e Tratamento de Feridas', path: '/wound-care', icon: 'Bandage' });
+  }, [addActivity]);
 
   const filteredDressings = useMemo(() => {
     return dressingTypes.filter(dressing =>

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,6 +7,7 @@ import { CheckCircle2, BookOpen } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import * as LucideIcons from "lucide-react";
 import assessmentData from "@/data/assessment.json";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -44,6 +46,11 @@ const { anamnesisSteps, propaedeuticMethods, systemAssessments }: {
 
 const Semiology = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Guia', title: 'Guia de Semiologia', path: '/semiology', icon: 'FileSearch' });
+  }, [addActivity]);
 
   return (
     <div className="space-y-8">

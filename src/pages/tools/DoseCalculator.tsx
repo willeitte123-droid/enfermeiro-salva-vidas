@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FlaskConical, Syringe, Activity, AlertTriangle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import FavoriteButton from "@/components/FavoriteButton";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -15,6 +16,12 @@ interface Profile {
 
 const DoseCalculator = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Ferramenta', title: 'Calculadora de Doses', path: '/tools/dose-calculator', icon: 'FlaskConical' });
+  }, [addActivity]);
+
   // State for Simple Dose Calculator
   const [prescribedDose, setPrescribedDose] = useState("");
   const [prescribedUnit, setPrescribedUnit] = useState("mg");

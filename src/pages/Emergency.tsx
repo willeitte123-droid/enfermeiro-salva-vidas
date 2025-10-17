@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import * as LucideIcons from "lucide-react";
 import emergencyProtocolsData from "@/data/emergencies.json";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -37,6 +38,11 @@ const emergencyProtocols: EmergencyCategory[] = emergencyProtocolsData;
 const Emergency = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Guia', title: 'Urgências e Emergências', path: '/emergency', icon: 'Siren' });
+  }, [addActivity]);
 
   const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
     queryKey: ['favorites', profile?.id, 'Protocolo de Emergência'],

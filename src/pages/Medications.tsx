@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import FavoriteButton from "@/components/FavoriteButton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import medicationsData from "@/data/medications.json";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -31,6 +32,11 @@ const medications: Medication[] = medicationsData;
 const Medications = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Guia', title: 'Guia Rápido de Medicamentos', path: '/medications', icon: 'Syringe' });
+  }, [addActivity]);
 
   const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
     queryKey: ['favorites', profile?.id, 'Medicamento'],

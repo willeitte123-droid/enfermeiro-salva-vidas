@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -5,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { HeartPulse, AlertTriangle, MapPin, Waves, Clock, Zap, Repeat } from "lucide-react";
 import EcgStrip from "@/components/EcgStrip";
 import FavoriteButton from "@/components/FavoriteButton";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -12,6 +14,11 @@ interface Profile {
 
 const EcgGuide = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Guia', title: 'Guia Rápido de ECG', path: '/ecg', icon: 'BookHeart' });
+  }, [addActivity]);
 
   const lethalRhythms = [
     {

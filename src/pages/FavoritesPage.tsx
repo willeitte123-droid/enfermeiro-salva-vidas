@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useOutletContext, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Star, ListChecks, ClipboardList, Syringe, Siren, BookOpen, Library, FlaskConical, Calculator as CalculatorIcon } from "lucide-react";
 import { LucideIcon } from "lucide-react";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface Profile {
   id: string;
@@ -38,6 +40,11 @@ const iconMap: { [key: string]: LucideIcon } = {
 
 const FavoritesPage = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const { addActivity } = useActivityTracker();
+
+  useEffect(() => {
+    addActivity({ type: 'Navegação', title: 'Meus Favoritos', path: '/favorites', icon: 'Star' });
+  }, [addActivity]);
 
   const { data: favorites = [], isLoading } = useQuery<Favorite[]>({
     queryKey: ["favorites", profile?.id],
