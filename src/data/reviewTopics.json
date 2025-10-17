@@ -7,19 +7,20 @@
     "summary": "Acompanhamento do crescimento e desenvolvimento infantil, da sala de parto à puericultura.",
     "details": [
       {
-        "subtitle": "Recepção do Recém-Nascido (RN)",
+        "subtitle": "Recepção do Recém-Nascido (RN) em Sala de Parto",
         "points": [
-          "<strong>Índice de Apgar:</strong> Avaliado no 1º e 5º minuto. Avalia Frequência Cardíaca, Esforço Respiratório, Tônus Muscular, Irritabilidade Reflexa e Cor. Nota 7-10: Boa vitalidade.",
-          "<strong>Cuidados Imediatos:</strong> Manter aquecido, aspirar vias aéreas (se necessário), laquear o coto umbilical, profilaxia da oftalmia neonatal (Credé), administrar Vitamina K.",
+          "<strong>Índice de Apgar:</strong> Avaliado no 1º e 5º minuto. Avalia 5 parâmetros (nota 0-2 cada): <strong>Frequência Cardíaca</strong>, <strong>Esforço Respiratório</strong>, <strong>Tônus Muscular</strong>, <strong>Irritabilidade Reflexa</strong> e <strong>Cor</strong>. Nota 7-10: Boa vitalidade; 4-6: Anoxia moderada; 0-3: Anoxia grave.",
+          "<strong>Cuidados Imediatos:</strong> Manter aquecido (contato pele a pele), aspirar vias aéreas (se necessário, boca e depois narinas), laquear o coto umbilical, secar e estimular o RN.",
+          "<strong>Cuidados Mediatos (após 1ª hora):</strong> Profilaxia da oftalmia neonatal (Credé), administração de Vitamina K (prevenção de doença hemorrágica), antropometria (peso, altura, perímetros).",
           "<strong>Classificação do RN:</strong> Pelo peso: Baixo peso (&lt;2500g), Muito baixo peso (&lt;1500g), Extremo baixo peso (&lt;1000g). Pela Idade Gestacional: Pré-termo (&lt;37 sem), A termo (37-41 sem), Pós-termo (≥42 sem)."
         ]
       },
       {
         "subtitle": "Puericultura e Triagem Neonatal",
         "points": [
-          "<strong>Puericultura:</strong> Acompanhar curvas de crescimento (peso, altura, PC), marcos do desenvolvimento, alimentação (aleitamento materno exclusivo até 6 meses) e imunização.",
-          "<strong>Teste do Pezinho:</strong> Coleta entre o 3º e 5º dia de vida para detectar doenças metabólicas (fenilcetonúria, hipotireoidismo congênito, etc.).",
-          "<strong>Testes Adicionais:</strong> Olhinho (reflexo vermelho), Orelhinha (emissões otoacústicas), Coraçãozinho (oximetria de pulso)."
+          "<strong>Puericultura:</strong> Acompanhar curvas de crescimento (peso, altura, PC), marcos do desenvolvimento (sorriso social ~2m, sustento cefálico ~3m, sentar sem apoio ~6m, andar ~12m), alimentação (aleitamento materno exclusivo até 6 meses) e imunização.",
+          "<strong>Teste do Pezinho:</strong> Coleta entre o 3º e 5º dia de vida para detectar: Fenilcetonúria, Hipotireoidismo Congênito, Doença Falciforme, Fibrose Cística, Hiperplasia Adrenal Congênita e Deficiência de Biotinidase.",
+          "<strong>Testes Adicionais:</strong> <strong>Olhinho</strong> (reflexo vermelho, para detectar catarata congênita, retinoblastoma), <strong>Orelhinha</strong> (emissões otoacústicas, para triagem de surdez), <strong>Coraçãozinho</strong> (oximetria de pulso em MSD e um dos MMII, para cardiopatias congênitas críticas)."
         ]
       }
     ]
@@ -34,11 +35,11 @@
       {
         "subtitle": "Principais Eixos de Cuidado",
         "points": [
-          "<strong>Crescimento e Desenvolvimento:</strong> Avaliação do estadiamento puberal (Escala de Tanner).",
-          "<strong>Saúde Sexual e Reprodutiva:</strong> Orientação sobre métodos contraceptivos, prevenção de ISTs e gravidez não planejada. Abordagem confidencial.",
-          "<strong>Saúde Mental:</strong> Rastreio de ansiedade, depressão, ideação suicida, bullying e transtornos alimentares.",
-          "<strong>Vulnerabilidades:</strong> Prevenção e abordagem do uso de álcool/drogas, violência e acidentes.",
-          "<strong>Direito ao Sigilo:</strong> Garantir um espaço de confiança e confidencialidade, exceto em situações de risco iminente para si ou para outros."
+          "<strong>Crescimento e Desenvolvimento:</strong> Avaliação do estadiamento puberal pela <strong>Escala de Tanner</strong> (avalia desenvolvimento de mamas, pelos pubianos e genitália masculina).",
+          "<strong>Saúde Sexual e Reprodutiva:</strong> Orientação sobre métodos contraceptivos, prevenção de ISTs e gravidez não planejada. Abordagem confidencial e sem julgamentos.",
+          "<strong>Saúde Mental:</strong> Rastreio de ansiedade, depressão, ideação suicida, bullying e transtornos alimentares. Utilizar abordagens como o método HEEADSSS (Casa, Educação, Atividades, Drogas, Sexualidade, Segurança, Suicídio/Depressão).",
+          "<strong>Imunização:</strong> Verificar e completar esquema vacinal, com foco em <strong>HPV</strong> (9-14 anos) e <strong>Meningocócica ACWY</strong> (11-14 anos).",
+          "<strong>Direito ao Sigilo:</strong> Garantir um espaço de confiança e confidencialidade, exceto em situações de risco iminente para si ou para outros (abuso, ideação suicida grave)."
         ]
       }
     ]
@@ -53,28 +54,28 @@
       {
         "subtitle": "Crianças",
         "points": [
-          "<strong>Ao nascer:</strong> BCG e Hepatite B.",
-          "<strong>2, 4, 6 meses:</strong> Pentavalente, VIP (Pólio), Pneumo 10V (2,4m), Rotavírus (2,4m).",
-          "<strong>3, 5 meses:</strong> Meningo C.",
-          "<strong>9 meses:</strong> Febre Amarela.",
-          "<strong>12 meses:</strong> Tríplice Viral (SCR), Reforços de Pneumo 10V e Meningo C.",
-          "<strong>15 meses:</strong> DTP (reforço), VOP (Pólio), Hepatite A, Tetra Viral (SCR + Varicela)."
+          "<strong>Ao nascer:</strong> BCG (ID) e Hepatite B (IM).",
+          "<strong>2, 4, 6 meses:</strong> Pentavalente (DTP+Hib+HepB), VIP (Pólio inativada), Pneumo 10V (2,4m + ref 12m), Rotavírus (2,4m).",
+          "<strong>3, 5 meses:</strong> Meningo C (IM) (+ ref 12m).",
+          "<strong>9 meses:</strong> Febre Amarela (SC).",
+          "<strong>12 meses:</strong> Tríplice Viral (SCR - Sarampo, Caxumba, Rubéola) (SC), Reforços de Pneumo 10V e Meningo C.",
+          "<strong>15 meses:</strong> DTP (1º reforço), VOP (Pólio oral), Hepatite A, Tetra Viral (SCR + Varicela)."
         ]
       },
       {
         "subtitle": "Adolescentes (10 a 19 anos)",
         "points": [
-          "<strong>HPV:</strong> Para meninas e meninos de 9 a 14 anos (2 doses).",
+          "<strong>HPV:</strong> Para meninas e meninos de 9 a 14 anos (esquema de 2 doses com intervalo de 6 meses).",
           "<strong>Meningocócica ACWY:</strong> Dose única ou reforço para 11 a 14 anos.",
           "<strong>dT (Dupla Adulto):</strong> Reforço a cada 10 anos.",
-          "<strong>Febre Amarela e Tríplice Viral:</strong> Verificar situação vacinal e completar esquema."
+          "<strong>Febre Amarela e Tríplice Viral:</strong> Verificar situação vacinal e completar esquema se necessário."
         ]
       },
       {
         "subtitle": "Gestantes e Idosos",
         "points": [
-          "<strong>Gestantes:</strong> dT, dTpa (a partir da 20ª semana), Hepatite B (se não imunizada), Influenza.",
-          "<strong>Idosos:</strong> Influenza (anual), Pneumocócica 23V, dT (reforço a cada 10 anos)."
+          "<strong>Gestantes:</strong> dT (Dupla Adulto), <strong>dTpa</strong> (Tríplice bacteriana acelular do tipo adulto, a cada gestação a partir da 20ª semana), Hepatite B (se não imunizada), Influenza (em qualquer idade gestacional).",
+          "<strong>Idosos (60+):</strong> Influenza (anual), Pneumocócica 23V (reforço único 5 anos após a 1ª dose), dT (reforço a cada 10 anos), Febre Amarela (avaliar risco/benefício)."
         ]
       }
     ]
@@ -89,17 +90,17 @@
       {
         "subtitle": "Pré-Natal de Baixo Risco",
         "points": [
-          "<strong>Consultas:</strong> Mínimo de 6. Mensais até 28 sem, quinzenais de 28-36 sem, semanais após 36 sem.",
+          "<strong>Consultas:</strong> Mínimo de 6. Mensais até 28 sem, quinzenais de 28-36 sem, semanais após 36 sem. Avaliar PA, peso, altura uterina (AU), ausculta dos BCF.",
           "<strong>Exames 1º Trimestre:</strong> Tipagem sanguínea/Fator Rh, Coombs Indireto (se Rh-), Hemograma, Glicemia de jejum, VDRL, HIV, HBsAg, Toxoplasmose, Urina I e Urocultura.",
-          "<strong>Exames 2º Trimestre:</strong> Teste de tolerância à glicose (24-28 sem).",
-          "<strong>Exames 3º Trimestre:</strong> Repetir Hemograma, Glicemia, VDRL, HIV, HBsAg. Pesquisa de Streptococcus do grupo B (35-37 sem).",
+          "<strong>Exames 2º Trimestre:</strong> Teste de tolerância à glicose (TOTG 75g) entre 24-28 semanas.",
+          "<strong>Exames 3º Trimestre:</strong> Repetir Hemograma, Glicemia, VDRL, HIV, HBsAg. Pesquisa de Streptococcus do grupo B (swab vaginal e retal entre 35-37 semanas).",
           "<strong>Imunização:</strong> dTpa, Hepatite B, Influenza."
         ]
       },
       {
         "subtitle": "Trabalho de Parto e Parto",
         "points": [
-          "<strong>Períodos Clínicos do Parto:</strong><ul><li><strong>1º - Dilatação:</strong> Início das contrações regulares até a dilatação total (10cm).</li><li><strong>2º - Expulsivo:</strong> Da dilatação total até a saída completa do feto.</li><li><strong>3º - Secundamento/Dequitação:</strong> Saída da placenta e membranas.</li><li><strong>4º - Período de Greenberg:</strong> A primeira hora pós-parto, crucial para vigilância de hemorragias.</li></ul>",
+          "<strong>Períodos Clínicos do Parto:</strong><ul><li><strong>1º - Dilatação:</strong> Início das contrações regulares até a dilatação total (10cm).</li><li><strong>2º - Expulsivo:</strong> Da dilatação total até a saída completa do feto.</li><li><strong>3º - Secundamento/Dequitação:</strong> Saída da placenta e membranas.</li><li><strong>4º - Período de Greenberg:</strong> A primeira hora pós-parto, crucial para vigilância de hemorragias (globo de segurança de Pinard).</li></ul>",
           "<strong>Mecanismo do Parto (Movimentos Cardinais):</strong> Sequência de movimentos do feto para passar pelo canal de parto: <strong>1.</strong> Insinuação, <strong>2.</strong> Descida, <strong>3.</strong> Flexão, <strong>4.</strong> Rotação Interna, <strong>5.</strong> Deflexão, <strong>6.</strong> Rotação Externa, <strong>7.</strong> Desprendimento dos ombros.",
           "<strong>Partograma:</strong> Ferramenta gráfica para monitorar a evolução do trabalho de parto, identificando distócias. Registra dilatação, descida, contrações e BCF."
         ]
@@ -108,24 +109,16 @@
         "subtitle": "Puerpério (Pós-parto)",
         "points": [
           "<strong>Classificação:</strong> Imediato (1º ao 10º dia), Tardio (11º ao 45º dia), Remoto (após 45º dia).",
-          "<strong>Cuidados de Enfermagem:</strong> Avaliar involução uterina (altura do fundo uterino), características dos lóquios, mamas (ingurgitamento, fissuras), períneo/ferida operatória e estado emocional.",
+          "<strong>Lóquios:</strong> Avaliar evolução: <strong>Loquia rubra</strong> (vermelho, até 3-4 dias), <strong>Loquia serosa</strong> (rosado/acastanhado, até 10º dia), <strong>Loquia alba</strong> (esbranquiçado, após 10º dia).",
+          "<strong>Cuidados de Enfermagem:</strong> Avaliar involução uterina (altura do fundo uterino), características dos lóquios, mamas (ingurgitamento, fissuras), períneo/ferida operatória e estado emocional (risco de depressão pós-parto).",
           "<strong>Sinais de Alerta:</strong> Febre, hemorragia excessiva (mais de 1 absorvente/hora), dor/edema em membros inferiores (risco de TVP), mastite."
         ]
       },
       {
         "subtitle": "Prevenção de Câncer Ginecológico",
         "points": [
-          "<strong>Câncer de Colo de Útero:</strong> Rastreamento com Papanicolau em mulheres de 25 a 64 anos. Início aos 25 anos, os dois primeiros anuais, se normais, a cada 3 anos.",
+          "<strong>Câncer de Colo de Útero:</strong> Causado principalmente pelo HPV. Rastreamento com Papanicolau em mulheres de 25 a 64 anos. Início aos 25 anos, os dois primeiros anuais, se normais, a cada 3 anos.",
           "<strong>Câncer de Mama:</strong> Rastreamento com mamografia bienal para mulheres de 50 a 69 anos. Exame clínico anual a partir dos 40 anos."
-        ]
-      },
-      {
-        "subtitle": "Planejamento Familiar e Contracepção",
-        "points": [
-          "<strong>Métodos de Barreira:</strong> Preservativos (masculino/feminino), diafragma. Únicos que protegem contra ISTs.",
-          "<strong>Métodos Hormonais:</strong> Pílulas (combinadas/progestágeno), injetáveis (mensal/trimestral), adesivo, anel vaginal, implante.",
-          "<strong>Dispositivos Intrauterinos (DIU):</strong> DIU de Cobre (não hormonal, dura até 10 anos) e DIU Hormonal (Mirena/Kyleena, dura até 5 anos).",
-          "<strong>Métodos Definitivos:</strong> Laqueadura tubária e Vasectomia (requerem critérios da Lei de Planejamento Familiar)."
         ]
       }
     ]
@@ -149,8 +142,8 @@
         "subtitle": "As 5 Etapas da SAE",
         "points": [
           "<strong>1. Coleta de Dados (Histórico):</strong> Coleta de informações através de anamnese e exame físico. Fontes podem ser primárias (paciente) ou secundárias (família, prontuário).",
-          "<strong>2. Diagnóstico de Enfermagem (DE):</strong> Julgamento clínico sobre as respostas do paciente. Utiliza-se a taxonomia da NANDA-I, estruturada no formato <strong>P.E.S.</strong> (Problema, Etiologia, Sinais e Sintomas).",
-          "<strong>3. Planejamento de Enfermagem:</strong> Definição de <strong>Resultados Esperados (NOC)</strong>, que são as metas mensuráveis para o paciente, e seleção das <strong>Intervenções de Enfermagem (NIC)</strong>, que são as ações a serem realizadas.",
+          "<strong>2. Diagnóstico de Enfermagem (DE):</strong> Julgamento clínico sobre as respostas do paciente. Utiliza-se a taxonomia da NANDA-I, estruturada no formato <strong>P.E.S.</strong> (Problema, Etiologia, Sinais e Sintomas). Ex: <i>Dor aguda (P) relacionada a agente lesivo físico (E) evidenciada por relato verbal de dor e fácies de dor (S).</i>",
+          "<strong>3. Planejamento de Enfermagem:</strong> Definição de <strong>Resultados Esperados (NOC)</strong>, que são as metas mensuráveis (Ex: 'Paciente referirá dor ≤ 3 na escala EVA em 1 hora'), e seleção das <strong>Intervenções de Enfermagem (NIC)</strong>, que são as ações (Ex: 'Administrar analgésico prescrito').",
           "<strong>4. Implementação (Prescrição):</strong> Execução do plano de cuidados. A prescrição de enfermagem detalha as ações que a equipe realizará, sendo fundamental o registro (checagem) de tudo que foi feito.",
           "<strong>5. Avaliação de Enfermagem:</strong> Processo contínuo para verificar se os resultados foram alcançados. A avaliação direciona a continuidade do plano, podendo gerar novos diagnósticos ou a alta do paciente do processo de cuidado."
         ]
@@ -167,12 +160,12 @@
       {
         "subtitle": "As 6 Metas Internacionais",
         "points": [
-          "<strong>1. Identificar Corretamente os Pacientes:</strong> Usar no mínimo dois identificadores (nome completo e data de nascimento).",
-          "<strong>2. Melhorar a Comunicação Efetiva:</strong> Registrar e ler de volta resultados de exames críticos. Usar padronização (ex: SBAR).",
-          "<strong>3. Melhorar a Segurança de Medicamentos de Alta Vigilância:</strong> Padronizar diluições, dupla checagem, identificar corretamente.",
-          "<strong>4. Assegurar Cirurgia Segura:</strong> Realizar checklist de segurança cirúrgica (antes, durante e após). Demarcação de lateralidade.",
-          "<strong>5. Reduzir o Risco de Infecções Associadas aos Cuidados de Saúde:</strong> Higienização das mãos como pilar central.",
-          "<strong>6. Reduzir o Risco de Lesões por Queda e Lesão por Pressão:</strong> Aplicar escalas de risco (Morse, Braden) e implementar planos de prevenção."
+          "<strong>1. Identificar Corretamente os Pacientes:</strong> Usar no mínimo dois identificadores (nome completo e data de nascimento) antes de qualquer procedimento ou administração de medicamento.",
+          "<strong>2. Melhorar a Comunicação Efetiva:</strong> Registrar e ler de volta (read-back) resultados de exames críticos. Usar padronização na passagem de plantão (ex: SBAR - Situação, Breve histórico, Avaliação, Recomendação).",
+          "<strong>3. Melhorar a Segurança de Medicamentos de Alta Vigilância:</strong> Padronizar diluições, dupla checagem, identificar corretamente (etiquetas de alerta). Ex: Insulina, heparina, eletrólitos concentrados (KCl).",
+          "<strong>4. Assegurar Cirurgia Segura:</strong> Realizar checklist de segurança cirúrgica (antes, durante e após). Demarcação de lateralidade pelo cirurgião com o paciente acordado.",
+          "<strong>5. Reduzir o Risco de Infecções Associadas aos Cuidados de Saúde:</strong> Higienização das mãos como pilar central (5 momentos da OMS). Cumprir os bundles de prevenção de infecções (ex: bundle de CVC, de PAV).",
+          "<strong>6. Reduzir o Risco de Lesões por Queda e Lesão por Pressão:</strong> Aplicar escalas de risco (Morse, Braden) na admissão e reavaliar. Implementar planos de prevenção individualizados."
         ]
       }
     ]
@@ -185,11 +178,11 @@
     "summary": "Pilares do Código de Ética (CEPE) e da Lei do Exercício Profissional, abordando direitos, deveres, responsabilidades e sigilo.",
     "details": [
       {
-        "subtitle": "Direitos, Deveres e Proibições (CEPE)",
+        "subtitle": "Lei do Exercício Profissional (Lei 7.498/86)",
         "points": [
-          "<strong>Direitos:</strong> Exercer a enfermagem com autonomia e ser tratado sem discriminação. Recusar-se a executar atividades que não sejam de sua competência técnica, científica, ética e legal.",
-          "<strong>Deveres:</strong> Assegurar ao paciente uma assistência livre de danos por <strong>imperícia, negligência ou imprudência</strong>. Respeitar o pudor, a privacidade e a intimidade. Realizar e registrar no prontuário todas as ações de cuidado.",
-          "<strong>Proibições:</strong> Negar assistência em situação de urgência/emergência. Delegar a outro membro da equipe atribuições exclusivas do enfermeiro. Administrar medicamento sem conhecer a ação da droga e seus riscos."
+          "<strong>Enfermeiro (privativo):</strong> Direção do órgão de enfermagem, planejamento e organização dos serviços, consultoria, auditoria, consulta de enfermagem, prescrição da assistência, cuidados a pacientes graves com risco de vida, cuidados de maior complexidade técnica.",
+          "<strong>Técnico de Enfermagem:</strong> Exerce atividades de nível médio, envolvendo orientação e acompanhamento do trabalho de enfermagem em grau auxiliar, e participação no planejamento da assistência. Atua sob supervisão do Enfermeiro.",
+          "<strong>Auxiliar de Enfermagem:</strong> Exerce atividades de natureza repetitiva e de menor complexidade, envolvendo observação, registro e assistência básica, sob supervisão do Enfermeiro."
         ]
       },
       {
@@ -221,11 +214,17 @@
       {
         "subtitle": "Componentes da RAPS",
         "points": [
-          "<strong>Atenção Básica:</strong> Acolhimento e cuidado inicial, através das Unidades Básicas de Saúde (UBS).",
-          "<strong>Atenção Especializada (CAPS):</strong> Centros de Atenção Psicossocial são os ordenadores do cuidado. <ul><li><strong>CAPS I:</strong> Cidades com &gt; 15 mil hab.</li><li><strong>CAPS II:</strong> Cidades com &gt; 70 mil hab.</li><li><strong>CAPS III:</strong> Cidades com &gt; 150 mil hab. (funciona 24h).</li><li><strong>CAPSi:</strong> Atende crianças e adolescentes.</li><li><strong>CAPSad:</strong> Focado em álcool e outras drogas.</li></ul>",
+          "<strong>Atenção Básica:</strong> Acolhimento e cuidado inicial, através das Unidades Básicas de Saúde (UBS) e Núcleo de Apoio à Saúde da Família (NASF).",
+          "<strong>Atenção Especializada (CAPS):</strong> Centros de Atenção Psicossocial são os ordenadores do cuidado. <ul><li><strong>CAPS I:</strong> Cidades com &gt; 15 mil hab.</li><li><strong>CAPS II:</strong> Cidades com &gt; 70 mil hab.</li><li><strong>CAPS III:</strong> Cidades com &gt; 150 mil hab. (funciona 24h, com leitos de acolhimento).</li><li><strong>CAPSi:</strong> Atende crianças e adolescentes.</li><li><strong>CAPSad:</strong> Focado em álcool e outras drogas.</li></ul>",
           "<strong>Urgência e Emergência:</strong> SAMU 192, UPA 24h, leitos de saúde mental em hospitais gerais.",
-          "<strong>Atenção Hospitalar:</strong> Enfermarias especializadas em Hospital Geral.",
-          "<strong>Estratégias de Desinstitucionalização:</strong> Serviços Residenciais Terapêuticos (SRT)."
+          "<strong>Estratégias de Desinstitucionalização:</strong> Serviços Residenciais Terapêuticos (SRT) e programa 'De Volta para Casa'."
+        ]
+      },
+      {
+        "subtitle": "Projeto Terapêutico Singular (PTS)",
+        "points": [
+          "É um conjunto de propostas de condutas terapêuticas articuladas, para um sujeito individual ou coletivo, resultado da discussão de uma equipe interdisciplinar.",
+          "É a principal ferramenta de cuidado nos CAPS, visando a reinserção social e a autonomia do usuário."
         ]
       }
     ]
@@ -238,9 +237,10 @@
     "summary": "Foco na manutenção da capacidade funcional e prevenção de agravos.",
     "details": [
       {
-        "subtitle": "Avaliação Multidimensional",
+        "subtitle": "Avaliação Multidimensional e Gigantes da Geriatria",
         "points": [
           "<strong>Capacidade Funcional:</strong> É o principal indicador de saúde do idoso. Avaliada por: <ul><li><strong>ABVD:</strong> Atividades Básicas de Vida Diária (comer, vestir-se, banhar-se).</li><li><strong>AIVD:</strong> Atividades Instrumentais de Vida Diária (usar telefone, preparar refeições, gerenciar finanças).</li></ul>",
+          "<strong>Gigantes da Geriatria (5 'Is'):</strong> <strong>I</strong>ncapacidade Cognitiva, <strong>I</strong>nstabilidade Postural (quedas), <strong>I</strong>mobilidade, <strong>I</strong>ncontinência e <strong>I</strong>atrogenia.",
           "<strong>Polifarmácia:</strong> Uso de 5 ou mais medicamentos. Aumenta o risco de reações adversas e interações.",
           "<strong>Prevenção de Quedas:</strong> Avaliar risco (equilíbrio, marcha, visão) e orientar sobre ambiente seguro.",
           "<strong>Caderneta de Saúde da Pessoa Idosa:</strong> Instrumento para registro e acompanhamento integral."
@@ -266,18 +266,16 @@
       {
         "subtitle": "Princípios Organizativos (Diretrizes)",
         "points": [
-          "<strong>Regionalização e Hierarquização:</strong> Organização dos serviços em níveis de complexidade (primário, secundário, terciário).",
-          "<strong>Descentralização:</strong> Redistribuição de poder e responsabilidades entre União, Estados e Municípios.",
-          "<strong>Participação Social:</strong> Através dos Conselhos e Conferências de Saúde."
+          "<strong>Regionalização e Hierarquização:</strong> Organização dos serviços em níveis de complexidade (primário, secundário, terciário) dentro de uma área geográfica.",
+          "<strong>Descentralização:</strong> Redistribuição de poder e responsabilidades entre União, Estados e Municípios, com ênfase na municipalização.",
+          "<strong>Participação Social:</strong> Através dos Conselhos de Saúde (permanentes e deliberativos) e Conferências de Saúde (a cada 4 anos)."
         ]
       },
       {
-        "subtitle": "Atributos da Atenção Primária (APS)",
+        "subtitle": "Legislação Fundamental",
         "points": [
-          "<strong>Acesso de Primeiro Contato:</strong> Ser a porta de entrada preferencial do sistema.",
-          "<strong>Longitudinalidade:</strong> Acompanhamento do paciente ao longo do tempo.",
-          "<strong>Integralidade:</strong> Oferta de uma gama de serviços que atendam às necessidades mais comuns.",
-          "<strong>Coordenação do Cuidado:</strong> Organizar o fluxo do paciente pela rede de atenção."
+          "<strong>Lei 8.080/90:</strong> A 'Lei Orgânica da Saúde', dispõe sobre as condições para a promoção, proteção e recuperação da saúde, a organização e o funcionamento dos serviços.",
+          "<strong>Lei 8.142/90:</strong> Dispõe sobre a participação da comunidade na gestão do SUS e sobre as transferências intergovernamentais de recursos financeiros."
         ]
       }
     ]
@@ -294,7 +292,7 @@
         "points": [
           "<strong>Pré-operatório:</strong> Inicia na decisão pela cirurgia e termina com a transferência para o CC. Cuidados: preparo físico e psicológico, jejum, administração de pré-anestésicos, verificação de exames e consentimento.",
           "<strong>Intraoperatório:</strong> Inicia com a recepção no CC e termina com a transferência para a SRPA. Cuidados: montagem da sala, recepção do paciente, posicionamento cirúrgico, controle de materiais (compressas, agulhas), auxílio à equipe.",
-          "<strong>Pós-operatório:</strong> Inicia na SRPA e se estende até a alta. Cuidados: monitoramento de sinais vitais, avaliação do nível de consciência, controle da dor, prevenção de complicações (TVP, infecção, deiscência)."
+          "<strong>Pós-operatório:</strong> Inicia na SRPA e se estende até a alta. Cuidados: monitoramento de sinais vitais, avaliação do nível de consciência (Índice de Aldrete), controle da dor, prevenção de complicações (TVP, infecção, deiscência)."
         ]
       },
       {
@@ -307,17 +305,12 @@
         ]
       },
       {
-        "subtitle": "Classificação das Cirurgias",
+        "subtitle": "Classificação das Cirurgias por Potencial de Contaminação",
         "points": [
-          "<strong>Quanto ao Potencial de Contaminação:</strong><ul><li><strong>Limpas:</strong> Sem contato com TGI, respiratório ou geniturinário. Ex: artroplastia.</li><li><strong>Potencialmente Contaminadas:</strong> Contato com TGI/respiratório/geniturinário em condições controladas. Ex: colecistectomia.</li><li><strong>Contaminadas:</strong> Feridas traumáticas recentes, contaminação grosseira do TGI. Ex: apendicectomia supurada.</li><li><strong>Infectadas:</strong> Presença de pus, vísceras perfuradas. Ex: cirurgia de abscesso.</li></ul>",
-          "<strong>Quanto à Urgência:</strong><ul><li><strong>Eletiva:</strong> Programada, sem risco iminente.</li><li><strong>Urgência:</strong> Requer atenção rápida, mas pode aguardar algumas horas.</li><li><strong>Emergência:</strong> Requer atenção imediata, risco de vida.</li></ul>"
-        ]
-      },
-      {
-        "subtitle": "Funções da Equipe de Enfermagem no CC",
-        "points": [
-          "<strong>Enfermeiro Circulante:</strong> Gerencia a sala operatória, provê materiais, posiciona o paciente, realiza anotações, garante a segurança e o bem-estar do paciente.",
-          "<strong>Técnico/Auxiliar Instrumentador:</strong> Prepara e fornece os instrumentos cirúrgicos à equipe médica de forma asséptica, realiza a contagem de instrumentais e compressas junto ao circulante."
+          "<strong>Limpas:</strong> Sem contato com TGI, respiratório ou geniturinário. Ex: artroplastia.",
+          "<strong>Potencialmente Contaminadas:</strong> Contato com TGI/respiratório/geniturinário em condições controladas. Ex: colecistectomia.",
+          "<strong>Contaminadas:</strong> Feridas traumáticas recentes, contaminação grosseira do TGI. Ex: apendicectomia supurada.",
+          "<strong>Infectadas:</strong> Presença de pus, vísceras perfuradas. Ex: cirurgia de abscesso."
         ]
       },
       {
@@ -335,20 +328,24 @@
     "title": "Fundamentos de Farmacologia",
     "icon": "FlaskConical",
     "color": "text-rose-500",
-    "summary": "Princípios essenciais para a administração segura de medicamentos, desde os '9 Certos' até os conceitos de diluição.",
+    "summary": "Princípios essenciais para a administração segura de medicamentos, desde os 'Certos' até os conceitos de diluição.",
     "details": [
       {
-        "subtitle": "Os 9 Certos da Administração de Medicamentos",
+        "subtitle": "Os 13 Certos da Administração de Medicamentos",
         "points": [
-          "<strong>1. Paciente Certo:</strong> Confirme a identidade com no mínimo dois identificadores.",
-          "<strong>2. Medicamento Certo:</strong> Cheque o nome do medicamento 3 vezes (ao pegar, ao preparar, antes de administrar).",
-          "<strong>3. Via Certa:</strong> Verifique se a via de administração prescrita é a correta.",
-          "<strong>4. Hora Certa:</strong> Administre na hora programada, respeitando a janela de tempo da instituição.",
-          "<strong>5. Dose Certa:</strong> Realize o cálculo da dose com atenção e, se necessário, peça dupla checagem.",
-          "<strong>6. Registro Certo:</strong> Documente a administração imediatamente após a realização, nunca antes.",
-          "<strong>7. Ação Certa (Orientação):</strong> Oriente o paciente sobre o medicamento, sua indicação e principais efeitos.",
-          "<strong>8. Forma Certa:</strong> Verifique se a forma farmacêutica (comprimido, solução, etc.) está correta.",
-          "<strong>9. Resposta Certa (Monitoramento):</strong> Monitore o paciente para avaliar a eficácia do medicamento e a presença de efeitos adversos."
+          "<strong>1. Paciente Certo</strong>",
+          "<strong>2. Medicamento Certo</strong>",
+          "<strong>3. Via Certa</strong>",
+          "<strong>4. Hora Certa</strong>",
+          "<strong>5. Dose Certa</strong>",
+          "<strong>6. Registro Certo</strong>",
+          "<strong>7. Ação Certa (Orientação)</strong>",
+          "<strong>8. Forma Certa</strong>",
+          "<strong>9. Resposta Certa (Monitoramento)</strong>",
+          "<strong>10. Compatibilidade Certa</strong>",
+          "<strong>11. Orientação ao Paciente</strong>",
+          "<strong>12. Direito de Recusa do Paciente</strong>",
+          "<strong>13. Anotação Correta</strong>"
         ]
       },
       {
@@ -364,15 +361,99 @@
           "<strong>Endovenosa (EV):</strong> Ação mais rápida. Risco de flebite, infecção e reações adversas graves. Nunca administrar soluções oleosas ou suspensões.",
           "<strong>Intramuscular (IM):</strong> Absorção mais rápida que a subcutânea. Locais: Deltoide (até 2-3mL), Ventroglúteo (preferencial, até 4-5mL), Dorsoglúteo (risco de lesão no nervo ciático, até 4mL).",
           "<strong>Subcutânea (SC):</strong> Absorção lenta e gradual. Locais: abdome, face externa dos braços e coxas. Comum para Insulina e Heparina. Realizar rodízio dos locais de aplicação.",
-          "<strong>Via Oral (VO):</strong> Mais segura e comum. Avaliar a capacidade de deglutição do paciente. Considerar interações com alimentos e a necessidade de jejum."
+          "<strong>Intradérmica (ID):</strong> Absorção muito lenta. Usada para testes de sensibilidade (PPD) e vacina BCG. Volume máximo de 0,5mL."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cardiovascular-nursing",
+    "title": "Enfermagem Cardiovascular",
+    "icon": "HeartPulse",
+    "color": "text-red-600",
+    "summary": "Cuidados essenciais nas condições cardiovasculares mais prevalentes: Hipertensão Arterial e Insuficiência Cardíaca.",
+    "details": [
+      {
+        "subtitle": "Hipertensão Arterial Sistêmica (HAS)",
+        "points": [
+          "<strong>Definição:</strong> Níveis de Pressão Arterial persistentemente elevados (≥ 140x90 mmHg).",
+          "<strong>Cuidados Não Farmacológicos:</strong> Orientar sobre dieta hipossódica (pobre em sal), controle de peso, atividade física regular, cessação do tabagismo e moderação no consumo de álcool.",
+          "<strong>Monitoramento:</strong> Aferir a PA com técnica correta (paciente em repouso, manguito adequado) e registrar. Orientar sobre o monitoramento residencial (MRPA)."
         ]
       },
       {
-        "subtitle": "Guia Rápido de Diluição e Rediluição",
+        "subtitle": "Insuficiência Cardíaca Congestiva (ICC)",
         "points": [
-          "<strong>Diluição (ou Reconstituição):</strong> É o processo de transformar um medicamento em pó (liofilizado) em uma solução líquida, utilizando o diluente especificado pelo fabricante (ex: Água Destilada).",
-          "<strong>Rediluição:</strong> É o processo de pegar a solução já reconstituída e adicioná-la a um volume maior de soro (ex: Soro Fisiológico 100mL) para infusão contínua ou intermitente.",
-          "<strong>Cuidado Essencial:</strong> Sempre verifique a compatibilidade do medicamento com a solução (SF 0,9% ou SG 5%), o tempo de estabilidade após o preparo e a velocidade de infusão recomendada."
+          "<strong>Definição:</strong> Incapacidade do coração de bombear sangue suficiente para atender às necessidades do corpo.",
+          "<strong>Sinais de ICC Esquerda:</strong> Dispneia (falta de ar), ortopneia, tosse, estertores pulmonares. Relacionados à congestão pulmonar.",
+          "<strong>Sinais de ICC Direita:</strong> Edema de membros inferiores, ascite, estase jugular, hepatomegalia. Relacionados à congestão sistêmica.",
+          "<strong>Cuidados de Enfermagem Cruciais:</strong><ul><li><strong>Controle de peso diário:</strong> Em jejum, após urinar. Ganhos > 1-2kg em 24h podem indicar retenção hídrica.</li><li><strong>Balanço hídrico rigoroso:</strong> Registrar todos os líquidos administrados e eliminados.</li><li><strong>Restrição hídrica e de sódio:</strong> Conforme prescrição.</li><li><strong>Posicionamento:</strong> Elevar a cabeceira (posição de Fowler) para aliviar a dispneia.</li></ul>"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "endocrine-diabetes",
+    "title": "Saúde Endócrina - Diabetes Mellitus",
+    "icon": "Activity",
+    "color": "text-orange-500",
+    "summary": "Pontos-chave sobre o diagnóstico, manejo e principais cuidados de enfermagem no Diabetes Mellitus (DM).",
+    "details": [
+      {
+        "subtitle": "Tipos e Diagnóstico",
+        "points": [
+          "<strong>DM Tipo 1:</strong> Destruição autoimune das células beta do pâncreas. Necessita de insulina desde o diagnóstico.",
+          "<strong>DM Tipo 2:</strong> Resistência à insulina e deficiência relativa de sua secreção. Associado a obesidade e sedentarismo.",
+          "<strong>Critérios Diagnósticos:</strong> Glicemia de jejum ≥ 126 mg/dL; Hemoglobina Glicada (HbA1c) ≥ 6,5%; Glicemia 2h após TOTG ≥ 200 mg/dL; ou Glicemia aleatória ≥ 200 mg/dL com sintomas clássicos."
+        ]
+      },
+      {
+        "subtitle": "Sinais de Hipo e Hiperglicemia",
+        "points": [
+          "<strong>Hipoglicemia (&lt;70 mg/dL):</strong> Sudorese, tremores, taquicardia, palidez, fome, confusão mental, convulsões. É uma emergência!",
+          "<strong>Hiperglicemia:</strong> Poliúria (muita urina), polidipsia (muita sede), polifagia (muita fome), visão turva, hálito cetônico (na cetoacidose)."
+        ]
+      },
+      {
+        "subtitle": "Cuidados de Enfermagem Essenciais",
+        "points": [
+          "<strong>Administração de Insulina:</strong> Realizar rodízio dos locais de aplicação (abdome, braços, coxas, glúteos) para prevenir lipodistrofia. Técnica de aplicação subcutânea correta.",
+          "<strong>Cuidado com os Pés (Pé Diabético):</strong> Orientar o paciente a inspecionar os pés diariamente, usar calçados confortáveis, não andar descalço e manter os pés hidratados (exceto entre os dedos).",
+          "<strong>Educação em Saúde:</strong> Ensinar sobre automonitorização glicêmica, reconhecimento de hipo/hiperglicemia e alimentação saudável."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wound-care-fundamentals",
+    "title": "Fundamentos do Cuidado com Feridas",
+    "icon": "Bandage",
+    "color": "text-amber-600",
+    "summary": "Princípios básicos para a avaliação do leito da ferida e a tomada de decisão no tratamento.",
+    "details": [
+      {
+        "subtitle": "Avaliação do Leito da Ferida (Cores)",
+        "points": [
+          "<strong>Vermelho (Granulação):</strong> Tecido saudável, vermelho vivo e úmido. Indica cicatrização. <strong>Objetivo:</strong> Proteger e manter úmido.",
+          "<strong>Amarelo (Esfacelo/Fibrina):</strong> Tecido desvitalizado, úmido e aderido. <strong>Objetivo:</strong> Remover através de desbridamento (autolítico, enzimático).",
+          "<strong>Preto (Necrose/Escara):</strong> Tecido morto, seco e duro. Impede a cicatrização. <strong>Objetivo:</strong> Amolecer e remover."
+        ]
+      },
+      {
+        "subtitle": "Princípio TIME para Preparo do Leito",
+        "points": [
+          "<strong>T (Tissue - Tecido):</strong> Remover tecido não viável.",
+          "<strong>I (Infection/Inflammation - Infecção):</strong> Controlar a carga bacteriana e a inflamação.",
+          "<strong>M (Moisture - Umidade):</strong> Manter o equilíbrio da umidade (nem seco, nem encharcado).",
+          "<strong>E (Edge - Bordas):</strong> Avaliar e tratar as bordas para promover a contração e epitelização."
+        ]
+      },
+      {
+        "subtitle": "Princípios do Curativo Ideal",
+        "points": [
+          "<strong>Limpeza:</strong> Realizar com soro fisiológico 0,9% morno, do centro para as bordas (do mais limpo para o mais contaminado).",
+          "<strong>Manter o Meio Úmido:</strong> Um ambiente úmido acelera a migração celular e a cicatrização.",
+          "<strong>Escolha da Cobertura:</strong> A cobertura ideal é aquela que atende às necessidades da ferida (desbridar, absorver, hidratar, proteger)."
         ]
       }
     ]
