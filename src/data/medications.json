@@ -592,5 +592,38 @@
       "contraindication": "Hipersensibilidade, anemias não ferroprivas, sobrecarga de ferro (hemocromatose).",
       "adverseEffects": "<strong>Hipotensão (infusão rápida), reações anafilactoides (risco grave)</strong>, gosto metálico, cefaleia, náuseas, flebite. Monitorar o paciente de perto durante a infusão.",
       "category": "Antianêmico / Repositor de Ferro"
+    },
+    {
+      "name": "Vasopressina",
+      "activeIngredient": "Argipressina",
+      "indication": "Vasopressor adjuvante no choque séptico refratário.",
+      "dose": "<strong>0,01-0,04 U/min</strong> em BIC.",
+      "administration": "<strong>IV:</strong> Administrar em <strong>acesso venoso central</strong> e em bomba de infusão contínua. Não administrar em bolus.",
+      "dilution": "Diluir (ex: 20 UI em 100mL de SF 0,9% ou SG 5% = 0,2 U/mL).",
+      "contraindication": "Hipersensibilidade. Cautela em pacientes com doença arterial coronariana.",
+      "adverseEffects": "Isquemia periférica e de mesentério, bradicardia, hiponatremia, necrose tecidual (extravasamento).",
+      "category": "Hormônio Antidiurético/Vasopressor"
+    },
+    {
+      "name": "Dexmedetomidina (Precedex)",
+      "activeIngredient": "Cloridrato de Dexmedetomidina",
+      "indication": "Sedação em pacientes sob ventilação mecânica. Promove sedação cooperativa.",
+      "dose": "Infusão de <strong>0,2-1,5 mcg/kg/h</strong> em BIC. Pode ter dose de ataque.",
+      "administration": "<strong>IV:</strong> Administrar em bomba de infusão contínua. A dose de ataque (se usada) deve ser infundida em 10 minutos.",
+      "dilution": "Geralmente vem pré-diluído. Se concentrado, diluir em SF 0,9% para uma concentração de 4 mcg/mL.",
+      "contraindication": "Hipersensibilidade, bloqueio cardíaco avançado.",
+      "adverseEffects": "<strong>Hipotensão e bradicardia</strong> (principais efeitos), boca seca, náuseas. Causa mínima depressão respiratória.",
+      "category": "Sedativo (Agonista Alfa-2)"
+    },
+    {
+      "name": "Cisatracúrio (Nimbex)",
+      "activeIngredient": "Besilato de Cisatracúrio",
+      "indication": "Bloqueador neuromuscular para relaxamento muscular em ventilação mecânica (ex: SARA/ARDS) e procedimentos cirúrgicos.",
+      "dose": "Bolus de <strong>0,15 mg/kg IV</strong>, seguido de infusão contínua de <strong>1-3 mcg/kg/min</strong>.",
+      "administration": "<strong>IV:</strong> Administrar em bolus ou BIC. <strong>SÓ DEVE SER USADO COM PACIENTE ADEQUADAMENTE SEDADO E COM SUPORTE VENTILATÓRIO GARANTIDO</strong>. Monitorar com TOF (Train-of-Four).",
+      "dilution": "Pode ser administrado puro ou diluído em SF 0,9% ou SG 5%.",
+      "contraindication": "Hipersensibilidade.",
+      "adverseEffects": "Paralisia muscular prolongada, bradicardia, hipotensão. Metabolismo independente de função renal ou hepática (Eliminação de Hofmann).",
+      "category": "Bloqueador Neuromuscular"
     }
 ]
