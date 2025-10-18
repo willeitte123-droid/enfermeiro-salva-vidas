@@ -96,7 +96,7 @@ serve(async (req: Request) => {
       user = users[0];
     }
 
-    // --- ETAPA 2: DETERMINAR O ESTADO DO PERFIL ---
+    // --- ETAPA 2: CRIAR/ATUALIZAR O PERFIL NA TABELA 'profiles' ---
     let profileData: any = {};
     let logDetails = '';
 
@@ -119,7 +119,7 @@ serve(async (req: Request) => {
       return new Response('Event not handled.', { status: 200, headers: corsHeaders });
     }
 
-    // --- ETAPA 3: CRIAR OU ATUALIZAR O PERFIL NA TABELA 'profiles' ---
+    // **A MUDANÇA CRUCIAL:** Usar 'upsert' para garantir que o perfil seja criado ou atualizado.
     const { error: upsertError } = await supabaseAdmin
       .from('profiles')
       .upsert({
