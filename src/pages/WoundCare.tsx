@@ -4,10 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Bandage, Info, Droplet, CheckCircle, Zap, XCircle, Search, AlertTriangle } from "lucide-react";
+import { Bandage, Info, Droplet, CheckCircle, Zap, XCircle, Search, AlertTriangle, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 interface Profile {
   id: string;
@@ -81,6 +82,15 @@ const dressingTypes = [
     { name: "Terapia por Pressão Negativa (TPN)", indication: "Feridas complexas, agudas ou crônicas, com alto exsudato.", action: "Aplica pressão subatmosférica controlada, remove exsudato, reduz edema e estimula a granulação.", contraindication: "Necrose não desbridada, malignidade na ferida, fístulas não exploradas, osteomielite não tratada." }
 ];
 
+const pressureInjuryStages = [
+  { stage: "Estágio 1", badgeColor: "bg-red-500", description: "Eritema não branqueável em pele intacta.", characteristics: ["Área localizada de pele intacta com vermelhidão que não desaparece à pressão.", "Pode apresentar alteração de temperatura, consistência e sensibilidade."], objectives: "Aliviar a pressão, proteger a pele e manter a hidratação.", dressings: ["Filme transparente", "Placa hidrocoloide fina", "Ácidos Graxos Essenciais (AGE)"] },
+  { stage: "Estágio 2", badgeColor: "bg-pink-500", description: "Perda da pele em sua espessura parcial com exposição da derme.", characteristics: ["Leito da ferida viável, rosa ou vermelho, úmido.", "Pode se apresentar como uma bolha (flictena) intacta ou rompida."], objectives: "Manter um ambiente úmido para cicatrização, proteger de contaminação e gerenciar exsudato.", dressings: ["Hidrocoloide", "Espuma de poliuretano", "Hidrogel", "Filme transparente"] },
+  { stage: "Estágio 3", badgeColor: "bg-yellow-500", description: "Perda da pele em sua espessura total.", characteristics: ["Gordura (tecido adiposo) é visível.", "Pode haver presença de esfacelo ou necrose.", "Pode ocorrer descolamento (solapamento) e túneis."], objectives: "Desbridar tecido não viável, preencher espaço morto, gerenciar exsudato e infecção.", dressings: ["Alginato de cálcio (se exsudativa)", "Hidrofibra", "Espuma", "Hidrogel com alginato (para desbridar)"] },
+  { stage: "Estágio 4", badgeColor: "bg-gray-800", description: "Perda da pele e tecidos em sua espessura total.", characteristics: ["Exposição direta da fáscia, músculo, tendão, ligamento, cartilagem ou osso.", "Esfacelo e/ou necrose são comuns.", "Alto risco de osteomielite."], objectives: "Mesmos do Estágio 3, com foco intenso no controle de infecção e proteção de estruturas expostas.", dressings: ["Alginato com prata", "Hidrofibra com prata", "Terapia por Pressão Negativa (TPN)"] },
+  { stage: "Não Estadiável", badgeColor: "bg-black", description: "Perda total da espessura da pele e tecidos não visível.", characteristics: ["A extensão do dano não pode ser confirmada porque está encoberta por esfacelo ou necrose.", "A base da lesão não é visível."], objectives: "Desbridar o tecido necrótico para revelar a base da ferida e determinar o estágio real.", dressings: ["Hidrogel", "Colagenase", "Papaína", "Desbridamento cirúrgico"] },
+  { stage: "Lesão por Pressão Tissular Profunda (LTP)", badgeColor: "bg-purple-600", description: "Lesão em tecido mole sob a pele intacta.", characteristics: ["Área localizada de coloração vermelho escura, marrom ou púrpura, que não branqueia.", "Pode evoluir rapidamente para uma lesão de espessura total."], objectives: "Alívio total da pressão, monitoramento rigoroso e proteção da pele. Não desbridar se a pele estiver intacta.", dressings: ["Espuma não adesiva", "Protetores de calcanhar", "Manter seco e protegido"] }
+];
+
 const WoundCare = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [selectedTissue, setSelectedTissue] = useState(tissueTypes[0]);
@@ -117,9 +127,10 @@ const WoundCare = () => {
       </div>
 
       <Tabs defaultValue="tissues" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="tissues" className="text-green-700 data-[state=active]:bg-green-600 data-[state=active]:text-white font-semibold">Avaliação da Ferida</TabsTrigger>
-          <TabsTrigger value="dressings" className="text-blue-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white font-semibold">Tipos de Cobertura</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="tissues">Avaliação da Ferida</TabsTrigger>
+          <TabsTrigger value="pressure-injury">Lesão por Pressão</TabsTrigger>
+          <TabsTrigger value="dressings">Tipos de Cobertura</TabsTrigger>
         </TabsList>
 
         <TabsContent value="tissues" className="space-y-4">
@@ -179,6 +190,39 @@ const WoundCare = () => {
               </Card>
             </div>
           </div>
+        </TabsContent>
+
+        <TabsContent value="pressure-injury" className="space-y-4">
+          <Card className="border-destructive/50 bg-destructive/5">
+            <CardHeader><CardTitle className="flex items-center gap-2 text-destructive"><ShieldAlert className="h-5 w-5" />Prevenção é a Chave</CardTitle></CardHeader>
+            <CardContent className="space-y-2 text-sm text-destructive/90">
+              <p><strong>• Reposicionamento:</strong> Mudança de decúbito a cada 2 horas.</p>
+              <p><strong>• Superfícies de Suporte:</strong> Uso de colchões e almofadas de alívio de pressão.</p>
+              <p><strong>• Cuidados com a Pele:</strong> Manter a pele limpa, seca e hidratada. Gerenciar a umidade.</p>
+              <p><strong>• Nutrição:</strong> Garantir aporte calórico e proteico adequado.</p>
+            </CardContent>
+          </Card>
+          <Accordion type="single" collapsible className="w-full space-y-3">
+            {pressureInjuryStages.map((item) => (
+              <AccordionItem key={item.stage} value={item.stage} className="border rounded-lg px-4 bg-card shadow-sm">
+                <AccordionTrigger className="hover:no-underline">
+                  <div className="flex items-center gap-3">
+                    <Badge className={cn("text-white", item.badgeColor)}>{item.stage}</Badge>
+                    <span className="font-semibold text-left">{item.description}</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 space-y-4">
+                  <div><h4 className="font-semibold text-sm mb-2">Características</h4><ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                    {item.characteristics.map((char, i) => <li key={i}>{char}</li>)}
+                  </ul></div>
+                  <div><h4 className="font-semibold text-sm text-primary mb-2">Objetivos do Tratamento</h4><p className="text-sm">{item.objectives}</p></div>
+                  <div><h4 className="font-semibold text-sm mb-2">Coberturas Sugeridas</h4><div className="flex flex-wrap gap-2">
+                    {item.dressings.map((dressing, idx) => <Badge key={idx} variant="secondary">{dressing}</Badge>)}
+                  </div></div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </TabsContent>
 
         <TabsContent value="dressings" className="space-y-4">
