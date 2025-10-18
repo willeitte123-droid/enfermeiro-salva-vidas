@@ -12,50 +12,47 @@ serve(async (req: Request) => {
   }
 
   try {
+    // Cria um cliente Supabase com a chave de serviço para privilégios de administrador
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       { auth: { persistSession: false } }
     );
 
+    // 1. Obtém o usuário a partir do token JWT no cabeçalho da requisição
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      throw new Error('Missing authorization header');
+      throw new Error('Cabeçalho de autorização ausente');
     }
     const jwt = authHeader.replace('Bearer ', '');
-
     const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(jwt);
     if (userError || !user) {
-      throw userError || new Error('User not found');
+      throw userError || new Error('Usuário não encontrado ou token inválido');
     }
 
-    // Verificação de perfil de administrador mais robusta
-    const { data: profiles, error: profileError } = await supabaseAdmin
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .limit(1);
+    // 2. Verifica se o usuário é um administrador chamando a função RPC 'get_user_role'
+    const { data: role, error: roleError } = await supabaseAdmin.rpc('get_user_role', { user_id: user.id });
 
-    if (profileError) {
-      throw profileError;
+    if (roleError) {
+      throw roleError;
     }
 
-    const profile = profiles?.[0];
-
-    if (!profile || profile.role !== 'admin') {
+    // 3. Se o usuário não for um administrador, retorna um erro de acesso negado
+    if (role !== 'admin') {
       return new Response(JSON.stringify({ error: 'Acesso negado: somente administradores.' }), {
         status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    // Chama a função SQL que agora pode ser executada com segurança
+    // 4. Se o usuário for um administrador, busca todos os detalhes dos usuários
     const { data: users, error: rpcError } = await supabaseAdmin.rpc('get_all_user_details');
 
     if (rpcError) {
       throw rpcError;
     }
 
+    // Retorna a lista de usuários com sucesso
     return new Response(JSON.stringify({ users }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
