@@ -14,24 +14,17 @@ async function verifyKiwifySignature(req: Request, secret: string) {
   const bodyText = await req.clone().text();
 
   if (!signature) {
-    console.error("ERRO CRÍTICO: Parâmetro 'signature' não encontrado na URL.");
+    console.error("Signature parameter not found in URL.");
     return { isValid: false, body: null };
   }
 
   const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey("raw", encoder.encode(secret), {
-    name: "HMAC",
-    hash: "SHA-1"
-  }, false, ["sign"]);
-
+  const key = await crypto.subtle.importKey("raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
   const mac = await crypto.subtle.sign("HMAC", key, encoder.encode(bodyText));
   const expectedSignature = new TextDecoder().decode(encode(new Uint8Array(mac)));
 
   const signaturesMatch = timingSafeEqual(encoder.encode(signature), encoder.encode(expectedSignature));
-
-  if (!signaturesMatch) {
-    console.warn("Falha na verificação da assinatura do webhook.");
-  }
+  if (!signaturesMatch) console.warn("Webhook signature verification failed.");
 
   return { isValid: signaturesMatch, body: JSON.parse(bodyText) };
 }
@@ -49,50 +42,40 @@ serve(async (req: Request) => {
 
   try {
     const KIWIFY_WEBHOOK_SECRET = Deno.env.get('KIWIFY_WEBHOOK_SECRET');
-    if (!KIWIFY_WEBHOOK_SECRET) {
-      throw new Error("A variável de ambiente KIWIFY_WEBHOOK_SECRET não está configurada.");
-    }
+    if (!KIWIFY_WEBHOOK_SECRET) throw new Error("KIWIFY_WEBHOOK_SECRET environment variable not set.");
 
     const { isValid, body } = await verifyKiwifySignature(req, KIWIFY_WEBHOOK_SECRET);
+    if (!isValid) return new Response('Invalid signature.', { status: 403, headers: corsHeaders });
 
-    if (!isValid) {
-      return new Response('Assinatura inválida.', { status: 403, headers: corsHeaders });
-    }
-
-    const email = body.Customer?.email;
-    const fullName = body.Customer?.full_name || '';
-    const evento = body.webhook_event_type;
-    const produto = body.Product?.product_name;
-    const orderStatus = body.order?.order_status;
+    const { Customer, webhook_event_type, order, Subscription } = body;
+    const email = Customer?.email;
+    const fullName = Customer?.full_name || '';
+    const evento = webhook_event_type;
+    const orderStatus = order?.order_status;
 
     if (!email || !evento) {
-      return new Response('Campos obrigatórios ausentes no payload: Customer.email e webhook_event_type', { status: 400, headers: corsHeaders });
+      return new Response('Missing required fields: Customer.email and webhook_event_type', { status: 400, headers: corsHeaders });
     }
 
-    const canceledEvents = ["subscription_canceled", "subscription_late"];
     const approvedEvents = ["order_approved", "subscription_activated", "subscription_renewed"];
+    const canceledEvents = ["subscription_canceled", "subscription_late", "refunded", "expired"];
     
     const isApprovedEvent = approvedEvents.includes(evento.toLowerCase()) || orderStatus === 'paid';
-    const isCanceledEvent = canceledEvents.includes(evento.toLowerCase()) || orderStatus === 'refunded' || orderStatus === 'expired';
+    const isCanceledEvent = canceledEvents.includes(evento.toLowerCase()) || canceledEvents.includes(orderStatus);
 
+    // --- ETAPA 1: ENCONTRAR OU CRIAR O USUÁRIO ---
     let userId;
-    let detailsLog = '';
-
-    const { data: existingUsers, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
-
+    const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
     if (findUserError) throw findUserError;
 
-    if (existingUsers.users.length === 0) {
+    if (users.length === 0) {
       if (isApprovedEvent) {
         const nameParts = fullName.split(' ');
         const firstName = nameParts[0];
         const lastName = nameParts.slice(1).join(' ');
 
         const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-          }
+          data: { first_name: firstName, last_name: lastName }
         });
 
         if (inviteError) {
@@ -100,69 +83,55 @@ serve(async (req: Request) => {
           throw inviteError;
         }
         userId = newUser.user.id;
-        detailsLog = 'Novo usuário convidado com sucesso. Um e-mail para definição de senha foi enviado.';
-
+        await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Usuário criado com ID: ${userId}. E-mail de convite enviado.` });
       } else {
-        await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: 'Usuário não encontrado para evento de cancelamento/atraso. Nenhuma ação tomada.' });
-        return new Response('User not found for this event.', { status: 200, headers: corsHeaders });
+        await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: 'Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.' });
+        return new Response('User not found for cancellation event.', { status: 200, headers: corsHeaders });
       }
     } else {
-      userId = existingUsers.users[0].id;
+      userId = users[0].id;
     }
 
-    let plan = 'free';
-    let status = 'pending';
-    let access_expires_at = new Date().toISOString();
+    // --- ETAPA 2: ATUALIZAR O PERFIL DO USUÁRIO ---
+    let profileUpdate: any = {};
+    let logDetails = '';
 
     if (isCanceledEvent) {
-      plan = 'free';
-      status = 'pending';
-      access_expires_at = new Date().toISOString();
-      detailsLog += ` Acesso removido. Status do usuário alterado para pendente.`;
+      profileUpdate = {
+        plan: 'free',
+        status: 'inactive',
+        access_expires_at: new Date().toISOString()
+      };
+      logDetails = 'Acesso removido. Status do usuário alterado para inativo.';
     } else if (isApprovedEvent) {
-      status = 'active';
-      const lowerCaseProduto = produto?.toLowerCase() || '';
-
-      if (lowerCaseProduto.includes('anual') || lowerCaseProduto === 'plataforma enfermagempro') {
-        plan = 'Plano PRO Anual';
-        const expiryDate = new Date();
-        expiryDate.setDate(expiryDate.getDate() + 365);
-        access_expires_at = expiryDate.toISOString();
-        detailsLog += ` Plano PRO Anual ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
-      } else if (lowerCaseProduto.includes('mensal')) {
-        plan = 'Plano PRO Mensal';
-        const expiryDate = new Date();
-        expiryDate.setDate(expiryDate.getDate() + 30);
-        access_expires_at = expiryDate.toISOString();
-        detailsLog += ` Plano PRO Mensal ativado. Acesso até ${expiryDate.toLocaleDateString('pt-BR')}.`;
-      } else {
-        detailsLog += ` Produto '${produto}' não reconhecido. Nenhuma alteração de plano realizada.`;
-      }
+      profileUpdate = {
+        status: 'active',
+        plan: Subscription?.plan?.name || body.Product?.product_name || 'Plano PRO',
+        access_expires_at: Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
+      };
+      logDetails = `Plano "${profileUpdate.plan}" ativado para o usuário ${email}.`;
     } else {
-      detailsLog += ` Evento '${evento}' não reconhecido. Nenhuma alteração realizada.`;
+      await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Evento '${evento}' não reconhecido. Nenhuma ação tomada.` });
+      return new Response('Event not handled.', { status: 200, headers: corsHeaders });
     }
 
-    if (!detailsLog.includes("não reconhecido")) {
-      const { error: updateError } = await supabaseAdmin
-        .from('profiles')
-        .update({ plan, status, access_expires_at })
-        .eq('id', userId);
-
-      if (updateError) {
-        await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao atualizar perfil: ${updateError.message}` });
-        throw updateError;
-      }
+    const { error: updateError } = await supabaseAdmin.from('profiles').update(profileUpdate).eq('id', userId);
+    if (updateError) {
+      await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao atualizar perfil: ${updateError.message}` });
+      throw updateError;
     }
 
-    await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: detailsLog });
+    await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Sucesso: ${logDetails}` });
 
-    return new Response(JSON.stringify({ success: true, message: detailsLog }), {
+    return new Response(JSON.stringify({ success: true, message: logDetails }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     });
 
   } catch (error) {
     console.error("Erro no processamento do webhook:", error);
+    const email = req.headers.get('X-Kiwify-Email') || 'unknown';
+    await supabaseAdmin.from('webhook_logs').insert({ email, evento: 'error', details: error.message });
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500
