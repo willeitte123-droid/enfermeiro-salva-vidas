@@ -44,7 +44,7 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
       { to: "/procedures", icon: ClipboardList, label: "Procedimentos" },
       { to: "/medications", icon: Syringe, label: "Medicamentos" },
       { to: "/emergency", icon: Siren, label: "Emergências" },
-      { to: "/wound-care", icon: Bandage, label: "Curativos" },
+      { to: "/wound-care", icon: Bandage, label: "Curativos e Tratamento de Feridas" },
       { to: "/semiology", icon: FileSearch, label: "Semiologia" },
       { to: "/semiotechnique", icon: HandHeart, label: "Semiotécnica" },
       { to: "/ecg", icon: BookHeart, label: "Guia de ECG" },
