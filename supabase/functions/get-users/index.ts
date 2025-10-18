@@ -29,13 +29,20 @@ serve(async (req: Request) => {
       throw userError || new Error('User not found');
     }
 
-    const { data: profile, error: profileError } = await supabaseAdmin
+    // Verificação de perfil de administrador mais robusta
+    const { data: profiles, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('role')
       .eq('id', user.id)
-      .single();
+      .limit(1);
 
-    if (profileError || profile?.role !== 'admin') {
+    if (profileError) {
+      throw profileError;
+    }
+
+    const profile = profiles?.[0];
+
+    if (!profile || profile.role !== 'admin') {
       return new Response(JSON.stringify({ error: 'Acesso negado: somente administradores.' }), {
         status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
