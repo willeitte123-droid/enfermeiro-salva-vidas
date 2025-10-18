@@ -61,7 +61,7 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
 
   return (
     <Routes>
-      <Route path="/" element={<MainLayout session={session} />}>
+      <Route path="/" element={<MainLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="calculator" element={<Calculator />} />
         <Route path="emergency" element={<Emergency />} />

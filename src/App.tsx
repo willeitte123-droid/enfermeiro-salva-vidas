@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter } from "react-router-dom";
-import { supabase } from "./lib/supabase";
-import { Session } from '@supabase/supabase-js';
 import { Loader2 } from "lucide-react";
 import { SuspendedAppRoutes } from "./routes";
+import { useAuth } from "./context/AuthContext";
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen w-full">
@@ -15,31 +14,12 @@ const LoadingFallback = () => (
 );
 
 const AppContent = () => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [loadingSession, setLoadingSession] = useState(true);
+  const { session, isLoading } = useAuth();
 
-  useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      setLoadingSession(false);
-    };
-
-    getSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  if (loadingSession) {
+  if (isLoading) {
     return <LoadingFallback />;
   }
 
-  // A lógica de perfil e status foi movida para dentro do MainLayout.
-  // AppContent agora apenas decide se mostra as rotas públicas ou privadas.
   return <SuspendedAppRoutes session={session} />;
 };
 
