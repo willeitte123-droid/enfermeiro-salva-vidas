@@ -91,6 +91,34 @@ const pressureInjuryStages = [
   { stage: "Lesão por Pressão Tissular Profunda (LTP)", badgeColor: "bg-purple-600", description: "Lesão em tecido mole sob a pele intacta.", characteristics: ["Área localizada de coloração vermelho escura, marrom ou púrpura, que não branqueia.", "Pode evoluir rapidamente para uma lesão de espessura total."], objectives: "Alívio total da pressão, monitoramento rigoroso e proteção da pele. Não desbridar se a pele estiver intacta.", dressings: ["Espuma não adesiva", "Protetores de calcanhar", "Manter seco e protegido"] }
 ];
 
+const diabeticFootData = {
+  prevention: [
+    "Inspeção diária dos pés (usar espelho se necessário).",
+    "Higiene adequada (lavar e secar bem, especialmente entre os dedos).",
+    "Hidratação da pele (evitar áreas interdigitais).",
+    "Corte reto das unhas, sem remover cutículas.",
+    "Uso de calçados confortáveis e adequados, sem costuras internas.",
+    "Nunca andar descalço.",
+    "Controle rigoroso da glicemia."
+  ],
+  wagnerClassification: [
+    { grade: "Grau 0", badgeColor: "bg-blue-500", description: "Pé em risco, sem úlcera.", characteristics: ["Pele intacta, mas com calosidades, deformidades ósseas ou neuropatia/vasculopatia."], objectives: "Prevenção, educação e uso de calçados adequados." },
+    { grade: "Grau 1", badgeColor: "bg-green-500", description: "Úlcera superficial.", characteristics: ["Lesão de espessura parcial ou total, limitada à pele e tecido subcutâneo."], objectives: "Alívio da pressão (offloading), manter meio úmido, desbridar se necessário." },
+    { grade: "Grau 2", badgeColor: "bg-yellow-500", description: "Úlcera profunda.", characteristics: ["A lesão penetra até tendão, cápsula articular ou osso, sem abscesso ou osteomielite."], objectives: "Mesmos do Grau 1, com avaliação rigorosa de infecção." },
+    { grade: "Grau 3", badgeColor: "bg-orange-500", description: "Úlcera profunda com infecção.", characteristics: ["Presença de abscesso, osteomielite ou celulite extensa."], objectives: "Desbridamento cirúrgico, antibioticoterapia sistêmica, controle da infecção." },
+    { grade: "Grau 4", badgeColor: "bg-red-600", description: "Gangrena localizada.", characteristics: ["Necrose de uma parte do pé, como dedos ou antepé."], objectives: "Avaliação cirúrgica para amputação parcial, controle da infecção." },
+    { grade: "Grau 5", badgeColor: "bg-black", description: "Gangrena extensa.", characteristics: ["Necrose de todo o pé, com infecção sistêmica (sepse)."], objectives: "Amputação maior para salvar a vida do paciente." }
+  ],
+  treatmentPillars: [
+    { pillar: "Controle Glicêmico", description: "Fundamental para a cicatrização e prevenção de novas lesões." },
+    { pillar: "Desbridamento", description: "Remoção de todo tecido necrótico e desvitalizado para reduzir a carga bacteriana e permitir a cicatrização." },
+    { pillar: "Controle da Infecção", description: "Uso de coberturas antimicrobianas e antibioticoterapia sistêmica conforme avaliação." },
+    { pillar: "Manejo do Exsudato", description: "Utilizar coberturas que mantenham o equilíbrio da umidade, absorvendo o excesso de exsudato sem ressecar o leito." },
+    { pillar: "Alívio da Pressão (Offloading)", description: "Essencial para permitir a cicatrização. Uso de palmilhas, calçados especiais ou dispositivos de imobilização." },
+    { pillar: "Avaliação Vascular", description: "Verificar a perfusão do membro. A revascularização pode ser necessária para a cicatrização." }
+  ]
+};
+
 const WoundCare = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [selectedTissue, setSelectedTissue] = useState(tissueTypes[0]);
@@ -127,9 +155,10 @@ const WoundCare = () => {
       </div>
 
       <Tabs defaultValue="tissues" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="tissues">Avaliação da Ferida</TabsTrigger>
           <TabsTrigger value="pressure-injury">Lesão por Pressão</TabsTrigger>
+          <TabsTrigger value="diabetic-foot">Pé Diabético</TabsTrigger>
           <TabsTrigger value="dressings">Tipos de Cobertura</TabsTrigger>
         </TabsList>
 
@@ -223,6 +252,47 @@ const WoundCare = () => {
               </AccordionItem>
             ))}
           </Accordion>
+        </TabsContent>
+
+        <TabsContent value="diabetic-foot" className="space-y-4">
+          <Card className="border-destructive/50 bg-destructive/5">
+            <CardHeader><CardTitle className="flex items-center gap-2 text-destructive"><ShieldAlert className="h-5 w-5" />Prevenção e Educação</CardTitle></CardHeader>
+            <CardContent className="space-y-2 text-sm text-destructive/90">
+              {diabeticFootData.prevention.map((item, index) => (
+                <p key={index}><strong>• {item.split(':')[0]}:</strong>{item.split(':')[1]}</p>
+              ))}
+            </CardContent>
+          </Card>
+          <Accordion type="single" collapsible className="w-full space-y-3">
+            <CardHeader className="px-0"><CardTitle>Classificação de Wagner</CardTitle><CardDescription>Estadiamento da gravidade da lesão no pé diabético.</CardDescription></CardHeader>
+            {diabeticFootData.wagnerClassification.map((item) => (
+              <AccordionItem key={item.grade} value={item.grade} className="border rounded-lg px-4 bg-card shadow-sm">
+                <AccordionTrigger className="hover:no-underline">
+                  <div className="flex items-center gap-3">
+                    <Badge className={cn("text-white", item.badgeColor)}>{item.grade}</Badge>
+                    <span className="font-semibold text-left">{item.description}</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 space-y-4">
+                  <div><h4 className="font-semibold text-sm mb-2">Características</h4><ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                    {item.characteristics.map((char, i) => <li key={i}>{char}</li>)}
+                  </ul></div>
+                  <div><h4 className="font-semibold text-sm text-primary mb-2">Objetivos do Tratamento</h4><p className="text-sm">{item.objectives}</p></div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+          <Card>
+            <CardHeader><CardTitle>Pilares do Tratamento</CardTitle></CardHeader>
+            <CardContent className="grid md:grid-cols-2 gap-4">
+              {diabeticFootData.treatmentPillars.map((item, index) => (
+                <div key={index} className="p-3 bg-muted rounded-md">
+                  <h4 className="font-semibold text-sm text-primary">{item.pillar}</h4>
+                  <p className="text-xs text-muted-foreground">{item.description}</p>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="dressings" className="space-y-4">
