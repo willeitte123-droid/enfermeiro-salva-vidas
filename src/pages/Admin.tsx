@@ -18,7 +18,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 // Tipagem para os dados completos do usuário
 interface AppUser {
@@ -167,7 +166,63 @@ const UserManagement = () => {
   );
 };
 
-// Componente de Configuração do Kiwify (movido para cá)
+const KiwifyWebhookLogs = () => {
+  const { data: logs = [], isLoading } = useQuery({
+    queryKey: ['webhookLogs'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('webhook_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(20);
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  return (
+    <Card className="mt-6">
+      <CardHeader>
+        <CardTitle>3. Últimos Eventos Recebidos (Logs)</CardTitle>
+        <CardDescription>Os 20 eventos mais recentes recebidos do webhook da Kiwify.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {isLoading ? (
+          <div className="flex items-center justify-center h-24"><Loader2 className="h-6 w-6 animate-spin" /></div>
+        ) : (
+          <div className="border rounded-md max-h-96 overflow-y-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Data</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Evento</TableHead>
+                  <TableHead>Detalhes</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {logs.length > 0 ? logs.map(log => (
+                  <TableRow key={log.id}>
+                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                      {format(new Date(log.created_at), "dd/MM/yy HH:mm", { locale: ptBR })}
+                    </TableCell>
+                    <TableCell>{log.email}</TableCell>
+                    <TableCell><Badge variant="outline">{log.evento}</Badge></TableCell>
+                    <TableCell className="text-sm">{log.details}</TableCell>
+                  </TableRow>
+                )) : (
+                  <TableRow><TableCell colSpan={4} className="h-24 text-center">Nenhum log encontrado.</TableCell></TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+// Componente de Configuração do Kiwify
 const KiwifySettings = () => {
   const webhookUrl = "https://hbokiayvlbywxuwsgzlj.supabase.co/functions/v1/kiwify-webhook";
   const handleCopy = (text: string) => {
@@ -175,13 +230,16 @@ const KiwifySettings = () => {
     toast.success("Copiado para a área de transferência!");
   };
   return (
-    <Card>
-      <CardHeader><CardTitle>Configuração do Webhook Kiwify</CardTitle><CardDescription>Siga os passos para configurar a integração.</CardDescription></CardHeader>
-      <CardContent className="space-y-6">
-        <div><Label>Passo 1: Copie a URL do Webhook</Label><div className="flex items-center gap-2"><Input readOnly value={webhookUrl} /><Button variant="outline" size="icon" onClick={() => handleCopy(webhookUrl)}><Copy className="h-4 w-4" /></Button></div><p className="text-xs text-muted-foreground mt-1">Cole esta URL no campo "URL de Webhook" na sua conta Kiwify.</p></div>
-        <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertDescription><strong>Passo 2 (Importante):</strong> Você <strong>DEVE</strong> adicionar o "Segredo do Webhook" da Kiwify como um "Secret" nas configurações da sua Edge Function no painel da Supabase. O nome do segredo deve ser <strong>KIWIFY_WEBHOOK_SECRET</strong>.</AlertDescription></Alert>
-      </CardContent>
-    </Card>
+    <>
+      <Card>
+        <CardHeader><CardTitle>Configuração do Webhook Kiwify</CardTitle><CardDescription>Siga os passos para configurar a integração.</CardDescription></CardHeader>
+        <CardContent className="space-y-6">
+          <div><Label>Passo 1: Copie a URL do Webhook</Label><div className="flex items-center gap-2"><Input readOnly value={webhookUrl} /><Button variant="outline" size="icon" onClick={() => handleCopy(webhookUrl)}><Copy className="h-4 w-4" /></Button></div><p className="text-xs text-muted-foreground mt-1">Cole esta URL no campo "URL de Webhook" na sua conta Kiwify.</p></div>
+          <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertDescription><strong>Passo 2 (Importante):</strong> Você <strong>DEVE</strong> adicionar o "Segredo do Webhook" da Kiwify como um "Secret" nas configurações da sua Edge Function no painel da Supabase. O nome do segredo deve ser <strong>KIWIFY_WEBHOOK_SECRET</strong>.</AlertDescription></Alert>
+        </CardContent>
+      </Card>
+      <KiwifyWebhookLogs />
+    </>
   );
 };
 

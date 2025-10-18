@@ -51,7 +51,6 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     ],
     admin: [
       { to: "/admin", icon: Shield, label: "Painel Admin" },
-      { to: "/admin/kiwify", icon: Webhook, label: "Kiwify Webhook" },
       { to: "/admin/theme", icon: Palette, label: "Aparência" },
     ]
   };
