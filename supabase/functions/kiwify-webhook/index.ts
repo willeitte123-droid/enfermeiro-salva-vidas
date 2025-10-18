@@ -40,6 +40,10 @@ serve(async (req: Request) => {
     { auth: { persistSession: false } }
   );
 
+  const log = async (email: string, evento: string, details: string) => {
+    await supabaseAdmin.from('webhook_logs').insert({ email, evento, details });
+  };
+
   try {
     const KIWIFY_WEBHOOK_SECRET = Deno.env.get('KIWIFY_WEBHOOK_SECRET');
     if (!KIWIFY_WEBHOOK_SECRET) throw new Error("KIWIFY_WEBHOOK_SECRET environment variable not set.");
@@ -47,7 +51,7 @@ serve(async (req: Request) => {
     const { isValid, body } = await verifyKiwifySignature(req, KIWIFY_WEBHOOK_SECRET);
     if (!isValid) return new Response('Invalid signature.', { status: 403, headers: corsHeaders });
 
-    const { Customer, webhook_event_type, order, Subscription } = body;
+    const { Customer, webhook_event_type, order, Subscription, Product } = body;
     const email = Customer?.email;
     const fullName = Customer?.full_name || '';
     const evento = webhook_event_type;
@@ -64,7 +68,7 @@ serve(async (req: Request) => {
     const isCanceledEvent = canceledEvents.includes(evento.toLowerCase()) || canceledEvents.includes(orderStatus);
 
     // --- ETAPA 1: ENCONTRAR OU CRIAR O USUÁRIO ---
-    let userId;
+    let user;
     const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
     if (findUserError) throw findUserError;
 
@@ -79,25 +83,26 @@ serve(async (req: Request) => {
         });
 
         if (inviteError) {
-          await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao convidar novo usuário: ${inviteError.message}` });
+          await log(email, evento, `Erro ao convidar novo usuário: ${inviteError.message}`);
           throw inviteError;
         }
-        userId = newUser.user.id;
-        await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Usuário criado com ID: ${userId}. E-mail de convite enviado.` });
+        user = newUser.user;
+        await log(email, evento, `Usuário criado e convidado com sucesso. ID: ${user.id}.`);
       } else {
-        await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: 'Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.' });
+        await log(email, evento, 'Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
         return new Response('User not found for cancellation event.', { status: 200, headers: corsHeaders });
       }
     } else {
-      userId = users[0].id;
+      user = users[0];
     }
 
-    // --- ETAPA 2: ATUALIZAR O PERFIL DO USUÁRIO ---
-    let profileUpdate: any = {};
+    // --- ETAPA 2: DETERMINAR E APLICAR A ATUALIZAÇÃO DO PERFIL ---
+    let profileUpdate: any = { id: user.id }; // Sempre incluir o ID para o upsert
     let logDetails = '';
 
     if (isCanceledEvent) {
       profileUpdate = {
+        ...profileUpdate,
         plan: 'free',
         status: 'inactive',
         access_expires_at: new Date().toISOString()
@@ -105,23 +110,26 @@ serve(async (req: Request) => {
       logDetails = 'Acesso removido. Status do usuário alterado para inativo.';
     } else if (isApprovedEvent) {
       profileUpdate = {
+        ...profileUpdate,
         status: 'active',
-        plan: Subscription?.plan?.name || body.Product?.product_name || 'Plano PRO',
+        plan: Subscription?.plan?.name || Product?.product_name || 'Plano PRO',
         access_expires_at: Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
       };
       logDetails = `Plano "${profileUpdate.plan}" ativado para o usuário ${email}.`;
     } else {
-      await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Evento '${evento}' não reconhecido. Nenhuma ação tomada.` });
+      await log(email, evento, `Evento '${evento}' não reconhecido. Nenhuma ação tomada.`);
       return new Response('Event not handled.', { status: 200, headers: corsHeaders });
     }
 
-    const { error: updateError } = await supabaseAdmin.from('profiles').update(profileUpdate).eq('id', userId);
-    if (updateError) {
-      await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao atualizar perfil: ${updateError.message}` });
-      throw updateError;
+    // Usar upsert para criar o perfil se ele não existir, ou atualizá-lo se existir.
+    const { error: upsertError } = await supabaseAdmin.from('profiles').upsert(profileUpdate, { onConflict: 'id' });
+    
+    if (upsertError) {
+      await log(email, evento, `Erro ao atualizar/inserir perfil: ${upsertError.message}`);
+      throw upsertError;
     }
 
-    await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Sucesso: ${logDetails}` });
+    await log(email, evento, `Sucesso: ${logDetails}`);
 
     return new Response(JSON.stringify({ success: true, message: logDetails }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -130,8 +138,8 @@ serve(async (req: Request) => {
 
   } catch (error) {
     console.error("Erro no processamento do webhook:", error);
-    const email = req.headers.get('X-Kiwify-Email') || 'unknown';
-    await supabaseAdmin.from('webhook_logs').insert({ email, evento: 'error', details: error.message });
+    const email = "unknown"; // Não é possível obter o e-mail se o corpo falhar no parse
+    await log(email, 'error', error.message);
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500
