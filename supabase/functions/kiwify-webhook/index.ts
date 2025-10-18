@@ -67,17 +67,17 @@ serve(async (req: Request) => {
     const isApprovedEvent = approvedEvents.includes(evento.toLowerCase()) || orderStatus === 'paid';
     const isCanceledEvent = canceledEvents.includes(evento.toLowerCase()) || canceledEvents.includes(orderStatus);
 
-    // --- ETAPA 1: ENCONTRAR OU CRIAR O USUÁRIO ---
+    // --- ETAPA 1: ENCONTRAR OU CRIAR O USUÁRIO NA AUTH ---
     let user;
     const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
     if (findUserError) throw findUserError;
 
+    const nameParts = fullName.split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
+
     if (users.length === 0) {
       if (isApprovedEvent) {
-        const nameParts = fullName.split(' ');
-        const firstName = nameParts[0];
-        const lastName = nameParts.slice(1).join(' ');
-
         const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
           data: { first_name: firstName, last_name: lastName }
         });
@@ -87,7 +87,7 @@ serve(async (req: Request) => {
           throw inviteError;
         }
         user = newUser.user;
-        await log(email, evento, `Usuário criado e convidado com sucesso. ID: ${user.id}.`);
+        await log(email, evento, `Usuário criado na autenticação (ID: ${user.id}). E-mail de convite enviado.`);
       } else {
         await log(email, evento, 'Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
         return new Response('User not found for cancellation event.', { status: 200, headers: corsHeaders });
@@ -96,36 +96,41 @@ serve(async (req: Request) => {
       user = users[0];
     }
 
-    // --- ETAPA 2: DETERMINAR E APLICAR A ATUALIZAÇÃO DO PERFIL ---
-    let profileUpdate: any = { id: user.id }; // Sempre incluir o ID para o upsert
+    // --- ETAPA 2: DETERMINAR O ESTADO DO PERFIL ---
+    let profileData: any = {};
     let logDetails = '';
 
     if (isCanceledEvent) {
-      profileUpdate = {
-        ...profileUpdate,
+      profileData = {
         plan: 'free',
         status: 'inactive',
         access_expires_at: new Date().toISOString()
       };
       logDetails = 'Acesso removido. Status do usuário alterado para inativo.';
     } else if (isApprovedEvent) {
-      profileUpdate = {
-        ...profileUpdate,
+      profileData = {
         status: 'active',
         plan: Subscription?.plan?.name || Product?.product_name || 'Plano PRO',
         access_expires_at: Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
       };
-      logDetails = `Plano "${profileUpdate.plan}" ativado para o usuário ${email}.`;
+      logDetails = `Plano "${profileData.plan}" ativado para o usuário ${email}.`;
     } else {
       await log(email, evento, `Evento '${evento}' não reconhecido. Nenhuma ação tomada.`);
       return new Response('Event not handled.', { status: 200, headers: corsHeaders });
     }
 
-    // Usar upsert para criar o perfil se ele não existir, ou atualizá-lo se existir.
-    const { error: upsertError } = await supabaseAdmin.from('profiles').upsert(profileUpdate, { onConflict: 'id' });
-    
+    // --- ETAPA 3: CRIAR OU ATUALIZAR O PERFIL NA TABELA 'profiles' ---
+    const { error: upsertError } = await supabaseAdmin
+      .from('profiles')
+      .upsert({
+        id: user.id,
+        first_name: firstName,
+        last_name: lastName,
+        ...profileData
+      }, { onConflict: 'id' });
+
     if (upsertError) {
-      await log(email, evento, `Erro ao atualizar/inserir perfil: ${upsertError.message}`);
+      await log(email, evento, `Erro ao criar/atualizar perfil: ${upsertError.message}`);
       throw upsertError;
     }
 
@@ -138,7 +143,7 @@ serve(async (req: Request) => {
 
   } catch (error) {
     console.error("Erro no processamento do webhook:", error);
-    const email = "unknown"; // Não é possível obter o e-mail se o corpo falhar no parse
+    const email = "unknown";
     await log(email, 'error', error.message);
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
