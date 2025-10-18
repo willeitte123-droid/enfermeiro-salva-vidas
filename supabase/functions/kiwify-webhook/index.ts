@@ -78,49 +78,36 @@ serve(async (req: Request) => {
     let userId;
     let detailsLog = '';
 
-    const { data: existingUser, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email: email });
+    const { data: existingUsers, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
 
     if (findUserError) throw findUserError;
 
-    if (existingUser.users.length === 0) {
+    if (existingUsers.users.length === 0) {
       if (isApprovedEvent) {
         const nameParts = fullName.split(' ');
         const firstName = nameParts[0];
         const lastName = nameParts.slice(1).join(' ');
 
-        const { data: newUser, error: creationError } = await supabaseAdmin.auth.admin.createUser({
-          email: email,
-          email_confirm: true,
-          user_metadata: {
+        const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
+          data: {
             first_name: firstName,
             last_name: lastName,
           }
         });
 
-        if (creationError) {
-          await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao criar novo usuário: ${creationError.message}` });
-          throw creationError;
+        if (inviteError) {
+          await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: `Erro ao convidar novo usuário: ${inviteError.message}` });
+          throw inviteError;
         }
         userId = newUser.user.id;
-
-        // Gera e envia o e-mail para definição de senha
-        const { error: linkError } = await supabaseAdmin.auth.admin.generateLink({
-          type: 'recovery',
-          email: newUser.user.email,
-        });
-
-        if (linkError) {
-          detailsLog = `Usuário criado, mas falha ao enviar e-mail de definição de senha: ${linkError.message}`;
-        } else {
-          detailsLog = 'Novo usuário criado. Um e-mail para definição de senha foi enviado.';
-        }
+        detailsLog = 'Novo usuário convidado com sucesso. Um e-mail para definição de senha foi enviado.';
 
       } else {
         await supabaseAdmin.from('webhook_logs').insert({ email, evento, details: 'Usuário não encontrado para evento de cancelamento/atraso. Nenhuma ação tomada.' });
         return new Response('User not found for this event.', { status: 200, headers: corsHeaders });
       }
     } else {
-      userId = existingUser.users[0].id;
+      userId = existingUsers.users[0].id;
     }
 
     let plan = 'free';
