@@ -12,54 +12,65 @@ serve(async (req: Request) => {
   }
 
   try {
-    // Cria um cliente Supabase com a chave de serviço para privilégios de administrador
+    console.log("Function get-users invoked.");
+
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       { auth: { persistSession: false } }
     );
+    console.log("Supabase admin client created.");
 
-    // 1. Obtém o usuário a partir do token JWT no cabeçalho da requisição
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
+      console.error("Authorization header missing.");
       throw new Error('Cabeçalho de autorização ausente');
     }
     const jwt = authHeader.replace('Bearer ', '');
+    
+    console.log("Attempting to get user from JWT.");
     const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(jwt);
-    if (userError || !user) {
-      throw userError || new Error('Usuário não encontrado ou token inválido');
+    if (userError) {
+      console.error("Error getting user from JWT:", userError);
+      throw userError;
     }
+    if (!user) {
+      console.error("User not found for the provided JWT.");
+      throw new Error('Usuário não encontrado ou token inválido');
+    }
+    console.log(`User found: ${user.id}`);
 
-    // 2. Verifica se o usuário é um administrador chamando a função RPC 'get_user_role'
+    console.log(`Checking role for user: ${user.id}`);
     const { data: role, error: roleError } = await supabaseAdmin.rpc('get_user_role', { user_id: user.id });
-
     if (roleError) {
+      console.error("Error calling get_user_role RPC:", roleError);
       throw roleError;
     }
+    console.log(`User role is: ${role}`);
 
-    // 3. Se o usuário não for um administrador, retorna um erro de acesso negado
     if (role !== 'admin') {
+      console.warn(`Permission denied for user ${user.id} with role ${role}.`);
       return new Response(JSON.stringify({ error: 'Acesso negado: somente administradores.' }), {
         status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    // 4. Se o usuário for um administrador, busca todos os detalhes dos usuários
+    console.log("User is admin. Fetching all user details.");
     const { data: users, error: rpcError } = await supabaseAdmin.rpc('get_all_user_details');
-
     if (rpcError) {
+      console.error("Error calling get_all_user_details RPC:", rpcError);
       throw rpcError;
     }
+    console.log(`Successfully fetched ${users ? users.length : 0} users.`);
 
-    // Retorna a lista de usuários com sucesso
     return new Response(JSON.stringify({ users }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     });
 
   } catch (error) {
-    console.error("Erro na Edge Function get-users:", error);
+    console.error("Critical error in get-users function:", error);
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500,
