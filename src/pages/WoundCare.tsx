@@ -10,6 +10,8 @@ import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
 
 interface Profile {
   id: string;
@@ -134,6 +136,23 @@ const WoundCare = () => {
   useEffect(() => {
     addActivity({ type: 'Guia', title: 'Curativos e Tratamento de Feridas', path: '/wound-care', icon: 'Bandage' });
   }, [addActivity]);
+
+  const { data: favoritesData, isLoading: isLoadingFavorites } = useQuery({
+    queryKey: ['favorites', profile?.id, 'Cobertura'],
+    queryFn: async () => {
+      if (!profile) return [];
+      const { data, error } = await supabase
+        .from('user_favorites')
+        .select('item_id')
+        .eq('user_id', profile.id)
+        .eq('item_type', 'Cobertura');
+      if (error) throw error;
+      return data.map(f => f.item_id);
+    },
+    enabled: !!profile,
+  });
+
+  const favoriteSet = useMemo(() => new Set(favoritesData || []), [favoritesData]);
 
   const filteredDressings = useMemo(() => {
     return dressingTypes.filter(dressing =>
@@ -366,19 +385,44 @@ const WoundCare = () => {
             />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            {filteredDressings.map((dressing, index) => (
-              <Card key={index} className="hover:shadow-md transition-shadow">
-                <CardHeader><CardTitle className="text-lg">{dressing.name}</CardTitle></CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-green-700 mb-1">Indicação</h4><p className="text-sm">{dressing.indication}</p></div></div>
-                  <div className="flex items-start gap-3"><Zap className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-blue-700 mb-1">Ação</h4><p className="text-sm">{dressing.action}</p></div></div>
-                  <div className="flex items-start gap-3"><AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-amber-700 mb-1">Contraindicação / Cuidado</h4><p className="text-sm">{dressing.contraindication}</p></div></div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          {filteredDressings.length === 0 && (
+          {filteredDressings.length > 0 ? (
+            <div className="space-y-4">
+              {filteredDressings.map((dressing, index) => {
+                const itemId = `/wound-care#${dressing.name.toLowerCase().replace(/\s+/g, '-')}`;
+                return (
+                  <Accordion type="single" collapsible key={index}>
+                    <AccordionItem value={`item-${index}`} className="border rounded-lg px-4 bg-card shadow-sm">
+                      <div className="flex items-center">
+                        <AccordionTrigger className="flex-1 group hover:no-underline text-left py-0">
+                          <div className="flex items-center gap-3 py-4">
+                            <Bandage className="h-5 w-5 text-primary" />
+                            <p className="font-semibold text-left">{dressing.name}</p>
+                          </div>
+                        </AccordionTrigger>
+                        <div className="pl-4">
+                          {profile && (
+                            <FavoriteButton
+                              userId={profile.id}
+                              itemId={itemId}
+                              itemType="Cobertura"
+                              itemTitle={dressing.name}
+                              isInitiallyFavorited={favoriteSet.has(itemId)}
+                              isLoading={isLoadingFavorites}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <AccordionContent className="pt-4 space-y-4">
+                        <div className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-green-700 mb-1">Indicação</h4><p className="text-sm">{dressing.indication}</p></div></div>
+                        <div className="flex items-start gap-3"><Zap className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-blue-700 mb-1">Ação</h4><p className="text-sm">{dressing.action}</p></div></div>
+                        <div className="flex items-start gap-3"><AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-amber-700 mb-1">Contraindicação / Cuidado</h4><p className="text-sm">{dressing.contraindication}</p></div></div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                );
+              })}
+            </div>
+          ) : (
             <Card><CardContent className="py-12 text-center text-muted-foreground">Nenhuma cobertura encontrada para "{searchTerm}"</CardContent></Card>
           )}
         </TabsContent>
