@@ -4,47 +4,102 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
-import { Calendar as CalendarIcon, RefreshCw, Info, Baby, BookOpen, ClipboardList } from "lucide-react";
-import { format, addDays, addMonths, differenceInDays } from "date-fns";
+import { Calendar as CalendarIcon, RefreshCw, Baby, BookOpen, ClipboardList } from "lucide-react";
+import { format, addDays, addMonths, differenceInDays, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 
 const PregnancyCalculator = () => {
+  // Estado para o cálculo por DUM
   const [dum, setDum] = useState<Date | undefined>(undefined);
-  const [dpp, setDpp] = useState<string | null>(null);
-  const [gestationalAge, setGestationalAge] = useState<string | null>(null);
-  const [trimester, setTrimester] = useState<string | null>(null);
+  const [dppByDum, setDppByDum] = useState<string | null>(null);
+  const [gestationalAgeByDum, setGestationalAgeByDum] = useState<string | null>(null);
+  const [trimesterByDum, setTrimesterByDum] = useState<string | null>(null);
 
+  // Estado para o cálculo por USG
+  const [usgDate, setUsgDate] = useState<Date | undefined>(undefined);
+  const [usgWeeks, setUsgWeeks] = useState<string>("");
+  const [usgDays, setUsgDays] = useState<string>("");
+  const [dppByUsg, setDppByUsg] = useState<string | null>(null);
+  const [gestationalAgeByUsg, setGestationalAgeByUsg] = useState<string | null>(null);
+  const [trimesterByUsg, setTrimesterByUsg] = useState<string | null>(null);
+  const [estimatedDum, setEstimatedDum] = useState<string | null>(null);
+
+  // Lógica de cálculo para DUM
   useEffect(() => {
     if (dum) {
       const dppDate = addMonths(addDays(dum, 7), 9);
-      setDpp(format(dppDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }));
+      setDppByDum(format(dppDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }));
 
       const today = new Date();
       const totalDays = differenceInDays(today, dum);
       if (totalDays >= 0) {
         const weeks = Math.floor(totalDays / 7);
         const days = totalDays % 7;
-        setGestationalAge(`${weeks} semanas e ${days} dias`);
+        setGestationalAgeByDum(`${weeks} semanas e ${days} dias`);
 
-        if (weeks < 14) setTrimester("1º Trimestre");
-        else if (weeks < 28) setTrimester("2º Trimestre");
-        else setTrimester("3º Trimestre");
+        if (weeks < 14) setTrimesterByDum("1º Trimestre");
+        else if (weeks < 28) setTrimesterByDum("2º Trimestre");
+        else setTrimesterByDum("3º Trimestre");
       } else {
-        setGestationalAge(null);
-        setTrimester(null);
+        setGestationalAgeByDum(null);
+        setTrimesterByDum(null);
       }
     } else {
-      setDpp(null);
-      setGestationalAge(null);
-      setTrimester(null);
+      setDppByDum(null);
+      setGestationalAgeByDum(null);
+      setTrimesterByDum(null);
     }
   }, [dum]);
 
-  const resetCalculator = () => {
+  // Lógica de cálculo para USG
+  useEffect(() => {
+    const weeks = parseInt(usgWeeks);
+    const days = parseInt(usgDays);
+
+    if (usgDate && !isNaN(weeks) && !isNaN(days) && weeks >= 0 && days >= 0 && days < 7) {
+      const totalDaysAtUsg = weeks * 7 + days;
+      const estimatedDumDate = subDays(usgDate, totalDaysAtUsg);
+      setEstimatedDum(format(estimatedDumDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }));
+
+      const dppDate = addDays(estimatedDumDate, 280);
+      setDppByUsg(format(dppDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }));
+
+      const today = new Date();
+      const totalDays = differenceInDays(today, estimatedDumDate);
+
+      if (totalDays >= 0) {
+        const currentWeeks = Math.floor(totalDays / 7);
+        const currentDays = totalDays % 7;
+        setGestationalAgeByUsg(`${currentWeeks} semanas e ${currentDays} dias`);
+
+        if (currentWeeks < 14) setTrimesterByUsg("1º Trimestre");
+        else if (currentWeeks < 28) setTrimesterByUsg("2º Trimestre");
+        else setTrimesterByUsg("3º Trimestre");
+      } else {
+        setGestationalAgeByUsg(null);
+        setTrimesterByUsg(null);
+      }
+    } else {
+      setDppByUsg(null);
+      setGestationalAgeByUsg(null);
+      setTrimesterByUsg(null);
+      setEstimatedDum(null);
+    }
+  }, [usgDate, usgWeeks, usgDays]);
+
+  const resetDumCalculator = () => {
     setDum(undefined);
+  };
+
+  const resetUsgCalculator = () => {
+    setUsgDate(undefined);
+    setUsgWeeks("");
+    setUsgDays("");
   };
 
   return (
@@ -55,44 +110,80 @@ const PregnancyCalculator = () => {
             <Baby />
             Calculadora Gestacional
           </CardTitle>
-          <CardDescription className="text-pink-900/80 dark:text-pink-200/80">Calcule a DPP e a Idade Gestacional (IG) a partir da DUM.</CardDescription>
+          <CardDescription className="text-pink-900/80 dark:text-pink-200/80">
+            Calcule a DPP e a Idade Gestacional (IG) a partir da DUM ou de um Ultrassom (USG).
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div>
-            <Label>Data da Última Menstruação (DUM)</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal mt-2", !dum && "text-muted-foreground")}>
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dum ? format(dum, "PPP", { locale: ptBR }) : <span>Escolha uma data</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={dum} onSelect={setDum} initialFocus locale={ptBR} /></PopoverContent>
-            </Popover>
-          </div>
-
-          <div className="space-y-4">
-            <Card className="bg-background/70 p-6 text-center">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="sm:border-r border-border sm:pr-4">
-                  <p className="text-sm text-muted-foreground">Data Provável do Parto (DPP)</p>
-                  <p className="text-2xl font-bold text-primary">{dpp || "--"}</p>
+        <CardContent>
+          <Tabs defaultValue="dum" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="dum">Cálculo por DUM</TabsTrigger>
+              <TabsTrigger value="usg">Cálculo por USG</TabsTrigger>
+            </TabsList>
+            <TabsContent value="dum" className="mt-6 space-y-6">
+              <div>
+                <Label>Data da Última Menstruação (DUM)</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal mt-2", !dum && "text-muted-foreground")}>
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {dum ? format(dum, "PPP", { locale: ptBR }) : <span>Escolha uma data</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={dum} onSelect={setDum} initialFocus locale={ptBR} /></PopoverContent>
+                </Popover>
+              </div>
+              <Card className="bg-background/70 p-6 text-center">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="sm:border-r border-border sm:pr-4">
+                    <p className="text-sm text-muted-foreground">Data Provável do Parto (DPP)</p>
+                    <p className="text-2xl font-bold text-primary">{dppByDum || "--"}</p>
+                  </div>
+                  <div className="sm:border-r border-border sm:pr-4">
+                    <p className="text-sm text-muted-foreground">Idade Gestacional (Hoje)</p>
+                    <p className="text-2xl font-bold text-primary">{gestationalAgeByDum || "--"}</p>
+                  </div>
+                  <div className="sm:pl-4">
+                    <p className="text-sm text-muted-foreground">Trimestre Atual</p>
+                    <p className="text-2xl font-bold text-primary">{trimesterByDum || "--"}</p>
+                  </div>
                 </div>
-                <div className="sm:border-r border-border sm:pr-4">
-                  <p className="text-sm text-muted-foreground">Idade Gestacional (Hoje)</p>
-                  <p className="text-2xl font-bold text-primary">{gestationalAge || "--"}</p>
+              </Card>
+              <Button variant="outline" onClick={resetDumCalculator} className="w-full"><RefreshCw className="h-4 w-4 mr-2" />Limpar</Button>
+            </TabsContent>
+            <TabsContent value="usg" className="mt-6 space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Data do Ultrassom</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !usgDate && "text-muted-foreground")}>
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {usgDate ? format(usgDate, "PPP", { locale: ptBR }) : <span>Escolha uma data</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={usgDate} onSelect={setUsgDate} initialFocus locale={ptBR} /></PopoverContent>
+                  </Popover>
                 </div>
-                <div className="sm:pl-4">
-                  <p className="text-sm text-muted-foreground">Trimestre Atual</p>
-                  <p className="text-2xl font-bold text-primary">{trimester || "--"}</p>
+                <div className="space-y-2">
+                  <Label>Idade Gestacional no USG</Label>
+                  <div className="flex items-center gap-2">
+                    <Input type="number" placeholder="Semanas" value={usgWeeks} onChange={(e) => setUsgWeeks(e.target.value)} />
+                    <Input type="number" placeholder="Dias" value={usgDays} onChange={(e) => setUsgDays(e.target.value)} max={6} />
+                  </div>
                 </div>
               </div>
-            </Card>
-            <Button variant="outline" onClick={resetCalculator} className="w-full">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Limpar
-            </Button>
-          </div>
+              <Card className="bg-background/70 p-6 text-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="lg:border-r border-border lg:pr-4"><p className="text-sm text-muted-foreground">DPP</p><p className="text-xl font-bold text-primary">{dppByUsg || "--"}</p></div>
+                  <div className="lg:border-r border-border lg:pr-4"><p className="text-sm text-muted-foreground">IG Atual</p><p className="text-xl font-bold text-primary">{gestationalAgeByUsg || "--"}</p></div>
+                  <div className="lg:border-r border-border lg:pr-4"><p className="text-sm text-muted-foreground">Trimestre</p><p className="text-xl font-bold text-primary">{trimesterByUsg || "--"}</p></div>
+                  <div className="lg:pl-4"><p className="text-sm text-muted-foreground">DUM Estimada</p><p className="text-xl font-bold text-primary">{estimatedDum || "--"}</p></div>
+                </div>
+              </Card>
+              <Button variant="outline" onClick={resetUsgCalculator} className="w-full"><RefreshCw className="h-4 w-4 mr-2" />Limpar</Button>
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
       
