@@ -1,85 +1,76 @@
-import { useEffect, useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { UserCheck, UserX, Loader2, Users, Hourglass, Search } from "lucide-react";
+import { Loader2, Users, Search, AlertTriangle } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { useQuery } from "@tanstack/react-query";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { User } from "@supabase/supabase-js";
 
-interface Profile {
-  id: string;
-  first_name: string | null;
-  last_name: string | null;
-  email: string | null;
-  role: string;
-  status: string;
-  plan: string;
-  avatar_url: string | null;
-  location: string | null;
-  access_expires_at: string | null;
-}
+const fetchAllUsers = async () => {
+  const { data, error } = await supabase.functions.invoke('get-users');
+  
+  if (error) {
+    // Tenta extrair uma mensagem de erro mais amigável do corpo da resposta
+    if (error instanceof Error && 'context' in error) {
+      const context = error.context as any;
+      if (context?.json?.error) {
+        throw new Error(context.json.error);
+      }
+    }
+    throw error;
+  }
+
+  if (data.error) {
+    throw new Error(data.error);
+  }
+
+  return data.users as User[];
+};
 
 const Admin = () => {
-  const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
 
-  const fetchProfiles = async () => {
-    setLoading(true);
-    const { data, error } = await supabase.rpc('get_all_user_details');
-    if (error) {
-      toast.error("Acesso Negado", { description: "Apenas administradores podem visualizar esta página." });
-    } else {
-      setProfiles(data || []);
-    }
-    setLoading(false);
-  };
+  const { data: users = [], isLoading, error } = useQuery<User[]>({
+    queryKey: ["allUsers"],
+    queryFn: fetchAllUsers,
+    retry: false, // Não tenta novamente em caso de erro de permissão
+  });
 
-  useEffect(() => {
-    fetchProfiles();
-  }, []);
-
-  const handleStatusChange = async (id: string, newStatus: "active" | "pending") => {
-    const { error } = await supabase.from("profiles").update({ status: newStatus }).eq("id", id);
-
-    if (error) {
-      toast.error("Erro ao atualizar status", { description: error.message });
-    } else {
-      toast.success(`Usuário ${newStatus === "active" ? "aprovado" : "movido para pendente"} com sucesso!`);
-      fetchProfiles();
-    }
-  };
-
-  const filteredProfiles = useMemo(() => {
+  const filteredUsers = useMemo(() => {
+    if (!searchTerm) return users;
     const lowercasedSearchTerm = searchTerm.toLowerCase();
-    return profiles
-      .filter(profile => {
-        if (statusFilter === "all") return true;
-        return profile.status === statusFilter;
-      })
-      .filter(profile => {
-        const fullName = `${profile.first_name || ''} ${profile.last_name || ''}`.toLowerCase();
-        const email = (profile.email || '').toLowerCase();
-        const location = (profile.location || '').toLowerCase();
-        return fullName.includes(lowercasedSearchTerm) || email.includes(lowercasedSearchTerm) || location.includes(lowercasedSearchTerm);
-      });
-  }, [profiles, searchTerm, statusFilter]);
+    return users.filter(user =>
+      (user.email || '').toLowerCase().includes(lowercasedSearchTerm) ||
+      (user.id || '').toLowerCase().includes(lowercasedSearchTerm)
+    );
+  }, [users, searchTerm]);
 
-  const totalUsers = profiles.length;
-  const activeUsers = profiles.filter(p => p.status === 'active').length;
-  const pendingUsers = profiles.filter(p => p.status === 'pending').length;
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-full">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Painel de Administração</h1>
+        </div>
+        <Alert variant="destructive">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Erro de Acesso</AlertTitle>
+          <AlertDescription>
+            {(error as Error).message || "Ocorreu um erro ao buscar os usuários. Verifique se você tem permissão de administrador."}
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
@@ -88,63 +79,60 @@ const Admin = () => {
     <div className="space-y-6">
       <div className="text-center">
         <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Painel de Administração</h1>
-        <p className="text-muted-foreground">Gerenciamento de usuários e visão geral do sistema.</p>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Total de Usuários</CardTitle><Users className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">{totalUsers}</div></CardContent></Card>
-        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Usuários Ativos</CardTitle><UserCheck className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">{activeUsers}</div></CardContent></Card>
-        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Aprovações Pendentes</CardTitle><Hourglass className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">{pendingUsers}</div></CardContent></Card>
+        <p className="text-muted-foreground">Gerenciamento de usuários da plataforma.</p>
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Gerenciamento de Usuários</CardTitle>
-          <CardDescription>Aprove, desative ou gerencie os usuários da plataforma.</CardDescription>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2"><Users className="h-5 w-5" /> Usuários ({filteredUsers.length})</CardTitle>
+            <CardDescription>Lista de todos os usuários registrados no sistema.</CardDescription>
+          </div>
+          <div className="relative w-full sm:w-auto max-w-xs">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Buscar por email ou ID..."
+              className="pl-8"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </CardHeader>
         <CardContent>
-          <Tabs value={statusFilter} onValueChange={setStatusFilter}>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-              <TabsList className="grid w-full grid-cols-3"><TabsTrigger value="all">Todos</TabsTrigger><TabsTrigger value="pending">Pendentes</TabsTrigger><TabsTrigger value="active">Ativos</TabsTrigger></TabsList>
-              <div className="relative w-full sm:w-auto"><Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar..." className="pl-8 w-full sm:w-[250px]" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /></div>
-            </div>
-          </Tabs>
           <div className="border rounded-md">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Email</TableHead>
-                  <TableHead>Plano</TableHead>
+                  <TableHead>ID do Usuário</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Localização</TableHead>
-                  <TableHead>Expira em</TableHead>
-                  <TableHead className="text-right">Ações</TableHead>
+                  <TableHead>Criado em</TableHead>
+                  <TableHead>Último Login</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredProfiles.length > 0 ? (
-                  filteredProfiles.map((profile) => (
-                    <TableRow key={profile.id}>
-                      <TableCell className="font-medium">{profile.email}</TableCell>
-                      <TableCell><Badge variant="secondary">{profile.plan}</Badge></TableCell>
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell className="font-medium">{user.email}</TableCell>
+                      <TableCell className="text-muted-foreground text-xs">{user.id}</TableCell>
                       <TableCell>
-                        <Badge className={cn(profile.status === "active" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800")} variant="outline">
-                          {profile.status === "active" ? "Ativo" : "Pendente"}
+                        <Badge variant={user.email_confirmed_at ? "default" : "outline"}>
+                          {user.email_confirmed_at ? "Confirmado" : "Aguardando"}
                         </Badge>
                       </TableCell>
-                      <TableCell>{profile.location || "-"}</TableCell>
-                      <TableCell>{profile.access_expires_at ? format(new Date(profile.access_expires_at), "dd/MM/yyyy", { locale: ptBR }) : "-"}</TableCell>
-                      <TableCell className="text-right">
-                        {profile.status === "pending" ? (
-                          <Button variant="outline" size="sm" onClick={() => handleStatusChange(profile.id, "active")}><UserCheck className="h-4 w-4 mr-2" />Aprovar</Button>
-                        ) : (
-                          <Button variant="ghost" size="sm" onClick={() => handleStatusChange(profile.id, "pending")}><UserX className="h-4 w-4 mr-2" />Desativar</Button>
-                        )}
+                      <TableCell>
+                        {user.created_at ? format(new Date(user.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR }) : "-"}
+                      </TableCell>
+                      <TableCell>
+                        {user.last_sign_in_at ? format(new Date(user.last_sign_in_at), "dd/MM/yyyy HH:mm", { locale: ptBR }) : "Nunca"}
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
-                  <TableRow><TableCell colSpan={6} className="h-24 text-center">Nenhum usuário encontrado.</TableCell></TableRow>
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center">Nenhum usuário encontrado.</TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </Table>
