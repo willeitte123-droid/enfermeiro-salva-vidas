@@ -4,11 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Bandage, Info, Droplet, CheckCircle, Zap, XCircle, Search, AlertTriangle, ShieldAlert } from "lucide-react";
+import { Bandage, Info, Droplet, CheckCircle, Zap, XCircle, Search, AlertTriangle, ShieldAlert, Scale } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface Profile {
   id: string;
@@ -155,10 +156,11 @@ const WoundCare = () => {
       </div>
 
       <Tabs defaultValue="tissues" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="tissues">Avaliação da Ferida</TabsTrigger>
           <TabsTrigger value="pressure-injury">Lesão por Pressão</TabsTrigger>
           <TabsTrigger value="diabetic-foot">Pé Diabético</TabsTrigger>
+          <TabsTrigger value="vascular-ulcers">Úlceras Vasculares</TabsTrigger>
           <TabsTrigger value="dressings">Tipos de Cobertura</TabsTrigger>
         </TabsList>
 
@@ -293,6 +295,59 @@ const WoundCare = () => {
               ))}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="vascular-ulcers" className="space-y-4">
+          <Card className="border-blue-500/50 bg-blue-50 dark:bg-blue-950">
+            <CardHeader><CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400"><Scale className="h-5 w-5" />Índice Tornozelo-Braquial (ITB)</CardTitle></CardHeader>
+            <CardContent className="space-y-2">
+              <p className="text-sm text-muted-foreground">O ITB é <strong>essencial</strong> para diferenciar úlceras e, principalmente, para indicar ou contraindicar a terapia compressiva. É calculado pela fórmula: <strong>Maior Pressão Sistólica do Tornozelo ÷ Maior Pressão Sistólica Braquial</strong>.</p>
+              <Table><TableHeader><TableRow><TableHead>Valor do ITB</TableHead><TableHead>Interpretação</TableHead><TableHead>Conduta</TableHead></TableRow></TableHeader>
+                <TableBody>
+                  <TableRow><TableCell className="font-semibold">{'>'} 1.3</TableCell><TableCell>Artérias não compressíveis (calcificadas)</TableCell><TableCell>Investigar com outros métodos</TableCell></TableRow>
+                  <TableRow className="bg-green-100 dark:bg-green-900/30"><TableCell className="font-semibold">0.9 - 1.3</TableCell><TableCell>Normal</TableCell><TableCell>Terapia compressiva segura</TableCell></TableRow>
+                  <TableRow className="bg-yellow-100 dark:bg-yellow-900/30"><TableCell className="font-semibold">0.5 - 0.8</TableCell><TableCell>Doença Arterial Periférica (DAP) Leve a Moderada</TableCell><TableCell>Compressão modificada/leve, com cautela</TableCell></TableRow>
+                  <TableRow className="bg-red-100 dark:bg-red-900/30"><TableCell className="font-semibold">{'<'} 0.5</TableCell><TableCell>DAP Grave</TableCell><TableCell><strong>Terapia compressiva CONTRAINDICADA</strong></TableCell></TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card><CardHeader><CardTitle className="text-blue-600">Úlcera Venosa</CardTitle></CardHeader><CardContent className="space-y-4">
+              <div><h4 className="font-semibold text-sm mb-2">Características</h4><ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                <li><strong>Localização:</strong> Terço inferior da perna (área da "bota"), principalmente maléolo medial.</li>
+                <li><strong>Aparência:</strong> Bordas irregulares, superficial, leito com tecido de granulação ou fibrina.</li>
+                <li><strong>Exsudato:</strong> Moderado a alto.</li>
+                <li><strong>Pele ao Redor:</strong> Edema, dermatite de estase, hiperpigmentação ocre.</li>
+                <li><strong>Dor:</strong> Melhora com a elevação dos membros.</li>
+                <li><strong>Pulsos:</strong> Presentes e normais.</li>
+              </ul></div>
+              <div><h4 className="font-semibold text-sm text-primary mb-2">Pilares do Tratamento</h4><ul className="list-disc pl-5 space-y-1 text-sm">
+                <li className="font-bold">Terapia Compressiva (padrão-ouro).</li>
+                <li>Elevação dos membros.</li>
+                <li>Controle do exsudato e proteção da pele perilesional.</li>
+              </ul></div>
+              <div><h4 className="font-semibold text-sm mb-2">Coberturas Sugeridas</h4><div className="flex flex-wrap gap-2">
+                <Badge variant="secondary">Bota de Unna</Badge><Badge variant="secondary">Alginato de Cálcio</Badge><Badge variant="secondary">Espuma</Badge><Badge variant="secondary">Hidrofibra</Badge>
+              </div></div>
+            </CardContent></Card>
+            <Card><CardHeader><CardTitle className="text-red-600">Úlcera Arterial</CardTitle></CardHeader><CardContent className="space-y-4">
+              <div><h4 className="font-semibold text-sm mb-2">Características</h4><ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                <li><strong>Localização:</strong> Extremidades (dedos, calcanhar), proeminências ósseas, maléolo lateral.</li>
+                <li><strong>Aparência:</strong> Bordas bem definidas ("em saca-bocado"), leito pálido ou necrótico.</li>
+                <li><strong>Exsudato:</strong> Mínimo ou ausente.</li>
+                <li><strong>Pele ao Redor:</strong> Pálida, fria, sem pelos, unhas espessadas.</li>
+                <li><strong>Dor:</strong> Intensa, piora com a elevação dos membros (dor em repouso).</li>
+                <li><strong>Pulsos:</strong> Diminuídos ou ausentes.</li>
+              </ul></div>
+              <div><h4 className="font-semibold text-sm text-primary mb-2">Pilares do Tratamento</h4><ul className="list-disc pl-5 space-y-1 text-sm">
+                <li className="font-bold">Avaliação vascular e revascularização.</li>
+                <li>Manter o leito seco se houver necrose seca e estável.</li>
+                <li>Evitar desbridamento agressivo sem avaliação vascular.</li>
+              </ul></div>
+              <div className="border-l-4 border-destructive pl-4"><h4 className="font-semibold text-sm text-destructive mb-2">CUIDADO CRÍTICO</h4><p className="text-sm font-bold text-destructive">A TERAPIA COMPRESSIVA É ABSOLUTAMENTE CONTRAINDICADA!</p></div>
+            </CardContent></Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="dressings" className="space-y-4">
