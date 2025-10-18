@@ -120,7 +120,7 @@ const PregnancyCalculator = () => {
               <TabsTrigger value="dum">Cálculo por DUM</TabsTrigger>
               <TabsTrigger value="usg">Cálculo por USG</TabsTrigger>
             </TabsList>
-            <TabsContent value="dum" className="mt-6 space-y-6">
+            <TabsContent value="dum" className="mt-4 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800 space-y-6">
               <div>
                 <Label>Data da Última Menstruação (DUM)</Label>
                 <Popover>
@@ -151,7 +151,7 @@ const PregnancyCalculator = () => {
               </Card>
               <Button variant="outline" onClick={resetDumCalculator} className="w-full"><RefreshCw className="h-4 w-4 mr-2" />Limpar</Button>
             </TabsContent>
-            <TabsContent value="usg" className="mt-6 space-y-6">
+            <TabsContent value="usg" className="mt-4 bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded-lg border border-emerald-200 dark:border-emerald-800 space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Data do Ultrassom</Label>
