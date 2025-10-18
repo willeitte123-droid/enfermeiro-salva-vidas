@@ -18,23 +18,17 @@ serve(async (req: Request) => {
       { auth: { persistSession: false } }
     );
 
-    // 1. Obter o token do usuário que está fazendo a chamada
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       throw new Error('Missing authorization header');
     }
     const jwt = authHeader.replace('Bearer ', '');
 
-    // 2. Obter os dados do usuário a partir do token
     const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(jwt);
-    if (userError) {
-      throw userError;
-    }
-    if (!user) {
-      throw new Error('User not found');
+    if (userError || !user) {
+      throw userError || new Error('User not found');
     }
 
-    // 3. Verificar se o usuário tem a permissão 'admin' na tabela de perfis
     const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('role')
@@ -48,14 +42,11 @@ serve(async (req: Request) => {
       });
     }
 
-    // 4. Se for admin, buscar a lista de todos os usuários
-    const { data: { users }, error: listUsersError } = await supabaseAdmin.auth.admin.listUsers({
-      page: 1,
-      perPage: 1000,
-    });
+    // Chama a função SQL que agora pode ser executada com segurança
+    const { data: users, error: rpcError } = await supabaseAdmin.rpc('get_all_user_details');
 
-    if (listUsersError) {
-      throw listUsersError;
+    if (rpcError) {
+      throw rpcError;
     }
 
     return new Response(JSON.stringify({ users }), {
