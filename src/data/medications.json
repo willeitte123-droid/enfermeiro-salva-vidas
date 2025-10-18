@@ -535,7 +535,7 @@
       "administration": "<strong>IV:</strong> Administrar em infusão lenta, durante 60 minutos, para evitar reações no local da infusão.",
       "dilution": "Já vem pronto para uso na forma de bolsa de infusão. Não diluir.",
       "contraindication": "Hipersensibilidade a quinolonas, uso concomitante com tizanidina.",
-      "adverseEffects": "Náusea, diarreia, flebite. <strong>Risco de tendinite e ruptura de tendão</strong>, fotossensibilidade, prolongamento do intervalo QT.",
+      "adverseEffects": "<strong>Risco de tendinite e ruptura de tendão</strong>, fotossensibilidade, prolongamento do intervalo QT.",
       "category": "Antibiótico Quinolona"
     },
     {
@@ -581,5 +581,16 @@
       "contraindication": "Hipersensibilidade. Cautela em pacientes com alergia a peixe ou vasectomizados.",
       "adverseEffects": "<strong>Hipotensão (infusão rápida)</strong>, bradicardia, reações anafilactoides.",
       "category": "Antídoto/Alta Vigilância"
+    },
+    {
+      "name": "Noripurum",
+      "activeIngredient": "Sacarato de Hidróxido Férrico",
+      "indication": "Tratamento de anemias por deficiência de ferro.",
+      "dose": "Dose calculada individualmente com base no peso e déficit de hemoglobina. Ex: <strong>100-200mg IV</strong> por aplicação.",
+      "administration": "<strong>IV:</strong> Infundir <strong>MUITO LENTAMENTE</strong>. Uma dose de 100mg deve ser infundida em pelo menos 15 minutos. Recomenda-se uma dose-teste inicial.",
+      "dilution": "Diluir <strong>APENAS em Soro Fisiológico 0,9%</strong>. Ex: 100mg (1 ampola de 5mL) em 100mL de SF 0,9%. Não misturar com outras soluções ou medicamentos.",
+      "contraindication": "Hipersensibilidade, anemias não ferroprivas, sobrecarga de ferro (hemocromatose).",
+      "adverseEffects": "<strong>Hipotensão (infusão rápida), reações anafilactoides (risco grave)</strong>, gosto metálico, cefaleia, náuseas, flebite. Monitorar o paciente de perto durante a infusão.",
+      "category": "Antianêmico / Repositor de Ferro"
     }
 ]
