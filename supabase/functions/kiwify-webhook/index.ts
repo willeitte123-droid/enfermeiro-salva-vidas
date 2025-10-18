@@ -78,16 +78,32 @@ serve(async (req: Request) => {
 
     if (users.length === 0) {
       if (isApprovedEvent) {
-        const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
-          data: { first_name: firstName, last_name: lastName }
+        const { data: newUser, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
+          email: email,
+          password: crypto.randomUUID(), // Senha temporária segura
+          email_confirm: true,
+          user_metadata: {
+            first_name: firstName,
+            last_name: lastName
+          }
         });
 
-        if (inviteError) {
-          await log(email, evento, `Erro ao convidar novo usuário: ${inviteError.message}`);
-          throw inviteError;
+        if (createUserError) {
+          await log(email, evento, `Erro ao CRIAR novo usuário na auth: ${createUserError.message}`);
+          throw createUserError;
         }
         user = newUser.user;
-        await log(email, evento, `Usuário criado na autenticação (ID: ${user.id}). E-mail de convite enviado.`);
+        await log(email, evento, `Usuário criado na autenticação (ID: ${user.id}).`);
+
+        const { error: recoveryError } = await supabaseAdmin.auth.admin.generateLink({
+            type: 'recovery',
+            email: email,
+        });
+        if (recoveryError) {
+            await log(email, evento, `Usuário criado, mas falha ao enviar e-mail de recuperação: ${recoveryError.message}`);
+        } else {
+            await log(email, evento, `E-mail de definição de senha enviado para o novo usuário.`);
+        }
       } else {
         await log(email, evento, 'Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
         return new Response('User not found for cancellation event.', { status: 200, headers: corsHeaders });
@@ -119,7 +135,6 @@ serve(async (req: Request) => {
       return new Response('Event not handled.', { status: 200, headers: corsHeaders });
     }
 
-    // **A MUDANÇA CRUCIAL:** Usar 'upsert' para garantir que o perfil seja criado ou atualizado.
     const { error: upsertError } = await supabaseAdmin
       .from('profiles')
       .upsert({
@@ -130,7 +145,7 @@ serve(async (req: Request) => {
       }, { onConflict: 'id' });
 
     if (upsertError) {
-      await log(email, evento, `Erro ao criar/atualizar perfil: ${upsertError.message}`);
+      await log(email, evento, `Erro ao criar/atualizar perfil na tabela 'profiles': ${upsertError.message}`);
       throw upsertError;
     }
 
