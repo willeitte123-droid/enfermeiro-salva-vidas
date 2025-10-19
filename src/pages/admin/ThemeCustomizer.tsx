@@ -58,10 +58,16 @@ const defaultSettings = {
   font_family: "Inter, sans-serif",
   "--primary": "210 90% 48%", "--secondary": "260 70% 55%", "--accent": "40 80% 96%", "--background": "40 50% 98%", "--foreground": "215 25% 15%", "--card": "0 0% 100%", "--destructive": "0 72% 51%", "--border": "40 30% 92%",
   "--dark-primary": "210 90% 58%", "--dark-secondary": "260 65% 60%", "--dark-accent": "215 25% 16%", "--dark-background": "215 30% 8%", "--dark-foreground": "210 20% 98%", "--dark-card": "215 25% 12%", "--dark-destructive": "0 72% 51%", "--dark-border": "215 20% 18%",
+  "--sidebar-background": "215 25% 12%", "--sidebar-foreground": "210 20% 85%", "--sidebar-active-background": "210 90% 48%", "--sidebar-active-foreground": "0 0% 100%", "--sidebar-hover-background": "215 20% 18%",
+  "--dark-sidebar-background": "215 25% 12%", "--dark-sidebar-foreground": "210 20% 85%", "--dark-sidebar-active-background": "210 90% 58%", "--dark-sidebar-active-foreground": "0 0% 100%", "--dark-sidebar-hover-background": "215 20% 18%",
 };
 
 const colorFields = [
   { id: "primary", label: "Primária" }, { id: "secondary", label: "Secundária" }, { id: "accent", label: "Acento" }, { id: "background", label: "Fundo" }, { id: "foreground", label: "Texto" }, { id: "card", label: "Card" }, { id: "destructive", label: "Destrutiva" }, { id: "border", label: "Borda" },
+];
+
+const sidebarColorFields = [
+  { id: "sidebar-background", label: "Fundo da Sidebar" }, { id: "sidebar-foreground", label: "Texto da Sidebar" }, { id: "sidebar-active-background", label: "Fundo do Item Ativo" }, { id: "sidebar-active-foreground", label: "Texto do Item Ativo" }, { id: "sidebar-hover-background", label: "Fundo do Hover" },
 ];
 
 const fetchThemeSettings = async () => {
@@ -101,9 +107,7 @@ const ThemeCustomizer = () => {
         font_family: themeSettings.font_family,
         logo_url: themeSettings.logo_url,
       };
-      colorFields.forEach(({ id }) => {
-        formValues[`--primary`] = hslToHex(themeSettings[`--primary`]);
-        formValues[`--dark-primary`] = hslToHex(themeSettings[`--dark-primary`]);
+      [...colorFields, ...sidebarColorFields].forEach(({ id }) => {
         formValues[`--${id}`] = hslToHex(themeSettings[`--${id}`]);
         formValues[`--dark-${id}`] = hslToHex(themeSettings[`--dark-${id}`]);
       });
@@ -126,7 +130,7 @@ const ThemeCustomizer = () => {
         logo_url: newLogoUrl,
         font_family: formData.font_family,
       };
-      colorFields.forEach(({ id }) => {
+      [...colorFields, ...sidebarColorFields].forEach(({ id }) => {
         settingsToSave[`--${id}`] = hexToHsl(formData[`--${id}`]);
         settingsToSave[`--dark-${id}`] = hexToHsl(formData[`--dark-${id}`]);
       });
@@ -178,32 +182,40 @@ const ThemeCustomizer = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card><CardHeader><CardTitle>Logo e Fonte</CardTitle></CardHeader><CardContent className="space-y-4">
-          <div><Label>Logo</Label><div className="flex items-center gap-4 mt-2">
-            <Avatar className="h-16 w-16 rounded-md"><AvatarImage src={logoPreview || logoUrl} className="object-contain" /><AvatarFallback className="rounded-md">Logo</AvatarFallback></Avatar>
-            <div className="flex-1 space-y-2">
-              <Button asChild variant="outline"><label htmlFor="logo-upload"><Upload className="mr-2 h-4 w-4" />Alterar Logo<Input id="logo-upload" type="file" accept="image/*" onChange={handleLogoChange} className="hidden" /></label></Button>
-              {(logoPreview || (logoUrl && logoUrl !== defaultSettings.logo_url)) && <Button variant="destructive" size="sm" onClick={() => { setLogoFile(null); setLogoPreview(null); reset({ ...watch(), logo_url: defaultSettings.logo_url }); }}><Trash2 className="mr-2 h-4 w-4" />Remover</Button>}
-            </div>
-          </div></div>
-          <div><Label>Fonte Principal</Label><Controller control={control} name="font_family" render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent><SelectItem value="Inter, sans-serif">Inter (Padrão)</SelectItem><SelectItem value="Poppins, sans-serif">Poppins</SelectItem><SelectItem value="Roboto Slab, serif">Roboto Slab</SelectItem></SelectContent>
-            </Select>
-          )} /></div>
-        </CardContent></Card>
-      </div>
+      <Card><CardHeader><CardTitle>Logo e Fonte</CardTitle></CardHeader><CardContent className="space-y-4">
+        <div><Label>Logo</Label><div className="flex items-center gap-4 mt-2">
+          <Avatar className="h-16 w-16 rounded-md"><AvatarImage src={logoPreview || logoUrl} className="object-contain" /><AvatarFallback className="rounded-md">Logo</AvatarFallback></Avatar>
+          <div className="flex-1 space-y-2">
+            <Button asChild variant="outline"><label htmlFor="logo-upload"><Upload className="mr-2 h-4 w-4" />Alterar Logo<Input id="logo-upload" type="file" accept="image/*" onChange={handleLogoChange} className="hidden" /></label></Button>
+            {(logoPreview || (logoUrl && logoUrl !== defaultSettings.logo_url)) && <Button variant="destructive" size="sm" onClick={() => { setLogoFile(null); setLogoPreview(null); reset({ ...watch(), logo_url: defaultSettings.logo_url }); }}><Trash2 className="mr-2 h-4 w-4" />Remover</Button>}
+          </div>
+        </div></div>
+        <div><Label>Fonte Principal</Label><Controller control={control} name="font_family" render={({ field }) => (
+          <Select onValueChange={field.onChange} value={field.value}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent><SelectItem value="Inter, sans-serif">Inter (Padrão)</SelectItem><SelectItem value="Poppins, sans-serif">Poppins</SelectItem><SelectItem value="Roboto Slab, serif">Roboto Slab</SelectItem></SelectContent>
+          </Select>
+        )} /></div>
+      </CardContent></Card>
 
       <Tabs defaultValue="light">
         <TabsList className="grid w-full grid-cols-2"><TabsTrigger value="light">Tema Claro</TabsTrigger><TabsTrigger value="dark">Tema Escuro</TabsTrigger></TabsList>
-        <TabsContent value="light"><Card><CardHeader><CardTitle>Cores do Tema Claro</CardTitle></CardHeader><CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {colorFields.map(field => <ColorPickerInput key={field.id} control={control} name={`--${field.id}`} label={field.label} />)}
-        </CardContent></Card></TabsContent>
-        <TabsContent value="dark"><Card><CardHeader><CardTitle>Cores do Tema Escuro</CardTitle></CardHeader><CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {colorFields.map(field => <ColorPickerInput key={field.id} control={control} name={`--dark-${field.id}`} label={field.label} />)}
-        </CardContent></Card></TabsContent>
+        <TabsContent value="light" className="space-y-6">
+          <Card><CardHeader><CardTitle>Cores Gerais (Tema Claro)</CardTitle></CardHeader><CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {colorFields.map(field => <ColorPickerInput key={field.id} control={control} name={`--${field.id}`} label={field.label} />)}
+          </CardContent></Card>
+          <Card><CardHeader><CardTitle>Cores da Sidebar (Tema Claro)</CardTitle></CardHeader><CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {sidebarColorFields.map(field => <ColorPickerInput key={field.id} control={control} name={`--${field.id}`} label={field.label} />)}
+          </CardContent></Card>
+        </TabsContent>
+        <TabsContent value="dark" className="space-y-6">
+          <Card><CardHeader><CardTitle>Cores Gerais (Tema Escuro)</CardTitle></CardHeader><CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {colorFields.map(field => <ColorPickerInput key={field.id} control={control} name={`--dark-${field.id}`} label={field.label} />)}
+          </CardContent></Card>
+          <Card><CardHeader><CardTitle>Cores da Sidebar (Tema Escuro)</CardTitle></CardHeader><CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {sidebarColorFields.map(field => <ColorPickerInput key={field.id} control={control} name={`--dark-${field.id}`} label={field.label} />)}
+          </CardContent></Card>
+        </TabsContent>
       </Tabs>
     </form>
   );
