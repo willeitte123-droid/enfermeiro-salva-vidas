@@ -1,0 +1,79 @@
+{
+  "pageTitle": "Anotações e Evolução de Enfermagem",
+  "pageDescription": "Um guia prático para a documentação segura e eficaz do cuidado de enfermagem.",
+  "keyDifferences": {
+    "title": "Anotação vs. Evolução: Qual a Diferença?",
+    "annotation": {
+      "title": "Anotação de Enfermagem",
+      "who": "Realizada por toda a equipe de enfermagem (Enfermeiros, Técnicos e Auxiliares).",
+      "what": "Registro pontual de dados brutos, observações, cuidados prestados e intercorrências.",
+      "when": "Realizada a cada cuidado prestado, durante todo o plantão.",
+      "why": "Subsidia a Evolução do Enfermeiro e garante a continuidade do cuidado.",
+      "how": "Dados objetivos e subjetivos, sem análise ou julgamento clínico."
+    },
+    "evolution": {
+      "title": "Evolução de Enfermagem (SAE)",
+      "who": "Ato privativo do Enfermeiro.",
+      "what": "Análise e interpretação dos dados coletados para avaliar a resposta do paciente ao plano de cuidados.",
+      "when": "Realizada uma vez a cada 24 horas (ou conforme a necessidade do paciente).",
+      "why": "Avalia a eficácia do plano de cuidados e direciona as próximas ações.",
+      "how": "Processo reflexivo e analítico, parte da Sistematização da Assistência de Enfermagem (SAE)."
+    }
+  },
+  "bestPractices": {
+    "title": "Regras de Ouro da Documentação",
+    "items": [
+      { "icon": "Clock", "text": "Registre imediatamente após o cuidado prestado. Não deixe para o final do plantão." },
+      { "icon": "CalendarDays", "text": "Sempre inclua data e hora em cada registro." },
+      { "icon": "Pen", "text": "Use caneta de tinta indelével (azul ou preta). Não use lápis." },
+      { "icon": "Eraser", "text": "Não use corretivos ou borrachas. Se errar, use 'digo' entre vírgulas ou passe um traço simples e escreva 'sem efeito'." },
+      { "icon": "BookMarked", "text": "Use terminologia técnica e evite abreviações não padronizadas." },
+      { "icon": "Eye", "text": "Seja objetivo e descritivo. Evite termos vagos como 'bem', 'mal', 'normal'." },
+      { "icon": "FileSignature", "text": "Assine e carimbe (ou identifique-se eletronicamente) ao final de cada registro." },
+      { "icon": "Lock", "text": "Respeite o sigilo. O prontuário é um documento legal e confidencial." },
+      { "icon": "Ban", "text": "Não deixe espaços em branco entre os registros." }
+    ]
+  },
+  "annotationExamples": {
+    "title": "Exemplos Práticos de Anotação de Enfermagem",
+    "scenarios": [
+      {
+        "title": "Admissão",
+        "example": "14:00 - Admitido no setor, proveniente da emergência, em maca, consciente, orientado, verbalizando. Refere dor abdominal em Fossa Ilíaca Direita, nota 8/10. Apresenta acesso venoso periférico em membro superior esquerdo com soro fisiológico 0,9% 500ml em curso. Sinais vitais: PA 130x85 mmHg, FC 92 bpm, FR 20 irpm, SpO2 97% em ar ambiente, Tax 37,8°C. Comunicado enfermeiro do setor. Segue aos cuidados da enfermagem. --- [Assinatura e COREN]"
+      },
+      {
+        "title": "Pré-operatório",
+        "example": "06:30 - Paciente orientado, calmo, refere ter realizado jejum de 8 horas. Realizado preparo intestinal com enema conforme prescrição. Realizada tricotomia da região abdominal. Retirado próteses e adornos, entregues à família. Sinais vitais estáveis. Aguarda encaminhamento ao centro cirúrgico. --- [Assinatura e COREN]"
+      },
+      {
+        "title": "Pós-operatório Imediato (SRPA)",
+        "example": "11:15 - Recebido na SRPA, proveniente do centro cirúrgico, sonolento, respondendo a estímulos verbais. Apresenta incisão cirúrgica em abdome com curativo oclusivo, limpo e seco. Mantém acesso venoso periférico em MSE salinizado e pérvio. Sinais vitais: PA 110x70 mmHg, FC 80 bpm, FR 16 irpm, SpO2 96% com cateter nasal a 2L/min. Índice de Aldrete = 9. Segue em monitorização. --- [Assinatura e COREN]"
+      },
+      {
+        "title": "Intercorrência (Queda)",
+        "example": "09:40 - Paciente encontrado caído ao lado do leito, consciente, queixando-se de dor em quadril direito. Apresenta escoriação em região frontal. Realizado exame físico primário, sem outras lesões aparentes. Sinais vitais: PA 140x90 mmHg, FC 105 bpm. Acomodado no leito, grades elevadas. Comunicado enfermeiro e médico plantonista. Aguarda avaliação médica. --- [Assinatura e COREN]"
+      },
+      {
+        "title": "Alta Hospitalar",
+        "example": "10:30 - Paciente recebe alta hospitalar. Deambula sem auxílio, orientado, refere melhora do quadro. Realizadas orientações sobre cuidados com a ferida operatória, uso de medicamentos prescritos e sinais de alerta para retorno. Entregue sumário de alta e receitas. Retirado acesso venoso periférico de MSD, sem sinais flogísticos. Sai acompanhado pela esposa. --- [Assinatura e COREN]"
+      }
+    ]
+  },
+  "soapieModel": {
+    "title": "Estruturando a Evolução com SOAPIE",
+    "description": "O SOAPIE é um mnemônico que ajuda o Enfermeiro a organizar a Evolução de Enfermagem de forma lógica e completa, alinhada com a SAE.",
+    "steps": [
+      { "letter": "S", "name": "Subjetivo", "description": "O que o paciente refere. A queixa principal, sintomas, sentimentos, registrados com as palavras do paciente." },
+      { "letter": "O", "name": "Objetivo", "description": "O que a enfermagem observa e mede. Sinais vitais, dados do exame físico, resultados de exames, débitos de drenos." },
+      { "letter": "A", "name": "Análise (Avaliação)", "description": "A interpretação do Enfermeiro sobre os dados S e O. É aqui que se enunciam os Diagnósticos de Enfermagem (NANDA)." },
+      { "letter": "P", "name": "Planejamento", "description": "O que será feito a respeito. Definição dos resultados esperados (NOC) e do plano de cuidados." },
+      { "letter": "I", "name": "Intervenção", "description": "As ações que foram implementadas. A prescrição de enfermagem (NIC) que foi executada." },
+      { "letter": "E", "name": "Evolução (Resultados)", "description": "A resposta do paciente às intervenções. Avaliação se os resultados esperados foram alcançados." }
+    ],
+    "example": {
+      "title": "Exemplo de Evolução de Enfermagem (SOAPIE)",
+      "scenario": "Paciente no 2º dia de pós-operatório de apendicectomia.",
+      "content": "<strong>S:</strong> Paciente refere 'dor na barriga, perto do corte', nota 5/10. Queixa-se de 'dificuldade para ir ao banheiro'.\n<strong>O:</strong> Consciente, orientado, corado, hidratado. Abdome flácido, doloroso à palpação em FID. RHA hipoativos. Eliminações urinárias presentes, ausência de evacuação há 2 dias. Ferida operatória com curativo limpo e seco. AVP em MSE pérvio. SSVV: PA 125x80 mmHg, FC 88 bpm, FR 18 irpm, Tax 36,8°C.\n<strong>A:</strong> Dor aguda relacionada a agente lesivo físico (incisão cirúrgica). Risco de constipação relacionado a efeitos de opioides e imobilidade.\n<strong>P:</strong> Manter dor controlada (EVA < 3). Promover retorno do trânsito intestinal. Manter integridade da pele.\n<strong>I:</strong> Administrado analgésico conforme prescrição. Realizado curativo da FO. Estimulada deambulação e ingestão hídrica. Orientado sobre importância da mobilização.\n<strong>E:</strong> Paciente refere melhora da dor (EVA 2/10) após analgesia. Aceitou bem a dieta. Deambulou pelo corredor com auxílio. Mantém-se afebril e com sinais vitais estáveis."
+    }
+  }
+}
