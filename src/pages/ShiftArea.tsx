@@ -4,7 +4,7 @@ import { Shift, ShiftSelector } from "@/components/shift/ShiftSelector";
 import { TeamManager } from "@/components/shift/TeamManager";
 import { PatientManager } from "@/components/shift/PatientManager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, BedDouble, ClipboardUser } from "lucide-react";
+import { Users, BedDouble, ClipboardList } from "lucide-react";
 
 interface Profile {
   id: string;
@@ -43,7 +43,7 @@ const ShiftArea = () => {
         </Tabs>
       ) : (
         <div className="flex flex-col items-center justify-center h-96 border rounded-lg bg-card text-center p-8">
-          <ClipboardUser className="h-16 w-16 mb-4 text-primary/30" />
+          <ClipboardList className="h-16 w-16 mb-4 text-primary/30" />
           <h2 className="text-xl font-semibold">Nenhum plantão selecionado</h2>
           <p className="text-muted-foreground mt-2">Crie um novo plantão ou selecione um existente para começar.</p>
         </div>
