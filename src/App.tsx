@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
-import RootLayout from "@/layouts/RootLayout";
-import AuthLayout from "@/layouts/AuthLayout";
-import AdminLayout from "@/layouts/AdminLayout";
+import RootLayout from "./layouts/RootLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import AdminLayout from "./layouts/AdminLayout";
 import ErrorPage from "@/pages/ErrorPage";
 import LoginPage from "@/pages/LoginPage";
 import SignUpPage from "@/pages/SignUpPage";
@@ -28,6 +28,7 @@ import IntegratedCalculatorsPage from "@/pages/tools/IntegratedCalculatorsPage";
 import LabValuesPage from "@/pages/tools/LabValuesPage";
 import NotepadPage from "@/pages/tools/NotepadPage";
 import AdminThemePage from "@/pages/admin/AdminThemePage";
+import SterilizationCenter from "@/pages/SterilizationCenter";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
       { path: "/tools/integrated-calculators", element: <IntegratedCalculatorsPage /> },
       { path: "/tools/lab-values", element: <LabValuesPage /> },
       { path: "/tools/bloco-de-notas", element: <NotepadPage /> },
+      { path: "/sterilization-center", element: <SterilizationCenter /> },
     ],
   },
   {
