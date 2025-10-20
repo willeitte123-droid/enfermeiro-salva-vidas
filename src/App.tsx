@@ -83,7 +83,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <Toaster richColors />
-    </Query-ClientProvider>
+    </QueryClientProvider>
   );
 }
 
