@@ -4,21 +4,20 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Plus, Trash2, BedDouble, Edit, Save } from "lucide-react";
+import { Loader2, Plus, Trash2, BedDouble, Edit, Save, XCircle } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { TaskList } from "./TaskList";
 
 interface PatientManagerProps {
   shiftId: string;
   userId: string;
 }
 
-interface PatientAssignment {
+export interface PatientAssignment {
   id: string;
   bed_number: string;
   patient_name: string | null;
-  notes: string | null;
   team_member_id: string | null;
 }
 
@@ -98,7 +97,7 @@ export const PatientManager = ({ shiftId, userId }: PatientManagerProps) => {
 
   return (
     <Card>
-      <CardHeader><CardTitle className="flex items-center gap-2"><BedDouble />Pacientes e Pendências</CardTitle><CardDescription>Liste os pacientes do setor, anote pendências e atribua à sua equipe.</CardDescription></CardHeader>
+      <CardHeader><CardTitle className="flex items-center gap-2"><BedDouble />Pacientes e Pendências</CardTitle><CardDescription>Liste os pacientes, adicione tarefas e atribua à sua equipe.</CardDescription></CardHeader>
       <CardContent>
         <div className="flex gap-2 mb-4">
           <Input placeholder="Nº do Leito" value={newBed} onChange={(e) => setNewBed(e.target.value)} />
@@ -117,7 +116,6 @@ export const PatientManager = ({ shiftId, userId }: PatientManagerProps) => {
                       </div>
                     </div>
                     <Input placeholder="Nome do Paciente" value={editFormData.patient_name || ""} onChange={(e) => setEditFormData(d => ({ ...d, patient_name: e.target.value }))} />
-                    <Textarea placeholder="Anotações, pendências, cuidados..." value={editFormData.notes || ""} onChange={(e) => setEditFormData(d => ({ ...d, notes: e.target.value }))} />
                     <Select value={editFormData.team_member_id || ""} onValueChange={(value) => setEditFormData(d => ({ ...d, team_member_id: value }))}>
                       <SelectTrigger><SelectValue placeholder="Atribuir a..." /></SelectTrigger>
                       <SelectContent><SelectItem value="">Ninguém</SelectItem>{teamMembers.map(m => <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>)}</SelectContent>
@@ -132,10 +130,10 @@ export const PatientManager = ({ shiftId, userId }: PatientManagerProps) => {
                       </div>
                     </div>
                     <p className="font-semibold">{patient.patient_name || "Paciente não identificado"}</p>
-                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">{patient.notes || "Sem anotações."}</p>
                     {patient.team_member_id && <div className="text-xs font-semibold text-primary mt-2">Atribuído a: {teamMembers.find(m => m.id === patient.team_member_id)?.name}</div>}
                   </div>
                 )}
+                 <TaskList patientAssignmentId={patient.id} userId={userId} />
               </div>
             ))}
             {patients.length === 0 && <p className="text-sm text-muted-foreground text-center p-4">Nenhum paciente adicionado a este plantão.</p>}

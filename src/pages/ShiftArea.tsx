@@ -3,8 +3,9 @@ import { useOutletContext } from "react-router-dom";
 import { Shift, ShiftSelector } from "@/components/shift/ShiftSelector";
 import { TeamManager } from "@/components/shift/TeamManager";
 import { PatientManager } from "@/components/shift/PatientManager";
+import { HandoverReport } from "@/components/shift/HandoverReport";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, BedDouble, ClipboardList } from "lucide-react";
+import { Users, BedDouble, ClipboardList, FileText } from "lucide-react";
 
 interface Profile {
   id: string;
@@ -30,15 +31,19 @@ const ShiftArea = () => {
 
       {selectedShift ? (
         <Tabs defaultValue="patients" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="patients"><BedDouble className="mr-2 h-4 w-4" />Pacientes e Pendências</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="patients"><BedDouble className="mr-2 h-4 w-4" />Pacientes e Tarefas</TabsTrigger>
             <TabsTrigger value="team"><Users className="mr-2 h-4 w-4" />Equipe e Escala</TabsTrigger>
+            <TabsTrigger value="handover"><FileText className="mr-2 h-4 w-4" />Passagem de Plantão</TabsTrigger>
           </TabsList>
           <TabsContent value="patients" className="mt-4">
             <PatientManager shiftId={selectedShift.id} userId={profile.id} />
           </TabsContent>
           <TabsContent value="team" className="mt-4">
             <TeamManager shiftId={selectedShift.id} userId={profile.id} />
+          </TabsContent>
+          <TabsContent value="handover" className="mt-4">
+            <HandoverReport shift={selectedShift} />
           </TabsContent>
         </Tabs>
       ) : (

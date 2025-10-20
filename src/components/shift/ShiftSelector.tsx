@@ -21,9 +21,11 @@ import { toast } from "sonner";
 
 export interface Shift {
   id: string;
+  user_id: string;
   title: string;
   shift_date: string;
   period: string;
+  handover_report?: string;
 }
 
 interface ShiftSelectorProps {
