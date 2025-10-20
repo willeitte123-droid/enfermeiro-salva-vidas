@@ -3,7 +3,7 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook, Palette, BookText, PackageCheck
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook, Palette, BookText
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -36,7 +36,6 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
       { to: "/tools/integrated-calculators", icon: CalculatorIcon, label: "DUM e IMC" },
       { to: "/tools/lab-values", icon: FileText, label: "Valores Laboratoriais" },
       { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
-      { to: "/sterilization-center", icon: PackageCheck, label: "Central de Esterilização" },
     ],
     study: [
       { to: "/questions", icon: FileQuestion, label: "Banca de Questões" },

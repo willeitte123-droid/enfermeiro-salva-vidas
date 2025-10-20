@@ -43,7 +43,6 @@ import SimuladoPage from './pages/SimuladoPage';
 import ReviewArea from './pages/ReviewArea';
 import FavoritesPage from './pages/FavoritesPage';
 import NursingNotesGuide from './pages/NursingNotesGuide';
-import ShiftArea from './pages/ShiftArea';
 
 interface AppRoutesProps {
   session: any;
@@ -98,7 +97,6 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
         <Route path="review-area" element={<ReviewArea />} />
         <Route path="favorites" element={<FavoritesPage />} />
         <Route path="nursing-notes" element={<NursingNotesGuide />} />
-        <Route path="shift-area" element={<ShiftArea />} />
         <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="/login" element={<Navigate to="/" replace />} />
