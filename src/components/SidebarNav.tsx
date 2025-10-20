@@ -28,7 +28,6 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     main: [
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
-      { to: "/shift-area", icon: ClipboardList, label: "Área do Plantão" },
     ],
     tools: [
       { to: "/calculator", icon: Calculator, label: "Gotejamento" },
