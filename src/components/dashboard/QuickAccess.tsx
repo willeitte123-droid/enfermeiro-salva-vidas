@@ -1,37 +1,45 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getIcon } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import {
+  Calculator,
+  ClipboardList,
+  ListChecks,
+  Siren,
+} from "lucide-react";
 
-const quickAccessTools = [
-  {
-    title: "Gotejamento",
-    path: "/calculadoras/gotejamento",
-    icon: "Gotejamento",
-    description: "Calcule a taxa de infusão.",
-  },
+const quickAccessItems = [
   {
     title: "Escalas",
-    path: "/escalas",
-    icon: "Escalas",
-    description: "Acesse escalas de avaliação.",
-  },
-  {
-    title: "Medicamentos",
-    path: "/calculadoras/medicamentos",
-    icon: "Medicamentos",
-    description: "Dose e diluição de fármacos.",
+    path: "/scales",
+    icon: ListChecks,
+    description: "Acesse e gerencie escalas de trabalho.",
   },
   {
     title: "Procedimentos",
-    path: "/procedimentos",
-    icon: "Procedimentos",
-    description: "Guias e passo-a-passo.",
+    path: "/procedures",
+    icon: ClipboardList,
+    description: "Consulte e registre procedimentos.",
+  },
+  {
+    title: "Emergência",
+    path: "/emergency",
+    icon: Siren,
+    description: "Protocolos e guias de emergência.",
+  },
+  {
+    title: "Calculadoras",
+    path: "/tools",
+    icon: Calculator,
+    description: "Ferramentas e calculadoras úteis.",
   },
 ];
 
 export function QuickAccess() {
-  const Icon = getIcon;
-
   return (
     <Card>
       <CardHeader>
@@ -39,19 +47,16 @@ export function QuickAccess() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {quickAccessTools.map((tool) => {
-            const ToolIcon = Icon(tool.icon);
-            return (
-              <Link
-                key={tool.title}
-                to={tool.path}
-                className="flex flex-col items-center justify-center gap-2 p-4 border rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors text-center"
-              >
-                <ToolIcon className="h-8 w-8" />
-                <span className="text-sm font-medium">{tool.title}</span>
-              </Link>
-            );
-          })}
+          {quickAccessItems.map((item) => (
+            <Link
+              key={item.title}
+              to={item.path}
+              className="flex flex-col items-center justify-center gap-2 p-4 border rounded-lg text-center hover:bg-accent hover:text-accent-foreground transition-colors"
+            >
+              <item.icon className="h-8 w-8" />
+              <span className="text-sm font-medium">{item.title}</span>
+            </Link>
+          ))}
         </div>
       </CardContent>
     </Card>
