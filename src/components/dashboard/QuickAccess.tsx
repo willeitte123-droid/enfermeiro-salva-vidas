@@ -51,7 +51,7 @@ export function QuickAccess() {
             <Link
               key={item.title}
               to={item.path}
-              className="flex flex-col items-center justify-center gap-2 p-4 border rounded-lg text-center hover:bg-accent hover:text-accent-foreground transition-colors h-28"
+              className="flex flex-col items-center justify-center gap-2 p-4 border rounded-lg text-center hover:bg-accent hover:text-accent-foreground transition-colors min-h-[112px]"
             >
               <item.icon className="h-8 w-8" />
               <span className="text-sm font-medium">{item.title}</span>
