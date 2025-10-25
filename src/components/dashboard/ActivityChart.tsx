@@ -85,7 +85,7 @@ export function ActivityChart({ data }: ActivityChartProps) {
             />
             <Bar dataKey="count" fill={currentColors.fill} radius={[4, 4, 0, 0]} />
           </BarChart>
-        ResponsiveContainer>
+        </ResponsiveContainer>
       </CardContent>
     </Card>
   );
