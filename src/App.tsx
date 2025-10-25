@@ -11,24 +11,24 @@ import AuthLayout from "@/layouts/AuthLayout";
 import AdminLayout from "@/layouts/AdminLayout";
 
 // Pages
-import Dashboard from "./pages/Dashboard";
-import DripCalculator from "./pages/DripCalculator";
-import ClinicalScales from "./pages/ClinicalScales";
-import ScaleDetail from "./pages/ScaleDetail";
-import Medications from "./pages/Medications";
-import MedicationDetail from "./pages/MedicationDetail";
-import Procedures from "./pages/Procedures";
-import ProcedureDetail from "./pages/ProcedureDetail";
-import Profile from "./pages/Profile";
-import Favorites from "./pages/Favorites";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import ForgotPassword from "./pages/ForgotPassword";
-import UpdatePassword from "./pages/UpdatePassword";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import ThemeCustomizer from "./pages/admin/ThemeCustomizer";
-import UserManagement from "./pages/admin/UserManagement";
-import ContentManagement from "./pages/admin/ContentManagement";
+import Dashboard from "@/pages/Dashboard";
+import DripCalculator from "@/pages/DripCalculator";
+import ClinicalScales from "@/pages/ClinicalScales";
+import ScaleDetail from "@/pages/ScaleDetail";
+import Medications from "@/pages/Medications";
+import MedicationDetail from "@/pages/MedicationDetail";
+import Procedures from "@/pages/Procedures";
+import ProcedureDetail from "@/pages/ProcedureDetail";
+import Profile from "@/pages/Profile";
+import Favorites from "@/pages/Favorites";
+import Login from "@/pages/Login";
+import SignUp from "@/pages/SignUp";
+import ForgotPassword from "@/pages/ForgotPassword";
+import UpdatePassword from "@/pages/UpdatePassword";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import ThemeCustomizer from "@/pages/admin/ThemeCustomizer";
+import UserManagement from "@/pages/admin/UserManagement";
+import ContentManagement from "@/pages/admin/ContentManagement";
 
 const queryClient = new QueryClient();
 
