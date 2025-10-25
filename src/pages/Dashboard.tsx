@@ -4,7 +4,7 @@ import { QuickAccess } from "@/components/dashboard/QuickAccess";
 import { RecentActivityList } from "@/components/dashboard/RecentActivityList";
 import { useUserActivity } from "@/hooks/useUserActivity";
 
-export function Dashboard() {
+export default function Dashboard() {
   const { userName, recentActivity, favorites, allActivity } = useUserActivity();
 
   return (
