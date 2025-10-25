@@ -51,10 +51,12 @@ export function QuickAccess() {
             <Link
               key={item.title}
               to={item.path}
-              className="flex flex-col items-center justify-center gap-2 p-4 border rounded-lg text-center hover:bg-accent hover:text-accent-foreground transition-colors min-h-[112px]"
+              className="flex flex-col items-center justify-center gap-2 p-4 border rounded-lg text-center hover:bg-accent hover:text-accent-foreground transition-colors"
             >
               <item.icon className="h-8 w-8" />
-              <span className="text-sm font-medium">{item.title}</span>
+              <span className="text-sm font-medium h-10 flex items-center justify-center">
+                {item.title}
+              </span>
             </Link>
           ))}
         </div>
