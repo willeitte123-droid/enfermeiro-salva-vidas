@@ -8,6 +8,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
+import SuspendedAccount from "@/pages/SuspendedAccount";
 
 const ContentLoader = () => (
   <div className="flex items-center justify-center h-full w-full">
@@ -48,6 +49,8 @@ const MainLayout = () => {
               <p className="text-muted-foreground mb-6 max-w-md">Sua conta foi criada e está aguardando a aprovação de um administrador.</p>
               <Button onClick={() => supabase.auth.signOut()}>Sair</Button>
             </div>
+          ) : profile?.status === 'suspended' || profile?.status === 'inactive' ? (
+            <SuspendedAccount />
           ) : (
             <Suspense fallback={<ContentLoader />}>
               <Outlet context={{ profile }} />

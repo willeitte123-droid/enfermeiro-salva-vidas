@@ -25,7 +25,7 @@ interface AppUser {
   first_name: string | null;
   last_name: string | null;
   role: 'admin' | 'user';
-  status: 'active' | 'pending' | 'inactive';
+  status: 'active' | 'pending' | 'inactive' | 'suspended';
   plan: 'free' | 'Plano PRO Mensal' | 'Plano PRO Anual';
   avatar_url: string | null;
   email: string | null;
@@ -35,7 +35,7 @@ interface AppUser {
 // Schema de validação para o formulário de edição
 const editUserSchema = z.object({
   role: z.enum(['admin', 'user']),
-  status: z.enum(['active', 'pending', 'inactive']),
+  status: z.enum(['active', 'pending', 'inactive', 'suspended']),
   plan: z.enum(['free', 'Plano PRO Mensal', 'Plano PRO Anual']),
 });
 
@@ -99,7 +99,12 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
           <Controller name="status" control={form.control} render={({ field }) => (
             <div className="space-y-2"><Label>Status</Label><Select onValueChange={field.onChange} value={field.value}>
               <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent><SelectItem value="active">Ativo</SelectItem><SelectItem value="pending">Pendente</SelectItem><SelectItem value="inactive">Inativo</SelectItem></SelectContent>
+              <SelectContent>
+                <SelectItem value="active">Ativo</SelectItem>
+                <SelectItem value="pending">Pendente</SelectItem>
+                <SelectItem value="inactive">Inativo</SelectItem>
+                <SelectItem value="suspended">Suspenso</SelectItem>
+              </SelectContent>
             </Select></div>
           )} />
           <Controller name="plan" control={form.control} render={({ field }) => (
@@ -132,6 +137,7 @@ const UserManagement = () => {
   const getStatusVariant = (status: string) => {
     if (status === 'active') return 'default';
     if (status === 'pending') return 'secondary';
+    if (status === 'suspended') return 'destructive';
     return 'destructive';
   };
 

@@ -56,7 +56,7 @@ serve(async (req: Request) => {
         const user = users[0];
         const { error: updateProfileError } = await supabaseAdmin.from('profiles').update({
           plan: 'free',
-          status: 'inactive',
+          status: 'suspended',
           access_expires_at: new Date().toISOString()
         }).eq('id', user.id);
 
@@ -64,7 +64,7 @@ serve(async (req: Request) => {
           throw new Error(`Falha ao atualizar perfil para cancelar acesso: ${updateProfileError.message}`);
         }
         
-        await log(emailForLog, eventForLog, 'SUCESSO: Acesso do usuário removido. Plano alterado para free e status para inativo.');
+        await log(emailForLog, eventForLog, 'SUCESSO: Acesso do usuário removido. Plano alterado para free e status para suspended.');
         return new Response(JSON.stringify({ success: true, message: `Access revoked for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
       } else {
         await log(emailForLog, eventForLog, 'AVISO: Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
