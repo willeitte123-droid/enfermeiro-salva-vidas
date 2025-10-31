@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { Session } from '@supabase/supabase-js';
 
@@ -19,11 +20,37 @@ const fetchProfile = async (session: Session | null) => {
 };
 
 export const useProfile = (session: Session | null) => {
+    const queryClient = useQueryClient();
+
+    useEffect(() => {
+        if (!session?.user?.id) return;
+
+        const channel = supabase
+            .channel('profile-changes')
+            .on(
+                'postgres_changes',
+                {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'profiles',
+                    filter: `id=eq.${session.user.id}`,
+                },
+                () => {
+                    queryClient.invalidateQueries({ queryKey: ['profile', session.user.id] });
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [session, queryClient]);
+
     return useQuery({
         queryKey: ['profile', session?.user?.id],
         queryFn: () => fetchProfile(session),
         enabled: !!session?.user,
-        staleTime: 0, // Força a revalidação dos dados do perfil a cada visita
-        refetchOnWindowFocus: true, // Garante que os dados sejam atualizados ao focar na janela
+        staleTime: 0,
+        refetchOnWindowFocus: true,
     });
 };
