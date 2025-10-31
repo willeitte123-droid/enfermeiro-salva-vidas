@@ -46,7 +46,32 @@ serve(async (req: Request) => {
     const isApprovedEvent = approvedEvents.includes(eventForLog.toLowerCase()) || orderStatus === 'paid';
     const isCanceledEvent = canceledEvents.includes(eventForLog.toLowerCase()) || canceledEvents.includes(orderStatus);
 
-    if (isApprovedEvent) {
+    // **CORREÇÃO: Verificar cancelamento PRIMEIRO**
+    if (isCanceledEvent) {
+      // --- LÓGICA DE CANCELAMENTO/REMOÇÃO DE ACESSO ---
+      const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
+      if (findUserError) throw findUserError;
+
+      if (users.length > 0) {
+        const user = users[0];
+        const { error: updateProfileError } = await supabaseAdmin.from('profiles').update({
+          plan: 'free',
+          status: 'inactive',
+          access_expires_at: new Date().toISOString()
+        }).eq('id', user.id);
+
+        if (updateProfileError) {
+          throw new Error(`Falha ao atualizar perfil para cancelar acesso: ${updateProfileError.message}`);
+        }
+        
+        await log(emailForLog, eventForLog, 'SUCESSO: Acesso do usuário removido. Plano alterado para free e status para inativo.');
+        return new Response(JSON.stringify({ success: true, message: `Access revoked for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
+      } else {
+        await log(emailForLog, eventForLog, 'AVISO: Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
+        return new Response(JSON.stringify({ message: "User not found for cancellation event." }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
+      }
+
+    } else if (isApprovedEvent) {
       // --- LÓGICA DE CRIAÇÃO/CONCESSÃO DE ACESSO ---
       const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
       if (inviteError) throw inviteError;
@@ -74,30 +99,6 @@ serve(async (req: Request) => {
 
       await log(emailForLog, eventForLog, `SUCESSO: Convite enviado/reenviado. Perfil criado/atualizado para o plano "${planName}".`);
       return new Response(JSON.stringify({ success: true, message: `Access granted for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
-
-    } else if (isCanceledEvent) {
-      // --- LÓGICA DE CANCELAMENTO/REMOÇÃO DE ACESSO ---
-      const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
-      if (findUserError) throw findUserError;
-
-      if (users.length > 0) {
-        const user = users[0];
-        const { error: updateProfileError } = await supabaseAdmin.from('profiles').update({
-          plan: 'free',
-          status: 'inactive',
-          access_expires_at: new Date().toISOString()
-        }).eq('id', user.id);
-
-        if (updateProfileError) {
-          throw new Error(`Falha ao atualizar perfil para cancelar acesso: ${updateProfileError.message}`);
-        }
-        
-        await log(emailForLog, eventForLog, 'SUCESSO: Acesso do usuário removido. Plano alterado para free e status para inativo.');
-        return new Response(JSON.stringify({ success: true, message: `Access revoked for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
-      } else {
-        await log(emailForLog, eventForLog, 'AVISO: Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
-        return new Response(JSON.stringify({ message: "User not found for cancellation event." }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
-      }
 
     } else {
       await log(emailForLog, eventForLog, `Evento '${eventForLog}' não é de aprovação nem de cancelamento. Ignorado.`);
