@@ -1,9 +1,16 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
-import { createClient, User } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { HmacSha256 } from 'https://deno.land/std@0.177.0/crypto/hmac.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type'
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-kiwify-signature'
+};
+
+// Função para verificar a assinatura do webhook
+const verifySignature = (body: string, signature: string, secret: string): boolean => {
+  const hash = new HmacSha256(secret).update(body).toString();
+  return hash === signature;
 };
 
 serve(async (req: Request) => {
@@ -21,7 +28,7 @@ serve(async (req: Request) => {
     try {
       await supabaseAdmin.from('webhook_logs').insert({ email, evento, details });
     } catch (e) {
-      console.error("Falha ao registrar log:", e.message);
+      console.error("CRITICAL: Failed to write to webhook_logs table.", e.message);
     }
   };
 
@@ -29,7 +36,22 @@ serve(async (req: Request) => {
   let eventForLog = "unknown";
 
   try {
-    const body = await req.json();
+    const kiwifySecret = Deno.env.get('KIWIFY_WEBHOOK_SECRET');
+    if (!kiwifySecret) {
+      throw new Error("KIWIFY_WEBHOOK_SECRET is not set in Supabase secrets.");
+    }
+
+    const signature = req.headers.get('X-Kiwify-Signature');
+    if (!signature) {
+      throw new Error("X-Kiwify-Signature header is missing.");
+    }
+
+    const rawBody = await req.text();
+    if (!verifySignature(rawBody, signature, kiwifySecret)) {
+      throw new Error("Invalid webhook signature.");
+    }
+
+    const body = JSON.parse(rawBody);
     const email = body?.Customer?.email;
     emailForLog = email || "no_email_found";
     eventForLog = body?.webhook_event_type || "no_event_type";
@@ -46,9 +68,7 @@ serve(async (req: Request) => {
     const isApprovedEvent = approvedEvents.includes(eventForLog.toLowerCase()) || orderStatus === 'paid';
     const isCanceledEvent = canceledEvents.includes(eventForLog.toLowerCase()) || canceledEvents.includes(orderStatus);
 
-    // **CORREÇÃO: Verificar cancelamento PRIMEIRO**
     if (isCanceledEvent) {
-      // --- LÓGICA DE CANCELAMENTO/REMOÇÃO DE ACESSO ---
       const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
       if (findUserError) throw findUserError;
 
@@ -60,9 +80,7 @@ serve(async (req: Request) => {
           access_expires_at: new Date().toISOString()
         }).eq('id', user.id);
 
-        if (updateProfileError) {
-          throw new Error(`Falha ao atualizar perfil para cancelar acesso: ${updateProfileError.message}`);
-        }
+        if (updateProfileError) throw new Error(`Falha ao atualizar perfil para cancelar acesso: ${updateProfileError.message}`);
         
         await log(emailForLog, eventForLog, 'SUCESSO: Acesso do usuário removido. Plano alterado para free e status para suspended.');
         return new Response(JSON.stringify({ success: true, message: `Access revoked for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
@@ -72,10 +90,12 @@ serve(async (req: Request) => {
       }
 
     } else if (isApprovedEvent) {
-      // --- LÓGICA DE CRIAÇÃO/CONCESSÃO DE ACESSO ---
       const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
-      if (inviteError) throw inviteError;
-      if (!newUser || !newUser.user) throw new Error("inviteUserByEmail succeeded but returned no user object.");
+      if (inviteError && !inviteError.message.includes('User already registered')) throw inviteError;
+
+      const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
+      if (findUserError || users.length === 0) throw findUserError || new Error("User not found after invite.");
+      const user = users[0];
 
       const fullName = body?.Customer?.full_name || '';
       const nameParts = fullName.split(' ');
@@ -85,7 +105,7 @@ serve(async (req: Request) => {
       const expiresAt = body?.Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
 
       const { error: upsertProfileError } = await supabaseAdmin.from('profiles').upsert({
-          id: newUser.user.id,
+          id: user.id,
           first_name: firstName,
           last_name: lastName,
           status: 'active',
@@ -93,9 +113,7 @@ serve(async (req: Request) => {
           access_expires_at: expiresAt
       }, { onConflict: 'id' });
 
-      if (upsertProfileError) {
-        await log(emailForLog, eventForLog, `AVISO: Usuário criado/convidado, mas falha ao criar/atualizar perfil: ${upsertProfileError.message}`);
-      }
+      if (upsertProfileError) await log(emailForLog, eventForLog, `AVISO: Usuário criado/convidado, mas falha ao criar/atualizar perfil: ${upsertProfileError.message}`);
 
       await log(emailForLog, eventForLog, `SUCESSO: Convite enviado/reenviado. Perfil criado/atualizado para o plano "${planName}".`);
       return new Response(JSON.stringify({ success: true, message: `Access granted for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
