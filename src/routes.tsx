@@ -44,6 +44,7 @@ import ReviewArea from './pages/ReviewArea';
 import FavoritesPage from './pages/FavoritesPage';
 import NursingNotesGuide from './pages/NursingNotesGuide';
 import ShiftArea from './pages/ShiftArea';
+import UpdatePassword from './pages/UpdatePassword';
 
 interface AppRoutesProps {
   session: any;
@@ -55,6 +56,7 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/update-password" element={<UpdatePassword />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     );
@@ -103,6 +105,7 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
       </Route>
       <Route path="/login" element={<Navigate to="/" replace />} />
       <Route path="/register" element={<Navigate to="/" replace />} />
+      <Route path="/update-password" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };
