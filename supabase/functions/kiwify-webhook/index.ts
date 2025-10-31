@@ -44,6 +44,9 @@ serve(async (req: Request) => {
     await supabaseAdmin.from('webhook_logs').insert({ email, evento, details });
   };
 
+  const bodyForLog = await req.clone().text();
+  let emailForLog = "unknown";
+
   try {
     const KIWIFY_WEBHOOK_SECRET = Deno.env.get('KIWIFY_WEBHOOK_SECRET');
     if (!KIWIFY_WEBHOOK_SECRET) throw new Error("KIWIFY_WEBHOOK_SECRET environment variable not set.");
@@ -53,11 +56,13 @@ serve(async (req: Request) => {
 
     const { Customer, webhook_event_type, order, Subscription, Product } = body;
     const email = Customer?.email;
+    emailForLog = email || "unknown";
     const fullName = Customer?.full_name || '';
     const evento = webhook_event_type;
     const orderStatus = order?.order_status;
 
     if (!email || !evento) {
+      await log(emailForLog, evento || 'unknown', `Webhook recebido sem email ou tipo de evento. Body: ${bodyForLog}`);
       return new Response('Missing required fields: Customer.email and webhook_event_type', { status: 400, headers: corsHeaders });
     }
 
@@ -67,7 +72,6 @@ serve(async (req: Request) => {
     const isApprovedEvent = approvedEvents.includes(evento.toLowerCase()) || orderStatus === 'paid';
     const isCanceledEvent = canceledEvents.includes(evento.toLowerCase()) || canceledEvents.includes(orderStatus);
 
-    // --- ETAPA 1: ENCONTRAR OU CRIAR O USUÁRIO NA AUTH ---
     let user;
     const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
     if (findUserError) throw findUserError;
@@ -78,22 +82,17 @@ serve(async (req: Request) => {
 
     if (users.length === 0) {
       if (isApprovedEvent) {
-        // Usar inviteUserByEmail para criar o usuário e enviar o convite de uma só vez
-        const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(
+        const { data: inviteData, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(
           email,
-          {
-            data: {
-              first_name: firstName,
-              last_name: lastName,
-            }
-          }
+          { data: { first_name: firstName, last_name: lastName } }
         );
 
-        if (inviteError) {
-          await log(email, evento, `Erro ao CONVIDAR novo usuário na auth: ${inviteError.message}`);
-          throw inviteError;
+        if (inviteError || !inviteData?.user) {
+          const errorMessage = `Falha ao convidar novo usuário na auth: ${inviteError?.message || 'Usuário não retornado.'}`;
+          await log(email, evento, errorMessage);
+          throw new Error(errorMessage);
         }
-        user = newUser.user;
+        user = inviteData.user;
         await log(email, evento, `Convite enviado e usuário criado na autenticação (ID: ${user.id}).`);
       } else {
         await log(email, evento, 'Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
@@ -103,16 +102,11 @@ serve(async (req: Request) => {
       user = users[0];
     }
 
-    // --- ETAPA 2: CRIAR/ATUALIZAR O PERFIL NA TABELA 'profiles' ---
     let profileData: any = {};
     let logDetails = '';
 
     if (isCanceledEvent) {
-      profileData = {
-        plan: 'free',
-        status: 'inactive',
-        access_expires_at: new Date().toISOString()
-      };
+      profileData = { plan: 'free', status: 'inactive', access_expires_at: new Date().toISOString() };
       logDetails = 'Acesso removido. Status do usuário alterado para inativo.';
     } else if (isApprovedEvent) {
       profileData = {
@@ -128,12 +122,7 @@ serve(async (req: Request) => {
 
     const { error: upsertError } = await supabaseAdmin
       .from('profiles')
-      .upsert({
-        id: user.id,
-        first_name: firstName,
-        last_name: lastName,
-        ...profileData
-      }, { onConflict: 'id' });
+      .upsert({ id: user.id, first_name: firstName, last_name: lastName, ...profileData }, { onConflict: 'id' });
 
     if (upsertError) {
       await log(email, evento, `Erro ao criar/atualizar perfil na tabela 'profiles': ${upsertError.message}`);
@@ -149,8 +138,7 @@ serve(async (req: Request) => {
 
   } catch (error) {
     console.error("Erro no processamento do webhook:", error);
-    const email = "unknown";
-    await log(email, 'error', error.message);
+    await log(emailForLog, 'error', error.message);
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500
