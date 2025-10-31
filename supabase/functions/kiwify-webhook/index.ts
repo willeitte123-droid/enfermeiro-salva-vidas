@@ -1,5 +1,5 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient, User } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -40,68 +40,73 @@ serve(async (req: Request) => {
     }
 
     const approvedEvents = ["order_approved", "subscription_activated", "subscription_renewed"];
+    const canceledEvents = ["subscription_canceled", "subscription_late", "refunded", "expired"];
     const orderStatus = body?.order?.order_status;
+    
     const isApprovedEvent = approvedEvents.includes(eventForLog.toLowerCase()) || orderStatus === 'paid';
+    const isCanceledEvent = canceledEvents.includes(eventForLog.toLowerCase()) || canceledEvents.includes(orderStatus);
 
-    if (!isApprovedEvent) {
-        await log(emailForLog, eventForLog, `Evento '${eventForLog}' ignorado. Nenhuma ação de criação de usuário necessária.`);
-        return new Response(JSON.stringify({ message: "Event ignored." }), {
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            status: 200,
-        });
+    if (isApprovedEvent) {
+      // --- LÓGICA DE CRIAÇÃO/CONCESSÃO DE ACESSO ---
+      const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+      if (inviteError) throw inviteError;
+      if (!newUser || !newUser.user) throw new Error("inviteUserByEmail succeeded but returned no user object.");
+
+      const fullName = body?.Customer?.full_name || '';
+      const nameParts = fullName.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+      const planName = body?.Subscription?.plan?.name || body?.Product?.product_name || 'Plano PRO';
+      const expiresAt = body?.Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
+
+      const { error: upsertProfileError } = await supabaseAdmin.from('profiles').upsert({
+          id: newUser.user.id,
+          first_name: firstName,
+          last_name: lastName,
+          status: 'active',
+          plan: planName,
+          access_expires_at: expiresAt
+      }, { onConflict: 'id' });
+
+      if (upsertProfileError) {
+        await log(emailForLog, eventForLog, `AVISO: Usuário criado/convidado, mas falha ao criar/atualizar perfil: ${upsertProfileError.message}`);
+      }
+
+      await log(emailForLog, eventForLog, `SUCESSO: Convite enviado/reenviado. Perfil criado/atualizado para o plano "${planName}".`);
+      return new Response(JSON.stringify({ success: true, message: `Access granted for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
+
+    } else if (isCanceledEvent) {
+      // --- LÓGICA DE CANCELAMENTO/REMOÇÃO DE ACESSO ---
+      const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
+      if (findUserError) throw findUserError;
+
+      if (users.length > 0) {
+        const user = users[0];
+        const { error: updateProfileError } = await supabaseAdmin.from('profiles').update({
+          plan: 'free',
+          status: 'inactive',
+          access_expires_at: new Date().toISOString()
+        }).eq('id', user.id);
+
+        if (updateProfileError) {
+          throw new Error(`Falha ao atualizar perfil para cancelar acesso: ${updateProfileError.message}`);
+        }
+        
+        await log(emailForLog, eventForLog, 'SUCESSO: Acesso do usuário removido. Plano alterado para free e status para inativo.');
+        return new Response(JSON.stringify({ success: true, message: `Access revoked for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
+      } else {
+        await log(emailForLog, eventForLog, 'AVISO: Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
+        return new Response(JSON.stringify({ message: "User not found for cancellation event." }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
+      }
+
+    } else {
+      await log(emailForLog, eventForLog, `Evento '${eventForLog}' não é de aprovação nem de cancelamento. Ignorado.`);
+      return new Response(JSON.stringify({ message: "Event ignored." }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
     }
-
-    // Lógica simplificada: Tentar convidar o usuário diretamente.
-    // Se o usuário já existir, o Supabase reenviará o convite.
-    await log(emailForLog, eventForLog, "Tentando enviar convite de criação de usuário...");
-    const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
-
-    if (inviteError) {
-      await log(emailForLog, eventForLog, `ERRO CRÍTICO ao tentar enviar convite: ${inviteError.message}`);
-      throw inviteError;
-    }
-
-    if (!newUser || !newUser.user) {
-      await log(emailForLog, eventForLog, "ERRO CRÍTICO: A função de convite foi executada sem erro, mas não retornou um usuário.");
-      throw new Error("inviteUserByEmail succeeded but returned no user object.");
-    }
-
-    // Se chegamos aqui, o usuário foi criado ou o convite foi reenviado com sucesso.
-    // Agora, podemos prosseguir com a criação/atualização do perfil.
-    const fullName = body?.Customer?.full_name || '';
-    const nameParts = fullName.split(' ');
-    const firstName = nameParts[0] || '';
-    const lastName = nameParts.slice(1).join(' ') || '';
-    const planName = body?.Subscription?.plan?.name || body?.Product?.product_name || 'Plano PRO';
-    const expiresAt = body?.Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
-
-    const { error: upsertProfileError } = await supabaseAdmin.from('profiles').upsert({
-        id: newUser.user.id,
-        first_name: firstName,
-        last_name: lastName,
-        status: 'active',
-        plan: planName,
-        access_expires_at: expiresAt
-    }, { onConflict: 'id' });
-
-    if (upsertProfileError) {
-        await log(emailForLog, eventForLog, `AVISO: Usuário criado na auth, mas falha ao criar/atualizar perfil: ${upsertProfileError.message}`);
-        // Não lançamos um erro aqui, pois a criação do usuário foi o passo crítico.
-    }
-
-    await log(emailForLog, eventForLog, `SUCESSO: Convite enviado/reenviado para ${email}. Perfil criado/atualizado.`);
-
-    return new Response(JSON.stringify({ success: true, message: `Invite sent/resent for user ${newUser.user.id}` }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 200,
-    });
 
   } catch (error) {
     console.error("ERRO GERAL no webhook:", error);
     await log(emailForLog, eventForLog, `ERRO GERAL: ${error.message}`);
-    return new Response(JSON.stringify({ error: error.message }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 500
-    });
+    return new Response(JSON.stringify({ error: error.message }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
 });
