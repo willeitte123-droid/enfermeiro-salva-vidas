@@ -78,32 +78,23 @@ serve(async (req: Request) => {
 
     if (users.length === 0) {
       if (isApprovedEvent) {
-        const { data: newUser, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
-          email: email,
-          password: crypto.randomUUID(), // Senha temporária segura
-          email_confirm: true,
-          user_metadata: {
-            first_name: firstName,
-            last_name: lastName
+        // Usar inviteUserByEmail para criar o usuário e enviar o convite de uma só vez
+        const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(
+          email,
+          {
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+            }
           }
-        });
+        );
 
-        if (createUserError) {
-          await log(email, evento, `Erro ao CRIAR novo usuário na auth: ${createUserError.message}`);
-          throw createUserError;
+        if (inviteError) {
+          await log(email, evento, `Erro ao CONVIDAR novo usuário na auth: ${inviteError.message}`);
+          throw inviteError;
         }
         user = newUser.user;
-        await log(email, evento, `Usuário criado na autenticação (ID: ${user.id}).`);
-
-        const { error: recoveryError } = await supabaseAdmin.auth.admin.generateLink({
-            type: 'recovery',
-            email: email,
-        });
-        if (recoveryError) {
-            await log(email, evento, `Usuário criado, mas falha ao enviar e-mail de recuperação: ${recoveryError.message}`);
-        } else {
-            await log(email, evento, `E-mail de definição de senha enviado para o novo usuário.`);
-        }
+        await log(email, evento, `Convite enviado e usuário criado na autenticação (ID: ${user.id}).`);
       } else {
         await log(email, evento, 'Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
         return new Response('User not found for cancellation event.', { status: 200, headers: corsHeaders });
