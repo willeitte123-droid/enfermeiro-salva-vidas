@@ -190,7 +190,7 @@ const Dashboard = () => {
             Questão em Destaque
           </CardTitle>
           <CardDescription className="text-blue-900/80 dark:text-blue-200/80">
-            Teste seus conhecimentos com uma questão aleatória a cada 15 segundos.
+            Um novo desafio a cada 15 segundos para testar seus conhecimentos.
           </CardDescription>
         </CardHeader>
         <CardContent className="min-h-[150px] flex items-center justify-center">
