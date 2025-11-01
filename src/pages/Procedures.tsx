@@ -10,7 +10,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Info, CheckSquare, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useQuery } from "@tanstack/react-query";
@@ -48,7 +47,6 @@ const diagramMap: { [key: string]: React.ComponentType } = {
 const Procedures = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeCategory, setActiveCategory] = useState("Todos");
   const { addActivity } = useActivityTracker();
 
   useEffect(() => {
@@ -72,19 +70,13 @@ const Procedures = () => {
 
   const favoriteSet = useMemo(() => new Set(favoritesData || []), [favoritesData]);
 
-  const categories = useMemo(() => {
-    const allCategories = procedures.map(p => p.category);
-    return ["Todos", ...Array.from(new Set(allCategories))];
-  }, [procedures]);
-
   const filteredProcedures = useMemo(() => {
     return procedures
-      .filter(proc => activeCategory === "Todos" || proc.category === activeCategory)
       .filter(proc =>
         proc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         proc.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
-  }, [searchTerm, activeCategory, procedures]);
+  }, [searchTerm]);
 
   return (
     <div className="space-y-6">
@@ -103,14 +95,6 @@ const Procedures = () => {
             className="pl-10"
           />
         </div>
-
-        <Tabs value={activeCategory} onValueChange={setActiveCategory}>
-          <TabsList className="flex flex-wrap h-auto">
-            {categories.map(category => (
-              <TabsTrigger key={category} value={category}>{category}</TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
       </div>
 
       {filteredProcedures.length > 0 ? (
