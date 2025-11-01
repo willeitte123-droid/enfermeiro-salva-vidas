@@ -7,6 +7,7 @@ import FavoriteButton from "@/components/FavoriteButton";
 import * as LucideIcons from "lucide-react";
 import reviewTopicsData from "@/data/reviewTopics.json";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { cn } from "@/lib/utils";
 
 interface Profile {
   id: string;
@@ -76,7 +77,7 @@ const ReviewArea = () => {
                 <Accordion type="single" collapsible className="w-full">
                   {topic.details.map((detail, index) => (
                     <AccordionItem value={`item-${index}`} key={index}>
-                      <AccordionTrigger className="font-semibold">{detail.subtitle}</AccordionTrigger>
+                      <AccordionTrigger className={cn("font-semibold", topic.color)}>{detail.subtitle}</AccordionTrigger>
                       <AccordionContent>
                         <ul className="space-y-3 pt-2">
                           {detail.points.map((point, pIndex) => (
