@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useOutletContext, Link } from "react-router-dom";
+import { useOutletContext, Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -56,6 +56,8 @@ const Questions = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const queryClient = useQueryClient();
   const { addActivity } = useActivityTracker();
+  const [searchParams] = useSearchParams();
+  const questionId = searchParams.get('id');
 
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [currentPage, setCurrentPage] = useState(0);
@@ -93,8 +95,14 @@ const Questions = () => {
   });
 
   const { data, isLoading, isFetching, error } = useQuery({
-    queryKey: ['questions', selectedCategory, currentPage],
+    queryKey: ['questions', selectedCategory, currentPage, questionId],
     queryFn: async () => {
+      if (questionId) {
+        const { data, error } = await supabase.from('questions').select('*').eq('id', questionId).single();
+        if (error) throw error;
+        return { questions: data ? [data] : [], count: data ? 1 : 0 };
+      }
+
       const from = currentPage * QUESTIONS_PER_PAGE;
       const to = from + QUESTIONS_PER_PAGE - 1;
 
@@ -108,12 +116,13 @@ const Questions = () => {
       if (error) throw error;
       return { questions: data as Question[], count };
     },
-    keepPreviousData: true,
+    keepPreviousData: !questionId,
   });
 
   const currentQuestion = data?.questions?.[0];
   const totalQuestions = data?.count ?? 0;
   const totalPages = Math.ceil(totalQuestions / QUESTIONS_PER_PAGE);
+  const isSingleQuestionMode = !!questionId;
 
   useEffect(() => {
     setSelectedAnswer("");
@@ -208,13 +217,15 @@ const Questions = () => {
         <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Banca de Questões</h1>
         <p className="text-muted-foreground">Afie seu raciocínio clínico. Desafie-se com questões de concurso e residência.</p>
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="category-filter">Filtrar por Categoria</Label>
-        <Select value={selectedCategory} onValueChange={(value) => { setSelectedCategory(value); setCurrentPage(0); }}>
-          <SelectTrigger id="category-filter" className="w-full md:w-[300px]"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger>
-          <SelectContent>{isLoadingCategories ? <div className="p-2"><Loader2 className="h-4 w-4 animate-spin"/></div> : categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent>
-        </Select>
-      </div>
+      {!isSingleQuestionMode && (
+        <div className="space-y-2">
+          <Label htmlFor="category-filter">Filtrar por Categoria</Label>
+          <Select value={selectedCategory} onValueChange={(value) => { setSelectedCategory(value); setCurrentPage(0); }}>
+            <SelectTrigger id="category-filter" className="w-full md:w-[300px]"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger>
+            <SelectContent>{isLoadingCategories ? <div className="p-2"><Loader2 className="h-4 w-4 animate-spin"/></div> : categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent>
+          </Select>
+        </div>
+      )}
 
       {isLoading ? <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando...</span></div> :
        error ? <Alert variant="destructive"><XCircle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{(error as Error).message}</AlertDescription></Alert> :
@@ -222,7 +233,10 @@ const Questions = () => {
       (
         <Card>
           <CardHeader>
-            <div className="flex justify-between items-center mb-2"><Badge variant="secondary">{currentQuestion.category}</Badge><CardDescription>Questão <strong>{currentPage + 1}</strong> de <strong>{totalQuestions}</strong></CardDescription></div>
+            <div className="flex justify-between items-center mb-2">
+              <Badge variant="secondary">{currentQuestion.category}</Badge>
+              {!isSingleQuestionMode && <CardDescription>Questão <strong>{currentPage + 1}</strong> de <strong>{totalQuestions}</strong></CardDescription>}
+            </div>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
@@ -275,8 +289,21 @@ const Questions = () => {
             )}
 
             <div className="flex justify-between items-center">
-              <Button variant="outline" onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 0 || isFetching}><ChevronLeft className="h-4 w-4 mr-2" />Anterior</Button>
-              {!showExplanation ? <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer || isFetching}>Responder</Button> : <Button onClick={handleNextQuestion} disabled={currentPage >= totalPages - 1 || isFetching}>Próxima Questão<ChevronRight className="h-4 w-4 ml-2" /></Button>}
+              {isSingleQuestionMode ? (
+                <Button variant="outline" asChild>
+                  <Link to="/questions"><ChevronLeft className="h-4 w-4 mr-2" />Voltar para a Banca</Link>
+                </Button>
+              ) : (
+                <Button variant="outline" onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 0 || isFetching}><ChevronLeft className="h-4 w-4 mr-2" />Anterior</Button>
+              )}
+              
+              {!showExplanation ? (
+                <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer || isFetching}>Responder</Button>
+              ) : !isSingleQuestionMode ? (
+                <Button onClick={handleNextQuestion} disabled={currentPage >= totalPages - 1 || isFetching}>Próxima Questão<ChevronRight className="h-4 w-4 ml-2" /></Button>
+              ) : (
+                <div></div> // Placeholder to keep alignment
+              )}
             </div>
           </CardContent>
         </Card>

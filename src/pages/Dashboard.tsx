@@ -209,8 +209,8 @@ const Dashboard = () => {
           )}
         </CardContent>
         <CardFooter className="p-4 flex justify-end">
-          <Button asChild>
-            <Link to="/questions">
+          <Button asChild disabled={isLoadingQuestion || !randomQuestion}>
+            <Link to={randomQuestion ? `/questions?id=${randomQuestion.id}` : "/questions"}>
               Responder essa Questão <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
