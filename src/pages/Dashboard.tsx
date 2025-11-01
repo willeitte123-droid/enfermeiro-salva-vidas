@@ -1,14 +1,14 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, MessageSquare, Loader2, History } from "lucide-react";
+import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, Loader2, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import * as LucideIcons from "lucide-react";
+import { Question } from "@/context/QuestionsContext";
 
 interface Profile {
   id: string;
@@ -16,20 +16,6 @@ interface Profile {
   status: string;
   first_name?: string;
   last_name?: string;
-}
-
-interface FeaturedComment {
-  content: string;
-  profiles: {
-    id: string;
-    first_name: string;
-    last_name: string;
-    avatar_url: string;
-  };
-  questions: {
-    id: number;
-    question: string;
-  };
 }
 
 const quickAccessLinks = [
@@ -87,28 +73,26 @@ const clinicalTips = [
   "O antídoto para intoxicação por opioides é a Naloxona. Para benzodiazepínicos, é o Flumazenil.",
 ];
 
-const fetchFeaturedComments = async () => {
-  const { data, error } = await supabase
-    .from("comments")
-    .select("content, profiles(id, first_name, last_name, avatar_url), questions(id, question)")
-    .order("created_at", { ascending: false })
-    .limit(5);
-
-  if (error) throw error;
-
-  return data.filter(comment => comment.profiles && comment.questions) as FeaturedComment[];
+const fetchRandomQuestion = async (): Promise<Question | null> => {
+  const { data, error } = await supabase.rpc('get_random_questions', { limit_count: 1 });
+  if (error) {
+    console.error("Error fetching random question:", error);
+    throw error;
+  }
+  return data?.[0] as Question || null;
 };
 
 const Dashboard = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
-  const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
   const { activities } = useActivityTracker();
   const recentActivities = activities.slice(0, 3);
   const [randomTip, setRandomTip] = useState("");
 
-  const { data: featuredComments = [], isLoading: isLoadingComment } = useQuery({
-    queryKey: ['featuredComments'],
-    queryFn: fetchFeaturedComments,
+  const { data: randomQuestion, isLoading: isLoadingQuestion } = useQuery({
+    queryKey: ['randomQuestion'],
+    queryFn: fetchRandomQuestion,
+    refetchInterval: 15000, // Rotate question every 15 seconds
+    staleTime: 10000,
   });
 
   useEffect(() => {
@@ -121,17 +105,6 @@ const Dashboard = () => {
 
     return () => clearInterval(intervalId);
   }, []);
-
-  useEffect(() => {
-    if (featuredComments.length > 1) {
-      const timer = setInterval(() => {
-        setCurrentCommentIndex(prevIndex => (prevIndex + 1) % featuredComments.length);
-      }, 7000);
-      return () => clearInterval(timer);
-    }
-  }, [featuredComments]);
-
-  const currentComment = featuredComments[currentCommentIndex];
 
   return (
     <div className="space-y-8">
@@ -213,54 +186,32 @@ const Dashboard = () => {
       <Card className="w-full max-w-4xl mx-auto shadow-lg bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-blue-700 dark:text-blue-400">
-            <MessageSquare className="h-6 w-6" />
-            Comentários em Destaque
+            <FileQuestion className="h-6 w-6" />
+            Questão em Destaque
           </CardTitle>
-          <CardDescription className="text-blue-900/80 dark:text-blue-200/80">Veja o que a comunidade está discutindo.</CardDescription>
+          <CardDescription className="text-blue-900/80 dark:text-blue-200/80">
+            Teste seus conhecimentos com uma questão aleatória a cada 15 segundos.
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          {isLoadingComment ? (
-            <div className="flex items-center justify-center h-32">
-              <Loader2 className="h-6 w-6 animate-spin text-primary" />
-            </div>
-          ) : currentComment ? (
-            <div key={currentCommentIndex} className="space-y-4 animate-in fade-in-50 duration-500">
-              <blockquote className="border-l-4 pl-4 italic text-blue-900 dark:text-blue-200">
-                "{currentComment.content}"
-              </blockquote>
-              <div className="flex justify-end items-center gap-3 mt-2">
-                <p className="text-sm font-semibold text-right">
-                  — <Link to={`/user/${currentComment.profiles.id}`} className="hover:underline text-primary">
-                    {`${currentComment.profiles.first_name} ${currentComment.profiles.last_name}`}
-                  </Link>
-                </p>
-                <Link to={`/user/${currentComment.profiles.id}`}>
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={currentComment.profiles.avatar_url} alt={`Avatar de ${currentComment.profiles.first_name}`} className="object-cover" />
-                    <AvatarFallback>{`${currentComment.profiles.first_name?.[0] || ''}${currentComment.profiles.last_name?.[0] || ''}`.toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                </Link>
-              </div>
-              <Link to="/questions" className="block mt-4 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                  <FileQuestion className="h-4 w-4" />
-                  <span>Referente à questão:</span>
-                </div>
-                <p className="text-sm text-foreground font-medium">
-                  "{currentComment.questions.question.substring(0, 120)}..."
-                </p>
-              </Link>
+        <CardContent className="min-h-[150px] flex items-center justify-center">
+          {isLoadingQuestion ? (
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          ) : randomQuestion ? (
+            <div className="space-y-4 animate-in fade-in-50 duration-500 w-full">
+              <p className="text-center font-semibold text-blue-900 dark:text-blue-200">
+                {randomQuestion.question}
+              </p>
             </div>
           ) : (
-            <p className="text-center text-muted-foreground h-32 flex items-center justify-center">
-              Nenhuma interação recente. Seja o primeiro a comentar em uma questão!
+            <p className="text-center text-muted-foreground">
+              Não foi possível carregar uma questão. Tente novamente mais tarde.
             </p>
           )}
         </CardContent>
         <CardFooter className="p-4 flex justify-end">
           <Button asChild>
             <Link to="/questions">
-              Participar da Discussão <ArrowRight className="ml-2 h-4 w-4" />
+              Responder essa Questão <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         </CardFooter>
