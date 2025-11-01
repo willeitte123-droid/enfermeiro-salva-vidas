@@ -48,12 +48,12 @@ const EcgGuide = () => {
   ];
 
   const waveComponents = [
-    { id: "p-wave", title: "Onda P", value: "< 2,5mm", icon: Waves, color: "text-blue-500", description: "Representa a despolarização dos átrios. Deve ser arredondada e positiva na maioria das derivações." },
-    { id: "pr-interval", title: "Intervalo PR", value: "0,12-0,20s", icon: Clock, color: "text-green-500", description: "Mede o tempo desde o início da despolarização atrial até o início da despolarização ventricular. Representa a condução através do nó AV." },
-    { id: "qrs-complex", title: "Complexo QRS", value: "< 0,12s", icon: Zap, color: "text-red-500", description: "Representa a despolarização dos ventrículos. Um QRS largo indica um distúrbio na condução ventricular." },
-    { id: "st-segment", title: "Segmento ST", value: "Isoelétrico", icon: HeartPulse, color: "text-purple-500", description: "Período entre a despolarização e a repolarização ventricular. Alterações (supra/infra) são cruciais para identificar isquemia e infarto." },
-    { id: "t-wave", title: "Onda T", value: "Assimétrica", icon: Waves, color: "text-orange-500", description: "Representa a repolarização dos ventrículos. Deve ser positiva e assimétrica. Ondas T apiculadas ou invertidas podem indicar isquemia ou distúrbios eletrolíticos." },
-    { id: "qt-interval", title: "Intervalo QT", value: "< 0,44s (corrigido)", icon: Repeat, color: "text-teal-500", description: "Representa a sístole elétrica ventricular (despolarização + repolarização). O prolongamento aumenta o risco de arritmias ventriculares graves." },
+    { id: "p-wave", title: "Onda P", value: "< 2,5mm", icon: Waves, color: "text-blue-500", description: "Representa a despolarização dos átrios. Normalmente é arredondada e positiva em DII. Uma onda P ausente pode indicar Fibrilação Atrial. Ondas P apiculadas ('P pulmonale') podem sugerir sobrecarga atrial direita, enquanto ondas P entalhadas ('P mitrale') podem indicar sobrecarga atrial esquerda." },
+    { id: "pr-interval", title: "Intervalo PR", value: "0,12-0,20s", icon: Clock, color: "text-green-500", description: "Mede o tempo do início da onda P ao início do complexo QRS. Representa o tempo que o impulso leva para viajar do nó sinusal até o nó atrioventricular (AV). Um PR curto (<0,12s) pode indicar vias de pré-excitação (ex: Wolff-Parkinson-White). Um PR longo (>0,20s) indica um bloqueio atrioventricular (BAV) de 1º grau." },
+    { id: "qrs-complex", title: "Complexo QRS", value: "< 0,12s", icon: Zap, color: "text-red-500", description: "Representa a despolarização dos ventrículos. Um QRS estreito (<0,12s) indica que o impulso se originou acima dos ventrículos (supraventricular). Um QRS largo (≥0,12s) sugere uma origem ventricular do impulso (ex: Taquicardia Ventricular) ou um distúrbio de condução (ex: Bloqueio de Ramo)." },
+    { id: "st-segment", title: "Segmento ST", value: "Isoelétrico", icon: HeartPulse, color: "text-purple-500", description: "Período entre o fim do QRS e o início da onda T. Um <strong>supradesnivelamento do segmento ST</strong> é um sinal clássico de Infarto Agudo do Miocárdio com Supra de ST (IAMCSST). Um <strong>infradesnivelamento do segmento ST</strong> pode indicar isquemia miocárdica (angina) ou um IAM sem Supra de ST." },
+    { id: "t-wave", title: "Onda T", value: "Assimétrica", icon: Waves, color: "text-orange-500", description: "Representa a repolarização dos ventrículos. <strong>Ondas T apiculadas e simétricas</strong> são um sinal precoce e crítico de hipercalemia (excesso de potássio). <strong>Ondas T invertidas</strong> podem ser um sinal de isquemia miocárdica." },
+    { id: "qt-interval", title: "Intervalo QT", value: "< 0,44s (corrigido)", icon: Repeat, color: "text-teal-500", description: "Representa a duração total da atividade elétrica ventricular. Seu valor deve ser corrigido pela frequência cardíaca (QTc). Um <strong>intervalo QT prolongado</strong> é perigoso, pois aumenta o risco de arritmias ventriculares graves, como Torsades de Pointes. Vários medicamentos podem prolongar o QT." },
   ];
 
   return (
@@ -153,7 +153,7 @@ const EcgGuide = () => {
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
-                        {comp.description}
+                        <p dangerouslySetInnerHTML={{ __html: comp.description }} />
                       </AccordionContent>
                     </AccordionItem>
                   );
