@@ -75,7 +75,10 @@ const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, onToggle
         <Button
           variant="primary"
           size="icon"
-          className="absolute -right-5 top-16 z-10 h-10 w-10 rounded-full shadow-lg animate-pulse-subtle"
+          className={cn(
+            "absolute -right-5 top-16 z-10 h-10 w-10 rounded-full shadow-lg",
+            !isCollapsed && "animate-pulse-subtle"
+          )}
           onClick={onToggle}
         >
           {isCollapsed ? <ChevronsRight className="h-5 w-5" /> : <ChevronsLeft className="h-5 w-5" />}
