@@ -116,9 +116,9 @@ const PregnancyCalculator = () => {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="dum" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="dum">Cálculo por DUM</TabsTrigger>
-              <TabsTrigger value="usg">Cálculo por USG</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 gap-2 bg-transparent p-0">
+              <TabsTrigger value="dum" className="py-2 font-semibold text-blue-700 bg-blue-100 hover:bg-blue-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-md dark:bg-blue-900/50 dark:text-blue-300 dark:hover:bg-blue-900/70 data-[state=active]:dark:bg-blue-600">Cálculo por DUM</TabsTrigger>
+              <TabsTrigger value="usg" className="py-2 font-semibold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 data-[state=active]:bg-emerald-600 data-[state=active]:text-white rounded-md dark:bg-emerald-900/50 dark:text-emerald-300 dark:hover:bg-emerald-900/70 data-[state=active]:dark:bg-emerald-600">Cálculo por USG</TabsTrigger>
             </TabsList>
             <TabsContent value="dum" className="mt-4 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800 space-y-6">
               <div>
