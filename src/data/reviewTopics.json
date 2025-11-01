@@ -457,5 +457,38 @@
         ]
       }
     ]
+  },
+  {
+    "id": "icu-nursing",
+    "title": "Cuidados de Enfermagem em UTI",
+    "icon": "Monitor",
+    "color": "text-fuchsia-500",
+    "summary": "Foco no cuidado ao paciente crítico, abordando monitorização avançada, suporte ventilatório e manejo de drogas vasoativas.",
+    "details": [
+      {
+        "subtitle": "Monitorização Hemodinâmica Avançada",
+        "points": [
+          "<strong>Pressão Arterial Média (PAM):</strong> Principal indicador de perfusão tecidual. Calculada como `(PAS + 2*PAD) / 3`. O alvo terapêutico no choque séptico é <strong>≥ 65 mmHg</strong>.",
+          "<strong>Pressão Venosa Central (PVC):</strong> Mede a pré-carga do ventrículo direito. Valor normal: <strong>2-8 mmHg</strong>. PVC baixa sugere hipovolemia; PVC alta sugere hipervolemia ou disfunção cardíaca.",
+          "<strong>Balanço Hídrico (BH) Rigoroso:</strong> Controle de todos os líquidos administrados e eliminados. BH positivo indica retenção hídrica; BH negativo indica perda de volume. Essencial no manejo do choque e da SARA."
+        ]
+      },
+      {
+        "subtitle": "Suporte Ventilatório (Ventilação Mecânica Invasiva - VMI)",
+        "points": [
+          "<strong>Cuidados com o Tubo Orotraqueal (TOT):</strong> Manter a pressão do cuff entre <strong>20-30 cmH₂O</strong> para prevenir broncoaspiração e lesão traqueal. Realizar a troca da fixação a cada 24h ou conforme necessidade.",
+          "<strong>Prevenção de Pneumonia Associada à Ventilação (PAV):</strong> Pacote (bundle) de medidas: <strong>Cabeceira elevada (30-45º)</strong>, higiene oral com clorexidina, despertar diário e teste de respiração espontânea, profilaxia de úlcera péptica e TVP.",
+          "<strong>Aspiração de Vias Aéreas:</strong> Realizar apenas quando necessário (sistema fechado), com técnica asséptica. Hiperoxigenar antes e após o procedimento."
+        ]
+      },
+      {
+        "subtitle": "Manejo de Drogas Vasoativas (DVAs) e Sedação",
+        "points": [
+          "<strong>Drogas Vasoativas (DVAs):</strong> Ex: Noradrenalina, Dobutamina. Devem ser administradas em <strong>acesso venoso central</strong> e em <strong>bomba de infusão contínua (BIC)</strong>. O extravasamento em acesso periférico pode causar necrose tecidual grave.",
+          "<strong>Monitorização da Sedação:</strong> Utilizar a <strong>Escala de Agitação e Sedação de Richmond (RASS)</strong> para titular o nível de sedação, buscando o alvo prescrito (geralmente RASS 0 a -2).",
+          "<strong>Prevenção de Delirium:</strong> Aplicar escalas como o CAM-ICU. Medidas não farmacológicas são cruciais: orientação, sono, mobilização precoce."
+        ]
+      }
+    ]
   }
 ]
