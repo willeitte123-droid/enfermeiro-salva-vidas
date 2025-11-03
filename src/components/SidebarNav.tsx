@@ -74,6 +74,31 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     return isMobile ? <SheetClose asChild key={item.to}>{link}</SheetClose> : <div key={item.to}>{link}</div>;
   };
 
+  if (isMobile) {
+    return (
+      <nav className="flex flex-col gap-1">
+        {navItems.main.map(renderNavLink)}
+
+        <h3 className={cn(sectionHeaderClass, "justify-start")}>Consulta e Estudo</h3>
+        <div className="space-y-1 pt-1">
+          {navItems.study.map(renderNavLink)}
+        </div>
+
+        <h3 className={cn(sectionHeaderClass, "justify-start")}>Ferramentas</h3>
+        <div className="space-y-1 pt-1">
+          {navItems.tools.map(renderNavLink)}
+        </div>
+
+        {isAdmin && (
+          <>
+            <div className="my-4 border-t border-border/10"></div>
+            {navItems.admin.map(renderNavLink)}
+          </>
+        )}
+      </nav>
+    );
+  }
+
   return (
     <nav className="flex flex-col gap-1">
       {navItems.main.map(renderNavLink)}
