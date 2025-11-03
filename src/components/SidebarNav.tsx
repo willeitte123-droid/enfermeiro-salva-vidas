@@ -18,7 +18,7 @@ interface SidebarNavProps {
 const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarNavProps) => {
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     cn(
-      "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors text-sidebar-foreground hover:bg-sidebar-hover",
+      "flex flex-row items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors text-sidebar-foreground hover:bg-sidebar-hover",
       isActive && "bg-sidebar-active text-sidebar-active-foreground hover:bg-sidebar-active/90"
     );
 
