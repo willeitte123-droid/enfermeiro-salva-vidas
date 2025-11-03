@@ -156,7 +156,7 @@ const ProfilePage = () => {
         onCropComplete={handleCropComplete}
       />
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Meu Perfil</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Meu Perfil</h1>
         <p className="text-muted-foreground">Atualize suas informações pessoais e sua biografia.</p>
       </div>
 

@@ -252,7 +252,7 @@ const KiwifySettings = () => {
 // Componente Principal do Admin
 const Admin = () => (
   <div className="space-y-6">
-    <div className="text-center"><h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Painel de Administração</h1><p className="text-muted-foreground">Gerenciamento de usuários e integrações da plataforma.</p></div>
+    <div className="text-center"><h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Painel de Administração</h1><p className="text-muted-foreground">Gerenciamento de usuários e integrações da plataforma.</p></div>
     <Tabs defaultValue="users" className="w-full">
       <TabsList className="grid w-full grid-cols-2"><TabsTrigger value="users"><Users className="mr-2 h-4 w-4" />Gerenciar Usuários</TabsTrigger><TabsTrigger value="kiwify"><Webhook className="mr-2 h-4 w-4" />Integração Kiwify</TabsTrigger></TabsList>
       <TabsContent value="users" className="mt-4"><UserManagement /></TabsContent>
