@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthContextType } from './context/AuthContext';
 
 // Layout
 import MainLayout from './components/MainLayout';
@@ -46,10 +47,23 @@ import NursingNotesGuide from './pages/NursingNotesGuide';
 import UpdatePassword from './pages/UpdatePassword';
 
 interface AppRoutesProps {
-  session: any;
+  auth: AuthContextType;
 }
 
-export const AppRoutes = ({ session }: AppRoutesProps) => {
+export const AppRoutes = ({ auth }: AppRoutesProps) => {
+  const { session, authEvent } = auth;
+
+  const isPasswordRecovery = session && authEvent === 'PASSWORD_RECOVERY';
+
+  if (isPasswordRecovery) {
+    return (
+      <Routes>
+        <Route path="/update-password" element={<UpdatePassword />} />
+        <Route path="*" element={<Navigate to="/update-password" replace />} />
+      </Routes>
+    );
+  }
+
   if (!session) {
     return (
       <Routes>
@@ -107,8 +121,3 @@ export const AppRoutes = ({ session }: AppRoutesProps) => {
     </Routes>
   );
 };
-
-// O Suspense não é mais necessário aqui para as rotas, então renomeamos para simplificar.
-export const SuspendedAppRoutes = (props: AppRoutesProps) => (
-  <AppRoutes {...props} />
-);

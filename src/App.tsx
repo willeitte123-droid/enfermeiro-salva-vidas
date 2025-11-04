@@ -5,9 +5,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { Loader2 } from "lucide-react";
 
 function App() {
-  const { session, isLoading } = useAuth();
+  const auth = useAuth();
 
-  if (isLoading) {
+  if (auth.isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <Router>
-      <AppRoutes session={session} />
+      <AppRoutes auth={auth} />
       <Toaster richColors position="top-right" />
     </Router>
   );
