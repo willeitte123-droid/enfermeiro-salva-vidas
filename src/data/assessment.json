@@ -74,6 +74,11 @@
             { "term": "Febrícula", "description": "37,3°C a 37,7°C" },
             { "term": "Febre", "description": "≥ 37,8°C" },
             { "term": "Hiperpirexia", "description": "≥ 41°C" }
+        ],
+        "childValues": [
+            { "age": "Faixa Normal", "value": "Similar ao adulto (36.1°C - 37.2°C axilar)." },
+            { "age": "Febre", "value": "Considerada a partir de 37.8°C (axilar)." },
+            { "age": "Alerta Neonato (<3 meses)", "value": "Temperatura ≥ 37.5°C (axilar) ou ≥ 38°C (retal) é uma emergência." }
         ]
     },
     {
