@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -23,7 +23,6 @@ import { useNavigate } from "react-router-dom";
 import { Stethoscope, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
-import { Session } from "@supabase/supabase-js";
 
 const formSchema = z.object({
   password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
@@ -35,28 +34,7 @@ const formSchema = z.object({
 
 const UpdatePassword = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
-  const [isCheckingSession, setIsCheckingSession] = useState(true);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setSession(session);
-        setIsCheckingSession(false);
-      }
-    });
-
-    // Handle the case where the user lands on the page directly
-    const hash = window.location.hash;
-    if (!hash.includes('type=recovery')) {
-        setIsCheckingSession(false);
-    }
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,13 +45,6 @@ const UpdatePassword = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!session) {
-      toast.error("Sessão inválida ou expirada.", {
-        description: "Por favor, solicite um novo link de redefinição de senha.",
-      });
-      return;
-    }
-
     setIsLoading(true);
     const { error } = await supabase.auth.updateUser({
       password: values.password,
@@ -91,32 +62,6 @@ const UpdatePassword = () => {
       await supabase.auth.signOut();
       navigate("/login");
     }
-  }
-
-  if (isCheckingSession) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!session) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <Card className="w-full max-w-md text-center">
-          <CardHeader>
-            <CardTitle>Link Inválido ou Expirado</CardTitle>
-            <CardDescription>
-              O link de redefinição de senha pode ter expirado. Por favor, solicite um novo.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button onClick={() => navigate("/login")}>Voltar para o Login</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
   }
 
   return (

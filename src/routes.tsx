@@ -117,7 +117,6 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
       </Route>
       <Route path="/login" element={<Navigate to="/" replace />} />
       <Route path="/register" element={<Navigate to="/" replace />} />
-      <Route path="/update-password" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };
