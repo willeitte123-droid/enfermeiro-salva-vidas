@@ -1,15 +1,15 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { HmacSha256 } from 'https://deno.land/std@0.177.0/crypto/hmac.ts';
+import { hmac } from "https://deno.land/x/hmac@v2.0.1/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-kiwify-signature'
 };
 
-// Função para verificar a assinatura do webhook
+// Função para verificar a assinatura do webhook usando a nova biblioteca
 const verifySignature = (body: string, signature: string, secret: string): boolean => {
-  const hash = new HmacSha256(secret).update(body).toString();
+  const hash = hmac("sha256", secret, body, "hex");
   return hash === signature;
 };
 
