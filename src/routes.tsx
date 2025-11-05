@@ -45,6 +45,7 @@ import ReviewArea from './pages/ReviewArea';
 import FavoritesPage from './pages/FavoritesPage';
 import NursingNotesGuide from './pages/NursingNotesGuide';
 import UpdatePassword from './pages/UpdatePassword';
+import CmeControl from './pages/CmeControl';
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -114,6 +115,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="favorites" element={<FavoritesPage />} />
         <Route path="nursing-notes" element={<NursingNotesGuide />} />
         <Route path="update-password" element={<UpdatePassword />} />
+        <Route path="cme-control" element={<CmeControl />} />
         <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="/login" element={<Navigate to="/" replace />} />
