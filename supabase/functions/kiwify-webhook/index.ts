@@ -90,12 +90,11 @@ serve(async (req: Request) => {
 
       if (users.length > 0) {
         const user = users[0];
-        const { error: updateProfileError } = await supabaseAdmin.from('profiles').upsert({
-          id: user.id,
+        const { error: updateProfileError } = await supabaseAdmin.from('profiles').update({
           plan: 'free',
           status: 'suspended',
           access_expires_at: new Date().toISOString()
-        }, { onConflict: 'id' });
+        }).eq('id', user.id);
 
         if (updateProfileError) throw new Error(`Falha ao atualizar perfil para cancelar acesso: ${updateProfileError.message}`);
         
