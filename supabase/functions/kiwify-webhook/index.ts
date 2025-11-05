@@ -66,7 +66,8 @@ serve(async (req: Request) => {
     const orderStatus = body?.order?.order_status;
     
     const isApprovedEvent = approvedEvents.includes(eventForLog.toLowerCase()) || orderStatus === 'paid';
-    const isCanceledEvent = canceledEvents.includes(eventForLog.toLowerCase()) || canceledEvents.includes(orderStatus);
+    // Corrigido para garantir que o orderStatus seja comparado em minúsculas, tornando a verificação mais robusta.
+    const isCanceledEvent = canceledEvents.includes(eventForLog.toLowerCase()) || (orderStatus && canceledEvents.includes(orderStatus.toLowerCase()));
 
     if (isCanceledEvent) {
       const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
