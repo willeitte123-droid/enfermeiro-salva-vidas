@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Webhook, Package, Wrench } from "lucide-react";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import EquipmentList from "@/components/cme/EquipmentList";
 import LoadList from "@/components/cme/LoadList";
 import MaintenanceLogList from "@/components/cme/MaintenanceLogList";
