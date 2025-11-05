@@ -36,7 +36,6 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
       { to: "/tools/integrated-calculators", icon: CalculatorIcon, label: "DUM e IMC" },
       { to: "/tools/lab-values", icon: FileText, label: "Valores Laboratoriais" },
       { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
-      { to: "/cme-control", icon: Webhook, label: "Controle de CME" },
     ],
     study: [
       { to: "/questions", icon: FileQuestion, label: "Banca de Questões" },
