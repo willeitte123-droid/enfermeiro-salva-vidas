@@ -1,15 +1,30 @@
-import { serve } from 'https://deno.land/std@0.190.0/http/server.ts';
+import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { HmacSha256 } from 'https://deno.land/std@0.190.0/crypto/hmac.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-kiwify-signature'
 };
 
-// Função para verificar a assinatura do webhook
-const verifySignature = (body: string, signature: string, secret: string): boolean => {
-  const hash = new HmacSha256(secret).update(body).toString();
+// Função para verificar a assinatura do webhook usando a API Web Crypto nativa
+const verifySignature = async (body: string, signature: string, secret: string): Promise<boolean> => {
+  const secretKeyData = new TextEncoder().encode(secret);
+  const key = await crypto.subtle.importKey(
+    "raw",
+    secretKeyData,
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  const bodyData = new TextEncoder().encode(body);
+  const signatureBuffer = await crypto.subtle.sign("HMAC", key, bodyData);
+
+  // Converte o buffer da assinatura para uma string hexadecimal
+  const hash = Array.from(new Uint8Array(signatureBuffer))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+
   return hash === signature;
 };
 
@@ -47,7 +62,7 @@ serve(async (req: Request) => {
     }
 
     const rawBody = await req.text();
-    if (!verifySignature(rawBody, signature, kiwifySecret)) {
+    if (!await verifySignature(rawBody, signature, kiwifySecret)) {
       throw new Error("Invalid webhook signature.");
     }
 
@@ -66,7 +81,6 @@ serve(async (req: Request) => {
     const orderStatus = body?.order?.order_status;
     
     const isApprovedEvent = approvedEvents.includes(eventForLog.toLowerCase()) || orderStatus === 'paid';
-    // Corrigido para garantir que o orderStatus seja comparado em minúsculas, tornando a verificação mais robusta.
     const isCanceledEvent = canceledEvents.includes(eventForLog.toLowerCase()) || (orderStatus && canceledEvents.includes(orderStatus.toLowerCase()));
 
     if (isCanceledEvent) {
