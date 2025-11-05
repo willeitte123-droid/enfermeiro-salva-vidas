@@ -101,7 +101,7 @@ const SemioTechnique = () => {
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="values">
-                      <AccordionTrigger>Valores de Referência (Adulto)</AccordionTrigger>
+                      <AccordionTrigger>{sign.id === 'pain' ? 'Valores de Referência' : 'Valores de Referência (Adulto)'}</AccordionTrigger>
                       <AccordionContent>
                         {sign.normalValues && <p className="font-semibold text-primary">{sign.normalValues}</p>}
                         <div className="mt-4 space-y-2">
