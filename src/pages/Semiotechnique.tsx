@@ -155,7 +155,7 @@ const SemioTechnique = () => {
             <CardDescription>Técnica para aferição de glicemia capilar e critérios diagnósticos.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Accordion type="multiple" defaultValue={["technique"]} className="space-y-4">
+            <Accordion type="multiple" className="space-y-4">
               <AccordionItem value="technique" className="border rounded-lg px-4 bg-card shadow-sm">
                 <AccordionTrigger className="font-semibold">Técnica de Aferição</AccordionTrigger>
                 <AccordionContent>
