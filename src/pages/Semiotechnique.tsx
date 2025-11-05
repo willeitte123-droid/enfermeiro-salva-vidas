@@ -25,6 +25,11 @@ interface GlycemiaCriteria {
   diabetes: string;
 }
 
+interface ChildValue {
+  age: string;
+  value: string;
+}
+
 interface SemioTechniqueItem {
   id: string;
   name: string;
@@ -34,6 +39,7 @@ interface SemioTechniqueItem {
   normalValues?: string;
   alterations?: Alteration[];
   glycemiaCriteria?: GlycemiaCriteria[];
+  childValues?: ChildValue[];
 }
 
 const semioTechniqueData: SemioTechniqueItem[] = assessmentData.semioTechniqueData;
@@ -95,7 +101,7 @@ const SemioTechnique = () => {
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="values">
-                      <AccordionTrigger>Valores de Referência</AccordionTrigger>
+                      <AccordionTrigger>Valores de Referência (Adulto)</AccordionTrigger>
                       <AccordionContent>
                         {sign.normalValues && <p className="font-semibold text-primary">{sign.normalValues}</p>}
                         <div className="mt-4 space-y-2">
@@ -108,6 +114,29 @@ const SemioTechnique = () => {
                         </div>
                       </AccordionContent>
                     </AccordionItem>
+                    {sign.childValues && (
+                      <AccordionItem value="child-values">
+                        <AccordionTrigger>Valores Pediátricos</AccordionTrigger>
+                        <AccordionContent>
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Faixa Etária</TableHead>
+                                <TableHead>Valor</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {sign.childValues.map(cv => (
+                                <TableRow key={cv.age}>
+                                  <TableCell className="text-sm font-medium">{cv.age}</TableCell>
+                                  <TableCell className="text-sm">{cv.value}</TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </AccordionContent>
+                      </AccordionItem>
+                    )}
                   </Accordion>
                 </CardContent>
               </Card>
