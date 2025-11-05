@@ -464,22 +464,24 @@
     "title": "Cuidados de Enfermagem em UTI",
     "icon": "Monitor",
     "color": "text-fuchsia-500",
-    "summary": "Foco no cuidado ao paciente crítico, abordando monitorização avançada, suporte ventilatório e manejo de drogas vasoativas.",
+    "summary": "Foco no cuidado ao paciente crítico, abordando monitorização avançada, suporte ventilatório, manejo de drogas, TRS e nutrição.",
     "details": [
       {
-        "subtitle": "Monitorização Hemodinâmica Avançada",
+        "subtitle": "Monitorização Hemodinâmica e Neurológica",
         "points": [
-          "<strong>Pressão Arterial Média (PAM):</strong> Principal indicador de perfusão tecidual. Calculada como `(PAS + 2*PAD) / 3`. O alvo terapêutico no choque séptico é <strong>≥ 65 mmHg</strong>.",
-          "<strong>Pressão Venosa Central (PVC):</strong> Mede a pré-carga do ventrículo direito. Valor normal: <strong>2-8 mmHg</strong>. PVC baixa sugere hipovolemia; PVC alta sugere hipervolemia ou disfunção cardíaca.",
-          "<strong>Balanço Hídrico (BH) Rigoroso:</strong> Controle de todos os líquidos administrados e eliminados. BH positivo indica retenção hídrica; BH negativo indica perda de volume. Essencial no manejo do choque e da SARA."
+          "<strong>Pressão Arterial Média (PAM):</strong> Principal indicador de perfusão tecidual. Alvo <strong>≥ 65 mmHg</strong> no choque séptico. Cálculo: `(PAS + 2*PAD) / 3`.",
+          "<strong>Pressão Venosa Central (PVC):</strong> Mede a pré-carga do ventrículo direito. Valor normal: <strong>2-8 mmHg</strong>. Essencial para guiar a reposição volêmica.",
+          "<strong>Balanço Hídrico (BH) Rigoroso:</strong> Controle de todos os líquidos administrados e eliminados. Fundamental no manejo do choque e da SARA.",
+          "<strong>Pressão Intracraniana (PIC):</strong> Para pacientes neurocríticos. Valor normal: <strong>5-15 mmHg</strong>. Cuidados: manter cabeceira a 30-45º, alinhamento cervical, controle de estímulos e temperatura.",
+          "<strong>Cateter de Artéria Pulmonar (Swan-Ganz):</strong> Monitora débito cardíaco (DC), pressão da artéria pulmonar (PAP) e pressão de oclusão da artéria pulmonar (POAP). Cuidados: zerar o sistema, inflar o balão apenas para medidas de POAP, monitorar arritmias."
         ]
       },
       {
         "subtitle": "Suporte Ventilatório (Ventilação Mecânica Invasiva - VMI)",
         "points": [
           "<strong>Cuidados com o Tubo Orotraqueal (TOT):</strong> Manter a pressão do cuff entre <strong>20-30 cmH₂O</strong> para prevenir broncoaspiração e lesão traqueal. Realizar a troca da fixação a cada 24h ou conforme necessidade.",
-          "<strong>Prevenção de Pneumonia Associada à Ventilação (PAV):</strong> Pacote (bundle) de medidas: <strong>Cabeceira elevada (30-45º)</strong>, higiene oral com clorexidina, despertar diário e teste de respiração espontânea, profilaxia de úlcera péptica e TVP.",
-          "<strong>Aspiração de Vias Aéreas:</strong> Realizar apenas quando necessário (sistema fechado), com técnica asséptica. Hiperoxigenar antes e após o procedimento."
+          "<strong>Prevenção de Pneumonia Associada à Ventilação (PAV):</strong> Pacote (bundle) de medidas: <strong>Cabeceira elevada (30-45º)</strong>, higiene oral com clorexidina, despertar diário e teste de respiração espontânea.",
+          "<strong>Aspiração de Vias Aéreas:</strong> Realizar apenas quando necessário (sistema fechado), com técnica asséptica. Hiperoxigenar antes e após o procedimento. O procedimento não deve exceder 15 segundos."
         ]
       },
       {
@@ -487,7 +489,28 @@
         "points": [
           "<strong>Drogas Vasoativas (DVAs):</strong> Ex: Noradrenalina, Dobutamina. Devem ser administradas em <strong>acesso venoso central</strong> e em <strong>bomba de infusão contínua (BIC)</strong>. O extravasamento em acesso periférico pode causar necrose tecidual grave.",
           "<strong>Monitorização da Sedação:</strong> Utilizar a <strong>Escala de Agitação e Sedação de Richmond (RASS)</strong> para titular o nível de sedação, buscando o alvo prescrito (geralmente RASS 0 a -2).",
-          "<strong>Prevenção de Delirium:</strong> Aplicar escalas como o CAM-ICU. Medidas não farmacológicas são cruciais: orientação, sono, mobilização precoce."
+          "<strong>Prevenção de Delirium:</strong> Aplicar escalas como o CAM-ICU. Medidas não farmacológicas são cruciais: orientação, sono, mobilização precoce, presença da família."
+        ]
+      },
+      {
+        "subtitle": "Terapia Renal Substitutiva (TRS) Contínua",
+        "points": [
+          "<strong>Indicação:</strong> Lesão renal aguda (LRA) com instabilidade hemodinâmica, distúrbios eletrolíticos graves, sobrecarga hídrica refratária.",
+          "<strong>Cuidados de Enfermagem:</strong> Monitorar o circuito (pressões, coagulação), controlar rigorosamente a taxa de ultrafiltração (UF), realizar balanço hídrico preciso, monitorar eletrólitos e estado ácido-básico, cuidar do acesso vascular (cateter de diálise)."
+        ]
+      },
+      {
+        "subtitle": "Nutrição no Paciente Crítico",
+        "points": [
+          "<strong>Nutrição Enteral (NE):</strong> Via preferencial. Cuidados: manter cabeceira elevada (30-45º), verificar posicionamento da sonda, monitorar resíduo gástrico (conforme protocolo institucional), e observar sinais de intolerância (distensão, vômitos).",
+          "<strong>Nutrição Parenteral Total (NPT):</strong> Indicada quando a via enteral não é possível. Cuidados: administrar em <strong>acesso venoso central exclusivo</strong>, usar técnica asséptica rigorosa no manuseio, monitorar glicemia capilar e eletrólitos."
+        ]
+      },
+      {
+        "subtitle": "Prevenção de Complicações da Imobilidade",
+        "points": [
+          "<strong>Lesão por Pressão (LPP):</strong> Aplicar Escala de Braden, realizar mudança de decúbito a cada 2 horas, usar superfícies de alívio de pressão, manter a pele limpa e hidratada.",
+          "<strong>Trombose Venosa Profunda (TVP):</strong> Utilizar compressão pneumática intermitente ou meias elásticas, administrar anticoagulantes profiláticos (heparina) conforme prescrição, estimular a mobilização precoce."
         ]
       }
     ]
