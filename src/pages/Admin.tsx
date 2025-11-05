@@ -26,7 +26,7 @@ interface AppUser {
   last_name: string | null;
   role: 'admin' | 'user';
   status: 'active' | 'pending' | 'inactive' | 'suspended';
-  plan: 'free' | 'Plano PRO Mensal' | 'Plano PRO Anual';
+  plan: 'free' | 'Plano Essencial' | 'Plano Premium anual' | 'Plano Pro anual';
   avatar_url: string | null;
   email: string | null;
   access_expires_at: string | null;
@@ -36,7 +36,7 @@ interface AppUser {
 const editUserSchema = z.object({
   role: z.enum(['admin', 'user']),
   status: z.enum(['active', 'pending', 'inactive', 'suspended']),
-  plan: z.enum(['free', 'Plano PRO Mensal', 'Plano PRO Anual']),
+  plan: z.enum(['free', 'Plano Essencial', 'Plano Premium anual', 'Plano Pro anual']),
 });
 
 // Função para buscar todos os usuários via Edge Function
@@ -110,7 +110,12 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
           <Controller name="plan" control={form.control} render={({ field }) => (
             <div className="space-y-2"><Label>Plano</Label><Select onValueChange={field.onChange} value={field.value}>
               <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent><SelectItem value="free">Free</SelectItem><SelectItem value="Plano PRO Mensal">PRO Mensal</SelectItem><SelectItem value="Plano PRO Anual">PRO Anual</SelectItem></SelectContent>
+              <SelectContent>
+                <SelectItem value="free">Free</SelectItem>
+                <SelectItem value="Plano Essencial">Plano Essencial</SelectItem>
+                <SelectItem value="Plano Premium anual">Plano Premium anual</SelectItem>
+                <SelectItem value="Plano Pro anual">Plano Pro anual</SelectItem>
+              </SelectContent>
             </Select></div>
           )} />
           <DialogFooter>
