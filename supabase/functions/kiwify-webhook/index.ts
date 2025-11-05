@@ -1,35 +1,15 @@
-import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
+import { serve } from 'https://deno.land/std@0.190.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { HmacSha256 } from 'https://deno.land/std@0.190.0/crypto/hmac.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-kiwify-signature'
 };
 
-// Função para converter um ArrayBuffer para uma string hexadecimal
-const bufferToHex = (buffer: ArrayBuffer): string => {
-  return Array.from(new Uint8Array(buffer))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
-};
-
-// Função para verificar a assinatura usando a Web Crypto API nativa
-const verifySignature = async (body: string, signature: string, secret: string): Promise<boolean> => {
-  const encoder = new TextEncoder();
-  const keyData = encoder.encode(secret);
-  const bodyData = encoder.encode(body);
-
-  const key = await crypto.subtle.importKey(
-    'raw',
-    keyData,
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
-
-  const mac = await crypto.subtle.sign('HMAC', key, bodyData);
-  const hash = bufferToHex(mac);
-
+// Função para verificar a assinatura do webhook
+const verifySignature = (body: string, signature: string, secret: string): boolean => {
+  const hash = new HmacSha256(secret).update(body).toString();
   return hash === signature;
 };
 
@@ -67,8 +47,7 @@ serve(async (req: Request) => {
     }
 
     const rawBody = await req.text();
-    const isValid = await verifySignature(rawBody, signature, kiwifySecret);
-    if (!isValid) {
+    if (!verifySignature(rawBody, signature, kiwifySecret)) {
       throw new Error("Invalid webhook signature.");
     }
 
