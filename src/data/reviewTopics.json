@@ -55,11 +55,12 @@
         "subtitle": "Crianças",
         "points": [
           "<strong>Ao nascer:</strong> BCG (ID) e Hepatite B (IM).",
-          "<strong>2, 4, 6 meses:</strong> Pentavalente (DTP+Hib+HepB), VIP (Pólio inativada), Pneumo 10V (2,4m + ref 12m), Rotavírus (2,4m).",
-          "<strong>3, 5 meses:</strong> Meningo C (IM) (+ ref 12m).",
+          "<strong>2, 4, 6 meses:</strong> Pentavalente (DTP+Hib+HepB) (IM), VIP (Pólio inativada) (IM), Rotavírus (VO - aos 2 e 4 meses).",
+          "<strong>2, 4 meses:</strong> Pneumocócica 10V (IM) (+ reforço aos 12 meses).",
+          "<strong>3, 5 meses:</strong> Meningocócica C (IM) (+ reforço aos 12 meses).",
           "<strong>9 meses:</strong> Febre Amarela (SC).",
           "<strong>12 meses:</strong> Tríplice Viral (SCR - Sarampo, Caxumba, Rubéola) (SC), Reforços de Pneumo 10V e Meningo C.",
-          "<strong>15 meses:</strong> DTP (1º reforço), VOP (Pólio oral), Hepatite A, Tetra Viral (SCR + Varicela)."
+          "<strong>15 meses:</strong> DTP (1º reforço), VOP (Pólio oral - 1º reforço), Hepatite A (IM), Tetra Viral (SCR + Varicela) (SC)."
         ]
       },
       {
