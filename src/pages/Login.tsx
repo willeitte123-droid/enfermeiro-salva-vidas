@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -40,6 +40,15 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setTimeout(() => {
+      setCooldown(cooldown - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [cooldown]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,6 +83,7 @@ const Login = () => {
       redirectTo: `${window.location.origin}/update-password`,
     });
     setIsResetting(false);
+    setCooldown(60); // Start 60-second cooldown
 
     if (error) {
       toast.error("Erro ao enviar e-mail", { description: error.message });
@@ -107,9 +117,14 @@ const Login = () => {
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handlePasswordReset} disabled={isResetting}>
-              {isResetting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Enviar E-mail
+            <AlertDialogAction onClick={handlePasswordReset} disabled={isResetting || cooldown > 0}>
+              {isResetting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : cooldown > 0 ? (
+                `Aguarde ${cooldown}s...`
+              ) : (
+                "Enviar E-mail"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
