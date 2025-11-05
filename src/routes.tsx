@@ -113,6 +113,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="review-area" element={<ReviewArea />} />
         <Route path="favorites" element={<FavoritesPage />} />
         <Route path="nursing-notes" element={<NursingNotesGuide />} />
+        <Route path="update-password" element={<UpdatePassword />} />
         <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="/login" element={<Navigate to="/" replace />} />
