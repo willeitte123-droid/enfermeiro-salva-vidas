@@ -1,5 +1,7 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { timingSafeEqual } from "https://deno.land/std@0.177.0/crypto/timing_safe_equal.ts";
+import { encode } from "https://deno.land/std@0.177.0/encoding/hex.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -7,27 +9,37 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-kiwify-signature'
 };
 
-// Função para verificar a assinatura do webhook usando a API Web Crypto nativa
-const verifySignature = async (body: string, signature: string, secret: string): Promise<boolean> => {
-  const secretKeyData = new TextEncoder().encode(secret);
+// Função para verificar a assinatura do webhook da Kiwify via parâmetro de URL e SHA-1
+async function verifyKiwifySignature(req: Request, secret: string) {
+  const url = new URL(req.url);
+  const signature = url.searchParams.get('signature');
+  const bodyText = await req.clone().text();
+
+  if (!signature) {
+    console.error("ERRO CRÍTICO: Parâmetro 'signature' não encontrado na URL.");
+    return { isValid: false, bodyText };
+  }
+
+  const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
     "raw",
-    secretKeyData,
-    { name: "HMAC", hash: "SHA-256" },
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-1" },
     false,
     ["sign"]
   );
 
-  const bodyData = new TextEncoder().encode(body);
-  const signatureBuffer = await crypto.subtle.sign("HMAC", key, bodyData);
+  const mac = await crypto.subtle.sign("HMAC", key, encoder.encode(bodyText));
+  const expectedSignature = new TextDecoder().decode(encode(new Uint8Array(mac)));
 
-  // Converte o buffer da assinatura para uma string hexadecimal
-  const hash = Array.from(new Uint8Array(signatureBuffer))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+  const isValid = timingSafeEqual(encoder.encode(signature), encoder.encode(expectedSignature));
 
-  return hash === signature;
-};
+  if (!isValid) {
+    console.warn('Falha na verificação da assinatura.');
+  }
+
+  return { isValid, bodyText };
+}
 
 serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -57,21 +69,12 @@ serve(async (req: Request) => {
       throw new Error("KIWIFY_WEBHOOK_SECRET is not set in Supabase secrets.");
     }
 
-    // Verificação mais robusta para o cabeçalho de assinatura, tentando diferentes capitalizações.
-    const signature = req.headers.get('x-kiwify-signature') || req.headers.get('X-Kiwify-Signature');
-    
-    if (!signature) {
-      const headersObj = Object.fromEntries(req.headers.entries());
-      console.log("Signature header missing. Received headers:", JSON.stringify(headersObj, null, 2));
-      throw new Error("X-Kiwify-Signature header is missing.");
-    }
-
-    const rawBody = await req.text();
-    if (!await verifySignature(rawBody, signature, kiwifySecret)) {
+    const { isValid, bodyText } = await verifyKiwifySignature(req, kiwifySecret);
+    if (!isValid) {
       throw new Error("Invalid webhook signature.");
     }
 
-    const body = JSON.parse(rawBody);
+    const body = JSON.parse(bodyText);
     const email = body?.Customer?.email;
     emailForLog = email || "no_email_found";
     eventForLog = body?.webhook_event_type || "no_event_type";
