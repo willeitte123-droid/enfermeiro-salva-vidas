@@ -235,6 +235,30 @@
     "category": "Cuidados Gerais"
   },
   {
+    "title": "Troca de Bolsa de Colostomia",
+    "icon": "Shield",
+    "color": "text-lime-500",
+    "openColor": "text-lime-600",
+    "description": "Procedimento para higienização do estoma e substituição do dispositivo (bolsa) coletor de efluentes intestinais.",
+    "materials": [
+      "Luvas de procedimento", "Bolsa de colostomia nova e placa protetora", "Gaze ou compressas macias", "Água morna e sabão neutro", "Tesoura de ponta romba", "Medidor de estoma", "Pasta ou pó para pele periestomal (se necessário)", "Saco para descarte"
+    ],
+    "steps": [
+      "Explicar o procedimento ao paciente e promover privacidade.",
+      "Realizar a higiene das mãos e calçar luvas de procedimento.",
+      "Remover suavemente a bolsa e a placa usadas, de cima para baixo, apoiando a pele.",
+      "Limpar a pele periestomal e o estoma com gaze umedecida em água morna e sabão neutro. Não esfregar o estoma.",
+      "Secar bem a pele ao redor do estoma com toques suaves, sem friccionar.",
+      "<strong>Medir o estoma e recortar a nova placa protetora com uma folga de 2-3 mm ao redor do estoma.</strong>",
+      "Aplicar pasta ou pó, se necessário, para nivelar a pele. Aquecer a placa adesiva com as mãos para melhorar a aderência.",
+      "Centralizar e aplicar a nova placa, pressionando suavemente do centro para as bordas por 1-2 minutos para garantir a vedação.",
+      "Encaixar a nova bolsa na placa (se sistema de 2 peças) e garantir que o sistema de fechamento (clamp ou velcro) esteja fechado.",
+      "Descartar os materiais, remover as luvas, higienizar as mãos e registrar o procedimento e o aspecto do estoma/pele."
+    ],
+    "observations": "A troca deve ser realizada quando a bolsa estiver com 1/3 a 1/2 de sua capacidade. Avaliar o estoma a cada troca: deve estar vermelho vivo, úmido e indolor. Sinais de alerta: alteração na cor (pálido, roxo, preto), sangramento excessivo, retração ou prolapso do estoma, irritação da pele.",
+    "category": "Cuidados Gerais"
+  },
+  {
     "title": "Transfusão Sanguínea",
     "icon": "HeartPulse",
     "color": "text-red-600",
