@@ -34,10 +34,6 @@ serve(async (req: Request) => {
     return new Response('ok', { headers: corsHeaders });
   }
 
-  // **PASSO DE DIAGNÓSTICO: Registrar todos os cabeçalhos recebidos**
-  const headersObj = Object.fromEntries(req.headers.entries());
-  console.log("Received headers:", JSON.stringify(headersObj, null, 2));
-
   const supabaseAdmin = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
@@ -61,8 +57,12 @@ serve(async (req: Request) => {
       throw new Error("KIWIFY_WEBHOOK_SECRET is not set in Supabase secrets.");
     }
 
-    const signature = req.headers.get('x-kiwify-signature'); // Tentando com minúsculas
+    // Verificação mais robusta para o cabeçalho de assinatura, tentando diferentes capitalizações.
+    const signature = req.headers.get('x-kiwify-signature') || req.headers.get('X-Kiwify-Signature');
+    
     if (!signature) {
+      const headersObj = Object.fromEntries(req.headers.entries());
+      console.log("Signature header missing. Received headers:", JSON.stringify(headersObj, null, 2));
       throw new Error("X-Kiwify-Signature header is missing.");
     }
 
