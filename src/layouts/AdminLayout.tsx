@@ -28,7 +28,6 @@ const AdminLayout = () => {
   const [session, setSession] = useState<any>(null);
   const [loadingSession, setLoadingSession] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
 
   useState(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -74,9 +73,6 @@ const AdminLayout = () => {
       <Sidebar 
         isAdmin={true} 
         user={user} 
-        isCollapsed={isSidebarCollapsed} 
-        onMouseEnter={() => setIsSidebarCollapsed(false)}
-        onMouseLeave={() => setIsSidebarCollapsed(true)}
       />
       <div className="flex flex-1 flex-col">
         <Header onSearchClick={() => setIsSearchOpen(true)} isAdmin={true} user={user} />

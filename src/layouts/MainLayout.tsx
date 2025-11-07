@@ -19,7 +19,6 @@ const ContentLoader = () => (
 const MainLayout = () => {
   const { session } = useAuth();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
 
   const { data: profile, isLoading: isLoadingProfile } = useProfile(session);
 
@@ -35,9 +34,6 @@ const MainLayout = () => {
       <Sidebar 
         isAdmin={isAdmin} 
         user={user} 
-        isCollapsed={isSidebarCollapsed} 
-        onMouseEnter={() => setIsSidebarCollapsed(false)}
-        onMouseLeave={() => setIsSidebarCollapsed(true)}
       />
       <main className="flex-1 flex flex-col">
         <Header onSearchClick={() => setIsSearchOpen(true)} isAdmin={isAdmin} user={user} />

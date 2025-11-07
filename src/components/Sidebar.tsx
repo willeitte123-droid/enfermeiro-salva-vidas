@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   LogOut, Sun, Moon, Stethoscope
@@ -19,18 +20,16 @@ interface SidebarProps {
     last_name?: string;
     avatar_url?: string;
   } | null;
-  isCollapsed?: boolean;
   isMobile?: boolean;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
 }
 
-const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, isMobile = false, onMouseEnter, onMouseLeave }: SidebarProps) => {
+const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
   const { themeSettings } = useThemeCustomization();
-  
-  const isCollapsed = isMobile ? false : isCollapsedProp;
+  const [isHovered, setIsHovered] = useState(false);
+
+  const isCollapsed = isMobile ? false : !isHovered;
 
   const getInitials = () => {
     const firstName = user?.first_name?.[0] || '';
@@ -72,8 +71,8 @@ const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, isMobile
         isMobile ? "h-full" : "hidden md:flex border-r border-border/10 relative",
         isCollapsed ? "w-20" : "w-64"
       )}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onMouseEnter={() => !isMobile && setIsHovered(true)}
+      onMouseLeave={() => !isMobile && setIsHovered(false)}
     >
       <div className="flex h-16 items-center border-b border-border/10 px-6">
         <div className="flex items-center gap-3">
