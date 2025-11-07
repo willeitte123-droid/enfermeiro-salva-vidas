@@ -28,7 +28,7 @@ const AdminLayout = () => {
   const [session, setSession] = useState<any>(null);
   const [loadingSession, setLoadingSession] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
 
   useState(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -63,10 +63,6 @@ const AdminLayout = () => {
     return <Navigate to="/" replace />;
   }
 
-  const toggleSidebar = () => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
-  };
-
   const user = profile ? { 
     first_name: profile.first_name, 
     last_name: profile.last_name,
@@ -75,7 +71,13 @@ const AdminLayout = () => {
 
   return (
     <div className="flex min-h-screen w-full bg-muted/40">
-      <Sidebar isAdmin={true} user={user} isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
+      <Sidebar 
+        isAdmin={true} 
+        user={user} 
+        isCollapsed={isSidebarCollapsed} 
+        onMouseEnter={() => setIsSidebarCollapsed(false)}
+        onMouseLeave={() => setIsSidebarCollapsed(true)}
+      />
       <div className="flex flex-1 flex-col">
         <Header onSearchClick={() => setIsSearchOpen(true)} isAdmin={true} user={user} />
         <GlobalSearch open={isSearchOpen} setOpen={setIsSearchOpen} />

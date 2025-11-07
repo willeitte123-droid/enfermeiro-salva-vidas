@@ -1,6 +1,6 @@
 import { useNavigate, Link } from "react-router-dom";
 import {
-  LogOut, Sun, Moon, ChevronsLeft, ChevronsRight, Stethoscope
+  LogOut, Sun, Moon, Stethoscope
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -20,11 +20,12 @@ interface SidebarProps {
     avatar_url?: string;
   } | null;
   isCollapsed?: boolean;
-  onToggle?: () => void;
   isMobile?: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
-const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, onToggle, isMobile = false }: SidebarProps) => {
+const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, isMobile = false, onMouseEnter, onMouseLeave }: SidebarProps) => {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
   const { themeSettings } = useThemeCustomization();
@@ -66,25 +67,15 @@ const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, onToggle
   );
 
   return (
-    <aside className={cn(
-      "flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300",
-      isMobile ? "h-full" : "hidden md:flex border-r border-border/10 relative",
-      isCollapsed ? "w-20" : "w-64"
-    )}>
-      {!isMobile && onToggle && (
-        <Button
-          variant="primary"
-          size="icon"
-          className={cn(
-            "absolute -right-5 top-16 z-10 h-10 w-10 rounded-full shadow-lg",
-            !isCollapsed && "animate-pulse-subtle"
-          )}
-          onClick={onToggle}
-        >
-          {isCollapsed ? <ChevronsRight className="h-5 w-5" /> : <ChevronsLeft className="h-5 w-5" />}
-        </Button>
+    <aside 
+      className={cn(
+        "flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300",
+        isMobile ? "h-full" : "hidden md:flex border-r border-border/10 relative",
+        isCollapsed ? "w-20" : "w-64"
       )}
-
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div className="flex h-16 items-center border-b border-border/10 px-6">
         <div className="flex items-center gap-3">
           {themeSettings.logo_url && themeSettings.logo_url !== '/logo.svg' ? (
