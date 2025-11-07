@@ -28,6 +28,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
   const { setTheme } = useTheme();
   const { themeSettings } = useThemeCustomization();
   const [isHovered, setIsHovered] = useState(false);
+  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
 
   const isCollapsed = isMobile ? false : !isHovered;
 
@@ -72,7 +73,11 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
         isCollapsed ? "w-20" : "w-64"
       )}
       onMouseEnter={() => !isMobile && setIsHovered(true)}
-      onMouseLeave={() => !isMobile && setIsHovered(false)}
+      onMouseLeave={() => {
+        if (!isMobile && !isThemeMenuOpen) {
+          setIsHovered(false);
+        }
+      }}
     >
       <div className="flex h-16 items-center border-b border-border/10 px-6">
         <div className="flex items-center gap-3">
@@ -88,7 +93,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
         <SidebarNav isAdmin={isAdmin} isCollapsed={isCollapsed} isMobile={isMobile} />
       </div>
       <div className="mt-auto border-t border-border/10 p-4 space-y-2">
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={setIsThemeMenuOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className={cn("w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-sidebar-hover hover:text-white", isCollapsed && "justify-center")}>
               <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 flex-shrink-0" />
