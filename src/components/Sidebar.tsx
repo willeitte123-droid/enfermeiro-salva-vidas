@@ -30,7 +30,6 @@ const Sidebar = ({ isAdmin, user, isCollapsed: isCollapsedProp = false, isMobile
   const { setTheme } = useTheme();
   const { themeSettings } = useThemeCustomization();
   
-  // Garante que o menu nunca esteja no estado "colapsado" em dispositivos móveis.
   const isCollapsed = isMobile ? false : isCollapsedProp;
 
   const getInitials = () => {
