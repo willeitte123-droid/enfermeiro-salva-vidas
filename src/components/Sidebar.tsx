@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   LogOut, Sun, Moon, Stethoscope
@@ -28,10 +28,9 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
   const { setTheme } = useTheme();
   const { themeSettings } = useThemeCustomization();
   const [isHovered, setIsHovered] = useState(false);
-  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
-  const sidebarRef = useRef<HTMLElement>(null);
+  const [isLockedOpen, setIsLockedOpen] = useState(false);
 
-  const isCollapsed = isMobile ? false : !isHovered;
+  const isCollapsed = isMobile ? false : !(isHovered || isLockedOpen);
 
   const getInitials = () => {
     const firstName = user?.first_name?.[0] || '';
@@ -68,18 +67,13 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
 
   return (
     <aside 
-      ref={sidebarRef}
       className={cn(
         "flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300",
         isMobile ? "h-full" : "hidden md:flex border-r border-border/10 relative",
         isCollapsed ? "w-20" : "w-64"
       )}
       onMouseEnter={() => !isMobile && setIsHovered(true)}
-      onMouseLeave={() => {
-        if (!isMobile && !isThemeMenuOpen) {
-          setIsHovered(false);
-        }
-      }}
+      onMouseLeave={() => !isMobile && setIsHovered(false)}
     >
       <div className="flex h-16 items-center border-b border-border/10 px-6">
         <div className="flex items-center gap-3">
@@ -95,12 +89,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
         <SidebarNav isAdmin={isAdmin} isCollapsed={isCollapsed} isMobile={isMobile} />
       </div>
       <div className="mt-auto border-t border-border/10 p-4 space-y-2">
-        <DropdownMenu onOpenChange={(isOpen) => {
-          setIsThemeMenuOpen(isOpen);
-          if (!isOpen && sidebarRef.current && !sidebarRef.current.matches(':hover')) {
-            setIsHovered(false);
-          }
-        }}>
+        <DropdownMenu onOpenChange={setIsLockedOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className={cn("w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-sidebar-hover hover:text-white", isCollapsed && "justify-center")}>
               <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 flex-shrink-0" />
