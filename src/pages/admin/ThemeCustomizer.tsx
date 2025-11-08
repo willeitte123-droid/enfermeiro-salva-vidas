@@ -11,6 +11,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Upload, Trash2, Palette, RefreshCw } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useOutletContext } from "react-router-dom";
+
+interface Profile {
+  id: string;
+  role: 'admin' | 'user';
+}
 
 // Helper Functions
 const hexToHsl = (hex: string): string => {
@@ -93,6 +99,7 @@ const ColorPickerInput = ({ control, name, label }: { control: any, name: string
 );
 
 const ThemeCustomizer = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const queryClient = useQueryClient();
   const { data: themeSettings, isLoading } = useQuery({ queryKey: ['themeSettingsAdmin'], queryFn: fetchThemeSettings });
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -183,13 +190,15 @@ const ThemeCustomizer = () => {
       </div>
 
       <Card><CardHeader><CardTitle>Logo e Fonte</CardTitle></CardHeader><CardContent className="space-y-4">
-        <div><Label>Logo</Label><div className="flex items-center gap-4 mt-2">
-          <Avatar className="h-16 w-16 rounded-md"><AvatarImage src={logoPreview || logoUrl} className="object-contain" /><AvatarFallback className="rounded-md">Logo</AvatarFallback></Avatar>
-          <div className="flex-1 space-y-2">
-            <Button asChild variant="outline"><label htmlFor="logo-upload"><Upload className="mr-2 h-4 w-4" />Alterar Logo<Input id="logo-upload" type="file" accept="image/*" onChange={handleLogoChange} className="hidden" /></label></Button>
-            {(logoPreview || (logoUrl && logoUrl !== defaultSettings.logo_url)) && <Button variant="destructive" size="sm" onClick={() => { setLogoFile(null); setLogoPreview(null); reset({ ...watch(), logo_url: defaultSettings.logo_url }); }}><Trash2 className="mr-2 h-4 w-4" />Remover</Button>}
-          </div>
-        </div></div>
+        {profile?.role === 'admin' && (
+          <div><Label>Logo</Label><div className="flex items-center gap-4 mt-2">
+            <Avatar className="h-16 w-16 rounded-md"><AvatarImage src={logoPreview || logoUrl} className="object-contain" /><AvatarFallback className="rounded-md">Logo</AvatarFallback></Avatar>
+            <div className="flex-1 space-y-2">
+              <Button asChild variant="outline"><label htmlFor="logo-upload"><Upload className="mr-2 h-4 w-4" />Alterar Logo<Input id="logo-upload" type="file" accept="image/*" onChange={handleLogoChange} className="hidden" /></label></Button>
+              {(logoPreview || (logoUrl && logoUrl !== defaultSettings.logo_url)) && <Button variant="destructive" size="sm" onClick={() => { setLogoFile(null); setLogoPreview(null); reset({ ...watch(), logo_url: defaultSettings.logo_url }); }}><Trash2 className="mr-2 h-4 w-4" />Remover</Button>}
+            </div>
+          </div></div>
+        )}
         <div><Label>Fonte Principal</Label><Controller control={control} name="font_family" render={({ field }) => (
           <Select onValueChange={field.onChange} value={field.value}>
             <SelectTrigger><SelectValue /></SelectTrigger>
