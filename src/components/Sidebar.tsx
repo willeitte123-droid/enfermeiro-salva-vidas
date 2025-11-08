@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   LogOut, Sun, Moon, Stethoscope
@@ -29,6 +29,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
   const { themeSettings } = useThemeCustomization();
   const [isHovered, setIsHovered] = useState(false);
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
 
   const isCollapsed = isMobile ? false : !isHovered;
 
@@ -67,6 +68,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
 
   return (
     <aside 
+      ref={sidebarRef}
       className={cn(
         "flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300",
         isMobile ? "h-full" : "hidden md:flex border-r border-border/10 relative",
@@ -93,7 +95,12 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
         <SidebarNav isAdmin={isAdmin} isCollapsed={isCollapsed} isMobile={isMobile} />
       </div>
       <div className="mt-auto border-t border-border/10 p-4 space-y-2">
-        <DropdownMenu onOpenChange={setIsThemeMenuOpen}>
+        <DropdownMenu onOpenChange={(isOpen) => {
+          setIsThemeMenuOpen(isOpen);
+          if (!isOpen && sidebarRef.current && !sidebarRef.current.matches(':hover')) {
+            setIsHovered(false);
+          }
+        }}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className={cn("w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-sidebar-hover hover:text-white", isCollapsed && "justify-center")}>
               <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 flex-shrink-0" />
