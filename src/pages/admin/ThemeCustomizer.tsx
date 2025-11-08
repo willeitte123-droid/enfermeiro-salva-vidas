@@ -142,8 +142,12 @@ const ThemeCustomizer = () => {
       toast.error("Erro no upload da logo", { description: uploadError.message });
       return;
     }
-    const { data } = supabase.storage.from('theme').getPublicUrl(filePath);
-    const newLogoUrl = data.publicUrl;
+    const { data: urlData } = supabase.storage.from('theme').getPublicUrl(filePath);
+    if (!urlData?.publicUrl) {
+      toast.error("Erro ao obter URL da logo", { description: "Não foi possível gerar o link público para a imagem." });
+      return;
+    }
+    const newLogoUrl = urlData.publicUrl;
     const newSettings = { ...themeSettings, logo_url: newLogoUrl };
     updateSettingsMutation.mutate(newSettings, {
       onSuccess: () => {
@@ -155,7 +159,7 @@ const ThemeCustomizer = () => {
     });
   };
 
-  const handleRemoveLogo = async () => {
+  const handleRemoveLogo = () => {
     const newSettings = { ...themeSettings, logo_url: defaultSettings.logo_url };
     updateSettingsMutation.mutate(newSettings, {
       onSuccess: () => {
