@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Upload, Trash2, Palette, RefreshCw } from "lucide-react";
+import { Loader2, Upload, Trash2, Palette, RefreshCw, Save } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useOutletContext } from "react-router-dom";
 
@@ -105,7 +105,7 @@ const ThemeCustomizer = () => {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
-  const { control, handleSubmit, reset, watch } = useForm();
+  const { control, handleSubmit, reset, watch, setValue } = useForm();
   const logoUrl = watch('logo_url');
 
   useEffect(() => {
@@ -122,38 +122,66 @@ const ThemeCustomizer = () => {
     }
   }, [themeSettings, reset]);
 
-  const mutation = useMutation({
-    mutationFn: async (formData: any) => {
-      let newLogoUrl = formData.logo_url;
-      if (logoFile) {
-        const filePath = `public/logo-${Date.now()}`;
-        const { error: uploadError } = await supabase.storage.from('theme').upload(filePath, logoFile, { upsert: true });
-        if (uploadError) throw uploadError;
-        const { data } = supabase.storage.from('theme').getPublicUrl(filePath);
-        newLogoUrl = data.publicUrl;
-      }
-
-      const settingsToSave: { [key: string]: any } = {
-        logo_url: newLogoUrl,
-        font_family: formData.font_family,
-      };
-      [...colorFields, ...sidebarColorFields].forEach(({ id }) => {
-        settingsToSave[`--${id}`] = hexToHsl(formData[`--${id}`]);
-        settingsToSave[`--dark-${id}`] = hexToHsl(formData[`--dark-${id}`]);
-      });
-
+  const updateSettingsMutation = useMutation({
+    mutationFn: async (settingsToSave: any) => {
       const { error } = await supabase.from('app_theme').update({ settings: settingsToSave }).eq('id', 1);
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success("Tema salvo com sucesso!");
       queryClient.invalidateQueries({ queryKey: ['themeSettings'] });
       queryClient.invalidateQueries({ queryKey: ['themeSettingsAdmin'] });
-      setLogoFile(null);
-      setLogoPreview(null);
     },
-    onError: (error: any) => toast.error("Erro ao salvar tema", { description: error.message }),
+    onError: (error: any) => toast.error("Erro ao salvar", { description: error.message }),
   });
+
+  const handleSaveLogo = async () => {
+    if (!logoFile) return;
+    const filePath = `public/logo-${Date.now()}`;
+    const { error: uploadError } = await supabase.storage.from('theme').upload(filePath, logoFile, { upsert: true });
+    if (uploadError) {
+      toast.error("Erro no upload da logo", { description: uploadError.message });
+      return;
+    }
+    const { data } = supabase.storage.from('theme').getPublicUrl(filePath);
+    const newLogoUrl = data.publicUrl;
+    const newSettings = { ...themeSettings, logo_url: newLogoUrl };
+    updateSettingsMutation.mutate(newSettings, {
+      onSuccess: () => {
+        toast.success("Logo salva com sucesso!");
+        setLogoFile(null);
+        setLogoPreview(null);
+        setValue('logo_url', newLogoUrl);
+      }
+    });
+  };
+
+  const handleRemoveLogo = async () => {
+    const newSettings = { ...themeSettings, logo_url: defaultSettings.logo_url };
+    updateSettingsMutation.mutate(newSettings, {
+      onSuccess: () => {
+        toast.success("Logo removida com sucesso.");
+        setLogoFile(null);
+        setLogoPreview(null);
+        setValue('logo_url', defaultSettings.logo_url);
+      }
+    });
+  };
+
+  const handleSaveTheme = (formData: any) => {
+    const settingsToSave: { [key: string]: any } = {
+      logo_url: formData.logo_url,
+      font_family: formData.font_family,
+    };
+    [...colorFields, ...sidebarColorFields].forEach(({ id }) => {
+      settingsToSave[`--${id}`] = hexToHsl(formData[`--${id}`]);
+      settingsToSave[`--dark-${id}`] = hexToHsl(formData[`--dark-${id}`]);
+    });
+    updateSettingsMutation.mutate(settingsToSave, {
+      onSuccess: () => {
+        toast.success("Tema salvo com sucesso!");
+      }
+    });
+  };
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -164,20 +192,17 @@ const ThemeCustomizer = () => {
   };
 
   const handleReset = async () => {
-    const { error } = await supabase.from('app_theme').update({ settings: defaultSettings }).eq('id', 1);
-    if (error) {
-      toast.error("Erro ao resetar tema", { description: error.message });
-    } else {
-      toast.success("Tema restaurado para o padrão.");
-      queryClient.invalidateQueries({ queryKey: ['themeSettings'] });
-      queryClient.invalidateQueries({ queryKey: ['themeSettingsAdmin'] });
-    }
+    updateSettingsMutation.mutate(defaultSettings, {
+      onSuccess: () => {
+        toast.success("Tema restaurado para o padrão.");
+      }
+    });
   };
 
   if (isLoading) return <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin" /></div>;
 
   return (
-    <form onSubmit={handleSubmit(data => mutation.mutate(data))} className="space-y-6">
+    <form onSubmit={handleSubmit(handleSaveTheme)} className="space-y-6">
       <div className="flex justify-between items-center">
         <div className="text-center sm:text-left">
           <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Personalização da Aparência</h1>
@@ -185,7 +210,7 @@ const ThemeCustomizer = () => {
         </div>
         <div className="flex gap-2">
           <Button type="button" variant="outline" onClick={handleReset}><RefreshCw className="h-4 w-4 mr-2" />Restaurar Padrão</Button>
-          <Button type="submit" disabled={mutation.isPending}>{mutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Palette className="h-4 w-4 mr-2" />}Salvar Tema</Button>
+          <Button type="submit" disabled={updateSettingsMutation.isPending}>{updateSettingsMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Palette className="h-4 w-4 mr-2" />}Salvar Tema</Button>
         </div>
       </div>
 
@@ -193,9 +218,10 @@ const ThemeCustomizer = () => {
         {profile?.role === 'admin' && (
           <div><Label>Logo</Label><div className="flex items-center gap-4 mt-2">
             <Avatar className="h-16 w-16 rounded-md"><AvatarImage src={logoPreview || logoUrl} className="object-contain" /><AvatarFallback className="rounded-md">Logo</AvatarFallback></Avatar>
-            <div className="flex-1 space-y-2">
-              <Button asChild variant="outline"><label htmlFor="logo-upload"><Upload className="mr-2 h-4 w-4" />Alterar Logo<Input id="logo-upload" type="file" accept="image/*" onChange={handleLogoChange} className="hidden" /></label></Button>
-              {(logoPreview || (logoUrl && logoUrl !== defaultSettings.logo_url)) && <Button variant="destructive" size="sm" onClick={() => { setLogoFile(null); setLogoPreview(null); reset({ ...watch(), logo_url: defaultSettings.logo_url }); }}><Trash2 className="mr-2 h-4 w-4" />Remover</Button>}
+            <div className="flex-1 flex items-center gap-2">
+              <Button asChild variant="outline"><label htmlFor="logo-upload"><Upload className="mr-2 h-4 w-4" />Alterar<Input id="logo-upload" type="file" accept="image/*" onChange={handleLogoChange} className="hidden" /></label></Button>
+              {logoFile && <Button type="button" size="sm" onClick={handleSaveLogo} disabled={updateSettingsMutation.isPending}>{updateSettingsMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}Salvar Logo</Button>}
+              {(logoPreview || (logoUrl && logoUrl !== defaultSettings.logo_url)) && <Button type="button" variant="destructive" size="sm" onClick={handleRemoveLogo} disabled={updateSettingsMutation.isPending}><Trash2 className="mr-2 h-4 w-4" />Remover</Button>}
             </div>
           </div></div>
         )}
