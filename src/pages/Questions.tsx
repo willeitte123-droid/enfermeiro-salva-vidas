@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, Loader2, Lightbulb, Award, RefreshCw, MessageSquare, Smile, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Lightbulb, RefreshCw, MessageSquare, Smile, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import EmojiPicker from "emoji-picker-react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Question } from "@/context/QuestionsContext";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { shuffleQuestionOptions } from "@/lib/utils";
@@ -61,6 +61,7 @@ const Questions = () => {
   const questionId = searchParams.get('id');
 
   const [selectedCategory, setSelectedCategory] = useState("Todas");
+  const [answerStatusFilter, setAnswerStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(0);
   
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
@@ -96,7 +97,7 @@ const Questions = () => {
   });
 
   const { data, isLoading, isFetching, error } = useQuery({
-    queryKey: ['questions', selectedCategory, currentPage, questionId],
+    queryKey: ['questions', selectedCategory, answerStatusFilter, currentPage, questionId],
     queryFn: async () => {
       if (questionId) {
         const { data, error } = await supabase.from('questions').select('*').eq('id', questionId).single();
@@ -112,6 +113,34 @@ const Questions = () => {
       if (selectedCategory !== "Todas") {
         query = query.eq('category', selectedCategory);
       }
+
+      if (profile && answerStatusFilter !== 'all') {
+        const answeredQuery = supabase
+          .from('user_question_answers')
+          .select('question_id, is_correct')
+          .eq('user_id', profile.id);
+        
+        const { data: answeredData, error: answeredError } = await answeredQuery;
+        if (answeredError) throw answeredError;
+
+        if (answerStatusFilter === 'unanswered') {
+          const answeredIds = answeredData.map(a => a.question_id);
+          if (answeredIds.length > 0) {
+            query = query.not('id', 'in', `(${answeredIds.join(',')})`);
+          }
+        } else {
+          const isCorrect = answerStatusFilter === 'correct';
+          const relevantIds = answeredData
+            .filter(a => a.is_correct === isCorrect)
+            .map(a => a.question_id);
+          
+          if (relevantIds.length === 0) {
+            return { questions: [], count: 0 };
+          }
+          query = query.in('id', relevantIds);
+        }
+      }
+
       query = query.range(from, to);
 
       const { data, error, count } = await query;
@@ -134,7 +163,11 @@ const Questions = () => {
     setAnsweredCorrectly(null);
     setIsCommentsOpen(false);
     setComments([]);
-  }, [currentPage, selectedCategory, currentQuestion]);
+  }, [currentPage, selectedCategory, answerStatusFilter, currentQuestion]);
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [selectedCategory, answerStatusFilter]);
 
   const fetchComments = async (questionId: number) => {
     setIsCommentsLoading(true);
@@ -208,6 +241,15 @@ const Questions = () => {
     setCommentToDelete(null);
   };
 
+  const getNoQuestionsMessage = () => {
+    switch (answerStatusFilter) {
+      case 'unanswered': return 'Você respondeu todas as questões nesta categoria!';
+      case 'correct': return 'Nenhuma questão acertada encontrada para esta categoria.';
+      case 'incorrect': return 'Nenhuma questão errada encontrada. Parabéns!';
+      default: return 'Nenhuma questão encontrada para a categoria selecionada.';
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -222,18 +264,34 @@ const Questions = () => {
         <p className="text-muted-foreground">Afie seu raciocínio clínico. Desafie-se com questões de concurso e residência.</p>
       </div>
       {!isSingleQuestionMode && (
-        <div className="space-y-2">
-          <Label htmlFor="category-filter">Filtrar por Categoria</Label>
-          <Select value={selectedCategory} onValueChange={(value) => { setSelectedCategory(value); setCurrentPage(0); }}>
-            <SelectTrigger id="category-filter" className="w-full md:w-[300px]"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger>
-            <SelectContent>{isLoadingCategories ? <div className="p-2"><Loader2 className="h-4 w-4 animate-spin"/></div> : categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent>
-          </Select>
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="space-y-2 flex-1">
+            <Label htmlFor="category-filter">Filtrar por Categoria</Label>
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger id="category-filter"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger>
+              <SelectContent>{isLoadingCategories ? <div className="p-2"><Loader2 className="h-4 w-4 animate-spin"/></div> : categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent>
+            </Select>
+          </div>
+          {profile && (
+            <div className="space-y-2 flex-1">
+              <Label htmlFor="status-filter">Filtrar por Status</Label>
+              <Select value={answerStatusFilter} onValueChange={setAnswerStatusFilter}>
+                <SelectTrigger id="status-filter"><SelectValue placeholder="Selecione um status" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas as Questões</SelectItem>
+                  <SelectItem value="unanswered">Não Resolvidas</SelectItem>
+                  <SelectItem value="correct">Acertos</SelectItem>
+                  <SelectItem value="incorrect">Erros</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
         </div>
       )}
 
       {isLoading ? <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando...</span></div> :
        error ? <Alert variant="destructive"><XCircle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{(error as Error).message}</AlertDescription></Alert> :
-       !currentQuestion ? <Card><CardContent className="py-12 text-center text-muted-foreground">Nenhuma questão encontrada para a categoria selecionada.</CardContent></Card> :
+       !currentQuestion ? <Card><CardContent className="py-12 text-center text-muted-foreground">{getNoQuestionsMessage()}</CardContent></Card> :
       (
         <Card>
           <CardHeader>
