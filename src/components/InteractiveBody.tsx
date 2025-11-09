@@ -11,25 +11,33 @@ const interactiveParts = [
   { id: 'torsoBack', name: 'Tronco Posterior (18%)', percentage: '18%', paths: [
     "M 125,50 L 155,50 L 160,110 L 120,110 Z"
   ], labelPositions: [{ x: 140, y: 80 }] },
-  { id: 'leftArm', name: 'Braço Esquerdo (9%)', percentage: '9%', paths: [
-    "M 45,52 L 30,60 L 25,105 L 40,108 Z",
+  { id: 'leftArmFront', name: 'Braço Esq. Anterior (4.5%)', percentage: '4.5%', paths: [
+    "M 45,52 L 30,60 L 25,105 L 40,108 Z"
+  ], labelPositions: [{ x: 33, y: 85 }] },
+  { id: 'leftArmBack', name: 'Braço Esq. Posterior (4.5%)', percentage: '4.5%', paths: [
     "M 125,52 L 110,60 L 105,105 L 120,108 Z"
-  ], labelPositions: [{ x: 33, y: 85 }, { x: 117, y: 85 }] },
-  { id: 'rightArm', name: 'Braço Direito (9%)', percentage: '9%', paths: [
-    "M 75,52 L 90,60 L 95,105 L 80,108 Z",
+  ], labelPositions: [{ x: 117, y: 85 }] },
+  { id: 'rightArmFront', name: 'Braço Dir. Anterior (4.5%)', percentage: '4.5%', paths: [
+    "M 75,52 L 90,60 L 95,105 L 80,108 Z"
+  ], labelPositions: [{ x: 87, y: 85 }] },
+  { id: 'rightArmBack', name: 'Braço Dir. Posterior (4.5%)', percentage: '4.5%', paths: [
     "M 155,52 L 170,60 L 175,105 L 160,108 Z"
-  ], labelPositions: [{ x: 87, y: 85 }, { x: 163, y: 85 }] },
+  ], labelPositions: [{ x: 163, y: 85 }] },
   { id: 'genitalia', name: 'Genitália (1%)', percentage: '1%', paths: [
     "M 57,110 L 63,110 L 60,120 Z"
   ], labelPositions: [{ x: 60, y: 115 }] },
-  { id: 'leftLeg', name: 'Perna Esquerda (18%)', percentage: '18%', paths: [
-    "M 40,112 L 58,112 L 55,200 L 35,200 Z",
+  { id: 'leftLegFront', name: 'Perna Esq. Anterior (9%)', percentage: '9%', paths: [
+    "M 40,112 L 58,112 L 55,200 L 35,200 Z"
+  ], labelPositions: [{ x: 48, y: 160 }] },
+  { id: 'leftLegBack', name: 'Perna Esq. Posterior (9%)', percentage: '9%', paths: [
     "M 120,112 L 138,112 L 135,200 L 115,200 Z"
-  ], labelPositions: [{ x: 48, y: 160 }, { x: 128, y: 160 }] },
-  { id: 'rightLeg', name: 'Perna Direita (18%)', percentage: '18%', paths: [
-    "M 62,112 L 80,112 L 85,200 L 65,200 Z",
+  ], labelPositions: [{ x: 128, y: 160 }] },
+  { id: 'rightLegFront', name: 'Perna Dir. Anterior (9%)', percentage: '9%', paths: [
+    "M 62,112 L 80,112 L 85,200 L 65,200 Z"
+  ], labelPositions: [{ x: 72, y: 160 }] },
+  { id: 'rightLegBack', name: 'Perna Dir. Posterior (9%)', percentage: '9%', paths: [
     "M 142,112 L 160,112 L 165,200 L 145,200 Z"
-  ], labelPositions: [{ x: 72, y: 160 }, { x: 152, y: 160 }] },
+  ], labelPositions: [{ x: 152, y: 160 }] },
 ];
 
 interface InteractiveBodyProps {

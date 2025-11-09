@@ -17,11 +17,15 @@ const bodyPartValues: Record<string, number> = {
     head: 9,
     torsoFront: 18,
     torsoBack: 18,
-    leftArm: 9,
-    rightArm: 9,
+    leftArmFront: 4.5,
+    leftArmBack: 4.5,
+    rightArmFront: 4.5,
+    rightArmBack: 4.5,
     genitalia: 1,
-    leftLeg: 18,
-    rightLeg: 18,
+    leftLegFront: 9,
+    leftLegBack: 9,
+    rightLegFront: 9,
+    rightLegBack: 9,
 };
 
 const ParklandScale = () => {
