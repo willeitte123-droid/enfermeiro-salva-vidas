@@ -25,6 +25,7 @@ import EmojiPicker from "emoji-picker-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Question } from "@/context/QuestionsContext";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { shuffleQuestionOptions } from "@/lib/utils";
 
 interface Profile {
   id: string;
@@ -100,7 +101,8 @@ const Questions = () => {
       if (questionId) {
         const { data, error } = await supabase.from('questions').select('*').eq('id', questionId).single();
         if (error) throw error;
-        return { questions: data ? [data] : [], count: data ? 1 : 0 };
+        const shuffledQuestion = data ? shuffleQuestionOptions(data as Question) : null;
+        return { questions: shuffledQuestion ? [shuffledQuestion] : [], count: data ? 1 : 0 };
       }
 
       const from = currentPage * QUESTIONS_PER_PAGE;
@@ -114,7 +116,9 @@ const Questions = () => {
 
       const { data, error, count } = await query;
       if (error) throw error;
-      return { questions: data as Question[], count };
+      
+      const shuffledQuestions = (data as Question[]).map(shuffleQuestionOptions);
+      return { questions: shuffledQuestions, count };
     },
     keepPreviousData: !questionId,
   });

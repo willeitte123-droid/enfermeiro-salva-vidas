@@ -9,6 +9,7 @@ import * as ProgressPrimitive from "@radix-ui/react-progress";
 import { Question } from "@/context/QuestionsContext";
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
+import { shuffleQuestionOptions } from "@/lib/utils";
 
 interface UserAnswer {
   questionId: number;
@@ -26,7 +27,8 @@ const fetchSimuladoQuestions = async (numQuestions: number) => {
   if (error) {
     throw new Error(error.message);
   }
-  return data as Question[];
+  // Embaralha as opções de cada questão
+  return (data as Question[]).map(shuffleQuestionOptions);
 };
 
 const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) => {
