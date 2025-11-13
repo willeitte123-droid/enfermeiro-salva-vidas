@@ -1,4 +1,4 @@
-const CACHE_NAME = 'enfermagem-pro-cache-v2';
+const CACHE_NAME = 'enfermagem-pro-cache-v3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -18,30 +18,6 @@ self.addEventListener('install', (event) => {
   );
 });
 
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request).then(
-          (response) => {
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-            return response;
-          }
-        );
-      })
-  );
-});
-
 self.addEventListener('activate', (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -49,10 +25,31 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
+            console.log('Deletando cache antigo:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
+    })
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  // Estratégia: Network falling back to cache
+  event.respondWith(
+    caches.open(CACHE_NAME).then((cache) => {
+      return fetch(event.request)
+        .then((response) => {
+          // Se a resposta da rede for bem-sucedida, atualizamos o cache
+          if (response && response.status === 200) {
+            cache.put(event.request, response.clone());
+          }
+          return response;
+        })
+        .catch(() => {
+          // Se a rede falhar, tentamos servir do cache
+          return cache.match(event.request);
+        });
     })
   );
 });
