@@ -1,0 +1,23 @@
+{
+  "name": "Enfermagem Pro",
+  "short_name": "EnfermagemPro",
+  "description": "Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1c75e7",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

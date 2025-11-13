@@ -109,8 +109,8 @@ const Medications = () => {
                         </div>
                       </div>
                     </AccordionTrigger>
-                    <div className="flex items-center pl-4">
-                      <Badge className="flex-shrink-0 bg-green-600 text-white hover:bg-green-700">{medication.category}</Badge>
+                    <div className="flex items-center pl-2 sm:pl-4">
+                      <Badge className="bg-green-600 text-white hover:bg-green-700 text-right whitespace-normal">{medication.category}</Badge>
                       {profile && (
                         <FavoriteButton
                           userId={profile.id}
