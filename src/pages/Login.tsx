@@ -130,7 +130,7 @@ const Login = () => {
         </AlertDialogContent>
 
         <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground p-6 text-center shadow-md">
-          <img src="/logo.svg" alt="Enfermagem Pro Logo" className="h-20 w-20 mb-4" />
+          <img src="/logo.png" alt="Enfermagem Pro Logo" className="h-20 w-20 mb-4" />
           <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
           <p className="mt-4 text-base font-medium text-primary-foreground max-w-lg">
             Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
