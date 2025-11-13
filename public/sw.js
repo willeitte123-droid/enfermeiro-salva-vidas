@@ -1,4 +1,4 @@
-const CACHE_NAME = 'enfermagem-pro-cache-v1';
+const CACHE_NAME = 'enfermagem-pro-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
