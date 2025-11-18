@@ -3,7 +3,7 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook, Palette, BookText
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Webhook, Palette, BookText, BookA
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -49,6 +49,7 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
       { to: "/semiotechnique", icon: HandHeart, label: "Semiotécnica" },
       { to: "/ecg", icon: BookHeart, label: "Guia de ECG" },
       { to: "/nursing-notes", icon: BookText, label: "Anotações e Evolução" },
+      { to: "/technical-terms", icon: BookA, label: "Termos Técnicos" },
     ],
     admin: [
       { to: "/admin", icon: Shield, label: "Painel Admin" },

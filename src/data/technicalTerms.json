@@ -1,0 +1,121 @@
+[
+  {
+    "letter": "A",
+    "terms": [
+      { "term": "Abcesso", "definition": "Coleção localizada de pus em um tecido, formando uma cavidade." },
+      { "term": "Afebril", "definition": "Sem febre; temperatura corporal dentro da normalidade." },
+      { "term": "Anasarca", "definition": "Edema generalizado, com acúmulo de líquido no tecido subcutâneo e cavidades corporais." },
+      { "term": "Anisocoria", "definition": "Pupilas com diâmetros desiguais." },
+      { "term": "Apneia", "definition": "Ausência de respiração." },
+      { "term": "Ascite", "definition": "Acúmulo de líquido na cavidade peritoneal (abdominal)." }
+    ]
+  },
+  {
+    "letter": "B",
+    "terms": [
+      { "term": "Bradicardia", "definition": "Frequência cardíaca abaixo do valor normal (< 60 bpm em adultos)." },
+      { "term": "Bradipneia", "definition": "Frequência respiratória abaixo do valor normal (< 12 irpm em adultos)." },
+      { "term": "Blenorragia", "definition": "Infecção sexualmente transmissível causada pela bactéria Neisseria gonorrhoeae, também conhecida como gonorreia." }
+    ]
+  },
+  {
+    "letter": "C",
+    "terms": [
+      { "term": "Cianose", "definition": "Coloração azulada da pele e mucosas devido à baixa oxigenação do sangue." },
+      { "term": "Cefaleia", "definition": "Dor de cabeça." },
+      { "term": "Crepitação", "definition": "Som auscultado nos pulmões, semelhante a um 'velcro', indicativo de líquido nos alvéolos." }
+    ]
+  },
+  {
+    "letter": "D",
+    "terms": [
+      { "term": "Deiscência", "definition": "Abertura espontânea de uma sutura cirúrgica." },
+      { "term": "Disfagia", "definition": "Dificuldade para engolir." },
+      { "term": "Dispneia", "definition": "Dificuldade para respirar; sensação de falta de ar." },
+      { "term": "Diurese", "definition": "Volume de urina produzido pelos rins." }
+    ]
+  },
+  {
+    "letter": "E",
+    "terms": [
+      { "term": "Edema", "definition": "Acúmulo anormal de líquido no espaço intersticial, causando inchaço." },
+      { "term": "Êmese", "definition": "Vômito." },
+      { "term": "Epistaxe", "definition": "Sangramento nasal." },
+      { "term": "Eritema", "definition": "Vermelhidão na pele causada por vasodilatação." },
+      { "term": "Evisceração", "definition": "Saída de órgãos internos através de uma incisão cirúrgica." }
+    ]
+  },
+  {
+    "letter": "F",
+    "terms": [
+      { "term": "Flebite", "definition": "Inflamação de uma veia, geralmente associada a um acesso venoso." },
+      { "term": "Flictena", "definition": "Bolha contendo líquido claro." }
+    ]
+  },
+  {
+    "letter": "H",
+    "terms": [
+      { "term": "Hematêmese", "definition": "Vômito com sangue vivo." },
+      { "term": "Hematoma", "definition": "Coleção de sangue fora dos vasos sanguíneos, geralmente em tecido subcutâneo." },
+      { "term": "Hemoptise", "definition": "Tosse com sangue proveniente das vias aéreas inferiores." }
+    ]
+  },
+  {
+    "letter": "I",
+    "terms": [
+      { "term": "Icterícia", "definition": "Coloração amarelada da pele e mucosas devido ao acúmulo de bilirrubina." },
+      { "term": "Isocoria", "definition": "Pupilas com diâmetros iguais." }
+    ]
+  },
+  {
+    "letter": "M",
+    "terms": [
+      { "term": "Melena", "definition": "Fezes escuras, em 'borra de café', indicativas de sangramento digestivo alto." },
+      { "term": "Miose", "definition": "Contração da pupila." },
+      { "term": "Midríase", "definition": "Dilatação da pupila." }
+    ]
+  },
+  {
+    "letter": "N",
+    "terms": [
+      { "term": "Nistagmo", "definition": "Movimentos oculares involuntários, rápidos e repetitivos." }
+    ]
+  },
+  {
+    "letter": "O",
+    "terms": [
+      { "term": "Oligúria", "definition": "Débito urinário diminuído (< 400-500 mL em 24h em adultos)." }
+    ]
+  },
+  {
+    "letter": "P",
+    "terms": [
+      { "term": "Paresia", "definition": "Diminuição da força muscular." },
+      { "term": "Plegia", "definition": "Paralisia; ausência total de movimento." },
+      { "term": "Polidipsia", "definition": "Sede excessiva." },
+      { "term": "Polifagia", "definition": "Fome excessiva." },
+      { "term": "Poliúria", "definition": "Produção de urina em volume acima do normal." },
+      { "term": "Prurido", "definition": "Coceira." }
+    ]
+  },
+  {
+    "letter": "S",
+    "terms": [
+      { "term": "Sialorreia", "definition": "Produção excessiva de saliva." },
+      { "term": "Síncope", "definition": "Desmaio; perda súbita e transitória da consciência." }
+    ]
+  },
+  {
+    "letter": "T",
+    "terms": [
+      { "term": "Taquicardia", "definition": "Frequência cardíaca acima do valor normal (> 100 bpm em adultos)." },
+      { "term": "Taquipneia", "definition": "Frequência respiratória acima do valor normal (> 20 irpm em adultos)." }
+    ]
+  },
+  {
+    "letter": "U",
+    "terms": [
+      { "term": "Urticária", "definition": "Erupção cutânea com placas avermelhadas e pruriginosas (coceira)." }
+    ]
+  }
+]
