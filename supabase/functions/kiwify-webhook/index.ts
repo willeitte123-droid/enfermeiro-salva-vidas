@@ -84,18 +84,18 @@ serve(async (req: Request) => {
     const isCanceledEvent = canceledEvents.includes(eventForLog.toLowerCase()) || (orderStatus && canceledEvents.includes(orderStatus.toLowerCase()));
 
     if (isCanceledEvent) {
-      const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
-      if (findUserError) throw findUserError;
+      // Busca ID exato via RPC
+      const { data: userId, error: rpcError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
+      if (rpcError) throw rpcError;
 
-      if (users.length > 0) {
-        const user = users[0];
+      if (userId) {
         await supabaseAdmin.from('profiles').update({
           plan: 'free',
           status: 'suspended',
           access_expires_at: new Date().toISOString()
-        }).eq('id', user.id);
+        }).eq('id', userId);
         
-        await log(emailForLog, eventForLog, `SUCESSO: Acesso removido (ID: ${user.id}).`);
+        await log(emailForLog, eventForLog, `SUCESSO: Acesso removido para o ID ${userId}.`);
         return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
       } else {
         await log(emailForLog, eventForLog, 'AVISO: Usuário não encontrado para cancelamento.');
@@ -103,30 +103,32 @@ serve(async (req: Request) => {
       }
 
     } else if (isApprovedEvent) {
-      let user;
-      const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
-      if (findUserError) throw findUserError;
+      let userId;
+      // Busca ID exato via RPC - CORREÇÃO PRINCIPAL
+      const { data: existingUserId, error: rpcError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
+      if (rpcError) throw rpcError;
 
-      if (users.length > 0) {
-        user = users[0];
-        await log(emailForLog, eventForLog, `INFO: Usuário existente (ID: ${user.id}).`);
+      if (existingUserId) {
+        userId = existingUserId;
+        await log(emailForLog, eventForLog, `INFO: Usuário encontrado via RPC (ID: ${userId}). Atualizando.`);
       } else {
-        await log(emailForLog, eventForLog, 'INFO: Criando novo usuário (convite).');
+        await log(emailForLog, eventForLog, 'INFO: Usuário não encontrado via RPC. Enviando convite.');
         const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+        
         if (inviteError) {
-           // Tenta recuperar caso tenha falhado por race condition
            if (inviteError.message.includes('already been registered')) {
-              const { data: { users: retryUsers } } = await supabaseAdmin.auth.admin.listUsers({ email });
-              if (retryUsers.length > 0) user = retryUsers[0];
-              else throw new Error(`Falha ao convidar/recuperar usuário: ${inviteError.message}`);
+              // Race condition: usuário criado entre a busca e o convite
+              const { data: retryId, error: retryError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
+              if (retryId) userId = retryId;
+              else throw new Error(`Erro de concorrência: usuário existe mas não foi encontrado via RPC: ${inviteError.message}`);
            } else {
               throw new Error(`Falha no convite: ${inviteError.message}`);
            }
         } else {
-            // Recupera o usuário recém criado para garantir que temos o ID correto
-            const { data: { users: newUsers } } = await supabaseAdmin.auth.admin.listUsers({ email });
-            if (!newUsers.length) throw new Error("Usuário convidado não encontrado.");
-            user = newUsers[0];
+            // Convite enviado, busca ID novamente para garantir
+             const { data: newId, error: findAgainError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
+             if (!newId) throw new Error("Usuário convidado mas ID não encontrado via RPC.");
+             userId = newId;
         }
       }
 
@@ -137,38 +139,21 @@ serve(async (req: Request) => {
       const planName = body?.Subscription?.plan?.name || body?.Product?.product_name || 'Plano PRO';
       const expiresAt = body?.Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
 
-      // Tenta UPDATE primeiro para garantir que estamos alterando o registro existente
-      const { error: updateError, count } = await supabaseAdmin.from('profiles').update({
+      const { error: upsertProfileError } = await supabaseAdmin.from('profiles').upsert({
+          id: userId,
           first_name: firstName,
           last_name: lastName,
           status: 'active',
           plan: planName,
           access_expires_at: expiresAt
-      }).eq('id', user.id).select(); // Select retorna os dados atualizados
+      }, { onConflict: 'id' });
 
-      let finalAction = "UPDATE";
-
-      // Se o UPDATE não afetou linhas (perfil não existe), fazemos INSERT
-      if (!updateError && count === 0) {
-          finalAction = "INSERT";
-          const { error: insertError } = await supabaseAdmin.from('profiles').insert({
-              id: user.id,
-              first_name: firstName,
-              last_name: lastName,
-              status: 'active',
-              plan: planName,
-              access_expires_at: expiresAt
-          });
-          if (insertError) throw insertError;
-      } else if (updateError) {
-          throw updateError;
+      if (upsertProfileError) {
+        await log(emailForLog, eventForLog, `AVISO: Falha no upsert do perfil: ${upsertProfileError.message}`);
+        throw upsertProfileError;
       }
 
-      // LEITURA DE CONFIRMAÇÃO
-      const { data: confirmData } = await supabaseAdmin.from('profiles').select('status, plan').eq('id', user.id).single();
-      
-      await log(emailForLog, eventForLog, `SUCESSO (${finalAction}): ID ${user.id}. DB Confirma: Status=${confirmData?.status}, Plano=${confirmData?.plan}`);
-      
+      await log(emailForLog, eventForLog, `SUCESSO: ID ${userId} atualizado para "${planName}".`);
       return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
 
     } else {
