@@ -113,12 +113,25 @@ serve(async (req: Request) => {
       }
 
     } else if (isApprovedEvent) {
-      const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
-      if (inviteError && !inviteError.message.includes('User already registered')) throw inviteError;
-
+      let user;
       const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
-      if (findUserError || users.length === 0) throw findUserError || new Error("User not found after invite.");
-      const user = users[0];
+      if (findUserError) throw findUserError;
+
+      if (users.length > 0) {
+        user = users[0];
+        await log(emailForLog, eventForLog, 'INFO: Usuário já existente encontrado. Prosseguindo para atualização do plano.');
+      } else {
+        await log(emailForLog, eventForLog, 'INFO: Usuário não encontrado. Enviando convite.');
+        const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+        if (inviteError) {
+          throw new Error(`Falha ao convidar novo usuário: ${inviteError.message}`);
+        }
+        const { data: { users: newUsers }, error: findAgainError } = await supabaseAdmin.auth.admin.listUsers({ email });
+        if (findAgainError || newUsers.length === 0) {
+          throw findAgainError || new Error("Falha ao encontrar o usuário recém-convidado.");
+        }
+        user = newUsers[0];
+      }
 
       const fullName = body?.Customer?.full_name || '';
       const nameParts = fullName.split(' ');
@@ -136,9 +149,12 @@ serve(async (req: Request) => {
           access_expires_at: expiresAt
       }, { onConflict: 'id' });
 
-      if (upsertProfileError) await log(emailForLog, eventForLog, `AVISO: Usuário criado/convidado, mas falha ao criar/atualizar perfil: ${upsertProfileError.message}`);
+      if (upsertProfileError) {
+        await log(emailForLog, eventForLog, `AVISO: Usuário encontrado/criado, mas falha ao atualizar perfil: ${upsertProfileError.message}`);
+        throw new Error(`Falha ao atualizar perfil: ${upsertProfileError.message}`);
+      }
 
-      await log(emailForLog, eventForLog, `SUCESSO: Convite enviado/reenviado. Perfil criado/atualizado para o plano "${planName}".`);
+      await log(emailForLog, eventForLog, `SUCESSO: Perfil criado/atualizado para o plano "${planName}".`);
       return new Response(JSON.stringify({ success: true, message: `Access granted for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
 
     } else {
