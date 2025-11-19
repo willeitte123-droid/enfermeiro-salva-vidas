@@ -75,7 +75,10 @@ serve(async (req: Request) => {
     }
 
     const body = JSON.parse(bodyText);
-    const email = body?.Customer?.email;
+    // Normaliza o email removendo espaços em branco e convertendo para minúsculas
+    const rawEmail = body?.Customer?.email;
+    const email = rawEmail ? rawEmail.trim().toLowerCase() : null;
+    
     emailForLog = email || "no_email_found";
     eventForLog = body?.webhook_event_type || "no_event_type";
 
@@ -105,7 +108,7 @@ serve(async (req: Request) => {
 
         if (updateProfileError) throw new Error(`Falha ao atualizar perfil para cancelar acesso: ${updateProfileError.message}`);
         
-        await log(emailForLog, eventForLog, 'SUCESSO: Acesso do usuário removido. Plano alterado para free e status para suspended.');
+        await log(emailForLog, eventForLog, `SUCESSO: Acesso removido para o ID ${user.id}. Status alterado para suspended.`);
         return new Response(JSON.stringify({ success: true, message: `Access revoked for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
       } else {
         await log(emailForLog, eventForLog, 'AVISO: Usuário não encontrado para evento de cancelamento. Nenhuma ação tomada.');
@@ -114,23 +117,37 @@ serve(async (req: Request) => {
 
     } else if (isApprovedEvent) {
       let user;
+      // Busca exata pelo email normalizado
       const { data: { users }, error: findUserError } = await supabaseAdmin.auth.admin.listUsers({ email });
       if (findUserError) throw findUserError;
 
       if (users.length > 0) {
         user = users[0];
-        await log(emailForLog, eventForLog, 'INFO: Usuário já existente encontrado. Prosseguindo para atualização do plano.');
+        await log(emailForLog, eventForLog, `INFO: Usuário encontrado (ID: ${user.id}). Atualizando plano.`);
       } else {
         await log(emailForLog, eventForLog, 'INFO: Usuário não encontrado. Enviando convite.');
         const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
         if (inviteError) {
-          throw new Error(`Falha ao convidar novo usuário: ${inviteError.message}`);
+          // Se o convite falhar porque o usuário já existe (caso de race condition ou erro na busca), tenta buscar novamente
+          if (inviteError.message.includes('already been registered')) {
+             const { data: { users: existingUsers } } = await supabaseAdmin.auth.admin.listUsers({ email });
+             if (existingUsers.length > 0) {
+                 user = existingUsers[0];
+                 await log(emailForLog, eventForLog, `INFO: Usuário recuperado após erro de convite (ID: ${user.id}).`);
+             } else {
+                 throw new Error(`Falha ao convidar e ao buscar usuário existente: ${inviteError.message}`);
+             }
+          } else {
+             throw new Error(`Falha ao convidar novo usuário: ${inviteError.message}`);
+          }
+        } else {
+            // Convite enviado com sucesso, busca o usuário criado
+            const { data: { users: newUsers }, error: findAgainError } = await supabaseAdmin.auth.admin.listUsers({ email });
+            if (findAgainError || newUsers.length === 0) {
+                throw findAgainError || new Error("Falha ao encontrar o usuário recém-convidado.");
+            }
+            user = newUsers[0];
         }
-        const { data: { users: newUsers }, error: findAgainError } = await supabaseAdmin.auth.admin.listUsers({ email });
-        if (findAgainError || newUsers.length === 0) {
-          throw findAgainError || new Error("Falha ao encontrar o usuário recém-convidado.");
-        }
-        user = newUsers[0];
       }
 
       const fullName = body?.Customer?.full_name || '';
@@ -138,27 +155,32 @@ serve(async (req: Request) => {
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
       const planName = body?.Subscription?.plan?.name || body?.Product?.product_name || 'Plano PRO';
+      
+      // Se o plano vier com 'anual' ou similar, garantimos a formatação correta se necessário, 
+      // mas aqui confiamos no payload ou no fallback
+      
       const expiresAt = body?.Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
 
+      // Usamos upsert para garantir que o registro em profiles exista e seja atualizado
       const { error: upsertProfileError } = await supabaseAdmin.from('profiles').upsert({
           id: user.id,
           first_name: firstName,
           last_name: lastName,
-          status: 'active',
+          status: 'active', // Força o status ativo
           plan: planName,
           access_expires_at: expiresAt
       }, { onConflict: 'id' });
 
       if (upsertProfileError) {
-        await log(emailForLog, eventForLog, `AVISO: Usuário encontrado/criado, mas falha ao atualizar perfil: ${upsertProfileError.message}`);
+        await log(emailForLog, eventForLog, `AVISO: Falha ao atualizar tabela profiles para o ID ${user.id}: ${upsertProfileError.message}`);
         throw new Error(`Falha ao atualizar perfil: ${upsertProfileError.message}`);
       }
 
-      await log(emailForLog, eventForLog, `SUCESSO: Perfil criado/atualizado para o plano "${planName}".`);
+      await log(emailForLog, eventForLog, `SUCESSO: Perfil do ID ${user.id} atualizado para "${planName}" e status "active".`);
       return new Response(JSON.stringify({ success: true, message: `Access granted for ${email}` }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
 
     } else {
-      await log(emailForLog, eventForLog, `Evento '${eventForLog}' não é de aprovação nem de cancelamento. Ignorado.`);
+      await log(emailForLog, eventForLog, `Evento '${eventForLog}' ignorado.`);
       return new Response(JSON.stringify({ message: "Event ignored." }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
     }
 
