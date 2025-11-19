@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Users, Search, AlertTriangle, Edit, Save, Copy, Webhook } from "lucide-react";
+import { Loader2, Users, Search, AlertTriangle, Edit, Save, Copy, Webhook, Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -18,8 +18,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-// Tipagem para os dados completos do usuário
 interface AppUser {
   id: string;
   first_name: string | null;
@@ -32,14 +32,12 @@ interface AppUser {
   access_expires_at: string | null;
 }
 
-// Schema de validação para o formulário de edição
 const editUserSchema = z.object({
   role: z.enum(['admin', 'user']),
   status: z.enum(['active', 'pending', 'inactive', 'suspended']),
   plan: z.enum(['free', 'Plano Essencial', 'Plano Premium anual', 'Plano Pro anual']),
 });
 
-// Função para buscar todos os usuários via Edge Function
 const fetchAllUsers = async (): Promise<AppUser[]> => {
   const { data, error } = await supabase.functions.invoke('get-users');
   if (error) throw new Error(error instanceof Error ? error.message : String(error));
@@ -47,7 +45,6 @@ const fetchAllUsers = async (): Promise<AppUser[]> => {
   return data.users as AppUser[];
 };
 
-// Componente do Modal de Edição
 const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; open: boolean; onOpenChange: (open: boolean) => void }) => {
   const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof editUserSchema>>({
@@ -87,7 +84,10 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Editar Usuário</DialogTitle>
-          <p className="text-sm text-muted-foreground">{user.first_name} {user.last_name} ({user.email})</p>
+          <div className="text-sm text-muted-foreground">
+            <p>{user.first_name} {user.last_name} ({user.email})</p>
+            <p className="text-xs font-mono mt-1">ID: {user.id}</p>
+          </div>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(d => mutation.mutate(d))} className="space-y-4">
           <Controller name="role" control={form.control} render={({ field }) => (
@@ -128,11 +128,10 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
   );
 };
 
-// Componente da Tabela de Usuários
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingUser, setEditingUser] = useState<AppUser | null>(null);
-  const { data: users = [], isLoading, error } = useQuery<AppUser[]>({ queryKey: ["allUsers"], queryFn: fetchAllUsers, retry: false });
+  const { data: users = [], isLoading, error, refetch } = useQuery<AppUser[]>({ queryKey: ["allUsers"], queryFn: fetchAllUsers });
 
   const filteredUsers = useMemo(() => {
     if (!searchTerm) return users;
@@ -146,6 +145,11 @@ const UserManagement = () => {
     return 'destructive';
   };
 
+  const handleRefresh = () => {
+    refetch();
+    toast.success("Lista atualizada");
+  };
+
   if (isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
   if (error) return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro de Acesso</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
 
@@ -153,14 +157,29 @@ const UserManagement = () => {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div><CardTitle className="flex items-center gap-2"><Users className="h-5 w-5" /> Usuários ({filteredUsers.length})</CardTitle><CardDescription>Gerencie todos os usuários registrados.</CardDescription></div>
-        <div className="relative w-full sm:w-auto max-w-xs"><Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar por email..." className="pl-8" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /></div>
+        <div className="flex items-center gap-2">
+          <div className="relative w-full sm:w-auto max-w-xs"><Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar por email..." className="pl-8" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /></div>
+          <Button variant="outline" size="icon" onClick={handleRefresh} title="Atualizar Lista"><Loader2 className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} /></Button>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="border rounded-md"><Table><TableHeader><TableRow><TableHead>Nome</TableHead><TableHead>Email</TableHead><TableHead>Plano</TableHead><TableHead>Status</TableHead><TableHead>Função</TableHead><TableHead>Expira em</TableHead><TableHead>Ações</TableHead></TableRow></TableHeader>
           <TableBody>
             {filteredUsers.length > 0 ? filteredUsers.map((user) => (
               <TableRow key={user.id}>
-                <TableCell className="font-medium">{user.first_name} {user.last_name}</TableCell>
+                <TableCell className="font-medium">
+                  <div className="flex flex-col">
+                    <span>{user.first_name} {user.last_name}</span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="text-[10px] text-muted-foreground font-mono cursor-help truncate w-20">{user.id.substring(0, 8)}...</span>
+                        </TooltipTrigger>
+                        <TooltipContent><p>ID Completo: {user.id}</p></TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell><Badge variant="outline">{user.plan}</Badge></TableCell>
                 <TableCell><Badge variant={getStatusVariant(user.status)}>{user.status}</Badge></TableCell>
@@ -178,7 +197,7 @@ const UserManagement = () => {
 };
 
 const KiwifyWebhookLogs = () => {
-  const { data: logs = [], isLoading } = useQuery({
+  const { data: logs = [], isLoading, refetch } = useQuery({
     queryKey: ['webhookLogs'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -193,9 +212,9 @@ const KiwifyWebhookLogs = () => {
 
   return (
     <Card className="mt-6">
-      <CardHeader>
-        <CardTitle>3. Últimos Eventos Recebidos (Logs)</CardTitle>
-        <CardDescription>Os 20 eventos mais recentes recebidos do webhook da Kiwify.</CardDescription>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div><CardTitle>3. Últimos Eventos Recebidos (Logs)</CardTitle><CardDescription>Os 20 eventos mais recentes recebidos do webhook da Kiwify.</CardDescription></div>
+        <Button variant="ghost" size="icon" onClick={() => refetch()}><Loader2 className="h-4 w-4" /></Button>
       </CardHeader>
       <CardContent>
         {isLoading ? (
@@ -219,7 +238,7 @@ const KiwifyWebhookLogs = () => {
                     </TableCell>
                     <TableCell>{log.email}</TableCell>
                     <TableCell><Badge variant="outline">{log.evento}</Badge></TableCell>
-                    <TableCell className="text-sm">{log.details}</TableCell>
+                    <TableCell className="text-sm font-mono">{log.details}</TableCell>
                   </TableRow>
                 )) : (
                   <TableRow><TableCell colSpan={4} className="h-24 text-center">Nenhum log encontrado.</TableCell></TableRow>
@@ -233,7 +252,6 @@ const KiwifyWebhookLogs = () => {
   );
 };
 
-// Componente de Configuração do Kiwify
 const KiwifySettings = () => {
   const webhookUrl = "https://hbokiayvlbywxuwsgzlj.supabase.co/functions/v1/kiwify-webhook";
   const handleCopy = (text: string) => {
@@ -254,7 +272,6 @@ const KiwifySettings = () => {
   );
 };
 
-// Componente Principal do Admin
 const Admin = () => (
   <div className="space-y-6">
     <div className="text-center"><h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Painel de Administração</h1><p className="text-muted-foreground">Gerenciamento de usuários e integrações da plataforma.</p></div>
