@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Search, BookA } from "lucide-react";
+import { Search } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import technicalTermsData from "@/data/technicalTerms.json";
@@ -22,9 +22,35 @@ interface TermGroup {
   terms: Term[];
 }
 
+// Componente auxiliar para destacar o texto pesquisado
+const HighlightText = ({ text, highlight }: { text: string; highlight: string }) => {
+  if (!highlight.trim()) {
+    return <>{text}</>;
+  }
+
+  // Escapa caracteres especiais para o Regex não quebrar
+  const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const parts = text.split(new RegExp(`(${escapedHighlight})`, 'gi'));
+
+  return (
+    <span>
+      {parts.map((part, i) => 
+        part.toLowerCase() === highlight.toLowerCase() ? (
+          <span key={i} className="bg-yellow-200 dark:bg-yellow-900/60 text-foreground font-medium rounded px-0.5">
+            {part}
+          </span>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  );
+};
+
 const TechnicalTerms = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [searchTerm, setSearchTerm] = useState("");
+  const [openItems, setOpenItems] = useState<string[]>([]);
   const { addActivity } = useActivityTracker();
 
   useEffect(() => {
@@ -47,6 +73,15 @@ const TechnicalTerms = () => {
       })
       .filter(group => group.terms.length > 0);
   }, [searchTerm]);
+
+  // Expande automaticamente os accordions quando há uma busca
+  useEffect(() => {
+    if (searchTerm) {
+      setOpenItems(filteredTerms.map(group => group.letter));
+    } else {
+      setOpenItems([]);
+    }
+  }, [searchTerm, filteredTerms]);
 
   return (
     <div className="space-y-6">
@@ -76,7 +111,7 @@ const TechnicalTerms = () => {
       </div>
 
       {filteredTerms.length > 0 ? (
-        <Accordion type="multiple" className="space-y-3">
+        <Accordion type="multiple" className="space-y-3" value={openItems} onValueChange={setOpenItems}>
           {filteredTerms.map((group) => (
             <AccordionItem key={group.letter} value={group.letter} className="border rounded-lg px-4 bg-card shadow-sm">
               <AccordionTrigger className="text-2xl font-bold text-primary hover:no-underline">
@@ -86,8 +121,12 @@ const TechnicalTerms = () => {
                 <dl className="space-y-4">
                   {group.terms.map((term, index) => (
                     <div key={index}>
-                      <dt className="font-semibold text-foreground">{term.term}</dt>
-                      <dd className="text-sm text-muted-foreground ml-4">{term.definition}</dd>
+                      <dt className="font-semibold text-foreground">
+                        <HighlightText text={term.term} highlight={searchTerm} />
+                      </dt>
+                      <dd className="text-sm text-muted-foreground ml-4">
+                        <HighlightText text={term.definition} highlight={searchTerm} />
+                      </dd>
                     </div>
                   ))}
                 </dl>
