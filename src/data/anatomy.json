@@ -6,8 +6,6 @@
     "color": "text-red-600",
     "bgColor": "bg-red-50",
     "description": "Responsável pelo transporte de oxigênio, nutrientes e hormônios para as células.",
-    "imageUrl": "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?q=80&w=1000&auto=format&fit=crop",
-    "imageCaption": "Modelo anatômico do coração humano evidenciando grandes vasos e câmaras.",
     "anatomy": [
       { "part": "Coração", "function": "Bomba muscular oca que impulsiona o sangue. Dividido em 4 câmaras (Átrios e Ventrículos)." },
       { "part": "Artérias", "function": "Vasos que levam sangue (geralmente oxigenado) do coração para o corpo. Alta pressão." },
@@ -29,8 +27,6 @@
     "color": "text-blue-500",
     "bgColor": "bg-blue-50",
     "description": "Responsável pelas trocas gasosas (hematose) e equilíbrio ácido-básico.",
-    "imageUrl": "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=1000&auto=format&fit=crop",
-    "imageCaption": "Modelo anatômico do tronco evidenciando a caixa torácica e pulmões.",
     "anatomy": [
       { "part": "Vias Aéreas Superiores", "function": "Nariz, faringe, laringe. Aquecem, umidificam e filtram o ar." },
       { "part": "Traqueia e Brônquios", "function": "Conduzem o ar aos pulmões. Possuem cílios para limpeza." },
@@ -52,8 +48,6 @@
     "color": "text-violet-600",
     "bgColor": "bg-violet-50",
     "description": "Controla e coordena as funções corporais e interpreta estímulos.",
-    "imageUrl": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?q=80&w=1000&auto=format&fit=crop",
-    "imageCaption": "Modelo do encéfalo humano, destacando os hemisférios cerebrais.",
     "anatomy": [
       { "part": "SNC (Central)", "function": "Encéfalo (Cérebro, Cerebelo, Tronco) e Medula Espinhal." },
       { "part": "SNP (Periférico)", "function": "Nervos cranianos e espinhais que conectam o SNC ao corpo." },
@@ -75,8 +69,6 @@
     "color": "text-yellow-500",
     "bgColor": "bg-yellow-50",
     "description": "Filtra o sangue, remove excretas e regula o volume de líquidos e eletrólitos.",
-    "imageUrl": "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=1000&auto=format&fit=crop",
-    "imageCaption": "Visão geral da anatomia abdominal e localização renal (modelo didático).",
     "anatomy": [
       { "part": "Rins", "function": "Filtram o sangue e produzem urina. Produzem eritropoietina." },
       { "part": "Ureteres", "function": "Tubos que transportam a urina do rim à bexiga." },
@@ -98,8 +90,6 @@
     "color": "text-orange-500",
     "bgColor": "bg-orange-50",
     "description": "Processa alimentos, absorve nutrientes e elimina resíduos.",
-    "imageUrl": "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=1000&auto=format&fit=crop",
-    "imageCaption": "Modelo anatômico evidenciando a cavidade abdominal e vísceras digestivas.",
     "anatomy": [
       { "part": "Estômago", "function": "Mistura o alimento com suco gástrico (ácido). Início da digestão proteica." },
       { "part": "Intestino Delgado", "function": "Duodeno, Jejuno, Íleo. Principal local de absorção de nutrientes." },
@@ -121,8 +111,6 @@
     "color": "text-amber-700",
     "bgColor": "bg-amber-50",
     "description": "Pele e anexos. Proteção, termorregulação e sensibilidade.",
-    "imageUrl": "https://images.unsplash.com/photo-1516549655169-df83a092dd14?q=80&w=1000&auto=format&fit=crop",
-    "imageCaption": "Microscopia eletrônica ilustrativa da superfície da pele (epiderme).",
     "anatomy": [
       { "part": "Epiderme", "function": "Camada externa, barreira protetora, avascular." },
       { "part": "Derme", "function": "Tecido conjuntivo, contém vasos, nervos, folículos e glândulas." },

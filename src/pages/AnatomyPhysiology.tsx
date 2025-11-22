@@ -25,8 +25,6 @@ interface AnatomySystem {
   color: string;
   bgColor: string;
   description: string;
-  imageUrl?: string;
-  imageCaption?: string;
   anatomy: { part: string; function: string }[];
   physiology: string;
   nursingFocus: string[];
@@ -139,23 +137,6 @@ const AnatomyPhysiology = () => {
                       </div>
                     ))}
                   </div>
-
-                  {/* Anatomical Image */}
-                  {activeSystem.imageUrl && (
-                    <div className="rounded-xl overflow-hidden border shadow-md mt-6 relative group">
-                      <img 
-                        src={activeSystem.imageUrl} 
-                        alt={`Anatomia do ${activeSystem.name}`} 
-                        className="w-full h-64 sm:h-80 object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-10">
-                        <p className="text-white text-sm font-medium flex items-center gap-2">
-                          <Info className="h-4 w-4 text-white/80" />
-                          {activeSystem.imageCaption || "Visualização anatômica"}
-                        </p>
-                      </div>
-                    </div>
-                  )}
                 </TabsContent>
                 
                 <TabsContent value="physiology" className="mt-4 space-y-6">
@@ -164,17 +145,6 @@ const AnatomyPhysiology = () => {
                       {activeSystem.physiology}
                     </p>
                   </div>
-                  
-                  {/* Reusing image for context if user stays on physiology */}
-                  {activeSystem.imageUrl && (
-                    <div className="rounded-xl overflow-hidden border shadow-sm opacity-80 hover:opacity-100 transition-opacity">
-                       <img 
-                        src={activeSystem.imageUrl} 
-                        alt="Contexto fisiológico" 
-                        className="w-full h-48 object-cover"
-                      />
-                    </div>
-                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>
