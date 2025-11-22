@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { Stethoscope, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import {
@@ -28,6 +28,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
+import { useThemeCustomization } from "@/context/ThemeCustomizationContext";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor, insira um email válido." }),
@@ -41,6 +42,7 @@ const Login = () => {
   const [resetEmail, setResetEmail] = useState("");
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+  const { themeSettings } = useThemeCustomization();
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -130,7 +132,11 @@ const Login = () => {
         </AlertDialogContent>
 
         <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground p-6 text-center shadow-md">
-          <img src="/logo.svg" alt="Enfermagem Pro Logo" className="h-20 w-20 mb-4" />
+          <img 
+            src={themeSettings.logo_url || "/logo.svg"} 
+            alt="Logo" 
+            className="h-20 w-auto max-w-[200px] object-contain mb-4" 
+          />
           <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
           <p className="mt-4 text-base font-medium text-primary-foreground max-w-lg">
             Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
