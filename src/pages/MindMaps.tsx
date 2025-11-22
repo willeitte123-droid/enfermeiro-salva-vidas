@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Search, Workflow, BookOpen } from "lucide-react";
+import { Search, Workflow, BookOpen, MoveHorizontal } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -66,7 +66,7 @@ const MindMaps = () => {
             />
           )}
         </div>
-        <p className="text-sm sm:text-base text-muted-foreground">Resumos visuais para facilitar a fixação de conteúdos complexos.</p>
+        <p className="text-sm sm:text-base text-muted-foreground">Conecte conceitos complexos visualmente.</p>
       </div>
 
       <div className="space-y-4">
@@ -106,23 +106,23 @@ const MindMaps = () => {
           {filteredMaps.map((map) => (
             <Dialog key={map.id}>
               <DialogTrigger asChild>
-                <Card className="cursor-pointer hover:border-primary/50 hover:shadow-md transition-all group h-full flex flex-col">
-                  <CardHeader>
+                <Card className="cursor-pointer hover:border-primary/50 hover:shadow-md transition-all group h-full flex flex-col overflow-hidden border-t-4 border-t-transparent hover:border-t-primary">
+                  <CardHeader className="bg-muted/10 pb-4">
                     <CardTitle className="flex items-center gap-2 text-lg group-hover:text-primary transition-colors">
-                      <Workflow className="h-5 w-5" />
+                      <Workflow className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
                       {map.title}
                     </CardTitle>
                     <CardDescription className="line-clamp-2">{map.description}</CardDescription>
                   </CardHeader>
-                  <CardContent className="flex-1 flex items-end">
-                    <div className="w-full p-2 bg-muted/50 rounded-md flex items-center justify-center text-xs text-muted-foreground group-hover:bg-primary/5 group-hover:text-primary transition-colors">
+                  <CardContent className="flex-1 flex items-end pt-4">
+                    <div className="w-full p-2 bg-primary/5 rounded-md flex items-center justify-center text-xs font-medium text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                       <BookOpen className="h-3 w-3 mr-1.5" />
-                      Clique para visualizar
+                      Visualizar Mapa
                     </div>
                   </CardContent>
                 </Card>
               </DialogTrigger>
-              <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] overflow-y-auto">
+              <DialogContent className="max-w-5xl w-[95vw] h-[90vh] flex flex-col">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-xl sm:text-2xl">
                     <Workflow className="h-6 w-6 text-primary" />
@@ -130,8 +130,14 @@ const MindMaps = () => {
                   </DialogTitle>
                   <p className="text-muted-foreground text-sm">{map.description}</p>
                 </DialogHeader>
-                <div className="mt-4">
-                  <MindMapRenderer data={map.root} />
+                
+                <div className="flex-1 min-h-0 mt-4 relative rounded-xl border bg-slate-50/50 dark:bg-slate-950/50 overflow-hidden flex flex-col">
+                  <div className="absolute top-4 right-4 z-20 flex items-center gap-2 bg-background/80 backdrop-blur px-3 py-1 rounded-full border shadow-sm text-xs text-muted-foreground pointer-events-none">
+                    <MoveHorizontal className="h-3 w-3" /> Use o scroll para navegar
+                  </div>
+                  <div className="flex-1 overflow-auto p-4">
+                    <MindMapRenderer data={map.root} />
+                  </div>
                 </div>
               </DialogContent>
             </Dialog>
