@@ -29,7 +29,7 @@ interface AnatomySystem {
   bgColor: string;
   description: string;
   anatomy: { part: string; function: string }[];
-  physiology: PhysiologyProcess[] | string; // Suporta ambos os formatos para evitar erros
+  physiology: PhysiologyProcess[] | string;
   nursingFocus: string[];
 }
 
@@ -40,17 +40,18 @@ const iconMap: Record<string, React.ElementType> = {
 const AnatomyPhysiology = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
+  // Força o tipo correto na inicialização
   const [activeSystem, setActiveSystem] = useState<AnatomySystem>(anatomyData[0] as unknown as AnatomySystem);
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Anatomia e Fisiologia', path: '/anatomy', icon: 'Activity' });
   }, [addActivity]);
 
-  // Atualiza o sistema ativo se os dados mudarem (HMR ou navegação)
+  // Garante atualização dos dados se o JSON mudar (HMR)
   useEffect(() => {
-    const updatedSystem = anatomyData.find(sys => sys.id === activeSystem.id);
-    if (updatedSystem) {
-      setActiveSystem(updatedSystem as unknown as AnatomySystem);
+    const currentInJson = anatomyData.find(sys => sys.id === activeSystem.id);
+    if (currentInJson) {
+      setActiveSystem(currentInJson as unknown as AnatomySystem);
     }
   }, [activeSystem.id]);
 
@@ -152,6 +153,7 @@ const AnatomyPhysiology = () => {
                 
                 <TabsContent value="physiology" className="mt-4">
                   <div className="space-y-4">
+                    {/* Verificação defensiva: Se for array, renderiza os cartões. Se for string, renderiza texto. */}
                     {Array.isArray(activeSystem.physiology) ? (
                       activeSystem.physiology.map((process, idx) => (
                         <div key={idx} className="group relative overflow-hidden rounded-lg border bg-background p-5 hover:shadow-md transition-all duration-300">
