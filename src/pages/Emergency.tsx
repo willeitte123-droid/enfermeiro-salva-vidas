@@ -140,7 +140,7 @@ const Emergency = () => {
                           <AccordionTrigger className="flex-1 group hover:no-underline text-left py-0">
                             <div className="flex items-center gap-3 py-4">
                               {Icon && <Icon className={`h-5 w-5 ${item.color} transition-colors group-data-[state=open]:${item.openColor}`} />}
-                              <span className="font-semibold text-left">{item.title}</span>
+                              <span className="font-semibold text-left text-lg">{item.title}</span>
                             </div>
                           </AccordionTrigger>
                           <div className="pl-4">
@@ -156,9 +156,10 @@ const Emergency = () => {
                             )}
                           </div>
                         </div>
-                        <AccordionContent className="pt-4 space-y-3">
+                        <AccordionContent className="pt-4 space-y-4">
                           {item.content.map((line, index) => (
-                            <div key={index} className="flex items-start gap-3 text-sm" dangerouslySetInnerHTML={{ __html: line.text }} />
+                            // Alterado: removido flex items-start gap-3 para permitir blocos completos
+                            <div key={index} className="text-sm w-full" dangerouslySetInnerHTML={{ __html: line.text }} />
                           ))}
                         </AccordionContent>
                       </AccordionItem>
