@@ -3,11 +3,10 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { 
   HeartPulse, Wind, Brain, Droplet, Utensils, Shield, 
-  Activity, Stethoscope, Microscope, Info 
+  Activity, Stethoscope, Microscope, Info, ArrowRight 
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -18,6 +17,11 @@ interface Profile {
   id: string;
 }
 
+interface PhysiologyProcess {
+  title: string;
+  description: string;
+}
+
 interface AnatomySystem {
   id: string;
   name: string;
@@ -26,7 +30,7 @@ interface AnatomySystem {
   bgColor: string;
   description: string;
   anatomy: { part: string; function: string }[];
-  physiology: string;
+  physiology: PhysiologyProcess[];
   nursingFocus: string[];
 }
 
@@ -139,11 +143,26 @@ const AnatomyPhysiology = () => {
                   </div>
                 </TabsContent>
                 
-                <TabsContent value="physiology" className="mt-4 space-y-6">
-                  <div className="p-6 rounded-lg bg-muted/30 border leading-relaxed text-lg">
-                    <p className="first-letter:text-4xl first-letter:font-bold first-letter:mr-1 first-letter:float-left">
-                      {activeSystem.physiology}
-                    </p>
+                <TabsContent value="physiology" className="mt-4">
+                  <div className="space-y-4">
+                    {activeSystem.physiology.map((process, idx) => (
+                      <div key={idx} className="group relative overflow-hidden rounded-lg border bg-background p-5 hover:shadow-md transition-all duration-300">
+                        <div className={cn("absolute left-0 top-0 h-full w-1 transition-all group-hover:w-2", activeSystem.bgColor.replace('bg-', 'bg-slate-200'))} />
+                        <div className="flex gap-4">
+                          <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-bold text-white", activeSystem.color.replace('text-', 'bg-'))}>
+                            {idx + 1}
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-foreground mb-1 flex items-center gap-2">
+                              {process.title}
+                            </h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              {process.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </TabsContent>
               </Tabs>
@@ -166,16 +185,17 @@ const AnatomyPhysiology = () => {
             <CardContent>
               <ul className="space-y-4">
                 {activeSystem.nursingFocus.map((point, index) => (
-                  <li key={index} className="flex gap-3 items-start p-3 rounded-md bg-background border shadow-sm">
+                  <li key={index} className="flex gap-3 items-start p-3 rounded-md bg-background border shadow-sm hover:border-emerald-200 transition-colors">
                     <Info className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />
-                    <span className="text-sm">{point}</span>
+                    <span className="text-sm leading-snug">{point}</span>
                   </li>
                 ))}
               </ul>
               
               <div className="mt-6 p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
-                <p className="text-xs text-yellow-800 dark:text-yellow-200 font-medium text-center">
-                  💡 Dica: Sempre relacione os sinais vitais alterados com a fisiologia do sistema afetado.
+                <p className="text-xs text-yellow-800 dark:text-yellow-200 font-medium text-center flex flex-col gap-1">
+                  <span className="text-lg">💡</span>
+                  Sempre relacione os sinais vitais alterados com a fisiologia do sistema afetado.
                 </p>
               </div>
             </CardContent>

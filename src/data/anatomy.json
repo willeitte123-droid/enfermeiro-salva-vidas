@@ -7,17 +7,30 @@
     "bgColor": "bg-red-50",
     "description": "Responsável pelo transporte de oxigênio, nutrientes e hormônios para as células.",
     "anatomy": [
-      { "part": "Coração", "function": "Bomba muscular oca que impulsiona o sangue. Dividido em 4 câmaras (Átrios e Ventrículos)." },
-      { "part": "Artérias", "function": "Vasos que levam sangue (geralmente oxigenado) do coração para o corpo. Alta pressão." },
-      { "part": "Veias", "function": "Vasos que trazem sangue (geralmente desoxigenado) do corpo para o coração. Possuem válvulas." },
-      { "part": "Capilares", "function": "Vasos microscópicos onde ocorrem as trocas gasosas e de nutrientes." }
+      { "part": "Coração", "function": "Bomba muscular oca. Dividido em 4 câmaras: Átrios (recebem sangue) e Ventrículos (ejetam sangue)." },
+      { "part": "Valvas Cardíacas", "function": "Atrioventriculares (Tricúspide, Mitral) e Semilunares (Pulmonar, Aórtica). Garantem o fluxo unidirecional." },
+      { "part": "Artérias", "function": "Vasos de alta pressão que levam sangue do coração para os tecidos (Eferentes)." },
+      { "part": "Veias", "function": "Vasos de baixa pressão e complacentes que trazem sangue de volta ao coração (Aferentes). Possuem válvulas." }
     ],
-    "physiology": "O ciclo cardíaco envolve a sístole (contração/ejeção) e a diástole (relaxamento/enchimento). O sangue pobre em O2 chega ao Átrio Direito -> Ventrículo Direito -> Pulmões. O sangue rico em O2 volta ao Átrio Esquerdo -> Ventrículo Esquerdo -> Corpo (Aorta).",
+    "physiology": [
+      {
+        "title": "1. Ciclo Cardíaco (Sístole e Diástole)",
+        "description": "O coração funciona como uma bomba dupla. Na **Diástole**, o músculo relaxa e as câmaras se enchem de sangue. Na **Sístole**, o músculo contrai e ejeta o sangue. O 'tum-tá' que ouvimos são as valvas se fechando (B1: fechamento das atrioventriculares; B2: fechamento das semilunares)."
+      },
+      {
+        "title": "2. Circulação Pulmonar e Sistêmica",
+        "description": "Na **Pequena Circulação**, o sangue pobre em O2 sai do Ventrículo Direito, vai aos pulmões oxigenar e volta ao Átrio Esquerdo. Na **Grande Circulação**, o sangue rico em O2 sai do Ventrículo Esquerdo (alta pressão), nutre todo o corpo e retorna venoso ao Átrio Direito."
+      },
+      {
+        "title": "3. Sistema de Condução Elétrica",
+        "description": "O coração tem automatismo. O impulso nasce no **Nó Sinusal** (marcapasso natural), passa para o Nó Atrioventricular (onde sofre um atraso vital), desce pelo Feixe de His e se espalha pelas Fibras de Purkinje, causando a contração ventricular organizada."
+      }
+    ],
     "nursingFocus": [
-      "Auscuta Cardíaca: Focos Aórtico, Pulmonar, Tricúspide e Mitral.",
-      "Pulsos: Avaliar simetria e amplitude (Radial, Carotídeo, Femoral, Pedioso).",
-      "Edema: Sinal de falha na bomba (insuficiência cardíaca) ou retorno venoso.",
-      "Perfusão: Tempo de enchimento capilar deve ser < 2 segundos."
+      "Auscuta Cardíaca: Identificar B1 e B2 e possíveis sopros nos focos Aórtico, Pulmonar, Tricúspide e Mitral.",
+      "Débito Cardíaco: DC = Volume Sistólico x Frequência Cardíaca. Alterações na FC ou no volume impactam a perfusão.",
+      "Pré-carga e Pós-carga: Conceitos vitais para entender insuficiência cardíaca e manejo de drogas vasoativas.",
+      "Sinais de Má Perfusão: Tempo de enchimento capilar > 2s, extremidades frias, hipotensão e alteração do nível de consciência."
     ]
   },
   {
@@ -28,17 +41,30 @@
     "bgColor": "bg-blue-50",
     "description": "Responsável pelas trocas gasosas (hematose) e equilíbrio ácido-básico.",
     "anatomy": [
-      { "part": "Vias Aéreas Superiores", "function": "Nariz, faringe, laringe. Aquecem, umidificam e filtram o ar." },
-      { "part": "Traqueia e Brônquios", "function": "Conduzem o ar aos pulmões. Possuem cílios para limpeza." },
-      { "part": "Pulmões", "function": "Órgãos esponjosos onde ocorre a troca gasosa." },
-      { "part": "Alvéolos", "function": "Sacos de ar microscópicos; unidade funcional onde ocorre a hematose." }
+      { "part": "Vias Aéreas Superiores", "function": "Nariz, faringe, laringe. Aquecem, umidificam e filtram o ar inspirado." },
+      { "part": "Árvore Brônquica", "function": "Traqueia, brônquios e bronquíolos. Conduzem o ar. Possuem musculatura lisa (broncodilatação/constrição)." },
+      { "part": "Alvéolos", "function": "Sacos microscópicos na extremidade final. Unidade funcional onde ocorre a troca gasosa." },
+      { "part": "Pleura", "function": "Membrana dupla que envolve o pulmão, permitindo o deslizamento na caixa torácica." }
     ],
-    "physiology": "A ventilação depende do diafragma. Na inspiração, ele desce e a pressão intratorácica diminui (ar entra). Na hematose, o O2 passa do alvéolo para o sangue e o CO2 faz o caminho inverso por difusão.",
+    "physiology": [
+      {
+        "title": "1. Mecânica Ventilatória",
+        "description": "A entrada de ar depende de pressão negativa. O **diafragma** contrai e desce, aumentando o volume torácico e diminuindo a pressão interna, sugando o ar (Inspiração). O relaxamento do diafragma expulsa o ar passivamente (Expiração)."
+      },
+      {
+        "title": "2. Hematose (Troca Gasosa)",
+        "description": "Ocorre nos alvéolos por **difusão simples**. O oxigênio (O2) passa do alvéolo para o sangue capilar (onde a concentração é menor), e o dióxido de carbono (CO2) passa do sangue para o alvéolo para ser exalado."
+      },
+      {
+        "title": "3. Controle da Respiração e pH",
+        "description": "O centro respiratório no tronco encefálico ajusta a frequência respiratória baseada, principalmente, nos níveis de CO2 no sangue. Se o CO2 sobe (acidose), a respiração acelera para 'lavar' o ácido. Se o CO2 cai, a respiração diminui."
+      }
+    ],
     "nursingFocus": [
-      "Padrão Respiratório: Observar uso de musculatura acessória, tiragem e frequência.",
-      "Saturação (SpO2): Ideal > 94%. Atenção a extremidades frias que falseiam leitura.",
-      "Ausculta: Identificar Murmúrio Vesicular (normal) vs. Ruídos Adventícios (sibilos, roncos, estertores).",
-      "Aspiração: Cuidado para não lesionar a mucosa traqueal e evitar hipóxia."
+      "Padrão Respiratório: Observar uso de musculatura acessória (tiragem), batimento de asa de nariz e frequência.",
+      "Saturação (SpO2): Mede a porcentagem de hemoglobina carreando oxigênio. Atenção: extremidades frias ou esmalte podem falsear.",
+      "Ausculta Pulmonar: Diferenciar Murmúrio Vesicular (som limpo) de Ruídos Adventícios (crepitações = líquido; sibilos = broncoespasmo; roncos = secreção).",
+      "Vias Aéreas: A proteção da via aérea é prioridade A no trauma e na emergência."
     ]
   },
   {
@@ -49,17 +75,30 @@
     "bgColor": "bg-violet-50",
     "description": "Controla e coordena as funções corporais e interpreta estímulos.",
     "anatomy": [
-      { "part": "SNC (Central)", "function": "Encéfalo (Cérebro, Cerebelo, Tronco) e Medula Espinhal." },
-      { "part": "SNP (Periférico)", "function": "Nervos cranianos e espinhais que conectam o SNC ao corpo." },
-      { "part": "Neurônio", "function": "Célula unidade funcional, transmite impulsos elétricos (sinapses)." },
-      { "part": "Meninges", "function": "Membranas que protegem o SNC (Dura-máter, Aracnoide, Pia-máter)." }
+      { "part": "Encéfalo", "function": "Composto por Cérebro (cognição/motor), Cerebelo (equilíbrio) e Tronco Encefálico (funções vitais)." },
+      { "part": "Medula Espinhal", "function": "Via de transmissão de impulsos entre cérebro e corpo. Centro de reflexos." },
+      { "part": "Neurônio", "function": "Célula unidade funcional. Transmite impulsos elétricos e químicos (sinapses)." },
+      { "part": "Meninges", "function": "Dura-máter, Aracnoide e Pia-máter. Protegem o SNC e contêm o líquor." }
     ],
-    "physiology": "Recebe estímulos sensoriais (aferentes), processa no cérebro e envia respostas motoras (eferentes). O Sistema Autônomo controla funções involuntárias: Simpático (luta/fuga - adrenalina) e Parassimpático (repouso - acetilcolina).",
+    "physiology": [
+      {
+        "title": "1. Potencial de Ação e Sinapse",
+        "description": "A informação viaja como um impulso elétrico ao longo do neurônio. Ao chegar no final, libera substâncias químicas (**neurotransmissores**) na fenda sináptica, que ativam o próximo neurônio ou órgão alvo."
+      },
+      {
+        "title": "2. Sistema Autônomo: Simpático vs. Parassimpático",
+        "description": "Controla funções involuntárias. O **Simpático** (Adrenalina) prepara para 'Luta ou Fuga' (acelera coração, dilata pupila, inibe digestão). O **Parassimpático** (Acetilcolina) foca em 'Repouso e Digestão' (desacelera coração, estimula intestino)."
+      },
+      {
+        "title": "3. Hipertensão Intracraniana (HIC)",
+        "description": "O crânio é uma caixa fechada contendo cérebro, sangue e líquor (Doutrina de Monro-Kellie). Se um volume aumenta (ex: edema ou hematoma), a pressão sobe drasticamente, podendo causar herniação e morte cerebral."
+      }
+    ],
     "nursingFocus": [
-      "Escala de Glasgow: Avaliação do nível de consciência (Ocular, Verbal, Motora).",
-      "Pupilas: Avaliar fotorreagência e simetria (isocóricas, anisocóricas, midríase, miose).",
-      "Déficits Motores: Testar força e sensibilidade nos 4 membros (paresia/plegia).",
-      "Sinais de PIC: Hipertensão, bradicardia e alteração respiratória (Tríade de Cushing)."
+      "Escala de Glasgow: Ferramenta padrão para avaliar nível de consciência (Ocular, Verbal, Motor).",
+      "Pupilas: Avaliar fotorreagência e simetria. Anisocoria é sinal de alerta grave (herniação uncal).",
+      "Déficits Focais: Testar força e sensibilidade comparando os lados (paresia/plegia).",
+      "Tríade de Cushing: Hipertensão + Bradicardia + Respiração irregular = Sinal tardio de HIC grave."
     ]
   },
   {
@@ -70,17 +109,30 @@
     "bgColor": "bg-yellow-50",
     "description": "Filtra o sangue, remove excretas e regula o volume de líquidos e eletrólitos.",
     "anatomy": [
-      { "part": "Rins", "function": "Filtram o sangue e produzem urina. Produzem eritropoietina." },
-      { "part": "Ureteres", "function": "Tubos que transportam a urina do rim à bexiga." },
-      { "part": "Bexiga", "function": "Reservatório muscular temporário de urina." },
-      { "part": "Uretra", "function": "Canal de excreção. Na mulher é curto (risco ITU), no homem é longo." }
+      { "part": "Rins", "function": "Órgãos retroperitoneais que filtram o sangue. Produzem hormônios (eritropoietina, renina)." },
+      { "part": "Néfron", "function": "Unidade funcional microscópica do rim (cerca de 1 milhão por rim)." },
+      { "part": "Ureteres", "function": "Tubos musculares que conduzem a urina do rim à bexiga por peristaltismo." },
+      { "part": "Bexiga", "function": "Reservatório muscular temporário. O músculo detrusor contrai na micção." }
     ],
-    "physiology": "O néfron é a unidade funcional. O sangue é filtrado no glomérulo. Tubulos reabsorvem água e nutrientes essenciais (Glicose, Na+, K+) e secretam toxinas. O volume urinário reflete a perfusão renal e o estado de hidratação.",
+    "physiology": [
+      {
+        "title": "1. Filtração Glomerular",
+        "description": "O sangue chega com pressão no glomérulo e parte do plasma é filtrado para dentro do néfron. Células e proteínas grandes não passam (se passarem, há lesão). A Taxa de Filtração Glomerular (TFG) é o melhor índice de função renal."
+      },
+      {
+        "title": "2. Reabsorção e Secreção Tubular",
+        "description": "Cerca de 99% do filtrado é reabsorvido de volta para o sangue (água, glicose, sódio). Toxinas, excesso de potássio e hidrogênio são secretados ativamente na urina final. É assim que o rim regula o pH e eletrólitos."
+      },
+      {
+        "title": "3. Sistema Renina-Angiotensina-Aldosterona",
+        "description": "Quando a pressão cai, o rim libera Renina. Isso gera Angiotensina II (vasoconstrição) e Aldosterona (retém sódio e água). Resultado: aumento da pressão arterial e volume sanguíneo."
+      }
+    ],
     "nursingFocus": [
-      "Débito Urinário: Normal 0,5 a 1 mL/kg/h. Oligúria (<400mL/dia) é sinal de alerta.",
-      "Aspecto da Urina: Cor (hematúria, colúria), odor e turbidez.",
-      "Sondagem Vesical: Técnica estéril rigorosa para evitar infecções.",
-      "Balanço Hídrico: Fundamental em pacientes críticos e renais."
+      "Débito Urinário: Monitorar rigorosamente. Oligúria (<0,5 mL/kg/h) é o primeiro sinal de choque ou lesão renal.",
+      "Balanço Hídrico: Essencial para evitar sobrecarga (edema agudo de pulmão) ou desidratação.",
+      "Aspecto da Urina: Hematúria (sangue), Piúria (pus), Colúria (bilirrubina).",
+      "Creatinina e Ureia: Marcadores laboratoriais de função renal. A creatinina é mais específica."
     ]
   },
   {
@@ -91,17 +143,30 @@
     "bgColor": "bg-orange-50",
     "description": "Processa alimentos, absorve nutrientes e elimina resíduos.",
     "anatomy": [
-      { "part": "Estômago", "function": "Mistura o alimento com suco gástrico (ácido). Início da digestão proteica." },
-      { "part": "Intestino Delgado", "function": "Duodeno, Jejuno, Íleo. Principal local de absorção de nutrientes." },
-      { "part": "Fígado", "function": "Metaboliza fármacos, produz bile, fatores de coagulação e albumina." },
-      { "part": "Intestino Grosso", "function": "Absorção de água e formação das fezes." }
+      { "part": "Estômago", "function": "Reservatório ácido (pH 1-2). Inicia a digestão de proteínas (Pepsina)." },
+      { "part": "Intestino Delgado", "function": "Duodeno, Jejuno e Íleo. Local principal de digestão química e absorção de nutrientes." },
+      { "part": "Fígado e Vesícula", "function": "Fígado produz bile (emulsifica gorduras) e metaboliza drogas. Vesícula armazena a bile." },
+      { "part": "Pâncreas", "function": "Produz enzimas digestivas potentes (amilase, lipase) e bicarbonato para neutralizar o ácido." }
     ],
-    "physiology": "Movimentos peristálticos movem o bolo alimentar. Enzimas (amilase, pepsina, lipase) quebram macromoléculas. O fígado processa nutrientes absorvidos antes de irem para a circulação sistêmica.",
+    "physiology": [
+      {
+        "title": "1. Motilidade (Peristaltismo)",
+        "description": "Ondas de contração muscular empurram o alimento. Ruídos hidroaéreos (RHA) são o som dessa movimentação. A ausência de RHA indica Íleo Paralítico."
+      },
+      {
+        "title": "2. Digestão Química e Absorção",
+        "description": "Enzimas quebram macromoléculas em micronutrientes. As vilosidades intestinais aumentam a área de contato para absorver esses nutrientes para a corrente sanguínea (via sistema porta para o fígado)."
+      },
+      {
+        "title": "3. Função Hepática (Metabolismo)",
+        "description": "Todo sangue do intestino passa primeiro pelo fígado (Efeito de Primeira Passagem). O fígado processa nutrientes, desintoxica substâncias, sintetiza albumina e fatores de coagulação."
+      }
+    ],
     "nursingFocus": [
-      "Ruídos Hidroaéreos (RHA): Auscultar antes de palpar. Ausência pode indicar íleo paralítico.",
-      "Sondas (SNG/SNE): Verificar posicionamento (pH, ausculta, Raio-X) antes de dieta.",
-      "Eliminações: Avaliar constipação, diarreia, melena (sangue digerido) ou hematoquezia.",
-      "Glicemia: O pâncreas (anexo) regula o açúcar. Monitorar em diabéticos e NPT."
+      "Ruídos Hidroaéreos (RHA): Auscultar antes de palpar/percutir. Importante no pós-operatório.",
+      "Sondas (SNG/SNE): Verificar posicionamento (pH, ausculta, Raio-X) para evitar broncoaspiração de dieta.",
+      "Eliminações: Avaliar consistência (Escala de Bristol) e cor (Melena = sangue digerido/alto; Hematoquezia = sangue vivo/baixo).",
+      "Glicemia: O pâncreas endócrino regula o açúcar. Monitorar sinais de hipo/hiperglicemia."
     ]
   },
   {
@@ -112,16 +177,30 @@
     "bgColor": "bg-amber-50",
     "description": "Pele e anexos. Proteção, termorregulação e sensibilidade.",
     "anatomy": [
-      { "part": "Epiderme", "function": "Camada externa, barreira protetora, avascular." },
-      { "part": "Derme", "function": "Tecido conjuntivo, contém vasos, nervos, folículos e glândulas." },
-      { "part": "Hipoderme", "function": "Tecido adiposo subcutâneo, isolamento térmico e reserva de energia." }
+      { "part": "Epiderme", "function": "Camada externa avascular. Barreira física contra patógenos e perda de água." },
+      { "part": "Derme", "function": "Camada média resistente. Contém colágeno, vasos sanguíneos, terminações nervosas e glândulas." },
+      { "part": "Tecido Subcutâneo", "function": "Tecido adiposo (gordura). Isolante térmico, reserva de energia e proteção mecânica." },
+      { "part": "Anexos", "function": "Unhas, pelos, glândulas sudoríparas e sebáceas." }
     ],
-    "physiology": "A pele regula a temperatura (suor/vasodilatação). Sintetiza Vitamina D. É a primeira linha de defesa imunológica. A integridade da pele é vital para prevenir infecções (sepse).",
+    "physiology": [
+      {
+        "title": "1. Função de Barreira e Imunidade",
+        "description": "A pele íntegra é a primeira linha de defesa contra infecções. O pH levemente ácido e a microbiota residente impedem o crescimento de patógenos. Quebras na barreira (feridas, acessos) são portas de entrada para sepse."
+      },
+      {
+        "title": "2. Termorregulação",
+        "description": "Se a temperatura sobe, os vasos da derme dilatam (perda de calor) e suamos. Se esfria, os vasos contraem (vasoconstrição) para reter calor no núcleo do corpo, deixando as extremidades frias e pálidas."
+      },
+      {
+        "title": "3. Cicatrização",
+        "description": "Processo complexo em fases: Inflamatória (limpeza), Proliferativa (granulação/reconstrução) e Maturação (remodelagem). Fatores como nutrição, oxigenação e glicemia afetam diretamente esse processo."
+      }
+    ],
     "nursingFocus": [
-      "Lesão por Pressão: Mudança de decúbito e hidratação são vitais.",
-      "Turgor e Elasticidade: Indicadores de hidratação.",
-      "Coloração: Palidez, cianose, icterícia, hiperemia.",
-      "Administração SC/ID: Conhecer a anatomia para aplicar insulina e vacinas corretamente."
+      "Integridade da Pele: Avaliar risco de Lesão por Pressão (Escala de Braden). Mudança de decúbito é prevenção vital.",
+      "Turgor e Elasticidade: Avaliar no tórax ou fronte. Turgor diminuído indica desidratação.",
+      "Perfusão e Cor: Cianose, palidez e tempo de enchimento capilar refletem o estado hemodinâmico.",
+      "Administração Parenteral: Conhecer a profundidade das camadas é crucial para injeções ID, SC e IM corretas."
     ]
   }
 ]
