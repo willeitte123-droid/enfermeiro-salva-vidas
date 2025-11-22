@@ -107,15 +107,15 @@ const Emergency = () => {
         />
       </div>
 
-      <Card className="border-destructive/50 bg-destructive/5">
+      <Card className="border-red-200 bg-red-100 dark:bg-red-900/20 dark:border-red-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-destructive">
+          <CardTitle className="flex items-center gap-2 text-red-700 dark:text-red-400">
             <AlertCircle className="h-5 w-5" />
             Atenção
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-destructive/90">
+          <p className="text-sm text-red-800 dark:text-red-200">
             Este é um guia de referência rápida. Sempre siga os protocolos institucionais e busque 
             capacitação contínua (BLS/ACLS).
           </p>
@@ -158,7 +158,6 @@ const Emergency = () => {
                         </div>
                         <AccordionContent className="pt-4 space-y-4">
                           {item.content.map((line, index) => (
-                            // Alterado: removido flex items-start gap-3 para permitir blocos completos
                             <div key={index} className="text-sm w-full" dangerouslySetInnerHTML={{ __html: line.text }} />
                           ))}
                         </AccordionContent>
