@@ -7,11 +7,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Info, Search, Package, Footprints, ListFilter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useQuery } from "@tanstack/react-query";
@@ -94,9 +92,9 @@ const Procedures = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <div className="flex justify-center items-center gap-4 mb-2">
-          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Guia de Procedimentos</h1>
+      <div className="text-center px-2">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mb-2">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Guia de Procedimentos</h1>
           {profile && (
             <FavoriteButton
               userId={profile.id}
@@ -106,14 +104,14 @@ const Procedures = () => {
             />
           )}
         </div>
-        <p className="text-muted-foreground">Protocolos passo a passo para a prática segura de enfermagem</p>
+        <p className="text-sm sm:text-base text-muted-foreground">Protocolos passo a passo para a prática segura de enfermagem</p>
       </div>
 
       <div className="space-y-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Buscar procedimento (ex: Sonda, Curativo, Punção...)"
+            placeholder="Buscar procedimento..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -121,7 +119,7 @@ const Procedures = () => {
         </div>
 
         {/* Category Tabs with Horizontal Scroll */}
-        <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card p-2 shadow-sm">
+        <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card p-2 shadow-sm max-w-[100vw]">
           <div className="flex w-max space-x-2 p-1">
             {categories.map((cat) => (
               <button
@@ -153,19 +151,20 @@ const Procedures = () => {
             return (
               <Accordion type="single" collapsible key={`${proc.title}-${index}`}>
                 <AccordionItem value={`item-${index}`} className="border rounded-lg px-0 bg-card shadow-sm overflow-hidden">
-                  <div className="flex items-center px-4">
-                    <AccordionTrigger className="flex-1 group hover:no-underline text-left py-4">
-                      <div className="flex items-center gap-4">
-                        <div className={`p-2 rounded-lg bg-muted group-hover:bg-muted/80 transition-colors`}>
-                          {Icon && <Icon className={`h-6 w-6 ${proc.color} transition-colors group-data-[state=open]:${proc.openColor}`} />}
+                  <div className="flex items-start sm:items-center px-3 py-2 sm:px-4">
+                    <AccordionTrigger className="flex-1 group hover:no-underline text-left py-2 sm:py-4">
+                      <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+                        <div className={`p-2 rounded-lg bg-muted group-hover:bg-muted/80 transition-colors mt-1 sm:mt-0 shrink-0`}>
+                          {Icon && <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${proc.color} transition-colors group-data-[state=open]:${proc.openColor}`} />}
                         </div>
-                        <div>
-                          <span className="font-semibold text-lg block">{proc.title}</span>
+                        <div className="min-w-0">
+                          <span className="font-semibold text-base sm:text-lg block leading-tight">{proc.title}</span>
+                          <span className="text-xs text-muted-foreground font-normal block sm:hidden mt-1 line-clamp-2">{proc.description}</span>
                           <span className="text-xs text-muted-foreground font-normal hidden sm:block">{proc.description}</span>
                         </div>
                       </div>
                     </AccordionTrigger>
-                    <div className="pl-2">
+                    <div className="pl-2 pt-3 sm:pt-0">
                       {profile && (
                         <FavoriteButton
                           userId={profile.id}
@@ -180,34 +179,29 @@ const Procedures = () => {
                   </div>
                   
                   <AccordionContent className="px-0 pb-0">
-                    {/* Descrição Mobile (se necessário) */}
-                    <div className="px-6 pb-4 sm:hidden text-sm text-muted-foreground border-b border-border/50">
-                      {proc.description}
-                    </div>
-
-                    <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x">
+                    <div className="flex flex-col md:flex-row md:divide-x border-t border-border/50">
                       {/* Coluna 1: Materiais */}
-                      <div className="p-6 bg-slate-50 dark:bg-slate-900/30 md:col-span-1">
+                      <div className="p-4 sm:p-6 bg-slate-50 dark:bg-slate-900/30 md:w-1/3 shrink-0">
                         <h4 className="font-bold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
-                          <Package className="h-4 w-4" /> Materiais Necessários
+                          <Package className="h-4 w-4" /> Materiais
                         </h4>
                         <ul className="space-y-2">
                           {proc.materials.map((material, i) => (
                             <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                               <div className="h-1.5 w-1.5 rounded-full bg-slate-400 mt-1.5 flex-shrink-0" />
-                              {material}
+                              <span className="leading-snug">{material}</span>
                             </li>
                           ))}
                         </ul>
                         {DiagramComponent && (
-                          <div className="mt-6">
+                          <div className="mt-6 -mx-2 sm:mx-0">
                             <DiagramComponent />
                           </div>
                         )}
                       </div>
 
                       {/* Coluna 2: Passo a Passo */}
-                      <div className="p-6 md:col-span-2 bg-background">
+                      <div className="p-4 sm:p-6 md:w-2/3 bg-background">
                         <h4 className="font-bold text-primary mb-6 flex items-center gap-2">
                           <Footprints className="h-4 w-4" /> Passo a Passo
                         </h4>
@@ -215,7 +209,7 @@ const Procedures = () => {
                         <div className="space-y-0 relative before:absolute before:inset-0 before:ml-3.5 before:h-full before:w-0.5 before:-translate-x-px before:bg-gradient-to-b before:from-transparent before:via-muted before:to-transparent">
                           {proc.steps.map((step, i) => (
                             <div key={i} className="relative flex gap-4 pb-6 last:pb-0 group">
-                              <div className="absolute left-0 mt-0.5 flex h-7 w-7 items-center justify-center rounded-full border bg-background shadow-sm group-hover:border-primary transition-colors z-10">
+                              <div className="absolute left-0 mt-0.5 flex h-7 w-7 items-center justify-center rounded-full border bg-background shadow-sm group-hover:border-primary transition-colors z-10 shrink-0">
                                 <span className="text-xs font-bold text-muted-foreground group-hover:text-primary">{i + 1}</span>
                               </div>
                               <div className="pl-8">
@@ -229,7 +223,7 @@ const Procedures = () => {
                           <Alert className="bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-900">
                             <Info className="h-4 w-4 text-amber-600 dark:text-amber-500" />
                             <AlertTitle className="text-amber-800 dark:text-amber-400 font-semibold ml-2">Ponto de Atenção</AlertTitle>
-                            <AlertDescription className="text-amber-700 dark:text-amber-300 ml-2 mt-1 text-sm">
+                            <AlertDescription className="text-amber-700 dark:text-amber-300 ml-2 mt-1 text-sm leading-snug">
                               {proc.observations}
                             </AlertDescription>
                           </Alert>
@@ -246,8 +240,7 @@ const Procedures = () => {
         <Card>
           <CardContent className="py-12 text-center text-muted-foreground flex flex-col items-center gap-2">
             <Search className="h-8 w-8 opacity-20" />
-            <p>Nenhum procedimento encontrado para os filtros selecionados.</p>
-            <p className="text-xs">Tente mudar a categoria para "Todos" ou buscar por outro termo.</p>
+            <p>Nenhum procedimento encontrado.</p>
           </CardContent>
         </Card>
       )}
