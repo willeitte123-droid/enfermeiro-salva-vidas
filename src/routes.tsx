@@ -47,7 +47,6 @@ import NursingNotesGuide from './pages/NursingNotesGuide';
 import UpdatePassword from './pages/UpdatePassword';
 import TechnicalTerms from './pages/TechnicalTerms';
 import AnatomyPhysiology from './pages/AnatomyPhysiology';
-import MindMaps from './pages/MindMaps';
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -115,7 +114,6 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="tools/integrated-calculators" element={<IntegratedCalculators />} />
         <Route path="simulado" element={<SimuladoPage />} />
         <Route path="review-area" element={<ReviewArea />} />
-        <Route path="mind-maps" element={<MindMaps />} />
         <Route path="favorites" element={<FavoritesPage />} />
         <Route path="nursing-notes" element={<NursingNotesGuide />} />
         <Route path="technical-terms" element={<TechnicalTerms />} />
