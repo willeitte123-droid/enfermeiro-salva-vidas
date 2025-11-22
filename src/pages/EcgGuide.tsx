@@ -7,6 +7,7 @@ import { HeartPulse, AlertTriangle, MapPin, Waves, Clock, Zap, Repeat } from "lu
 import EcgStrip from "@/components/EcgStrip";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface Profile {
   id: string;
@@ -74,10 +75,13 @@ const EcgGuide = () => {
       </div>
 
       <Tabs defaultValue="fundamentals" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="fundamentals" className="text-green-700 data-[state=active]:bg-green-600 data-[state=active]:text-white font-semibold">Fundamentos</TabsTrigger>
-          <TabsTrigger value="lethal" className="text-red-700 data-[state=active]:bg-red-600 data-[state=active]:text-white font-semibold">Arritmias Letais</TabsTrigger>
-        </TabsList>
+        <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card p-2 shadow-sm">
+          <TabsList className="flex w-max space-x-2 h-auto bg-transparent p-0">
+            <TabsTrigger value="fundamentals" className="px-4 py-2 text-green-700 hover:bg-green-50 data-[state=active]:bg-green-600 data-[state=active]:text-white font-semibold rounded-md transition-colors">Fundamentos</TabsTrigger>
+            <TabsTrigger value="lethal" className="px-4 py-2 text-red-700 hover:bg-red-50 data-[state=active]:bg-red-600 data-[state=active]:text-white font-semibold rounded-md transition-colors">Arritmias Letais</TabsTrigger>
+          </TabsList>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
 
         <TabsContent value="fundamentals" className="space-y-6">
           <Card className="overflow-hidden">

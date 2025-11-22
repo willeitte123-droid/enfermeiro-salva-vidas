@@ -12,6 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface Profile {
   id: string;
@@ -180,13 +181,17 @@ const WoundCare = () => {
       </div>
 
       <Tabs defaultValue="tissues" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 h-auto bg-transparent p-0">
-          <TabsTrigger value="tissues" className="py-2 font-semibold text-sky-700 bg-sky-50 hover:bg-sky-100 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-md dark:bg-sky-900/50 dark:text-sky-300 dark:hover:bg-sky-900/70 data-[state=active]:dark:bg-sky-600">Avaliação da Ferida</TabsTrigger>
-          <TabsTrigger value="pressure-injury" className="py-2 font-semibold text-red-700 bg-red-50 hover:bg-red-100 data-[state=active]:bg-red-600 data-[state=active]:text-white rounded-md dark:bg-red-900/50 dark:text-red-300 dark:hover:bg-red-900/70 data-[state=active]:dark:bg-red-600">Lesão por Pressão</TabsTrigger>
-          <TabsTrigger value="diabetic-foot" className="py-2 font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-600 data-[state=active]:text-white rounded-md dark:bg-amber-900/50 dark:text-amber-300 dark:hover:bg-amber-900/70 data-[state=active]:dark:bg-amber-600">Pé Diabético</TabsTrigger>
-          <TabsTrigger value="vascular-ulcers" className="py-2 font-semibold text-violet-700 bg-violet-50 hover:bg-violet-100 data-[state=active]:bg-violet-600 data-[state=active]:text-white rounded-md dark:bg-violet-900/50 dark:text-violet-300 dark:hover:bg-violet-900/70 data-[state=active]:dark:bg-violet-600">Úlceras Vasculares</TabsTrigger>
-          <TabsTrigger value="dressings" className="py-2 font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 data-[state=active]:bg-emerald-600 data-[state=active]:text-white rounded-md dark:bg-emerald-900/50 dark:text-emerald-300 dark:hover:bg-emerald-900/70 data-[state=active]:dark:bg-emerald-600">Tipos de Cobertura</TabsTrigger>
-        </TabsList>
+        {/* Mobile Responsive Tabs */}
+        <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card p-2 shadow-sm">
+          <TabsList className="flex w-max space-x-2 h-auto bg-transparent p-0">
+            <TabsTrigger value="tissues" className="py-2 font-semibold text-sky-700 bg-sky-50 hover:bg-sky-100 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-md dark:bg-sky-900/50 dark:text-sky-300 dark:hover:bg-sky-900/70 data-[state=active]:dark:bg-sky-600">Avaliação da Ferida</TabsTrigger>
+            <TabsTrigger value="pressure-injury" className="py-2 font-semibold text-red-700 bg-red-50 hover:bg-red-100 data-[state=active]:bg-red-600 data-[state=active]:text-white rounded-md dark:bg-red-900/50 dark:text-red-300 dark:hover:bg-red-900/70 data-[state=active]:dark:bg-red-600">Lesão por Pressão</TabsTrigger>
+            <TabsTrigger value="diabetic-foot" className="py-2 font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-600 data-[state=active]:text-white rounded-md dark:bg-amber-900/50 dark:text-amber-300 dark:hover:bg-amber-900/70 data-[state=active]:dark:bg-amber-600">Pé Diabético</TabsTrigger>
+            <TabsTrigger value="vascular-ulcers" className="py-2 font-semibold text-violet-700 bg-violet-50 hover:bg-violet-100 data-[state=active]:bg-violet-600 data-[state=active]:text-white rounded-md dark:bg-violet-900/50 dark:text-violet-300 dark:hover:bg-violet-900/70 data-[state=active]:dark:bg-violet-600">Úlceras Vasculares</TabsTrigger>
+            <TabsTrigger value="dressings" className="py-2 font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 data-[state=active]:bg-emerald-600 data-[state=active]:text-white rounded-md dark:bg-emerald-900/50 dark:text-emerald-300 dark:hover:bg-emerald-900/70 data-[state=active]:dark:bg-emerald-600">Tipos de Cobertura</TabsTrigger>
+          </TabsList>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
 
         <TabsContent value="tissues" className="space-y-4">
           <Card className="border-primary/50 bg-accent">

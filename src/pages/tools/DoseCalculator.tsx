@@ -9,6 +9,7 @@ import { FlaskConical, Syringe, Activity, AlertTriangle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface Profile {
   id: string;
@@ -134,11 +135,14 @@ const DoseCalculator = () => {
       </Alert>
 
       <Tabs defaultValue="simple" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 gap-2">
-          <TabsTrigger value="simple" className="py-2 font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-md">Dose Simples</TabsTrigger>
-          <TabsTrigger value="pump" className="py-2 font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 data-[state=active]:bg-emerald-600 data-[state=active]:text-white rounded-md">Bomba de Infusão</TabsTrigger>
-          <TabsTrigger value="vasoactive" className="py-2 font-semibold text-violet-700 bg-violet-50 hover:bg-violet-100 data-[state=active]:bg-violet-600 data-[state=active]:text-white rounded-md">Drogas Vasoativas</TabsTrigger>
-        </TabsList>
+        <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card p-2 shadow-sm">
+          <TabsList className="flex w-max space-x-2 h-auto bg-transparent p-0">
+            <TabsTrigger value="simple" className="py-2 font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-md">Dose Simples</TabsTrigger>
+            <TabsTrigger value="pump" className="py-2 font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 data-[state=active]:bg-emerald-600 data-[state=active]:text-white rounded-md">Bomba de Infusão</TabsTrigger>
+            <TabsTrigger value="vasoactive" className="py-2 font-semibold text-violet-700 bg-violet-50 hover:bg-violet-100 data-[state=active]:bg-violet-600 data-[state=active]:text-white rounded-md">Drogas Vasoativas</TabsTrigger>
+          </TabsList>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
 
         {/* Simple Dose Calculator */}
         <TabsContent value="simple">
