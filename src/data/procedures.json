@@ -33,13 +33,15 @@
       "Pacote de cateterismo estéril", "Luvas estéreis", "Sonda uretral (Nelaton)", "Xilocaína gel", "Clorexidina aquosa", "Cuba redonda ou similar para coletar urina"
     ],
     "steps": [
-      "Seguir os mesmos passos de assepsia e preparo da Sondagem Vesical de Demora.",
-      "Lubrificar e introduzir a sonda uretral até o retorno de urina.",
-      "Drenar completamente a bexiga.",
+      "Realizar higiene íntima prévia.",
+      "Abrir campo estéril, calçar luvas estéreis e realizar antissepsia rigorosa.",
+      "Lubrificar a sonda uretral (Nelaton).",
+      "Introduzir delicadamente a sonda até o retorno de urina.",
+      "Drenar completamente a bexiga em cuba estéril.",
       "Retirar a sonda delicadamente assim que o fluxo de urina cessar.",
-      "Registrar o procedimento, volume e características da urina."
+      "Registrar o volume drenado e características (cor, odor, sedimentos)."
     ],
-    "observations": "Técnica limpa intermitente pode ser ensinada ao paciente para autocateterismo em domicílio. Em ambiente hospitalar, a técnica deve ser estéril.",
+    "observations": "Procedimento indicado para retenção urinária aguda ou coleta de urina estéril para exame. O volume drenado deve ser monitorado para evitar descompressão brusca excessiva.",
     "category": "Sondagens e Drenagem"
   },
   {
@@ -49,19 +51,19 @@
     "openColor": "text-red-600",
     "description": "Punção de uma veia periférica para administração de fluidos e medicamentos.",
     "materials": [
-      "Cateter sobre agulha (Jelco)", "Luvas de procedimento", "Garrote", "Swab com álcool 70%", "Curativo transparente", "Seringa com SF 0,9%"
+      "Cateter sobre agulha (Jelco)", "Luvas de procedimento", "Garrote", "Swab com álcool 70%", "Curativo transparente", "Seringa com SF 0,9%", "Polifix/Extensor"
     ],
     "steps": [
-      "Escolher a veia (distal para proximal, membro não dominante).",
-      "Aplicar garrote e realizar antissepsia (aguardar secar).",
-      "Puncionar com bisel para cima (15-30º).",
-      "Observar refluxo sanguíneo, progredir o cateter e remover a agulha.",
-      "Soltar o garrote e conectar o equipo/polifix.",
-      "Testar perviedade com flush de SF 0,9%.",
-      "Fixar com curativo transparente e identificar o acesso.",
-      "Descartar perfurocortante adequadamente."
+      "Selecionar a veia (preferir membros superiores não dominantes, sentido distal para proximal).",
+      "Aplicar o garrote 10-15cm acima do local.",
+      "Realizar antissepsia com álcool 70% (esperar secar completamente).",
+      "Tracionar a pele e puncionar com bisel para cima (ângulo 15-30º).",
+      "Ao observar refluxo de sangue, diminuir o ângulo, avançar levemente o cateter e retirar a agulha guia.",
+      "Soltar o garrote e conectar o extensor (preenchido com SF).",
+      "Testar perviedade (flush) e observar se há infiltração.",
+      "Fixar com película transparente estéril para visualização do sítio."
     ],
-    "observations": "Evitar articulações. Não puncionar membros com fístula, esvaziamento ganglionar ou lesões. Trocar apenas com indicação clínica.",
+    "observations": "Identificar com data, calibre e nome do profissional. Trocar o acesso conforme protocolo institucional (geralmente a cada 72-96h ou se sinais de flebite).",
     "category": "Acessos e Punções",
     "diagramComponent": "AvpSitesDiagram"
   },
@@ -70,23 +72,21 @@
     "icon": "GitBranchPlus",
     "color": "text-indigo-500",
     "openColor": "text-indigo-600",
-    "description": "Procedimento estéril para inserção de um cateter venoso central através de uma veia periférica.",
+    "description": "Procedimento estéril para inserção de cateter venoso central via periférica (Veias Basílica, Braquial ou Cefálica).",
     "materials": [
-      "Kit PICC completo", "Ultrassom com probe linear", "Campo estéril amplo", "Anestésico local (Lidocaína)", "Equipamentos de proteção individual (EPI) completos"
+      "Kit PICC", "Ultrassom (USG)", "Campo estéril amplo", "Avental/Luvas estéreis", "Máscara/Touca", "Anestésico local", "SF 0,9%"
     ],
     "steps": [
-      "Obter consentimento informado.",
-      "Avaliar a rede venosa com ultrassom (veias basílica, braquial, cefálica).",
-      "Realizar paramentação cirúrgica completa.",
-      "Realizar antissepsia ampla do membro.",
-      "Anestesiar o local da punção.",
-      "Puncionar a veia guiado por ultrassom (Técnica de Seldinger).",
-      "Introduzir o fio-guia, seguido pelo introdutor/dilatador.",
-      "Inserir o cateter PICC até a medida pré-estabelecida.",
-      "Confirmar o posicionamento (padrão-ouro: radiografia de tórax).",
-      "Realizar curativo estéril com fixador específico."
+      "Medir circunferência do braço e comprimento do cateter antes do procedimento.",
+      "Realizar barreira máxima estéril (profissional e paciente).",
+      "Avaliar rede venosa com USG (Zona Verde de Dawson).",
+      "Realizar antissepsia com Clorexidina Alcoólica.",
+      "Puncionar veia guiada por USG (Técnica de Seldinger modificada).",
+      "Progredir o cateter suavemente até a medida prévia.",
+      "Confirmar posicionamento (Raio-X ou tecnologias de navegação) antes de liberar para uso.",
+      "Realizar curativo estéril e fixação."
     ],
-    "observations": "Procedimento avançado que exige capacitação e certificação específica. Seguir rigorosamente os protocolos institucionais e as resoluções do COFEN.",
+    "observations": "Procedimento privativo do Enfermeiro habilitado. A ponta deve estar na junção da Veia Cava Superior com o Átrio Direito.",
     "category": "Acessos e Punções"
   },
   {
@@ -94,21 +94,18 @@
     "icon": "Activity",
     "color": "text-pink-500",
     "openColor": "text-pink-600",
-    "description": "Medição da pressão na veia cava superior ou átrio direito, refletindo a pré-carga cardíaca.",
+    "description": "Medição da pressão na veia cava superior, refletindo a pré-carga do ventrículo direito.",
     "materials": [
-      "Kit de pressão invasiva (transdutor, domo)", "Bolsa pressurizadora", "Soro Fisiológico 0,9% 500ml", "Suporte de soro", "Monitor multiparamétrico com cabo de PAI"
+      "Transdutor de pressão", "Bolsa pressurizadora (300mmHg)", "SF 0,9%", "Monitor multiparamétrico", "Nivelador"
     ],
     "steps": [
-      "Montar o sistema de forma asséptica.",
-      "Instalar a bolsa de SF 0,9% no pressurizador e inflar até 300 mmHg.",
-      "Conectar o sistema ao monitor e ao cateter venoso central (via distal).",
-      "Posicionar o paciente em decúbito dorsal horizontal (0º).",
-      "Nivelar o transdutor no eixo flebostático (4º espaço intercostal, linha axilar média).",
-      "Zerar o sistema: fechar a via para o paciente, abrir para a atmosfera e acionar 'zerar PAI' no monitor.",
-      "Abrir a via para o paciente e observar a curva de pressão.",
-      "Registrar o valor da PVC (geralmente ao final da expiração)."
+      "Zerar o sistema: Nivelar o transdutor no <strong>eixo flebostático</strong> (4º espaço intercostal, linha axilar média).",
+      "Fechar a via do paciente e abrir para o ar ambiente (zero atmosférico) no monitor.",
+      "Posicionar o paciente em decúbito dorsal horizontal (ou até 30º se tolerado, mas zerar novamente).",
+      "Conectar o sistema à via distal do CVC.",
+      "Observar a curva de PVC no monitor e registrar o valor no final da expiração."
     ],
-    "observations": "O correto posicionamento do eixo flebostático é crucial para uma medida fidedigna. Valores normais: 2-8 mmHg ou 3-10 cmH₂O. Sempre verificar a qualidade da curva no monitor.",
+    "observations": "Valores normais: 2-8 mmHg (ou 3-10 cmH₂O). Variações na posição do paciente ou obstrução do cateter alteram o valor real.",
     "category": "Monitoramento e Emergência"
   },
   {
@@ -116,20 +113,20 @@
     "icon": "Beaker",
     "color": "text-cyan-500",
     "openColor": "text-cyan-600",
-    "description": "Coleta de sangue arterial para análise de gases sanguíneos, pH e eletrólitos.",
+    "description": "Coleta de sangue arterial para análise de pH e gases sanguíneos.",
     "materials": [
-      "Seringa específica para gasometria (com heparina)", "Luvas de procedimento", "Antisséptico", "Gaze estéril", "Dispositivo de proteção para agulha"
+      "Seringa heparinizada", "Agulha fina (ex: 13x4,5)", "Luvas de procedimento", "Gaze", "Antisséptico", "Gelo (se transporte demorado)"
     ],
     "steps": [
-      "Realizar o Teste de Allen modificado para avaliar a circulação colateral (se puncionar a artéria radial).",
-      "Localizar o pulso arterial (radial, braquial ou femoral).",
-      "Realizar antissepsia do local.",
-      "Puncionar a artéria em um ângulo de 45-60º (radial) ou 90º (femoral).",
-      "Coletar 1-2 mL de sangue (a seringa se encherá com a pressão arterial).",
-      "Remover a agulha e aplicar compressão firme no local por 5-10 minutos.",
-      "Remover bolhas de ar da seringa, vedá-la e encaminhar ao laboratório imediatamente (em gelo, se necessário)."
+      "Realizar o <strong>Teste de Allen</strong> para confirmar circulação colateral (se punção radial).",
+      "Palpar o pulso arterial (Radial é a 1ª escolha).",
+      "Realizar antissepsia e esperar secar.",
+      "Puncionar a artéria a 45º (radial) ou 90º (femoral).",
+      "Deixar o sangue fluir pela pressão arterial (1-2ml).",
+      "Retirar agulha e realizar <strong>compressão firme por 5 minutos</strong> (ou mais se coagulopatia).",
+      "Retirar bolhas da seringa, vedar e homogeneizar."
     ],
-    "observations": "Evitar puncionar locais com lesões, fístulas ou infecções. A compressão pós-punção é vital para evitar hematomas.",
+    "observations": "Nunca reencapar a agulha. Identificar se o paciente usa O2 suplementar. Processar a amostra imediatamente.",
     "category": "Acessos e Punções"
   },
   {
@@ -137,20 +134,19 @@
     "icon": "Bone",
     "color": "text-orange-500",
     "openColor": "text-orange-600",
-    "description": "Punção da cavidade medular óssea para infusão de fluidos e drogas em emergências.",
+    "description": "Via de emergência para infusão de fluidos/drogas quando o acesso venoso falha.",
     "materials": [
-      "Dispositivo de inserção (ex: EZ-IO, BIG)", "Agulha de calibre apropriado", "Antisséptico", "Seringa com SF 0,9%", "Equipo de infusão"
+      "Dispositivo AIO (agulha manual ou furadeira)", "Antisséptico", "Seringa 10ml com SF", "Lidocaína (se paciente consciente)"
     ],
     "steps": [
-      "Identificar o sítio de inserção (ex: tíbia proximal, úmero proximal).",
-      "Realizar antissepsia rigorosa do local.",
-      "Inserir o dispositivo de punção perpendicularmente ao osso até sentir a perda de resistência.",
-      "Remover o mandril e conectar uma seringa.",
-      "Aspirar para confirmar a presença de medula óssea (nem sempre visível).",
-      "Realizar flush com 10ml de SF 0,9% (pode exigir pressão).",
-      "Fixar o dispositivo e iniciar a infusão (pode ser necessário pressurizador)."
+      "Identificar local (ex: Tíbia proximal - 2cm medial à tuberosidade tibial).",
+      "Realizar antissepsia.",
+      "Inserir a agulha perpendicularmente (90º) até sentir perda de resistência ('pop').",
+      "Retirar o mandril e aspirar (pode vir medula óssea).",
+      "<strong>Flush obrigatório:</strong> Injetar 10ml de SF em bolus para abrir o canal medular.",
+      "Fixar e conectar infusão (pode precisar de pressão)."
     ],
-    "observations": "Indicado em emergências (PCR, choque) quando o acesso venoso não é obtido rapidamente. É uma ponte temporária até um acesso definitivo ser estabelecido.",
+    "observations": "Qualquer droga IV pode ser feita IO. A dor no flush é intensa em pacientes conscientes (usar lidocaína prévia se possível).",
     "category": "Acessos e Punções"
   },
   {
@@ -158,20 +154,19 @@
     "icon": "Scissors",
     "color": "text-gray-500",
     "openColor": "text-gray-600",
-    "description": "Aproximação das bordas de feridas cutâneas limpas e superficiais.",
+    "description": "Aproximação de bordas de feridas traumáticas limpas.",
     "materials": [
-      "Kit de sutura estéril (porta-agulha, pinça, tesoura)", "Fio de sutura apropriado", "Anestésico local", "Seringa e agulha", "Antisséptico", "Campo estéril"
+      "Kit de sutura", "Fio (Nylon 3-0, 4-0 ou 5-0)", "Anestésico (Lidocaína)", "Seringa/Agulha", "SF 0,9%"
     ],
     "steps": [
-      "Avaliar a ferida (profundidade, contaminação, corpos estranhos).",
+      "Lavar a ferida abundantemente com SF 0,9% e remover corpos estranhos.",
       "Realizar anestesia local infiltrativa.",
-      "Limpar e irrigar a ferida abundantemente com SF 0,9%.",
-      "Realizar a aproximação das bordas da ferida.",
-      "Executar a técnica de sutura (ex: pontos simples interrompidos).",
-      "Limpar a área suturada e aplicar curativo oclusivo.",
-      "Orientar o paciente sobre os cuidados e o retorno para retirada dos pontos."
+      "Realizar antissepsia das bordas.",
+      "Executar pontos simples (separados), evertendo as bordas da pele.",
+      "Não apertar excessivamente os nós (risco de isquemia).",
+      "Realizar curativo oclusivo."
     ],
-    "observations": "Realizado por enfermeiros com capacitação específica, conforme protocolos institucionais. Indicado para feridas lineares, limpas e sem perda de tecido.",
+    "observations": "Verificar legislação local sobre competência do enfermeiro. Indicado apenas para feridas superficiais, sem lesão de tendões/nervos.",
     "category": "Cuidados Gerais"
   },
   {
@@ -179,19 +174,20 @@
     "icon": "Droplets",
     "color": "text-green-500",
     "openColor": "text-green-600",
-    "description": "Inserção de sonda pelo nariz até o estômago/intestino para alimentação ou drenagem.",
+    "description": "Inserção de sonda para alimentação (enteral) ou descompressão (gástrica).",
     "materials": [
-      "Sonda (calibre adequado)", "Luvas", "Xilocaína gel", "Seringa 20ml", "Fita adesiva", "Estetoscópio", "Tira de pH"
+      "Sonda (Levine ou Dobbhoff)", "Seringa 20ml", "Copo com água", "Estetoscópio", "Fita adesiva", "Xilocaína gel", "Tira de pH"
     ],
     "steps": [
-      "Posicionar paciente em Fowler (cabeceira 45-90º).",
-      "Medir a sonda (nariz -> lóbulo da orelha -> apêndice xifoide).",
-      "Lubrificar e introduzir a sonda, solicitando deglutição.",
-      "Verificar posicionamento: aspirar conteúdo gástrico e testar pH (≤ 5.5).",
-      "<strong>Padrão-ouro:</strong> solicitar radiografia para confirmar antes do uso.",
-      "Fixar a sonda e registrar o procedimento."
+      "Posicionar paciente em Fowler (45º+).",
+      "Medir a sonda: Ponta do nariz -> Lóbulo da orelha -> Apêndice Xifoide (+10cm se para intestino).",
+      "Lubrificar a ponta e introduzir pela narina.",
+      "Solicitar que o paciente degluta (oferecer água ajuda) enquanto progride a sonda.",
+      "<strong>Confirmação:</strong> Aspirar conteúdo gástrico e medir pH (ácido < 5.5).",
+      "<strong>PADRÃO-OURO:</strong> Raio-X de abdome para confirmar posição pós-pilórica antes de iniciar dieta.",
+      "Fixar adequadamente no nariz sem pressionar a asa nasal."
     ],
-    "observations": "Se o paciente tossir ou apresentar dispneia, retire a sonda imediatamente. O método de ausculta com injeção de ar é inseguro e não recomendado.",
+    "observations": "A ausculta epigástrica com injeção de ar <strong>NÃO</strong> é segura para confirmar posicionamento para dieta. Aguardar Raio-X.",
     "category": "Sondagens e Drenagem"
   },
   {
@@ -199,20 +195,19 @@
     "icon": "AirVent",
     "color": "text-purple-500",
     "openColor": "text-purple-600",
-    "description": "Remoção de secreções da árvore traqueobrônquica.",
+    "description": "Remoção de secreções em pacientes com via aérea artificial ou natural.",
     "materials": [
-      "Sonda de aspiração estéril", "Luva estéril", "Fonte de vácuo (80-120 mmHg)", "Frasco coletor", "Gaze estéril", "SF 0,9% ou AD"
+      "Sonda de aspiração estéril", "Luva estéril (mão dominante)", "Óculos de proteção/Máscara", "Fonte de vácuo"
     ],
     "steps": [
-      "Hiperoxigenar o paciente por 1-2 minutos.",
-      "Calçar luva estéril na mão dominante.",
-      "Conectar a sonda e introduzir desligada até encontrar resistência.",
-      "Aplicar aspiração intermitente, com movimentos rotacionais, ao retirar a sonda.",
-      "O procedimento não deve exceder <strong>15 segundos</strong>.",
-      "Reoxigenar o paciente entre as aspirações.",
-      "Registrar aspecto e volume da secreção."
+      "<strong>Hiperoxigenar</strong> o paciente antes do procedimento.",
+      "Introduzir a sonda estéril <strong>sem aspirar</strong> até encontrar resistência.",
+      "Tracionar a sonda 1cm e aplicar sucção <strong>apenas na retirada</strong>.",
+      "Retirar com movimentos rotatórios.",
+      "Tempo máximo de aspiração: <strong>10 a 15 segundos</strong>.",
+      "Permitir recuperação entre as passagens."
     ],
-    "observations": "Técnica estritamente asséptica. Monitorar SpO2 e FC durante todo o procedimento. Aspirar primeiro a via aérea artificial, depois a boca/nariz com outra sonda.",
+    "observations": "Monitorar SpO2 e frequência cardíaca (risco de bradicardia vagal). Aspirar: TOT/Traqueo -> Nariz -> Boca (nesta ordem).",
     "category": "Vias Aéreas"
   },
   {
@@ -220,20 +215,20 @@
     "icon": "Bandage",
     "color": "text-teal-500",
     "openColor": "text-teal-600",
-    "description": "Limpeza e proteção de feridas limpas com baixo potencial de infecção.",
+    "description": "Limpeza e proteção de lesões cutâneas.",
     "materials": [
-      "Pacote de curativo estéril", "Luvas de procedimento", "Soro fisiológico 0,9% morno", "Cobertura secundária", "Fita adesiva"
+      "Pacote de curativo", "SF 0,9% morno", "Gaze", "Cobertura prescrita", "Fita adesiva"
     ],
     "steps": [
-      "Remover o curativo antigo e avaliar a ferida.",
-      "Calçar novas luvas ou usar técnica asséptica com pinças.",
-      "Limpar a ferida com gaze umedecida em SF 0,9%.",
-      "Realizar a limpeza sempre da <strong>área menos contaminada para a mais contaminada</strong> (centro para as bordas).",
-      "Secar as bordas da ferida com gaze seca.",
-      "Aplicar a cobertura secundária estéril e fixar.",
-      "Registrar o procedimento e a evolução da ferida."
+      "Remover curativo anterior (umidificar se aderido).",
+      "Calçar luvas ou usar pinças.",
+      "Limpar a ferida com jato de SF 0,9%.",
+      "Se usar gaze: limpar do <strong>menos contaminado para o mais contaminado</strong> (centro para fora, ou de cima para baixo).",
+      "Secar apenas a pele perilesional.",
+      "Aplicar a cobertura primária e secundária.",
+      "Datar e assinar."
     ],
-    "observations": "Sempre registrar as características da lesão para acompanhar a evolução. Feridas com sinais de infecção exigem avaliação e coberturas específicas.",
+    "observations": "Não esfregar o leito da ferida se houver tecido de granulação (sangra fácil). Manter técnica asséptica.",
     "category": "Cuidados Gerais"
   },
   {
@@ -241,23 +236,19 @@
     "icon": "Shield",
     "color": "text-lime-500",
     "openColor": "text-lime-600",
-    "description": "Procedimento para higienização do estoma e substituição do dispositivo (bolsa) coletor de efluentes intestinais.",
+    "description": "Higiene e substituição do dispositivo coletor.",
     "materials": [
-      "Luvas de procedimento", "Bolsa de colostomia nova e placa protetora", "Gaze ou compressas macias", "Água morna e sabão neutro", "Tesoura de ponta romba", "Medidor de estoma", "Pasta ou pó para pele periestomal (se necessário)", "Saco para descarte"
+      "Bolsa nova", "Medidor de estoma", "Tesoura curva", "Gaze/Toalha macia", "Água morna", "Sabão neutro"
     ],
     "steps": [
-      "Explicar o procedimento ao paciente e promover privacidade.",
-      "Realizar a higiene das mãos e calçar luvas de procedimento.",
-      "Remover suavemente a bolsa e a placa usadas, de cima para baixo, apoiando a pele.",
-      "Limpar a pele periestomal e o estoma com gaze umedecida em água morna e sabão neutro. Não esfregar o estoma.",
-      "Secar bem a pele ao redor do estoma com toques suaves, sem friccionar.",
-      "<strong>Medir o estoma e recortar a nova placa protetora com uma folga de 2-3 mm ao redor do estoma.</strong>",
-      "Aplicar pasta ou pó, se necessário, para nivelar a pele. Aquecer a placa adesiva com as mãos para melhorar a aderência.",
-      "Centralizar e aplicar a nova placa, pressionando suavemente do centro para as bordas por 1-2 minutos para garantir a vedação.",
-      "Encaixar a nova bolsa na placa (se sistema de 2 peças) e garantir que o sistema de fechamento (clamp ou velcro) esteja fechado.",
-      "Descartar os materiais, remover as luvas, higienizar as mãos e registrar o procedimento e o aspecto do estoma/pele."
+      "Remover bolsa antiga com cuidado, segurando a pele.",
+      "Limpar o estoma e a pele ao redor com água e sabão neutro. Secar bem (sem esfregar).",
+      "<strong>Medir o estoma:</strong> O orifício da placa deve ser 2-3mm maior que o estoma.",
+      "Recortar a placa no tamanho correto.",
+      "Aplicar a placa/bolsa, pressionando ao redor do estoma para vedar.",
+      "Fechar o clamp da bolsa."
     ],
-    "observations": "A troca deve ser realizada quando a bolsa estiver com 1/3 a 1/2 de sua capacidade. Avaliar o estoma a cada troca: deve estar vermelho vivo, úmido e indolor. Sinais de alerta: alteração na cor (pálido, roxo, preto), sangramento excessivo, retração ou prolapso do estoma, irritação da pele.",
+    "observations": "Trocar quando a bolsa estiver 1/3 cheia ou se houver vazamento. Avaliar a cor do estoma (deve ser vermelho vivo e úmido).",
     "category": "Cuidados Gerais"
   },
   {
@@ -265,22 +256,20 @@
     "icon": "HeartPulse",
     "color": "text-red-600",
     "openColor": "text-red-700",
-    "description": "Administração de hemocomponentes (concentrado de hemácias, plaquetas, plasma) por via intravenosa.",
+    "description": "Administração de hemocomponentes com segurança.",
     "materials": [
-      "Equipo de transfusão com filtro", "Hemocomponente", "Acesso venoso pérvio (18G/20G)", "Luvas", "Material para aferição de SSVV"
+      "Hemocomponente", "Equipo com filtro", "Acesso calibroso (20G+)", "Sinais Vitais"
     ],
     "steps": [
-      "Confirmar prescrição e consentimento informado.",
-      "Obter o hemocomponente no serviço de hemoterapia.",
-      "<strong>Dupla checagem à beira-leito:</strong> Dois profissionais devem confirmar a identificação do paciente (nome completo, data de nascimento) com a etiqueta da bolsa (tipo sanguíneo, fator Rh, número da bolsa).",
-      "Aferir e registrar os sinais vitais basais do paciente.",
-      "Instalar o equipo e iniciar a infusão lentamente nos primeiros 15 minutos (aprox. 2 mL/min).",
-      "<strong>Permanecer com o paciente nos primeiros 15 minutos</strong>, monitorando sinais de reação transfusional (febre, calafrios, dor lombar, prurido, dispneia).",
-      "Se não houver reação, ajustar a velocidade de infusão conforme prescrição (geralmente para correr em até 4 horas para CH).",
-      "Aferir SSVV periodicamente durante e após a transfusão.",
-      "Registrar todo o procedimento, incluindo horários, SSVV e qualquer intercorrência."
+      "<strong>Dupla Checagem à Beira-Leito (Obrigatória):</strong> 2 profissionais conferem nome, data de nascimento, tipo sanguíneo e nº da bolsa.",
+      "Aferir Sinais Vitais (SSVV) <strong>antes</strong> de iniciar.",
+      "Instalar o sangue com equipo de filtro.",
+      "Iniciar lentamente (gotejamento lento) nos primeiros <strong>15 minutos</strong>.",
+      "<strong>Permanecer ao lado do paciente</strong> nos primeiros 15 minutos (maior risco de reação).",
+      "Reavaliar SSVV após 15 min e ao final.",
+      "Tempo máximo de infusão: 4 horas."
     ],
-    "observations": "A checagem de identificação à beira-leito é a barreira de segurança mais crítica para prevenir reações hemolíticas fatais. Nunca adicione medicamentos à bolsa de sangue. O tempo máximo de infusão para concentrado de hemácias é de 4 horas.",
+    "observations": "Suspender imediatamente se: febre, calafrios, dor lombar, urticária ou hipotensão. Nunca infundir medicação na mesma via.",
     "category": "Cuidados Gerais"
   },
   {
@@ -288,20 +277,18 @@
     "icon": "LineChart",
     "color": "text-purple-600",
     "openColor": "text-purple-700",
-    "description": "Registro da atividade elétrica do coração a partir de 12 pontos de vista diferentes.",
+    "description": "Registro da atividade elétrica cardíaca.",
     "materials": [
-      "Eletrocardiógrafo", "Eletrodos descartáveis", "Gaze com álcool", "Material para tricotomia (se necessário)"
+      "Eletrocardiógrafo", "Eletrodos/Gel", "Álcool 70% (limpeza da pele)", "Gaze"
     ],
     "steps": [
-      "Explicar o procedimento e posicionar o paciente em decúbito dorsal, relaxado.",
-      "Expor o tórax, punhos e tornozelos. Realizar tricotomia e limpeza da pele com álcool se necessário.",
-      "<strong>Posicionamento dos eletrodos periféricos:</strong> R (braço direito - Vermelho), A (braço esquerdo - Amarelo), L (perna esquerda - Verde/Green), N (perna direita - Preto/Neutro). Mnemônico: 'Flamengo Sempre Ganha no Brasil'.",
-      "<strong>Posicionamento dos eletrodos precordiais:</strong> V1 (4º EIC, à direita do esterno), V2 (4º EIC, à esquerda do esterno), V3 (entre V2 e V4), V4 (5º EIC, na linha hemiclavicular), V5 (5º EIC, na linha axilar anterior), V6 (5º EIC, na linha axilar média).",
-      "Conectar os cabos aos eletrodos, seguindo as cores e identificações.",
-      "Verificar a calibração padrão (N = 10mm, 25 mm/s) e registrar o ECG, solicitando ao paciente que não fale ou se mova.",
-      "Identificar o traçado com nome completo do paciente, data e hora."
+      "Limpar a pele com álcool (retirar oleosidade) e realizar tricotomia se necessário.",
+      "<strong>Eletrodos Periféricos:</strong> R (Braço Dir/Vermelho), L (Braço Esq/Amarelo), F (Perna Esq/Verde), N (Perna Dir/Preto).",
+      "<strong>Precordiais:</strong> V1 (4º EIC dir), V2 (4º EIC esq), V4 (5º EIC linha hemiclavicular), V3 (entre V2 e V4), V5 (lin. axilar anterior), V6 (lin. axilar média).",
+      "Solicitar que o paciente não se mova ou fale.",
+      "Registrar o traçado."
     ],
-    "observations": "O posicionamento correto dos eletrodos é crucial para um diagnóstico preciso. A troca de cabos gera alterações que podem simular patologias graves. Em mulheres, os eletrodos V3-V6 devem ser colocados abaixo da mama.",
+    "observations": "V1 e V2 ficam nas bordas do esterno. Em mulheres, colocar os eletrodos abaixo da mama (não sobre ela).",
     "category": "Monitoramento e Emergência",
     "diagramComponent": "EcgPlacementDiagram"
   },
@@ -310,21 +297,19 @@
     "icon": "TestTube",
     "color": "text-orange-600",
     "openColor": "text-orange-700",
-    "description": "Coleta de amostras de sangue para detecção de microrganismos na corrente sanguínea.",
+    "description": "Coleta de sangue para identificar bacteremia. A técnica asséptica é crítica.",
     "materials": [
-      "Frascos de hemocultura (aeróbio e anaeróbio)", "Luvas estéreis", "Clorexidina alcoólica >0,5%", "Dispositivo de coleta", "Garrote", "Gaze estéril"
+      "Frascos (Aeróbio + Anaeróbio)", "Seringas/Agulhas ou Scalp a vácuo", "Clorexidina Alcoólica", "Luvas estéreis"
     ],
     "steps": [
-      "Realizar higiene das mãos e identificar os frascos.",
-      "Escolher o sítio de punção (preferencialmente veia periférica).",
-      "<strong>Realizar antissepsia rigorosa da pele:</strong> Aplicar clorexidina alcoólica com movimentos de vai e vem por 30 segundos e aguardar a secagem completa.",
-      "Realizar antissepsia da tampa de borracha dos frascos com álcool 70%.",
-      "Calçar luvas estéreis e realizar a punção venosa sem palpar novamente o local.",
-      "Coletar o volume de sangue recomendado (8-10 mL por frasco em adultos).",
-      "Inocular primeiro o frasco <strong>aeróbio</strong>, depois o <strong>anaeróbio</strong>.",
-      "Homogeneizar suavemente os frascos e encaminhar ao laboratório imediatamente."
+      "Realizar higiene das mãos e calçar luvas.",
+      "Realizar antissepsia rigorosa da pele com Clorexidina Alcoólica (fricção por 30s). <strong>Esperar secar.</strong>",
+      "Desinfetar a tampa dos frascos com álcool 70%.",
+      "Coletar o sangue (punção periférica nova, não usar cateteres antigos).",
+      "<strong>Ordem de injeção:</strong> 1º Frasco Aeróbio (Azul) -> 2º Frasco Anaeróbio (Roxo/Laranja). Se usar Scalp a vácuo, a ordem inverte (Aeróbio primeiro para purgar ar do tubo).",
+      "Volume ideal: 8-10ml por frasco (adulto)."
     ],
-    "observations": "A contaminação da amostra é o principal desafio. A técnica de antissepsia da pele é a etapa mais crítica. Idealmente, coletar duas amostras de locais de punção diferentes. Evitar coletar de acessos venosos já existentes.",
+    "observations": "Coletar preferencialmente 2 pares (4 frascos) de sítios diferentes. Evitar coletar de cateter central, salvo ordem específica.",
     "category": "Acessos e Punções"
   },
   {
@@ -332,21 +317,19 @@
     "icon": "AirVent",
     "color": "text-cyan-600",
     "openColor": "text-cyan-700",
-    "description": "Manutenção da perviedade e higiene da via aérea artificial para prevenir complicações.",
+    "description": "Manutenção da via aérea e prevenção de infecções.",
     "materials": [
-      "Kit de curativo estéril", "Luvas (estéril e de procedimento)", "SF 0,9%", "Gaze estéril", "Cadarço de fixação", "Material para aspiração"
+      "Kit curativo estéril", "SF 0,9%", "Cadarço/Fixador", "Cuffômetro"
     ],
     "steps": [
-      "Explicar o procedimento e posicionar o paciente em semi-Fowler.",
-      "Aspirar a via aérea (cânula e boca) antes de iniciar o curativo.",
-      "Remover o curativo antigo e inspecionar o estoma para sinais de infecção.",
-      "<strong>Limpeza do estoma:</strong> Com técnica asséptica, limpar a pele ao redor do estoma com gaze umedecida em SF 0,9%, do estoma para fora.",
-      "Secar a pele e aplicar um novo curativo estéril específico para traqueostomia (não cortar gaze comum).",
-      "<strong>Troca do cadarço de fixação (realizada por dois profissionais):</strong> Um estabiliza a cânula enquanto o outro troca o cadarço. A fixação deve permitir a passagem de um dedo.",
-      "Se aplicável, remover, limpar e reinserir a cânula interna.",
-      "Verificar e manter a pressão do cuff entre 20-30 cmH₂O."
+      "Aspirar a cânula e a boca antes de mexer no cuff.",
+      "Verificar a pressão do Cuff: manter entre <strong>20-30 cmH₂O</strong> (prevenir isquemia e broncoaspiração).",
+      "Limpar a pele ao redor do estoma com SF 0,9%.",
+      "Trocar o curativo (usar gaze fenestrada própria ou dobrada, nunca cortada para não aspirar fios).",
+      "Trocar a fixação/cadarço (necessário 2 pessoas: uma segura a cânula, a outra troca).",
+      "Limpar a cânula interna (endocânula) se houver."
     ],
-    "observations": "A troca do cadarço é um momento de alto risco para decanulação acidental. Manter sempre um kit de traqueostomia de emergência (com uma cânula do mesmo tamanho e uma de tamanho menor) à beira do leito.",
+    "observations": "Risco de decanulação acidental durante a troca do cadarço. Manter material de reintubação/traqueo próximo.",
     "category": "Vias Aéreas"
   },
   {
@@ -354,24 +337,21 @@
     "icon": "Zap",
     "color": "text-yellow-500",
     "openColor": "text-yellow-600",
-    "description": "Aplicação de uma corrente elétrica no tórax para reverter arritmias cardíacas.",
+    "description": "Aplicação de choque elétrico terapêutico.",
     "materials": [
-      "Desfibrilador/cardioversor", "Pás ou eletrodos adesivos", "Material para sedação/analgesia", "Material de SAV"
+      "Cardioversor", "Gel condutor", "Sedação (para cardioversão)"
     ],
     "steps": [
-      "<strong>Desfibrilação (PCR por FV/TV sem pulso):</strong>",
-      "1. Ligar o desfibrilador e aplicar as pás/eletrodos.",
-      "2. Selecionar a carga (ex: 200J bifásico) e carregar enquanto a RCP continua.",
-      "3. <strong>Garantir segurança:</strong> Afastar todos do paciente ('Afastar!').",
-      "4. Aplicar o choque e <strong>reiniciar a RCP imediatamente</strong>.",
-      "<strong>Cardioversão Sincronizada (Taquiarritmias instáveis com pulso):</strong>",
-      "1. Administrar sedação/analgesia.",
-      "2. <strong>Ativar o modo 'SINCRONIZAR' (SYNC)</strong> e verificar se há um marcador em cada QRS.",
-      "3. Selecionar a carga (ex: 50-100J para FA) e carregar.",
-      "4. Garantir segurança ('Afastar!').",
-      "5. Pressionar e <strong>manter pressionado</strong> o botão de choque até a descarga ocorrer."
+      "<strong>Desfibrilação (PCR - FV/TV sem pulso):</strong>",
+      "Carga máxima/indicada. <strong>NÃO</strong> sincronizar. Choque imediato.",
+      "<strong>Cardioversão (Taqui instável COM pulso):</strong>",
+      "1. Sedar o paciente (se consciente).",
+      "2. Apertar botão <strong>SYNC</strong> (Sincronizar) no aparelho. Confirmar a marcação no QRS (R).",
+      "3. Carregar energia.",
+      "4. Afastar todos.",
+      "5. Aplicar choque (manter botões pressionados até a descarga, pois há delay da sincronização)."
     ],
-    "observations": "A principal diferença é a <strong>sincronização</strong>. Desfibrilação é para PCR e não é sincronizada. Cardioversão é para pacientes com pulso e <strong>DEVE</strong> ser sincronizada para evitar o fenômeno R sobre T. Se o paciente entrar em PCR, desligue o modo SYNC e desfibrila.",
+    "observations": "A diferença vital é o botão SYNC. Cardioverter sem sincronizar em um paciente com pulso pode causar FV (choque na onda T).",
     "category": "Monitoramento e Emergência"
   }
 ]
