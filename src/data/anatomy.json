@@ -1,0 +1,127 @@
+[
+  {
+    "id": "cardiovascular",
+    "name": "Sistema Cardiovascular",
+    "icon": "HeartPulse",
+    "color": "text-red-600",
+    "bgColor": "bg-red-50",
+    "description": "Responsável pelo transporte de oxigênio, nutrientes e hormônios para as células.",
+    "anatomy": [
+      { "part": "Coração", "function": "Bomba muscular oca que impulsiona o sangue. Dividido em 4 câmaras (Átrios e Ventrículos)." },
+      { "part": "Artérias", "function": "Vasos que levam sangue (geralmente oxigenado) do coração para o corpo. Alta pressão." },
+      { "part": "Veias", "function": "Vasos que trazem sangue (geralmente desoxigenado) do corpo para o coração. Possuem válvulas." },
+      { "part": "Capilares", "function": "Vasos microscópicos onde ocorrem as trocas gasosas e de nutrientes." }
+    ],
+    "physiology": "O ciclo cardíaco envolve a sístole (contração/ejeção) e a diástole (relaxamento/enchimento). O sangue pobre em O2 chega ao Átrio Direito -> Ventrículo Direito -> Pulmões. O sangue rico em O2 volta ao Átrio Esquerdo -> Ventrículo Esquerdo -> Corpo (Aorta).",
+    "nursingFocus": [
+      "Auscuta Cardíaca: Focos Aórtico, Pulmonar, Tricúspide e Mitral.",
+      "Pulsos: Avaliar simetria e amplitude (Radial, Carotídeo, Femoral, Pedioso).",
+      "Edema: Sinal de falha na bomba (insuficiência cardíaca) ou retorno venoso.",
+      "Perfusão: Tempo de enchimento capilar deve ser < 2 segundos."
+    ]
+  },
+  {
+    "id": "respiratory",
+    "name": "Sistema Respiratório",
+    "icon": "Wind",
+    "color": "text-blue-500",
+    "bgColor": "bg-blue-50",
+    "description": "Responsável pelas trocas gasosas (hematose) e equilíbrio ácido-básico.",
+    "anatomy": [
+      { "part": "Vias Aéreas Superiores", "function": "Nariz, faringe, laringe. Aquecem, umidificam e filtram o ar." },
+      { "part": "Traqueia e Brônquios", "function": "Conduzem o ar aos pulmões. Possuem cílios para limpeza." },
+      { "part": "Pulmões", "function": "Órgãos esponjosos onde ocorre a troca gasosa." },
+      { "part": "Alvéolos", "function": "Sacos de ar microscópicos; unidade funcional onde ocorre a hematose." }
+    ],
+    "physiology": "A ventilação depende do diafragma. Na inspiração, ele desce e a pressão intratorácica diminui (ar entra). Na hematose, o O2 passa do alvéolo para o sangue e o CO2 faz o caminho inverso por difusão.",
+    "nursingFocus": [
+      "Padrão Respiratório: Observar uso de musculatura acessória, tiragem e frequência.",
+      "Saturação (SpO2): Ideal > 94%. Atenção a extremidades frias que falseiam leitura.",
+      "Ausculta: Identificar Murmúrio Vesicular (normal) vs. Ruídos Adventícios (sibilos, roncos, estertores).",
+      "Aspiração: Cuidado para não lesionar a mucosa traqueal e evitar hipóxia."
+    ]
+  },
+  {
+    "id": "nervous",
+    "name": "Sistema Nervoso",
+    "icon": "Brain",
+    "color": "text-violet-600",
+    "bgColor": "bg-violet-50",
+    "description": "Controla e coordena as funções corporais e interpreta estímulos.",
+    "anatomy": [
+      { "part": "SNC (Central)", "function": "Encéfalo (Cérebro, Cerebelo, Tronco) e Medula Espinhal." },
+      { "part": "SNP (Periférico)", "function": "Nervos cranianos e espinhais que conectam o SNC ao corpo." },
+      { "part": "Neurônio", "function": "Célula unidade funcional, transmite impulsos elétricos (sinapses)." },
+      { "part": "Meninges", "function": "Membranas que protegem o SNC (Dura-máter, Aracnoide, Pia-máter)." }
+    ],
+    "physiology": "Recebe estímulos sensoriais (aferentes), processa no cérebro e envia respostas motoras (eferentes). O Sistema Autônomo controla funções involuntárias: Simpático (luta/fuga - adrenalina) e Parassimpático (repouso - acetilcolina).",
+    "nursingFocus": [
+      "Escala de Glasgow: Avaliação do nível de consciência (Ocular, Verbal, Motora).",
+      "Pupilas: Avaliar fotorreagência e simetria (isocóricas, anisocóricas, midríase, miose).",
+      "Déficits Motores: Testar força e sensibilidade nos 4 membros (paresia/plegia).",
+      "Sinais de PIC: Hipertensão, bradicardia e alteração respiratória (Tríade de Cushing)."
+    ]
+  },
+  {
+    "id": "renal",
+    "name": "Sistema Renal/Urinário",
+    "icon": "Droplet",
+    "color": "text-yellow-500",
+    "bgColor": "bg-yellow-50",
+    "description": "Filtra o sangue, remove excretas e regula o volume de líquidos e eletrólitos.",
+    "anatomy": [
+      { "part": "Rins", "function": "Filtram o sangue e produzem urina. Produzem eritropoietina." },
+      { "part": "Ureteres", "function": "Tubos que transportam a urina do rim à bexiga." },
+      { "part": "Bexiga", "function": "Reservatório muscular temporário de urina." },
+      { "part": "Uretra", "function": "Canal de excreção. Na mulher é curto (risco ITU), no homem é longo." }
+    ],
+    "physiology": "O néfron é a unidade funcional. O sangue é filtrado no glomérulo. Tubulos reabsorvem água e nutrientes essenciais (Glicose, Na+, K+) e secretam toxinas. O volume urinário reflete a perfusão renal e o estado de hidratação.",
+    "nursingFocus": [
+      "Débito Urinário: Normal 0,5 a 1 mL/kg/h. Oligúria (<400mL/dia) é sinal de alerta.",
+      "Aspecto da Urina: Cor (hematúria, colúria), odor e turbidez.",
+      "Sondagem Vesical: Técnica estéril rigorosa para evitar infecções.",
+      "Balanço Hídrico: Fundamental em pacientes críticos e renais."
+    ]
+  },
+  {
+    "id": "digestive",
+    "name": "Sistema Digestório",
+    "icon": "Utensils",
+    "color": "text-orange-500",
+    "bgColor": "bg-orange-50",
+    "description": "Processa alimentos, absorve nutrientes e elimina resíduos.",
+    "anatomy": [
+      { "part": "Estômago", "function": "Mistura o alimento com suco gástrico (ácido). Início da digestão proteica." },
+      { "part": "Intestino Delgado", "function": "Duodeno, Jejuno, Íleo. Principal local de absorção de nutrientes." },
+      { "part": "Fígado", "function": "Metaboliza fármacos, produz bile, fatores de coagulação e albumina." },
+      { "part": "Intestino Grosso", "function": "Absorção de água e formação das fezes." }
+    ],
+    "physiology": "Movimentos peristálticos movem o bolo alimentar. Enzimas (amilase, pepsina, lipase) quebram macromoléculas. O fígado processa nutrientes absorvidos antes de irem para a circulação sistêmica.",
+    "nursingFocus": [
+      "Ruídos Hidroaéreos (RHA): Auscultar antes de palpar. Ausência pode indicar íleo paralítico.",
+      "Sondas (SNG/SNE): Verificar posicionamento (pH, ausculta, Raio-X) antes de dieta.",
+      "Eliminações: Avaliar constipação, diarreia, melena (sangue digerido) ou hematoquezia.",
+      "Glicemia: O pâncreas (anexo) regula o açúcar. Monitorar em diabéticos e NPT."
+    ]
+  },
+  {
+    "id": "integumentary",
+    "name": "Sistema Tegumentar",
+    "icon": "Shield",
+    "color": "text-amber-700",
+    "bgColor": "bg-amber-50",
+    "description": "Pele e anexos. Proteção, termorregulação e sensibilidade.",
+    "anatomy": [
+      { "part": "Epiderme", "function": "Camada externa, barreira protetora, avascular." },
+      { "part": "Derme", "function": "Tecido conjuntivo, contém vasos, nervos, folículos e glândulas." },
+      { "part": "Hipoderme", "function": "Tecido adiposo subcutâneo, isolamento térmico e reserva de energia." }
+    ],
+    "physiology": "A pele regula a temperatura (suor/vasodilatação). Sintetiza Vitamina D. É a primeira linha de defesa imunológica. A integridade da pele é vital para prevenir infecções (sepse).",
+    "nursingFocus": [
+      "Lesão por Pressão: Mudança de decúbito e hidratação são vitais.",
+      "Turgor e Elasticidade: Indicadores de hidratação.",
+      "Coloração: Palidez, cianose, icterícia, hiperemia.",
+      "Administração SC/ID: Conhecer a anatomia para aplicar insulina e vacinas corretamente."
+    ]
+  }
+]
