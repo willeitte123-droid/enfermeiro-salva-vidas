@@ -1,0 +1,132 @@
+[
+  {
+    "id": "sus-principios",
+    "title": "Princípios do SUS",
+    "category": "Legislação",
+    "description": "Os pilares doutrinários e organizativos da Lei 8.080/90.",
+    "root": {
+      "label": "SUS",
+      "color": "bg-blue-600 text-white",
+      "children": [
+        {
+          "label": "Doutrinários (Éticos)",
+          "color": "bg-blue-100 text-blue-800 border-blue-200",
+          "children": [
+            { "label": "Universalidade", "note": "Saúde é direito de TODOS" },
+            { "label": "Integralidade", "note": "Promoção, Prevenção, Cura" },
+            { "label": "Equidade", "note": "Tratar desigual os desiguais" }
+          ]
+        },
+        {
+          "label": "Organizativos (Operacionais)",
+          "color": "bg-indigo-100 text-indigo-800 border-indigo-200",
+          "children": [
+            { "label": "Descentralização", "note": "Comando único em cada esfera" },
+            { "label": "Regionalização", "note": "Serviços próximos à população" },
+            { "label": "Hierarquização", "note": "Níveis de complexidade" },
+            { "label": "Participação Social", "note": "Conselhos e Conferências" }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "diabetes-tipos",
+    "title": "Diabetes Mellitus",
+    "category": "Saúde do Adulto",
+    "description": "Classificação, sintomas e tratamento.",
+    "root": {
+      "label": "Diabetes Mellitus",
+      "color": "bg-emerald-600 text-white",
+      "children": [
+        {
+          "label": "Tipo 1",
+          "color": "bg-red-100 text-red-800 border-red-200",
+          "children": [
+            { "label": "Autoimune", "note": "Destruição células Beta" },
+            { "label": "Insulino-dependente" },
+            { "label": "Início Abrupto", "note": "Geralmente jovens" }
+          ]
+        },
+        {
+          "label": "Sintomas (4 Ps)",
+          "color": "bg-amber-100 text-amber-800 border-amber-200",
+          "children": [
+            { "label": "Poliúria", "note": "Urina muito" },
+            { "label": "Polidipsia", "note": "Sede excessiva" },
+            { "label": "Polifagia", "note": "Fome excessiva" },
+            { "label": "Perda de Peso" }
+          ]
+        },
+        {
+          "label": "Tipo 2",
+          "color": "bg-emerald-100 text-emerald-800 border-emerald-200",
+          "children": [
+            { "label": "Resistência à Insulina" },
+            { "label": "Fatores de Risco", "note": "Obesidade, Sedentarismo" },
+            { "label": "Tratamento", "note": "ADO + Mudança Estilo de Vida" }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "lavagem-maos",
+    "title": "Higienização das Mãos",
+    "category": "Segurança do Paciente",
+    "description": "Os 5 momentos cruciais da OMS.",
+    "root": {
+      "label": "5 Momentos",
+      "color": "bg-sky-600 text-white",
+      "children": [
+        {
+          "label": "Antes",
+          "color": "bg-sky-100 text-sky-800 border-sky-200",
+          "children": [
+            { "label": "1. Tocar o paciente" },
+            { "label": "2. Realizar procedimento limpo/asséptico" }
+          ]
+        },
+        {
+          "label": "Depois",
+          "color": "bg-teal-100 text-teal-800 border-teal-200",
+          "children": [
+            { "label": "3. Risco de exposição a fluidos" },
+            { "label": "4. Tocar o paciente" },
+            { "label": "5. Tocar superfícies próximas" }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "imunizacao-vacinas",
+    "title": "Vacinas ao Nascer",
+    "category": "Saúde da Criança",
+    "description": "Vacinas administradas na maternidade.",
+    "root": {
+      "label": "Ao Nascer",
+      "color": "bg-pink-600 text-white",
+      "children": [
+        {
+          "label": "BCG",
+          "color": "bg-pink-100 text-pink-800 border-pink-200",
+          "children": [
+            { "label": "Proteção", "note": "Formas graves Tuberculose" },
+            { "label": "Via", "note": "Intradérmica (ID)" },
+            { "label": "Local", "note": "Braço Direito (inserção inferior do deltoide)" }
+          ]
+        },
+        {
+          "label": "Hepatite B",
+          "color": "bg-orange-100 text-orange-800 border-orange-200",
+          "children": [
+            { "label": "Prazo", "note": "Preferencialmente nas primeiras 12h" },
+            { "label": "Via", "note": "Intramuscular (IM)" },
+            { "label": "Local", "note": "Vasto Lateral da Coxa" }
+          ]
+        }
+      ]
+    }
+  }
+]
