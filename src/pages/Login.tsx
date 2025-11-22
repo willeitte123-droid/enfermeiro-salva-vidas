@@ -131,14 +131,14 @@ const Login = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
 
-        <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground p-6 text-center shadow-md">
+        <div className="flex flex-col items-center justify-center bg-blue-800 text-white p-6 text-center shadow-md">
           <img 
             src={themeSettings.logo_url || "/logo.svg"} 
             alt="Logo" 
-            className="h-32 w-32 rounded-full object-contain mb-6 bg-white border-4 border-blue-600 p-1 shadow-xl" 
+            className="h-32 w-32 rounded-full object-contain mb-6 bg-white border-4 border-blue-900 p-1 shadow-xl" 
           />
           <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
-          <p className="mt-4 text-base font-medium text-primary-foreground max-w-lg">
+          <p className="mt-4 text-base font-medium text-blue-100 max-w-lg">
             Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
           </p>
         </div>
