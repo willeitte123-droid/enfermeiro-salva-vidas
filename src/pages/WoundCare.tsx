@@ -164,10 +164,10 @@ const WoundCare = () => {
   }, [searchTerm]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 animate-in fade-in duration-500 pb-6">
       <div className="text-center px-2">
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mb-2">
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Curativos e Feridas</h1>
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mb-1">
+          <h1 className="text-2xl sm:text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Curativos e Feridas</h1>
           {profile && (
             <FavoriteButton
               userId={profile.id}
@@ -177,72 +177,72 @@ const WoundCare = () => {
             />
           )}
         </div>
-        <p className="text-sm sm:text-base text-muted-foreground">Guia de avaliação de tecidos e seleção de coberturas</p>
+        <p className="text-xs sm:text-base text-muted-foreground">Avaliação e seleção de coberturas.</p>
       </div>
 
       <Tabs defaultValue="tissues" className="space-y-4">
         {/* Mobile Responsive Tabs */}
-        <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card p-2 shadow-sm max-w-[100vw]">
-          <TabsList className="flex w-max space-x-2 h-auto bg-transparent p-0">
-            <TabsTrigger value="tissues" className="py-2 font-semibold text-sky-700 bg-sky-50 hover:bg-sky-100 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-md dark:bg-sky-900/50 dark:text-sky-300 dark:hover:bg-sky-900/70 data-[state=active]:dark:bg-sky-600">Avaliação da Ferida</TabsTrigger>
-            <TabsTrigger value="pressure-injury" className="py-2 font-semibold text-red-700 bg-red-50 hover:bg-red-100 data-[state=active]:bg-red-600 data-[state=active]:text-white rounded-md dark:bg-red-900/50 dark:text-red-300 dark:hover:bg-red-900/70 data-[state=active]:dark:bg-red-600">Lesão por Pressão</TabsTrigger>
-            <TabsTrigger value="diabetic-foot" className="py-2 font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-600 data-[state=active]:text-white rounded-md dark:bg-amber-900/50 dark:text-amber-300 dark:hover:bg-amber-900/70 data-[state=active]:dark:bg-amber-600">Pé Diabético</TabsTrigger>
-            <TabsTrigger value="vascular-ulcers" className="py-2 font-semibold text-violet-700 bg-violet-50 hover:bg-violet-100 data-[state=active]:bg-violet-600 data-[state=active]:text-white rounded-md dark:bg-violet-900/50 dark:text-violet-300 dark:hover:bg-violet-900/70 data-[state=active]:dark:bg-violet-600">Úlceras Vasculares</TabsTrigger>
-            <TabsTrigger value="dressings" className="py-2 font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 data-[state=active]:bg-emerald-600 data-[state=active]:text-white rounded-md dark:bg-emerald-900/50 dark:text-emerald-300 dark:hover:bg-emerald-900/70 data-[state=active]:dark:bg-emerald-600">Tipos de Cobertura</TabsTrigger>
-          </TabsList>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        <div className="w-full -mx-4 px-4 sm:mx-0 sm:px-0">
+          <ScrollArea className="w-full whitespace-nowrap rounded-lg border bg-card/50 p-2 shadow-sm">
+            <TabsList className="flex w-max space-x-2 h-auto bg-transparent p-0">
+              <TabsTrigger value="tissues" className="px-3 py-1.5 text-xs font-semibold text-sky-700 bg-sky-50 hover:bg-sky-100 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-md dark:bg-sky-900/50 dark:text-sky-300 data-[state=active]:dark:bg-sky-600">Avaliação</TabsTrigger>
+              <TabsTrigger value="pressure-injury" className="px-3 py-1.5 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 data-[state=active]:bg-red-600 data-[state=active]:text-white rounded-md dark:bg-red-900/50 dark:text-red-300 data-[state=active]:dark:bg-red-600">Lesão Pressão</TabsTrigger>
+              <TabsTrigger value="diabetic-foot" className="px-3 py-1.5 text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-600 data-[state=active]:text-white rounded-md dark:bg-amber-900/50 dark:text-amber-300 data-[state=active]:dark:bg-amber-600">Pé Diabético</TabsTrigger>
+              <TabsTrigger value="vascular-ulcers" className="px-3 py-1.5 text-xs font-semibold text-violet-700 bg-violet-50 hover:bg-violet-100 data-[state=active]:bg-violet-600 data-[state=active]:text-white rounded-md dark:bg-violet-900/50 dark:text-violet-300 data-[state=active]:dark:bg-violet-600">Vasculares</TabsTrigger>
+              <TabsTrigger value="dressings" className="px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 data-[state=active]:bg-emerald-600 data-[state=active]:text-white rounded-md dark:bg-emerald-900/50 dark:text-emerald-300 data-[state=active]:dark:bg-emerald-600">Coberturas</TabsTrigger>
+            </TabsList>
+            <ScrollBar orientation="horizontal" className="hidden" />
+          </ScrollArea>
+        </div>
 
         <TabsContent value="tissues" className="space-y-4">
-          <Card className="border-primary/50 bg-accent">
-            <CardHeader className="p-4 sm:p-6"><CardTitle className="flex items-center gap-2 text-base sm:text-lg"><Info className="h-5 w-5 text-primary" />Princípios de Avaliação (TIME)</CardTitle></CardHeader>
-            <CardContent className="space-y-2 text-xs sm:text-sm p-4 sm:p-6 pt-0 sm:pt-0">
-              <p><strong>T (Tissue - Tecido):</strong> Avaliar o tipo de tecido e desbridar se necessário.</p>
-              <p><strong>I (Infection/Inflammation - Infecção):</strong> Identificar e tratar a infecção/inflamação.</p>
-              <p><strong>M (Moisture - Umidade):</strong> Manter o equilíbrio da umidade (hidratar ou absorver).</p>
-              <p><strong>E (Edge - Bordas):</strong> Avaliar e tratar as bordas para promover a epitelização.</p>
+          <Card className="border-primary/30 bg-accent/50">
+            <CardHeader className="p-4 py-3"><CardTitle className="flex items-center gap-2 text-sm sm:text-lg"><Info className="h-4 w-4 text-primary" />Princípios TIME</CardTitle></CardHeader>
+            <CardContent className="space-y-1 text-xs sm:text-sm p-4 pt-0">
+              <p><strong>T:</strong> Tecido | <strong>I:</strong> Infecção | <strong>M:</strong> Umidade | <strong>E:</strong> Bordas</p>
             </CardContent>
           </Card>
 
-          <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
-            <div className="md:col-span-1 space-y-2">
+          <div className="grid md:grid-cols-3 gap-4">
+            {/* Lista de Tecidos - Grid 2 colunas no mobile para economizar altura */}
+            <div className="md:col-span-1 grid grid-cols-2 md:grid-cols-1 gap-2">
               {tissueTypes.map((tissue) => (
                 <div
                   key={tissue.name}
                   onClick={() => setSelectedTissue(tissue)}
                   className={cn(
-                    "p-3 sm:p-4 rounded-lg border-2 cursor-pointer transition-all flex items-center gap-3",
+                    "p-2 sm:p-3 rounded-lg border cursor-pointer transition-all flex flex-col sm:flex-row items-center sm:items-start gap-2 text-center sm:text-left h-full sm:h-auto justify-center sm:justify-start",
                     selectedTissue.name === tissue.name
-                      ? `${tissue.borderColor} ring-2 ring-primary bg-accent`
-                      : "border-transparent hover:bg-accent"
+                      ? `${tissue.borderColor} ring-1 ring-primary bg-accent`
+                      : "border-transparent hover:bg-accent/50 bg-card"
                   )}
                 >
-                  <div className={cn("p-2 rounded-full shrink-0", tissue.bgColor)}>
-                    <Bandage className={cn("h-4 w-4 sm:h-5 sm:w-5", tissue.textColor)} />
+                  <div className={cn("p-1.5 rounded-full shrink-0", tissue.bgColor)}>
+                    <Bandage className={cn("h-4 w-4", tissue.textColor)} />
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="font-semibold text-sm sm:text-base truncate">{tissue.name}</h3>
-                    <Badge variant="outline" className={cn("text-[10px] sm:text-xs", tissue.borderColor)}>{tissue.color}</Badge>
+                  <div className="min-w-0 flex flex-col items-center sm:items-start">
+                    <h3 className="font-semibold text-xs sm:text-sm leading-tight">{tissue.name}</h3>
+                    <Badge variant="outline" className={cn("text-[9px] h-4 px-1 mt-1 w-fit", tissue.borderColor)}>{tissue.color}</Badge>
                   </div>
                 </div>
               ))}
             </div>
             <div className="md:col-span-2">
-              <Card className="sticky top-6 shadow-lg">
-                <CardHeader className={cn("rounded-t-lg p-4 sm:p-6", selectedTissue.bgColor, selectedTissue.textColor)}>
-                  <CardTitle className="text-lg sm:text-xl">{selectedTissue.name}</CardTitle>
-                  <CardDescription className={cn("text-xs sm:text-sm", selectedTissue.textColor, "opacity-80")}>{selectedTissue.description}</CardDescription>
+              <Card className="shadow-md border-t-4 md:sticky md:top-6" style={{ borderTopColor: selectedTissue.bgColor.replace('bg-', 'text-').includes('red') ? '#ef4444' : selectedTissue.bgColor.replace('bg-', 'text-').includes('pink') ? '#f472b6' : selectedTissue.bgColor.replace('bg-', 'text-').includes('yellow') ? '#eab308' : selectedTissue.bgColor.replace('bg-', 'text-').includes('gray') ? '#1f2937' : '#9333ea' }}>
+                <CardHeader className={cn("p-4 bg-muted/10")}>
+                  <CardTitle className="text-base sm:text-lg">{selectedTissue.name}</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm mt-1">{selectedTissue.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="p-4 sm:p-6 space-y-4">
+                <CardContent className="p-4 space-y-4">
                   <div>
-                    <h4 className="font-semibold text-sm text-primary mb-2">Objetivos do Tratamento</h4>
-                    <p className="text-sm">{selectedTissue.objectives}</p>
+                    <h4 className="font-semibold text-xs text-primary mb-1 uppercase tracking-wider">Objetivos</h4>
+                    <p className="text-sm text-muted-foreground">{selectedTissue.objectives}</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-sm mb-2">Coberturas Recomendadas</h4>
-                    <div className="flex flex-wrap gap-2">
+                    <h4 className="font-semibold text-xs mb-2 uppercase tracking-wider">Indicações</h4>
+                    <div className="flex flex-wrap gap-1.5">
                       {selectedTissue.dressings.map((dressing, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs">{dressing}</Badge>
+                        <Badge key={idx} variant="secondary" className="text-[10px] sm:text-xs font-normal">{dressing}</Badge>
                       ))}
                     </div>
                   </div>
@@ -253,31 +253,33 @@ const WoundCare = () => {
         </TabsContent>
 
         <TabsContent value="pressure-injury" className="space-y-4">
-          <Card className="border-destructive/50 bg-destructive/5">
-            <CardHeader className="p-4 sm:p-6"><CardTitle className="flex items-center gap-2 text-destructive text-base sm:text-lg"><ShieldAlert className="h-5 w-5" />Prevenção é a Chave</CardTitle></CardHeader>
-            <CardContent className="space-y-2 text-xs sm:text-sm text-destructive/90 p-4 sm:p-6 pt-0 sm:pt-0">
-              <p><strong>• Reposicionamento:</strong> Mudança de decúbito a cada 2 horas.</p>
-              <p><strong>• Superfícies de Suporte:</strong> Uso de colchões e almofadas de alívio de pressão.</p>
-              <p><strong>• Cuidados com a Pele:</strong> Manter a pele limpa, seca e hidratada. Gerenciar a umidade.</p>
-              <p><strong>• Nutrição:</strong> Garantir aporte calórico e proteico adequado.</p>
+          <Card className="border-destructive/30 bg-destructive/5">
+            <CardHeader className="p-4 py-3"><CardTitle className="flex items-center gap-2 text-destructive text-sm sm:text-base"><ShieldAlert className="h-4 w-4" />Prevenção é a Chave</CardTitle></CardHeader>
+            <CardContent className="p-4 pt-0 text-xs sm:text-sm text-destructive/90">
+              <ul className="list-disc pl-4 space-y-1">
+                <li>Mudança de decúbito (2h/2h).</li>
+                <li>Superfícies de suporte (colchões).</li>
+                <li>Hidratação da pele.</li>
+                <li>Nutrição adequada.</li>
+              </ul>
             </CardContent>
           </Card>
-          <Accordion type="single" collapsible className="w-full space-y-3">
+          <Accordion type="single" collapsible className="w-full space-y-2">
             {pressureInjuryStages.map((item) => (
-              <AccordionItem key={item.stage} value={item.stage} className="border rounded-lg px-3 sm:px-4 bg-card shadow-sm">
-                <AccordionTrigger className="hover:no-underline py-3 sm:py-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full">
-                    <Badge className={cn("text-white w-fit", item.badgeColor)}>{item.stage}</Badge>
-                    <span className="font-semibold text-left text-sm sm:text-base">{item.description}</span>
+              <AccordionItem key={item.stage} value={item.stage} className="border rounded-lg px-3 bg-card shadow-sm">
+                <AccordionTrigger className="hover:no-underline py-3">
+                  <div className="flex items-center gap-3 w-full">
+                    <Badge className={cn("text-white text-[10px] sm:text-xs w-16 justify-center shrink-0", item.badgeColor)}>{item.stage}</Badge>
+                    <span className="font-semibold text-left text-xs sm:text-sm line-clamp-2">{item.description}</span>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="pt-2 sm:pt-4 space-y-4 text-sm">
-                  <div><h4 className="font-semibold mb-2">Características</h4><ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+                <AccordionContent className="pt-2 pb-4 space-y-3 text-xs sm:text-sm">
+                  <div><h4 className="font-bold mb-1">Características</h4><ul className="list-disc pl-4 text-muted-foreground">
                     {item.characteristics.map((char, i) => <li key={i}>{char}</li>)}
                   </ul></div>
-                  <div><h4 className="font-semibold text-primary mb-2">Objetivos do Tratamento</h4><p>{item.objectives}</p></div>
-                  <div><h4 className="font-semibold mb-2">Coberturas Sugeridas</h4><div className="flex flex-wrap gap-2">
-                    {item.dressings.map((dressing, idx) => <Badge key={idx} variant="secondary" className="text-xs">{dressing}</Badge>)}
+                  <div><h4 className="font-bold text-primary mb-1">Objetivos</h4><p>{item.objectives}</p></div>
+                  <div><h4 className="font-bold mb-2">Coberturas</h4><div className="flex flex-wrap gap-1.5">
+                    {item.dressings.map((dressing, idx) => <Badge key={idx} variant="outline" className="text-[10px]">{dressing}</Badge>)}
                   </div></div>
                 </AccordionContent>
               </AccordionItem>
@@ -286,96 +288,71 @@ const WoundCare = () => {
         </TabsContent>
 
         <TabsContent value="diabetic-foot" className="space-y-4">
-          <Card className="border-destructive/50 bg-destructive/5">
-            <CardHeader className="p-4 sm:p-6"><CardTitle className="flex items-center gap-2 text-destructive text-base sm:text-lg"><ShieldAlert className="h-5 w-5" />Prevenção e Educação</CardTitle></CardHeader>
-            <CardContent className="space-y-2 text-xs sm:text-sm text-destructive/90 p-4 sm:p-6 pt-0 sm:pt-0">
-              {diabeticFootData.prevention.map((item, index) => (
-                <p key={index}><strong>• {item.split(':')[0]}:</strong>{item.split(':')[1]}</p>
-              ))}
+          <Card className="border-destructive/30 bg-destructive/5">
+            <CardHeader className="p-4 py-3"><CardTitle className="flex items-center gap-2 text-destructive text-sm sm:text-base"><ShieldAlert className="h-4 w-4" />Prevenção e Educação</CardTitle></CardHeader>
+            <CardContent className="p-4 pt-0 text-xs sm:text-sm text-destructive/90">
+              <ul className="list-disc pl-4 space-y-1">
+                {diabeticFootData.prevention.slice(0, 4).map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
             </CardContent>
           </Card>
-          <Accordion type="single" collapsible className="w-full space-y-3">
-            <div className="px-1 mb-2"><h3 className="font-bold text-lg">Classificação de Wagner</h3><p className="text-sm text-muted-foreground">Estadiamento da gravidade da lesão.</p></div>
+          <Accordion type="single" collapsible className="w-full space-y-2">
+            <div className="px-1 mb-2"><h3 className="font-bold text-base">Classificação de Wagner</h3></div>
             {diabeticFootData.wagnerClassification.map((item) => (
-              <AccordionItem key={item.grade} value={item.grade} className="border rounded-lg px-3 sm:px-4 bg-card shadow-sm">
-                <AccordionTrigger className="hover:no-underline py-3 sm:py-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full">
-                    <Badge className={cn("text-white w-fit", item.badgeColor)}>{item.grade}</Badge>
-                    <span className="font-semibold text-left text-sm sm:text-base">{item.description}</span>
+              <AccordionItem key={item.grade} value={item.grade} className="border rounded-lg px-3 bg-card shadow-sm">
+                <AccordionTrigger className="hover:no-underline py-3">
+                  <div className="flex items-center gap-3 w-full">
+                    <Badge className={cn("text-white text-[10px] sm:text-xs w-14 justify-center shrink-0", item.badgeColor)}>{item.grade}</Badge>
+                    <span className="font-semibold text-left text-xs sm:text-sm">{item.description}</span>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="pt-2 sm:pt-4 space-y-4 text-sm">
-                  <div><h4 className="font-semibold mb-2">Características</h4><ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+                <AccordionContent className="pt-2 pb-4 space-y-3 text-xs sm:text-sm">
+                  <div><h4 className="font-bold mb-1">Características</h4><ul className="list-disc pl-4 text-muted-foreground">
                     {item.characteristics.map((char, i) => <li key={i}>{char}</li>)}
                   </ul></div>
-                  <div><h4 className="font-semibold text-primary mb-2">Objetivos do Tratamento</h4><p>{item.objectives}</p></div>
+                  <div><h4 className="font-bold text-primary mb-1">Objetivos</h4><p>{item.objectives}</p></div>
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
-          <Card>
-            <CardHeader className="p-4 sm:p-6"><CardTitle className="text-lg">Pilares do Tratamento</CardTitle></CardHeader>
-            <CardContent className="grid md:grid-cols-2 gap-4 p-4 sm:p-6 pt-0 sm:pt-0">
-              {diabeticFootData.treatmentPillars.map((item, index) => (
-                <div key={index} className="p-3 bg-muted rounded-md">
-                  <h4 className="font-semibold text-sm text-primary">{item.pillar}</h4>
-                  <p className="text-xs text-muted-foreground leading-snug">{item.description}</p>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
         </TabsContent>
 
         <TabsContent value="vascular-ulcers" className="space-y-4">
-          <Card className="border-blue-500/50 bg-blue-50 dark:bg-blue-950">
-            <CardHeader className="p-4 sm:p-6"><CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400 text-base sm:text-lg"><Scale className="h-5 w-5" />Índice Tornozelo-Braquial (ITB)</CardTitle></CardHeader>
-            <CardContent className="space-y-4 p-4 sm:p-6 pt-0 sm:pt-0">
-              <p className="text-xs sm:text-sm text-muted-foreground">O ITB é <strong>essencial</strong> para diferenciar úlceras. Fórmula: <strong>Maior PS Tornozelo ÷ Maior PS Braquial</strong>.</p>
-              <div className="overflow-x-auto">
-                <Table className="min-w-[500px]">
-                  <TableHeader><TableRow><TableHead>Valor do ITB</TableHead><TableHead>Interpretação</TableHead><TableHead>Conduta</TableHead></TableRow></TableHeader>
-                  <TableBody>
-                    <TableRow><TableCell className="font-semibold">{'>'} 1.3</TableCell><TableCell>Artérias não compressíveis</TableCell><TableCell>Investigar com outros métodos</TableCell></TableRow>
-                    <TableRow className="bg-green-100 dark:bg-green-900/30"><TableCell className="font-semibold">0.9 - 1.3</TableCell><TableCell>Normal</TableCell><TableCell>Terapia compressiva segura</TableCell></TableRow>
-                    <TableRow className="bg-yellow-100 dark:bg-yellow-900/30"><TableCell className="font-semibold">0.5 - 0.8</TableCell><TableCell>DAP Leve a Moderada</TableCell><TableCell>Compressão leve, com cautela</TableCell></TableRow>
-                    <TableRow className="bg-red-100 dark:bg-red-900/30"><TableCell className="font-semibold">{'<'} 0.5</TableCell><TableCell>DAP Grave</TableCell><TableCell><strong>Compressão CONTRAINDICADA</strong></TableCell></TableRow>
+          <Card className="border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/30">
+            <CardHeader className="p-4 py-3"><CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400 text-sm sm:text-base"><Scale className="h-4 w-4" />Índice Tornozelo-Braquial (ITB)</CardTitle></CardHeader>
+            <CardContent className="space-y-2 p-4 pt-0">
+              <p className="text-xs text-muted-foreground">Fórmula: <strong>Maior PS Tornozelo ÷ Maior PS Braquial</strong>.</p>
+              <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+                <Table className="min-w-[400px]">
+                  <TableHeader><TableRow><TableHead className="w-24">Valor ITB</TableHead><TableHead>Interpretação</TableHead><TableHead>Conduta</TableHead></TableRow></TableHeader>
+                  <TableBody className="text-xs sm:text-sm">
+                    <TableRow><TableCell className="font-semibold">{'>'} 1.3</TableCell><TableCell>Não compressível</TableCell><TableCell>Investigar</TableCell></TableRow>
+                    <TableRow className="bg-green-100/50 dark:bg-green-900/20"><TableCell className="font-semibold">0.9 - 1.3</TableCell><TableCell>Normal</TableCell><TableCell>Compressão OK</TableCell></TableRow>
+                    <TableRow className="bg-yellow-100/50 dark:bg-yellow-900/20"><TableCell className="font-semibold">0.5 - 0.8</TableCell><TableCell>DAP Leve/Mod.</TableCell><TableCell>Compressão leve</TableCell></TableRow>
+                    <TableRow className="bg-red-100/50 dark:bg-red-900/20"><TableCell className="font-semibold">{'<'} 0.5</TableCell><TableCell>DAP Grave</TableCell><TableCell className="font-bold text-destructive">SEM COMPRESSÃO</TableCell></TableRow>
                   </TableBody>
                 </Table>
               </div>
             </CardContent>
           </Card>
-          <div className="grid md:grid-cols-2 gap-6">
-            <Card><CardHeader className="p-4 sm:p-6"><CardTitle className="text-blue-600 text-lg">Úlcera Venosa</CardTitle></CardHeader><CardContent className="space-y-4 p-4 sm:p-6 pt-0 sm:pt-0">
-              <div><h4 className="font-semibold text-sm mb-2">Características</h4><ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted-foreground">
-                <li><strong>Localização:</strong> Terço inferior da perna ("bota").</li>
-                <li><strong>Aparência:</strong> Bordas irregulares, superficial.</li>
-                <li><strong>Exsudato:</strong> Moderado a alto.</li>
-                <li><strong>Pele:</strong> Edema, dermatite ocre.</li>
-                <li><strong>Dor:</strong> Melhora elevando pernas.</li>
-                <li><strong>Pulsos:</strong> Presentes.</li>
-              </ul></div>
-              <div><h4 className="font-semibold text-sm text-primary mb-2">Tratamento</h4><ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm">
-                <li className="font-bold">Terapia Compressiva.</li>
-                <li>Elevação dos membros.</li>
-              </ul></div>
-              <div><h4 className="font-semibold text-sm mb-2">Coberturas</h4><div className="flex flex-wrap gap-2">
-                <Badge variant="secondary" className="text-xs">Bota de Unna</Badge><Badge variant="secondary" className="text-xs">Alginato</Badge><Badge variant="secondary" className="text-xs">Espuma</Badge>
-              </div></div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <Card><CardHeader className="p-4 py-3"><CardTitle className="text-blue-600 text-sm sm:text-base">Úlcera Venosa</CardTitle></CardHeader><CardContent className="space-y-3 p-4 pt-0 text-xs sm:text-sm">
+              <ul className="list-disc pl-4 space-y-1 text-muted-foreground">
+                <li><strong>Local:</strong> "Bota", maléolo medial.</li>
+                <li><strong>Aparência:</strong> Irregular, superficial, exsudativa.</li>
+                <li><strong>Dor:</strong> Melhora elevando.</li>
+              </ul>
+              <div className="pt-2"><span className="font-bold text-primary block mb-1">Tratamento:</span> Compressão + Elevação.</div>
             </CardContent></Card>
-            <Card><CardHeader className="p-4 sm:p-6"><CardTitle className="text-red-600 text-lg">Úlcera Arterial</CardTitle></CardHeader><CardContent className="space-y-4 p-4 sm:p-6 pt-0 sm:pt-0">
-              <div><h4 className="font-semibold text-sm mb-2">Características</h4><ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted-foreground">
-                <li><strong>Localização:</strong> Dedos, calcanhar, proeminências.</li>
-                <li><strong>Aparência:</strong> "Saca-bocado", pálida/necrótica.</li>
-                <li><strong>Exsudato:</strong> Mínimo.</li>
-                <li><strong>Pele:</strong> Pálida, fria, sem pelos.</li>
-                <li><strong>Dor:</strong> Piora elevando (dor em repouso).</li>
-                <li><strong>Pulsos:</strong> Ausentes/Diminuídos.</li>
-              </ul></div>
-              <div><h4 className="font-semibold text-sm text-primary mb-2">Tratamento</h4><ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm">
-                <li className="font-bold">Revascularização.</li>
-                <li>Manter seco (se necrose estável).</li>
-              </ul></div>
-              <div className="border-l-4 border-destructive pl-3"><p className="text-xs font-bold text-destructive">COMPRESSÃO CONTRAINDICADA!</p></div>
+            <Card><CardHeader className="p-4 py-3"><CardTitle className="text-red-600 text-sm sm:text-base">Úlcera Arterial</CardTitle></CardHeader><CardContent className="space-y-3 p-4 pt-0 text-xs sm:text-sm">
+              <ul className="list-disc pl-4 space-y-1 text-muted-foreground">
+                <li><strong>Local:</strong> Pontas dos dedos, proeminências.</li>
+                <li><strong>Aparência:</strong> "Saca-bocado", pálida/seca.</li>
+                <li><strong>Dor:</strong> Piora elevando.</li>
+              </ul>
+              <div className="pt-2 border-l-4 border-destructive pl-2"><span className="font-bold text-destructive block">SEM COMPRESSÃO!</span>Revascularização.</div>
             </CardContent></Card>
           </div>
         </TabsContent>
@@ -387,22 +364,22 @@ const WoundCare = () => {
               placeholder="Buscar cobertura..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 h-9 text-sm"
             />
           </div>
 
           {filteredDressings.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {filteredDressings.map((dressing, index) => {
                 const itemId = `/wound-care#${dressing.name.toLowerCase().replace(/\s+/g, '-')}`;
                 return (
                   <Accordion type="single" collapsible key={index}>
-                    <AccordionItem value={`item-${index}`} className="border rounded-lg px-3 sm:px-4 bg-card shadow-sm">
-                      <div className="flex items-center py-2 sm:py-0">
-                        <AccordionTrigger className="flex-1 group hover:no-underline text-left py-2 sm:py-4">
-                          <div className="flex items-center gap-3 sm:gap-4">
-                            <Bandage className="h-5 w-5 text-primary shrink-0" />
-                            <p className="font-semibold text-left text-sm sm:text-base">{dressing.name}</p>
+                    <AccordionItem value={`item-${index}`} className="border rounded-lg px-3 bg-card shadow-sm">
+                      <div className="flex items-center py-1">
+                        <AccordionTrigger className="flex-1 group hover:no-underline text-left py-3">
+                          <div className="flex items-center gap-3">
+                            <Bandage className="h-4 w-4 text-primary shrink-0" />
+                            <p className="font-semibold text-left text-xs sm:text-sm">{dressing.name}</p>
                           </div>
                         </AccordionTrigger>
                         <div className="pl-2">
@@ -414,15 +391,16 @@ const WoundCare = () => {
                               itemTitle={dressing.name}
                               isInitiallyFavorited={favoriteSet.has(itemId)}
                               isLoading={isLoadingFavorites}
+                              className="h-8 w-8"
                             />
                           )}
                         </div>
                       </div>
-                      <AccordionContent className="pt-2 sm:pt-4 space-y-3 sm:space-y-4 border-t border-border/40 mt-1">
-                        <div className="flex items-start gap-3"><CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-green-700 mb-1">Indicação</h4><p className="text-xs sm:text-sm leading-snug">{dressing.indication}</p></div></div>
-                        <div className="flex items-start gap-3"><Zap className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-blue-700 mb-1">Ação</h4><p className="text-xs sm:text-sm leading-snug">{dressing.action}</p></div></div>
-                        <div className="flex items-start gap-3"><Clock className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600 shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-cyan-700 mb-1">Troca</h4><p className="text-xs sm:text-sm leading-snug">{dressing.changeInterval}</p></div></div>
-                        <div className="flex items-start gap-3"><AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 shrink-0 mt-0.5" /><div><h4 className="font-semibold text-sm text-amber-700 mb-1">Cuidado</h4><p className="text-xs sm:text-sm leading-snug">{dressing.contraindication}</p></div></div>
+                      <AccordionContent className="pt-2 pb-4 space-y-3 border-t border-border/40 mt-1 text-xs sm:text-sm">
+                        <div className="flex gap-2"><CheckCircle className="h-4 w-4 text-green-600 shrink-0" /><div className="flex-1"><span className="font-bold text-green-700 block mb-0.5">Indicação</span>{dressing.indication}</div></div>
+                        <div className="flex gap-2"><Zap className="h-4 w-4 text-blue-600 shrink-0" /><div className="flex-1"><span className="font-bold text-blue-700 block mb-0.5">Ação</span>{dressing.action}</div></div>
+                        <div className="flex gap-2"><Clock className="h-4 w-4 text-cyan-600 shrink-0" /><div className="flex-1"><span className="font-bold text-cyan-700 block mb-0.5">Troca</span>{dressing.changeInterval}</div></div>
+                        <div className="flex gap-2"><AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" /><div className="flex-1"><span className="font-bold text-amber-700 block mb-0.5">Cuidado</span>{dressing.contraindication}</div></div>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
@@ -430,7 +408,7 @@ const WoundCare = () => {
               })}
             </div>
           ) : (
-            <Card><CardContent className="py-12 text-center text-muted-foreground">Nenhuma cobertura encontrada</CardContent></Card>
+            <Card><CardContent className="py-12 text-center text-muted-foreground text-sm">Nenhuma cobertura encontrada</CardContent></Card>
           )}
         </TabsContent>
       </Tabs>
