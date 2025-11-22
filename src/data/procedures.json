@@ -4,21 +4,23 @@
     "icon": "ClipboardList",
     "color": "text-blue-500",
     "openColor": "text-blue-600",
-    "description": "Inserção de um cateter na bexiga para drenagem contínua de urina.",
+    "description": "Inserção de um cateter na bexiga para drenagem contínua de urina (procedimento estéril).",
     "materials": [
-      "Pacote de cateterismo estéril", "Luvas estéreis", "Sonda de Foley", "Xilocaína gel", "Seringa 10/20ml", "Água destilada", "Clorexidina aquosa", "Bolsa coletora"
+      "Pacote de cateterismo estéril", "Luvas estéreis", "Sonda de Foley (calibre adequado)", "Xilocaína gel 2%", "Seringa 20ml", "Água destilada (ampolas)", "Clorexidina aquosa ou PVPI tópico", "Bolsa coletora (Sistema Fechado)", "Luvas de procedimento (para higiene)", "Fita para fixação"
     ],
     "steps": [
-      "Explicar o procedimento e garantir privacidade.",
-      "Realizar higiene íntima.",
+      "Explicar o procedimento, garantir privacidade e posicionar o paciente.",
+      "Realizar higiene íntima prévia com água e sabão (usando luvas de procedimento).",
       "Abrir campo estéril e calçar luvas estéreis.",
-      "Realizar antissepsia da região genital.",
-      "Lubrificar e introduzir a sonda até o retorno de urina.",
-      "Insuflar o balonete com água destilada.",
-      "Conectar à bolsa coletora e fixar a sonda.",
-      "Registrar o procedimento e características da urina."
+      "Testar o balonete da sonda e <strong>conectar previamente à bolsa coletora</strong> (garantir sistema fechado).",
+      "Realizar a antissepsia da região genital (movimentos únicos, do meato para fora).",
+      "Lubrificar a sonda. <strong>Em homens:</strong> injetar 10-15ml de xilocaína gel na uretra e pinçar por alguns minutos.",
+      "Introduzir a sonda até o retorno de urina. <strong>IMPORTANTE:</strong> Após o retorno, avançar mais 3-5cm (mulheres) ou até a bifurcação em Y (homens) antes de insuflar.",
+      "Insuflar o balonete com Água Destilada (volume indicado na sonda). <strong>Nunca usar Soro Fisiológico (risco de cristalização).</strong>",
+      "Tracionar delicadamente a sonda até sentir resistência.",
+      "Realizar a fixação: <strong>Mulheres:</strong> face interna da coxa. <strong>Homens:</strong> região hipogástrica ou coxa (evita fístula penescrotal)."
     ],
-    "observations": "Técnica estritamente asséptica é crucial para prevenir ITU. Nunca force a passagem da sonda. Documente o volume do balonete.",
+    "observations": "Manter o sistema de drenagem sempre fechado e abaixo do nível da bexiga. Esvaziar a bolsa quando atingir 2/3 da capacidade. Não forçar a passagem da sonda se houver resistência (risco de falso trajeto).",
     "category": "Sondagens e Drenagem"
   },
   {
