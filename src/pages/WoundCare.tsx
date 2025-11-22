@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Bandage, Info, Droplet, CheckCircle, Zap, XCircle, Search, AlertTriangle, ShieldAlert, Scale, Clock } from "lucide-react";
+import { Bandage, Info, Droplet, CheckCircle, Zap, XCircle, Search, AlertTriangle, ShieldAlert, Scale, Clock, ArrowDown, ArrowUp, Heart, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -337,23 +337,89 @@ const WoundCare = () => {
               </div>
             </CardContent>
           </Card>
-          <div className="grid md:grid-cols-2 gap-4">
-            <Card><CardHeader className="p-4 py-3"><CardTitle className="text-blue-600 text-sm sm:text-base">Úlcera Venosa</CardTitle></CardHeader><CardContent className="space-y-3 p-4 pt-0 text-xs sm:text-sm">
-              <ul className="list-disc pl-4 space-y-1 text-muted-foreground">
-                <li><strong>Local:</strong> "Bota", maléolo medial.</li>
-                <li><strong>Aparência:</strong> Irregular, superficial, exsudativa.</li>
-                <li><strong>Dor:</strong> Melhora elevando.</li>
-              </ul>
-              <div className="pt-2"><span className="font-bold text-primary block mb-1">Tratamento:</span> Compressão + Elevação.</div>
-            </CardContent></Card>
-            <Card><CardHeader className="p-4 py-3"><CardTitle className="text-red-600 text-sm sm:text-base">Úlcera Arterial</CardTitle></CardHeader><CardContent className="space-y-3 p-4 pt-0 text-xs sm:text-sm">
-              <ul className="list-disc pl-4 space-y-1 text-muted-foreground">
-                <li><strong>Local:</strong> Pontas dos dedos, proeminências.</li>
-                <li><strong>Aparência:</strong> "Saca-bocado", pálida/seca.</li>
-                <li><strong>Dor:</strong> Piora elevando.</li>
-              </ul>
-              <div className="pt-2 border-l-4 border-destructive pl-2"><span className="font-bold text-destructive block">SEM COMPRESSÃO!</span>Revascularização.</div>
-            </CardContent></Card>
+          
+          <div className="grid lg:grid-cols-2 gap-4">
+            {/* Úlcera Venosa */}
+            <Card className="border-blue-200 dark:border-blue-800">
+              <CardHeader className="p-4 bg-blue-50 dark:bg-blue-900/20">
+                <CardTitle className="text-blue-700 dark:text-blue-300 flex items-center gap-2 text-base">
+                  <Heart className="h-5 w-5" /> Úlcera Venosa
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 space-y-4 text-sm">
+                <div>
+                  <span className="font-bold text-blue-600 block mb-1">Causa Principal:</span>
+                  <p className="text-muted-foreground">Insuficiência Venosa Crônica (hipertensão venosa).</p>
+                </div>
+                <div>
+                  <span className="font-bold block mb-1">Características da Lesão:</span>
+                  <ul className="list-disc pl-4 text-muted-foreground space-y-1">
+                    <li><strong>Local:</strong> Terço distal da perna (polaina), maléolo medial.</li>
+                    <li><strong>Aparência:</strong> Superficial, bordas irregulares.</li>
+                    <li><strong>Leito:</strong> Vermelho (tecido de granulação), úmido, <strong>muito exsudato</strong>.</li>
+                  </ul>
+                </div>
+                <div>
+                  <span className="font-bold block mb-1">Pele Perilesional:</span>
+                  <p className="text-muted-foreground"><strong>Dermatite ocre</strong> (manchas acastanhadas), edema, lipodermoesclerose (pele endurecida), eczema.</p>
+                </div>
+                <div>
+                  <span className="font-bold block mb-1">Dor:</span>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <ArrowUp className="h-4 w-4 text-green-500" /> Melhora com a elevação das pernas.
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Sensação de peso ou queimação.</p>
+                </div>
+                <div className="pt-2 border-t border-blue-100 dark:border-blue-900">
+                  <Badge className="bg-blue-600 hover:bg-blue-700 text-white w-full justify-center py-1.5">
+                    Conduta: Compressão + Elevação
+                  </Badge>
+                  <p className="text-xs text-center mt-2 text-muted-foreground">Bota de Unna ou Terapia Compressiva (se ITB {'>'} 0.8).</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Úlcera Arterial */}
+            <Card className="border-red-200 dark:border-red-800">
+              <CardHeader className="p-4 bg-red-50 dark:bg-red-900/20">
+                <CardTitle className="text-red-700 dark:text-red-300 flex items-center gap-2 text-base">
+                  <Activity className="h-5 w-5" /> Úlcera Arterial
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 space-y-4 text-sm">
+                <div>
+                  <span className="font-bold text-red-600 block mb-1">Causa Principal:</span>
+                  <p className="text-muted-foreground">Doença Arterial Periférica (Isquemia/Falta de fluxo).</p>
+                </div>
+                <div>
+                  <span className="font-bold block mb-1">Características da Lesão:</span>
+                  <ul className="list-disc pl-4 text-muted-foreground space-y-1">
+                    <li><strong>Local:</strong> Pontas dos dedos, maléolo lateral, áreas de trauma.</li>
+                    <li><strong>Aparência:</strong> Profunda, "saca-bocado" (bordas regulares).</li>
+                    <li><strong>Leito:</strong> Pálido, necrótico ou esfacelo seco. <strong>Pouco exsudato</strong>.</li>
+                  </ul>
+                </div>
+                <div>
+                  <span className="font-bold block mb-1">Pele Perilesional:</span>
+                  <p className="text-muted-foreground">Fria, pálida ou cianótica, lisa, brilhante, <strong>sem pelos</strong>, unhas espessas. Pulso diminuído ou ausente.</p>
+                </div>
+                <div>
+                  <span className="font-bold block mb-1">Dor:</span>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <ArrowUp className="h-4 w-4 text-red-500" /> Piora com a elevação e ao caminhar (claudicação).
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground mt-1">
+                    <ArrowDown className="h-4 w-4 text-green-500" /> Melhora pendendo a perna.
+                  </div>
+                </div>
+                <div className="pt-2 border-t border-red-100 dark:border-red-900">
+                  <Badge className="bg-red-600 hover:bg-red-700 text-white w-full justify-center py-1.5 mb-1">
+                    CONTRAINDICADO COMPRESSÃO!
+                  </Badge>
+                  <p className="text-xs text-center text-muted-foreground">Requer avaliação vascular urgente para revascularização. Manter aquecido.</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
 
