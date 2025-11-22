@@ -3,10 +3,9 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { 
   HeartPulse, Wind, Brain, Droplet, Utensils, Shield, 
-  Activity, Stethoscope, Microscope, Info, ArrowRight 
+  Activity, Stethoscope, Microscope, Info 
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -30,7 +29,7 @@ interface AnatomySystem {
   bgColor: string;
   description: string;
   anatomy: { part: string; function: string }[];
-  physiology: PhysiologyProcess[];
+  physiology: PhysiologyProcess[] | string; // Suporta ambos os formatos para evitar erros
   nursingFocus: string[];
 }
 
@@ -46,6 +45,14 @@ const AnatomyPhysiology = () => {
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Anatomia e Fisiologia', path: '/anatomy', icon: 'Activity' });
   }, [addActivity]);
+
+  // Atualiza o sistema ativo se os dados mudarem (HMR ou navegação)
+  useEffect(() => {
+    const updatedSystem = anatomyData.find(sys => sys.id === activeSystem.id);
+    if (updatedSystem) {
+      setActiveSystem(updatedSystem as unknown as AnatomySystem);
+    }
+  }, [activeSystem.id]);
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -121,7 +128,7 @@ const AnatomyPhysiology = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="anatomy" className="w-full">
+              <Tabs defaultValue="physiology" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="anatomy" className="font-bold"><Microscope className="mr-2 h-4 w-4"/> Estrutura (Anatomia)</TabsTrigger>
                   <TabsTrigger value="physiology" className="font-bold"><Activity className="mr-2 h-4 w-4"/> Função (Fisiologia)</TabsTrigger>
@@ -145,24 +152,32 @@ const AnatomyPhysiology = () => {
                 
                 <TabsContent value="physiology" className="mt-4">
                   <div className="space-y-4">
-                    {activeSystem.physiology.map((process, idx) => (
-                      <div key={idx} className="group relative overflow-hidden rounded-lg border bg-background p-5 hover:shadow-md transition-all duration-300">
-                        <div className={cn("absolute left-0 top-0 h-full w-1 transition-all group-hover:w-2", activeSystem.bgColor.replace('bg-', 'bg-slate-200'))} />
-                        <div className="flex gap-4">
-                          <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-bold text-white", activeSystem.color.replace('text-', 'bg-'))}>
-                            {idx + 1}
-                          </div>
-                          <div>
-                            <h4 className="text-lg font-semibold text-foreground mb-1 flex items-center gap-2">
-                              {process.title}
-                            </h4>
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                              {process.description}
-                            </p>
+                    {Array.isArray(activeSystem.physiology) ? (
+                      activeSystem.physiology.map((process, idx) => (
+                        <div key={idx} className="group relative overflow-hidden rounded-lg border bg-background p-5 hover:shadow-md transition-all duration-300">
+                          <div className={cn("absolute left-0 top-0 h-full w-1 transition-all group-hover:w-2", activeSystem.bgColor.replace('bg-', 'bg-slate-200'))} />
+                          <div className="flex gap-4">
+                            <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-bold text-white", activeSystem.color.replace('text-', 'bg-'))}>
+                              {idx + 1}
+                            </div>
+                            <div>
+                              <h4 className="text-lg font-semibold text-foreground mb-1 flex items-center gap-2">
+                                {process.title}
+                              </h4>
+                              <p className="text-sm text-muted-foreground leading-relaxed">
+                                {process.description}
+                              </p>
+                            </div>
                           </div>
                         </div>
+                      ))
+                    ) : (
+                      <div className="p-6 rounded-lg bg-muted/30 border leading-relaxed text-lg">
+                        <p className="first-letter:text-4xl first-letter:font-bold first-letter:mr-1 first-letter:float-left">
+                          {activeSystem.physiology}
+                        </p>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </TabsContent>
               </Tabs>
