@@ -7,7 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { 
   BookOpen, GraduationCap, Scale, ShieldAlert, 
   Stethoscope, Baby, Lightbulb, CheckCircle2, Gavel,
-  Biohazard, Scissors, Activity, Thermometer
+  Biohazard, Scissors, Activity, Thermometer, Heart
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -21,7 +21,7 @@ interface Profile {
 
 const iconMap: Record<string, React.ElementType> = {
   Scale, ShieldAlert, Stethoscope, Baby, Gavel, 
-  Biohazard, Scissors, Activity, Thermometer
+  Biohazard, Scissors, Activity, Thermometer, Heart
 };
 
 const ConcurseiroArea = () => {
