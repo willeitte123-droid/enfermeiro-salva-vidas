@@ -6,7 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { 
   BookOpen, GraduationCap, Scale, ShieldAlert, 
-  Stethoscope, Baby, Lightbulb, CheckCircle2, Gavel
+  Stethoscope, Baby, Lightbulb, CheckCircle2, Gavel,
+  Biohazard, Scissors, Activity, Thermometer
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -19,7 +20,8 @@ interface Profile {
 }
 
 const iconMap: Record<string, React.ElementType> = {
-  Scale, ShieldAlert, Stethoscope, Baby, Gavel
+  Scale, ShieldAlert, Stethoscope, Baby, Gavel, 
+  Biohazard, Scissors, Activity, Thermometer
 };
 
 const ConcurseiroArea = () => {
@@ -83,7 +85,7 @@ const ConcurseiroArea = () => {
           <ScrollArea className="w-full whitespace-nowrap rounded-lg border bg-card p-1 shadow-sm">
             <TabsList className="flex w-max h-auto bg-transparent p-0 gap-1">
               {concursoData.map((section) => {
-                const Icon = iconMap[section.icon];
+                const Icon = iconMap[section.icon] || BookOpen;
                 return (
                   <TabsTrigger 
                     key={section.category} 

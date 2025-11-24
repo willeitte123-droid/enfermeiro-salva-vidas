@@ -95,6 +95,121 @@
     ]
   },
   {
+    "category": "Biossegurança (NR-32)",
+    "icon": "Biohazard",
+    "color": "text-yellow-600",
+    "topics": [
+      {
+        "title": "Precauções e Isolamento",
+        "summary": "Medidas para interromper a cadeia de transmissão de infecções.",
+        "keyPoints": [
+          "<strong>Padrão:</strong> Para TODOS os pacientes. Higiene das mãos, luvas (se risco de contato com fluidos), óculos/máscara (se risco de respingos).",
+          "<strong>Contato:</strong> Avental + Luvas. Ex: Bactérias multirresistentes, Escabiose.",
+          "<strong>Gotículas:</strong> Máscara Cirúrgica (< 1m). Ex: Meningite, Influenza, Caxumba.",
+          "<strong>Aerossóis:</strong> Máscara N95 (PFF2) + Quarto com pressão negativa. Ex: Tuberculose, Sarampo, Varicela."
+        ],
+        "goldenTip": "A meningite bacteriana requer isolamento de gotículas apenas nas primeiras 24h de tratamento efetivo."
+      },
+      {
+        "title": "Gerenciamento de Resíduos (RDC 222)",
+        "summary": "Segregação correta do lixo hospitalar.",
+        "keyPoints": [
+          "<strong>Grupo A (Infectante):</strong> Saco Branco. Ex: Gaze com sangue, culturas, peças anatômicas.",
+          "<strong>Grupo B (Químico):</strong> Galão rígido/Saco Laranja. Ex: Medicamentos, reveladores.",
+          "<strong>Grupo D (Comum):</strong> Saco Preto/Azul. Ex: Papel, fralda sem fezes líquidas.",
+          "<strong>Grupo E (Perfurocortante):</strong> Caixa Rígida Amarela (Descarpack). Encher até o limite (linha pontilhada)."
+        ],
+        "goldenTip": "NUNCA reencapar agulhas. É a principal causa de acidentes com perfurocortantes (NR-32)."
+      }
+    ]
+  },
+  {
+    "category": "Saúde da Criança",
+    "icon": "Baby",
+    "color": "text-cyan-600",
+    "topics": [
+      {
+        "title": "Aleitamento Materno",
+        "summary": "Definições e recomendações da OMS/MS.",
+        "keyPoints": [
+          "<strong>Exclusivo:</strong> Apenas leite humano (direto da mama ou ordenhado). Permite vitaminas/medicamentos. NADA de água ou chás. Até 6 meses.",
+          "<strong>Predominante:</strong> Leite materno + Água/Chás/Sucos. (Não recomendado antes dos 6 meses).",
+          "<strong>Complementado:</strong> Leite materno + Alimentos sólidos/semissólidos (após 6 meses).",
+          "<strong>Misto/Parcial:</strong> Leite materno + Outros leites."
+        ],
+        "goldenTip": "Fissuras mamárias geralmente são causadas por 'pega' incorreta. A boca do bebê deve estar bem aberta (boca de peixinho) e abocanhar a aréola, não só o mamilo."
+      },
+      {
+        "title": "Marcos do Desenvolvimento",
+        "summary": "Sinais de alerta na puericultura.",
+        "keyPoints": [
+          "<strong>1-2 meses:</strong> Fixa o olhar, sorriso social.",
+          "<strong>3-4 meses:</strong> Sustenta a cabeça, leva objetos à boca.",
+          "<strong>6 meses:</strong> Senta sem apoio, rola.",
+          "<strong>9 meses:</strong> Pinça (polegar-indicador), engatinha.",
+          "<strong>12 meses:</strong> Anda com apoio, fala primeiras palavras."
+        ],
+        "goldenTip": "O desenvolvimento é Cefalocaudal (cabeça para os pés) e Proximodistal (centro para as pontas)."
+      }
+    ]
+  },
+  {
+    "category": "Doenças Transmissíveis",
+    "icon": "Thermometer",
+    "color": "text-red-500",
+    "topics": [
+      {
+        "title": "Tuberculose (TB)",
+        "summary": "Doença infectocontagiosa causada pelo Bacilo de Koch.",
+        "keyPoints": [
+          "<strong>Sintomático Respiratório:</strong> Tosse por ≥ 3 semanas.",
+          "<strong>Diagnóstico:</strong> Baciloscopia (escarro) ou Teste Rápido Molecular (TRM-TB).",
+          "<strong>Tratamento (Esquema Básico):</strong> 2 meses de RIPE (Rifampicina, Isoniazida, Pirazinamida, Etambutol) + 4 meses de RI.",
+          "<strong>Transmissão:</strong> Aerossóis (requer N95 para o profissional)."
+        ],
+        "goldenTip": "A urina pode ficar alaranjada/vermelha devido à Rifampicina. Avise o paciente para evitar sustos!"
+      },
+      {
+        "title": "Hanseníase",
+        "summary": "Doença crônica que afeta pele e nervos periféricos.",
+        "keyPoints": [
+          "<strong>Paucibacilar (PB):</strong> Até 5 lesões. Baciloscopia negativa. Tratamento: 6 meses (PBT).",
+          "<strong>Multibacilar (MB):</strong> Mais de 5 lesões. Baciloscopia positiva. Tratamento: 12 meses (PQT).",
+          "<strong>Teste de Sensibilidade:</strong> A perda de sensibilidade térmica é a primeira a ocorrer, seguida da dolorosa e tátil."
+        ],
+        "goldenTip": "A vacina BCG é indicada para contatos de pacientes com Hanseníase (para aumentar a imunidade cruzada), não como tratamento."
+      }
+    ]
+  },
+  {
+    "category": "Centro Cirúrgico e CME",
+    "icon": "Scissors",
+    "color": "text-purple-600",
+    "topics": [
+      {
+        "title": "Classificação de Spaulding (Artigos)",
+        "summary": "Define o tipo de processamento necessário para materiais.",
+        "keyPoints": [
+          "<strong>Críticos:</strong> Penetram tecidos estéreis ou sistema vascular (ex: bisturi, pinças cirúrgicas). Exigem <strong>Esterilização</strong>.",
+          "<strong>Semicríticos:</strong> Contato com mucosas íntegras ou pele não intacta (ex: endoscópio, lâmina de laringo). Exigem <strong>Desinfecção de Alto Nível</strong>.",
+          "<strong>Não Críticos:</strong> Contato apenas com pele íntegra (ex: comadre, termômetro, esteto). Exigem <strong>Limpeza/Desinfecção de Baixo Nível</strong>."
+        ],
+        "goldenTip": "O álcool 70% é um desinfetante de nível intermediário/médio, não esteriliza!"
+      },
+      {
+        "title": "Posicionamento Cirúrgico",
+        "summary": "Posições comuns e riscos.",
+        "keyPoints": [
+          "<strong>Supina (Dorsal):</strong> Mais comum. Risco de úlcera em occipital, escápula, sacro, calcanhar.",
+          "<strong>Trendelenburg:</strong> Cabeça para baixo. Cirurgias pélvicas/abdominais baixas. Risco: edema facial, aumento da PIC.",
+          "<strong>Litotomia (Ginecológica):</strong> Pernas em perneiras. Risco: lesão de nervo fibular, TVP.",
+          "<strong>Prona (Ventral):</strong> Cirurgias de coluna. Risco: compressão torácica, lesão ocular."
+        ],
+        "goldenTip": "Na Litotomia, as pernas devem ser elevadas e abaixadas simultaneamente por duas pessoas para evitar luxação de quadril e hipotensão súbita."
+      }
+    ]
+  },
+  {
     "category": "Fundamentos e Clínica",
     "icon": "Stethoscope",
     "color": "text-emerald-600",
