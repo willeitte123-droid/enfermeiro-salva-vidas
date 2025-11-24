@@ -35,6 +35,17 @@
           "<strong>Mapa da Saúde:</strong> Descrição geográfica da distribuição de recursos e serviços."
         ],
         "goldenTip": "Os serviços de Alta Complexidade e Hospitalares NÃO são portas de entrada diretas (exceto se referenciados ou urgência)."
+      },
+      {
+        "title": "PNAB (Política Nacional de Atenção Básica)",
+        "summary": "Portaria 2.436/2017. A base da Estratégia Saúde da Família.",
+        "keyPoints": [
+          "<strong>Atributos Essenciais:</strong> Acesso (primeiro contato), Longitudinalidade (vínculo), Integralidade e Coordenação do cuidado.",
+          "<strong>Equipe Mínima (eSF):</strong> Médico, Enfermeiro, Técnico/Auxiliar de Enfermagem e ACS. (Dentista é opcional na eSF, mas obrigatório na eSB).",
+          "<strong>Carga Horária:</strong> 40h semanais para todos os membros da equipe mínima.",
+          "<strong>ACS/ACE:</strong> Obrigatório residir na área de atuação desde a data do edital."
+        ],
+        "goldenTip": "A PNAB 2017 permite a existência da 'Equipe de Atenção Primária' (eAP) com carga horária flexível (20h ou 30h), diferente da eSF que exige 40h."
       }
     ]
   },
@@ -145,6 +156,17 @@
           "<strong>BICHOS (Mnemônico Imediatas):</strong> Botulismo, Influenza (novo), Cólera, Hantavirose, Óbito (Dengue), Sarampo."
         ],
         "goldenTip": "A violência sexual e a tentativa de suicídio são de notificação IMEDIATA (24h). As demais violências são SEMANAIS."
+      },
+      {
+        "title": "Rede de Frio (Imunobiológicos)",
+        "summary": "Armazenamento e conservação de vacinas.",
+        "keyPoints": [
+          "<strong>Temperatura Ideal:</strong> Entre +2°C e +8°C (Sendo +5°C o alvo).",
+          "<strong>Arrumação:</strong> 1ª prateleira (vacinas virais/susceptíveis a calor), 2ª prateleira (bacterianas/susceptíveis a gelo), 3ª prateleira (diluentes/caixas vazias).",
+          "<strong>Base:</strong> Garrafas com água colorida (estabilização térmica).",
+          "<strong>Proibido:</strong> Armazenar na porta, gaveta de legumes ou congelador (exceto VOP e Febre Amarela em instância central)."
+        ],
+        "goldenTip": "Se faltar energia, NÃO abra a geladeira. Monitore a temperatura. Se subir, inicie o plano de contingência (caixas térmicas)."
       }
     ]
   },
@@ -221,15 +243,16 @@
         "goldenTip": "Prevenção é prioridade: mudança de decúbito a cada 2h e hidratação da pele (exceto em proeminências ósseas já hiperemiadas)."
       },
       {
-        "title": "Biossegurança e Resíduos (NR-32 / RDC 222)",
-        "summary": "Gerenciamento de Resíduos de Serviços de Saúde (PGRSS).",
+        "title": "Biossegurança e Precauções (NR-32 / RDC 222)",
+        "summary": "Gerenciamento de Resíduos e Tipos de Isolamento.",
         "keyPoints": [
-          "<strong>Grupo A (Infectante):</strong> Saco BRANCO leitoso. Ex: sangue, peças anatômicas, vacinas vivas.",
-          "<strong>Grupo B (Químico):</strong> Galões rígidos/Saco Laranja. Ex: Reveladores, medicamentos (exceto controlados).",
-          "<strong>Grupo E (Perfurocortantes):</strong> Caixa rígida amarela (Descarpack). Preencher até 2/3 ou linha pontilhada.",
-          "<strong>NR-32:</strong> Proíbe adorno, reencape de agulhas e consumo de alimentos no posto de trabalho."
+          "<strong>Padrão:</strong> Higiene das mãos, luvas (se risco de fluidos). Para TODOS os pacientes.",
+          "<strong>Contato (Avental + Luvas):</strong> Bactérias multirresistentes (KPC, MRSA), Escabiose, Clostridium. Quarto privativo ou coorte.",
+          "<strong>Gotículas (Máscara Cirúrgica):</strong> Meningite bacteriana, Influenza, Rubéola, Caxumba. (Raio de 1m).",
+          "<strong>Aerossóis (Máscara N95/PFF2):</strong> Tuberculose, Sarampo, Varicela, Herpes Zoster disseminado. Pressão negativa.",
+          "<strong>Resíduos:</strong> Grupo A (Infectante/Branco), B (Químico/Laranja), E (Perfuro/Amarelo)."
         ],
-        "goldenTip": "Nunca reencapar agulhas! O descarte deve ser imediato no coletor rígido localizado próximo ao local do procedimento."
+        "goldenTip": "Varicela e Sarampo exigem precaução para AEROSSÓIS (N95) + Contato. Meningite é GOTÍCULAS (Cirúrgica)."
       },
       {
         "title": "Administração de Medicamentos",
@@ -281,6 +304,17 @@
         "goldenTip": "Placenta Prévia = Sangra muito e NÃO dói. DPP = Sangra (as vezes oculto) e DÓI muito. No DPP, o feto entra em sofrimento rápido."
       },
       {
+        "title": "Planejamento Reprodutivo",
+        "summary": "Métodos contraceptivos e Lei 9.263/96.",
+        "keyPoints": [
+          "<strong>Índice de Pearl:</strong> Mede a eficácia do método (nº falhas por 100 mulheres/ano). Quanto menor, mais eficaz.",
+          "<strong>Laqueadura/Vasectomia (Lei 14.443/22 - Nova):</strong> Idade mínima 21 anos OU pelo menos 2 filhos vivos. Não exige mais consentimento do cônjuge. Pode fazer no parto.",
+          "<strong>DIU T de Cobre:</strong> Duração 10 anos. Pode em nulíparas. Efeito inflamatório local/espermicida.",
+          "<strong>Pílula Combinada:</strong> Inibe a ovulação."
+        ],
+        "goldenTip": "A Lei 14.443/2022 mudou a idade da esterilização de 25 para 21 anos e permitiu a realização durante o parto (o que antes era proibido, salvo exceções)."
+      },
+      {
         "title": "Câncer de Colo e Mama",
         "summary": "Diretrizes de Rastreamento (INCA/MS).",
         "keyPoints": [
@@ -311,6 +345,17 @@
           "<strong>15 meses:</strong> Tetra Viral (ou Tríplice + Varicela), Hep A, DTP (Ref), VOP (Ref)."
         ],
         "goldenTip": "A vacina VIP (inativada/injetável) é aos 2, 4 e 6 meses. A VOP (gotinha/atenuada) é apenas nos reforços (15m e 4a). 'Zé Gotinha só no reforço'."
+      },
+      {
+        "title": "Crescimento e Desenvolvimento (CD)",
+        "summary": "Acompanhamento do desenvolvimento neuropsicomotor.",
+        "keyPoints": [
+          "<strong>Marcos Motores:</strong> Sustenta a cabeça (2-3m), Rola (4-5m), Senta sem apoio (6-7m), Engatinha (9m), Anda (12-15m).",
+          "<strong>Reflexos Primitivos:</strong> Moro (abraço), Preensão Palmar/Plantar, Sucção, Marcha Reflexa. Devem desaparecer nos primeiros meses.",
+          "<strong>Crescimento:</strong> Perda de 10% do peso ao nascer (recupera em 10 dias). Dobra o peso aos 5 meses, triplica aos 12 meses.",
+          "<strong>Perímetro Cefálico:</strong> Cresce mais rápido no 1º trimestre (2cm/mês)."
+        ],
+        "goldenTip": "Sinais de Alerta no CD: Ausência de sorriso social aos 3 meses, não sentar aos 9 meses, não andar aos 18 meses."
       },
       {
         "title": "Aleitamento Materno",
@@ -345,12 +390,12 @@
         "title": "Hanseníase",
         "summary": "Bacilo de Hansen. Doença infectocontagiosa crônica que atinge pele e nervos.",
         "keyPoints": [
-          "<strong>Transmissão:</strong> Vias aéreas superiores (contato prolongado).",
-          "<strong>Paucibacilar (PB):</strong> Até 5 lesões de pele. Baciloscopia negativa. Tratamento: 6 meses (PQT).",
-          "<strong>Multibacilar (MB):</strong> Mais de 5 lesões. Baciloscopia positiva. Tratamento: 12 meses (PQT).",
+          "<strong>Transmissão:</strong> Vias aéreas superiores (contato prolongado e íntimo).",
+          "<strong>Paucibacilar (PB):</strong> Até 5 lesões de pele. Baciloscopia negativa. Tratamento: 6 doses supervisionadas (6 meses).",
+          "<strong>Multibacilar (MB):</strong> Mais de 5 lesões. Baciloscopia positiva. Tratamento: 12 doses supervisionadas (12 meses).",
           "<strong>Sinais:</strong> Manchas com alteração de sensibilidade (térmica, dolorosa e tátil), espessamento neural."
         ],
-        "goldenTip": "A primeira dose do tratamento (PQT) é sempre supervisionada na unidade. As demais são autoadministradas. A Rifampicina é mensal."
+        "goldenTip": "A sensibilidade térmica é a primeira a ser perdida, seguida pela dolorosa e por último a tátil."
       },
       {
         "title": "Sífilis (Lues)",
@@ -359,10 +404,10 @@
           "<strong>Primária:</strong> Cancro duro (úlcera indolor, fundo limpo, bordas duras).",
           "<strong>Secundária:</strong> Roséolas, lesões palmoplantares, placas mucosas.",
           "<strong>Terciária:</strong> Gomas, lesões neurológicas e cardiovasculares.",
-          "<strong>Tratamento:</strong> Penicilina Benzatina (Benzetacil). A dose varia conforme o estágio.",
-          "<strong>Diagnóstico:</strong> Teste rápido/VDRL (Rastreio) + FTA-Abs (Confirmatório)."
+          "<strong>Tratamento:</strong> Penicilina Benzatina (Benzetacil). 2,4 mi UI (1 dose na Primária/Secundária; 3 doses na Terciária/Latente Tardia).",
+          "<strong>Diagnóstico:</strong> Teste rápido/VDRL (Não treponêmico - Rastreio) + FTA-Abs (Treponêmico - Confirmatório)."
         ],
-        "goldenTip": "VDRL cai (negativa) com a cura. FTA-Abs permanece positivo a vida toda (cicatriz sorológica)."
+        "goldenTip": "VDRL cai (negativa) com a cura e serve para monitoramento. FTA-Abs permanece positivo a vida toda (cicatriz sorológica)."
       },
       {
         "title": "Meningites",
@@ -373,7 +418,30 @@
           "<strong>Sinal de Brudzinski:</strong> Flexão involuntária das pernas ao fletir o pescoço.",
           "<strong>Isolamento:</strong> Meningocócica e Haemophilus exigem isolamento de GOTÍCULAS (máscara cirúrgica) por 24h de antibiótico."
         ],
-        "goldenTip": "Meningite viral geralmente tem bom prognóstico. Bacteriana (meningococo) pode causar meningococcemia (manchas na pele) e evoluir para óbito rápido."
+        "goldenTip": "Meningite viral geralmente tem bom prognóstico. Bacteriana (meningococo) pode causar meningococcemia (manchas/petéquias na pele) e evoluir para óbito rápido."
+      },
+      {
+        "title": "HIV / AIDS",
+        "summary": "Vírus da Imunodeficiência Humana.",
+        "keyPoints": [
+          "<strong>Transmissão:</strong> Sexual, Sanguínea, Vertical (Mãe-Filho).",
+          "<strong>CD4 e Carga Viral:</strong> CD4 baixo (<200) define AIDS e risco de infecções oportunistas. Meta: Carga Viral Indetectável = Intransmissível.",
+          "<strong>PEP (Pós-Exposição):</strong> Iniciar até 72h (ideal 2h). Duração 28 dias.",
+          "<strong>PrEP (Pré-Exposição):</strong> Uso diário para populações de risco.",
+          "<strong>Gestante:</strong> AZT venoso no parto + Inibição da lactação."
+        ],
+        "goldenTip": "A amamentação é CONTRAINDICADA no Brasil para mães HIV+, independente da carga viral."
+      },
+      {
+        "title": "Hepatites Virais",
+        "summary": "Inflamação do fígado (A, B, C, D, E).",
+        "keyPoints": [
+          "<strong>Hepatite A:</strong> Fecal-oral. Aguda. Vacina no PNI. Saneamento previne.",
+          "<strong>Hepatite B:</strong> Sexual, sangue, vertical. DNA vírus. Cronifica. Vacina disponível (3 doses).",
+          "<strong>Hepatite C:</strong> Sangue (principal), sexual (raro). Cronifica em 80%. Tem cura com antivirais, mas NÃO tem vacina.",
+          "<strong>Marcadores Hep B:</strong> HBsAg (Vírus presente), Anti-HBs (Imunidade/Cura ou Vacina), Anti-HBc (Contato prévio)."
+        ],
+        "goldenTip": "Anti-HBs positivo isolado = Imunidade por VACINA. Anti-HBs + Anti-HBc positivos = Imunidade por DOENÇA curada."
       },
       {
         "title": "Dengue, Zika e Chikungunya",
@@ -419,6 +487,45 @@
           "<strong>Pé Diabético:</strong> Teste de sensibilidade com monofilamento 10g. Prevenção de úlceras."
         ],
         "goldenTip": "A insulina Regular (R) é transparente e de ação rápida. A NPH é leitosa e de ação intermediária. Ao misturar na mesma seringa: Aspirar a Regular (clara) ANTES da NPH (escura) para não contaminar o frasco da rápida."
+      }
+    ]
+  },
+  {
+    "category": "Centro Cirúrgico e CME",
+    "icon": "Scissors",
+    "color": "text-gray-700",
+    "topics": [
+      {
+        "title": "Classificação de Artigos (Spaulding)",
+        "summary": "Base para o processamento de produtos para saúde (RDC 15).",
+        "keyPoints": [
+          "<strong>Críticos:</strong> Penetram tecidos estéreis ou sistema vascular. Ex: Bisturi, pinças cirúrgicas. Exigem <strong>Esterilização</strong>.",
+          "<strong>Semicríticos:</strong> Entram em contato com pele não íntegra ou mucosas. Ex: Endoscópio, lâmina de laringo. Exigem <strong>Desinfecção de Alto Nível</strong>.",
+          "<strong>Não Críticos:</strong> Contato apenas com pele íntegra. Ex: Estetoscópio, comadre. Exigem <strong>Limpeza/Desinfecção Baixo Nível</strong>."
+        ],
+        "goldenTip": "O álcool 70% é um desinfetante de nível intermediário. Não esteriliza (não mata esporos)."
+      },
+      {
+        "title": "Processamento de Materiais (CME)",
+        "summary": "Etapas da Central de Material e Esterilização.",
+        "keyPoints": [
+          "<strong>Limpeza:</strong> Remoção da sujidade visível (detergente enzimático). É o passo mais importante. Se estiver sujo, não esteriliza.",
+          "<strong>Esterilização Física:</strong> Autoclave (Vapor saturado sob pressão). Ciclos de 121°C a 134°C.",
+          "<strong>Esterilização Química:</strong> Peróxido de Hidrogênio (Plasma), Óxido de Etileno (Indústria).",
+          "<strong>Monitoramento:</strong> Físico (impressora), Químico (fitas/integradores) e Biológico (teste com esporos - padrão ouro)."
+        ],
+        "goldenTip": "O Teste Biológico (com Geobacillus stearothermophilus para autoclave) é o único que garante a morte dos microrganismos."
+      },
+      {
+        "title": "Posicionamento Cirúrgico",
+        "summary": "Prevenção de lesões no intraoperatório.",
+        "keyPoints": [
+          "<strong>Supina (Dorsal):</strong> Barriga para cima. Mais comum (laparotomias).",
+          "<strong>Prona (Ventral):</strong> Barriga para baixo. Cirurgias de coluna/fossa posterior. Risco de lesão ocular e compressão torácica.",
+          "<strong>Litotomia (Ginecológica):</strong> Pernas elevadas em perneiras. Risco de TVP e lesão de nervo se mal posicionado.",
+          "<strong>Trendelenburg:</strong> Cabeça mais baixa que o corpo. Cirurgias pélvicas (afasta vísceras)."
+        ],
+        "goldenTip": "A principal complicação do posicionamento inadequado é a lesão por compressão de nervos periféricos e úlceras por pressão."
       }
     ]
   }
