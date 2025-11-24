@@ -159,9 +159,9 @@ const ConcurseiroArea = () => {
                           </ul>
                         </div>
                         
-                        <Accordion type="single" collapsible className="w-full border rounded-md bg-muted/30 group-hover:bg-muted/50 transition-colors">
+                        <Accordion type="single" collapsible className="w-full border-2 border-primary/10 rounded-md bg-primary/5 hover:bg-primary/10 transition-colors">
                           <AccordionItem value="details" className="border-0">
-                            <AccordionTrigger className="px-3 py-2 text-xs font-semibold hover:no-underline hover:bg-muted/50">
+                            <AccordionTrigger className="px-3 py-2 text-xs font-bold text-primary hover:no-underline">
                               Ver Detalhes Completos
                             </AccordionTrigger>
                             <AccordionContent className="px-3 pb-3 pt-1">
