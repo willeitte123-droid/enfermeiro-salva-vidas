@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { 
   BookOpen, GraduationCap, Scale, ShieldAlert, 
   Stethoscope, Baby, Lightbulb, CheckCircle2, Gavel,
-  Biohazard, Scissors, Activity, Thermometer, Heart, Search
+  Biohazard, Scissors, Activity, Thermometer, Heart, Search,
+  Calculator, Siren, Brain
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -20,14 +21,14 @@ interface Profile {
 
 const iconMap: Record<string, React.ElementType> = {
   Scale, ShieldAlert, Stethoscope, Baby, Gavel, 
-  Biohazard, Scissors, Activity, Thermometer, Heart
+  Biohazard, Scissors, Activity, Thermometer, Heart,
+  Calculator, Siren, Brain
 };
 
 const ConcurseiroArea = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
   const [searchTerm, setSearchTerm] = useState("");
-  // Estado para controlar quais itens do acordeão principal estão abertos
   const [openSections, setOpenSections] = useState<string[]>([]);
 
   useEffect(() => {
@@ -49,13 +50,10 @@ const ConcurseiroArea = () => {
     })).filter(section => section.topics.length > 0);
   }, [searchTerm]);
 
-  // Efeito para abrir automaticamente as seções que contêm resultados da busca
   useEffect(() => {
     if (searchTerm) {
       setOpenSections(filteredData.map(s => s.category));
     } else {
-      // Opcional: Deixar apenas a primeira aberta ou todas fechadas inicialmente
-      // setOpenSections([concursoData[0].category]); 
       setOpenSections([]);
     }
   }, [searchTerm, filteredData]);
@@ -110,7 +108,7 @@ const ConcurseiroArea = () => {
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Buscar por tema, lei ou assunto (ex: Vacinas, Lei 8.080)..."
+          placeholder="Buscar por tema, lei ou assunto (ex: Vacinas, Lei 8.080, PCR)..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="pl-10 h-11"
