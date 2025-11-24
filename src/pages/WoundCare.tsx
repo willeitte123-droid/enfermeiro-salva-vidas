@@ -30,7 +30,7 @@ const tissueTypes = [
     bgColor: "bg-red-500",
     lightBg: "bg-red-50 dark:bg-red-900/20",
     textColor: "text-red-600 dark:text-red-400",
-    description: "Tecido conjuntivo novo, vascularizado e saudável. Indica progressão da cicatrização.",
+    description: "Tecido conjuntivo novo, vascularizado e saudável.",
     objectives: "Manter o leito da ferida úmido, proteger contra traumas e promover a epitelização.",
     dressings: ["Espuma não adesiva", "Hidrocoloide", "Filme transparente", "Hidrogel", "AGE"]
   },
@@ -41,7 +41,7 @@ const tissueTypes = [
     bgColor: "bg-pink-400",
     lightBg: "bg-pink-50 dark:bg-pink-900/20",
     textColor: "text-pink-600 dark:text-pink-400",
-    description: "Camada de novas células epiteliais que migram das bordas da ferida. Fase final da cicatrização.",
+    description: "Camada de novas células epiteliais. Fase final.",
     objectives: "Proteger o novo tecido frágil, manter a umidade e evitar maceração.",
     dressings: ["Filme transparente", "Hidrocoloide extrafino", "Curativo de silicone", "AGE"]
   },
@@ -52,7 +52,7 @@ const tissueTypes = [
     bgColor: "bg-yellow-500",
     lightBg: "bg-yellow-50 dark:bg-yellow-900/20",
     textColor: "text-yellow-600 dark:text-yellow-400",
-    description: "Tecido desvitalizado, úmido, composto por fibrina, leucócitos e bactérias. Adere ao leito da ferida.",
+    description: "Tecido desvitalizado, úmido, aderido ao leito.",
     objectives: "Promover o desbridamento autolítico ou enzimático para remover o tecido não viável.",
     dressings: ["Hidrogel com alginato", "Colagenase", "Papaína", "Alginato de cálcio", "Hidrofibra"]
   },
@@ -63,9 +63,9 @@ const tissueTypes = [
     bgColor: "bg-gray-800",
     lightBg: "bg-gray-100 dark:bg-gray-800",
     textColor: "text-gray-700 dark:text-gray-300",
-    description: "Tecido morto, seco e duro (escara). Impede a cicatrização e pode mascarar infecções.",
+    description: "Tecido morto, seco e duro. Impede a cicatrização.",
     objectives: "Amolecer e remover a escara através de desbridamento (autolítico, enzimático ou cirúrgico).",
-    dressings: ["Hidrogel", "Papaína 10%", "Colagenase", "AGE (para manter hidratado)"]
+    dressings: ["Hidrogel", "Papaína 10%", "Colagenase", "AGE"]
   },
   {
     name: "Sinais de Infecção",
@@ -74,9 +74,9 @@ const tissueTypes = [
     bgColor: "bg-purple-600",
     lightBg: "bg-purple-50 dark:bg-purple-900/20",
     textColor: "text-purple-600 dark:text-purple-400",
-    description: "Presença de sinais flogísticos (dor, calor, rubor, edema), exsudato purulento, odor fétido e tecido friável.",
+    description: "Flogose (dor, calor, rubor, edema), pus, odor.",
     objectives: "Controlar a carga bacteriana, gerenciar o exsudato e tratar a infecção sistemicamente se necessário.",
-    dressings: ["Alginato com prata", "Espuma com prata/PHMB", "Carvão ativado com prata", "Coberturas com iodo"]
+    dressings: ["Alginato com prata", "Espuma com prata/PHMB", "Carvão ativado", "Iodo"]
   }
 ];
 
@@ -101,39 +101,39 @@ const dressingTypes = [
 ];
 
 const pressureInjuryStages = [
-  { stage: "Estágio 1", badgeColor: "bg-red-500", description: "Eritema não branqueável em pele intacta.", characteristics: ["Área localizada de pele intacta com vermelhidão que não desaparece à pressão.", "Pode apresentar alteração de temperatura, consistência e sensibilidade."], objectives: "Aliviar a pressão, proteger a pele e manter a hidratação.", dressings: ["Filme transparente", "Placa hidrocoloide fina", "Ácidos Graxos Essenciais (AGE)"] },
-  { stage: "Estágio 2", badgeColor: "bg-pink-500", description: "Perda da pele em sua espessura parcial com exposição da derme.", characteristics: ["Leito da ferida viável, rosa/vermelho, úmido.", "Pode se apresentar como uma bolha (flictena) intacta ou rompida."], objectives: "Manter um ambiente úmido para cicatrização, proteger de contaminação e gerenciar exsudato.", dressings: ["Hidrocoloide", "Espuma de poliuretano", "Hidrogel", "Filme transparente"] },
-  { stage: "Estágio 3", badgeColor: "bg-yellow-500", description: "Perda da pele em sua espessura total.", characteristics: ["Gordura (tecido adiposo) é visível.", "Pode haver presença de esfacelo ou necrose.", "Pode ocorrer descolamento (solapamento) e túneis."], objectives: "Desbridar tecido não viável, preencher espaço morto, gerenciar exsudato e infecção.", dressings: ["Alginato de cálcio (se exsudativa)", "Hidrofibra", "Espuma", "Hidrogel com alginato (para desbridar)"] },
-  { stage: "Estágio 4", badgeColor: "bg-gray-800", description: "Perda da pele e tecidos em sua espessura total.", characteristics: ["Exposição direta da fáscia, músculo, tendão, ligamento, cartilagem ou osso.", "Esfacelo e/ou necrose são comuns.", "Alto risco de osteomielite."], objectives: "Mesmos do Estágio 3, com foco intenso no controle de infecção e proteção de estruturas expostas.", dressings: ["Alginato com prata", "Hidrofibra com prata", "Terapia por Pressão Negativa (TPN)"] },
-  { stage: "Não Estadiável", badgeColor: "bg-black", description: "Perda total da espessura da pele e tecidos não visível.", characteristics: ["A extensão do dano não pode ser confirmada porque está encoberta por esfacelo ou necrose.", "A base da lesão não é visível."], objectives: "Desbridar o tecido necrótico para revelar a base da ferida e determinar o estágio real.", dressings: ["Hidrogel", "Colagenase", "Papaína", "Desbridamento cirúrgico"] },
-  { stage: "Lesão por Pressão Tissular Profunda (LTP)", badgeColor: "bg-purple-600", description: "Lesão em tecido mole sob a pele intacta.", characteristics: ["Área localizada de coloração vermelho escura, marrom ou púrpura, que não branqueia.", "Pode evoluir rapidamente para uma lesão de espessura total."], objectives: "Alívio total da pressão, monitoramento rigoroso e proteção da pele. Não desbridar se a pele estiver intacta.", dressings: ["Espuma não adesiva", "Protetores de calcanhar", "Manter seco e protegido"] }
+  { stage: "Estágio 1", badgeColor: "bg-red-500", description: "Eritema não branqueável em pele intacta.", characteristics: ["Pele intacta com vermelhidão.", "Não desaparece à pressão."], objectives: "Aliviar a pressão, proteger a pele e manter a hidratação.", dressings: ["Filme transparente", "Placa hidrocoloide fina", "Ácidos Graxos Essenciais (AGE)"] },
+  { stage: "Estágio 2", badgeColor: "bg-pink-500", description: "Perda da pele em sua espessura parcial (derme).", characteristics: ["Leito viável, rosa/vermelho, úmido.", "Pode ser uma bolha (flictena)."], objectives: "Manter ambiente úmido, proteger de contaminação e gerenciar exsudato.", dressings: ["Hidrocoloide", "Espuma de poliuretano", "Hidrogel", "Filme transparente"] },
+  { stage: "Estágio 3", badgeColor: "bg-yellow-500", description: "Perda total da espessura da pele.", characteristics: ["Gordura visível.", "Pode haver esfacelo/necrose.", "Possíveis túneis/descolamentos."], objectives: "Desbridar, preencher espaço morto, gerenciar exsudato/infecção.", dressings: ["Alginato de cálcio", "Hidrofibra", "Espuma", "Hidrogel c/ alginato"] },
+  { stage: "Estágio 4", badgeColor: "bg-gray-800", description: "Perda total com exposição de estruturas.", characteristics: ["Exposição de osso, tendão ou músculo.", "Alto risco de osteomielite."], objectives: "Controle intenso de infecção e proteção de estruturas.", dressings: ["Alginato c/ prata", "Hidrofibra c/ prata", "TPN"] },
+  { stage: "Não Estadiável", badgeColor: "bg-black", description: "Perda total coberta por esfacelo/necrose.", characteristics: ["Base não visível devido à cobertura.", "Extensão do dano desconhecida."], objectives: "Desbridar para revelar a base e estadiar.", dressings: ["Hidrogel", "Colagenase", "Papaína", "Cirúrgico"] },
+  { stage: "Tissular Profunda", badgeColor: "bg-purple-600", description: "Lesão sob a pele intacta.", characteristics: ["Área vermelho escura/púrpura.", "Não branqueia."], objectives: "Alívio total, monitoramento e proteção.", dressings: ["Espuma não adesiva", "Protetores de calcanhar", "Manter seco"] }
 ];
 
 const diabeticFootData = {
   prevention: [
-    "Inspeção diária dos pés (usar espelho se necessário).",
-    "Higiene adequada (lavar e secar bem, especialmente entre os dedos).",
-    "Hidratação da pele (evitar áreas interdigitais).",
-    "Corte reto das unhas, sem remover cutículas.",
-    "Uso de calçados confortáveis e adequados, sem costuras internas.",
+    "Inspeção diária dos pés (usar espelho).",
+    "Higiene adequada (secar entre dedos).",
+    "Hidratação (evitar entre dedos).",
+    "Corte reto das unhas.",
+    "Calçados confortáveis/sem costura.",
     "Nunca andar descalço.",
     "Controle rigoroso da glicemia."
   ],
   wagnerClassification: [
-    { grade: "Grau 0", badgeColor: "bg-blue-500", description: "Pé em risco, sem úlcera.", characteristics: ["Pele intacta, mas com calosidades, deformidades ósseas ou neuropatia/vasculopatia."], objectives: "Educação intensiva do paciente sobre autocuidados. Implementar medidas de alívio de pressão em áreas de calosidade. Indicar calçados e palmilhas adequadas para redistribuir a carga plantar." },
-    { grade: "Grau 1", badgeColor: "bg-green-500", description: "Úlcera superficial.", characteristics: ["Lesão de espessura parcial ou total, limitada à pele e tecido subcutâneo."], objectives: "Alívio total da pressão na área ulcerada (offloading). Desbridamento de tecido necrótico ou hiperqueratose. Manter ambiente úmido para cicatrização com coberturas adequadas. Controle rigoroso da glicemia." },
-    { grade: "Grau 2", badgeColor: "bg-yellow-500", description: "Úlcera profunda.", characteristics: ["A lesão penetra até tendão, cápsula articular ou osso, sem abscesso ou osteomielite."], objectives: "Avaliação da profundidade da lesão e envolvimento de estruturas profundas (sondagem cuidadosa). Desbridamento completo. Manter meio úmido e controle de exsudato. Considerar exames de imagem (Raio-X) para descartar osteomielite." },
-    { grade: "Grau 3", badgeColor: "bg-orange-500", description: "Úlcera profunda com infecção.", characteristics: ["Presença de abscesso, osteomielite ou celulite extensa."], objectives: "Intervenção cirúrgica urgente para drenagem de abscesso e desbridamento amplo. Coleta de culturas de tecido profundo. Iniciar antibioticoterapia sistêmica de amplo espectro. Controle metabólico agressivo." },
-    { grade: "Grau 4", badgeColor: "bg-red-600", description: "Gangrena localizada.", characteristics: ["Necrose de uma parte do pé, como dedos ou antepé."], objectives: "Avaliação vascular e cirúrgica de emergência para determinar o nível de amputação necessário. Controle da infecção local e sistêmica. Estabilização clínica do paciente." },
-    { grade: "Grau 5", badgeColor: "bg-black", description: "Gangrena extensa.", characteristics: ["Necrose de todo o pé, com infecção sistêmica (sepse)."], objectives: "Intervenção cirúrgica de emergência (amputação maior) para controle do foco infeccioso e salvar a vida. Suporte hemodinâmico e tratamento agressivo da sepse. Cuidados paliativos podem ser considerados." }
+    { grade: "Grau 0", badgeColor: "bg-blue-500", description: "Pé em risco, sem úlcera.", characteristics: ["Pele intacta, calosidades, deformidades."], objectives: "Educação, alívio de pressão em calos, calçados adequados." },
+    { grade: "Grau 1", badgeColor: "bg-green-500", description: "Úlcera superficial.", characteristics: ["Lesão parcial/total, apenas pele/subcutâneo."], objectives: "Alívio de pressão (offloading), desbridamento, meio úmido." },
+    { grade: "Grau 2", badgeColor: "bg-yellow-500", description: "Úlcera profunda.", characteristics: ["Penetra tendão/osso, sem abscesso."], objectives: "Avaliar profundidade (probe to bone), desbridar, Raio-X." },
+    { grade: "Grau 3", badgeColor: "bg-orange-500", description: "Úlcera profunda + infecção.", characteristics: ["Abscesso, osteomielite ou celulite."], objectives: "Cirurgia urgente (drenagem), culturas, antibiótico sistêmico." },
+    { grade: "Grau 4", badgeColor: "bg-red-600", description: "Gangrena localizada.", characteristics: ["Necrose de parte do pé (dedos/antepé)."], objectives: "Avaliação vascular/cirúrgica, nível de amputação, estabilização." },
+    { grade: "Grau 5", badgeColor: "bg-black", description: "Gangrena extensa.", characteristics: ["Necrose de todo o pé, sepse."], objectives: "Amputação maior de emergência, suporte de vida." }
   ],
   treatmentPillars: [
-    { pillar: "Controle Glicêmico", description: "Fundamental para a cicatrização e prevenção de novas lesões." },
-    { pillar: "Desbridamento", description: "Remoção de todo tecido necrótico e desvitalizado para reduzir a carga bacteriana e permitir a cicatrização." },
-    { pillar: "Controle da Infecção", description: "Uso de coberturas antimicrobianas e antibioticoterapia sistêmica conforme avaliação." },
-    { pillar: "Manejo do Exsudato", description: "Utilizar coberturas que mantenham o equilíbrio da umidade, absorvendo o excesso de exsudato sem ressecar o leito." },
-    { pillar: "Alívio da Pressão (Offloading)", description: "Essencial para permitir a cicatrização. Uso de palmilhas, calçados especiais ou dispositivos de imobilização." },
-    { pillar: "Avaliação Vascular", description: "Verificar a perfusão do membro. A revascularização pode ser necessária para a cicatrização." }
+    { pillar: "Controle Glicêmico", description: "Fundamental para cicatrização." },
+    { pillar: "Desbridamento", description: "Remoção de tecido necrótico." },
+    { pillar: "Controle da Infecção", description: "Antimicrobianos locais/sistêmicos." },
+    { pillar: "Manejo do Exsudato", description: "Equilíbrio da umidade." },
+    { pillar: "Alívio da Pressão", description: "Offloading (palmilhas/calçados)." },
+    { pillar: "Avaliação Vascular", description: "Verificar perfusão (pulsos/ITB)." }
   ]
 };
 
@@ -173,18 +173,18 @@ const WoundCare = () => {
   }, [searchTerm]);
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 pb-8">
+    <div className="space-y-6 animate-in fade-in duration-500 pb-8">
       {/* Modern Gradient Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 p-8 text-white shadow-lg">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 p-6 sm:p-8 text-white shadow-lg">
         <div className="relative z-10 flex flex-col items-center text-center sm:items-start sm:text-left">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-              <Bandage className="h-8 w-8 text-white" />
+              <Bandage className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold">Curativos e Feridas</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Curativos e Feridas</h1>
           </div>
-          <p className="max-w-2xl text-emerald-100 text-sm sm:text-base mb-4">
-            Avaliação de lesões, estadiamento e guia completo para seleção de coberturas.
+          <p className="max-w-2xl text-emerald-100 text-xs sm:text-sm md:text-base mb-4">
+            Avaliação de lesões, estadiamento e guia completo de coberturas.
           </p>
         </div>
         
@@ -206,102 +206,107 @@ const WoundCare = () => {
       </div>
 
       <Tabs defaultValue="tissues" className="w-full">
-        {/* Modern Horizontal Scrollable Pills for Tabs */}
-        <ScrollArea className="w-full whitespace-nowrap rounded-xl border-0 bg-transparent mb-6">
-          <TabsList className="flex w-max space-x-2 h-auto bg-transparent p-1">
-            <TabsTrigger value="tissues" className="rounded-full border border-border/50 px-4 py-2 text-sm font-medium transition-all data-[state=active]:bg-sky-100 data-[state=active]:text-sky-700 data-[state=active]:border-sky-200 dark:data-[state=active]:bg-sky-900/40 dark:data-[state=active]:text-sky-300 dark:data-[state=active]:border-sky-700 hover:bg-accent">
-              <Microscope className="mr-2 h-4 w-4" /> Avaliação
-            </TabsTrigger>
-            <TabsTrigger value="pressure-injury" className="rounded-full border border-border/50 px-4 py-2 text-sm font-medium transition-all data-[state=active]:bg-red-100 data-[state=active]:text-red-700 data-[state=active]:border-red-200 dark:data-[state=active]:bg-red-900/40 dark:data-[state=active]:text-red-300 dark:data-[state=active]:border-red-700 hover:bg-accent">
-              <ShieldAlert className="mr-2 h-4 w-4" /> Lesão por Pressão
-            </TabsTrigger>
-            <TabsTrigger value="diabetic-foot" className="rounded-full border border-border/50 px-4 py-2 text-sm font-medium transition-all data-[state=active]:bg-amber-100 data-[state=active]:text-amber-700 data-[state=active]:border-amber-200 dark:data-[state=active]:bg-amber-900/40 dark:data-[state=active]:text-amber-300 dark:data-[state=active]:border-amber-700 hover:bg-accent">
-              <Footprints className="mr-2 h-4 w-4" /> Pé Diabético
-            </TabsTrigger>
-            <TabsTrigger value="vascular-ulcers" className="rounded-full border border-border/50 px-4 py-2 text-sm font-medium transition-all data-[state=active]:bg-violet-100 data-[state=active]:text-violet-700 data-[state=active]:border-violet-200 dark:data-[state=active]:bg-violet-900/40 dark:data-[state=active]:text-violet-300 dark:data-[state=active]:border-violet-700 hover:bg-accent">
-              <Activity className="mr-2 h-4 w-4" /> Úlceras Vasculares
-            </TabsTrigger>
-            <TabsTrigger value="dressings" className="rounded-full border border-border/50 px-4 py-2 text-sm font-medium transition-all data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-700 data-[state=active]:border-emerald-200 dark:data-[state=active]:bg-emerald-900/40 dark:data-[state=active]:text-emerald-300 dark:data-[state=active]:border-emerald-700 hover:bg-accent">
-              <Bandage className="mr-2 h-4 w-4" /> Guia de Coberturas
-            </TabsTrigger>
-          </TabsList>
-          <ScrollBar orientation="horizontal" className="hidden" />
-        </ScrollArea>
+        {/* Modern Horizontal Scrollable Pills for Tabs with Layout Constraints */}
+        <div className="w-full max-w-[calc(100vw-2rem)] mx-auto">
+          <ScrollArea className="w-full whitespace-nowrap rounded-xl border-0 bg-transparent mb-4">
+            <TabsList className="flex w-max space-x-2 h-auto bg-transparent p-1">
+              <TabsTrigger value="tissues" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-sky-100 data-[state=active]:text-sky-700 data-[state=active]:border-sky-200 dark:data-[state=active]:bg-sky-900/40 dark:data-[state=active]:text-sky-300 dark:data-[state=active]:border-sky-700 hover:bg-accent">
+                <Microscope className="mr-1.5 h-3.5 w-3.5" /> Avaliação
+              </TabsTrigger>
+              <TabsTrigger value="pressure-injury" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-red-100 data-[state=active]:text-red-700 data-[state=active]:border-red-200 dark:data-[state=active]:bg-red-900/40 dark:data-[state=active]:text-red-300 dark:data-[state=active]:border-red-700 hover:bg-accent">
+                <ShieldAlert className="mr-1.5 h-3.5 w-3.5" /> LPP
+              </TabsTrigger>
+              <TabsTrigger value="diabetic-foot" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-amber-100 data-[state=active]:text-amber-700 data-[state=active]:border-amber-200 dark:data-[state=active]:bg-amber-900/40 dark:data-[state=active]:text-amber-300 dark:data-[state=active]:border-amber-700 hover:bg-accent">
+                <Footprints className="mr-1.5 h-3.5 w-3.5" /> Pé Diabético
+              </TabsTrigger>
+              <TabsTrigger value="vascular-ulcers" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-violet-100 data-[state=active]:text-violet-700 data-[state=active]:border-violet-200 dark:data-[state=active]:bg-violet-900/40 dark:data-[state=active]:text-violet-300 dark:data-[state=active]:border-violet-700 hover:bg-accent">
+                <Activity className="mr-1.5 h-3.5 w-3.5" /> Úlceras
+              </TabsTrigger>
+              <TabsTrigger value="dressings" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-700 data-[state=active]:border-emerald-200 dark:data-[state=active]:bg-emerald-900/40 dark:data-[state=active]:text-emerald-300 dark:data-[state=active]:border-emerald-700 hover:bg-accent">
+                <Bandage className="mr-1.5 h-3.5 w-3.5" /> Coberturas
+              </TabsTrigger>
+            </TabsList>
+            <ScrollBar orientation="horizontal" className="hidden" />
+          </ScrollArea>
+        </div>
 
-        <TabsContent value="tissues" className="mt-4 space-y-6">
-          {/* Modern TIME Principle Card */}
+        <TabsContent value="tissues" className="mt-2 space-y-6">
+          {/* Modern TIME Principle Card - Responsive Grid */}
           <Card className="overflow-hidden border-l-4 border-l-primary shadow-md">
-            <div className="bg-primary/5 p-4 border-b border-primary/10">
-              <h3 className="flex items-center gap-2 text-lg font-bold text-primary">
-                <Info className="h-5 w-5" />Princípios TIME
+            <div className="bg-primary/5 p-3 border-b border-primary/10">
+              <h3 className="flex items-center gap-2 text-sm sm:text-lg font-bold text-primary">
+                <Info className="h-4 w-4 sm:h-5 sm:w-5" />Princípios TIME
               </h3>
             </div>
-            <CardContent className="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-card border rounded-lg p-3 text-center shadow-sm">
-                <span className="block text-2xl font-black text-primary mb-1">T</span>
-                <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Tecido</span>
+            <CardContent className="p-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="bg-card border rounded-lg p-2 text-center shadow-sm">
+                <span className="block text-xl sm:text-2xl font-black text-primary mb-0.5">T</span>
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">Tecido</span>
               </div>
-              <div className="bg-card border rounded-lg p-3 text-center shadow-sm">
-                <span className="block text-2xl font-black text-primary mb-1">I</span>
-                <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Infecção</span>
+              <div className="bg-card border rounded-lg p-2 text-center shadow-sm">
+                <span className="block text-xl sm:text-2xl font-black text-primary mb-0.5">I</span>
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">Infecção</span>
               </div>
-              <div className="bg-card border rounded-lg p-3 text-center shadow-sm">
-                <span className="block text-2xl font-black text-primary mb-1">M</span>
-                <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Umidade</span>
+              <div className="bg-card border rounded-lg p-2 text-center shadow-sm">
+                <span className="block text-xl sm:text-2xl font-black text-primary mb-0.5">M</span>
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">Umidade</span>
               </div>
-              <div className="bg-card border rounded-lg p-3 text-center shadow-sm">
-                <span className="block text-2xl font-black text-primary mb-1">E</span>
-                <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Bordas</span>
+              <div className="bg-card border rounded-lg p-2 text-center shadow-sm">
+                <span className="block text-xl sm:text-2xl font-black text-primary mb-0.5">E</span>
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">Bordas</span>
               </div>
             </CardContent>
           </Card>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-1 flex flex-col gap-3">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+            {/* Mobile: Horizontal scrollable selector or Compact Vertical list */}
+            <div className="lg:col-span-1 grid grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-3">
               {tissueTypes.map((tissue) => (
                 <button
                   key={tissue.name}
                   onClick={() => setSelectedTissue(tissue)}
                   className={cn(
-                    "group relative flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 hover:shadow-md",
+                    "group relative flex flex-col lg:flex-row items-center lg:items-center gap-2 lg:gap-3 rounded-xl border p-2 lg:p-3 text-center lg:text-left transition-all duration-200 hover:shadow-md",
                     selectedTissue.name === tissue.name
                       ? `${tissue.lightBg} ${tissue.borderColor} ring-1 ring-inset ${tissue.borderColor.replace('border-', 'ring-')}`
                       : "bg-card hover:bg-accent"
                   )}
                 >
-                  <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-transform group-hover:scale-110", tissue.bgColor, "text-white")}>
-                    <Bandage className="h-5 w-5" />
+                  <div className={cn("flex h-8 w-8 lg:h-10 lg:w-10 shrink-0 items-center justify-center rounded-full transition-transform group-hover:scale-110", tissue.bgColor, "text-white")}>
+                    <Bandage className="h-4 w-4 lg:h-5 lg:w-5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className={cn("font-semibold text-sm leading-tight", tissue.textColor)}>{tissue.name}</h3>
-                    <p className="text-[10px] text-muted-foreground mt-0.5 font-medium">{tissue.color}</p>
+                    <h3 className={cn("font-semibold text-xs lg:text-sm leading-tight", tissue.textColor)}>{tissue.name}</h3>
+                    <p className="text-[10px] text-muted-foreground mt-0.5 font-medium hidden lg:block">{tissue.color}</p>
                   </div>
                   {selectedTissue.name === tissue.name && (
-                    <div className={cn("absolute right-2 top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full", tissue.bgColor)} />
+                    <div className={cn("absolute right-2 top-2 lg:top-1/2 lg:-translate-y-1/2 h-1.5 w-1.5 rounded-full", tissue.bgColor)} />
                   )}
                 </button>
               ))}
             </div>
-            <div className="md:col-span-2">
+            
+            {/* Details Card */}
+            <div className="lg:col-span-2">
               <Card className={cn("shadow-lg border-t-4 h-full", selectedTissue.borderColor)}>
-                <CardHeader className={cn("pb-4", selectedTissue.lightBg)}>
-                  <CardTitle className={cn("text-xl", selectedTissue.textColor)}>{selectedTissue.name}</CardTitle>
-                  <CardDescription className="text-sm font-medium text-foreground/80">{selectedTissue.description}</CardDescription>
+                <CardHeader className={cn("p-4 lg:pb-4", selectedTissue.lightBg)}>
+                  <CardTitle className={cn("text-lg lg:text-xl", selectedTissue.textColor)}>{selectedTissue.name}</CardTitle>
+                  <CardDescription className="text-xs lg:text-sm font-medium text-foreground/80">{selectedTissue.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="p-6 space-y-6">
+                <CardContent className="p-4 lg:p-6 space-y-4 lg:space-y-6">
                   <div>
-                    <h4 className="flex items-center gap-2 text-sm font-bold text-primary mb-2 uppercase tracking-wider">
-                      <CheckCircle className="h-4 w-4" /> Objetivos
+                    <h4 className="flex items-center gap-2 text-xs lg:text-sm font-bold text-primary mb-2 uppercase tracking-wider">
+                      <CheckCircle className="h-3.5 w-3.5 lg:h-4 lg:w-4" /> Objetivos
                     </h4>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{selectedTissue.objectives}</p>
+                    <p className="text-xs lg:text-sm leading-relaxed text-muted-foreground">{selectedTissue.objectives}</p>
                   </div>
                   <div>
-                    <h4 className="flex items-center gap-2 text-sm font-bold text-foreground mb-3 uppercase tracking-wider">
-                      <Bandage className="h-4 w-4" /> Indicações
+                    <h4 className="flex items-center gap-2 text-xs lg:text-sm font-bold text-foreground mb-3 uppercase tracking-wider">
+                      <Bandage className="h-3.5 w-3.5 lg:h-4 lg:w-4" /> Indicações
                     </h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 lg:gap-2">
                       {selectedTissue.dressings.map((dressing, idx) => (
-                        <Badge key={idx} variant="secondary" className="px-3 py-1 text-xs font-medium bg-secondary/50 hover:bg-secondary/70">{dressing}</Badge>
+                        <Badge key={idx} variant="secondary" className="px-2 py-0.5 lg:px-3 lg:py-1 text-[10px] lg:text-xs font-medium bg-secondary/50 hover:bg-secondary/70">{dressing}</Badge>
                       ))}
                     </div>
                   </div>
@@ -311,53 +316,53 @@ const WoundCare = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="pressure-injury" className="mt-4 space-y-6">
+        <TabsContent value="pressure-injury" className="mt-4 space-y-4">
           <Card className="border-destructive/20 bg-destructive/5 shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-destructive text-lg">
-                <ShieldAlert className="h-5 w-5" />Prevenção é a Chave
+            <CardHeader className="p-4 pb-2">
+              <CardTitle className="flex items-center gap-2 text-destructive text-sm sm:text-lg">
+                <ShieldAlert className="h-4 w-4 sm:h-5 sm:w-5" />Prevenção é a Chave
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-muted-foreground font-medium">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
-                <div className="flex items-center gap-2 bg-background p-2 rounded border"><Clock className="h-4 w-4 text-destructive"/> Mudança de decúbito (2h)</div>
-                <div className="flex items-center gap-2 bg-background p-2 rounded border"><ArrowDown className="h-4 w-4 text-destructive"/> Superfícies de alívio</div>
-                <div className="flex items-center gap-2 bg-background p-2 rounded border"><Droplet className="h-4 w-4 text-destructive"/> Hidratação da pele</div>
-                <div className="flex items-center gap-2 bg-background p-2 rounded border"><Activity className="h-4 w-4 text-destructive"/> Nutrição adequada</div>
+            <CardContent className="p-4 pt-0 text-xs sm:text-sm text-muted-foreground font-medium">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 pt-2">
+                <div className="flex items-center gap-2 bg-background p-2 rounded border"><Clock className="h-3.5 w-3.5 text-destructive"/> Mudança decúbito (2h)</div>
+                <div className="flex items-center gap-2 bg-background p-2 rounded border"><ArrowDown className="h-3.5 w-3.5 text-destructive"/> Superfícies de alívio</div>
+                <div className="flex items-center gap-2 bg-background p-2 rounded border"><Droplet className="h-3.5 w-3.5 text-destructive"/> Hidratação da pele</div>
+                <div className="flex items-center gap-2 bg-background p-2 rounded border"><Activity className="h-3.5 w-3.5 text-destructive"/> Nutrição adequada</div>
               </div>
             </CardContent>
           </Card>
           
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {pressureInjuryStages.map((item) => (
               <div key={item.stage} className="group border rounded-xl bg-card shadow-sm hover:shadow-md transition-all overflow-hidden">
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-1" className="border-0">
-                    <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/30">
-                      <div className="flex items-center gap-3 w-full text-left">
-                        <Badge className={cn("text-white text-xs px-2.5 py-1 min-w-[80px] justify-center shrink-0", item.badgeColor)}>{item.stage}</Badge>
-                        <span className="font-semibold text-sm md:text-base">{item.description}</span>
+                    <AccordionTrigger className="px-3 py-3 sm:px-4 hover:no-underline hover:bg-muted/30">
+                      <div className="flex items-center gap-2 sm:gap-3 w-full text-left">
+                        <Badge className={cn("text-white text-[10px] sm:text-xs px-2 py-0.5 sm:py-1 min-w-[70px] justify-center shrink-0", item.badgeColor)}>{item.stage}</Badge>
+                        <span className="font-semibold text-xs sm:text-sm md:text-base line-clamp-1 sm:line-clamp-none">{item.description}</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="px-4 pb-4 pt-0">
-                      <div className="grid md:grid-cols-2 gap-4 pt-3 border-t mt-2">
-                        <div className="space-y-3">
+                    <AccordionContent className="px-3 sm:px-4 pb-4 pt-0">
+                      <div className="grid md:grid-cols-2 gap-3 sm:gap-4 pt-3 border-t mt-1">
+                        <div className="space-y-2 sm:space-y-3">
                           <div>
-                            <h4 className="text-xs font-bold text-muted-foreground uppercase mb-1">Características</h4>
-                            <ul className="list-disc pl-4 text-sm text-foreground/80 space-y-1 marker:text-muted-foreground">
+                            <h4 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase mb-1">Características</h4>
+                            <ul className="list-disc pl-4 text-xs sm:text-sm text-foreground/80 space-y-0.5 marker:text-muted-foreground">
                               {item.characteristics.map((char, i) => <li key={i}>{char}</li>)}
                             </ul>
                           </div>
                           <div>
-                            <h4 className="text-xs font-bold text-primary uppercase mb-1">Objetivos</h4>
-                            <p className="text-sm text-foreground/80">{item.objectives}</p>
+                            <h4 className="text-[10px] sm:text-xs font-bold text-primary uppercase mb-1">Objetivos</h4>
+                            <p className="text-xs sm:text-sm text-foreground/80">{item.objectives}</p>
                           </div>
                         </div>
-                        <div className="bg-muted/30 p-3 rounded-lg h-fit">
-                          <h4 className="text-xs font-bold text-muted-foreground uppercase mb-2">Coberturas Recomendadas</h4>
+                        <div className="bg-muted/30 p-2.5 sm:p-3 rounded-lg h-fit">
+                          <h4 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase mb-2">Coberturas Recomendadas</h4>
                           <div className="flex flex-wrap gap-1.5">
                             {item.dressings.map((dressing, idx) => (
-                              <Badge key={idx} variant="outline" className="text-xs bg-background">{dressing}</Badge>
+                              <Badge key={idx} variant="outline" className="text-[10px] bg-background border-border/60">{dressing}</Badge>
                             ))}
                           </div>
                         </div>
@@ -370,18 +375,18 @@ const WoundCare = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="diabetic-foot" className="mt-4 space-y-6">
+        <TabsContent value="diabetic-foot" className="mt-4 space-y-4">
           <Card className="border-l-4 border-l-destructive shadow-md bg-gradient-to-r from-destructive/5 to-transparent">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-destructive text-lg">
-                <ShieldAlert className="h-5 w-5" />Prevenção e Educação
+            <CardHeader className="p-4 pb-2">
+              <CardTitle className="flex items-center gap-2 text-destructive text-sm sm:text-lg">
+                <ShieldAlert className="h-4 w-4 sm:h-5 sm:w-5" />Prevenção e Educação
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <ul className="grid sm:grid-cols-2 gap-2 text-sm text-muted-foreground">
+            <CardContent className="p-4">
+              <ul className="grid sm:grid-cols-2 gap-1.5 text-xs sm:text-sm text-muted-foreground">
                 {diabeticFootData.prevention.slice(0, 6).map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <CheckCircle className="h-4 w-4 text-destructive/60 shrink-0 mt-0.5"/>
+                    <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-destructive/60 shrink-0 mt-0.5"/>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -389,34 +394,34 @@ const WoundCare = () => {
             </CardContent>
           </Card>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex items-center gap-2 px-1">
-              <Footprints className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-              <h3 className="font-bold text-lg text-amber-800 dark:text-amber-200">Classificação de Wagner</h3>
+              <Footprints className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-400" />
+              <h3 className="font-bold text-base sm:text-lg text-amber-800 dark:text-amber-200">Classificação de Wagner</h3>
             </div>
             
-            <div className="grid gap-3">
+            <div className="grid gap-2 sm:gap-3">
               {diabeticFootData.wagnerClassification.map((item) => (
                 <div key={item.grade} className="border rounded-xl bg-card shadow-sm hover:shadow-md transition-all overflow-hidden">
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1" className="border-0">
-                      <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/30">
-                        <div className="flex items-center gap-3 w-full text-left">
-                          <Badge className={cn("text-white text-xs px-2.5 py-1 w-16 justify-center shrink-0 font-bold", item.badgeColor)}>{item.grade}</Badge>
-                          <span className="font-semibold text-sm md:text-base text-foreground/90">{item.description}</span>
+                      <AccordionTrigger className="px-3 py-3 sm:px-4 hover:no-underline hover:bg-muted/30">
+                        <div className="flex items-center gap-2 sm:gap-3 w-full text-left">
+                          <Badge className={cn("text-white text-[10px] sm:text-xs w-12 sm:w-16 justify-center shrink-0 font-bold", item.badgeColor)}>{item.grade}</Badge>
+                          <span className="font-semibold text-xs sm:text-sm md:text-base text-foreground/90">{item.description}</span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="px-4 pb-4 pt-0">
+                      <AccordionContent className="px-3 sm:px-4 pb-4 pt-0">
                         <div className="pt-3 border-t mt-1 space-y-3">
                           <div>
-                            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1">Características</span>
-                            <ul className="list-disc pl-4 text-sm text-foreground/80 space-y-1 marker:text-muted-foreground">
+                            <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1">Características</span>
+                            <ul className="list-disc pl-4 text-xs sm:text-sm text-foreground/80 space-y-0.5 marker:text-muted-foreground">
                               {item.characteristics.map((char, i) => <li key={i}>{char}</li>)}
                             </ul>
                           </div>
-                          <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-100 dark:border-amber-800/30">
-                            <span className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wide block mb-1">Conduta / Objetivos</span>
-                            <p className="text-sm text-foreground/90 leading-relaxed">{item.objectives}</p>
+                          <div className="bg-amber-50 dark:bg-amber-900/20 p-2.5 sm:p-3 rounded-lg border border-amber-100 dark:border-amber-800/30">
+                            <span className="text-[10px] sm:text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wide block mb-1">Conduta / Objetivos</span>
+                            <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed">{item.objectives}</p>
                           </div>
                         </div>
                       </AccordionContent>
@@ -428,36 +433,36 @@ const WoundCare = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="vascular-ulcers" className="mt-4 space-y-6">
+        <TabsContent value="vascular-ulcers" className="mt-4 space-y-4">
           <Card className="border-blue-200 bg-blue-50/50 dark:bg-blue-950/30 shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400 text-base sm:text-lg">
-                <Scale className="h-5 w-5" />Índice Tornozelo-Braquial (ITB)
+            <CardHeader className="p-4 pb-2">
+              <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400 text-sm sm:text-lg">
+                <Scale className="h-4 w-4 sm:h-5 sm:w-5" />Índice Tornozelo-Braquial (ITB)
               </CardTitle>
-              <CardDescription className="text-xs sm:text-sm">Fórmula: <strong>Maior PS Tornozelo ÷ Maior PS Braquial</strong></CardDescription>
+              <CardDescription className="text-[10px] sm:text-xs">Fórmula: <strong>Maior PS Tornozelo ÷ Maior PS Braquial</strong></CardDescription>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <Table>
+              <div className="overflow-x-auto w-full">
+                <Table className="min-w-full">
                   <TableHeader>
                     <TableRow className="hover:bg-transparent border-b-blue-200 dark:border-b-blue-800">
-                      <TableHead className="text-blue-900 dark:text-blue-100 font-bold">Valor ITB</TableHead>
-                      <TableHead className="text-blue-900 dark:text-blue-100 font-bold">Interpretação</TableHead>
-                      <TableHead className="text-blue-900 dark:text-blue-100 font-bold">Conduta</TableHead>
+                      <TableHead className="text-blue-900 dark:text-blue-100 font-bold h-8 text-xs sm:text-sm">Valor ITB</TableHead>
+                      <TableHead className="text-blue-900 dark:text-blue-100 font-bold h-8 text-xs sm:text-sm">Interpretação</TableHead>
+                      <TableHead className="text-blue-900 dark:text-blue-100 font-bold h-8 text-xs sm:text-sm">Conduta</TableHead>
                     </TableRow>
                   </TableHeader>
-                  <TableBody className="text-xs sm:text-sm">
+                  <TableBody className="text-[10px] sm:text-sm">
                     <TableRow className="hover:bg-blue-100/50 dark:hover:bg-blue-900/50 border-b-blue-100 dark:border-b-blue-900/50">
-                      <TableCell className="font-semibold">{'>'} 1.3</TableCell><TableCell>Não compressível</TableCell><TableCell>Investigar</TableCell>
+                      <TableCell className="font-semibold py-2">{'>'} 1.3</TableCell><TableCell className="py-2">Não compressível</TableCell><TableCell className="py-2">Investigar</TableCell>
                     </TableRow>
                     <TableRow className="bg-green-100/50 dark:bg-green-900/20 border-b-green-200 dark:border-b-green-900/30">
-                      <TableCell className="font-semibold text-green-800 dark:text-green-300">0.9 - 1.3</TableCell><TableCell>Normal</TableCell><TableCell>Compressão OK</TableCell>
+                      <TableCell className="font-semibold text-green-800 dark:text-green-300 py-2">0.9 - 1.3</TableCell><TableCell className="py-2">Normal</TableCell><TableCell className="py-2">Compressão OK</TableCell>
                     </TableRow>
                     <TableRow className="bg-yellow-100/50 dark:bg-yellow-900/20 border-b-yellow-200 dark:border-b-yellow-900/30">
-                      <TableCell className="font-semibold text-yellow-800 dark:text-yellow-300">0.5 - 0.8</TableCell><TableCell>DAP Leve/Mod.</TableCell><TableCell>Compressão leve</TableCell>
+                      <TableCell className="font-semibold text-yellow-800 dark:text-yellow-300 py-2">0.5 - 0.8</TableCell><TableCell className="py-2">DAP Leve/Mod.</TableCell><TableCell className="py-2">Compressão leve</TableCell>
                     </TableRow>
                     <TableRow className="bg-red-100/50 dark:bg-red-900/20 border-b-red-200 dark:border-b-red-900/30">
-                      <TableCell className="font-semibold text-red-800 dark:text-red-300">{'<'} 0.5</TableCell><TableCell>DAP Grave</TableCell><TableCell className="font-bold text-destructive">SEM COMPRESSÃO</TableCell>
+                      <TableCell className="font-semibold text-red-800 dark:text-red-300 py-2">{'<'} 0.5</TableCell><TableCell className="py-2">DAP Grave</TableCell><TableCell className="font-bold text-destructive py-2">SEM COMPRESSÃO</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -465,35 +470,35 @@ const WoundCare = () => {
             </CardContent>
           </Card>
           
-          <div className="grid lg:grid-cols-2 gap-6">
+          <div className="grid lg:grid-cols-2 gap-4">
             {/* Úlcera Venosa */}
             <Card className="border-t-4 border-t-blue-500 shadow-md hover:shadow-lg transition-shadow">
-              <CardHeader className="bg-blue-50/50 dark:bg-blue-950/20 pb-4">
-                <CardTitle className="text-blue-700 dark:text-blue-400 flex items-center gap-2">
-                  <Heart className="h-6 w-6" /> Úlcera Venosa
+              <CardHeader className="bg-blue-50/50 dark:bg-blue-950/20 p-4 pb-3">
+                <CardTitle className="text-blue-700 dark:text-blue-300 flex items-center gap-2 text-sm sm:text-base">
+                  <Heart className="h-5 w-5" /> Úlcera Venosa
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-5 text-sm">
-                <div className="grid grid-cols-[100px_1fr] gap-2 items-baseline">
-                  <span className="text-xs font-bold text-muted-foreground uppercase">Causa</span>
+              <CardContent className="p-4 space-y-3 text-xs sm:text-sm">
+                <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-2 items-baseline">
+                  <span className="font-bold text-blue-600 uppercase text-[10px] sm:text-xs">Causa</span>
                   <p className="font-medium">Insuficiência Venosa Crônica</p>
                 </div>
-                <div className="grid grid-cols-[100px_1fr] gap-2 items-baseline">
-                  <span className="text-xs font-bold text-muted-foreground uppercase">Lesão</span>
-                  <p className="text-muted-foreground">Terço distal, superficial, bordas irregulares, muito exsudato, leito vermelho.</p>
+                <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-2 items-baseline">
+                  <span className="font-bold text-muted-foreground uppercase text-[10px] sm:text-xs">Lesão</span>
+                  <p className="text-muted-foreground">Terço distal, superficial, bordas irregulares, muito exsudato.</p>
                 </div>
-                <div className="grid grid-cols-[100px_1fr] gap-2 items-baseline">
-                  <span className="text-xs font-bold text-muted-foreground uppercase">Pele</span>
+                <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-2 items-baseline">
+                  <span className="font-bold text-muted-foreground uppercase text-[10px] sm:text-xs">Pele</span>
                   <p className="text-muted-foreground">Dermatite ocre, edema, lipodermoesclerose.</p>
                 </div>
-                <div className="grid grid-cols-[100px_1fr] gap-2 items-baseline">
-                  <span className="text-xs font-bold text-muted-foreground uppercase">Dor</span>
+                <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-2 items-baseline">
+                  <span className="font-bold text-muted-foreground uppercase text-[10px] sm:text-xs">Dor</span>
                   <div className="flex items-center gap-2 text-green-600 font-medium">
-                    <ArrowUp className="h-4 w-4" /> Melhora elevando
+                    <ArrowUp className="h-3.5 w-3.5" /> Melhora elevando
                   </div>
                 </div>
-                <div className="pt-4 border-t">
-                  <Badge className="bg-blue-600 hover:bg-blue-700 text-white w-full justify-center py-2 text-sm">
+                <div className="pt-2 border-t border-blue-100 dark:border-blue-900 mt-2">
+                  <Badge className="bg-blue-600 hover:bg-blue-700 text-white w-full justify-center py-1.5 text-[10px] sm:text-xs">
                     Conduta: Compressão + Elevação
                   </Badge>
                 </div>
@@ -502,33 +507,33 @@ const WoundCare = () => {
 
             {/* Úlcera Arterial */}
             <Card className="border-t-4 border-t-red-500 shadow-md hover:shadow-lg transition-shadow">
-              <CardHeader className="bg-red-50/50 dark:bg-red-950/20 pb-4">
-                <CardTitle className="text-red-700 dark:text-red-400 flex items-center gap-2">
-                  <Activity className="h-6 w-6" /> Úlcera Arterial
+              <CardHeader className="bg-red-50/50 dark:bg-red-950/20 p-4 pb-3">
+                <CardTitle className="text-red-700 dark:text-red-300 flex items-center gap-2 text-sm sm:text-base">
+                  <Activity className="h-5 w-5" /> Úlcera Arterial
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-5 text-sm">
-                <div className="grid grid-cols-[100px_1fr] gap-2 items-baseline">
-                  <span className="text-xs font-bold text-muted-foreground uppercase">Causa</span>
-                  <p className="font-medium">Doença Arterial Periférica (Isquemia)</p>
+              <CardContent className="p-4 space-y-3 text-xs sm:text-sm">
+                <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-2 items-baseline">
+                  <span className="font-bold text-red-600 uppercase text-[10px] sm:text-xs">Causa</span>
+                  <p className="font-medium">Doença Arterial (Isquemia)</p>
                 </div>
-                <div className="grid grid-cols-[100px_1fr] gap-2 items-baseline">
-                  <span className="text-xs font-bold text-muted-foreground uppercase">Lesão</span>
-                  <p className="text-muted-foreground">Pontas dos dedos/maléolo, profunda, "saca-bocado", leito pálido/seco.</p>
+                <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-2 items-baseline">
+                  <span className="font-bold text-muted-foreground uppercase text-[10px] sm:text-xs">Lesão</span>
+                  <p className="text-muted-foreground">Pontas dos dedos/maléolo, profunda, "saca-bocado", seca.</p>
                 </div>
-                <div className="grid grid-cols-[100px_1fr] gap-2 items-baseline">
-                  <span className="text-xs font-bold text-muted-foreground uppercase">Pele</span>
-                  <p className="text-muted-foreground">Fria, pálida, brilhante, sem pelos, unhas espessas, pulso ausente.</p>
+                <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-2 items-baseline">
+                  <span className="font-bold text-muted-foreground uppercase text-[10px] sm:text-xs">Pele</span>
+                  <p className="text-muted-foreground">Fria, pálida, brilhante, sem pelos, unhas espessas.</p>
                 </div>
-                <div className="grid grid-cols-[100px_1fr] gap-2 items-baseline">
-                  <span className="text-xs font-bold text-muted-foreground uppercase">Dor</span>
+                <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-2 items-baseline">
+                  <span className="font-bold text-muted-foreground uppercase text-[10px] sm:text-xs">Dor</span>
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-red-500 font-medium"><ArrowUp className="h-4 w-4" /> Piora elevando</div>
-                    <div className="flex items-center gap-2 text-green-600 font-medium"><ArrowDown className="h-4 w-4" /> Melhora pendendo</div>
+                    <div className="flex items-center gap-2 text-red-500 font-medium"><ArrowUp className="h-3.5 w-3.5" /> Piora elevando</div>
+                    <div className="flex items-center gap-2 text-green-600 font-medium"><ArrowDown className="h-3.5 w-3.5" /> Melhora pendendo</div>
                   </div>
                 </div>
-                <div className="pt-4 border-t">
-                  <Badge className="bg-red-600 hover:bg-red-700 text-white w-full justify-center py-2 text-sm mb-1">
+                <div className="pt-2 border-t border-red-100 dark:border-red-900 mt-2">
+                  <Badge className="bg-red-600 hover:bg-red-700 text-white w-full justify-center py-1.5 text-[10px] sm:text-xs">
                     CONTRAINDICADO COMPRESSÃO!
                   </Badge>
                 </div>
@@ -537,79 +542,64 @@ const WoundCare = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="dressings" className="mt-4 space-y-6">
-          <div className="sticky top-4 z-10 bg-background/95 backdrop-blur pb-4 border-b mb-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Buscar cobertura (ex: Hidrocoloide, Prata, Carvão)..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-11 shadow-sm"
-              />
-            </div>
+        <TabsContent value="dressings" className="mt-4 space-y-4">
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Buscar cobertura..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 h-10 text-sm"
+            />
           </div>
 
           {filteredDressings.length > 0 ? (
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-3">
               {filteredDressings.map((dressing, index) => {
                 const itemId = `/wound-care#${dressing.name.toLowerCase().replace(/\s+/g, '-')}`;
                 return (
-                  <Card key={index} className="border shadow-sm hover:shadow-md transition-all hover:border-emerald-200 dark:hover:border-emerald-800">
-                    <CardHeader className="p-4 pb-2 flex flex-row items-start justify-between space-y-0">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg">
-                          <Bandage className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <Accordion type="single" collapsible key={index}>
+                    <AccordionItem value={`item-${index}`} className="border rounded-lg px-3 bg-card shadow-sm">
+                      <div className="flex items-center py-1">
+                        <AccordionTrigger className="flex-1 group hover:no-underline text-left py-3">
+                          <div className="flex items-center gap-3">
+                            <div className="p-1.5 bg-emerald-100 dark:bg-emerald-900/50 rounded-md shrink-0">
+                              <Bandage className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                            </div>
+                            <p className="font-semibold text-left text-xs sm:text-sm">{dressing.name}</p>
+                          </div>
+                        </AccordionTrigger>
+                        <div className="pl-2">
+                          {profile && (
+                            <FavoriteButton
+                              userId={profile.id}
+                              itemId={itemId}
+                              itemType="Cobertura"
+                              itemTitle={dressing.name}
+                              isInitiallyFavorited={favoriteSet.has(itemId)}
+                              isLoading={isLoadingFavorites}
+                              className="h-8 w-8"
+                            />
+                          )}
                         </div>
-                        <CardTitle className="text-base font-bold">{dressing.name}</CardTitle>
                       </div>
-                      {profile && (
-                        <FavoriteButton
-                          userId={profile.id}
-                          itemId={itemId}
-                          itemType="Cobertura"
-                          itemTitle={dressing.name}
-                          isInitiallyFavorited={favoriteSet.has(itemId)}
-                          isLoading={isLoadingFavorites}
-                          className="h-8 w-8 -mt-1 -mr-2"
-                        />
-                      )}
-                    </CardHeader>
-                    <CardContent className="p-4 pt-2 space-y-3">
-                      <Accordion type="single" collapsible className="w-full border rounded-md bg-muted/20">
-                        <AccordionItem value="details" className="border-0">
-                          <AccordionTrigger className="px-3 py-2 text-xs font-medium hover:no-underline">Ver Detalhes</AccordionTrigger>
-                          <AccordionContent className="px-3 pb-3 pt-0 space-y-3">
-                            <div className="space-y-1">
-                              <span className="text-[10px] font-bold uppercase text-green-600 flex items-center gap-1"><CheckCircle className="h-3 w-3"/> Indicação</span>
-                              <p className="text-sm text-foreground/90 leading-snug">{dressing.indication}</p>
-                            </div>
-                            <div className="space-y-1">
-                              <span className="text-[10px] font-bold uppercase text-blue-600 flex items-center gap-1"><Zap className="h-3 w-3"/> Ação</span>
-                              <p className="text-sm text-foreground/90 leading-snug">{dressing.action}</p>
-                            </div>
-                            <div className="grid grid-cols-2 gap-2 pt-1">
-                              <div>
-                                <span className="text-[10px] font-bold uppercase text-cyan-600 flex items-center gap-1 mb-1"><Clock className="h-3 w-3"/> Troca</span>
-                                <p className="text-xs text-muted-foreground">{dressing.changeInterval}</p>
-                              </div>
-                              <div>
-                                <span className="text-[10px] font-bold uppercase text-amber-600 flex items-center gap-1 mb-1"><AlertTriangle className="h-3 w-3"/> Cuidado</span>
-                                <p className="text-xs text-muted-foreground">{dressing.contraindication}</p>
-                              </div>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    </CardContent>
-                  </Card>
+                      <AccordionContent className="pt-2 pb-4 space-y-3 border-t border-border/40 mt-1 text-xs sm:text-sm">
+                        <div className="flex gap-2"><CheckCircle className="h-4 w-4 text-green-600 shrink-0" /><div className="flex-1"><span className="font-bold text-green-700 block mb-0.5 text-[10px] uppercase">Indicação</span>{dressing.indication}</div></div>
+                        <div className="flex gap-2"><Zap className="h-4 w-4 text-blue-600 shrink-0" /><div className="flex-1"><span className="font-bold text-blue-700 block mb-0.5 text-[10px] uppercase">Ação</span>{dressing.action}</div></div>
+                        <div className="grid grid-cols-2 gap-2 pt-1">
+                          <div className="flex gap-2"><Clock className="h-4 w-4 text-cyan-600 shrink-0" /><div className="flex-1"><span className="font-bold text-cyan-700 block mb-0.5 text-[10px] uppercase">Troca</span>{dressing.changeInterval}</div></div>
+                          <div className="flex gap-2"><AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" /><div className="flex-1"><span className="font-bold text-amber-700 block mb-0.5 text-[10px] uppercase">Cuidado</span>{dressing.contraindication}</div></div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 );
               })}
             </div>
           ) : (
             <Card><CardContent className="py-12 text-center text-muted-foreground flex flex-col items-center gap-2">
               <Search className="h-8 w-8 opacity-20" />
-              <p>Nenhuma cobertura encontrada.</p>
+              <p className="text-sm">Nenhuma cobertura encontrada.</p>
             </CardContent></Card>
           )}
         </TabsContent>
