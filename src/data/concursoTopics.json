@@ -206,6 +206,40 @@
           "<strong>Sondagem Vesical:</strong> A fixação no homem é no abdome inferior (prevenir fístula) e na mulher na face interna da coxa."
         ],
         "goldenTip": "A respiração de Kussmaul (acidose) é profunda e rápida ('fome de ar'). Cheyne-Stokes tem ciclos crescentes/decrescentes com apneia."
+      },
+      {
+        "title": "Lesão por Pressão (LPP) - NPUAP",
+        "summary": "Classificação e prevenção de danos à pele.",
+        "keyPoints": [
+          "<strong>Estágio 1:</strong> Eritema não branqueável em pele íntegra.",
+          "<strong>Estágio 2:</strong> Perda parcial da espessura (derme exposta), leito rosa/vermelho.",
+          "<strong>Estágio 3:</strong> Perda total da espessura da pele (gordura visível).",
+          "<strong>Estágio 4:</strong> Perda total com exposição de osso/tendão/músculo.",
+          "<strong>Não Estadiável:</strong> Coberta por necrose ou esfacelo.",
+          "<strong>Tissular Profunda:</strong> Área vermelha escura/púrpura ou flictena de sangue em pele íntegra."
+        ],
+        "goldenTip": "Prevenção é prioridade: mudança de decúbito a cada 2h e hidratação da pele (exceto em proeminências ósseas já hiperemiadas)."
+      },
+      {
+        "title": "Biossegurança e Resíduos (NR-32 / RDC 222)",
+        "summary": "Gerenciamento de Resíduos de Serviços de Saúde (PGRSS).",
+        "keyPoints": [
+          "<strong>Grupo A (Infectante):</strong> Saco BRANCO leitoso. Ex: sangue, peças anatômicas, vacinas vivas.",
+          "<strong>Grupo B (Químico):</strong> Galões rígidos/Saco Laranja. Ex: Reveladores, medicamentos (exceto controlados).",
+          "<strong>Grupo E (Perfurocortantes):</strong> Caixa rígida amarela (Descarpack). Preencher até 2/3 ou linha pontilhada.",
+          "<strong>NR-32:</strong> Proíbe adorno, reencape de agulhas e consumo de alimentos no posto de trabalho."
+        ],
+        "goldenTip": "Nunca reencapar agulhas! O descarte deve ser imediato no coletor rígido localizado próximo ao local do procedimento."
+      },
+      {
+        "title": "Administração de Medicamentos",
+        "summary": "Vias e técnicas de aplicação.",
+        "keyPoints": [
+          "<strong>Intramuscular (IM):</strong> Região Ventroglútea (Hochstetter) é a mais segura (até 4-5ml, livre de nervos). Deltóide (máx 2ml, risco nervo radial). Dorsoglúteo (risco nervo ciático, não recomendado).",
+          "<strong>Subcutânea (SC):</strong> Insulina/Heparina. Rodízio de locais (abdome, braço, coxa).",
+          "<strong>Intradérmica (ID):</strong> BCG e PPD. Ângulo 10-15º. Não massagear."
+        ],
+        "goldenTip": "A região Ventroglútea é a preferencial para IM em todas as idades (exceto < 7 meses/não andantes que usam Vasto Lateral)."
       }
     ]
   },
@@ -224,6 +258,27 @@
           "<strong>Vacinas:</strong> dTpa (a partir de 20s), dT, Hepatite B, Influenza."
         ],
         "goldenTip": "A suplementação de Sulfato Ferroso (profilática) é 40mg ferro elementar. Ácido Fólico (prevenção defeito tubo neural) idealmente 3 meses antes."
+      },
+      {
+        "title": "Síndromes Hipertensivas (SHEG)",
+        "summary": "Principal causa de morte materna no Brasil.",
+        "keyPoints": [
+          "<strong>Pré-eclâmpsia:</strong> Hipertensão (>140/90) após 20 semanas + Proteinúria ou sinais de gravidade.",
+          "<strong>Sinais de Iminência de Eclâmpsia:</strong> Cefaleia intensa, escotomas (visão), epigastralgia (dor no estômago) e hiperreflexia.",
+          "<strong>Eclâmpsia:</strong> Pré-eclâmpsia + Convulsões.",
+          "<strong>Tratamento:</strong> Sulfato de Magnésio (prevenir/tratar convulsão). Antídoto: Gluconato de Cálcio."
+        ],
+        "goldenTip": "Na intoxicação por Magnésio: 1º some o reflexo patelar, 2º depressão respiratória, 3º parada cardíaca. Monitore reflexos e FR!"
+      },
+      {
+        "title": "Hemorragias da Gestação",
+        "summary": "Diferenciação das principais causas de sangramento.",
+        "keyPoints": [
+          "<strong>1ª Metade (<20s):</strong> Abortamento, Gravidez Ectópica (dor em baixo ventre + choque), Mola Hidatiforme (útero maior que o esperado, 'tempestade de neve' no USG).",
+          "<strong>2ª Metade (>20s):</strong> Placenta Prévia (sangramento vermelho vivo, INDOLOR, sem esforço), Descolamento Prematuro de Placenta - DPP (sangue escuro, DOR intensa, útero lenhoso, hipertonia).",
+          "<strong>Pós-Parto:</strong> Atonia Uterina (principal causa). Cd: Massagem uterina + Ocitocina."
+        ],
+        "goldenTip": "Placenta Prévia = Sangra muito e NÃO dói. DPP = Sangra (as vezes oculto) e DÓI muito. No DPP, o feto entra em sofrimento rápido."
       },
       {
         "title": "Câncer de Colo e Mama",
@@ -285,6 +340,40 @@
           "<strong>Precaução:</strong> Aerossóis (Máscara N95 para profissional, Cirúrgica para paciente no transporte)."
         ],
         "goldenTip": "A Rifampicina colore fluidos corporais (urina, suor) de laranja/vermelho. O Etambutol pode causar neurite óptica (visão)."
+      },
+      {
+        "title": "Hanseníase",
+        "summary": "Bacilo de Hansen. Doença infectocontagiosa crônica que atinge pele e nervos.",
+        "keyPoints": [
+          "<strong>Transmissão:</strong> Vias aéreas superiores (contato prolongado).",
+          "<strong>Paucibacilar (PB):</strong> Até 5 lesões de pele. Baciloscopia negativa. Tratamento: 6 meses (PQT).",
+          "<strong>Multibacilar (MB):</strong> Mais de 5 lesões. Baciloscopia positiva. Tratamento: 12 meses (PQT).",
+          "<strong>Sinais:</strong> Manchas com alteração de sensibilidade (térmica, dolorosa e tátil), espessamento neural."
+        ],
+        "goldenTip": "A primeira dose do tratamento (PQT) é sempre supervisionada na unidade. As demais são autoadministradas. A Rifampicina é mensal."
+      },
+      {
+        "title": "Sífilis (Lues)",
+        "summary": "IST causada pelo Treponema pallidum.",
+        "keyPoints": [
+          "<strong>Primária:</strong> Cancro duro (úlcera indolor, fundo limpo, bordas duras).",
+          "<strong>Secundária:</strong> Roséolas, lesões palmoplantares, placas mucosas.",
+          "<strong>Terciária:</strong> Gomas, lesões neurológicas e cardiovasculares.",
+          "<strong>Tratamento:</strong> Penicilina Benzatina (Benzetacil). A dose varia conforme o estágio.",
+          "<strong>Diagnóstico:</strong> Teste rápido/VDRL (Rastreio) + FTA-Abs (Confirmatório)."
+        ],
+        "goldenTip": "VDRL cai (negativa) com a cura. FTA-Abs permanece positivo a vida toda (cicatriz sorológica)."
+      },
+      {
+        "title": "Meningites",
+        "summary": "Inflamação das meninges. Pode ser viral, bacteriana ou fúngica.",
+        "keyPoints": [
+          "<strong>Sinais Clássicos:</strong> Rigidez de nuca, febre alta, cefaleia, vômitos em jato.",
+          "<strong>Sinal de Kerning:</strong> Dor ao estender a perna com a coxa flexionada.",
+          "<strong>Sinal de Brudzinski:</strong> Flexão involuntária das pernas ao fletir o pescoço.",
+          "<strong>Isolamento:</strong> Meningocócica e Haemophilus exigem isolamento de GOTÍCULAS (máscara cirúrgica) por 24h de antibiótico."
+        ],
+        "goldenTip": "Meningite viral geralmente tem bom prognóstico. Bacteriana (meningococo) pode causar meningococcemia (manchas na pele) e evoluir para óbito rápido."
       },
       {
         "title": "Dengue, Zika e Chikungunya",
