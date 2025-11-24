@@ -129,7 +129,7 @@ const ConcurseiroArea = () => {
                   <div>
                     <h2 className={cn("text-lg font-bold tracking-tight", section.color)}>{section.category}</h2>
                     <p className="text-xs text-muted-foreground font-normal mt-0.5">
-                      {section.topics.length} tópico{section.topics.length !== 1 && 's'} disponível{section.topics.length !== 1 && 'is'}
+                      {section.topics.length} tópico{section.topics.length !== 1 && 's'} {section.topics.length !== 1 ? 'disponíveis' : 'disponível'}
                     </p>
                   </div>
                 </div>
