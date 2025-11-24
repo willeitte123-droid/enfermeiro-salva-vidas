@@ -27,6 +27,8 @@ const ConcurseiroArea = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
   const [searchTerm, setSearchTerm] = useState("");
+  // Estado para controlar quais itens do acordeão principal estão abertos
+  const [openSections, setOpenSections] = useState<string[]>([]);
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Área do Concurseiro', path: '/concurseiro', icon: 'GraduationCap' });
@@ -46,6 +48,17 @@ const ConcurseiroArea = () => {
       )
     })).filter(section => section.topics.length > 0);
   }, [searchTerm]);
+
+  // Efeito para abrir automaticamente as seções que contêm resultados da busca
+  useEffect(() => {
+    if (searchTerm) {
+      setOpenSections(filteredData.map(s => s.category));
+    } else {
+      // Opcional: Deixar apenas a primeira aberta ou todas fechadas inicialmente
+      // setOpenSections([concursoData[0].category]); 
+      setOpenSections([]);
+    }
+  }, [searchTerm, filteredData]);
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-8">
@@ -104,84 +117,93 @@ const ConcurseiroArea = () => {
         />
       </div>
 
-      {/* Content Sections */}
-      <div className="space-y-12">
+      {/* Content Sections - Accordion Layout */}
+      <Accordion type="multiple" value={openSections} onValueChange={setOpenSections} className="w-full space-y-4">
         {filteredData.map((section) => {
           const Icon = iconMap[section.icon] || BookOpen;
           return (
-            <div key={section.category} className="space-y-5">
-              <div className="flex items-center gap-3 border-b pb-2 border-border/60">
-                <div className="p-2 rounded-lg bg-muted/50 shadow-sm">
-                  <Icon className={cn("h-6 w-6", section.color)} />
+            <AccordionItem key={section.category} value={section.category} className="border rounded-lg bg-card shadow-sm overflow-hidden px-2">
+              <AccordionTrigger className="hover:no-underline py-4 px-2 hover:bg-muted/30 transition-colors rounded-t-lg">
+                <div className="flex items-center gap-4 text-left">
+                  <div className="p-2.5 rounded-lg bg-muted/50 shadow-sm">
+                    <Icon className={cn("h-6 w-6", section.color)} />
+                  </div>
+                  <div>
+                    <h2 className={cn("text-lg font-bold tracking-tight", section.color)}>{section.category}</h2>
+                    <p className="text-xs text-muted-foreground font-normal mt-0.5">
+                      {section.topics.length} tópico{section.topics.length !== 1 && 's'} disponível{section.topics.length !== 1 && 'is'}
+                    </p>
+                  </div>
                 </div>
-                <h2 className={cn("text-2xl font-bold tracking-tight", section.color)}>{section.category}</h2>
-              </div>
-
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {section.topics.map((topic, index) => (
-                  <Card key={index} className="flex flex-col h-full border-t-4 border-t-primary hover:shadow-md transition-all duration-200 group">
-                    <CardHeader className="pb-3">
-                      <CardTitle className={cn("text-lg flex items-start justify-between gap-2", section.color)}>
-                        {topic.title}
-                      </CardTitle>
-                      <CardDescription className="text-xs mt-1 leading-relaxed">
-                        {topic.summary}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-1 flex flex-col gap-4">
-                      <div className="flex-1">
-                        <ul className="space-y-2">
-                          {topic.keyPoints.slice(0, 2).map((point, idx) => (
-                            <li key={idx} className="text-sm flex items-start gap-2 text-muted-foreground">
-                              <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
-                              <span dangerouslySetInnerHTML={{ __html: point }} />
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      <Accordion type="single" collapsible className="w-full border rounded-md bg-muted/30 group-hover:bg-muted/50 transition-colors">
-                        <AccordionItem value="details" className="border-0">
-                          <AccordionTrigger className="px-3 py-2 text-xs font-semibold hover:no-underline">
-                            Ver Detalhes Completos
-                          </AccordionTrigger>
-                          <AccordionContent className="px-3 pb-3 pt-1">
-                            <ul className="space-y-2 pt-2">
-                              {topic.keyPoints.map((point, idx) => (
-                                <li key={idx} className="text-xs sm:text-sm flex items-start gap-2 text-foreground/80">
-                                  <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
-                                  <span dangerouslySetInnerHTML={{ __html: point }} />
-                                </li>
-                              ))}
-                            </ul>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-
-                      <div className="mt-auto p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
-                        <div className="flex items-center gap-2 mb-1 text-amber-700 dark:text-amber-400 font-bold text-xs uppercase tracking-wider">
-                          <Lightbulb className="h-3.5 w-3.5" /> Dica de Ouro
+              </AccordionTrigger>
+              
+              <AccordionContent className="px-2 pb-6 pt-2">
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {section.topics.map((topic, index) => (
+                    <Card key={index} className="flex flex-col h-full border-t-4 border-t-primary hover:shadow-md transition-all duration-200 group">
+                      <CardHeader className="pb-3">
+                        <CardTitle className={cn("text-lg flex items-start justify-between gap-2", section.color)}>
+                          {topic.title}
+                        </CardTitle>
+                        <CardDescription className="text-xs mt-1 leading-relaxed">
+                          {topic.summary}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex-1 flex flex-col gap-4">
+                        <div className="flex-1">
+                          <ul className="space-y-2">
+                            {topic.keyPoints.slice(0, 2).map((point, idx) => (
+                              <li key={idx} className="text-sm flex items-start gap-2 text-muted-foreground">
+                                <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                                <span dangerouslySetInnerHTML={{ __html: point }} />
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <p className="text-xs text-amber-800 dark:text-amber-200 leading-relaxed italic">
-                          "{topic.goldenTip}"
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+                        
+                        <Accordion type="single" collapsible className="w-full border rounded-md bg-muted/30 group-hover:bg-muted/50 transition-colors">
+                          <AccordionItem value="details" className="border-0">
+                            <AccordionTrigger className="px-3 py-2 text-xs font-semibold hover:no-underline hover:bg-muted/50">
+                              Ver Detalhes Completos
+                            </AccordionTrigger>
+                            <AccordionContent className="px-3 pb-3 pt-1">
+                              <ul className="space-y-2 pt-2">
+                                {topic.keyPoints.map((point, idx) => (
+                                  <li key={idx} className="text-xs sm:text-sm flex items-start gap-2 text-foreground/80">
+                                    <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
+                                    <span dangerouslySetInnerHTML={{ __html: point }} />
+                                  </li>
+                                ))}
+                              </ul>
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
+
+                        <div className="mt-auto p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+                          <div className="flex items-center gap-2 mb-1 text-amber-700 dark:text-amber-400 font-bold text-xs uppercase tracking-wider">
+                            <Lightbulb className="h-3.5 w-3.5" /> Dica de Ouro
+                          </div>
+                          <p className="text-xs text-amber-800 dark:text-amber-200 leading-relaxed italic">
+                            "{topic.goldenTip}"
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
           );
         })}
+      </Accordion>
 
-        {filteredData.length === 0 && (
-          <div className="text-center py-12 bg-muted/30 rounded-lg border border-dashed">
-            <Search className="h-10 w-10 text-muted-foreground mx-auto mb-3 opacity-20" />
-            <p className="text-muted-foreground">Nenhum conteúdo encontrado para "{searchTerm}".</p>
-            <p className="text-xs text-muted-foreground mt-1">Tente buscar por palavras-chave mais gerais.</p>
-          </div>
-        )}
-      </div>
+      {filteredData.length === 0 && (
+        <div className="text-center py-12 bg-muted/30 rounded-lg border border-dashed">
+          <Search className="h-10 w-10 text-muted-foreground mx-auto mb-3 opacity-20" />
+          <p className="text-muted-foreground">Nenhum conteúdo encontrado para "{searchTerm}".</p>
+          <p className="text-xs text-muted-foreground mt-1">Tente buscar por palavras-chave mais gerais.</p>
+        </div>
+      )}
     </div>
   );
 };
