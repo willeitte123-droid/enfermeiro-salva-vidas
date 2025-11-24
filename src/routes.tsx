@@ -47,6 +47,7 @@ import NursingNotesGuide from './pages/NursingNotesGuide';
 import UpdatePassword from './pages/UpdatePassword';
 import TechnicalTerms from './pages/TechnicalTerms';
 import AnatomyPhysiology from './pages/AnatomyPhysiology';
+import ConcurseiroArea from './pages/ConcurseiroArea';
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -108,6 +109,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="semiology" element={<Semiology />} />
         <Route path="semiotechnique" element={<SemioTechnique />} />
         <Route path="anatomy" element={<AnatomyPhysiology />} />
+        <Route path="concurseiro" element={<ConcurseiroArea />} />
         <Route path="tools/dose-calculator" element={<DoseCalculator />} />
         <Route path="tools/lab-values" element={<LabValues />} />
         <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />

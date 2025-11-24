@@ -1,0 +1,164 @@
+[
+  {
+    "category": "Legislação do SUS",
+    "icon": "Scale",
+    "color": "text-blue-600",
+    "topics": [
+      {
+        "title": "Lei 8.080/90 (Lei Orgânica)",
+        "summary": "Dispõe sobre as condições para promoção, proteção e recuperação da saúde.",
+        "keyPoints": [
+          "<strong>Princípios Doutrinários:</strong> Universalidade, Integralidade e Equidade.",
+          "<strong>Princípios Organizativos:</strong> Descentralização, Regionalização, Hierarquização e Participação Popular.",
+          "<strong>Competências:</strong> Define o que cabe à União, Estados e Municípios.",
+          "<strong>Art. 19-T:</strong> Proíbe, em tese, o pagamento por ordem de chegada (fura-fila)."
+        ],
+        "goldenTip": "Cuidado com as pegadinhas: A Equidade NÃO está escrita literalmente na lei 8.080, mas é um princípio doutrinário implícito reconhecido."
+      },
+      {
+        "title": "Lei 8.142/90",
+        "summary": "Dispõe sobre a participação da comunidade e transferências intergovernamentais.",
+        "keyPoints": [
+          "<strong>Conferências de Saúde:</strong> Reúnem-se a cada 4 anos. Formulam diretrizes.",
+          "<strong>Conselhos de Saúde:</strong> Permanentes e Deliberativos. Atuam na estratégia e fiscalização.",
+          "<strong>Paridade:</strong> 50% Usuários, 25% Trabalhadores, 25% Gestores/Prestadores."
+        ],
+        "goldenTip": "Memorize: Conferência = 4 anos (Diretrizes). Conselho = Permanente (Fiscalização/Execução)."
+      },
+      {
+        "title": "Decreto 7.508/11",
+        "summary": "Regulamenta a Lei 8.080, organizando o SUS em Redes de Atenção (RAS).",
+        "keyPoints": [
+          "<strong>Região de Saúde:</strong> Espaço geográfico contínuo constituído por agrupamentos de municípios.",
+          "<strong>Portas de Entrada:</strong> Atenção Primária, Urgência/Emergência, Atenção Psicossocial e Especiais de Acesso Aberto.",
+          "<strong>COAP:</strong> Contrato Organizativo da Ação Pública da Saúde."
+        ],
+        "goldenTip": "A Atenção Primária é a coordenadora do cuidado e ordenadora da rede."
+      }
+    ]
+  },
+  {
+    "category": "Ética e Legislação",
+    "icon": "Gavel",
+    "color": "text-slate-600",
+    "topics": [
+      {
+        "title": "Lei 7.498/86 (Exercício Profissional)",
+        "summary": "Regulamenta o exercício da enfermagem no Brasil.",
+        "keyPoints": [
+          "<strong>Privativo do Enfermeiro:</strong> Direção de órgãos de enfermagem, Consultoria, Auditoria, Consulta de Enfermagem, Prescrição da assistência, Cuidados a pacientes graves com risco de vida.",
+          "<strong>Técnico de Enfermagem:</strong> Atividades de nível médio, sob supervisão do enfermeiro.",
+          "<strong>Auxiliar de Enfermagem:</strong> Atividades repetitivas, serviços de higiene e conforto."
+        ],
+        "goldenTip": "O Técnico de Enfermagem NÃO pode realizar consulta de enfermagem nem auditoria."
+      },
+      {
+        "title": "Código de Ética (Res. COFEN 564/2017)",
+        "summary": "Direitos, Deveres e Proibições.",
+        "keyPoints": [
+          "<strong>Direito:</strong> É o que eu POSSO fazer (ex: recusar-se a executar atividades que não sejam de sua competência).",
+          "<strong>Dever:</strong> É o que eu TENHO que fazer (ex: prestar assistência livre de danos).",
+          "<strong>Proibição:</strong> É o que eu NÃO POSSO fazer (ex: administrar medicamento sem conhecer ação/efeito, exceto em emergência).",
+          "<strong>Infrações:</strong> Leve (advertência), Moderada (multa), Grave (censura/suspensão), Gravíssima (cassação)."
+        ],
+        "goldenTip": "Recusar-se a trabalhar em local sem condições seguras é um DIREITO, desde que não cause dano imediato (omissão de socorro)."
+      }
+    ]
+  },
+  {
+    "category": "Saúde Pública (Vigilância e PNI)",
+    "icon": "ShieldAlert",
+    "color": "text-orange-600",
+    "topics": [
+      {
+        "title": "Calendário Nacional de Vacinação",
+        "summary": "Imunobiológicos obrigatórios e esquemas vacinais.",
+        "keyPoints": [
+          "<strong>Ao nascer:</strong> BCG e Hepatite B.",
+          "<strong>2, 4, 6 meses:</strong> Pentavalente, VIP, Pneumo 10, Rotavírus (2 e 4m), Meningo C (3 e 5m).",
+          "<strong>9 meses:</strong> Febre Amarela.",
+          "<strong>12 meses:</strong> Tríplice Viral, Pneumo 10 (Ref), Meningo C (Ref).",
+          "<strong>15 meses:</strong> Tetra Viral, DTP, VOP, Hep A."
+        ],
+        "goldenTip": "Vacinas de Vírus Vivos (BCG, VOP, FA, SCR, Varicela, Rotavírus) geralmente não são administradas em gestantes ou imunodeprimidos graves."
+      },
+      {
+        "title": "Doenças de Notificação Compulsória",
+        "summary": "Lista de agravos que exigem comunicação às autoridades.",
+        "keyPoints": [
+          "<strong>Imediatas (<24h):</strong> Botulismo, Cólera, Sarampo, Rubéola, Raiva Humana, Peste, Febre Amarela, Zika (gestante), Violência Sexual.",
+          "<strong>Semanais:</strong> Dengue (casos leves), Tuberculose, Hanseníase, Esquistossomose.",
+          "<strong>Negativa:</strong> Notificar a ausência de doenças na semana epidemiológica."
+        ],
+        "goldenTip": "Lembre do Mnemônico 'BICHOS' para algumas imediatas: Botulismo, Influenza (novo subtipo), Cólera, Hantavirose, Óbito (Dengue), Sarampo."
+      }
+    ]
+  },
+  {
+    "category": "Fundamentos e Clínica",
+    "icon": "Stethoscope",
+    "color": "text-emerald-600",
+    "topics": [
+      {
+        "title": "Cálculo de Medicação",
+        "summary": "Fórmulas essenciais para provas.",
+        "keyPoints": [
+          "<strong>Gotejamento (h):</strong> Gotas = Volume / (Tempo x 3).",
+          "<strong>Microgotas (h):</strong> Microgotas = Volume / Tempo.",
+          "<strong>Regra de Três:</strong> Fundamental para diluição e rediluição.",
+          "<strong>Insulina:</strong> Atenção às seringas (100UI/ml vs 40UI/ml)."
+        ],
+        "goldenTip": "1 ml = 20 gotas = 60 microgotas. Se a questão pedir 'em minutos', a fórmula muda: Gotas = (Vol x 20) / Minutos."
+      },
+      {
+        "title": "Feridas e Curativos",
+        "summary": "Tipos de tecido e coberturas ideais.",
+        "keyPoints": [
+          "<strong>Tecido Necrótico (Preto):</strong> Desbridamento (Papaína, Hidrogel, Mecânico).",
+          "<strong>Esfacelo (Amarelo):</strong> Desbridamento (Colagenase, Alginato).",
+          "<strong>Granulação (Vermelho):</strong> Proteger e manter úmido (Rayon, Espuma, AGE).",
+          "<strong>Infectada:</strong> Carvão Ativado, Prata, PHMB."
+        ],
+        "goldenTip": "Colagenase não deve ser usada com prata ou iodo (inativação enzimática)."
+      },
+      {
+        "title": "Sondagens (Gástrica e Vesical)",
+        "summary": "Técnica e cuidados de enfermagem.",
+        "keyPoints": [
+          "<strong>SNG/SNE:</strong> Medição (Nariz-Lóbulo-Xifoide + 10cm para enteral). Padrão-ouro de confirmação: Raio-X.",
+          "<strong>SVD:</strong> Sistema fechado obrigatório. Fixação no homem (abdome inferior/coxa) e mulher (face interna da coxa).",
+          "<strong>Prevenção de ITU:</strong> Manter bolsa abaixo da bexiga, higiene meatal, não desconectar o sistema."
+        ],
+        "goldenTip": "Na SVD masculina, introduzir toda a sonda até a bifurcação antes de insuflar o balão para evitar lesão uretral (falso trajeto ou insuflar na uretra)."
+      }
+    ]
+  },
+  {
+    "category": "Saúde da Mulher",
+    "icon": "Baby",
+    "color": "text-pink-600",
+    "topics": [
+      {
+        "title": "Pré-Natal e Gestação",
+        "summary": "Consultas, vacinas e regra de Naegele.",
+        "keyPoints": [
+          "<strong>Regra de Naegele (DPP):</strong> DUM + 7 dias / Mês - 3 (ou +9).",
+          "<strong>Exames:</strong> Tipagem, Coombs (se Rh-), VDRL, HIV, Toxo, HBsAg, Glicemia, Urina I + Urocultura.",
+          "<strong>Vacinas:</strong> dTpa (a partir de 20s), dT, Hepatite B, Influenza.",
+          "<strong>DHEG:</strong> Hipertensão + Proteinúria após 20s = Pré-eclâmpsia."
+        ],
+        "goldenTip": "Suplementação de Ácido Fólico deve começar preferencialmente 3 meses antes da concepção para prevenir defeitos do tubo neural."
+      },
+      {
+        "title": "Câncer de Colo do Útero e Mama",
+        "summary": "Rastreamento (Screening).",
+        "keyPoints": [
+          "<strong>Colo (Preventivo/Pap):</strong> 25 a 64 anos. Anual, após 2 negativos -> a cada 3 anos.",
+          "<strong>Mama (Mamografia):</strong> 50 a 69 anos. A cada 2 anos (Bienal).",
+          "<strong>Autoexame:</strong> É método de autoconhecimento, não substitui o rastreamento."
+        ],
+        "goldenTip": "O Ministério da Saúde recomenda rastreamento de mama a partir dos 50 anos, mas a SBM (Mastologia) recomenda a partir dos 40. Na prova do SUS/MS, siga 50-69 anos."
+      }
+    ]
+  }
+]
