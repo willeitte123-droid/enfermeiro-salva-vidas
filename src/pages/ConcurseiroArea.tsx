@@ -73,18 +73,6 @@ const ConcurseiroArea = () => {
             Conteúdo direcionado e de alta performance para sua aprovação. 
             Foco nos temas mais cobrados em provas de Enfermagem.
           </p>
-          
-          <div className="flex flex-wrap justify-center sm:justify-start gap-3 mt-2">
-            <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-none">
-              <BookOpen className="mr-1.5 h-3.5 w-3.5" /> Lei 8.080
-            </Badge>
-            <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-none">
-              <Scale className="mr-1.5 h-3.5 w-3.5" /> Código de Ética
-            </Badge>
-            <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-none">
-              <ShieldAlert className="mr-1.5 h-3.5 w-3.5" /> PNI & Vigilância
-            </Badge>
-          </div>
         </div>
         
         {/* Decorative Elements */}
