@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, Loader2, Lightbulb, RefreshCw, MessageSquare, Smile, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Lightbulb, RefreshCw, MessageSquare, Smile, Trash2, ChevronLeft, ChevronRight, Shuffle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -63,6 +63,8 @@ const Questions = () => {
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [answerStatusFilter, setAnswerStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(0);
+  // Estado para forçar recarregamento aleatório
+  const [randomSeed, setRandomSeed] = useState(0);
   
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [showExplanation, setShowExplanation] = useState(false);
@@ -86,6 +88,9 @@ const Questions = () => {
     addActivity({ type: 'Estudo', title: 'Banca de Questões', path: '/questions', icon: 'FileQuestion' });
   }, [addActivity]);
 
+  // Determina se estamos no modo aleatório (sem filtros e sem ID específico)
+  const isRandomMode = !questionId && selectedCategory === "Todas" && answerStatusFilter === "all";
+
   const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
     queryKey: ['questionCategories'],
     queryFn: async () => {
@@ -97,8 +102,9 @@ const Questions = () => {
   });
 
   const { data, isLoading, isFetching, error } = useQuery({
-    queryKey: ['questions', selectedCategory, answerStatusFilter, currentPage, questionId],
+    queryKey: ['questions', selectedCategory, answerStatusFilter, currentPage, questionId, randomSeed],
     queryFn: async () => {
+      // Caso 1: Questão específica por ID (via Link do Dashboard)
       if (questionId) {
         const { data, error } = await supabase.from('questions').select('*').eq('id', questionId).single();
         if (error) throw error;
@@ -106,10 +112,21 @@ const Questions = () => {
         return { questions: shuffledQuestion ? [shuffledQuestion] : [], count: data ? 1 : 0 };
       }
 
+      // Caso 2: Modo Aleatório (Sem filtros) - Usa RPC
+      if (selectedCategory === "Todas" && answerStatusFilter === "all") {
+        const { data, error } = await supabase.rpc('get_random_questions', { limit_count: 1 });
+        if (error) throw error;
+        const shuffledQuestions = (data as Question[]).map(shuffleQuestionOptions);
+        // No modo aleatório, count é irrelevante para paginação, retornamos 0 ou um placeholder
+        return { questions: shuffledQuestions, count: -1 }; 
+      }
+
+      // Caso 3: Modo Filtrado (Categoria ou Status) - Usa Paginação Padrão
       const from = currentPage * QUESTIONS_PER_PAGE;
       const to = from + QUESTIONS_PER_PAGE - 1;
 
       let query = supabase.from('questions').select('*', { count: 'exact' });
+      
       if (selectedCategory !== "Todas") {
         query = query.eq('category', selectedCategory);
       }
@@ -149,7 +166,7 @@ const Questions = () => {
       const shuffledQuestions = (data as Question[]).map(shuffleQuestionOptions);
       return { questions: shuffledQuestions, count };
     },
-    keepPreviousData: !questionId,
+    keepPreviousData: !questionId && !isRandomMode, // Não manter dados anteriores no modo aleatório para forçar refresh visual
   });
 
   const currentQuestion = data?.questions?.[0];
@@ -163,10 +180,11 @@ const Questions = () => {
     setAnsweredCorrectly(null);
     setIsCommentsOpen(false);
     setComments([]);
-  }, [currentPage, selectedCategory, answerStatusFilter, currentQuestion]);
+  }, [currentPage, selectedCategory, answerStatusFilter, currentQuestion, randomSeed]);
 
   useEffect(() => {
     setCurrentPage(0);
+    setRandomSeed(0); // Reseta a seed ao mudar filtros
   }, [selectedCategory, answerStatusFilter]);
 
   const fetchComments = async (questionId: number) => {
@@ -204,7 +222,10 @@ const Questions = () => {
   };
 
   const handleNextQuestion = () => {
-    if (currentPage < totalPages - 1) {
+    if (isRandomMode) {
+      // No modo aleatório, incrementamos a seed para forçar uma nova busca RPC
+      setRandomSeed(prev => prev + 1);
+    } else if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -289,7 +310,7 @@ const Questions = () => {
         </div>
       )}
 
-      {isLoading ? <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Carregando...</span></div> :
+      {isLoading ? <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Buscando questão...</span></div> :
        error ? <Alert variant="destructive"><XCircle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{(error as Error).message}</AlertDescription></Alert> :
        !currentQuestion ? <Card><CardContent className="py-12 text-center text-muted-foreground">{getNoQuestionsMessage()}</CardContent></Card> :
       (
@@ -297,7 +318,13 @@ const Questions = () => {
           <CardHeader>
             <div className="flex justify-between items-center mb-2">
               <Badge variant="secondary">{currentQuestion.category}</Badge>
-              {!isSingleQuestionMode && <CardDescription>Questão <strong>{currentPage + 1}</strong> de <strong>{totalQuestions}</strong></CardDescription>}
+              {!isSingleQuestionMode && (
+                isRandomMode ? (
+                  <Badge variant="outline" className="flex items-center gap-1 bg-primary/5 text-primary border-primary/20"><Shuffle className="h-3 w-3"/> Modo Aleatório</Badge>
+                ) : (
+                  <CardDescription>Questão <strong>{currentPage + 1}</strong> de <strong>{totalQuestions}</strong></CardDescription>
+                )
+              )}
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -356,13 +383,17 @@ const Questions = () => {
                   <Link to="/questions"><ChevronLeft className="h-4 w-4 mr-2" />Voltar para a Banca</Link>
                 </Button>
               ) : (
-                <Button variant="outline" onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 0 || isFetching}><ChevronLeft className="h-4 w-4 mr-2" />Anterior</Button>
+                <Button variant="outline" onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 0 || isFetching || isRandomMode}>
+                  <ChevronLeft className="h-4 w-4 mr-2" />Anterior
+                </Button>
               )}
               
               {!showExplanation ? (
                 <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer || isFetching}>Responder</Button>
               ) : !isSingleQuestionMode ? (
-                <Button onClick={handleNextQuestion} disabled={currentPage >= totalPages - 1 || isFetching}>Próxima Questão<ChevronRight className="h-4 w-4 ml-2" /></Button>
+                <Button onClick={handleNextQuestion} disabled={(currentPage >= totalPages - 1 && !isRandomMode) || isFetching}>
+                  {isRandomMode ? "Sortear Próxima" : "Próxima Questão"} <ChevronRight className="h-4 w-4 ml-2" />
+                </Button>
               ) : (
                 <div></div> // Placeholder to keep alignment
               )}
