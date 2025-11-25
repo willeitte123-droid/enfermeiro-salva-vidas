@@ -3,19 +3,21 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { SheetClose } from "./ui/sheet";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface SidebarNavProps {
   isAdmin: boolean;
+  userPlan?: string;
   isCollapsed?: boolean;
   isMobile?: boolean;
 }
 
-const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarNavProps) => {
+const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }: SidebarNavProps) => {
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     cn(
       "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors text-sidebar-foreground hover:bg-sidebar-hover",
@@ -59,18 +61,78 @@ const SidebarNav = ({ isAdmin, isCollapsed = false, isMobile = false }: SidebarN
     ]
   };
 
+  const isLinkLocked = (path: string) => {
+    if (isAdmin) return false;
+    if (!userPlan) return true; // Bloqueia se não tiver plano (ex: erro de carregamento)
+    
+    const plan = userPlan.toLowerCase();
+    // Premium e Pro têm acesso total
+    if (plan.includes('premium') || plan.includes('pro') || plan.includes('anual')) return false;
+
+    // Lógica para Plano Essencial
+    if (plan.includes('essencial') || plan === 'plano essencial') {
+      const allowedPaths = [
+        '/', 
+        '/favorites',
+        '/questions', 
+        '/simulado', 
+        '/procedures', 
+        '/ecg',
+        '/calculator', // Parte de ferramentas
+        '/scales', // Parte de ferramentas
+        '/tools', // Parte de ferramentas
+      ];
+      
+      // Verifica se o caminho atual começa com algum dos caminhos permitidos
+      const isAllowed = allowedPaths.some(allowed => path === allowed || path.startsWith(allowed + '/'));
+      return !isAllowed;
+    }
+
+    // Plano Free (se existir) ou fallback: Bloqueia quase tudo exceto Dashboard
+    if (path === '/') return false;
+    return true; 
+  };
+
   const renderNavLink = (item: { to: string; end?: boolean; icon: React.ElementType; label: string }) => {
     const Icon = item.icon;
-    const linkContent = (
-      <>
-        <Icon className="h-4 w-4 flex-shrink-0" />
-        <span className={cn(isCollapsed && "hidden")}>{item.label}</span>
-      </>
+    const locked = isLinkLocked(item.to);
+
+    const content = (
+      <div className={cn("flex items-center justify-between w-full", locked && "opacity-60")}>
+        <div className="flex items-center gap-3 overflow-hidden">
+          <Icon className="h-4 w-4 flex-shrink-0" />
+          <span className={cn(isCollapsed && "hidden", "truncate")}>{item.label}</span>
+        </div>
+        {locked && !isCollapsed && <Lock className="h-3 w-3 ml-2 flex-shrink-0" />}
+      </div>
     );
+
+    if (locked) {
+      return (
+        <TooltipProvider key={item.to} delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className={cn(navLinkClass({ isActive: false }), "cursor-not-allowed relative group")}>
+                {content}
+                {/* Ícone de cadeado centralizado quando colapsado */}
+                {isCollapsed && locked && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-sidebar/50 rounded-md">
+                    <Lock className="h-3 w-3 text-white" />
+                  </div>
+                )}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="bg-primary text-primary-foreground border-primary">
+              <p className="font-semibold">Adquira o plano premium e tenha acesso</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
 
     const link = (
       <NavLink to={item.to} end={item.end} className={navLinkClass}>
-        {linkContent}
+        {content}
       </NavLink>
     );
 

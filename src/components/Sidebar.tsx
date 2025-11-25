@@ -19,18 +19,23 @@ interface SidebarProps {
     first_name?: string;
     last_name?: string;
     avatar_url?: string;
+    plan?: string;
   } | null;
   isMobile?: boolean;
+  isCollapsed?: boolean;
+  onToggle?: () => void;
 }
 
-const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
+const Sidebar = ({ isAdmin, user, isMobile = false, isCollapsed: propIsCollapsed, onToggle }: SidebarProps) => {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
   const { themeSettings } = useThemeCustomization();
   const [isHovered, setIsHovered] = useState(false);
   const [isLockedOpen, setIsLockedOpen] = useState(false);
 
-  const isCollapsed = isMobile ? false : !(isHovered || isLockedOpen);
+  // Lógica para colapso: se for mobile, nunca colapsa visualmente (fica dentro do sheet).
+  // Se for desktop, usa a prop ou o hover.
+  const isCollapsed = isMobile ? false : (propIsCollapsed !== undefined ? propIsCollapsed : !(isHovered || isLockedOpen));
 
   const getInitials = () => {
     const firstName = user?.first_name?.[0] || '';
@@ -54,7 +59,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
         </Avatar>
         <div className={cn(isCollapsed && "hidden")}>
           <p className="text-sm font-medium text-white">{`${user?.first_name || 'Usuário'} ${user?.last_name || ''}`}</p>
-          <p className="text-xs text-sidebar-foreground">{isAdmin ? 'Administrador' : 'Usuário'}</p>
+          <p className="text-xs text-sidebar-foreground">{isAdmin ? 'Administrador' : (user?.plan || 'Usuário')}</p>
         </div>
       </div>
       {!isMobile && (
@@ -69,14 +74,14 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
     <aside 
       className={cn(
         "flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300",
-        isMobile ? "h-full" : "hidden md:flex border-r border-border/10 relative",
-        isCollapsed ? "w-20" : "w-64"
+        isMobile ? "h-full w-full" : "hidden md:flex border-r border-border/10 relative",
+        !isMobile && (isCollapsed ? "w-20" : "w-64")
       )}
-      onMouseEnter={() => !isMobile && setIsHovered(true)}
-      onMouseLeave={() => !isMobile && setIsHovered(false)}
+      onMouseEnter={() => !isMobile && onToggle && !propIsCollapsed && setIsHovered(true)}
+      onMouseLeave={() => !isMobile && onToggle && !propIsCollapsed && setIsHovered(false)}
     >
-      <div className="flex h-16 items-center border-b border-border/10 px-6">
-        <div className="flex items-center gap-3">
+      <div className="flex h-16 items-center border-b border-border/10 px-6 justify-between">
+        <div className={cn("flex items-center gap-3", isCollapsed && "justify-center w-full")}>
           {themeSettings.logo_url && themeSettings.logo_url !== '/logo.svg' ? (
             <img src={themeSettings.logo_url} alt="Logo" className={cn("h-8 transition-all", isCollapsed ? "w-8" : "w-auto")} />
           ) : (
@@ -84,9 +89,14 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
           )}
           <h1 className={cn("text-xl font-bold text-white", isCollapsed && "hidden")}>Enfermagem Pro</h1>
         </div>
+        {!isMobile && onToggle && (
+           <button onClick={onToggle} className="text-sidebar-foreground hover:text-white focus:outline-none md:hidden">
+             {/* Botão de toggle manual se necessário */}
+           </button>
+        )}
       </div>
-      <div className="flex-1 overflow-y-auto p-4">
-        <SidebarNav isAdmin={isAdmin} isCollapsed={isCollapsed} isMobile={isMobile} />
+      <div className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-sidebar-hover scrollbar-track-transparent">
+        <SidebarNav isAdmin={isAdmin} userPlan={user?.plan} isCollapsed={isCollapsed} isMobile={isMobile} />
       </div>
       <div className="mt-auto border-t border-border/10 p-4 space-y-2">
         <DropdownMenu onOpenChange={setIsLockedOpen}>

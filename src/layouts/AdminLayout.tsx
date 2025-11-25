@@ -11,7 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 const fetchProfile = async (userId: string) => {
   const { data, error } = await supabase
     .from("profiles")
-    .select("role, status, first_name, last_name, avatar_url")
+    .select("role, status, first_name, last_name, avatar_url, plan")
     .eq("id", userId)
     .single();
   if (error) throw error;
@@ -65,7 +65,8 @@ const AdminLayout = () => {
   const user = profile ? { 
     first_name: profile.first_name, 
     last_name: profile.last_name,
-    avatar_url: profile.avatar_url 
+    avatar_url: profile.avatar_url,
+    plan: profile.plan
   } : null;
 
   return (
