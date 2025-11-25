@@ -85,7 +85,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       '/tools',
       '/technical-terms',
       '/review-area',
-      '/anatomy', // Liberado para Essencial
+      '/anatomy',
     ];
 
     const proAdditions = [
@@ -93,6 +93,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       '/semiotechnique',
       '/wound-care',
       '/medications',
+      '/concurseiro', // Adicionado para o Plano Pro
     ];
 
     // Função auxiliar para verificar se o path está na lista (incluindo sub-rotas)
