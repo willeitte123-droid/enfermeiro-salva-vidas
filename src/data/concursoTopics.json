@@ -5,6 +5,17 @@
     "color": "text-blue-600",
     "topics": [
       {
+        "title": "Constituição Federal de 1988 (Art. 196 a 200)",
+        "summary": "A base constitucional da Saúde no Brasil (Seção II - Da Saúde).",
+        "keyPoints": [
+          "<strong>Art. 196:</strong> 'A saúde é direito de todos e dever do Estado', garantido mediante políticas sociais e econômicas.",
+          "<strong>Art. 198 (Diretrizes):</strong> Descentralização (direção única), Atendimento Integral (prioridade preventiva) e Participação da Comunidade.",
+          "<strong>Art. 199 (Iniciativa Privada):</strong> A assistência à saúde é livre à iniciativa privada. Poderá participar do SUS em caráter <strong>COMPLEMENTAR</strong> (preferência para filantrópicas/sem fins lucrativos).",
+          "<strong>Vedações:</strong> É vedada a destinação de recursos públicos para auxílios ou subvenções às instituições privadas com fins lucrativos."
+        ],
+        "goldenTip": "A iniciativa privada participa de forma COMPLEMENTAR (contrato/convênio). O termo 'suplementar' refere-se aos Planos de Saúde, não à relação com o SUS."
+      },
+      {
         "title": "Lei 8.080/90 (Lei Orgânica da Saúde)",
         "summary": "A 'Constituição do SUS'. Dispõe sobre condições de promoção, proteção e recuperação da saúde.",
         "keyPoints": [
@@ -24,6 +35,27 @@
           "<strong>Paridade (Res. 453/12):</strong> 50% Usuários, 25% Trabalhadores, 25% Gestores/Prestadores."
         ],
         "goldenTip": "Memorize: Conferência = 4 anos (Diretrizes/Avaliação). Conselho = Permanente (Fiscalização/Execução)."
+      },
+      {
+        "title": "Resolução CNS 453/2012 (Conselhos)",
+        "summary": "Diretrizes para funcionamento e composição dos Conselhos de Saúde.",
+        "keyPoints": [
+          "<strong>Composição Paritária:</strong> 50% Usuários, 25% Trabalhadores de Saúde, 25% Gestores/Prestadores de Serviço.",
+          "<strong>Natureza:</strong> Órgãos colegiados, deliberativos e permanentes.",
+          "<strong>Presidência:</strong> Eleita entre os membros do conselho (o Gestor/Secretário NÃO é presidente nato).",
+          "<strong>Mandato:</strong> Os conselheiros não são remunerados (atividade de relevância pública)."
+        ],
+        "goldenTip": "O Secretário de Saúde é membro nato do conselho, mas não presidente nato. Ele precisa ser eleito pelos pares para presidir."
+      },
+      {
+        "title": "Política Nacional de Humanização (PNH)",
+        "summary": "HumanizaSUS: Transversalidade e protagonismo dos sujeitos.",
+        "keyPoints": [
+          "<strong>Princípios (Tríade):</strong> 1. Transversalidade (atravessa todas as áreas); 2. Indissociabilidade entre Atenção e Gestão; 3. Protagonismo, corresponsabilidade e autonomia dos sujeitos.",
+          "<strong>Diretrizes (Ferramentas):</strong> Acolhimento (com classificação de risco), Clínica Ampliada, Gestão Participativa/Cogestão, Ambiência, Valorização do Trabalhador.",
+          "<strong>Acolhimento:</strong> É uma postura ética, não um espaço físico. Deve ocorrer em todo lugar e momento."
+        ],
+        "goldenTip": "Cuidado na prova: Equidade é princípio do SUS (8.080). Transversalidade é princípio da PNH."
       },
       {
         "title": "Lei Complementar 141/2012 (Financiamento)",
@@ -652,79 +684,6 @@
           "<strong>Trendelenburg:</strong> Cabeça mais baixa que o corpo. Cirurgias pélvicas (afasta vísceras)."
         ],
         "goldenTip": "A principal complicação do posicionamento inadequado é a lesão por compressão de nervos periféricos e úlceras por pressão."
-      }
-    ]
-  },
-  {
-    "category": "Fundamentos e Clínica",
-    "icon": "Stethoscope",
-    "color": "text-emerald-600",
-    "topics": [
-      {
-        "title": "Nutrição Enteral e Parenteral",
-        "summary": "Vias de administração de dieta e cuidados específicos.",
-        "keyPoints": [
-          "<strong>Nutrição Enteral (SNE/GTT):</strong> Via fisiológica (TGI funcionante). Risco principal: Broncoaspiração. Cuidados: Cabeceira > 30º, checar resíduo gástrico, lavar sonda com água.",
-          "<strong>Nutrição Parenteral (NPT):</strong> Via endovenosa (TGI não funcionante). Risco principal: Infecção de corrente sanguínea e hiperglicemia. Cuidados: Via exclusiva em cateter central (CVC), bomba de infusão obrigatória, troca do equipo a cada 24h."
-        ],
-        "goldenTip": "A NPT requer acesso venoso CENTRAL devido à alta osmolaridade. NPT periférica é rara e apenas para curto prazo/baixa osmolaridade."
-      },
-      {
-        "title": "Cálculo de Medicação",
-        "summary": "Fórmulas essenciais que caem em toda prova.",
-        "keyPoints": [
-          "<strong>Gotas/min (h):</strong> Volume / (Tempo x 3).",
-          "<strong>Microgotas/min (h):</strong> Volume / Tempo.",
-          "<strong>Permanganato (KMnO4):</strong> 1:40.000 significa 1g em 40.000ml. Usar regra de três.",
-          "<strong>Insulina:</strong> Frasco 100UI/ml. Se usar seringa de 3ml, regra de três simples."
-        ],
-        "goldenTip": "1 ml = 20 gotas = 60 microgotas. Se a questão pedir tempo em MINUTOS: Gotas = (Vol x 20) / Min."
-      },
-      {
-        "title": "Sinais Vitais e Semiotécnica",
-        "summary": "Parâmetros e técnicas.",
-        "keyPoints": [
-          "<strong>Pulso:</strong> Filiforme (fraco/fino = choque), Martelo d'água (forte/cheio = I.Aórtica).",
-          "<strong>Respiração:</strong> Cheyne-Stokes (períodos de apneia e hiperpneia - ICC/SNC), Kussmaul (rápida e profunda - Cetoacidose), Biot (caótica - HIC).",
-          "<strong>Pressão Arterial:</strong> Manguito adequado (bolsa deve cobrir 80% da circunferência). Manguito pequeno = PA falsamente alta.",
-          "<strong>Sondagem Vesical:</strong> A fixação no homem é no abdome inferior (prevenir fístula) e na mulher na face interna da coxa."
-        ],
-        "goldenTip": "A respiração de Kussmaul (acidose) é profunda e rápida ('fome de ar'). Cheyne-Stokes tem ciclos crescentes/decrescentes com apneia."
-      },
-      {
-        "title": "Lesão por Pressão (LPP) - NPUAP",
-        "summary": "Classificação e prevenção de danos à pele.",
-        "keyPoints": [
-          "<strong>Estágio 1:</strong> Eritema não branqueável em pele íntegra.",
-          "<strong>Estágio 2:</strong> Perda parcial da espessura (derme exposta), leito rosa/vermelho.",
-          "<strong>Estágio 3:</strong> Perda total da espessura da pele (gordura visível).",
-          "<strong>Estágio 4:</strong> Perda total com exposição de osso/tendão/músculo.",
-          "<strong>Não Estadiável:</strong> Coberta por necrose ou esfacelo.",
-          "<strong>Tissular Profunda:</strong> Área vermelha escura/púrpura ou flictena de sangue em pele íntegra."
-        ],
-        "goldenTip": "Prevenção é prioridade: mudança de decúbito a cada 2h e hidratação da pele (exceto em proeminências ósseas já hiperemiadas)."
-      },
-      {
-        "title": "Biossegurança e Precauções (NR-32 / RDC 222)",
-        "summary": "Gerenciamento de Resíduos e Tipos de Isolamento.",
-        "keyPoints": [
-          "<strong>Padrão:</strong> Higiene das mãos, luvas (se risco de fluidos). Para TODOS os pacientes.",
-          "<strong>Contato (Avental + Luvas):</strong> Bactérias multirresistentes (KPC, MRSA), Escabiose, Clostridium. Quarto privativo ou coorte.",
-          "<strong>Gotículas (Máscara Cirúrgica):</strong> Meningite bacteriana, Influenza, Rubéola, Caxumba. (Raio de 1m).",
-          "<strong>Aerossóis (Máscara N95/PFF2):</strong> Tuberculose, Sarampo, Varicela, Herpes Zoster disseminado. Pressão negativa.",
-          "<strong>Resíduos:</strong> Grupo A (Infectante/Branco), B (Químico/Laranja), E (Perfuro/Amarelo)."
-        ],
-        "goldenTip": "Varicela e Sarampo exigem precaução para AEROSSÓIS (N95) + Contato. Meningite é GOTÍCULAS (Cirúrgica)."
-      },
-      {
-        "title": "Administração de Medicamentos",
-        "summary": "Vias e técnicas de aplicação.",
-        "keyPoints": [
-          "<strong>Intramuscular (IM):</strong> Região Ventroglútea (Hochstetter) é a mais segura (até 4-5ml, livre de nervos). Deltóide (máx 2ml, risco nervo radial). Dorsoglúteo (risco nervo ciático, não recomendado).",
-          "<strong>Subcutânea (SC):</strong> Insulina/Heparina. Rodízio de locais (abdome, braço, coxa).",
-          "<strong>Intradérmica (ID):</strong> BCG e PPD. Ângulo 10-15º. Não massagear."
-        ],
-        "goldenTip": "A região Ventroglútea é a preferencial para IM em todas as idades (exceto < 7 meses/não andantes que usam Vasto Lateral)."
       }
     ]
   }
