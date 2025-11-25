@@ -83,8 +83,9 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       '/calculator', 
       '/scales', 
       '/tools',
-      '/technical-terms', // Liberado para Essencial
-      '/review-area',     // Liberado para Essencial
+      '/technical-terms',
+      '/review-area',
+      '/anatomy', // Liberado para Essencial
     ];
 
     const proAdditions = [
