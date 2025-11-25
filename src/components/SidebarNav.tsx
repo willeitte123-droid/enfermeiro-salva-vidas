@@ -67,6 +67,11 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
     
     const plan = userPlan.toLowerCase();
 
+    // 1. Plano Premium Anual: Acesso TOTAL
+    if (plan.includes('premium') && plan.includes('anual')) {
+      return false;
+    }
+
     // Definição dos grupos de acesso
     const baseAccess = [
       '/', 
@@ -93,14 +98,14 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       return allowedPaths.some(allowed => path === allowed || path.startsWith(allowed + '/'));
     };
 
-    // Lógica para Plano Pro Anual (Base + Adições Específicas)
+    // 2. Plano Pro Anual (Base + Adições Específicas)
     if (plan.includes('pro') && plan.includes('anual')) {
       const allowed = [...baseAccess, ...proAdditions];
       return !checkAccess(allowed);
     }
 
-    // Lógica para Plano Essencial E Plano Premium Anual (Apenas Base)
-    if (plan.includes('essencial') || (plan.includes('premium') && plan.includes('anual'))) {
+    // 3. Plano Essencial (Apenas Base)
+    if (plan.includes('essencial')) {
       return !checkAccess(baseAccess);
     }
 
