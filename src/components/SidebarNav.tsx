@@ -63,32 +63,48 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
 
   const isLinkLocked = (path: string) => {
     if (isAdmin) return false;
-    if (!userPlan) return true; // Bloqueia se não tiver plano (ex: erro de carregamento)
+    if (!userPlan) return true; // Bloqueia se não tiver plano
     
     const plan = userPlan.toLowerCase();
-    // Premium e Pro têm acesso total
-    if (plan.includes('premium') || plan.includes('pro') || plan.includes('anual')) return false;
 
-    // Lógica para Plano Essencial
-    if (plan.includes('essencial') || plan === 'plano essencial') {
-      const allowedPaths = [
-        '/', 
-        '/favorites',
-        '/questions', 
-        '/simulado', 
-        '/procedures', 
-        '/ecg',
-        '/calculator', // Parte de ferramentas
-        '/scales', // Parte de ferramentas
-        '/tools', // Parte de ferramentas
-      ];
-      
-      // Verifica se o caminho atual começa com algum dos caminhos permitidos
-      const isAllowed = allowedPaths.some(allowed => path === allowed || path.startsWith(allowed + '/'));
-      return !isAllowed;
+    // Definição dos grupos de acesso
+    const baseAccess = [
+      '/', 
+      '/favorites',
+      '/questions', 
+      '/simulado', 
+      '/procedures', 
+      '/ecg',
+      '/calculator', 
+      '/scales', 
+      '/tools',
+    ];
+
+    const proAdditions = [
+      '/semiology',
+      '/semiotechnique',
+      '/wound-care',
+      '/medications',
+      '/review-area',
+    ];
+
+    // Função auxiliar para verificar se o path está na lista (incluindo sub-rotas)
+    const checkAccess = (allowedPaths: string[]) => {
+      return allowedPaths.some(allowed => path === allowed || path.startsWith(allowed + '/'));
+    };
+
+    // Lógica para Plano Pro Anual (Base + Adições Específicas)
+    if (plan.includes('pro') && plan.includes('anual')) {
+      const allowed = [...baseAccess, ...proAdditions];
+      return !checkAccess(allowed);
     }
 
-    // Plano Free (se existir) ou fallback: Bloqueia quase tudo exceto Dashboard
+    // Lógica para Plano Essencial E Plano Premium Anual (Apenas Base)
+    if (plan.includes('essencial') || (plan.includes('premium') && plan.includes('anual'))) {
+      return !checkAccess(baseAccess);
+    }
+
+    // Plano Free ou desconhecido: Bloqueia tudo exceto Dashboard
     if (path === '/') return false;
     return true; 
   };
