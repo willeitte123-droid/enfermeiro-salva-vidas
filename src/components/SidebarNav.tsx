@@ -83,6 +83,8 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       '/calculator', 
       '/scales', 
       '/tools',
+      '/technical-terms', // Liberado para Essencial
+      '/review-area',     // Liberado para Essencial
     ];
 
     const proAdditions = [
@@ -90,7 +92,6 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       '/semiotechnique',
       '/wound-care',
       '/medications',
-      '/review-area',
     ];
 
     // Função auxiliar para verificar se o path está na lista (incluindo sub-rotas)
