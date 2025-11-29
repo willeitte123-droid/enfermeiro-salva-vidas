@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useOutletContext, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Star, ListChecks, ClipboardList, Syringe, Siren, BookOpen, Library, FlaskConical, Calculator as CalculatorIcon } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2, Star, ListChecks, ClipboardList, Syringe, Siren, BookOpen, Library, Calculator as CalculatorIcon } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { cn } from "@/lib/utils";
 
 interface Profile {
   id: string;
@@ -36,6 +37,16 @@ const iconMap: { [key: string]: LucideIcon } = {
   'Guia': BookOpen,
   'Tópico de Revisão': Library,
   'Ferramenta': CalculatorIcon,
+};
+
+const colorMap: { [key: string]: string } = {
+  'Escala': "bg-emerald-100 dark:bg-emerald-950/50 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 hover:border-emerald-500 dark:hover:border-emerald-500",
+  'Procedimento': "bg-cyan-100 dark:bg-cyan-950/50 border-cyan-200 dark:border-cyan-800 text-cyan-800 dark:text-cyan-300 hover:border-cyan-500 dark:hover:border-cyan-500",
+  'Medicamento': "bg-rose-100 dark:bg-rose-950/50 border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300 hover:border-rose-500 dark:hover:border-rose-500",
+  'Protocolo de Emergência': "bg-orange-100 dark:bg-orange-950/50 border-orange-200 dark:border-orange-800 text-orange-800 dark:text-orange-300 hover:border-orange-500 dark:hover:border-orange-500",
+  'Guia': "bg-violet-100 dark:bg-violet-950/50 border-violet-200 dark:border-violet-800 text-violet-800 dark:text-violet-300 hover:border-violet-500 dark:hover:border-violet-500",
+  'Tópico de Revisão': "bg-indigo-100 dark:bg-indigo-950/50 border-indigo-200 dark:border-indigo-800 text-indigo-800 dark:text-indigo-300 hover:border-indigo-500 dark:hover:border-indigo-500",
+  'Ferramenta': "bg-blue-100 dark:bg-blue-950/50 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300 hover:border-blue-500 dark:hover:border-blue-500",
 };
 
 const FavoritesPage = () => {
@@ -90,20 +101,27 @@ const FavoritesPage = () => {
         <div className="space-y-6">
           {Object.entries(groupedFavorites).map(([type, items]) => {
             const Icon = iconMap[type] || Star;
+            const itemStyle = colorMap[type] || "bg-accent/50 border-border hover:border-primary";
+            
             return (
-              <Card key={type}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Icon className="h-5 w-5 text-primary" />
+              <Card key={type} className="border-none shadow-none bg-transparent">
+                <CardHeader className="px-0">
+                  <CardTitle className="flex items-center gap-2 text-xl">
+                    <div className={cn("p-2 rounded-lg", itemStyle.split(' ')[0], itemStyle.split(' ')[3])}>
+                      <Icon className="h-5 w-5" />
+                    </div>
                     {type}s
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="px-0">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {items.map(item => (
                       <Link to={item.item_id} key={item.id}>
-                        <div className="p-4 border rounded-lg hover:bg-accent hover:border-primary transition-all h-full">
-                          <p className="font-semibold text-foreground">{item.item_title}</p>
+                        <div className={cn(
+                          "p-4 border rounded-xl transition-all duration-200 h-full flex items-center shadow-sm hover:shadow-md hover:scale-[1.02]",
+                          itemStyle
+                        )}>
+                          <p className="font-bold text-sm sm:text-base">{item.item_title}</p>
                         </div>
                       </Link>
                     ))}
