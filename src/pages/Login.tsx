@@ -135,7 +135,7 @@ const Login = () => {
           <img 
             src={themeSettings.logo_url || "/logo.svg"} 
             alt="Logo" 
-            className="h-32 w-32 rounded-full object-cover mb-6 bg-white border-4 border-blue-900 shadow-xl" 
+            className="h-32 w-32 rounded-full object-cover mb-6 bg-white border-4 border-white shadow-xl" 
           />
           <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
           <p className="mt-4 text-base font-medium text-blue-100 max-w-lg">
