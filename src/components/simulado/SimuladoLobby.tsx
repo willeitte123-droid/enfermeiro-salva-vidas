@@ -4,20 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Timer, FileText, Info, PlayCircle } from "lucide-react";
+import { Timer, FileText, Info, PlayCircle, Building2 } from "lucide-react";
 
 interface SimuladoLobbyProps {
-  onStart: (config: { numQuestions: number; totalTime: number }) => void;
+  onStart: (config: { numQuestions: number; totalTime: number; banca: string }) => void;
 }
 
 const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
   const [numQuestions, setNumQuestions] = useState("20");
   const [totalTime, setTotalTime] = useState("40");
+  const [selectedBanca, setSelectedBanca] = useState("Todas");
 
   const handleStart = () => {
     onStart({
       numQuestions: parseInt(numQuestions),
       totalTime: parseInt(totalTime) * 60, // in seconds
+      banca: selectedBanca,
     });
   };
 
@@ -52,6 +54,25 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="banca" className="flex items-center gap-2 font-semibold">
+                <Building2 className="h-5 w-5 text-primary" />
+                Banca Examinadora
+              </Label>
+              <Select value={selectedBanca} onValueChange={setSelectedBanca}>
+                <SelectTrigger id="banca"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Todas">Todas as Bancas</SelectItem>
+                  <SelectItem value="IBFC">IBFC (EBSERH)</SelectItem>
+                  <SelectItem value="Vunesp">Vunesp</SelectItem>
+                  <SelectItem value="Cebraspe">Cebraspe/Cespe</SelectItem>
+                  <SelectItem value="FGV">FGV</SelectItem>
+                  <SelectItem value="Instituto Mais">Instituto Mais</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="total-time" className="flex items-center gap-2 font-semibold">
                 <Timer className="h-5 w-5 text-primary" />
@@ -71,17 +92,22 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
               </Select>
             </div>
           </div>
-          <div className="bg-emerald-600 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-inner">
-            <h3 className="font-semibold text-lg text-white">Resumo do Simulado</h3>
-            <div className="flex items-baseline gap-4">
+          <div className="bg-emerald-600 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-inner text-white space-y-4">
+            <h3 className="font-semibold text-lg border-b border-white/20 pb-2 w-full">Resumo do Simulado</h3>
+            
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4 w-full">
                 <div>
-                    <p className="text-6xl font-bold text-white my-2">{numQuestions}</p>
-                    <p className="text-white/80">Questões</p>
+                    <p className="text-4xl font-bold">{numQuestions}</p>
+                    <p className="text-sm opacity-80">Questões</p>
                 </div>
                 <div>
-                    <p className="text-6xl font-bold text-white my-2">{totalTime}</p>
-                    <p className="text-white/80">Minutos</p>
+                    <p className="text-4xl font-bold">{totalTime}</p>
+                    <p className="text-sm opacity-80">Minutos</p>
                 </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-white/20 w-full">
+                <p className="text-sm opacity-80 uppercase tracking-wider text-[10px]">Banca Selecionada</p>
+                <p className="text-xl font-bold truncate">{selectedBanca === 'Todas' ? 'Multibancas' : selectedBanca}</p>
             </div>
           </div>
         </CardContent>

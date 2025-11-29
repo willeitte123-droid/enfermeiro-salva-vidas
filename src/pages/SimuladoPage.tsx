@@ -13,6 +13,7 @@ interface UserAnswer {
 interface QuizConfig {
   numQuestions: number;
   totalTime: number;
+  banca: string;
 }
 
 interface QuizResults {
@@ -52,7 +53,14 @@ const SimuladoPage = () => {
   }
 
   if (gameState === "quiz" && quizConfig) {
-    return <SimuladoQuiz numQuestions={quizConfig.numQuestions} totalTime={quizConfig.totalTime} onFinish={handleFinish} />;
+    return (
+      <SimuladoQuiz 
+        numQuestions={quizConfig.numQuestions} 
+        totalTime={quizConfig.totalTime} 
+        banca={quizConfig.banca}
+        onFinish={handleFinish} 
+      />
+    );
   }
 
   if (gameState === "results" && quizResults) {

@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase';
 export interface Question {
   id: number;
   category: string;
+  banca?: string; // Novo campo opcional
   question: string;
   options: { id: string; text: string }[];
   correctAnswer: string;

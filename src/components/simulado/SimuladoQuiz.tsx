@@ -3,13 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Loader2, Timer, AlertTriangle } from "lucide-react";
+import { Loader2, Timer, AlertTriangle, Building2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import { Question } from "@/context/QuestionsContext";
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { shuffleQuestionOptions } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 interface UserAnswer {
   questionId: number;
@@ -19,11 +20,16 @@ interface UserAnswer {
 interface SimuladoQuizProps {
   numQuestions: number;
   totalTime: number;
+  banca: string;
   onFinish: (results: { userAnswers: UserAnswer[]; questions: Question[]; timeTaken: number }) => void;
 }
 
-const fetchSimuladoQuestions = async (numQuestions: number) => {
-  const { data, error } = await supabase.rpc('get_random_questions', { limit_count: numQuestions });
+const fetchSimuladoQuestions = async (numQuestions: number, banca: string) => {
+  const { data, error } = await supabase.rpc('get_random_questions', { 
+    limit_count: numQuestions,
+    banca_filter: banca
+  });
+  
   if (error) {
     throw new Error(error.message);
   }
@@ -31,10 +37,10 @@ const fetchSimuladoQuestions = async (numQuestions: number) => {
   return (data as Question[]).map(shuffleQuestionOptions);
 };
 
-const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) => {
+const SimuladoQuiz = ({ numQuestions, totalTime, banca, onFinish }: SimuladoQuizProps) => {
   const { data: simuladoQuestions = [], isLoading: isLoadingQuestions } = useQuery({
-    queryKey: ['simuladoQuestions', numQuestions],
-    queryFn: () => fetchSimuladoQuestions(numQuestions),
+    queryKey: ['simuladoQuestions', numQuestions, banca],
+    queryFn: () => fetchSimuladoQuestions(numQuestions, banca),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
@@ -88,8 +94,19 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
     });
   };
 
-  if (isLoadingQuestions || simuladoQuestions.length === 0) {
+  if (isLoadingQuestions) {
     return <div className="flex items-center justify-center h-full"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
+  }
+
+  if (simuladoQuestions.length === 0) {
+    return (
+        <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-4">
+            <AlertTriangle className="h-12 w-12 text-yellow-500" />
+            <h3 className="text-lg font-semibold">Nenhuma questão encontrada</h3>
+            <p className="text-muted-foreground">Não encontramos questões suficientes para a banca <strong>{banca}</strong> neste momento.</p>
+            <Button onClick={() => window.location.reload()}>Voltar</Button>
+        </div>
+    );
   }
 
   const currentQuestion = simuladoQuestions[currentQuestionIndex];
@@ -111,9 +128,17 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
 
       <Card className="w-full max-w-3xl shadow-2xl">
         <CardHeader className="border-b">
-          <div className="flex justify-between items-center">
-            <CardTitle>Questão {currentQuestionIndex + 1} de {simuladoQuestions.length}</CardTitle>
-            <div className="flex items-center gap-2 font-bold text-lg bg-destructive text-destructive-foreground px-3 py-1 rounded-md">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+            <div>
+                <div className="flex items-center gap-2 mb-1">
+                    <Badge variant="outline" className="text-xs font-normal flex items-center gap-1">
+                        <Building2 className="h-3 w-3" /> {banca === 'Todas' ? 'Multibancas' : banca}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">Questão {currentQuestionIndex + 1} de {simuladoQuestions.length}</span>
+                </div>
+                <CardTitle className="text-lg">Simulado em Andamento</CardTitle>
+            </div>
+            <div className="flex items-center gap-2 font-bold text-lg bg-destructive/10 text-destructive border border-destructive/20 px-3 py-1 rounded-md self-start md:self-auto">
               <Timer className="h-5 w-5" />
               {formatTime(timeLeft)}
             </div>
@@ -127,8 +152,14 @@ const SimuladoQuiz = ({ numQuestions, totalTime, onFinish }: SimuladoQuizProps) 
         </CardHeader>
         <CardContent className="p-6 space-y-6">
           <div>
-            <p className="text-sm text-muted-foreground mb-2">{currentQuestion.category}</p>
-            <p className="font-semibold text-lg">{currentQuestion.question}</p>
+            <div className="flex items-center justify-between mb-2">
+                <p className="text-sm text-muted-foreground">{currentQuestion.category}</p>
+                {/* Exibir a banca da questão específica se estiver no modo 'Todas' */}
+                {banca === 'Todas' && (
+                    <Badge variant="secondary" className="text-[10px]">{currentQuestion.banca || 'Geral'}</Badge>
+                )}
+            </div>
+            <p className="font-semibold text-lg leading-relaxed">{currentQuestion.question}</p>
           </div>
           <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer} className="space-y-3">
             {currentQuestion.options.map((option) => (
