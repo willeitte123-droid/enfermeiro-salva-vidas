@@ -36,6 +36,10 @@ import ProfilePage from './pages/Profile';
 import PublicProfile from './pages/PublicProfile';
 import Semiology from './pages/Semiology';
 import SemioTechnique from './pages/Semiotechnique';
+import AnatomyPhysiology from './pages/AnatomyPhysiology';
+import ConcurseiroArea from './pages/ConcurseiroArea';
+import Flashcards from './pages/Flashcards';
+import Ranking from './pages/Ranking';
 import DoseCalculator from './pages/tools/DoseCalculator';
 import LabValues from './pages/tools/LabValues';
 import BlocoDeNotas from './pages/tools/BlocoDeNotas';
@@ -46,9 +50,6 @@ import FavoritesPage from './pages/FavoritesPage';
 import NursingNotesGuide from './pages/NursingNotesGuide';
 import UpdatePassword from './pages/UpdatePassword';
 import TechnicalTerms from './pages/TechnicalTerms';
-import AnatomyPhysiology from './pages/AnatomyPhysiology';
-import ConcurseiroArea from './pages/ConcurseiroArea';
-import Flashcards from './pages/Flashcards';
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -112,6 +113,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="anatomy" element={<AnatomyPhysiology />} />
         <Route path="concurseiro" element={<ConcurseiroArea />} />
         <Route path="flashcards" element={<Flashcards />} />
+        <Route path="ranking" element={<Ranking />} />
         <Route path="tools/dose-calculator" element={<DoseCalculator />} />
         <Route path="tools/lab-values" element={<LabValues />} />
         <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />

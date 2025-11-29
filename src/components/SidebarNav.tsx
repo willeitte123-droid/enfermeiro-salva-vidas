@@ -3,7 +3,7 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -30,6 +30,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
     main: [
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
+      { to: "/ranking", icon: Trophy, label: "Ranking e Conquistas" },
     ],
     tools: [
       { to: "/calculator", icon: Calculator, label: "Gotejamento" },
@@ -77,6 +78,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
     const baseAccess = [
       '/', 
       '/favorites',
+      '/ranking',
       '/questions', 
       '/simulado', 
       '/procedures', 
