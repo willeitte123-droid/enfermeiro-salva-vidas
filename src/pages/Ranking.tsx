@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -58,7 +58,7 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
   };
 
   return (
-    <div className="flex flex-col items-center justify-end group w-1/3 max-w-[140px]">
+    <Link to={`/user/${user.user_id}`} className="flex flex-col items-center justify-end group w-1/3 max-w-[140px] cursor-pointer">
       <div className="relative mb-3">
         {position === 1 && <Crown className="absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 text-yellow-400 fill-yellow-400 animate-bounce" />}
         <Avatar className={cn("w-14 h-14 sm:w-20 sm:h-20 border-4 transition-transform group-hover:scale-110", colors[position].split(' ')[2])}>
@@ -71,7 +71,7 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
       </div>
       
       <div className="text-center mb-2 w-full">
-        <p className="font-bold text-foreground truncate text-sm sm:text-base">{user.first_name}</p>
+        <p className="font-bold text-foreground truncate text-sm sm:text-base group-hover:text-primary transition-colors">{user.first_name}</p>
         
         {/* Stats Container */}
         <div className="flex flex-col items-center mt-1 space-y-1">
@@ -87,25 +87,25 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
         </div>
       </div>
 
-      <div className={cn("w-full rounded-t-lg bg-gradient-to-t opacity-80 shadow-inner", colors[position], height[position])} />
-    </div>
+      <div className={cn("w-full rounded-t-lg bg-gradient-to-t opacity-80 shadow-inner group-hover:opacity-100 transition-opacity", colors[position], height[position])} />
+    </Link>
   );
 };
 
 const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; position: number; isCurrentUser: boolean }) => (
-  <div className={cn(
-    "flex items-center gap-4 p-3 sm:p-4 rounded-xl border transition-all hover:scale-[1.01]",
+  <Link to={`/user/${user.user_id}`} className={cn(
+    "flex items-center gap-4 p-3 sm:p-4 rounded-xl border transition-all hover:scale-[1.01] cursor-pointer group",
     isCurrentUser 
       ? "bg-primary/10 border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.2)]" 
       : "bg-card border-border hover:border-primary/30"
   )}>
     <div className="font-bold text-muted-foreground w-6 text-center">{position}</div>
-    <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm">
+    <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm group-hover:border-primary transition-colors">
       <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
       <AvatarFallback>{user.first_name?.[0]}</AvatarFallback>
     </Avatar>
     <div className="flex-1 min-w-0">
-      <p className={cn("font-semibold truncate", isCurrentUser && "text-primary")}>
+      <p className={cn("font-semibold truncate group-hover:text-primary transition-colors", isCurrentUser && "text-primary")}>
         {user.first_name} {user.last_name}
         {isCurrentUser && <span className="ml-2 text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">Você</span>}
       </p>
@@ -119,7 +119,7 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
       <p className="font-bold text-lg sm:text-xl text-primary leading-none">{user.score}</p>
       <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Acertos</p>
     </div>
-  </div>
+  </Link>
 );
 
 const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnlocked: boolean; earnedDate?: string }) => {
