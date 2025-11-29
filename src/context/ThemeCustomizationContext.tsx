@@ -15,6 +15,8 @@ interface ThemeCustomizationContextType {
 
 const ThemeCustomizationContext = createContext<ThemeCustomizationContextType | undefined>(undefined);
 
+const THEME_SETTINGS_KEY = 'enfermagem_pro_theme_settings';
+
 const fetchThemeSettings = async () => {
   const { data, error } = await supabase
     .from('app_theme')
@@ -29,31 +31,52 @@ const fetchThemeSettings = async () => {
 };
 
 export const ThemeCustomizationProvider = ({ children }: { children: ReactNode }) => {
-  const { data: themeSettings = {}, isLoading } = useQuery<ThemeSettings>({
+  // Inicializa o estado com o valor do localStorage se existir, para ser instantâneo
+  const [cachedSettings, setCachedSettings] = useState<ThemeSettings>(() => {
+    try {
+      const stored = localStorage.getItem(THEME_SETTINGS_KEY);
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  const { data: serverSettings, isLoading } = useQuery<ThemeSettings>({
     queryKey: ['themeSettings'],
     queryFn: fetchThemeSettings,
     staleTime: Infinity, // Theme settings don't change often
   });
 
+  // Atualiza o cache e o localStorage quando os dados do servidor chegam
   useEffect(() => {
-    if (!isLoading && themeSettings) {
+    if (serverSettings) {
+      setCachedSettings(serverSettings);
+      localStorage.setItem(THEME_SETTINGS_KEY, JSON.stringify(serverSettings));
+    }
+  }, [serverSettings]);
+
+  // Usa as configurações do servidor se disponíveis (mais atuais), senão usa o cache
+  const activeSettings = serverSettings || cachedSettings;
+
+  // Aplica as configurações de CSS e Fonte
+  useEffect(() => {
+    if (activeSettings && Object.keys(activeSettings).length > 0) {
       // Apply font
-      if (themeSettings.font_family) {
-        document.body.style.fontFamily = themeSettings.font_family;
+      if (activeSettings.font_family) {
+        document.body.style.fontFamily = activeSettings.font_family;
       }
 
       // Apply colors
-      const root = document.documentElement;
       const lightVars: string[] = [];
       const darkVars: string[] = [];
 
-      for (const key in themeSettings) {
+      for (const key in activeSettings) {
         if (key.startsWith('--')) {
           if (key.startsWith('--dark-')) {
             const darkVarName = key.replace('--dark-', '--');
-            darkVars.push(`${darkVarName}: ${themeSettings[key]};`);
+            darkVars.push(`${darkVarName}: ${activeSettings[key]};`);
           } else {
-            lightVars.push(`${key}: ${themeSettings[key]};`);
+            lightVars.push(`${key}: ${activeSettings[key]};`);
           }
         }
       }
@@ -75,10 +98,15 @@ export const ThemeCustomizationProvider = ({ children }: { children: ReactNode }
       }
       darkStyleTag.innerHTML = `.dark { ${darkVars.join(' ')} }`;
     }
-  }, [themeSettings, isLoading]);
+  }, [activeSettings]);
 
   return (
-    <ThemeCustomizationContext.Provider value={{ themeSettings, isLoading }}>
+    <ThemeCustomizationContext.Provider 
+      value={{ 
+        themeSettings: activeSettings, 
+        isLoading: isLoading && Object.keys(cachedSettings).length === 0 
+      }}
+    >
       {children}
     </ThemeCustomizationContext.Provider>
   );
