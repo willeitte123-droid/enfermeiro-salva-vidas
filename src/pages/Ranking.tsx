@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Medal, Crown, Lock, Star } from "lucide-react";
+import { Trophy, Medal, Crown, Lock, Star, Target, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BADGES, BadgeDef } from "@/data/badges";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -58,22 +58,36 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
   };
 
   return (
-    <div className="flex flex-col items-center justify-end group">
+    <div className="flex flex-col items-center justify-end group w-1/3 max-w-[140px]">
       <div className="relative mb-3">
         {position === 1 && <Crown className="absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 text-yellow-400 fill-yellow-400 animate-bounce" />}
-        <Avatar className={cn("w-16 h-16 sm:w-24 sm:h-24 border-4 transition-transform group-hover:scale-110", colors[position].split(' ')[2])}>
+        <Avatar className={cn("w-14 h-14 sm:w-20 sm:h-20 border-4 transition-transform group-hover:scale-110", colors[position].split(' ')[2])}>
           <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
           <AvatarFallback className="font-bold text-lg bg-card">{user.first_name?.[0]}</AvatarFallback>
         </Avatar>
-        <div className={cn("absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg bg-gradient-to-br", colors[position])}>
+        <div className={cn("absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg bg-gradient-to-br", colors[position])}>
           {position}
         </div>
       </div>
-      <div className="text-center mb-2">
-        <p className="font-bold text-foreground truncate max-w-[120px]">{user.first_name}</p>
-        <p className="text-xs text-muted-foreground font-medium">{user.score} pts</p>
+      
+      <div className="text-center mb-2 w-full">
+        <p className="font-bold text-foreground truncate text-sm sm:text-base">{user.first_name}</p>
+        
+        {/* Stats Container */}
+        <div className="flex flex-col items-center mt-1 space-y-1">
+          <div className="flex flex-col items-center leading-none">
+            <span className="font-black text-lg sm:text-xl text-primary">{user.score}</span>
+            <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-wide">Acertos</span>
+          </div>
+          
+          <div className="flex items-center gap-1 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
+            <Target className="w-3 h-3 text-green-600 dark:text-green-400" />
+            <span className="text-[10px] font-bold text-green-700 dark:text-green-300">{user.accuracy}%</span>
+          </div>
+        </div>
       </div>
-      <div className={cn("w-full rounded-t-lg bg-gradient-to-t opacity-80", colors[position], height[position])} />
+
+      <div className={cn("w-full rounded-t-lg bg-gradient-to-t opacity-80 shadow-inner", colors[position], height[position])} />
     </div>
   );
 };
@@ -96,12 +110,14 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
         {isCurrentUser && <span className="ml-2 text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">Você</span>}
       </p>
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <Badge variant="secondary" className="h-5 px-1.5 text-[10px] font-normal">{user.accuracy}% precisão</Badge>
+        <Badge variant="secondary" className="h-5 px-1.5 text-[10px] font-normal flex gap-1 items-center">
+            <Target className="w-3 h-3" /> {user.accuracy}% precisão
+        </Badge>
       </div>
     </div>
     <div className="text-right">
       <p className="font-bold text-lg sm:text-xl text-primary leading-none">{user.score}</p>
-      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Pontos</p>
+      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Acertos</p>
     </div>
   </div>
 );
@@ -212,7 +228,7 @@ const Ranking = () => {
         <TabsContent value="ranking" className="space-y-8">
           {/* Podium */}
           {top3.length > 0 && (
-            <div className="flex justify-center items-end gap-2 sm:gap-6 pb-6 border-b border-dashed">
+            <div className="flex justify-center items-end gap-2 sm:gap-4 pb-6 border-b border-dashed px-2">
               {top3[1] && <PodiumItem user={top3[1]} position={2} />}
               {top3[0] && <PodiumItem user={top3[0]} position={1} />}
               {top3[2] && <PodiumItem user={top3[2]} position={3} />}
