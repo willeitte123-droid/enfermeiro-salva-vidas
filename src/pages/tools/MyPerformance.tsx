@@ -1,3 +1,4 @@
+Pontos Fortes/Fracos -> Radar de Competências -> Lista Detalhada de Disciplinas.">
 import { useEffect, useMemo, useState } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -244,83 +245,56 @@ const MyPerformance = () => {
 
       <Tabs defaultValue="overview" className="space-y-6" onValueChange={setActiveTab}>
         <div className="flex justify-center">
-          <TabsList className="grid w-full max-w-md grid-cols-3 h-11 p-1 bg-muted/50 rounded-full">
-            <TabsTrigger value="overview" className="rounded-full text-xs font-semibold data-[state=active]:bg-background data-[state=active]:shadow-sm">Visão Geral</TabsTrigger>
-            <TabsTrigger value="subjects" className="rounded-full text-xs font-semibold data-[state=active]:bg-background data-[state=active]:shadow-sm">Por Disciplina</TabsTrigger>
-            <TabsTrigger value="history" className="rounded-full text-xs font-semibold data-[state=active]:bg-background data-[state=active]:shadow-sm">Histórico</TabsTrigger>
+          <TabsList className="grid w-full max-w-md grid-cols-2 h-11 p-1 bg-muted/50 rounded-full">
+            <TabsTrigger value="overview" className="rounded-full text-xs font-semibold data-[state=active]:bg-background data-[state=active]:shadow-sm">Painel Completo</TabsTrigger>
+            <TabsTrigger value="history" className="rounded-full text-xs font-semibold data-[state=active]:bg-background data-[state=active]:shadow-sm">Histórico de Simulados</TabsTrigger>
           </TabsList>
         </div>
 
-        {/* ABA: VISÃO GERAL */}
-        <TabsContent value="overview" className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Gráfico de Evolução */}
-            <Card className="lg:col-span-2 shadow-lg border-t-4 border-t-emerald-500">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-emerald-500" /> Evolução nos Simulados</CardTitle>
-                <CardDescription>Acompanhe seu progresso ao longo do tempo.</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[350px]">
-                {processedData.simulationEvolution.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={processedData.simulationEvolution} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
-                      <XAxis dataKey="date" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                      <YAxis domain={[0, 100]} stroke="#888888" fontSize={12} tickLine={false} axisLine={false} unit="%" />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Area 
-                        type="monotone" 
-                        dataKey="Aproveitamento" 
-                        stroke="#10b981" 
-                        strokeWidth={3}
-                        fillOpacity={1} 
-                        fill="url(#colorScore)"
-                        activeDot={{ r: 6, strokeWidth: 0, fill: "#fff" }}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
-                    <FileQuestion className="h-10 w-10 mb-2 opacity-20" />
-                    <p>Realize simulados para ver o gráfico.</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Radar de Competências */}
-            <Card className="shadow-lg border-t-4 border-t-indigo-500">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2"><Brain className="h-5 w-5 text-indigo-500" /> Competências (Top 6)</CardTitle>
-                <CardDescription>Áreas mais praticadas.</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[350px] flex items-center justify-center">
+        {/* ABA: VISÃO GERAL (PAINEL COMPLETO) */}
+        <TabsContent value="overview" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          
+          {/* 1. Evolução nos Simulados */}
+          <Card className="shadow-lg border-t-4 border-t-emerald-500">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-emerald-500" /> Evolução nos Simulados</CardTitle>
+              <CardDescription>Acompanhe seu progresso ao longo do tempo.</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[350px]">
+              {processedData.simulationEvolution.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart cx="50%" cy="50%" outerRadius="70%" data={processedData.categoryPerformance}>
-                    <PolarGrid strokeOpacity={0.2} />
-                    <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--muted-foreground)', fontSize: 10 }} />
-                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                    <Radar
-                      name="Aproveitamento"
-                      dataKey="Aproveitamento"
-                      stroke="#6366f1"
-                      strokeWidth={3}
-                      fill="#6366f1"
-                      fillOpacity={0.4}
-                    />
+                  <AreaChart data={processedData.simulationEvolution} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
+                    <XAxis dataKey="date" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis domain={[0, 100]} stroke="#888888" fontSize={12} tickLine={false} axisLine={false} unit="%" />
                     <Tooltip content={<CustomTooltip />} />
-                  </RadarChart>
+                    <Area 
+                      type="monotone" 
+                      dataKey="Aproveitamento" 
+                      stroke="#10b981" 
+                      strokeWidth={3}
+                      fillOpacity={1} 
+                      fill="url(#colorScore)"
+                      activeDot={{ r: 6, strokeWidth: 0, fill: "#fff" }}
+                    />
+                  </AreaChart>
                 </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
+                  <FileQuestion className="h-10 w-10 mb-2 opacity-20" />
+                  <p>Realize simulados para ver o gráfico.</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
+          {/* 2. Pontos Fortes e Fracos */}
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="bg-gradient-to-br from-green-50 to-transparent dark:from-green-950/20 border-green-200 dark:border-green-800/50">
               <CardHeader>
@@ -354,10 +328,66 @@ const MyPerformance = () => {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
 
-        {/* ABA: POR DISCIPLINA */}
-        <TabsContent value="subjects" className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          {/* 3. Radar de Competências */}
+          <div className="w-full">
+            <Card className="shadow-lg border-t-4 border-t-indigo-500 max-w-3xl mx-auto overflow-hidden">
+              <CardHeader className="bg-gradient-to-b from-indigo-50/50 to-transparent dark:from-indigo-950/20">
+                <CardTitle className="text-xl flex items-center gap-2 text-indigo-700 dark:text-indigo-400">
+                  <Brain className="h-6 w-6" /> Mapa de Competências
+                </CardTitle>
+                <CardDescription>Visualização radial do seu equilíbrio entre as disciplinas.</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[500px] flex items-center justify-center p-0 sm:p-6">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadarChart 
+                    cx="50%" 
+                    cy="50%" 
+                    outerRadius="75%" 
+                    data={processedData.categoryPerformance}
+                    margin={{ top: 20, right: 30, bottom: 20, left: 30 }}
+                  >
+                    <defs>
+                      <linearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#6366f1" stopOpacity={0.6}/>
+                        <stop offset="100%" stopColor="#6366f1" stopOpacity={0.1}/>
+                      </linearGradient>
+                    </defs>
+                    <PolarGrid stroke="currentColor" className="text-muted-foreground/20" strokeDasharray="4 4" />
+                    <PolarAngleAxis 
+                      dataKey="subject" 
+                      tick={({ payload, x, y, textAnchor, stroke, radius }) => (
+                        <text
+                          x={x}
+                          y={y}
+                          textAnchor={textAnchor}
+                          fill="currentColor"
+                          className="text-[10px] sm:text-xs font-bold fill-muted-foreground uppercase tracking-wide"
+                        >
+                          {payload.value.length > 18 ? `${payload.value.substring(0, 15)}...` : payload.value}
+                        </text>
+                      )}
+                    />
+                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                    <Radar
+                      name="Você"
+                      dataKey="Aproveitamento"
+                      stroke="#6366f1"
+                      strokeWidth={3}
+                      fill="url(#radarGradient)"
+                      fillOpacity={1}
+                      isAnimationActive={true}
+                      dot={{ r: 4, fill: "#6366f1", strokeWidth: 2, stroke: "var(--background)" }}
+                      activeDot={{ r: 6, fill: "#4f46e5", stroke: "var(--background)", strokeWidth: 2 }}
+                    />
+                    <Tooltip content={<CustomTooltip />} cursor={false} />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* 4. Detalhamento Completo por Disciplina */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><ListFilter className="h-5 w-5 text-primary"/> Detalhamento Completo</CardTitle>
@@ -388,6 +418,7 @@ const MyPerformance = () => {
               </ScrollArea>
             </CardContent>
           </Card>
+
         </TabsContent>
 
         {/* ABA: HISTÓRICO */}
