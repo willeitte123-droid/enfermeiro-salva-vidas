@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
-  LogOut, Sun, Moon, Stethoscope
+  LogOut, Sun, Moon, Stethoscope, ChevronLeft
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -26,16 +26,11 @@ interface SidebarProps {
   onToggle?: () => void;
 }
 
-const Sidebar = ({ isAdmin, user, isMobile = false, isCollapsed: propIsCollapsed, onToggle }: SidebarProps) => {
+const Sidebar = ({ isAdmin, user, isMobile = false, isCollapsed = false, onToggle }: SidebarProps) => {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
   const { themeSettings } = useThemeCustomization();
-  const [isHovered, setIsHovered] = useState(false);
   const [isLockedOpen, setIsLockedOpen] = useState(false);
-
-  // Lógica para colapso: se for mobile, nunca colapsa visualmente (fica dentro do sheet).
-  // Se for desktop, usa a prop ou o hover.
-  const isCollapsed = isMobile ? false : (propIsCollapsed !== undefined ? propIsCollapsed : !(isHovered || isLockedOpen));
 
   const getInitials = () => {
     const firstName = user?.first_name?.[0] || '';
@@ -63,7 +58,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false, isCollapsed: propIsCollapsed
         </div>
       </div>
       {!isMobile && (
-        <Button variant="ghost" size="icon" onClick={handleLogout} className={cn("text-sidebar-foreground transition-opacity hover:bg-sidebar-hover hover:text-white", isCollapsed ? "opacity-0 group-hover:opacity-100" : "opacity-0 group-hover:opacity-100")} title="Sair">
+        <Button variant="ghost" size="icon" onClick={handleLogout} className={cn("text-sidebar-foreground transition-opacity hover:bg-sidebar-hover hover:text-white", isCollapsed ? "hidden" : "opacity-0 group-hover:opacity-100")} title="Sair">
           <LogOut className="h-5 w-5" />
         </Button>
       )}
@@ -77,22 +72,26 @@ const Sidebar = ({ isAdmin, user, isMobile = false, isCollapsed: propIsCollapsed
         isMobile ? "h-full w-full" : "hidden md:flex border-r border-border/10 relative",
         !isMobile && (isCollapsed ? "w-20" : "w-64")
       )}
-      onMouseEnter={() => !isMobile && onToggle && !propIsCollapsed && setIsHovered(true)}
-      onMouseLeave={() => !isMobile && onToggle && !propIsCollapsed && setIsHovered(false)}
     >
-      <div className="flex h-16 items-center border-b border-border/10 px-6 justify-between">
+      <div className="flex h-16 items-center border-b border-border/10 px-6 justify-between relative">
         <div className={cn("flex items-center gap-3", isCollapsed && "justify-center w-full")}>
           {themeSettings.logo_url && themeSettings.logo_url !== '/logo.svg' ? (
             <img src={themeSettings.logo_url} alt="Logo" className={cn("h-8 transition-all", isCollapsed ? "w-8" : "w-auto")} />
           ) : (
             <Stethoscope className="h-7 w-7 text-primary flex-shrink-0" />
           )}
-          <h1 className={cn("text-xl font-bold text-white", isCollapsed && "hidden")}>Enfermagem Pro</h1>
+          <h1 className={cn("text-xl font-bold text-white whitespace-nowrap overflow-hidden transition-all duration-300", isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100")}>Enfermagem Pro</h1>
         </div>
+        
         {!isMobile && onToggle && (
-           <button onClick={onToggle} className="text-sidebar-foreground hover:text-white focus:outline-none md:hidden">
-             {/* Botão de toggle manual se necessário */}
-           </button>
+           <Button 
+             onClick={onToggle} 
+             variant="ghost"
+             size="icon"
+             className="absolute -right-3 top-8 z-50 h-6 w-6 rounded-full border border-border bg-background text-foreground shadow-md hover:bg-accent"
+           >
+             <ChevronLeft className={cn("h-3 w-3 transition-transform", isCollapsed && "rotate-180")} />
+           </Button>
         )}
       </div>
       <div className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-sidebar-hover scrollbar-track-transparent">
