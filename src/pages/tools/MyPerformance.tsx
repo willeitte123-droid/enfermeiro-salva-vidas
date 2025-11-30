@@ -1,3 +1,4 @@
+= 60% para fortes).">
 import { useEffect, useMemo, useState } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -90,23 +91,37 @@ const MyPerformance = () => {
   const processedData = useMemo(() => {
     if (!stats) return null;
 
-    // Categorias para Radar (Top 6)
-    const categoryPerformance = stats.categories.map(cat => ({
-      subject: cat.category,
-      Aproveitamento: Math.round((cat.total_correct / cat.total_answered) * 100) || 0,
-      total: cat.total_answered,
-      fullMark: 100
-    })).sort((a, b) => b.total - a.total).slice(0, 6);
-
-    // Todas as categorias ordenadas por total respondido
+    // Processar e ordenar categorias gerais
     const allCategories = [...stats.categories].map(cat => ({
         ...cat,
         accuracy: Math.round((cat.total_correct / cat.total_answered) * 100) || 0,
         incorrect: cat.total_answered - cat.total_correct
     })).sort((a, b) => b.total_answered - a.total_answered);
 
-    const strengths = [...allCategories].sort((a, b) => b.accuracy - a.accuracy).filter(c => c.total_answered >= 5).slice(0, 3);
-    const weaknesses = [...allCategories].sort((a, b) => a.accuracy - b.accuracy).filter(c => c.total_answered >= 5).slice(0, 3);
+    // Filtrar categorias com pelo menos 1 resposta
+    const validCategories = allCategories.filter(c => c.total_answered >= 1);
+
+    // 1. Determinar Pontos Fortes: >= 60% de acerto
+    const strengths = validCategories
+        .filter(c => c.accuracy >= 60)
+        .sort((a, b) => b.accuracy - a.accuracy)
+        .slice(0, 3);
+
+    const strengthNames = new Set(strengths.map(s => s.category));
+
+    // 2. Determinar Pontos de Atenção: O que não é ponto forte, ordenado pelo menor acerto
+    const weaknesses = validCategories
+        .filter(c => !strengthNames.has(c.category))
+        .sort((a, b) => a.accuracy - b.accuracy)
+        .slice(0, 3);
+
+    // Categorias para Radar (Top 6 por volume)
+    const categoryPerformance = stats.categories.map(cat => ({
+      subject: cat.category,
+      Aproveitamento: Math.round((cat.total_correct / cat.total_answered) * 100) || 0,
+      total: cat.total_answered,
+      fullMark: 100
+    })).sort((a, b) => b.total - a.total).slice(0, 6);
 
     // Evolução Simulados
     const simulationEvolution = [...stats.simulations].reverse().map(sim => ({
@@ -298,7 +313,7 @@ const MyPerformance = () => {
             <Card className="bg-gradient-to-br from-green-50 to-transparent dark:from-green-950/20 border-green-200 dark:border-green-800/50">
               <CardHeader>
                 <CardTitle className="text-green-700 dark:text-green-400 flex items-center gap-2 text-base">
-                  <Zap className="h-5 w-5 fill-current" /> Pontos Fortes
+                  <Zap className="h-5 w-5 fill-current" /> Pontos Fortes (≥60%)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -307,7 +322,7 @@ const MyPerformance = () => {
                     <span className="text-sm font-medium truncate max-w-[70%]">{cat.category}</span>
                     <Badge className="bg-green-500 text-white hover:bg-green-600">{cat.accuracy}%</Badge>
                   </div>
-                )) : <p className="text-sm text-muted-foreground italic">Responda mais questões (mín. 5) para análise.</p>}
+                )) : <p className="text-sm text-muted-foreground italic">Nenhuma disciplina com acerto ≥ 60% ainda.</p>}
               </CardContent>
             </Card>
 
@@ -323,7 +338,7 @@ const MyPerformance = () => {
                     <span className="text-sm font-medium truncate max-w-[70%]">{cat.category}</span>
                     <Badge variant="destructive">{cat.accuracy}%</Badge>
                   </div>
-                )) : <p className="text-sm text-muted-foreground italic">Sem pontos fracos críticos ainda.</p>}
+                )) : <p className="text-sm text-muted-foreground italic">Continue praticando para identificar dificuldades.</p>}
               </CardContent>
             </Card>
           </div>
