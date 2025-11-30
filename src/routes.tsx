@@ -44,6 +44,7 @@ import DoseCalculator from './pages/tools/DoseCalculator';
 import LabValues from './pages/tools/LabValues';
 import BlocoDeNotas from './pages/tools/BlocoDeNotas';
 import IntegratedCalculators from './pages/tools/IntegratedCalculators';
+import MyPerformance from './pages/tools/MyPerformance';
 import SimuladoPage from './pages/SimuladoPage';
 import ReviewArea from './pages/ReviewArea';
 import FavoritesPage from './pages/FavoritesPage';
@@ -118,6 +119,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="tools/lab-values" element={<LabValues />} />
         <Route path="tools/bloco-de-notas" element={<BlocoDeNotas />} />
         <Route path="tools/integrated-calculators" element={<IntegratedCalculators />} />
+        <Route path="tools/performance" element={<MyPerformance />} />
         <Route path="simulado" element={<SimuladoPage />} />
         <Route path="review-area" element={<ReviewArea />} />
         <Route path="favorites" element={<FavoritesPage />} />

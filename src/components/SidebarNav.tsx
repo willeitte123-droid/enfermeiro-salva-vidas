@@ -3,7 +3,7 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy, PieChart
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -33,6 +33,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       { to: "/ranking", icon: Trophy, label: "Ranking e Conquistas" },
     ],
     tools: [
+      { to: "/tools/performance", icon: PieChart, label: "Meu Desempenho" },
       { to: "/calculator", icon: Calculator, label: "Gotejamento" },
       { to: "/scales", icon: ListChecks, label: "Escalas Clínicas" },
       { to: "/tools/dose-calculator", icon: FlaskConical, label: "Calculadora de Doses" },
