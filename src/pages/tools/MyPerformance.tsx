@@ -185,7 +185,48 @@ const MyPerformance = () => {
         </div>
       </div>
 
-      {/* Análise de Pontos Fortes e Fracos (MOVIDO PARA CIMA) */}
+      {/* Evolução nos Simulados - AGORA NO TOPO */}
+      <Card className="shadow-lg border-t-4 border-t-emerald-500">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-emerald-500" /> Evolução nos Simulados
+          </CardTitle>
+          <CardDescription>Seu histórico de aproveitamento nos últimos 10 simulados.</CardDescription>
+        </CardHeader>
+        <CardContent className="h-[300px]">
+          {processedData.simulationEvolution.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={processedData.simulationEvolution} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="date" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis domain={[0, 100]} stroke="#888888" fontSize={12} tickLine={false} axisLine={false} unit="%" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.2} />
+                <Tooltip content={<CustomTooltip />} />
+                <Area 
+                  type="monotone" 
+                  dataKey="Aproveitamento" 
+                  stroke="#10b981" 
+                  strokeWidth={3}
+                  fillOpacity={1} 
+                  fill="url(#colorScore)" 
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+              <FileQuestion className="h-10 w-10 mb-2 opacity-20" />
+              <p>Nenhum simulado realizado ainda.</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Análise de Pontos Fortes e Fracos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Pontos Fortes */}
         <Card className="bg-gradient-to-br from-green-50 to-emerald-100/50 dark:from-green-950/20 dark:to-emerald-900/10 border-green-200 dark:border-green-800">
@@ -243,10 +284,9 @@ const MyPerformance = () => {
         </Card>
       </div>
 
-      {/* Seção de Gráficos Principais */}
+      {/* Radar de Competências - AGORA ABAIXO DE TUDO */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Radar de Competências */}
-        <Card className="lg:col-span-1 shadow-lg border-t-4 border-t-indigo-500">
+        <Card className="lg:col-span-1 shadow-lg border-t-4 border-t-indigo-500 lg:col-start-2"> {/* Centralizado */}
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <Brain className="h-5 w-5 text-indigo-500" /> Mapa de Competências
@@ -279,47 +319,6 @@ const MyPerformance = () => {
                 <Tooltip content={<CustomTooltip />} />
               </RadarChart>
             </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Evolução nos Simulados */}
-        <Card className="lg:col-span-2 shadow-lg border-t-4 border-t-emerald-500">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-emerald-500" /> Evolução nos Simulados
-            </CardTitle>
-            <CardDescription>Seu histórico de aproveitamento nos últimos 10 simulados.</CardDescription>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            {processedData.simulationEvolution.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={processedData.simulationEvolution} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="date" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis domain={[0, 100]} stroke="#888888" fontSize={12} tickLine={false} axisLine={false} unit="%" />
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.2} />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Area 
-                    type="monotone" 
-                    dataKey="Aproveitamento" 
-                    stroke="#10b981" 
-                    strokeWidth={3}
-                    fillOpacity={1} 
-                    fill="url(#colorScore)" 
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-                <FileQuestion className="h-10 w-10 mb-2 opacity-20" />
-                <p>Nenhum simulado realizado ainda.</p>
-              </div>
-            )}
           </CardContent>
         </Card>
       </div>
