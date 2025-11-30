@@ -197,9 +197,19 @@ const MyPerformance = () => {
           </CardHeader>
           <CardContent className="h-[300px] flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="60%" data={processedData.categoryPerformance}>
+              <RadarChart 
+                cx="50%" 
+                cy="50%" 
+                outerRadius="55%" 
+                data={processedData.categoryPerformance}
+                margin={{ top: 20, right: 30, bottom: 20, left: 30 }}
+              >
                 <PolarGrid strokeOpacity={0.2} />
-                <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }} />
+                <PolarAngleAxis 
+                  dataKey="subject" 
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 10 }}
+                  tickFormatter={(val) => val.length > 20 ? `${val.substring(0, 18)}...` : val}
+                />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                 <Radar
                   name="Você"
