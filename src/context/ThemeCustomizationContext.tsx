@@ -58,12 +58,23 @@ export const ThemeCustomizationProvider = ({ children }: { children: ReactNode }
   // Usa as configurações do servidor se disponíveis (mais atuais), senão usa o cache
   const activeSettings = serverSettings || cachedSettings;
 
-  // Aplica as configurações de CSS e Fonte
+  // Aplica as configurações de CSS, Fonte e Favicon
   useEffect(() => {
     if (activeSettings && Object.keys(activeSettings).length > 0) {
       // Apply font
       if (activeSettings.font_family) {
         document.body.style.fontFamily = activeSettings.font_family;
+      }
+
+      // Apply Favicon (Logo na aba do navegador)
+      if (activeSettings.logo_url) {
+        let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = activeSettings.logo_url;
       }
 
       // Apply colors
