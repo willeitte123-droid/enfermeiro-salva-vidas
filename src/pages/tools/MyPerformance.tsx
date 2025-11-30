@@ -284,28 +284,28 @@ const MyPerformance = () => {
         </Card>
       </div>
 
-      {/* Radar de Competências - AGORA ABAIXO DE TUDO */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-1 shadow-lg border-t-4 border-t-indigo-500 lg:col-start-2"> {/* Centralizado */}
+      {/* Radar de Competências - AGORA MAIOR E CENTRALIZADO */}
+      <div className="w-full">
+        <Card className="shadow-lg border-t-4 border-t-indigo-500 max-w-3xl mx-auto">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <Brain className="h-5 w-5 text-indigo-500" /> Mapa de Competências
             </CardTitle>
             <CardDescription>Seu desempenho nas áreas mais estudadas.</CardDescription>
           </CardHeader>
-          <CardContent className="h-[300px] flex items-center justify-center">
+          <CardContent className="h-[500px] flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart 
                 cx="50%" 
                 cy="50%" 
-                outerRadius="55%" 
+                outerRadius="70%" 
                 data={processedData.categoryPerformance}
                 margin={{ top: 20, right: 30, bottom: 20, left: 30 }}
               >
                 <PolarGrid strokeOpacity={0.2} />
                 <PolarAngleAxis 
                   dataKey="subject" 
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 10 }}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
                   tickFormatter={(val) => val.length > 20 ? `${val.substring(0, 18)}...` : val}
                 />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
