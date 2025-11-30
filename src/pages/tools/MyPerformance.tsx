@@ -1,4 +1,3 @@
-Pontos Fortes/Fracos -> Radar de Competências -> Lista Detalhada de Disciplinas.">
 import { useEffect, useMemo, useState } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
