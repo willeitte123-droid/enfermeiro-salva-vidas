@@ -22,7 +22,7 @@ interface SidebarProps {
     plan?: string;
   } | null;
   isMobile?: boolean;
-  isCollapsed?: boolean; // Mantido para compatibilidade, mas controlado internamente pelo hover
+  isCollapsed?: boolean; // Mantido para compatibilidade
   onToggle?: () => void; // Mantido para compatibilidade
 }
 
@@ -33,9 +33,9 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
   const [isLockedOpen, setIsLockedOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // No desktop, a sidebar expande se o mouse estiver em cima.
-  // No mobile, o comportamento é controlado pelo Sheet (sempre expandido dentro do menu).
-  const isExpanded = isMobile ? true : isHovered;
+  // No desktop, a sidebar expande se o mouse estiver em cima OU se o menu de tema estiver aberto.
+  // Isso impede que a sidebar feche quando o usuário move o mouse para o dropdown do tema.
+  const isExpanded = isMobile ? true : (isHovered || isLockedOpen);
   const isCollapsed = !isExpanded;
 
   const getInitials = () => {
@@ -78,7 +78,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
       className={cn(
         "flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out",
         isMobile ? "h-full w-full" : "hidden md:flex border-r border-border/10 relative z-50",
-        // Largura baseada no estado de hover
+        // Largura baseada no estado de expansão (hover ou menu aberto)
         !isMobile && (isExpanded ? "w-64" : "w-20")
       )}
     >
