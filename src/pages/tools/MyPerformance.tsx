@@ -197,9 +197,9 @@ const MyPerformance = () => {
           </CardHeader>
           <CardContent className="h-[300px] flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="70%" data={processedData.categoryPerformance}>
+              <RadarChart cx="50%" cy="50%" outerRadius="60%" data={processedData.categoryPerformance}>
                 <PolarGrid strokeOpacity={0.2} />
-                <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--muted-foreground)', fontSize: 10 }} />
+                <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }} />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                 <Radar
                   name="Você"
