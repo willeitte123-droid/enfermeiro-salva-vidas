@@ -57,10 +57,11 @@ const Questions = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const queryClient = useQueryClient();
   const { addActivity } = useActivityTracker();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const questionId = searchParams.get('id');
+  const categoryParam = searchParams.get('category');
 
-  const [selectedCategory, setSelectedCategory] = useState("Todas");
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam || "Todas");
   const [answerStatusFilter, setAnswerStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(0);
   // Estado para forçar recarregamento aleatório
@@ -87,6 +88,24 @@ const Questions = () => {
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Banca de Questões', path: '/questions', icon: 'FileQuestion' });
   }, [addActivity]);
+
+  useEffect(() => {
+    if (categoryParam && categoryParam !== selectedCategory) {
+      setSelectedCategory(categoryParam);
+    }
+  }, [categoryParam]);
+
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value);
+    setSearchParams(prev => {
+      if (value === "Todas") {
+        prev.delete("category");
+      } else {
+        prev.set("category", value);
+      }
+      return prev;
+    });
+  };
 
   // Determina se estamos no modo aleatório (sem filtros e sem ID específico)
   const isRandomMode = !questionId && selectedCategory === "Todas" && answerStatusFilter === "all";
@@ -288,7 +307,7 @@ const Questions = () => {
         <div className="flex flex-col md:flex-row gap-4">
           <div className="space-y-2 flex-1">
             <Label htmlFor="category-filter">Filtrar por Categoria</Label>
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select value={selectedCategory} onValueChange={handleCategoryChange}>
               <SelectTrigger id="category-filter"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger>
               <SelectContent>{isLoadingCategories ? <div className="p-2"><Loader2 className="h-4 w-4 animate-spin"/></div> : categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent>
             </Select>
