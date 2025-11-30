@@ -185,6 +185,64 @@ const MyPerformance = () => {
         </div>
       </div>
 
+      {/* Análise de Pontos Fortes e Fracos (MOVIDO PARA CIMA) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Pontos Fortes */}
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-100/50 dark:from-green-950/20 dark:to-emerald-900/10 border-green-200 dark:border-green-800">
+          <CardHeader>
+            <CardTitle className="text-green-700 dark:text-green-400 flex items-center gap-2">
+              <Zap className="h-5 w-5 fill-current" /> Pontos Fortes
+            </CardTitle>
+            <CardDescription>Assuntos que você domina (mín. 5 questões).</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {processedData.strengths.length > 0 ? processedData.strengths.map((cat) => (
+              <div key={cat.category} className="bg-background/60 p-3 rounded-lg flex items-center justify-between shadow-sm">
+                <div>
+                  <p className="font-semibold text-sm">{cat.category}</p>
+                  <p className="text-xs text-muted-foreground">{cat.total_answered} questões</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-lg font-bold text-green-600">{cat.accuracy}%</span>
+                </div>
+              </div>
+            )) : (
+              <p className="text-sm text-muted-foreground italic p-4 text-center">Responda mais questões para descobrir seus pontos fortes.</p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Pontos de Atenção */}
+        <Card className="bg-gradient-to-br from-red-50 to-orange-100/50 dark:from-red-950/20 dark:to-orange-900/10 border-red-200 dark:border-red-800">
+          <CardHeader>
+            <CardTitle className="text-red-700 dark:text-red-400 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 fill-current" /> Onde Melhorar
+            </CardTitle>
+            <CardDescription>Foque nestes assuntos para subir de nível.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {processedData.weaknesses.length > 0 ? processedData.weaknesses.map((cat) => (
+              <div key={cat.category} className="bg-background/60 p-3 rounded-lg flex items-center justify-between shadow-sm">
+                <div>
+                  <p className="font-semibold text-sm">{cat.category}</p>
+                  <p className="text-xs text-muted-foreground">{cat.total_answered} questões</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-lg font-bold text-red-600">{cat.accuracy}%</span>
+                  <Button size="sm" variant="outline" className="h-8 w-8 p-0 rounded-full" asChild title="Estudar agora">
+                    <Link to={`/questions?category=${encodeURIComponent(cat.category)}`}>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            )) : (
+              <p className="text-sm text-muted-foreground italic p-4 text-center">Sem pontos fracos identificados ainda. Continue praticando!</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Seção de Gráficos Principais */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Radar de Competências */}
@@ -261,64 +319,6 @@ const MyPerformance = () => {
                 <FileQuestion className="h-10 w-10 mb-2 opacity-20" />
                 <p>Nenhum simulado realizado ainda.</p>
               </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Análise de Pontos Fortes e Fracos */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Pontos Fortes */}
-        <Card className="bg-gradient-to-br from-green-50 to-emerald-100/50 dark:from-green-950/20 dark:to-emerald-900/10 border-green-200 dark:border-green-800">
-          <CardHeader>
-            <CardTitle className="text-green-700 dark:text-green-400 flex items-center gap-2">
-              <Zap className="h-5 w-5 fill-current" /> Pontos Fortes
-            </CardTitle>
-            <CardDescription>Assuntos que você domina (mín. 5 questões).</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {processedData.strengths.length > 0 ? processedData.strengths.map((cat) => (
-              <div key={cat.category} className="bg-background/60 p-3 rounded-lg flex items-center justify-between shadow-sm">
-                <div>
-                  <p className="font-semibold text-sm">{cat.category}</p>
-                  <p className="text-xs text-muted-foreground">{cat.total_answered} questões</p>
-                </div>
-                <div className="text-right">
-                  <span className="text-lg font-bold text-green-600">{cat.accuracy}%</span>
-                </div>
-              </div>
-            )) : (
-              <p className="text-sm text-muted-foreground italic p-4 text-center">Responda mais questões para descobrir seus pontos fortes.</p>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Pontos de Atenção */}
-        <Card className="bg-gradient-to-br from-red-50 to-orange-100/50 dark:from-red-950/20 dark:to-orange-900/10 border-red-200 dark:border-red-800">
-          <CardHeader>
-            <CardTitle className="text-red-700 dark:text-red-400 flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 fill-current" /> Onde Melhorar
-            </CardTitle>
-            <CardDescription>Foque nestes assuntos para subir de nível.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {processedData.weaknesses.length > 0 ? processedData.weaknesses.map((cat) => (
-              <div key={cat.category} className="bg-background/60 p-3 rounded-lg flex items-center justify-between shadow-sm">
-                <div>
-                  <p className="font-semibold text-sm">{cat.category}</p>
-                  <p className="text-xs text-muted-foreground">{cat.total_answered} questões</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-bold text-red-600">{cat.accuracy}%</span>
-                  <Button size="sm" variant="outline" className="h-8 w-8 p-0 rounded-full" asChild title="Estudar agora">
-                    <Link to={`/questions?category=${encodeURIComponent(cat.category)}`}>
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            )) : (
-              <p className="text-sm text-muted-foreground italic p-4 text-center">Sem pontos fracos identificados ainda. Continue praticando!</p>
             )}
           </CardContent>
         </Card>
