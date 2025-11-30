@@ -284,39 +284,58 @@ const MyPerformance = () => {
         </Card>
       </div>
 
-      {/* Radar de Competências - AGORA MAIOR E CENTRALIZADO */}
+      {/* Radar de Competências - AGORA MAIOR E MODERNO */}
       <div className="w-full">
-        <Card className="shadow-lg border-t-4 border-t-indigo-500 max-w-3xl mx-auto">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Brain className="h-5 w-5 text-indigo-500" /> Mapa de Competências
+        <Card className="shadow-lg border-t-4 border-t-indigo-500 max-w-3xl mx-auto overflow-hidden">
+          <CardHeader className="bg-gradient-to-b from-indigo-50/50 to-transparent dark:from-indigo-950/20">
+            <CardTitle className="text-xl flex items-center gap-2 text-indigo-700 dark:text-indigo-400">
+              <Brain className="h-6 w-6" /> Mapa de Competências
             </CardTitle>
-            <CardDescription>Seu desempenho nas áreas mais estudadas.</CardDescription>
+            <CardDescription>Visualização radial do seu equilíbrio entre as disciplinas.</CardDescription>
           </CardHeader>
-          <CardContent className="h-[500px] flex items-center justify-center">
+          <CardContent className="h-[500px] flex items-center justify-center p-0 sm:p-6">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart 
                 cx="50%" 
                 cy="50%" 
-                outerRadius="70%" 
+                outerRadius="75%" 
                 data={processedData.categoryPerformance}
                 margin={{ top: 20, right: 30, bottom: 20, left: 30 }}
               >
-                <PolarGrid strokeOpacity={0.2} />
+                <defs>
+                  <linearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#6366f1" stopOpacity={0.6}/>
+                    <stop offset="100%" stopColor="#6366f1" stopOpacity={0.1}/>
+                  </linearGradient>
+                </defs>
+                <PolarGrid stroke="currentColor" className="text-muted-foreground/20" strokeDasharray="4 4" />
                 <PolarAngleAxis 
                   dataKey="subject" 
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
-                  tickFormatter={(val) => val.length > 20 ? `${val.substring(0, 18)}...` : val}
+                  tick={({ payload, x, y, textAnchor, stroke, radius }) => (
+                    <text
+                      x={x}
+                      y={y}
+                      textAnchor={textAnchor}
+                      fill="currentColor"
+                      className="text-[10px] sm:text-xs font-bold fill-muted-foreground uppercase tracking-wide"
+                    >
+                      {payload.value.length > 18 ? `${payload.value.substring(0, 15)}...` : payload.value}
+                    </text>
+                  )}
                 />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                 <Radar
                   name="Você"
                   dataKey="Aproveitamento"
                   stroke="#6366f1"
-                  fill="#6366f1"
-                  fillOpacity={0.3}
+                  strokeWidth={3}
+                  fill="url(#radarGradient)"
+                  fillOpacity={1}
+                  isAnimationActive={true}
+                  dot={{ r: 4, fill: "#6366f1", strokeWidth: 2, stroke: "var(--background)" }}
+                  activeDot={{ r: 6, fill: "#4f46e5", stroke: "var(--background)", strokeWidth: 2 }}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={<CustomTooltip />} cursor={false} />
               </RadarChart>
             </ResponsiveContainer>
           </CardContent>
