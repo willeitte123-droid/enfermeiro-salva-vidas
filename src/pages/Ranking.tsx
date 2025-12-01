@@ -58,7 +58,7 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
   };
 
   return (
-    <div className="flex flex-col items-center justify-end group w-1/3 max-w-[140px]">
+    <div className="flex flex-col items-center justify-end group w-1/3 max-w-[140px] animate-in slide-in-from-bottom-4 duration-700 fade-in">
       <div className="relative mb-3">
         {position === 1 && <Crown className="absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 text-yellow-400 fill-yellow-400 animate-bounce" />}
         <Avatar className={cn("w-14 h-14 sm:w-20 sm:h-20 border-4 transition-transform group-hover:scale-110", colors[position].split(' ')[2])}>
@@ -176,6 +176,8 @@ const Ranking = () => {
   const { data: ranking = [], isLoading: isLoadingRanking } = useQuery({
     queryKey: ['weeklyRanking'],
     queryFn: fetchRanking,
+    refetchInterval: 15000, // Refetch a cada 15 segundos para garantir atualização constante
+    refetchOnWindowFocus: true,
   });
 
   const { data: myBadges = [], isLoading: isLoadingBadges } = useQuery({
@@ -184,7 +186,7 @@ const Ranking = () => {
     enabled: !!profile
   });
 
-  // Configuração do Realtime
+  // Configuração do Realtime para atualização instantânea
   useEffect(() => {
     const channel = supabase.channel('ranking-updates')
       .on(
@@ -207,7 +209,6 @@ const Ranking = () => {
         },
         (payload) => {
           // Se for uma medalha do usuário atual, atualiza badges dele.
-          // O ranking geral não depende de medalhas, mas é bom atualizar se necessário.
           if (profile && payload.new && 'user_id' in payload.new && payload.new.user_id === profile.id) {
              queryClient.invalidateQueries({ queryKey: ['myBadges', profile.id] });
           }
@@ -274,32 +275,38 @@ const Ranking = () => {
         </TabsList>
 
         <TabsContent value="ranking" className="space-y-8">
-          {/* Podium */}
+          {/* Podium - Exibe dinamicamente conforme usuários disponíveis */}
           {top3.length > 0 && (
             <div className="flex justify-center items-end gap-2 sm:gap-4 pb-6 border-b border-dashed px-2">
+              {/* 2º Lugar (Esquerda) */}
               {top3[1] && <PodiumItem user={top3[1]} position={2} />}
+              
+              {/* 1º Lugar (Centro - Destaque) */}
               {top3[0] && <PodiumItem user={top3[0]} position={1} />}
+              
+              {/* 3º Lugar (Direita) */}
               {top3[2] && <PodiumItem user={top3[2]} position={3} />}
             </div>
           )}
 
           {/* List */}
           <div className="max-w-3xl mx-auto space-y-3">
-            {restOfRanking.map((user, index) => (
-              <RankingItem 
-                key={user.user_id} 
-                user={user} 
-                position={index + 4} 
-                isCurrentUser={user.user_id === profile?.id}
-              />
-            ))}
-            {ranking.length === 0 && (
-              <div className="text-center py-12 text-muted-foreground">
-                <Trophy className="w-12 h-12 mx-auto mb-3 opacity-20" />
-                <p>O ranking desta semana ainda está vazio.</p>
-                <p className="text-sm">Seja o primeiro a pontuar!</p>
+            {restOfRanking.length > 0 ? (
+              restOfRanking.map((user, index) => (
+                <RankingItem 
+                  key={user.user_id} 
+                  user={user} 
+                  position={index + 4} 
+                  isCurrentUser={user.user_id === profile?.id}
+                />
+              ))
+            ) : ranking.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground animate-in fade-in zoom-in duration-500">
+                <Trophy className="w-16 h-16 mx-auto mb-4 opacity-20 text-yellow-500" />
+                <h3 className="text-lg font-semibold text-foreground">O Ranking está vazio</h3>
+                <p className="text-sm">Seja o primeiro a pontuar nesta semana!</p>
               </div>
-            )}
+            ) : null}
           </div>
         </TabsContent>
 
