@@ -79,14 +79,14 @@ const MyPerformance = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const queryClient = useQueryClient();
   
-  // Estado local para incrementar visualmente os segundos enquanto o usuário está na página
+  // Contador visual local para preencher os intervalos de 10s do banco
   const [localSecondsAdded, setLocalSecondsAdded] = useState(0);
 
   useEffect(() => {
     addActivity({ type: 'Ferramenta', title: 'Análise de Desempenho', path: '/tools/performance', icon: 'PieChart' });
   }, [addActivity]);
 
-  // Contador visual local: incrementa a cada segundo enquanto a página está aberta
+  // Incrementa visualmente a cada segundo se a aba estiver ativa
   useEffect(() => {
     const timer = setInterval(() => {
       if (document.visibilityState === 'visible') {
@@ -100,83 +100,59 @@ const MyPerformance = () => {
     queryKey: ['detailedStats', profile?.id],
     queryFn: () => fetchStats(profile!.id),
     enabled: !!profile,
-    refetchInterval: 10000, // Atualiza do servidor a cada 10s para sincronizar
+    refetchInterval: 5000, // Sincroniza com o servidor a cada 5s para garantir precisão
     staleTime: 0,
   });
 
-  // Resetar o contador local quando os dados do servidor chegam (para não somar duplicado)
+  // Quando o dado do servidor chega (a cada ~10s via TimeTracker), 
+  // resetamos o contador visual para evitar contagem dupla e manter sincronia.
   useEffect(() => {
     if (stats) {
       setLocalSecondsAdded(0);
     }
   }, [stats]);
 
-  // Configuração do Realtime para atualização automática instantânea
+  // Configuração do Realtime
   useEffect(() => {
     if (!profile?.id) return;
 
     const channel = supabase
       .channel('performance-realtime')
-      .on(
-        'postgres_changes',
-        {
-          event: '*', 
-          schema: 'public',
-          table: 'user_question_answers',
-          filter: `user_id=eq.${profile.id}`,
-        },
-        () => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'user_question_answers', filter: `user_id=eq.${profile.id}` }, () => {
           queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'user_simulations',
-          filter: `user_id=eq.${profile.id}`,
-        },
-        () => {
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'user_simulations', filter: `user_id=eq.${profile.id}` }, () => {
           queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
-        }
-      )
+      })
       .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    return () => { supabase.removeChannel(channel); };
   }, [profile?.id, queryClient]);
 
   const processedData = useMemo(() => {
     if (!stats) return null;
 
-    // Processar e ordenar categorias gerais
+    // Processamento de categorias e simulados (mantido igual)
     const allCategories = [...stats.categories].map(cat => ({
         ...cat,
         accuracy: Math.round((cat.total_correct / cat.total_answered) * 100) || 0,
         incorrect: cat.total_answered - cat.total_correct
     })).sort((a, b) => b.total_answered - a.total_answered);
 
-    // Filtrar categorias com pelo menos 1 resposta para análise de força/fraqueza
     const validCategories = allCategories.filter(c => c.total_answered >= 1);
 
-    // 1. Determinar Pontos Fortes: >= 60% de acerto (Critério mais rigoroso para destacar excelência)
-    // Se não houver >= 70%, pega os melhores disponíveis acima de 50%
     const strengths = validCategories
         .filter(c => c.accuracy >= 60)
-        .sort((a, b) => b.accuracy - a.accuracy) // Maior acerto primeiro
+        .sort((a, b) => b.accuracy - a.accuracy)
         .slice(0, 3);
 
     const strengthNames = new Set(strengths.map(s => s.category));
 
-    // 2. Determinar Pontos de Atenção: < 60% ou os piores desempenhos
     const weaknesses = validCategories
-        .filter(c => !strengthNames.has(c.category)) // Exclui os que já são fortes
-        .sort((a, b) => a.accuracy - b.accuracy) // Menor acerto primeiro
+        .filter(c => !strengthNames.has(c.category))
+        .sort((a, b) => a.accuracy - b.accuracy)
         .slice(0, 3);
 
-    // Categorias para Radar (Top 6 por volume de questões, para mostrar onde o aluno foca mais)
     const categoryPerformance = stats.categories.map(cat => ({
       subject: cat.category,
       Aproveitamento: Math.round((cat.total_correct / cat.total_answered) * 100) || 0,
@@ -184,27 +160,26 @@ const MyPerformance = () => {
       fullMark: 100
     })).sort((a, b) => b.total - a.total).slice(0, 6);
 
-    // Evolução Simulados
     const simulationEvolution = [...stats.simulations].reverse().map(sim => ({
       date: format(new Date(sim.created_at), 'dd/MM'),
       Aproveitamento: sim.percentage,
       Score: sim.score
     }));
 
-    // Totais com incremento visual local
+    // CÁLCULO DE TEMPO: Banco de Dados + Contador Visual Local
+    // Isso cria o efeito de tempo real sem precisar salvar no banco a cada segundo
     const totalSecondsWithLocal = stats.total_time_seconds + localSecondsAdded;
+    
     const hours = Math.floor(totalSecondsWithLocal / 3600);
     const minutes = Math.floor((totalSecondsWithLocal % 3600) / 60);
-    
     const totalQuestions = stats.categories.reduce((acc, curr) => acc + curr.total_answered, 0);
     const totalCorrect = stats.categories.reduce((acc, curr) => acc + curr.total_correct, 0);
     const totalIncorrect = totalQuestions - totalCorrect;
     const globalAccuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
 
-    // Dados para Pie Chart
     const pieData = [
-      { name: 'Acertos', value: totalCorrect, color: '#10b981' }, // emerald-500
-      { name: 'Erros', value: totalIncorrect, color: '#ef4444' }, // red-500
+      { name: 'Acertos', value: totalCorrect, color: '#10b981' },
+      { name: 'Erros', value: totalIncorrect, color: '#ef4444' },
     ];
 
     return {
@@ -213,7 +188,7 @@ const MyPerformance = () => {
       strengths,
       weaknesses,
       simulationEvolution,
-      timeString: `${hours}h ${minutes}m`,
+      timeString: `${hours}h ${minutes}m`, // Formato simples e limpo
       totalQuestions,
       globalAccuracy,
       pieData,
@@ -249,10 +224,7 @@ const MyPerformance = () => {
     <div className="space-y-8 animate-in fade-in duration-700 pb-12">
       {/* Header Imersivo */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 p-8 text-white shadow-2xl ring-1 ring-white/10">
-        {/* Background Effects */}
-        <div className="absolute top-0 right-0 p-10 opacity-5 mix-blend-overlay">
-          <Trophy className="w-80 h-80" />
-        </div>
+        <div className="absolute top-0 right-0 p-10 opacity-5 mix-blend-overlay"><Trophy className="w-80 h-80" /></div>
         <div className="absolute -left-20 -bottom-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
         <div className="absolute right-20 -top-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl"></div>
 
@@ -291,24 +263,12 @@ const MyPerformance = () => {
             </div>
           </div>
 
-          {/* Gráfico de Pizza no Header */}
           <div className="hidden lg:flex justify-center items-center relative">
             <div className="relative w-48 h-48">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie
-                    data={processedData.pieData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                    stroke="none"
-                  >
-                    {processedData.pieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
+                  <Pie data={processedData.pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value" stroke="none">
+                    {processedData.pieData.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
                   </Pie>
                 </PieChart>
               </ResponsiveContainer>
@@ -329,10 +289,7 @@ const MyPerformance = () => {
           </TabsList>
         </div>
 
-        {/* ABA: VISÃO GERAL (PAINEL COMPLETO) */}
         <TabsContent value="overview" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          
-          {/* 1. Evolução nos Simulados */}
           <Card className="shadow-lg border-t-4 border-t-emerald-500">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-emerald-500" /> Evolução nos Simulados</CardTitle>
@@ -352,15 +309,7 @@ const MyPerformance = () => {
                     <XAxis dataKey="date" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis domain={[0, 100]} stroke="#888888" fontSize={12} tickLine={false} axisLine={false} unit="%" />
                     <Tooltip content={<CustomTooltip />} />
-                    <Area 
-                      type="monotone" 
-                      dataKey="Aproveitamento" 
-                      stroke="#10b981" 
-                      strokeWidth={3}
-                      fillOpacity={1} 
-                      fill="url(#colorScore)"
-                      activeDot={{ r: 6, strokeWidth: 0, fill: "#fff" }}
-                    />
+                    <Area type="monotone" dataKey="Aproveitamento" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorScore)" activeDot={{ r: 6, strokeWidth: 0, fill: "#fff" }} />
                   </AreaChart>
                 </ResponsiveContainer>
               ) : (
@@ -372,13 +321,10 @@ const MyPerformance = () => {
             </CardContent>
           </Card>
 
-          {/* 2. Pontos Fortes e Fracos */}
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="bg-gradient-to-br from-green-50 to-transparent dark:from-green-950/20 border-green-200 dark:border-green-800/50">
               <CardHeader>
-                <CardTitle className="text-green-700 dark:text-green-400 flex items-center gap-2 text-base">
-                  <Zap className="h-5 w-5 fill-current" /> Pontos Fortes (≥60%)
-                </CardTitle>
+                <CardTitle className="text-green-700 dark:text-green-400 flex items-center gap-2 text-base"><Zap className="h-5 w-5 fill-current" /> Pontos Fortes (≥60%)</CardTitle>
                 <CardDescription>Suas melhores disciplinas.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -393,9 +339,7 @@ const MyPerformance = () => {
 
             <Card className="bg-gradient-to-br from-red-50 to-transparent dark:from-red-950/20 border-red-200 dark:border-red-800/50">
               <CardHeader>
-                <CardTitle className="text-red-700 dark:text-red-400 flex items-center gap-2 text-base">
-                  <AlertTriangle className="h-5 w-5 fill-current" /> Pontos de Atenção
-                </CardTitle>
+                <CardTitle className="text-red-700 dark:text-red-400 flex items-center gap-2 text-base"><AlertTriangle className="h-5 w-5 fill-current" /> Pontos de Atenção</CardTitle>
                 <CardDescription>Onde focar seus estudos agora.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -409,57 +353,20 @@ const MyPerformance = () => {
             </Card>
           </div>
 
-          {/* 3. Radar de Competências */}
           <div className="w-full">
             <Card className="shadow-lg border-t-4 border-t-indigo-500 max-w-3xl mx-auto overflow-hidden">
               <CardHeader className="bg-gradient-to-b from-indigo-50/50 to-transparent dark:from-indigo-950/20">
-                <CardTitle className="text-xl flex items-center gap-2 text-indigo-700 dark:text-indigo-400">
-                  <Brain className="h-6 w-6" /> Mapa de Competências
-                </CardTitle>
+                <CardTitle className="text-xl flex items-center gap-2 text-indigo-700 dark:text-indigo-400"><Brain className="h-6 w-6" /> Mapa de Competências</CardTitle>
                 <CardDescription>Visualização radial do seu equilíbrio entre as disciplinas.</CardDescription>
               </CardHeader>
               <CardContent className="h-[500px] flex items-center justify-center p-0 sm:p-6">
                 <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart 
-                    cx="50%" 
-                    cy="50%" 
-                    outerRadius="75%" 
-                    data={processedData.categoryPerformance}
-                    margin={{ top: 20, right: 30, bottom: 20, left: 30 }}
-                  >
-                    <defs>
-                      <linearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#6366f1" stopOpacity={0.6}/>
-                        <stop offset="100%" stopColor="#6366f1" stopOpacity={0.1}/>
-                      </linearGradient>
-                    </defs>
+                  <RadarChart cx="50%" cy="50%" outerRadius="75%" data={processedData.categoryPerformance} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
+                    <defs><linearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#6366f1" stopOpacity={0.6}/><stop offset="100%" stopColor="#6366f1" stopOpacity={0.1}/></linearGradient></defs>
                     <PolarGrid stroke="currentColor" className="text-muted-foreground/20" strokeDasharray="4 4" />
-                    <PolarAngleAxis 
-                      dataKey="subject" 
-                      tick={({ payload, x, y, textAnchor, stroke, radius }) => (
-                        <text
-                          x={x}
-                          y={y}
-                          textAnchor={textAnchor}
-                          fill="currentColor"
-                          className="text-[10px] sm:text-xs font-bold fill-muted-foreground uppercase tracking-wide"
-                        >
-                          {payload.value.length > 18 ? `${payload.value.substring(0, 15)}...` : payload.value}
-                        </text>
-                      )}
-                    />
+                    <PolarAngleAxis dataKey="subject" tick={({ payload, x, y, textAnchor }) => (<text x={x} y={y} textAnchor={textAnchor} fill="currentColor" className="text-[10px] sm:text-xs font-bold fill-muted-foreground uppercase tracking-wide">{payload.value.length > 18 ? `${payload.value.substring(0, 15)}...` : payload.value}</text>)} />
                     <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                    <Radar
-                      name="Você"
-                      dataKey="Aproveitamento"
-                      stroke="#6366f1"
-                      strokeWidth={3}
-                      fill="url(#radarGradient)"
-                      fillOpacity={1}
-                      isAnimationActive={true}
-                      dot={{ r: 4, fill: "#6366f1", strokeWidth: 2, stroke: "var(--background)" }}
-                      activeDot={{ r: 6, fill: "#4f46e5", stroke: "var(--background)", strokeWidth: 2 }}
-                    />
+                    <Radar name="Você" dataKey="Aproveitamento" stroke="#6366f1" strokeWidth={3} fill="url(#radarGradient)" fillOpacity={1} isAnimationActive={true} dot={{ r: 4, fill: "#6366f1", strokeWidth: 2, stroke: "var(--background)" }} activeDot={{ r: 6, fill: "#4f46e5", stroke: "var(--background)", strokeWidth: 2 }} />
                     <Tooltip content={<CustomTooltip />} cursor={false} />
                   </RadarChart>
                 </ResponsiveContainer>
@@ -467,7 +374,6 @@ const MyPerformance = () => {
             </Card>
           </div>
 
-          {/* 4. Detalhamento Completo por Disciplina */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><ListFilter className="h-5 w-5 text-primary"/> Detalhamento Completo</CardTitle>
@@ -487,21 +393,15 @@ const MyPerformance = () => {
                           <span className="text-muted-foreground text-xs ml-1">({cat.total_correct}/{cat.total_answered})</span>
                         </div>
                       </div>
-                      <Progress 
-                        value={cat.accuracy} 
-                        className="h-2.5" 
-                        indicatorClassName={cn(cat.accuracy >= 70 ? "bg-green-500" : cat.accuracy >= 40 ? "bg-yellow-500" : "bg-red-500")}
-                      />
+                      <Progress value={cat.accuracy} className="h-2.5" indicatorClassName={cn(cat.accuracy >= 70 ? "bg-green-500" : cat.accuracy >= 40 ? "bg-yellow-500" : "bg-red-500")} />
                     </div>
                   ))}
                 </div>
               </ScrollArea>
             </CardContent>
           </Card>
-
         </TabsContent>
 
-        {/* ABA: HISTÓRICO */}
         <TabsContent value="history" className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <Card>
             <CardHeader>
