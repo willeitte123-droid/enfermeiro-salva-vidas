@@ -9,6 +9,7 @@ import { Button } from "../components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import SuspendedAccount from "@/pages/SuspendedAccount";
+import { TimeTracker } from "@/components/TimeTracker";
 
 const ContentLoader = () => (
   <div className="flex items-center justify-center h-full w-full">
@@ -31,6 +32,7 @@ const MainLayout = () => {
 
   return (
     <div className="flex min-h-screen w-full bg-muted/40">
+      <TimeTracker />
       <Sidebar 
         isAdmin={isAdmin} 
         user={user} 

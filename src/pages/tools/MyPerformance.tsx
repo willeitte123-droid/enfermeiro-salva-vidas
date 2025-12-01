@@ -78,18 +78,38 @@ const MyPerformance = () => {
   const { addActivity } = useActivityTracker();
   const [activeTab, setActiveTab] = useState("overview");
   const queryClient = useQueryClient();
+  
+  // Estado local para incrementar visualmente os segundos enquanto o usuário está na página
+  const [localSecondsAdded, setLocalSecondsAdded] = useState(0);
 
   useEffect(() => {
     addActivity({ type: 'Ferramenta', title: 'Análise de Desempenho', path: '/tools/performance', icon: 'PieChart' });
   }, [addActivity]);
 
+  // Contador visual local: incrementa a cada segundo enquanto a página está aberta
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        setLocalSecondsAdded(prev => prev + 1);
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const { data: stats, isLoading } = useQuery({
     queryKey: ['detailedStats', profile?.id],
     queryFn: () => fetchStats(profile!.id),
     enabled: !!profile,
-    refetchInterval: 5000, // Polling de backup a cada 5s
-    staleTime: 0, // Considera os dados sempre "velhos" para forçar atualização no invalidate
+    refetchInterval: 10000, // Atualiza do servidor a cada 10s para sincronizar
+    staleTime: 0,
   });
+
+  // Resetar o contador local quando os dados do servidor chegam (para não somar duplicado)
+  useEffect(() => {
+    if (stats) {
+      setLocalSecondsAdded(0);
+    }
+  }, [stats]);
 
   // Configuração do Realtime para atualização automática instantânea
   useEffect(() => {
@@ -106,7 +126,6 @@ const MyPerformance = () => {
           filter: `user_id=eq.${profile.id}`,
         },
         () => {
-          // Invalida e força recarregamento imediato ao responder uma questão
           queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
         }
       )
@@ -119,7 +138,6 @@ const MyPerformance = () => {
           filter: `user_id=eq.${profile.id}`,
         },
         () => {
-          // Invalida e força recarregamento imediato ao terminar um simulado
           queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
         }
       )
@@ -143,7 +161,7 @@ const MyPerformance = () => {
     // Filtrar categorias com pelo menos 1 resposta para análise de força/fraqueza
     const validCategories = allCategories.filter(c => c.total_answered >= 1);
 
-    // 1. Determinar Pontos Fortes: >= 70% de acerto (Critério mais rigoroso para destacar excelência)
+    // 1. Determinar Pontos Fortes: >= 60% de acerto (Critério mais rigoroso para destacar excelência)
     // Se não houver >= 70%, pega os melhores disponíveis acima de 50%
     const strengths = validCategories
         .filter(c => c.accuracy >= 60)
@@ -173,9 +191,11 @@ const MyPerformance = () => {
       Score: sim.score
     }));
 
-    // Totais
-    const hours = Math.floor(stats.total_time_seconds / 3600);
-    const minutes = Math.floor((stats.total_time_seconds % 3600) / 60);
+    // Totais com incremento visual local
+    const totalSecondsWithLocal = stats.total_time_seconds + localSecondsAdded;
+    const hours = Math.floor(totalSecondsWithLocal / 3600);
+    const minutes = Math.floor((totalSecondsWithLocal % 3600) / 60);
+    
     const totalQuestions = stats.categories.reduce((acc, curr) => acc + curr.total_answered, 0);
     const totalCorrect = stats.categories.reduce((acc, curr) => acc + curr.total_correct, 0);
     const totalIncorrect = totalQuestions - totalCorrect;
@@ -200,13 +220,13 @@ const MyPerformance = () => {
       simulations: stats.simulations,
       totalSimulationsCount: stats.total_simulations_count
     };
-  }, [stats]);
+  }, [stats, localSecondsAdded]);
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-[50vh]"><Loader2 className="h-10 w-10 animate-spin text-primary" /></div>;
   }
 
-  if (!processedData || processedData.totalQuestions === 0) {
+  if (!processedData || (processedData.totalQuestions === 0 && processedData.timeString === "0h 0m")) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] space-y-6 text-center animate-in fade-in zoom-in duration-500">
         <div className="bg-primary/10 p-8 rounded-full ring-8 ring-primary/5">
@@ -258,7 +278,7 @@ const MyPerformance = () => {
                 <div className="p-2 bg-blue-500/20 rounded-lg text-blue-300"><Clock className="w-5 h-5" /></div>
                 <div>
                   <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Tempo Total</p>
-                  <p className="text-xl font-bold">{processedData.timeString}</p>
+                  <p className="text-xl font-bold tabular-nums">{processedData.timeString}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-3 pr-6 border border-white/10">
@@ -367,7 +387,7 @@ const MyPerformance = () => {
                     <span className="text-sm font-medium truncate max-w-[70%]">{cat.category}</span>
                     <Badge className="bg-green-500 text-white hover:bg-green-600 font-bold">{cat.accuracy}%</Badge>
                   </div>
-                )) : <p className="text-sm text-muted-foreground italic p-2">Continue estudando para identificar seus pontos fortes.</p>}
+                )) : <p className="text-sm text-muted-foreground italic p-2">Nenhuma disciplina com acerto ≥ 60% ainda.</p>}
               </CardContent>
             </Card>
 
