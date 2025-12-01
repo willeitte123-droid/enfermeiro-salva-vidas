@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -167,6 +167,7 @@ const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnloc
 const Ranking = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     addActivity({ type: 'Social', title: 'Ranking e Conquistas', path: '/ranking', icon: 'Trophy' });
@@ -182,6 +183,53 @@ const Ranking = () => {
     queryFn: () => profile ? fetchUserBadges(profile.id) : Promise.resolve([]),
     enabled: !!profile
   });
+
+  // Configuração do Realtime
+  useEffect(() => {
+    const channel = supabase.channel('ranking-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // Escuta INSERT, UPDATE, DELETE
+          schema: 'public',
+          table: 'user_question_answers' // Quando alguém responde questão, o ranking muda
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['weeklyRanking'] });
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_badges' // Quando alguém ganha medalha
+        },
+        (payload) => {
+          // Se for uma medalha do usuário atual, atualiza badges dele.
+          // O ranking geral não depende de medalhas, mas é bom atualizar se necessário.
+          if (profile && payload.new && 'user_id' in payload.new && payload.new.user_id === profile.id) {
+             queryClient.invalidateQueries({ queryKey: ['myBadges', profile.id] });
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles' // Se alguém mudar foto ou nome
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['weeklyRanking'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [profile, queryClient]);
 
   const top3 = ranking.slice(0, 3);
   const restOfRanking = ranking.slice(3);
