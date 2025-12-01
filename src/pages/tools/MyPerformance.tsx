@@ -46,7 +46,7 @@ interface DetailedStats {
   categories: CategoryStat[];
   simulations: SimulationStat[];
   total_time_seconds: number;
-  total_simulations_count: number; // Novo campo
+  total_simulations_count: number;
 }
 
 const fetchStats = async (userId: string) => {
@@ -87,10 +87,11 @@ const MyPerformance = () => {
     queryKey: ['detailedStats', profile?.id],
     queryFn: () => fetchStats(profile!.id),
     enabled: !!profile,
-    refetchInterval: 3000, // Atualiza a cada 3 segundos
+    refetchInterval: 5000, // Polling de backup a cada 5s
+    staleTime: 0, // Considera os dados sempre "velhos" para forçar atualização no invalidate
   });
 
-  // Configuração do Realtime para atualização automática
+  // Configuração do Realtime para atualização automática instantânea
   useEffect(() => {
     if (!profile?.id) return;
 
@@ -99,12 +100,13 @@ const MyPerformance = () => {
       .on(
         'postgres_changes',
         {
-          event: '*', // Escuta Insert, Update e Delete
+          event: '*', 
           schema: 'public',
           table: 'user_question_answers',
           filter: `user_id=eq.${profile.id}`,
         },
         () => {
+          // Invalida e força recarregamento imediato ao responder uma questão
           queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
         }
       )
@@ -117,6 +119,7 @@ const MyPerformance = () => {
           filter: `user_id=eq.${profile.id}`,
         },
         () => {
+          // Invalida e força recarregamento imediato ao terminar um simulado
           queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
         }
       )
@@ -137,25 +140,25 @@ const MyPerformance = () => {
         incorrect: cat.total_answered - cat.total_correct
     })).sort((a, b) => b.total_answered - a.total_answered);
 
-    // Filtrar categorias com pelo menos 1 resposta
+    // Filtrar categorias com pelo menos 1 resposta para análise de força/fraqueza
     const validCategories = allCategories.filter(c => c.total_answered >= 1);
 
-    // 1. Determinar Pontos Fortes: >= 60% de acerto
+    // 1. Determinar Pontos Fortes: >= 70% de acerto (Critério mais rigoroso para destacar excelência)
+    // Se não houver >= 70%, pega os melhores disponíveis acima de 50%
     const strengths = validCategories
         .filter(c => c.accuracy >= 60)
-        .sort((a, b) => b.accuracy - a.accuracy)
+        .sort((a, b) => b.accuracy - a.accuracy) // Maior acerto primeiro
         .slice(0, 3);
 
     const strengthNames = new Set(strengths.map(s => s.category));
 
-    // 2. Determinar Pontos de Atenção: O que não é ponto forte
-    // Prioriza acerto < 60%, mas se não tiver, pega os piores dos que sobraram
+    // 2. Determinar Pontos de Atenção: < 60% ou os piores desempenhos
     const weaknesses = validCategories
-        .filter(c => !strengthNames.has(c.category))
-        .sort((a, b) => a.accuracy - b.accuracy)
+        .filter(c => !strengthNames.has(c.category)) // Exclui os que já são fortes
+        .sort((a, b) => a.accuracy - b.accuracy) // Menor acerto primeiro
         .slice(0, 3);
 
-    // Categorias para Radar (Top 6 por volume)
+    // Categorias para Radar (Top 6 por volume de questões, para mostrar onde o aluno foca mais)
     const categoryPerformance = stats.categories.map(cat => ({
       subject: cat.category,
       Aproveitamento: Math.round((cat.total_correct / cat.total_answered) * 100) || 0,
@@ -195,7 +198,7 @@ const MyPerformance = () => {
       globalAccuracy,
       pieData,
       simulations: stats.simulations,
-      totalSimulationsCount: stats.total_simulations_count // Uso do novo campo
+      totalSimulationsCount: stats.total_simulations_count
     };
   }, [stats]);
 
@@ -356,14 +359,15 @@ const MyPerformance = () => {
                 <CardTitle className="text-green-700 dark:text-green-400 flex items-center gap-2 text-base">
                   <Zap className="h-5 w-5 fill-current" /> Pontos Fortes (≥60%)
                 </CardTitle>
+                <CardDescription>Suas melhores disciplinas.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 {processedData.strengths.length > 0 ? processedData.strengths.map(cat => (
-                  <div key={cat.category} className="flex justify-between items-center bg-background/50 p-2 rounded border border-green-100 dark:border-green-900/50">
+                  <div key={cat.category} className="flex justify-between items-center bg-background/50 p-3 rounded border border-green-100 dark:border-green-900/50">
                     <span className="text-sm font-medium truncate max-w-[70%]">{cat.category}</span>
-                    <Badge className="bg-green-500 text-white hover:bg-green-600">{cat.accuracy}%</Badge>
+                    <Badge className="bg-green-500 text-white hover:bg-green-600 font-bold">{cat.accuracy}%</Badge>
                   </div>
-                )) : <p className="text-sm text-muted-foreground italic">Nenhuma disciplina com acerto ≥ 60% ainda.</p>}
+                )) : <p className="text-sm text-muted-foreground italic p-2">Continue estudando para identificar seus pontos fortes.</p>}
               </CardContent>
             </Card>
 
@@ -372,14 +376,15 @@ const MyPerformance = () => {
                 <CardTitle className="text-red-700 dark:text-red-400 flex items-center gap-2 text-base">
                   <AlertTriangle className="h-5 w-5 fill-current" /> Pontos de Atenção
                 </CardTitle>
+                <CardDescription>Onde focar seus estudos agora.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 {processedData.weaknesses.length > 0 ? processedData.weaknesses.map(cat => (
-                  <div key={cat.category} className="flex justify-between items-center bg-background/50 p-2 rounded border border-red-100 dark:border-red-900/50">
+                  <div key={cat.category} className="flex justify-between items-center bg-background/50 p-3 rounded border border-red-100 dark:border-red-900/50">
                     <span className="text-sm font-medium truncate max-w-[70%]">{cat.category}</span>
-                    <Badge variant="destructive">{cat.accuracy}%</Badge>
+                    <Badge variant="destructive" className="font-bold">{cat.accuracy}%</Badge>
                   </div>
-                )) : <p className="text-sm text-muted-foreground italic">Continue praticando para identificar dificuldades.</p>}
+                )) : <p className="text-sm text-muted-foreground italic p-2">Nenhum ponto crítico identificado ainda. Parabéns!</p>}
               </CardContent>
             </Card>
           </div>
