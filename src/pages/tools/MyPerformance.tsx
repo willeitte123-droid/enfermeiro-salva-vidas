@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useOutletContext, Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -76,6 +76,7 @@ const MyPerformance = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
   const [activeTab, setActiveTab] = useState("overview");
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     addActivity({ type: 'Ferramenta', title: 'Análise de Desempenho', path: '/tools/performance', icon: 'PieChart' });
@@ -86,6 +87,43 @@ const MyPerformance = () => {
     queryFn: () => fetchStats(profile!.id),
     enabled: !!profile,
   });
+
+  // Configuração do Realtime para atualização automática
+  useEffect(() => {
+    if (!profile?.id) return;
+
+    const channel = supabase
+      .channel('performance-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // Escuta Insert, Update e Delete
+          schema: 'public',
+          table: 'user_question_answers',
+          filter: `user_id=eq.${profile.id}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_simulations',
+          filter: `user_id=eq.${profile.id}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [profile?.id, queryClient]);
 
   const processedData = useMemo(() => {
     if (!stats) return null;
@@ -108,7 +146,8 @@ const MyPerformance = () => {
 
     const strengthNames = new Set(strengths.map(s => s.category));
 
-    // 2. Determinar Pontos de Atenção: O que não é ponto forte, ordenado pelo menor acerto
+    // 2. Determinar Pontos de Atenção: O que não é ponto forte
+    // Prioriza acerto < 60%, mas se não tiver, pega os piores dos que sobraram
     const weaknesses = validCategories
         .filter(c => !strengthNames.has(c.category))
         .sort((a, b) => a.accuracy - b.accuracy)
