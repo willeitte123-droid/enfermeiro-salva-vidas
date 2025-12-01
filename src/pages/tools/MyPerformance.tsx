@@ -108,8 +108,7 @@ const MyPerformance = () => {
 
     const strengthNames = new Set(strengths.map(s => s.category));
 
-    // 2. Determinar Pontos de Atenção: O que não é ponto forte
-    // Prioriza acerto < 60%, mas se não tiver, pega os piores dos que sobraram
+    // 2. Determinar Pontos de Atenção: O que não é ponto forte, ordenado pelo menor acerto
     const weaknesses = validCategories
         .filter(c => !strengthNames.has(c.category))
         .sort((a, b) => a.accuracy - b.accuracy)
