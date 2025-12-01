@@ -46,6 +46,7 @@ interface DetailedStats {
   categories: CategoryStat[];
   simulations: SimulationStat[];
   total_time_seconds: number;
+  total_simulations_count: number; // Novo campo
 }
 
 const fetchStats = async (userId: string) => {
@@ -86,6 +87,7 @@ const MyPerformance = () => {
     queryKey: ['detailedStats', profile?.id],
     queryFn: () => fetchStats(profile!.id),
     enabled: !!profile,
+    refetchInterval: 3000, // Atualiza a cada 3 segundos
   });
 
   // Configuração do Realtime para atualização automática
@@ -192,7 +194,8 @@ const MyPerformance = () => {
       totalQuestions,
       globalAccuracy,
       pieData,
-      simulations: stats.simulations
+      simulations: stats.simulations,
+      totalSimulationsCount: stats.total_simulations_count // Uso do novo campo
     };
   }, [stats]);
 
@@ -259,7 +262,7 @@ const MyPerformance = () => {
                 <div className="p-2 bg-amber-500/20 rounded-lg text-amber-300"><FileQuestion className="w-5 h-5" /></div>
                 <div>
                   <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Simulados</p>
-                  <p className="text-xl font-bold">{processedData.simulations.length}</p>
+                  <p className="text-xl font-bold">{processedData.totalSimulationsCount}</p>
                 </div>
               </div>
             </div>
@@ -490,7 +493,7 @@ const MyPerformance = () => {
                             <Target className="h-5 w-5" />
                           </div>
                           <div>
-                            <p className="font-semibold">Simulado #{processedData.simulations.length - i}</p>
+                            <p className="font-semibold">Simulado #{processedData.totalSimulationsCount - i}</p>
                             <p className="text-xs text-muted-foreground">{format(new Date(sim.created_at), "dd 'de' MMMM, HH:mm", { locale: ptBR })}</p>
                           </div>
                         </div>
