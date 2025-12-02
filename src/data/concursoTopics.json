@@ -895,7 +895,7 @@
   {
     "category": "Centro Cirúrgico e CME",
     "icon": "Scissors",
-    "color": "text-gray-700",
+    "color": "text-fuchsia-600",
     "topics": [
       {
         "title": "Cirurgia Segura (Checklist OMS)",
