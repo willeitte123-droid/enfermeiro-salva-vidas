@@ -84,7 +84,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
     >
       <div className="flex h-16 items-center border-b border-border/10 px-6 justify-between relative overflow-hidden shrink-0">
         <div className={cn("flex items-center gap-3 transition-all duration-300", isCollapsed && "justify-center w-full")}>
-          {themeSettings.logo_url && themeSettings.logo_url !== '/logo.svg' ? (
+          {themeSettings.logo_url ? (
             <img src={themeSettings.logo_url} alt="Logo" className={cn("h-8 transition-all object-contain", isCollapsed ? "w-8" : "w-auto")} />
           ) : (
             <Stethoscope className="h-7 w-7 text-primary flex-shrink-0" />
