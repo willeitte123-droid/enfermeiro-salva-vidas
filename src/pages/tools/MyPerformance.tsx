@@ -14,9 +14,9 @@ import {
   AreaChart, Area, PieChart, Pie, Cell, Legend
 } from "recharts";
 import { 
-  Trophy, Clock, Target, AlertTriangle, TrendingUp, 
+  Trophy, Target, AlertTriangle, TrendingUp, 
   Brain, FileQuestion, ArrowRight, Loader2, Zap, 
-  Calendar, CheckCircle2, ListFilter
+  Calendar, CheckCircle2, ListFilter, ClipboardList
 } from "lucide-react";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { format } from "date-fns";
@@ -79,60 +79,59 @@ const MyPerformance = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const queryClient = useQueryClient();
   
-  // Contador visual local para preencher os intervalos de 10s do banco
-  const [localSecondsAdded, setLocalSecondsAdded] = useState(0);
-
   useEffect(() => {
     addActivity({ type: 'Ferramenta', title: 'Análise de Desempenho', path: '/tools/performance', icon: 'PieChart' });
   }, [addActivity]);
-
-  // Incrementa visualmente a cada segundo se a aba estiver ativa
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (document.visibilityState === 'visible') {
-        setLocalSecondsAdded(prev => prev + 1);
-      }
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const { data: stats, isLoading } = useQuery({
     queryKey: ['detailedStats', profile?.id],
     queryFn: () => fetchStats(profile!.id),
     enabled: !!profile,
-    refetchInterval: 5000, // Sincroniza com o servidor a cada 5s para garantir precisão
+    refetchInterval: 10000, 
     staleTime: 0,
   });
 
-  // Quando o dado do servidor chega (a cada ~10s via TimeTracker), 
-  // resetamos o contador visual para evitar contagem dupla e manter sincronia.
-  useEffect(() => {
-    if (stats) {
-      setLocalSecondsAdded(0);
-    }
-  }, [stats]);
-
-  // Configuração do Realtime
+  // Configuração do Realtime para atualização automática instantânea
   useEffect(() => {
     if (!profile?.id) return;
 
     const channel = supabase
       .channel('performance-realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'user_question_answers', filter: `user_id=eq.${profile.id}` }, () => {
+      .on(
+        'postgres_changes',
+        {
+          event: '*', 
+          schema: 'public',
+          table: 'user_question_answers',
+          filter: `user_id=eq.${profile.id}`,
+        },
+        () => {
           queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'user_simulations', filter: `user_id=eq.${profile.id}` }, () => {
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_simulations',
+          filter: `user_id=eq.${profile.id}`,
+        },
+        () => {
           queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
-      })
+        }
+      )
       .subscribe();
 
-    return () => { supabase.removeChannel(channel); };
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [profile?.id, queryClient]);
 
   const processedData = useMemo(() => {
     if (!stats) return null;
 
-    // Processamento de categorias e simulados (mantido igual)
+    // Processamento de categorias e simulados
     const allCategories = [...stats.categories].map(cat => ({
         ...cat,
         accuracy: Math.round((cat.total_correct / cat.total_answered) * 100) || 0,
@@ -166,20 +165,14 @@ const MyPerformance = () => {
       Score: sim.score
     }));
 
-    // CÁLCULO DE TEMPO: Banco de Dados + Contador Visual Local
-    // Isso cria o efeito de tempo real sem precisar salvar no banco a cada segundo
-    const totalSecondsWithLocal = stats.total_time_seconds + localSecondsAdded;
-    
-    const hours = Math.floor(totalSecondsWithLocal / 3600);
-    const minutes = Math.floor((totalSecondsWithLocal % 3600) / 60);
     const totalQuestions = stats.categories.reduce((acc, curr) => acc + curr.total_answered, 0);
     const totalCorrect = stats.categories.reduce((acc, curr) => acc + curr.total_correct, 0);
     const totalIncorrect = totalQuestions - totalCorrect;
     const globalAccuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
 
     const pieData = [
-      { name: 'Acertos', value: totalCorrect, color: '#10b981' },
-      { name: 'Erros', value: totalIncorrect, color: '#ef4444' },
+      { name: 'Acertos', value: totalCorrect, color: '#10b981' }, // emerald-500
+      { name: 'Erros', value: totalIncorrect, color: '#ef4444' }, // red-500
     ];
 
     return {
@@ -188,20 +181,19 @@ const MyPerformance = () => {
       strengths,
       weaknesses,
       simulationEvolution,
-      timeString: `${hours}h ${minutes}m`, // Formato simples e limpo
       totalQuestions,
       globalAccuracy,
       pieData,
       simulations: stats.simulations,
       totalSimulationsCount: stats.total_simulations_count
     };
-  }, [stats, localSecondsAdded]);
+  }, [stats]);
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-[50vh]"><Loader2 className="h-10 w-10 animate-spin text-primary" /></div>;
   }
 
-  if (!processedData || (processedData.totalQuestions === 0 && processedData.timeString === "0h 0m")) {
+  if (!processedData || processedData.totalQuestions === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] space-y-6 text-center animate-in fade-in zoom-in duration-500">
         <div className="bg-primary/10 p-8 rounded-full ring-8 ring-primary/5">
@@ -240,21 +232,22 @@ const MyPerformance = () => {
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">Olá, {profile?.first_name}</h1>
               <p className="text-slate-300 max-w-xl text-lg leading-relaxed">
-                Você já resolveu <strong className="text-white">{processedData.totalQuestions} questões</strong> com um aproveitamento global de <strong className="text-emerald-400">{processedData.globalAccuracy}%</strong>.
-                {processedData.globalAccuracy >= 80 ? " Excelente desempenho!" : " Continue praticando para evoluir."}
+                Acompanhe o seu progresso e identifique pontos de melhoria. Seu aproveitamento global atual é de <strong className="text-emerald-400">{processedData.globalAccuracy}%</strong>.
               </p>
             </div>
             
             <div className="flex flex-wrap gap-4 pt-2">
+              {/* Card Questões Resolvidas */}
               <div className="flex items-center gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-3 pr-6 border border-white/10">
-                <div className="p-2 bg-blue-500/20 rounded-lg text-blue-300"><Clock className="w-5 h-5" /></div>
+                <div className="p-2 bg-blue-500/20 rounded-lg text-blue-300"><CheckCircle2 className="w-5 h-5" /></div>
                 <div>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Tempo Total</p>
-                  <p className="text-xl font-bold tabular-nums">{processedData.timeString}</p>
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Questões Resolvidas</p>
+                  <p className="text-xl font-bold tabular-nums">{processedData.totalQuestions}</p>
                 </div>
               </div>
+              {/* Card Simulados */}
               <div className="flex items-center gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-3 pr-6 border border-white/10">
-                <div className="p-2 bg-amber-500/20 rounded-lg text-amber-300"><FileQuestion className="w-5 h-5" /></div>
+                <div className="p-2 bg-amber-500/20 rounded-lg text-amber-300"><ClipboardList className="w-5 h-5" /></div>
                 <div>
                   <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Simulados</p>
                   <p className="text-xl font-bold">{processedData.totalSimulationsCount}</p>
