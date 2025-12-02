@@ -37,58 +37,40 @@
         "goldenTip": "Memorize: Conferência = 4 anos (Diretrizes/Avaliação). Conselho = Permanente (Fiscalização/Execução)."
       },
       {
-        "title": "Resolução CNS 453/2012 (Conselhos)",
-        "summary": "Diretrizes para funcionamento e composição dos Conselhos de Saúde.",
-        "keyPoints": [
-          "<strong>Composição Paritária:</strong> 50% Usuários, 25% Trabalhadores de Saúde, 25% Gestores/Prestadores de Serviço.",
-          "<strong>Natureza:</strong> Órgãos colegiados, deliberativos e permanentes.",
-          "<strong>Presidência:</strong> Eleita entre os membros do conselho (o Gestor/Secretário NÃO é presidente nato).",
-          "<strong>Mandato:</strong> Os conselheiros não são remunerados (atividade de relevância pública)."
-        ],
-        "goldenTip": "O Secretário de Saúde é membro nato do conselho, mas não presidente nato. Ele precisa ser eleito pelos pares para presidir."
-      },
-      {
-        "title": "Política Nacional de Humanização (PNH)",
-        "summary": "HumanizaSUS: Transversalidade e protagonismo dos sujeitos.",
-        "keyPoints": [
-          "<strong>Princípios (Tríade):</strong> 1. Transversalidade (atravessa todas as áreas); 2. Indissociabilidade entre Atenção e Gestão; 3. Protagonismo, corresponsabilidade e autonomia dos sujeitos.",
-          "<strong>Diretrizes (Ferramentas):</strong> Acolhimento (com classificação de risco), Clínica Ampliada, Gestão Participativa/Cogestão, Ambiência, Valorização do Trabalhador.",
-          "<strong>Acolhimento:</strong> É uma postura ética, não um espaço físico. Deve ocorrer em todo lugar e momento."
-        ],
-        "goldenTip": "Cuidado na prova: Equidade é princípio do SUS (8.080). Transversalidade é princípio da PNH."
-      },
-      {
-        "title": "Lei Complementar 141/2012 (Financiamento)",
-        "summary": "Define os valores mínimos a serem aplicados em saúde e o que é considerado despesa com saúde.",
-        "keyPoints": [
-          "<strong>Municípios:</strong> Mínimo de <strong>15%</strong> da arrecadação de impostos.",
-          "<strong>Estados:</strong> Mínimo de <strong>12%</strong> da arrecadação de impostos.",
-          "<strong>União:</strong> Valor empenhado no ano anterior + variação do PIB (regra atualizada pelo novo arcabouço, sujeita a alterações).",
-          "<strong>Não é despesa com saúde:</strong> Aposentadorias, merenda escolar, limpeza urbana, saneamento básico (salvo em domicílios), obras de infraestrutura não ligadas à saúde."
-        ],
-        "goldenTip": "Lembre-se: Estados = 12%, Municípios = 15%. Saneamento e Merenda NÃO contam como gasto mínimo em saúde."
-      },
-      {
-        "title": "Decreto 7.508/11 (Regulamentação)",
-        "summary": "Organiza o SUS em Redes de Atenção à Saúde (RAS) e define a Região de Saúde.",
+        "title": "Decreto 7.508/11 (Organização do SUS)",
+        "summary": "Regulamenta a Lei 8.080, organizando o SUS em Redes e Regiões.",
         "keyPoints": [
           "<strong>Região de Saúde:</strong> Espaço geográfico contínuo para integrar serviços. Requisitos mínimos: Atenção Primária, Urgência, Psicossocial, Especializada e Vigilância.",
           "<strong>Portas de Entrada:</strong> Atenção Primária (Coordenadora), Urgência/Emergência, Atenção Psicossocial e Especiais de Acesso Aberto.",
-          "<strong>COAP:</strong> Contrato Organizativo da Ação Pública (acordo entre entes federativos).",
-          "<strong>Mapa da Saúde:</strong> Descrição geográfica da distribuição de recursos e serviços."
+          "<strong>COAP:</strong> Contrato Organizativo da Ação Pública (acordo de colaboração entre entes federativos).",
+          "<strong>Mapa da Saúde:</strong> Descrição geográfica da distribuição de recursos e serviços.",
+          "<strong>RENAME e RENASES:</strong> Relação Nacional de Medicamentos e Serviços, respectivamente."
         ],
-        "goldenTip": "Os serviços de Alta Complexidade e Hospitalares NÃO são portas de entrada diretas (exceto se referenciados ou urgência)."
+        "goldenTip": "Hospitais (Atenção Terciária) NÃO são portas de entrada, exceto se forem de Urgência/Emergência. O acesso eletivo é referenciado."
+      },
+      {
+        "title": "Determinantes Sociais da Saúde (DSS)",
+        "summary": "Fatores sociais, econômicos, culturais, étnicos/raciais, psicológicos e comportamentais que influenciam a ocorrência de problemas de saúde.",
+        "keyPoints": [
+          "<strong>Modelo de Dahlgren e Whitehead:</strong> O mais usado em provas.",
+          "<strong>Camada 1 (Centro):</strong> Idade, sexo e fatores hereditários (não modificáveis).",
+          "<strong>Camada 2:</strong> Estilo de vida dos indivíduos.",
+          "<strong>Camada 3:</strong> Redes sociais e comunitárias.",
+          "<strong>Camada 4:</strong> Condições de vida e trabalho (acesso a serviços, educação, habitação).",
+          "<strong>Camada 5 (Externa):</strong> Condições socioeconômicas, culturais e ambientais gerais."
+        ],
+        "goldenTip": "A atuação sobre os DSS visa diminuir as iniquidades em saúde."
       },
       {
         "title": "PNAB (Política Nacional de Atenção Básica)",
         "summary": "Portaria 2.436/2017. A base da Estratégia Saúde da Família.",
         "keyPoints": [
           "<strong>Atributos Essenciais:</strong> Acesso (primeiro contato), Longitudinalidade (vínculo), Integralidade e Coordenação do cuidado.",
-          "<strong>Equipe Mínima (eSF):</strong> Médico, Enfermeiro, Técnico/Auxiliar de Enfermagem e ACS. (Dentista é opcional na eSF, mas obrigatório na eSB).",
-          "<strong>Carga Horária:</strong> 40h semanais para todos os membros da equipe mínima.",
-          "<strong>ACS/ACE:</strong> Obrigatório residir na área de atuação desde a data do edital."
+          "<strong>Atributos Derivados:</strong> Orientação Familiar, Orientação Comunitária e Competência Cultural.",
+          "<strong>Equipe eSF (Estratégia Saúde da Família):</strong> Médico, Enfermeiro, Téc. Enfermagem e ACS. 40h semanais. Prioritária.",
+          "<strong>Equipe eAP (Atenção Primária):</strong> Nova modalidade. Carga horária flexível (20h ou 30h)."
         ],
-        "goldenTip": "A PNAB 2017 permite a existência da 'Equipe de Atenção Primária' (eAP) com carga horária flexível (20h ou 30h), diferente da eSF que exige 40h."
+        "goldenTip": "O número de ACS é definido pela base populacional e vulnerabilidade, mas deve cobrir 100% da área cadastrada. Média recomendada: 1 ACS para 750 pessoas."
       }
     ]
   },
@@ -102,46 +84,34 @@
         "summary": "Cálculo de pessoal baseado na complexidade do cuidado (Sistema de Classificação de Fugulin).",
         "keyPoints": [
           "<strong>Horas de Enfermagem por Paciente (24h):</strong>",
-          "• Cuidados Mínimos: 4 horas.",
-          "• Cuidados Intermediários: 6 horas.",
-          "• Alta Dependência: 10 horas.",
-          "• Semi-intensivo: 10 horas.",
-          "• Intensivo: 18 horas.",
-          "<strong>Distribuição Percentual (Enfermeiros):</strong> Mínima (33%), Intermediária (33%), Alta Dep. (36%), Semi (42%), Intensiva (52%)."
+          "• Cuidados Mínimos: 4 horas (33% Enfermeiro).",
+          "• Cuidados Intermediários: 6 horas (33% Enfermeiro).",
+          "• Alta Dependência: 10 horas (36% Enfermeiro).",
+          "• Semi-intensivo: 10 horas (42% Enfermeiro).",
+          "• Intensivo: 18 horas (52% Enfermeiro).",
+          "<strong>IST (Índice de Segurança Técnica):</strong> Mínimo de 15% (para cobrir férias e ausências). Se > 60 anos ou chance de afastamento alta, acrescentar 5% ou 10%."
         ],
-        "goldenTip": "Para Cuidado Intensivo, a equipe deve ser composta majoritariamente por Enfermeiros (52% mín). É a única categoria onde Enfermeiros são a maioria."
+        "goldenTip": "Para Cuidado Intensivo, a equipe deve ser composta majoritariamente por Enfermeiros (52% mín). É a única categoria onde Enfermeiros são a maioria numérica."
       },
       {
-        "title": "Auditoria em Enfermagem",
-        "summary": "Avaliação sistemática da qualidade da assistência e dos custos.",
+        "title": "Educação Permanente vs. Continuada",
+        "summary": "Conceitos fundamentais para gestão de pessoas no SUS.",
         "keyPoints": [
-          "<strong>Tipos:</strong> <em>Prospectiva</em> (antes do cuidado/autorização), <em>Concorrente</em> (durante a internação, à beira-leito) e <em>Retrospectiva</em> (após a alta, análise de prontuário).",
-          "<strong>Finalidade:</strong> Contábil (glosas, custos) e Operacional/Assistencial (qualidade do cuidado).",
-          "<strong>Glossa:</strong> Cancelamento parcial ou total do pagamento por falta de registro ou inconsistência."
+          "<strong>Educação Continuada:</strong> Foco na atualização técnico-científica, cursos, palestras. É pontual, uniprofissional e pedagógica. Visa preencher lacunas de conhecimento.",
+          "<strong>Educação Permanente em Saúde (EPS):</strong> Foco na transformação das práticas através da reflexão sobre o trabalho (aprender fazendo). É multiprofissional, contínua e resolve problemas do cotidiano."
         ],
-        "goldenTip": "A Auditoria Retrospectiva (após a alta) é a mais comum no Brasil, focada na análise de prontuários e contas hospitalares."
+        "goldenTip": "O SUS adota a política de Educação PERMANENTE (PNEPS) como estratégia de gestão."
       },
       {
         "title": "Teorias de Enfermagem",
         "summary": "Fundamentos teóricos que embasam a prática.",
         "keyPoints": [
           "<strong>Florence Nightingale:</strong> Teoria Ambientalista. Foco no ar fresco, luz, calor, higiene e silêncio.",
-          "<strong>Dorothea Orem:</strong> Teoria do Autocuidado (Déficit de autocuidado).",
-          "<strong>Wanda Horta:</strong> Teoria das Necessidades Humanas Básicas (NHB). Baseada em Maslow (Psicobiológicas, Psicossociais, Psicoespirituais). A mais usada no Brasil.",
-          "<strong>Madeleine Leininger:</strong> Teoria Transcultural (Cuidado culturalmente congruente)."
+          "<strong>Dorothea Orem:</strong> Teoria do Autocuidado. Sistemas: Totalmente compensatório, Parcialmente compensatório e Apoio-educação.",
+          "<strong>Wanda Horta:</strong> Teoria das Necessidades Humanas Básicas (NHB). Baseada em Maslow (Psicobiológicas, Psicossociais, Psicoespirituais).",
+          "<strong>Madeleine Leininger:</strong> Teoria da Diversidade e Universalidade do Cuidado Cultural (Transcultural)."
         ],
-        "goldenTip": "Associe sempre: Florence = Ambiente; Orem = Autocuidado; Horta = Necessidades Básicas (Pirâmide de Maslow)."
-      },
-      {
-        "title": "Liderança e Gerenciamento",
-        "summary": "Estilos de liderança e ferramentas de gestão.",
-        "keyPoints": [
-          "<strong>Liderança Autocrática:</strong> Focada na tarefa, centralizadora, decisões unilaterais. Útil em emergências críticas.",
-          "<strong>Liderança Democrática:</strong> Focada nas pessoas e tarefas, participativa, decisão em grupo.",
-          "<strong>Liderança Laissez-faire:</strong> Focada nas pessoas, liberdade total, líder omisso ou apenas consultivo.",
-          "<strong>Liderança Situacional:</strong> O líder adapta o estilo conforme a maturidade da equipe e a situação."
-        ],
-        "goldenTip": "Na administração moderna e nas provas, a Liderança Situacional ou Transformacional são as consideradas ideais."
+        "goldenTip": "Associe sempre: Florence = Ambiente/Higiene; Orem = Autocuidado; Horta = Maslow/Necessidades Básicas."
       }
     ]
   },
@@ -158,18 +128,7 @@
           "<strong>Técnico de Enfermagem:</strong> Nível médio. Assiste ao enfermeiro no planejamento e executa cuidados de maior complexidade sob supervisão.",
           "<strong>Auxiliar de Enfermagem:</strong> Atividades repetitivas, higiene, conforto, alimentação."
         ],
-        "goldenTip": "O Técnico de Enfermagem NÃO pode realizar consulta de enfermagem, nem auditoria, nem assumir chefia de serviço."
-      },
-      {
-        "title": "Sistematização da Assistência (Res. COFEN 358/2009)",
-        "summary": "Obrigatoriedade da SAE e do Processo de Enfermagem.",
-        "keyPoints": [
-          "<strong>SAE vs Processo de Enfermagem:</strong> A SAE organiza o trabalho profissional; o Processo de Enfermagem é o instrumento metodológico.",
-          "<strong>5 Etapas:</strong> 1. Coleta de Dados (Histórico); 2. Diagnóstico; 3. Planejamento; 4. Implementação; 5. Avaliação.",
-          "<strong>Privativo do Enfermeiro:</strong> Diagnóstico de Enfermagem e Prescrição de Enfermagem.",
-          "<strong>Técnicos e Auxiliares:</strong> Participam da execução (implementação) e da coleta de dados (sob supervisão)."
-        ],
-        "goldenTip": "A SAE deve ser implantada em TODA instituição (pública ou privada) onde ocorre o cuidado de enfermagem, não apenas em hospitais."
+        "goldenTip": "O Técnico de Enfermagem NÃO pode realizar consulta de enfermagem, nem auditoria, nem assumir chefia de serviço de enfermagem."
       },
       {
         "title": "Código de Ética (Res. COFEN 564/2017)",
@@ -178,9 +137,20 @@
           "<strong>Infrações Leves:</strong> Ofensa à integridade física/mental/moral sem dano ou com dano leve. Pena: Advertência Verbal.",
           "<strong>Infrações Graves:</strong> Perigo de vida, dano físico/mental/moral grave. Pena: Suspensão do exercício (até 90 dias).",
           "<strong>Infrações Gravíssimas:</strong> Morte, deformidade permanente, aborto, eutanásia. Pena: Cassação (apenas pelo COFEN).",
-          "<strong>Prescrição:</strong> A infração prescreve em 5 anos."
+          "<strong>Atenuantes:</strong> Ter bons antecedentes, confissão espontânea, colaborar com a fiscalização.",
+          "<strong>Agravantes:</strong> Reincidência, causar danos irreparáveis, cometer infração dolosamente."
         ],
         "goldenTip": "A Multa pode ser aplicada em qualquer tipo de infração (Leve, Grave ou Gravíssima), acumulada com outras penalidades."
+      },
+      {
+        "title": "Sondagens (Res. COFEN 619/2019 e 453/2014)",
+        "summary": "Competências legais sobre SVD e SNG/SNE.",
+        "keyPoints": [
+          "<strong>Sondagem Vesical (SVD/Alívio):</strong> Procedimento PRIVATIVO do Enfermeiro. O Técnico pode auxiliar e manipular o sistema após instalado.",
+          "<strong>Sondagem Nasogástrica/Enteral:</strong> Inserção é PRIVATIVA do Enfermeiro. O Técnico pode administrar dietas e realizar cuidados de manutenção.",
+          "<strong>Justificativa:</strong> Alta complexidade técnica e riscos (falso trajeto, broncoaspiração)."
+        ],
+        "goldenTip": "Embora muito comum na prática antiga, a inserção de sonda nasogástrica por técnicos é ILEGAL e infração ética."
       }
     ]
   },
@@ -190,37 +160,37 @@
     "color": "text-orange-600",
     "topics": [
       {
-        "title": "Vigilância em Saúde",
-        "summary": "Os componentes da Vigilância em Saúde no Brasil.",
-        "keyPoints": [
-          "<strong>Vigilância Epidemiológica:</strong> Controle de doenças transmissíveis e não transmissíveis, notificação compulsória, investigação de surtos.",
-          "<strong>Vigilância Sanitária:</strong> Controle de bens (alimentos, remédios), serviços e ambientes. Foco no risco sanitário.",
-          "<strong>Vigilância Ambiental:</strong> Fatores do meio ambiente que interferem na saúde (água, ar, solo, vetores).",
-          "<strong>Saúde do Trabalhador:</strong> Doenças e agravos relacionados ao trabalho (LER/DORT, acidentes)."
-        ],
-        "goldenTip": "A Vigilância Sanitária (ANVISA) tem poder de polícia (fechar estabelecimentos, apreender produtos), diferente da Epidemiológica."
-      },
-      {
-        "title": "História Natural da Doença (Leavell & Clark)",
-        "summary": "Níveis de prevenção em saúde.",
-        "keyPoints": [
-          "<strong>Pré-Patogênese (Primária):</strong> Antes de adoecer. Promoção da saúde (educação) e Proteção específica (vacinas, EPI).",
-          "<strong>Patogênese (Secundária):</strong> Doença já existe, mas fase inicial. Diagnóstico precoce e tratamento imediato (rastreamento/screening).",
-          "<strong>Patogênese (Terciária):</strong> Reabilitação e limitação da incapacidade (fisioterapia, reintegração).",
-          "<strong>Quaternária:</strong> Prevenção de iatrogenias (evitar excesso de exames/tratamentos desnecessários)."
-        ],
-        "goldenTip": "Vacina é SEMPRE Prevenção Primária. Mamografia de rastreio é Prevenção Secundária."
-      },
-      {
         "title": "Indicadores de Saúde",
         "summary": "Cálculos epidemiológicos frequentes.",
         "keyPoints": [
           "<strong>Mortalidade Infantil:</strong> (Óbitos < 1 ano / Nascidos Vivos) x 1.000. Reflete qualidade de vida e assistência.",
-          "<strong>Mortalidade Materna:</strong> (Óbitos por causa materna / Nascidos Vivos) x 100.000.",
-          "<strong>Letalidade:</strong> (Óbitos pela doença / Total de doentes) x 100. Mede a gravidade da doença.",
+          "<strong>Mortalidade Materna:</strong> (Óbitos por causa materna / Nascidos Vivos) x 100.000 (Cuidado com o denominador!).",
+          "<strong>Letalidade:</strong> (Óbitos pela doença / Total de doentes) x 100. Mede a gravidade/virulência da doença.",
           "<strong>Índice de Swaroop-Uemura:</strong> % de óbitos em > 50 anos. Quanto maior, melhor o nível de saúde (ISU > 75% = nível 1)."
         ],
-        "goldenTip": "Cuidado com o denominador! Mortalidade Materna é por 100 MIL. Infantil é por MIL."
+        "goldenTip": "Coeficiente de Mortalidade Geral usa a População Total no denominador. Coeficiente de Mortalidade Infantil usa Nascidos Vivos."
+      },
+      {
+        "title": "Tipos de Estudos Epidemiológicos",
+        "summary": "Diferenciação para provas de sanitarista.",
+        "keyPoints": [
+          "<strong>Ecológico:</strong> Unidade de análise é a população (agregados). Gera hipóteses. Falácia Ecológica (o que vale para o grupo não vale necessariamente para o indivíduo).",
+          "<strong>Transversal (Seccional):</strong> Foto instantânea. Avalia exposição e doença ao mesmo tempo. Mede Prevalência.",
+          "<strong>Caso-Controle:</strong> Parte da Doença (Caso) para o Passado (Exposição). Risco estimado por Odds Ratio (OR). Bom para doenças raras.",
+          "<strong>Coorte:</strong> Parte da Exposição para o Futuro (Doença). O melhor observacional. Mede Incidência e Risco Relativo (RR)."
+        ],
+        "goldenTip": "Coorte é longitudinal e prospectivo (geralmente). Caso-Controle é longitudinal e retrospectivo. Transversal é... transversal!"
+      },
+      {
+        "title": "Sistemas de Informação em Saúde (SIS)",
+        "summary": "As bases de dados do SUS.",
+        "keyPoints": [
+          "<strong>SINAN:</strong> Sistema de Informação de Agravos de Notificação. Alimenta a Vigilância Epidemiológica.",
+          "<strong>SIM:</strong> Sistema de Informações sobre Mortalidade. Fonte: Declaração de Óbito (DO).",
+          "<strong>SINASC:</strong> Sistema de Informações sobre Nascidos Vivos. Fonte: Declaração de Nascido Vivo (DNV).",
+          "<strong>SIH:</strong> Sistema de Informações Hospitalares. Fonte: AIH (Autorização de Internação Hospitalar)."
+        ],
+        "goldenTip": "Para cálculo de Mortalidade Infantil, usamos dados do SIM (numerador) e do SINASC (denominador)."
       },
       {
         "title": "Doenças de Notificação Compulsória",
@@ -230,18 +200,7 @@
           "<strong>Semanais:</strong> Dengue (leve), Tuberculose, Hanseníase, HIV, Esquistossomose, Violência Doméstica (exceto sexual/suicídio).",
           "<strong>BICHOS (Mnemônico Imediatas):</strong> Botulismo, Influenza (novo), Cólera, Hantavirose, Óbito (Dengue), Sarampo."
         ],
-        "goldenTip": "A violência sexual e a tentativa de suicídio são de notificação IMEDIATA (24h). As demais violências são SEMANAIS."
-      },
-      {
-        "title": "Rede de Frio (Imunobiológicos)",
-        "summary": "Armazenamento e conservação de vacinas.",
-        "keyPoints": [
-          "<strong>Temperatura Ideal:</strong> Entre +2°C e +8°C (Sendo +5°C o alvo).",
-          "<strong>Arrumação:</strong> 1ª prateleira (vacinas virais/susceptíveis a calor), 2ª prateleira (bacterianas/susceptíveis a gelo), 3ª prateleira (diluentes/caixas vazias).",
-          "<strong>Base:</strong> Garrafas com água colorida (estabilização térmica).",
-          "<strong>Proibido:</strong> Armazenar na porta, gaveta de legumes ou congelador (exceto VOP e Febre Amarela em instância central)."
-        ],
-        "goldenTip": "Se faltar energia, NÃO abra a geladeira. Monitore a temperatura. Se subir, inicie o plano de contingência (caixas térmicas)."
+        "goldenTip": "A violência sexual e a tentativa de suicídio são de notificação IMEDIATA (24h) para qualquer idade. As demais violências são SEMANAIS."
       }
     ]
   },
@@ -251,41 +210,37 @@
     "color": "text-red-600",
     "topics": [
       {
-        "title": "Classificação de Risco (Protocolo de Manchester)",
-        "summary": "Cores e tempos alvo para atendimento na urgência.",
+        "title": "Sepse (Protocolo de 1 Hora)",
+        "summary": "Identificação e manejo precoce (Surviving Sepsis Campaign).",
         "keyPoints": [
-          "<strong>Vermelho (Emergência):</strong> Atendimento Imediato (0 min). Ex: PCR, Politrauma grave.",
-          "<strong>Laranja (Muito Urgente):</strong> Atendimento em até 10 min. Ex: Dor torácica, Dispneia severa.",
-          "<strong>Amarelo (Urgente):</strong> Atendimento em até 60 min. Ex: Dor abdominal moderada, febre alta.",
-          "<strong>Verde (Pouco Urgente):</strong> Atendimento em até 120 min.",
-          "<strong>Azul (Não Urgente):</strong> Atendimento em até 240 min."
+          "<strong>Definição:</strong> Disfunção orgânica ameaçadora à vida causada por resposta desregulada do hospedeiro à infecção.",
+          "<strong>qSOFA (Triagem beira-leito):</strong> FR ≥ 22, Alteração Mental (Glasgow < 15), PAS ≤ 100. (2 ou mais pontos = risco).",
+          "<strong>Pacote de 1 Hora:</strong> 1. Medir Lactato; 2. Coletar Hemoculturas (antes do ATB); 3. Iniciar Antibiótico amplo espectro; 4. Iniciar 30ml/kg de cristaloide (se hipotensão ou lactato ≥ 4); 5. Vasopressores se hipotensão refratária (PAM < 65)."
         ],
-        "goldenTip": "A dor torácica típica (suspeita de IAM) é classificada como LARANJA (Muito Urgente), a menos que o paciente esteja em PCR (Vermelho)."
+        "goldenTip": "A Noradrenalina é o vasopressor de primeira escolha no choque séptico."
       },
       {
         "title": "Suporte Básico e Avançado (PCR)",
         "summary": "Atualizações da AHA.",
         "keyPoints": [
           "<strong>C-A-B:</strong> Compressões (prioridade), Vias Aéreas, Respiração.",
-          "<strong>Compressões:</strong> 100-120/min, 5-6cm profundidade, retorno total do tórax.",
+          "<strong>Qualidade:</strong> 100-120/min, 5-6cm profundidade, retorno total do tórax, minimizar interrupções.",
           "<strong>Ritmos Chocáveis:</strong> Fibrilação Ventricular (FV) e Taquicardia Ventricular sem Pulso (TVSP). Droga: Adrenalina + Amiodarona.",
           "<strong>Ritmos Não Chocáveis:</strong> Assistolia e AESP. Droga: Apenas Adrenalina (o mais cedo possível).",
-          "<strong>5H e 5T (Causas):</strong> Hipovolemia, Hipóxia, H+ (Acidose), Hipo/Hiper K, Hipotermia; Tensão (Pneumotórax), Tamponamento, Toxinas, Trombose (TEP/IAM)."
+          "<strong>5H e 5T:</strong> Hipovolemia, Hipóxia, H+ (Acidose), Hipo/Hiper K, Hipotermia; Tensão (Pneumotórax), Tamponamento, Toxinas, Trombose (TEP/IAM)."
         ],
-        "goldenTip": "Na Assistolia/AESP (não chocável), NÃO se faz antiarrítmico (Amiodarona/Lidocaína). A prioridade é RCP de alta qualidade e Adrenalina."
+        "goldenTip": "Na Assistolia/AESP, NÃO se faz choque e NÃO se faz antiarrítmico (Amiodarona). A prioridade é RCP de alta qualidade e Adrenalina."
       },
       {
-        "title": "Trauma (XABCDE)",
-        "summary": "Abordagem primária ao politraumatizado (PHTLS).",
+        "title": "Queimaduras (Regra dos 9 e Parkland)",
+        "summary": "Avaliação de SCQ e reposição volêmica.",
         "keyPoints": [
-          "<strong>X:</strong> Hemorragia Exsanguinante (Controle de sangramento externo massivo - Torniquete).",
-          "<strong>A:</strong> Vias Aéreas + Proteção da Coluna Cervical.",
-          "<strong>B:</strong> Boa Ventilação (Respiração) + O2.",
-          "<strong>C:</strong> Circulação (Hemorragias internas, pulso, pele, choque) + Reposição Volêmica.",
-          "<strong>D:</strong> Disfunção Neurológica (Glasgow, Pupilas).",
-          "<strong>E:</strong> Exposição + Controle da Hipotermia."
+          "<strong>Regra dos 9 (Adulto):</strong> Cabeça 9%, Tronco Frente 18%, Tronco Costas 18%, Braços 9% cada, Pernas 18% cada, Genital 1%.",
+          "<strong>Fórmula de Parkland:</strong> 4ml x Peso x %SCQ. (Ringer Lactato).",
+          "<strong>Distribuição:</strong> 50% nas primeiras 8 horas, 50% nas próximas 16 horas.",
+          "<strong>Diurese Alvo:</strong> 0,5 a 1,0 ml/kg/h."
         ],
-        "goldenTip": "O 'X' vem antes do 'A' apenas se houver hemorragia externa massiva visível. Caso contrário, segue o ABCDE."
+        "goldenTip": "O tempo para infusão conta a partir da HORA DA QUEIMADURA, não da hora da chegada ao hospital. Se chegou 2h depois, o volume das 8h deve correr em 6h."
       }
     ]
   },
@@ -295,70 +250,50 @@
     "color": "text-emerald-600",
     "topics": [
       {
-        "title": "Nutrição Enteral e Parenteral",
-        "summary": "Vias de administração de dieta e cuidados específicos.",
+        "title": "Gasometria Arterial",
+        "summary": "Interpretação básica de distúrbios ácido-básicos.",
         "keyPoints": [
-          "<strong>Nutrição Enteral (SNE/GTT):</strong> Via fisiológica (TGI funcionante). Risco principal: Broncoaspiração. Cuidados: Cabeceira > 30º, checar resíduo gástrico, lavar sonda com água.",
-          "<strong>Nutrição Parenteral (NPT):</strong> Via endovenosa (TGI não funcionante). Risco principal: Infecção de corrente sanguínea e hiperglicemia. Cuidados: Via exclusiva em cateter central (CVC), bomba de infusão obrigatória, troca do equipo a cada 24h."
+          "<strong>Valores Normais:</strong> pH (7.35-7.45), pCO2 (35-45 mmHg), HCO3 (22-26 mEq/L).",
+          "<strong>Acidose:</strong> pH < 7.35. <strong>Alcalose:</strong> pH > 7.45.",
+          "<strong>Respiratório (pCO2):</strong> Inverso ao pH. (pH baixo + CO2 alto = Acidose Respiratória).",
+          "<strong>Metabólico (HCO3):</strong> Igual ao pH. (pH baixo + HCO3 baixo = Acidose Metabólica).",
+          "<strong>Compensação:</strong> O sistema oposto tenta corrigir. Ex: Acidose metabólica gera hiperventilação (para baixar CO2)."
         ],
-        "goldenTip": "A NPT requer acesso venoso CENTRAL devido à alta osmolaridade. NPT periférica é rara e apenas para curto prazo/baixa osmolaridade."
+        "goldenTip": "Lembre do ROME: Respiratory Opposite (pH e CO2 direções opostas), Metabolic Equal (pH e HCO3 mesma direção)."
       },
       {
         "title": "Cálculo de Medicação",
         "summary": "Fórmulas essenciais que caem em toda prova.",
         "keyPoints": [
-          "<strong>Gotas/min (h):</strong> Volume / (Tempo x 3).",
-          "<strong>Microgotas/min (h):</strong> Volume / Tempo.",
+          "<strong>Gotas/min:</strong> Volume / (Tempo em horas x 3).",
+          "<strong>Microgotas/min:</strong> Volume / Tempo em horas.",
           "<strong>Permanganato (KMnO4):</strong> 1:40.000 significa 1g em 40.000ml. Usar regra de três.",
           "<strong>Insulina:</strong> Frasco 100UI/ml. Se usar seringa de 3ml, regra de três simples."
         ],
-        "goldenTip": "1 ml = 20 gotas = 60 microgotas. Se a questão pedir tempo em MINUTOS: Gotas = (Vol x 20) / Min."
+        "goldenTip": "1 ml = 20 gotas = 60 microgotas. Se o tempo for dado em MINUTOS: Gotas = (Vol x 20) / Minutos."
       },
       {
         "title": "Sinais Vitais e Semiotécnica",
-        "summary": "Parâmetros e técnicas.",
+        "summary": "Parâmetros e técnicas de avaliação.",
         "keyPoints": [
-          "<strong>Pulso:</strong> Filiforme (fraco/fino = choque), Martelo d'água (forte/cheio = I.Aórtica).",
-          "<strong>Respiração:</strong> Cheyne-Stokes (períodos de apneia e hiperpneia - ICC/SNC), Kussmaul (rápida e profunda - Cetoacidose), Biot (caótica - HIC).",
-          "<strong>Pressão Arterial:</strong> Manguito adequado (bolsa deve cobrir 80% da circunferência). Manguito pequeno = PA falsamente alta.",
-          "<strong>Sondagem Vesical:</strong> A fixação no homem é no abdome inferior (prevenir fístula) e na mulher na face interna da coxa."
+          "<strong>Pulso:</strong> Filiforme (fraco/fino = choque), Martelo d'água (forte/cheio = I.Aórtica), Paradoxal (cai na inspiração = Tamponamento).",
+          "<strong>Respiração:</strong> Cheyne-Stokes (ciclos de apneia/hiperpneia - ICC/SNC), Kussmaul (profunda e rápida - Acidose), Biot (atática/caótica - HIC).",
+          "<strong>Pressão Arterial:</strong> Manguito pequeno = PA falsamente alta. Manguito grande = PA falsamente baixa."
         ],
-        "goldenTip": "A respiração de Kussmaul (acidose) é profunda e rápida ('fome de ar'). Cheyne-Stokes tem ciclos crescentes/decrescentes com apneia."
+        "goldenTip": "A respiração de Kussmaul é a 'fome de ar' típica da Cetoacidose Diabética."
       },
       {
-        "title": "Lesão por Pressão (LPP) - NPUAP",
-        "summary": "Classificação e prevenção de danos à pele.",
+        "title": "Lesão por Pressão (LPP)",
+        "summary": "Classificação NPUAP e prevenção.",
         "keyPoints": [
           "<strong>Estágio 1:</strong> Eritema não branqueável em pele íntegra.",
-          "<strong>Estágio 2:</strong> Perda parcial da espessura (derme exposta), leito rosa/vermelho.",
-          "<strong>Estágio 3:</strong> Perda total da espessura da pele (gordura visível).",
-          "<strong>Estágio 4:</strong> Perda total com exposição de osso/tendão/músculo.",
-          "<strong>Não Estadiável:</strong> Coberta por necrose ou esfacelo.",
-          "<strong>Tissular Profunda:</strong> Área vermelha escura/púrpura ou flictena de sangue em pele íntegra."
+          "<strong>Estágio 2:</strong> Perda parcial (derme exposta), bolha.",
+          "<strong>Estágio 3:</strong> Perda total da pele, gordura visível.",
+          "<strong>Estágio 4:</strong> Exposição de osso/tendão/músculo.",
+          "<strong>Não Estadiável:</strong> Coberta por necrose/esfacelo.",
+          "<strong>Tissular Profunda:</strong> Área vermelha escura/púrpura ou bolha de sangue em pele íntegra."
         ],
-        "goldenTip": "Prevenção é prioridade: mudança de decúbito a cada 2h e hidratação da pele (exceto em proeminências ósseas já hiperemiadas)."
-      },
-      {
-        "title": "Biossegurança e Precauções (NR-32 / RDC 222)",
-        "summary": "Gerenciamento de Resíduos e Tipos de Isolamento.",
-        "keyPoints": [
-          "<strong>Padrão:</strong> Higiene das mãos, luvas (se risco de fluidos). Para TODOS os pacientes.",
-          "<strong>Contato (Avental + Luvas):</strong> Bactérias multirresistentes (KPC, MRSA), Escabiose, Clostridium. Quarto privativo ou coorte.",
-          "<strong>Gotículas (Máscara Cirúrgica):</strong> Meningite bacteriana, Influenza, Rubéola, Caxumba. (Raio de 1m).",
-          "<strong>Aerossóis (Máscara N95/PFF2):</strong> Tuberculose, Sarampo, Varicela, Herpes Zoster disseminado. Pressão negativa.",
-          "<strong>Resíduos:</strong> Grupo A (Infectante/Branco), B (Químico/Laranja), E (Perfuro/Amarelo)."
-        ],
-        "goldenTip": "Varicela e Sarampo exigem precaução para AEROSSÓIS (N95) + Contato. Meningite é GOTÍCULAS (Cirúrgica)."
-      },
-      {
-        "title": "Administração de Medicamentos",
-        "summary": "Vias e técnicas de aplicação.",
-        "keyPoints": [
-          "<strong>Intramuscular (IM):</strong> Região Ventroglútea (Hochstetter) é a mais segura (até 4-5ml, livre de nervos). Deltóide (máx 2ml, risco nervo radial). Dorsoglúteo (risco nervo ciático, não recomendado).",
-          "<strong>Subcutânea (SC):</strong> Insulina/Heparina. Rodízio de locais (abdome, braço, coxa).",
-          "<strong>Intradérmica (ID):</strong> BCG e PPD. Ângulo 10-15º. Não massagear."
-        ],
-        "goldenTip": "A região Ventroglútea é a preferencial para IM em todas as idades (exceto < 7 meses/não andantes que usam Vasto Lateral)."
+        "goldenTip": "Prevenção: Mudança de decúbito a cada 2h e hidratação. NÃO massagear áreas hiperemiadas."
       }
     ]
   },
@@ -376,49 +311,17 @@
           "<strong>Exames Básicos:</strong> Tipagem, Coombs (Rh-), VDRL, HIV, Toxo, HBsAg, Glicemia, Urina, Urocultura.",
           "<strong>Vacinas:</strong> dTpa (a partir de 20s), dT, Hepatite B, Influenza."
         ],
-        "goldenTip": "A suplementação de Sulfato Ferroso (profilática) é 40mg ferro elementar. Ácido Fólico (prevenção defeito tubo neural) idealmente 3 meses antes."
-      },
-      {
-        "title": "Climatério e Menopausa",
-        "summary": "Fisiologia e manejo da transição menopausa.",
-        "keyPoints": [
-          "<strong>Definição:</strong> Menopausa é a data da última menstruação (diagnóstico retrospectivo após 12 meses de amenorreia). Climatério é o período de transição.",
-          "<strong>Sintomas:</strong> Fogachos (ondas de calor), atrofia vaginal, alterações de humor, risco aumentado de osteoporose e doenças cardiovasculares.",
-          "<strong>Terapia Hormonal (TRH):</strong> Indicada para alívio dos sintomas vasomotores (fogachos). Contraindicada em câncer de mama/endométrio, TEP/TVP prévio, doença hepática grave."
-        ],
-        "goldenTip": "Mulheres com útero devem usar Estrogênio + Progesterona (para proteger o endométrio). Mulheres histerectomizadas usam apenas Estrogênio."
-      },
-      {
-        "title": "Síndromes Hipertensivas (SHEG)",
-        "summary": "Principal causa de morte materna no Brasil.",
-        "keyPoints": [
-          "<strong>Pré-eclâmpsia:</strong> Hipertensão (>140/90) após 20 semanas + Proteinúria ou sinais de gravidade.",
-          "<strong>Sinais de Iminência de Eclâmpsia:</strong> Cefaleia intensa, escotomas (visão), epigastralgia (dor no estômago) e hiperreflexia.",
-          "<strong>Eclâmpsia:</strong> Pré-eclâmpsia + Convulsões.",
-          "<strong>Tratamento:</strong> Sulfato de Magnésio (prevenir/tratar convulsão). Antídoto: Gluconato de Cálcio."
-        ],
-        "goldenTip": "Na intoxicação por Magnésio: 1º some o reflexo patelar, 2º depressão respiratória, 3º parada cardíaca. Monitore reflexos e FR!"
+        "goldenTip": "A suplementação de Sulfato Ferroso é 40mg ferro elementar (profilática). Ácido Fólico (prevenção defeito tubo neural) idealmente 3 meses antes."
       },
       {
         "title": "Hemorragias da Gestação",
-        "summary": "Diferenciação das principais causas de sangramento.",
+        "summary": "Diferenciação das principais causas.",
         "keyPoints": [
-          "<strong>1ª Metade (<20s):</strong> Abortamento, Gravidez Ectópica (dor em baixo ventre + choque), Mola Hidatiforme (útero maior que o esperado, 'tempestade de neve' no USG).",
-          "<strong>2ª Metade (>20s):</strong> Placenta Prévia (sangramento vermelho vivo, INDOLOR, sem esforço), Descolamento Prematuro de Placenta - DPP (sangue escuro, DOR intensa, útero lenhoso, hipertonia).",
-          "<strong>Pós-Parto:</strong> Atonia Uterina (principal causa). Cd: Massagem uterina + Ocitocina."
+          "<strong>1ª Metade (<20s):</strong> Abortamento, Gravidez Ectópica (dor + choque + atraso), Mola Hidatiforme (útero aumentado, 'flocos de neve' no USG).",
+          "<strong>2ª Metade (>20s):</strong> Placenta Prévia (sangramento vivo, INDOLOR, sem esforço), DPP (sangue escuro, DOR intensa, útero lenhoso).",
+          "<strong>Pós-Parto:</strong> Atonia Uterina (4Ts: Tônus, Trauma, Tecido, Trombina). Cd: Massagem + Ocitocina."
         ],
-        "goldenTip": "Placenta Prévia = Sangra muito e NÃO dói. DPP = Sangra (as vezes oculto) e DÓI muito. No DPP, o feto entra em sofrimento rápido."
-      },
-      {
-        "title": "Planejamento Reprodutivo",
-        "summary": "Métodos contraceptivos e Lei 9.263/96.",
-        "keyPoints": [
-          "<strong>Índice de Pearl:</strong> Mede a eficácia do método (nº falhas por 100 mulheres/ano). Quanto menor, mais eficaz.",
-          "<strong>Laqueadura/Vasectomia (Lei 14.443/22 - Nova):</strong> Idade mínima 21 anos OU pelo menos 2 filhos vivos. Não exige mais consentimento do cônjuge. Pode fazer no parto.",
-          "<strong>DIU T de Cobre:</strong> Duração 10 anos. Pode em nulíparas. Efeito inflamatório local/espermicida.",
-          "<strong>Pílula Combinada:</strong> Inibe a ovulação."
-        ],
-        "goldenTip": "A Lei 14.443/2022 mudou a idade da esterilização de 25 para 21 anos e permitiu a realização durante o parto (o que antes era proibido, salvo exceções)."
+        "goldenTip": "Placenta Prévia = Sangra e NÃO dói. DPP = Sangra (as vezes oculto) e DÓI muito. DPP causa sofrimento fetal agudo."
       },
       {
         "title": "Câncer de Colo e Mama",
@@ -427,7 +330,7 @@
           "<strong>Colo (Papanicolau):</strong> 25 a 64 anos. Anual. Após 2 negativos consecutivos, a cada 3 anos.",
           "<strong>Mama (Mamografia):</strong> 50 a 69 anos. A cada 2 anos (Bienal).",
           "<strong>Exame Clínico das Mamas:</strong> Anual a partir dos 40 anos (MS).",
-          "<strong>Autoexame:</strong> Estimulado para autoconhecimento, mas não é método isolado de rastreio."
+          "<strong>Autoexame:</strong> Estimulado para autoconhecimento, mas não substitui exame clínico."
         ],
         "goldenTip": "Se a mulher tem 20 anos e vida sexual ativa, pelo Ministério da Saúde, NÃO entra no rastreamento populacional (inicia aos 25)."
       }
@@ -438,18 +341,6 @@
     "icon": "Baby",
     "color": "text-cyan-600",
     "topics": [
-      {
-        "title": "AIDPI - Sinais Gerais de Perigo",
-        "summary": "Estratégia da OMS para reduzir a mortalidade infantil. Identificação rápida de casos graves.",
-        "keyPoints": [
-          "<strong>1. Não consegue beber ou mamar.</strong>",
-          "<strong>2. Vomita tudo o que ingere.</strong>",
-          "<strong>3. Apresentou convulsões (agora ou histórico recente).</strong>",
-          "<strong>4. Letárgica ou inconsciente.</strong>",
-          "<strong>Conduta:</strong> Se apresentar QUALQUER um desses sinais, a criança tem doença muito grave. Requer referência urgente ao hospital."
-        ],
-        "goldenTip": "O estridor em repouso e a desnutrição grave também são sinais de classificação vermelha (referência urgente) no AIDPI."
-      },
       {
         "title": "Imunização Infantil (PNI)",
         "summary": "O tópico mais cobrado em pediatria.",
@@ -462,30 +353,28 @@
           "<strong>12 meses:</strong> Tríplice Viral, Pneumo 10 (Ref), Meningo C (Ref).",
           "<strong>15 meses:</strong> Tetra Viral (ou Tríplice + Varicela), Hep A, DTP (Ref), VOP (Ref)."
         ],
-        "goldenTip": "A vacina VIP (inativada/injetável) é aos 2, 4 e 6 meses. A VOP (gotinha/atenuada) é apenas nos reforços (15m e 4a). 'Zé Gotinha só no reforço'."
+        "goldenTip": "A vacina VIP (inativada) é aos 2, 4 e 6 meses. A VOP (gotinha/atenuada) é apenas nos reforços (15m e 4a)."
       },
       {
-        "title": "Crescimento e Desenvolvimento (CD)",
-        "summary": "Acompanhamento do desenvolvimento neuropsicomotor.",
+        "title": "Desidratação e TRO",
+        "summary": "Manejo da diarreia aguda (Planos A, B e C).",
         "keyPoints": [
-          "<strong>Marcos Motores:</strong> Sustenta a cabeça (2-3m), Rola (4-5m), Senta sem apoio (6-7m), Engatinha (9m), Anda (12-15m).",
-          "<strong>Reflexos Primitivos:</strong> Moro (abraço), Preensão Palmar/Plantar, Sucção, Marcha Reflexa. Devem desaparecer nos primeiros meses.",
-          "<strong>Crescimento:</strong> Perda de 10% do peso ao nascer (recupera em 10 dias). Dobra o peso aos 5 meses, triplica aos 12 meses.",
-          "<strong>Perímetro Cefálico:</strong> Cresce mais rápido no 1º trimestre (2cm/mês)."
+          "<strong>Plano A (Domiciliar):</strong> Sem desidratação. Aumentar líquidos (soro caseiro após cada evacuação), manter dieta, zinco 10-14 dias.",
+          "<strong>Plano B (UBS):</strong> Desidratação leve/moderada (olhos fundos, sinal da prega desaparece lento, irritada). TRO na unidade (50-100ml/kg em 4h).",
+          "<strong>Plano C (Hospital):</strong> Desidratação grave (letargia, pulso fraco, sinal da prega > 2s). Hidratação Venosa (Fase rápida: 100ml/kg - Soro Fisiológico/Ringer)."
         ],
-        "goldenTip": "Sinais de Alerta no CD: Ausência de sorriso social aos 3 meses, não sentar aos 9 meses, não andar aos 18 meses."
+        "goldenTip": "No Plano B, a gastrólise (SNG) é opção se houver vômitos persistentes. O Zinco reduz a duração e gravidade da diarreia."
       },
       {
         "title": "Aleitamento Materno",
-        "summary": "Definições OMS.",
+        "summary": "Definições e Contraindicações.",
         "keyPoints": [
           "<strong>Exclusivo (até 6m):</strong> Apenas leite humano. Sem água/chás.",
-          "<strong>Predominante:</strong> Leite + Água/Chás (Não recomendado antes de 6m).",
-          "<strong>Complementado:</strong> Leite + Comida (sólidos/semissólidos).",
-          "<strong>Misto:</strong> Leite materno + Outro leite.",
-          "<strong>Contraindicações Absolutas:</strong> HIV materno, HTLV 1 e 2, Galactosemia no bebê."
+          "<strong>Predominante:</strong> Leite + Água/Chás.",
+          "<strong>Complementado:</strong> Leite + Comida.",
+          "<strong>Contraindicações Absolutas:</strong> HIV materno, HTLV 1 e 2, Galactosemia no bebê, Uso de drogas ilícitas, Quimioterapia."
         ],
-        "goldenTip": "Hepatite B e Tuberculose materna NÃO contraindicam a amamentação (com cuidados específicos, ex: vacina/imunoglobulina para o bebê na HepB)."
+        "goldenTip": "Hepatite B e Tuberculose materna NÃO contraindicam a amamentação (com os devidos cuidados, ex: máscara na TB bacilífera)."
       }
     ]
   },
@@ -495,91 +384,36 @@
     "color": "text-red-500",
     "topics": [
       {
-        "title": "Leptospirose",
-        "summary": "Doença febril aguda transmitida pela urina de roedores. Comum em enchentes.",
-        "keyPoints": [
-          "<strong>Fase Precoce:</strong> Febre alta, cefaleia, mialgia intensa (principalmente nas panturrilhas).",
-          "<strong>Fase Tardia (Síndrome de Weil):</strong> Tríade: Icterícia (rubínica/alaranjada) + Insuficiência Renal Aguda + Hemorragia.",
-          "<strong>Tratamento:</strong> Antibióticos (Doxiciclina/Amoxicilina na fase leve; Penicilina/Ceftriaxona na grave) e suporte (diálise)."
-        ],
-        "goldenTip": "A mialgia das panturrilhas e a icterícia rubínica (olhos vermelhos/laranjas) são sinais clássicos de prova."
-      },
-      {
         "title": "Tuberculose (TB)",
-        "summary": "Bacilo de Koch. Transmissão por aerossóis.",
+        "summary": "Diagnóstico e Tratamento.",
         "keyPoints": [
           "<strong>Sintomático Respiratório:</strong> Tosse ≥ 3 semanas.",
-          "<strong>Tratamento:</strong> 2 meses RIPE (Rifampicina, Isoniazida, Pirazinamida, Etambutol) + 4 meses RI.",
-          "<strong>Precaução:</strong> Aerossóis (Máscara N95 para profissional, Cirúrgica para paciente no transporte)."
+          "<strong>Diagnóstico:</strong> Baciloscopia (BAAR), Teste Rápido Molecular (TRM-TB - Padrão Ouro), Cultura.",
+          "<strong>Tratamento (Esquema Básico):</strong> 2 meses RIPE (Rifampicina, Isoniazida, Pirazinamida, Etambutol) + 4 meses RI.",
+          "<strong>Precaução:</strong> Aerossóis (Máscara N95 para profissional, Cirúrgica para paciente)."
         ],
-        "goldenTip": "A Rifampicina colore fluidos corporais (urina, suor) de laranja/vermelho. O Etambutol pode causar neurite óptica (visão)."
-      },
-      {
-        "title": "Hanseníase",
-        "summary": "Bacilo de Hansen. Doença infectocontagiosa crônica que atinge pele e nervos.",
-        "keyPoints": [
-          "<strong>Transmissão:</strong> Vias aéreas superiores (contato prolongado e íntimo).",
-          "<strong>Paucibacilar (PB):</strong> Até 5 lesões de pele. Baciloscopia negativa. Tratamento: 6 doses supervisionadas (6 meses).",
-          "<strong>Multibacilar (MB):</strong> Mais de 5 lesões. Baciloscopia positiva. Tratamento: 12 doses supervisionadas (12 meses).",
-          "<strong>Sinais:</strong> Manchas com alteração de sensibilidade (térmica, dolorosa e tátil), espessamento neural."
-        ],
-        "goldenTip": "A sensibilidade térmica é a primeira a ser perdida, seguida pela dolorosa e por último a tátil."
-      },
-      {
-        "title": "Sífilis (Lues)",
-        "summary": "IST causada pelo Treponema pallidum.",
-        "keyPoints": [
-          "<strong>Primária:</strong> Cancro duro (úlcera indolor, fundo limpo, bordas duras).",
-          "<strong>Secundária:</strong> Roséolas, lesões palmoplantares, placas mucosas.",
-          "<strong>Terciária:</strong> Gomas, lesões neurológicas e cardiovasculares.",
-          "<strong>Tratamento:</strong> Penicilina Benzatina (Benzetacil). 2,4 mi UI (1 dose na Primária/Secundária; 3 doses na Terciária/Latente Tardia).",
-          "<strong>Diagnóstico:</strong> Teste rápido/VDRL (Não treponêmico - Rastreio) + FTA-Abs (Treponêmico - Confirmatório)."
-        ],
-        "goldenTip": "VDRL cai (negativa) com a cura e serve para monitoramento. FTA-Abs permanece positivo a vida toda (cicatriz sorológica)."
-      },
-      {
-        "title": "Meningites",
-        "summary": "Inflamação das meninges. Pode ser viral, bacteriana ou fúngica.",
-        "keyPoints": [
-          "<strong>Sinais Clássicos:</strong> Rigidez de nuca, febre alta, cefaleia, vômitos em jato.",
-          "<strong>Sinal de Kerning:</strong> Dor ao estender a perna com a coxa flexionada.",
-          "<strong>Sinal de Brudzinski:</strong> Flexão involuntária das pernas ao fletir o pescoço.",
-          "<strong>Isolamento:</strong> Meningocócica e Haemophilus exigem isolamento de GOTÍCULAS (máscara cirúrgica) por 24h de antibiótico."
-        ],
-        "goldenTip": "Meningite viral geralmente tem bom prognóstico. Bacteriana (meningococo) pode causar meningococcemia (manchas/petéquias na pele) e evoluir para óbito rápido."
-      },
-      {
-        "title": "HIV / AIDS",
-        "summary": "Vírus da Imunodeficiência Humana.",
-        "keyPoints": [
-          "<strong>Transmissão:</strong> Sexual, Sanguínea, Vertical (Mãe-Filho).",
-          "<strong>CD4 e Carga Viral:</strong> CD4 baixo (<200) define AIDS e risco de infecções oportunistas. Meta: Carga Viral Indetectável = Intransmissível.",
-          "<strong>PEP (Pós-Exposição):</strong> Iniciar até 72h (ideal 2h). Duração 28 dias.",
-          "<strong>PrEP (Pré-Exposição):</strong> Uso diário para populações de risco.",
-          "<strong>Gestante:</strong> AZT venoso no parto + Inibição da lactação."
-        ],
-        "goldenTip": "A amamentação é CONTRAINDICADA no Brasil para mães HIV+, independente da carga viral."
-      },
-      {
-        "title": "Hepatites Virais",
-        "summary": "Inflamação do fígado (A, B, C, D, E).",
-        "keyPoints": [
-          "<strong>Hepatite A:</strong> Fecal-oral. Aguda. Vacina no PNI. Saneamento previne.",
-          "<strong>Hepatite B:</strong> Sexual, sangue, vertical. DNA vírus. Cronifica. Vacina disponível (3 doses).",
-          "<strong>Hepatite C:</strong> Sangue (principal), sexual (raro). Cronifica em 80%. Tem cura com antivirais, mas NÃO tem vacina.",
-          "<strong>Marcadores Hep B:</strong> HBsAg (Vírus presente), Anti-HBs (Imunidade/Cura ou Vacina), Anti-HBc (Contato prévio)."
-        ],
-        "goldenTip": "Anti-HBs positivo isolado = Imunidade por VACINA. Anti-HBs + Anti-HBc positivos = Imunidade por DOENÇA curada."
+        "goldenTip": "A Rifampicina colore fluidos (urina/suor) de laranja. O Etambutol pode causar neurite óptica. Pirazinamida aumenta ácido úrico."
       },
       {
         "title": "Dengue, Zika e Chikungunya",
-        "summary": "Arboviroses transmitidas pelo Aedes aegypti.",
+        "summary": "Diagnóstico diferencial e manejo.",
         "keyPoints": [
-          "<strong>Dengue:</strong> Febre alta súbita, dor retro-orbital, mialgia intensa. Risco de choque (hemoconcentração/plaquetopenia). Prova do Laço.",
-          "<strong>Chikungunya:</strong> Febre alta e artralgia (dor articular) intensa e debilitante (pode cronificar).",
-          "<strong>Zika:</strong> Febre baixa, exantema pruriginoso, conjuntivite. Risco de microcefalia e Guillain-Barré."
+          "<strong>Dengue:</strong> Febre alta súbita, dor retro-orbital, mialgia intensa. Risco de choque (hemoconcentração). Prova do Laço.",
+          "<strong>Chikungunya:</strong> Febre alta e artralgia (dor articular) intensa e debilitante (fase crônica).",
+          "<strong>Zika:</strong> Febre baixa/ausente, exantema pruriginoso, conjuntivite. Risco de microcefalia."
         ],
-        "goldenTip": "Hidratação na Dengue: Grupo B (sinais de alarme) e C (choque) requerem hidratação venosa imediata. Grupo A (sem alarme) é oral."
+        "goldenTip": "Hidratação na Dengue Grupo B (sinais de alarme: dor abdominal, vômitos, sangramento mucosa) é imediata, venosa se necessário."
+      },
+      {
+        "title": "Sífilis (Lues)",
+        "summary": "Estágios e Tratamento.",
+        "keyPoints": [
+          "<strong>Primária:</strong> Cancro duro (úlcera indolor).",
+          "<strong>Secundária:</strong> Roséolas, lesões palmoplantares.",
+          "<strong>Terciária:</strong> Gomas, neurosífilis, cardiovascular.",
+          "<strong>Tratamento:</strong> Penicilina Benzatina (Benzetacil). Primária/Secundária: 2,4 mi UI dose única. Terciária/Latente Tardia: 2,4 mi UI semanal por 3 semanas (7,2 mi total)."
+        ],
+        "goldenTip": "A reação de Jarisch-Herxheimer (febre, calafrios após penicilina) não é alergia, é resposta à morte das bactérias."
       }
     ]
   },
@@ -589,52 +423,26 @@
     "color": "text-teal-500",
     "topics": [
       {
-        "title": "Prevenção do Suicídio",
-        "summary": "Identificação e manejo do comportamento suicida.",
-        "keyPoints": [
-          "<strong>Classificação de Risco:</strong> <em>Baixo:</em> Pensamento sem plano. <em>Médio:</em> Pensamento, plano, mas sem ação imediata. <em>Alto:</em> Plano definido, meios acessíveis, tentativa recente (< 48h).",
-          "<strong>Fatores de Risco:</strong> Tentativa prévia (maior preditor), transtornos mentais, isolamento social, doenças crônicas, acesso a meios letais.",
-          "<strong>Manejo:</strong> Escuta ativa sem julgamento. Não deixar o paciente sozinho (risco alto). Encaminhamento para psiquiatria/CAPS."
-        ],
-        "goldenTip": "Perguntar sobre suicídio NÃO induz o ato. Pelo contrário, oferece uma oportunidade de alívio e busca de ajuda."
-      },
-      {
         "title": "Reforma Psiquiátrica (Lei 10.216/2001)",
-        "summary": "Reorientação do modelo assistencial em saúde mental.",
+        "summary": "Marco legal da saúde mental no Brasil.",
         "keyPoints": [
-          "<strong>Desinstitucionalização:</strong> Substituição do manicômio por serviços abertos (CAPS).",
-          "<strong>Internação Voluntária:</strong> Com consentimento do paciente.",
-          "<strong>Internação Involuntária:</strong> Sem consentimento, a pedido de terceiro/médico. Comunicar MP em 72h.",
+          "<strong>Objetivo:</strong> Desinstitucionalização. Substituir manicômio por rede comunitária (CAPS, Residências).",
+          "<strong>Internação Voluntária:</strong> Com consentimento.",
+          "<strong>Internação Involuntária:</strong> Sem consentimento, a pedido de terceiro. Comunicar MP em 72h.",
           "<strong>Internação Compulsória:</strong> Determinada pela Justiça."
         ],
-        "goldenTip": "O CAPS (Centro de Atenção Psicossocial) é o ordenador da rede e a porta de entrada preferencial, não o hospital psiquiátrico."
-      }
-    ]
-  },
-  {
-    "category": "Saúde do Adulto (Crônicas)",
-    "icon": "Activity",
-    "color": "text-orange-500",
-    "topics": [
-      {
-        "title": "Doença Renal Crônica (DRC)",
-        "summary": "Perda progressiva e irreversível da função renal.",
-        "keyPoints": [
-          "<strong>Estadiamento (TFG):</strong> Estágio 1 (>90), 2 (60-89), 3a (45-59), 3b (30-44), 4 (15-29), 5 (<15 - Falência Renal).",
-          "<strong>Tratamento Conservador:</strong> Controle da PA (IECA/BRA), Glicemia, Dieta hipoproteica, tratamento da anemia (Eritropoietina) e distúrbios minerais.",
-          "<strong>TRS (Terapia Renal Substitutiva):</strong> Hemodiálise ou Diálise Peritoneal. Indicada no Estágio 5."
-        ],
-        "goldenTip": "A principal causa de DRC no Brasil é a Hipertensão Arterial, seguida pelo Diabetes Mellitus."
+        "goldenTip": "O CAPS é o ordenador da rede e porta de entrada, funcionando como substitutivo ao hospital psiquiátrico."
       },
       {
-        "title": "Hipertensão (HAS) e Diabetes (DM)",
-        "summary": "Protocolos do Caderno de Atenção Básica.",
+        "title": "Psicofarmacologia Básica",
+        "summary": "Classes de medicamentos mais comuns.",
         "keyPoints": [
-          "<strong>HAS:</strong> Diagnóstico com PA ≥ 140/90 mmHg em duas medidas distintas. Meta geral: < 140/90 (ou < 130/80 em alto risco).",
-          "<strong>DM Diagnóstico:</strong> Glicemia jejum ≥ 126; HbA1c ≥ 6,5%; TOTG ≥ 200; ou Glicemia casual ≥ 200 + Sintomas.",
-          "<strong>Pé Diabético:</strong> Teste de sensibilidade com monofilamento 10g. Prevenção de úlceras."
+          "<strong>Antipsicóticos (Neurolépticos):</strong> Típicos (Haloperidol - mais efeitos motores) e Atípicos (Risperidona, Olanzepina - metabólicos).",
+          "<strong>Benzodiazepínicos:</strong> Diazepam, Clonazepam. Risco de dependência e tolerância. Antídoto: Flumazenil.",
+          "<strong>Estabilizadores de Humor:</strong> Lítio (nível tóxico próximo do terapêutico, monitorar litemia).",
+          "<strong>ISRS (Antidepressivos):</strong> Fluoxetina, Sertralina. Inibem recaptação de serotonina."
         ],
-        "goldenTip": "A insulina Regular (R) é transparente e de ação rápida. A NPH é leitosa e de ação intermediária. Ao misturar na mesma seringa: Aspirar a Regular (clara) ANTES da NPH (escura) para não contaminar o frasco da rápida."
+        "goldenTip": "A Síndrome Neuroléptica Maligna é uma emergência rara e fatal (rigidez muscular grave, febre alta, instabilidade autonômica) associada a antipsicóticos."
       }
     ]
   },
@@ -644,46 +452,35 @@
     "color": "text-gray-700",
     "topics": [
       {
-        "title": "Cirurgia Segura (Checklist OMS)",
-        "summary": "Os 3 momentos de verificação obrigatória para prevenção de erros.",
+        "title": "Processamento de Materiais (RDC 15)",
+        "summary": "Classificação de Spaulding e etapas da CME.",
         "keyPoints": [
-          "<strong>Sign In (Antes da Indução Anestésica):</strong> Confirmar paciente, sítio cirúrgico, procedimento, consentimento, alergias, risco de via aérea.",
-          "<strong>Time Out (Antes da Incisão):</strong> Pausa cirúrgica. Toda a equipe confirma paciente, sítio, procedimento. Profilaxia antibiótica realizada?",
+          "<strong>Críticos:</strong> Penetram tecido estéril/vascular. Exigem Esterilização.",
+          "<strong>Semicríticos:</strong> Mucosas/Pele não íntegra. Exigem Desinfecção de Alto Nível.",
+          "<strong>Não Críticos:</strong> Pele íntegra. Limpeza/Desinfecção Baixo Nível.",
+          "<strong>Limpeza:</strong> Passo fundamental. Material sujo não esteriliza."
+        ],
+        "goldenTip": "O álcool 70% é desinfetante de nível intermediário. Glutaraldeído e Ácido Peracético são de alto nível/esterilizantes líquidos."
+      },
+      {
+        "title": "Monitoramento da Esterilização",
+        "summary": "Garantia da qualidade do processo.",
+        "keyPoints": [
+          "<strong>Físico:</strong> Parâmetros do equipamento (temperatura, pressão, tempo). Impressora da autoclave.",
+          "<strong>Químico:</strong> Indicadores. Classe 1 (fita zebrada - processo), Classe 5 (integrador - todos parâmetros), Classe 6 (emulador). Bowie-Dick (testa remoção de ar/vácuo).",
+          "<strong>Biológico:</strong> Esporos (Geobacillus stearothermophilus). Único que garante morte microbiana. Frequência: Semanal (mínima) e em toda carga de implantes."
+        ],
+        "goldenTip": "O Teste de Bowie-Dick deve ser feito DIARIAMENTE, na primeira carga do dia, com a autoclave vazia (para testar a bomba de vácuo)."
+      },
+      {
+        "title": "Cirurgia Segura (Checklist OMS)",
+        "summary": "3 momentos de verificação.",
+        "keyPoints": [
+          "<strong>Sign In (Antes da Indução):</strong> Identificação, Sítio, Consentimento, Alergias, Via Aérea.",
+          "<strong>Time Out (Antes da Incisão):</strong> Pausa Cirúrgica. Todos param. Confirmação verbal: Paciente, Procedimento, Sítio. Antibiótico profilático feito?",
           "<strong>Sign Out (Antes de sair da sala):</strong> Contagem de compressas/instrumentos, identificação de amostras, problemas com equipamentos."
         ],
-        "goldenTip": "O 'Time Out' é o momento mais crítico e deve envolver a participação verbal de TODOS os membros da equipe (cirurgião, anestesista e enfermagem)."
-      },
-      {
-        "title": "Classificação de Artigos (Spaulding)",
-        "summary": "Base para o processamento de produtos para saúde (RDC 15).",
-        "keyPoints": [
-          "<strong>Críticos:</strong> Penetram tecidos estéreis ou sistema vascular. Ex: Bisturi, pinças cirúrgicas. Exigem <strong>Esterilização</strong>.",
-          "<strong>Semicríticos:</strong> Entram em contato com pele não íntegra ou mucosas. Ex: Endoscópio, lâmina de laringo. Exigem <strong>Desinfecção de Alto Nível</strong>.",
-          "<strong>Não Críticos:</strong> Contato apenas com pele íntegra. Ex: Estetoscópio, comadre. Exigem <strong>Limpeza/Desinfecção Baixo Nível</strong>."
-        ],
-        "goldenTip": "O álcool 70% é um desinfetante de nível intermediário. Não esteriliza (não mata esporos)."
-      },
-      {
-        "title": "Processamento de Materiais (CME)",
-        "summary": "Etapas da Central de Material e Esterilização.",
-        "keyPoints": [
-          "<strong>Limpeza:</strong> Remoção da sujidade visível (detergente enzimático). É o passo mais importante. Se estiver sujo, não esteriliza.",
-          "<strong>Esterilização Física:</strong> Autoclave (Vapor saturado sob pressão). Ciclos de 121°C a 134°C.",
-          "<strong>Esterilização Química:</strong> Peróxido de Hidrogênio (Plasma), Óxido de Etileno (Indústria).",
-          "<strong>Monitoramento:</strong> Físico (impressora), Químico (fitas/integradores) e Biológico (teste com esporos - padrão ouro)."
-        ],
-        "goldenTip": "O Teste Biológico (com Geobacillus stearothermophilus para autoclave) é o único que garante a morte dos microrganismos."
-      },
-      {
-        "title": "Posicionamento Cirúrgico",
-        "summary": "Prevenção de lesões no intraoperatório.",
-        "keyPoints": [
-          "<strong>Supina (Dorsal):</strong> Barriga para cima. Mais comum (laparotomias).",
-          "<strong>Prona (Ventral):</strong> Barriga para baixo. Cirurgias de coluna/fossa posterior. Risco de lesão ocular e compressão torácica.",
-          "<strong>Litotomia (Ginecológica):</strong> Pernas elevadas em perneiras. Risco de TVP e lesão de nervo se mal posicionado.",
-          "<strong>Trendelenburg:</strong> Cabeça mais baixa que o corpo. Cirurgias pélvicas (afasta vísceras)."
-        ],
-        "goldenTip": "A principal complicação do posicionamento inadequado é a lesão por compressão de nervos periféricos e úlceras por pressão."
+        "goldenTip": "O Time Out é o momento mais crítico e deve envolver a participação ativa de toda a equipe na sala."
       }
     ]
   }
