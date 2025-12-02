@@ -10,6 +10,7 @@ import { Trophy, Medal, Crown, Lock, Star, Target, CheckCircle2 } from "lucide-r
 import { cn } from "@/lib/utils";
 import { BADGES, BadgeDef } from "@/data/badges";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { toast } from "sonner";
 
 interface Profile {
   id: string;
@@ -176,7 +177,7 @@ const Ranking = () => {
   const { data: ranking = [], isLoading: isLoadingRanking } = useQuery({
     queryKey: ['weeklyRanking'],
     queryFn: fetchRanking,
-    refetchInterval: 15000, // Refetch a cada 15 segundos para garantir atualização constante
+    refetchInterval: 30000, 
     refetchOnWindowFocus: true,
   });
 
@@ -186,8 +187,10 @@ const Ranking = () => {
     enabled: !!profile
   });
 
-  // Configuração do Realtime para atualização instantânea
+  // Configuração do Realtime para atualização instantânea e Notificações de Conquista
   useEffect(() => {
+    if (!profile) return;
+
     const channel = supabase.channel('ranking-updates')
       .on(
         'postgres_changes',
@@ -203,14 +206,25 @@ const Ranking = () => {
       .on(
         'postgres_changes',
         {
-          event: '*',
+          event: 'INSERT',
           schema: 'public',
-          table: 'user_badges' // Quando alguém ganha medalha
+          table: 'user_badges',
+          filter: `user_id=eq.${profile.id}` // Filtra apenas medalhas do usuário logado
         },
         (payload) => {
-          // Se for uma medalha do usuário atual, atualiza badges dele.
-          if (profile && payload.new && 'user_id' in payload.new && payload.new.user_id === profile.id) {
-             queryClient.invalidateQueries({ queryKey: ['myBadges', profile.id] });
+          // 1. Atualiza a lista de badges
+          queryClient.invalidateQueries({ queryKey: ['myBadges', profile.id] });
+          
+          // 2. Mostra notificação de conquista
+          const newBadgeCode = payload.new.badge_code;
+          const badgeInfo = BADGES.find(b => b.id === newBadgeCode);
+          
+          if (badgeInfo) {
+            toast.success(`Nova Conquista Desbloqueada!`, {
+                description: badgeInfo.name,
+                icon: <Trophy className="h-5 w-5 text-yellow-500" />,
+                duration: 5000,
+            });
           }
         }
       )
@@ -219,7 +233,7 @@ const Ranking = () => {
         {
           event: 'UPDATE',
           schema: 'public',
-          table: 'profiles' // Se alguém mudar foto ou nome
+          table: 'profiles' 
         },
         () => {
           queryClient.invalidateQueries({ queryKey: ['weeklyRanking'] });
