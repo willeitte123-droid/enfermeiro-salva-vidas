@@ -184,38 +184,44 @@ const Ranking = () => {
   const { data: myBadges = [], isLoading: isLoadingBadges } = useQuery({
     queryKey: ['myBadges', profile?.id],
     queryFn: () => profile ? fetchUserBadges(profile.id) : Promise.resolve([]),
-    enabled: !!profile
+    enabled: !!profile,
+    refetchOnWindowFocus: true,
   });
 
   // Configuração do Realtime para atualização instantânea e Notificações de Conquista
   useEffect(() => {
     if (!profile) return;
 
-    const channel = supabase.channel('ranking-updates')
+    // Canal para Ranking (Respostas)
+    const rankingChannel = supabase.channel('ranking-updates')
       .on(
         'postgres_changes',
         {
-          event: '*', // Escuta INSERT, UPDATE, DELETE
+          event: '*', 
           schema: 'public',
-          table: 'user_question_answers' // Quando alguém responde questão, o ranking muda
+          table: 'user_question_answers' 
         },
         () => {
           queryClient.invalidateQueries({ queryKey: ['weeklyRanking'] });
         }
       )
+      .subscribe();
+
+    // Canal dedicado para Medalhas (Badges)
+    const badgesChannel = supabase.channel('badges-updates')
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'user_badges',
-          filter: `user_id=eq.${profile.id}` // Filtra apenas medalhas do usuário logado
+          filter: `user_id=eq.${profile.id}`
         },
         (payload) => {
-          // 1. Atualiza a lista de badges
+          // Atualiza a lista de badges imediatamente
           queryClient.invalidateQueries({ queryKey: ['myBadges', profile.id] });
           
-          // 2. Mostra notificação de conquista
+          // Mostra notificação de conquista
           const newBadgeCode = payload.new.badge_code;
           const badgeInfo = BADGES.find(b => b.id === newBadgeCode);
           
@@ -228,21 +234,11 @@ const Ranking = () => {
           }
         }
       )
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'profiles' 
-        },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['weeklyRanking'] });
-        }
-      )
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(rankingChannel);
+      supabase.removeChannel(badgesChannel);
     };
   }, [profile, queryClient]);
 
