@@ -339,16 +339,15 @@
         "goldenTip": "Prevenção é prioridade: mudança de decúbito a cada 2h e hidratação da pele (exceto em proeminências ósseas já hiperemiadas)."
       },
       {
-        "title": "Biossegurança e Precauções (NR-32 / RDC 222)",
-        "summary": "Gerenciamento de Resíduos e Tipos de Isolamento.",
+        "title": "Biossegurança e NR-32",
+        "summary": "Normas de segurança e saúde no trabalho em serviços de saúde.",
         "keyPoints": [
-          "<strong>Padrão:</strong> Higiene das mãos, luvas (se risco de fluidos). Para TODOS os pacientes.",
-          "<strong>Contato (Avental + Luvas):</strong> Bactérias multirresistentes (KPC, MRSA), Escabiose, Clostridium. Quarto privativo ou coorte.",
-          "<strong>Gotículas (Máscara Cirúrgica):</strong> Meningite bacteriana, Influenza, Rubéola, Caxumba. (Raio de 1m).",
-          "<strong>Aerossóis (Máscara N95/PFF2):</strong> Tuberculose, Sarampo, Varicela, Herpes Zoster disseminado. Pressão negativa.",
-          "<strong>Resíduos:</strong> Grupo A (Infectante/Branco), B (Químico/Laranja), E (Perfuro/Amarelo)."
+          "<strong>Vacinação:</strong> O empregador deve garantir vacinação gratuita (Tétano, Difteria, Hepatite B, etc). O trabalhador pode recusar, mas deve assinar termo.",
+          "<strong>Perfurocortantes:</strong> Proibido reencapar agulhas. Descarte em recipiente rígido (até 2/3 da capacidade). Dispositivos de segurança obrigatórios.",
+          "<strong>Adornos:</strong> Proibido o uso de anéis, pulseiras, relógios, colares, brincos e crachás pendurados.",
+          "<strong>Quimioterápicos:</strong> Cabine de segurança biológica, kit de derramamento, EPI específico."
         ],
-        "goldenTip": "Varicela e Sarampo exigem precaução para AEROSSÓIS (N95) + Contato. Meningite é GOTÍCULAS (Cirúrgica)."
+        "goldenTip": "Gestantes não devem trabalhar em áreas com radiação ionizante ou com gases anestésicos/quimioterápicos, salvo autorização médica expressa."
       },
       {
         "title": "Administração de Medicamentos",
@@ -363,10 +362,110 @@
     ]
   },
   {
+    "category": "Segurança do Paciente",
+    "icon": "ShieldCheck",
+    "color": "text-yellow-600",
+    "topics": [
+      {
+        "title": "PNSP e as 6 Metas Internacionais",
+        "summary": "Programa Nacional de Segurança do Paciente e metas da OMS.",
+        "keyPoints": [
+          "<strong>Meta 1:</strong> Identificação Correta (Nome + Data Nascimento). Pulseira.",
+          "<strong>Meta 2:</strong> Comunicação Efetiva (Registro, Read-back).",
+          "<strong>Meta 3:</strong> Medicamentos de Alta Vigilância (Identificação, dupla checagem).",
+          "<strong>Meta 4:</strong> Cirurgia Segura (Local correto, procedimento correto, paciente correto).",
+          "<strong>Meta 5:</strong> Redução de Infecções (Higiene das Mãos).",
+          "<strong>Meta 6:</strong> Prevenção de Quedas e Lesão por Pressão."
+        ],
+        "goldenTip": "O número do leito ou quarto NUNCA deve ser usado como identificador do paciente."
+      },
+      {
+        "title": "Incidentes e Eventos Adversos",
+        "summary": "Terminologia da OMS (RDC 36/2013).",
+        "keyPoints": [
+          "<strong>Near Miss (Quase erro):</strong> Incidente que não atingiu o paciente (erro interceptado).",
+          "<strong>Incidente sem dano:</strong> Atingiu o paciente, mas não causou dano.",
+          "<strong>Evento Adverso:</strong> Incidente que resultou em dano à saúde.",
+          "<strong>Never Event:</strong> Evento grave que nunca deveria ocorrer (ex: cirurgia em membro errado, suicídio intra-hospitalar)."
+        ],
+        "goldenTip": "A notificação de Eventos Adversos à ANVISA é obrigatória para os serviços de saúde (Notivisa)."
+      }
+    ]
+  },
+  {
+    "category": "Controle de Infecção (CCIH)",
+    "icon": "Biohazard",
+    "color": "text-purple-600",
+    "topics": [
+      {
+        "title": "Infecção Hospitalar (IRAS)",
+        "summary": "Conceitos da Portaria 2.616/98.",
+        "keyPoints": [
+          "<strong>Definição:</strong> Adquirida após a admissão e que se manifeste durante a internação ou após a alta (se relacionada).",
+          "<strong>Critério Temporal:</strong> Em geral, após 72h da admissão (se sem incubação prévia).",
+          "<strong>CCIH:</strong> Comissão de Controle de Infecção Hospitalar. Órgão consultivo e executor. Obrigatória em todos os hospitais.",
+          "<strong>PCIH:</strong> Programa de Controle (conjunto de ações)."
+        ],
+        "goldenTip": "A Infecção de Sítio Cirúrgico (ISC) pode se manifestar até 30 dias após a cirurgia (ou até 90 dias/1 ano se houver implante/prótese)."
+      },
+      {
+        "title": "Precauções e Isolamento",
+        "summary": "Medidas para interromper a cadeia de transmissão.",
+        "keyPoints": [
+          "<strong>Padrão:</strong> Higiene das mãos + EPI se risco de fluidos. (Todos os pacientes).",
+          "<strong>Contato:</strong> Bactérias Multirresistentes, Escabiose, Clostridium. (Quarto privativo, luva, avental).",
+          "<strong>Gotículas:</strong> Meningite, Influenza, Rubéola, Caxumba. (Máscara Cirúrgica < 1m).",
+          "<strong>Aerossóis:</strong> Tuberculose, Sarampo, Varicela. (Máscara N95, Quarto Pressão Negativa)."
+        ],
+        "goldenTip": "Herpes Zoster disseminado exige precaução para AEROSSÓIS + CONTATO (até todas as lesões formarem crostas)."
+      }
+    ]
+  },
+  {
+    "category": "Saúde do Idoso",
+    "icon": "Users",
+    "color": "text-slate-500",
+    "topics": [
+      {
+        "title": "Estatuto da Pessoa Idosa (Lei 10.741/03)",
+        "summary": "Direitos fundamentais da pessoa com 60 anos ou mais.",
+        "keyPoints": [
+          "<strong>Prioridade:</strong> Garantida a todos com ≥ 60 anos. Prioridade Especial ('Super Idoso') para > 80 anos.",
+          "<strong>Acompanhante:</strong> Direito a acompanhante em tempo integral na internação (salvo critério médico justificado).",
+          "<strong>Violência:</strong> Notificação compulsória (suspeita ou confirmada) em até 24h (Delegacia, MP, Conselho do Idoso).",
+          "<strong>Saúde:</strong> Vedada a discriminação em planos de saúde pela idade."
+        ],
+        "goldenTip": "A prioridade dos maiores de 80 anos prevalece sobre os demais idosos, exceto em casos de emergência médica."
+      },
+      {
+        "title": "Grandes Síndromes Geriátricas",
+        "summary": "Os 'Gigantes da Geriatria' (Is).",
+        "keyPoints": [
+          "<strong>Instabilidade Postural:</strong> Quedas (fator de alta morbidade).",
+          "<strong>Imobilidade:</strong> Perda da capacidade de deslocamento.",
+          "<strong>Incontinência:</strong> Urinária ou fecal.",
+          "<strong>Incapacidade Cognitiva:</strong> Demências (Alzheimer, Vascular), Delirium (agudo), Depressão.",
+          "<strong>Iatrogenia:</strong> Danos causados pelo tratamento (polifarmácia)."
+        ],
+        "goldenTip": "Delirium é um quadro AGUDO, flutuante e reversível de confusão mental. Demência é CRÔNICA e progressiva."
+      }
+    ]
+  },
+  {
     "category": "Saúde da Mulher",
     "icon": "Heart",
     "color": "text-pink-600",
     "topics": [
+      {
+        "title": "Rede Cegonha / RAMI",
+        "summary": "Rede de Atenção Materna e Infantil.",
+        "keyPoints": [
+          "<strong>Componentes:</strong> 1. Pré-natal; 2. Parto e Nascimento; 3. Puerpério e Atenção Integral à Criança; 4. Sistema Logístico (Transporte).",
+          "<strong>Diretrizes:</strong> Vínculo com a maternidade desde o pré-natal, direito a acompanhante no parto (Lei 11.108), boas práticas (evitar episiotomia rotineira, Kristeller).",
+          "<strong>Classificação de Risco:</strong> Gestante de Alto Risco deve ser referenciada ao Pré-natal de Alto Risco (PNAR)."
+        ],
+        "goldenTip": "A Manobra de Kristeller (pressão no fundo uterino) é proscrita/contraindicada pelo Ministério da Saúde, pois aumenta risco de lesões."
+      },
       {
         "title": "Pré-Natal e Regra de Naegele",
         "summary": "Cálculo da Data Provável do Parto (DPP).",
@@ -635,6 +734,34 @@
           "<strong>Pé Diabético:</strong> Teste de sensibilidade com monofilamento 10g. Prevenção de úlceras."
         ],
         "goldenTip": "A insulina Regular (R) é transparente e de ação rápida. A NPH é leitosa e de ação intermediária. Ao misturar na mesma seringa: Aspirar a Regular (clara) ANTES da NPH (escura) para não contaminar o frasco da rápida."
+      }
+    ]
+  },
+  {
+    "category": "Saúde do Trabalhador",
+    "icon": "Briefcase",
+    "color": "text-emerald-700",
+    "topics": [
+      {
+        "title": "Doenças Ocupacionais (LER/DORT e PAIR)",
+        "summary": "Principais agravos relacionados ao trabalho.",
+        "keyPoints": [
+          "<strong>LER/DORT:</strong> Lesões por Esforço Repetitivo / Distúrbios Osteomusculares. Causadas por movimentos repetitivos, postura inadequada e carga. Notificação compulsória em unidades sentinelas.",
+          "<strong>PAIR:</strong> Perda Auditiva Induzida por Ruído. Perda neurossensorial, irreversível, bilateral e progressiva. Prevenção: EPI (protetor auricular), revezamento.",
+          "<strong>Burnout:</strong> Síndrome do esgotamento profissional. Tríade: Exaustão emocional, Despersonalização e Baixa realização pessoal."
+        ],
+        "goldenTip": "A Comunicação de Acidente de Trabalho (CAT) deve ser emitida pela empresa até o 1º dia útil seguinte ao da ocorrência. Em caso de óbito, de imediato."
+      },
+      {
+        "title": "Acidentes com Material Biológico",
+        "summary": "Protocolo pós-exposição.",
+        "keyPoints": [
+          "<strong>Cuidados Imediatos:</strong> Lavar com água e sabão (pele) ou soro (mucosas). Não espremer a ferida.",
+          "<strong>Avaliação:</strong> Testar paciente-fonte e acidentado (HIV, Hep B, Hep C).",
+          "<strong>Profilaxia (PEP HIV):</strong> Se indicada (fonte HIV+ ou desconhecida com risco), iniciar em até 2h (máx 72h) por 28 dias.",
+          "<strong>Hepatite B:</strong> Se acidentado não imune (Anti-HBs-), fazer Vacina + Imunoglobulina (IGHAHB)."
+        ],
+        "goldenTip": "Não existe profilaxia medicamentosa (PEP) para Hepatite C. O acompanhamento é sorológico para detecção precoce."
       }
     ]
   },
