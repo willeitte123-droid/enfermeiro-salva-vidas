@@ -37,6 +37,16 @@
         "goldenTip": "Memorize: Conferência = 4 anos (Diretrizes/Avaliação). Conselho = Permanente (Fiscalização/Execução)."
       },
       {
+        "title": "Pacto pela Saúde 2006",
+        "summary": "Portaria 399/2006. Conjunto de reformas nas relações institucionais do SUS.",
+        "keyPoints": [
+          "<strong>Pacto pela Vida:</strong> Compromissos sanitários prioritários (Saúde do Idoso, Câncer de Colo/Mama, Mortalidade Infantil/Materna, Doenças Emergentes, Promoção da Saúde, Atenção Básica).",
+          "<strong>Pacto em Defesa do SUS:</strong> Mobilização social e garantia de financiamento.",
+          "<strong>Pacto de Gestão:</strong> Diretrizes para a gestão do sistema (Regionalização, Planejamento, PPI, Regulação)."
+        ],
+        "goldenTip": "O foco do Pacto pela VIDA são as METAS DE SAÚDE (doenças e populações). O Pacto de GESTÃO foca na ADM (burocracia/organização)."
+      },
+      {
         "title": "Resolução CNS 453/2012 (Conselhos)",
         "summary": "Diretrizes para funcionamento e composição dos Conselhos de Saúde.",
         "keyPoints": [
@@ -112,6 +122,15 @@
         "goldenTip": "Para Cuidado Intensivo, a equipe deve ser composta majoritariamente por Enfermeiros (52% mín). É a única categoria onde Enfermeiros são a maioria."
       },
       {
+        "title": "Educação Permanente vs. Continuada",
+        "summary": "Conceitos fundamentais de ensino no trabalho.",
+        "keyPoints": [
+          "<strong>Educação Continuada:</strong> Focada na atualização técnica, cursos pontuais, metodologia tradicional, foco na categoria profissional isolada.",
+          "<strong>Educação Permanente em Saúde (EPS):</strong> Focada nos problemas do cotidiano do trabalho ('aprender a aprender'), multiprofissional, transformação das práticas, aprendizado no serviço."
+        ],
+        "goldenTip": "EPS parte da 'Problematização' da realidade do serviço. Continuada parte da transmissão de conhecimento acadêmico."
+      },
+      {
         "title": "Auditoria em Enfermagem",
         "summary": "Avaliação sistemática da qualidade da assistência e dos custos.",
         "keyPoints": [
@@ -161,6 +180,17 @@
         "goldenTip": "O Técnico de Enfermagem NÃO pode realizar consulta de enfermagem, nem auditoria, nem assumir chefia de serviço."
       },
       {
+        "title": "Bioética: Princípios Fundamentais",
+        "summary": "Os 4 pilares da bioética principialista.",
+        "keyPoints": [
+          "<strong>1. Beneficência:</strong> Fazer o bem, agir no melhor interesse do paciente.",
+          "<strong>2. Não-Maleficência:</strong> 'Primum non nocere'. Não causar dano (intencional ou por negligência).",
+          "<strong>3. Autonomia:</strong> Respeito à vontade e liberdade de escolha do paciente (Consentimento Livre e Esclarecido).",
+          "<strong>4. Justiça:</strong> Equidade na distribuição de recursos e tratamentos."
+        ],
+        "goldenTip": "A Autonomia pode ser limitada se colocar terceiros em risco (ex: Tuberculose bacilífera recusando tratamento e isolamento)."
+      },
+      {
         "title": "Sistematização da Assistência (Res. COFEN 358/2009)",
         "summary": "Obrigatoriedade da SAE e do Processo de Enfermagem.",
         "keyPoints": [
@@ -199,6 +229,17 @@
           "<strong>Saúde do Trabalhador:</strong> Doenças e agravos relacionados ao trabalho (LER/DORT, acidentes)."
         ],
         "goldenTip": "A Vigilância Sanitária (ANVISA) tem poder de polícia (fechar estabelecimentos, apreender produtos), diferente da Epidemiológica."
+      },
+      {
+        "title": "Estudos Epidemiológicos",
+        "summary": "Tipos de desenhos de estudo em saúde.",
+        "keyPoints": [
+          "<strong>Ecológico:</strong> Unidade de estudo é a população (agregado). Bom para gerar hipóteses. Falácia ecológica.",
+          "<strong>Transversal (Seccional):</strong> Foto do momento. Mede Prevalência. Rápido e barato. Não define causa-efeito.",
+          "<strong>Caso-Controle:</strong> Parte da Doença para a Exposição (Retrospectivo). Bom para doenças raras.",
+          "<strong>Coorte:</strong> Parte da Exposição para a Doença (Prospectivo). Mede Incidência e Risco Relativo. Padrão-ouro observacional."
+        ],
+        "goldenTip": "Coorte é caro, longo e mede Incidência. Caso-Controle é barato, rápido e usa Odds Ratio."
       },
       {
         "title": "História Natural da Doença (Leavell & Clark)",
@@ -263,6 +304,30 @@
         "goldenTip": "A dor torácica típica (suspeita de IAM) é classificada como LARANJA (Muito Urgente), a menos que o paciente esteja em PCR (Vermelho)."
       },
       {
+        "title": "Estados de Choque",
+        "summary": "Classificação e sinais clínicos dos principais tipos de choque.",
+        "keyPoints": [
+          "<strong>Hipovolêmico:</strong> Perda de volume (sangue ou fluidos). Taquicardia, pele fria, hipotensão. Cd: Reposição volêmica.",
+          "<strong>Cardiogênico:</strong> Falência da bomba (IAM, ICC). Congestão pulmonar, turgência jugular. Cd: Inotrópicos, vasopressores.",
+          "<strong>Distributivo (Séptico/Anafilático/Neurogênico):</strong> Vasodilatação intensa. No choque séptico inicial a pele pode estar quente.",
+          "<strong>Obstrutivo:</strong> Bloqueio mecânico (Tamponamento, TEP maciço, Pneumotórax hipertensivo)."
+        ],
+        "goldenTip": "O Choque Neurogênico é o único que cursa com BRADICARDIA e hipotensão (perda do tônus simpático)."
+      },
+      {
+        "title": "Queimaduras (Regra dos Nove)",
+        "summary": "Cálculo da Superfície Corporal Queimada (SCQ) para adultos.",
+        "keyPoints": [
+          "<strong>Cabeça e Pescoço:</strong> 9%",
+          "<strong>Tronco Anterior:</strong> 18%",
+          "<strong>Tronco Posterior (Costas):</strong> 18%",
+          "<strong>Membros Superiores:</strong> 9% cada (4,5% frente / 4,5% trás).",
+          "<strong>Membros Inferiores:</strong> 18% cada (9% frente / 9% trás).",
+          "<strong>Genitália:</strong> 1%"
+        ],
+        "goldenTip": "A Regra da Palma da Mão (apenas a palma do paciente, sem os dedos) equivale a 1% da superfície corporal."
+      },
+      {
         "title": "Suporte Básico e Avançado (PCR)",
         "summary": "Atualizações da AHA.",
         "keyPoints": [
@@ -302,6 +367,16 @@
           "<strong>Nutrição Parenteral (NPT):</strong> Via endovenosa (TGI não funcionante). Risco principal: Infecção de corrente sanguínea e hiperglicemia. Cuidados: Via exclusiva em cateter central (CVC), bomba de infusão obrigatória, troca do equipo a cada 24h."
         ],
         "goldenTip": "A NPT requer acesso venoso CENTRAL devido à alta osmolaridade. NPT periférica é rara e apenas para curto prazo/baixa osmolaridade."
+      },
+      {
+        "title": "Oxigenoterapia",
+        "summary": "Dispositivos de baixo e alto fluxo.",
+        "keyPoints": [
+          "<strong>Cateter Nasal (Cânula):</strong> Baixo fluxo (até 4-5 L/min). FiO2 variável (~24-40%). Confortável.",
+          "<strong>Máscara de Venturi:</strong> Alto fluxo. FiO2 exata e fixa (24% a 50%) dependendo da cor do adaptador.",
+          "<strong>Máscara com Reservatório:</strong> Alta concentração. Fluxo mínimo de 10-15 L/min para não reinalar CO2. FiO2 90-100% (Não reinalante)."
+        ],
+        "goldenTip": "O Cateter Nasal tipo óculos não deve ultrapassar 5-6 L/min, pois resseca a mucosa e não aumenta significativamente a FiO2 acima disso."
       },
       {
         "title": "Cálculo de Medicação",
@@ -409,6 +484,17 @@
         "goldenTip": "A Infecção de Sítio Cirúrgico (ISC) pode se manifestar até 30 dias após a cirurgia (ou até 90 dias/1 ano se houver implante/prótese)."
       },
       {
+        "title": "Gerenciamento de Resíduos (RDC 222/2018)",
+        "summary": "Classificação e descarte correto dos Resíduos de Serviços de Saúde (RSS).",
+        "keyPoints": [
+          "<strong>Grupo A (Infectante):</strong> Saco Branco. Ex: Sangue, secreções, cultura, vacinas vivas.",
+          "<strong>Grupo B (Químico):</strong> Galões/Recipientes específicos. Ex: Medicamentos, reveladores de RX.",
+          "<strong>Grupo D (Comum):</strong> Saco Preto/Azul. Ex: Papel, fraldas (não infectadas), restos de comida.",
+          "<strong>Grupo E (Perfurocortante):</strong> Caixa Rígida (Amarela). Ex: Agulhas, lâminas, ampolas de vidro."
+        ],
+        "goldenTip": "Resíduos do Grupo E (Perfurocortantes) devem ser descartados em caixas rígidas, preenchidas apenas até 2/3 da capacidade (linha pontilhada)."
+      },
+      {
         "title": "Precauções e Isolamento",
         "summary": "Medidas para interromper a cadeia de transmissão.",
         "keyPoints": [
@@ -478,6 +564,16 @@
         "goldenTip": "A suplementação de Sulfato Ferroso (profilática) é 40mg ferro elementar. Ácido Fólico (prevenção defeito tubo neural) idealmente 3 meses antes."
       },
       {
+        "title": "Partograma",
+        "summary": "Gráfico para monitoramento da evolução do trabalho de parto e detecção de distócias.",
+        "keyPoints": [
+          "<strong>Linha de Alerta:</strong> Iniciada quando a dilatação cervical atinge a fase ativa. Se ultrapassada, observar melhor.",
+          "<strong>Linha de Ação:</strong> 4 horas após a linha de alerta. Se ultrapassada, requer intervenção (fórceps, cesárea, ocitocina).",
+          "<strong>Fase Ativa:</strong> Contrações regulares + Dilatação ≥ 5cm (novo protocolo OMS/MS, antes era 4cm)."
+        ],
+        "goldenTip": "Distócia Funcional: Parada Secundária da Dilatação (não dilata por 2h ou mais). Parada Secundária da Descida (feto não desce após dilatação total)."
+      },
+      {
         "title": "Climatério e Menopausa",
         "summary": "Fisiologia e manejo da transição menopausa.",
         "keyPoints": [
@@ -537,6 +633,16 @@
     "icon": "Baby",
     "color": "text-cyan-600",
     "topics": [
+      {
+        "title": "Reanimação Neonatal (SBP)",
+        "summary": "Protocolo de atendimento ao RN na sala de parto.",
+        "keyPoints": [
+          "<strong>Golden Minute (Minuto de Ouro):</strong> Se o RN não respira ou tem tônus ruim, clamplear cordão e levar para mesa. Aquecer, secar, posicionar e aspirar (se necessário) em até 30s.",
+          "<strong>VPP (Ventilação com Pressão Positiva):</strong> É a manobra mais importante. Iniciar se FC < 100 bpm ou apneia/gasping.",
+          "<strong>Massagem Cardíaca:</strong> Iniciar se FC < 60 bpm após 30s de VPP efetiva. Técnica dos dois polegares. Relação 3:1 (3 compressões : 1 ventilação)."
+        ],
+        "goldenTip": "A intubação no RN é indicada se a VPP com máscara não for efetiva ou se houver necessidade de massagem cardíaca prolongada."
+      },
       {
         "title": "AIDPI - Sinais Gerais de Perigo",
         "summary": "Estratégia da OMS para reduzir a mortalidade infantil. Identificação rápida de casos graves.",
@@ -602,6 +708,17 @@
           "<strong>Tratamento:</strong> Antibióticos (Doxiciclina/Amoxicilina na fase leve; Penicilina/Ceftriaxona na grave) e suporte (diálise)."
         ],
         "goldenTip": "A mialgia das panturrilhas e a icterícia rubínica (olhos vermelhos/laranjas) são sinais clássicos de prova."
+      },
+      {
+        "title": "Raiva Humana",
+        "summary": "Zoonose viral aguda, letalidade próxima a 100%.",
+        "keyPoints": [
+          "<strong>Transmissão:</strong> Mordedura, arranhadura ou lambedura de mamíferos infectados (cães, gatos, morcegos).",
+          "<strong>Profilaxia Pré-Exposição:</strong> Veterinários, biólogos (3 doses).",
+          "<strong>Profilaxia Pós-Exposição:</strong> Lavar com água e sabão. Avaliar animal. Se cão/gato observável: observar 10 dias. Se animal silvestre/morcego ou cão raivoso: Soro + Vacina imediato.",
+          "<strong>Sinais:</strong> Hidrofobia, aerofobia, agitação, espasmos."
+        ],
+        "goldenTip": "Acidente com morcego é SEMPRE considerado grave e requer Soro + Vacina, independente da lesão."
       },
       {
         "title": "Tuberculose (TB)",
@@ -707,6 +824,16 @@
           "<strong>Internação Compulsória:</strong> Determinada pela Justiça."
         ],
         "goldenTip": "O CAPS (Centro de Atenção Psicossocial) é o ordenador da rede e a porta de entrada preferencial, não o hospital psiquiátrico."
+      },
+      {
+        "title": "Psicofármacos Principais",
+        "summary": "Classes e cuidados de enfermagem.",
+        "keyPoints": [
+          "<strong>Antipsicóticos (Neurolépticos):</strong> Haldol (Típico), Risperidona (Atípico). Risco de Síndrome Extrapiramidal (impregnação).",
+          "<strong>Benzodiazepínicos:</strong> Diazepam, Clonazepam. Sedativos, ansiolíticos. Risco de dependência e queda.",
+          "<strong>Estabilizadores de Humor:</strong> Lítio. Janela terapêutica estreita (risco de toxicidade: tremores, diarreia, vômito). Dosar litemia."
+        ],
+        "goldenTip": "Na intoxicação por Lítio, o primeiro sinal costuma ser gastrointestinal (diarreia/vômito) seguido de neurológico (tremor grosseiro)."
       }
     ]
   },
@@ -779,6 +906,16 @@
           "<strong>Sign Out (Antes de sair da sala):</strong> Contagem de compressas/instrumentos, identificação de amostras, problemas com equipamentos."
         ],
         "goldenTip": "O 'Time Out' é o momento mais crítico e deve envolver a participação verbal de TODOS os membros da equipe (cirurgião, anestesista e enfermagem)."
+      },
+      {
+        "title": "Tipos de Anestesia",
+        "summary": "Principais modalidades anestésicas.",
+        "keyPoints": [
+          "<strong>Geral:</strong> Inconsciência + Analgesia + Relaxamento. Via inalatória ou venosa.",
+          "<strong>Raquidiana (Subaracnoidea):</strong> Injeção no líquor (espaço subaracnoideo). Bloqueio motor e sensitivo rápido. Causa hipotensão e cefaleia pós-raqui.",
+          "<strong>Peridural (Epidural):</strong> Injeção no espaço peridural (fora da dura-máter). Pode deixar cateter para analgesia pós-op."
+        ],
+        "goldenTip": "A cefaleia pós-raqui ocorre pelo vazamento de líquor. Tratamento: Repouso, hidratação e, em casos graves, Blood Patch (tampão sanguíneo)."
       },
       {
         "title": "Classificação de Artigos (Spaulding)",
