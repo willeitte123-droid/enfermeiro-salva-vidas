@@ -4,8 +4,9 @@
   "description": "Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.",
   "id": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#1c75e7",
   "categories": [
@@ -24,7 +25,13 @@
       "src": "/images/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
