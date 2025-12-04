@@ -1,13 +1,15 @@
 {
   "name": "Enfermagem Pro",
   "short_name": "EnfermagemPro",
-  "description": "Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.",
+  "description": "Sua plataforma completa de ferramentas, escalas e conhecimento para a prática de enfermagem.",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#1c75e7",
+  "categories": ["medical", "education", "productivity"],
   "icons": [
     {
       "src": "/images/icon-192.png",
@@ -27,13 +29,15 @@
       "src": "/images/screenshot1.png",
       "sizes": "1080x1920",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "Tela Inicial do App"
     },
     {
       "src": "/images/screenshot2.png",
       "sizes": "1080x1920",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "Ferramentas de Cálculo"
     }
   ]
 }
