@@ -4,7 +4,7 @@ import {
   Map, Compass, Lightbulb, CheckCircle2, 
   ArrowRight, BookOpen, Target, CalendarDays, 
   Trophy, Flame, Scale, Stethoscope, Biohazard, 
-  Siren, Users, Lock, Unlock, PlayCircle
+  Siren, Users, Lock, Unlock, PlayCircle, Brain
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
