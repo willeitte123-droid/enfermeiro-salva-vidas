@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { useThemeCustomization } from "@/context/ThemeCustomizationContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor, insira um email válido." }),
@@ -42,7 +43,7 @@ const Login = () => {
   const [resetEmail, setResetEmail] = useState("");
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [cooldown, setCooldown] = useState(0);
-  const { themeSettings } = useThemeCustomization();
+  const { themeSettings, isLoading: isThemeLoading } = useThemeCustomization();
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -132,11 +133,15 @@ const Login = () => {
         </AlertDialogContent>
 
         <div className="flex flex-col items-center justify-center bg-blue-800 text-white p-6 text-center shadow-md">
-          <img 
-            src={themeSettings.logo_url || "/logo.svg"} 
-            alt="Logo" 
-            className="h-32 w-32 rounded-full object-cover mb-6 bg-white border-4 border-white shadow-xl" 
-          />
+          {isThemeLoading ? (
+            <Skeleton className="h-32 w-32 rounded-full mb-6 bg-white/20" />
+          ) : (
+            <img 
+              src={themeSettings.logo_url || "/logo.svg"} 
+              alt="Logo" 
+              className="h-32 w-32 rounded-full object-cover mb-6 bg-white border-4 border-white shadow-xl animate-in fade-in zoom-in duration-500" 
+            />
+          )}
           <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
           <p className="mt-4 text-base font-medium text-blue-100 max-w-lg">
             Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
