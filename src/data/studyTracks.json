@@ -1,0 +1,149 @@
+{
+  "mentorship": [
+    {
+      "title": "A Regra do 80/20 (Pareto)",
+      "content": "20% dos assuntos correspondem a 80% das questões de prova. Na enfermagem, foque obsessivamente em: Imunização, Código de Ética, Cálculos de Medicação, Legislação do SUS (8.080/8.142) e Urgências (PCR/Trauma). Não tente decorar rodapés de livro antes de dominar a base."
+    },
+    {
+      "title": "Ciclo de Estudo Ativo",
+      "content": "Ler passivamente não funciona. Use o método: 1. Estudo Teórico (40 min) -> 2. Resumo por Tópicos (10 min) -> 3. Resolução de Questões (30 min) -> 4. Correção dos Erros (20 min). O aprendizado real acontece na correção dos erros."
+    },
+    {
+      "title": "Revisão Espaçada",
+      "content": "Você esquecerá 50% do que estudou em 24h se não revisar. Cronograma de revisão: 24h após o estudo, 7 dias após e 30 dias após. Use Flashcards para isso."
+    }
+  ],
+  "schedule": [
+    {
+      "day": "Dia 1: A Base do Sistema",
+      "focus": "Legislação do SUS + Ética",
+      "tasks": ["Ler CF/88 Art. 196-200", "Ler Lei 8.080 na íntegra", "Resolver 20 questões de SUS", "Ler Cap I e II do Código de Ética"],
+      "questionGoal": 30
+    },
+    {
+      "day": "Dia 2: Mãos à Obra",
+      "focus": "Fundamentos de Enfermagem",
+      "tasks": ["Técnicas de Sinais Vitais", "Cálculo de Gotejamento e Doses", "Vias de Administração", "Resolver 15 questões de cálculo"],
+      "questionGoal": 25
+    },
+    {
+      "day": "Dia 3: Proteção e Prevenção",
+      "focus": "Saúde Pública e Imunização",
+      "tasks": ["Calendário Vacinal (Criança/Adulto)", "Doenças de Notificação Compulsória", "Rede de Frio"],
+      "questionGoal": 40
+    },
+    {
+      "day": "Dia 4: O Paciente Crítico",
+      "focus": "Urgência e Emergência",
+      "tasks": ["Protocolo de PCR (AHA Atualizado)", "Trauma (XABCDE)", "Queimaduras (Regra dos 9 e Parkland)"],
+      "questionGoal": 30
+    },
+    {
+      "day": "Dia 5: Ciclos da Vida",
+      "focus": "Saúde da Mulher e Criança",
+      "tasks": ["Pré-natal (Exames/Vacinas)", "Parto Humanizado", "Puericultura", "Aleitamento Materno"],
+      "questionGoal": 35
+    },
+    {
+      "day": "Dia 6: Clínica Médica",
+      "focus": "Doenças Crônicas e Infecto",
+      "tasks": ["HAS e Diabetes (Cadernos AB)", "Tuberculose e Hanseníase", "ISTs principais"],
+      "questionGoal": 30
+    },
+    {
+      "day": "Dia 7: Simulado Geral",
+      "focus": "Revisão e Teste",
+      "tasks": ["Realizar um Simulado com 50 questões mistas", "Revisar erros da semana", "Organizar material da próxima semana"],
+      "questionGoal": 50
+    }
+  ],
+  "tracks": [
+    {
+      "id": "sus-legislation",
+      "title": "Módulo 1: Legislação do SUS",
+      "description": "O pilar obrigatório de todo concurso. Domine isso para garantir 20% da prova.",
+      "level": "Essencial",
+      "icon": "Scale",
+      "color": "text-blue-600",
+      "topics": [
+        { "name": "Evolução Histórica das Políticas de Saúde", "importance": "Média" },
+        { "name": "Constituição Federal (Art. 196 a 200)", "importance": "Altíssima" },
+        { "name": "Lei 8.080/90 (Orgânica da Saúde)", "importance": "Altíssima" },
+        { "name": "Lei 8.142/90 (Controle Social)", "importance": "Alta" },
+        { "name": "Decreto 7.508/11 (Regulamentação)", "importance": "Alta" },
+        { "name": "PNAB (Política Nacional de Atenção Básica)", "importance": "Alta" }
+      ],
+      "strategy": "Comece decorando os artigos da Constituição. Depois, faça um paralelo entre a 8.080 e o Decreto 7.508. Foque nas competências de cada ente (União, Estado, Município).",
+      "dailyGoal": "20 Questões"
+    },
+    {
+      "id": "nursing-fundamentals",
+      "title": "Módulo 2: Fundamentos e Ética",
+      "description": "A base da prática. Procedimentos, cálculos e legislação profissional.",
+      "level": "Essencial",
+      "icon": "Stethoscope",
+      "color": "text-emerald-600",
+      "topics": [
+        { "name": "Código de Ética (Res. 564/2017) - Penalidades", "importance": "Altíssima" },
+        { "name": "Lei do Exercício Profissional (7.498/86)", "importance": "Alta" },
+        { "name": "Cálculo de Medicação e Gotejamento", "importance": "Altíssima" },
+        { "name": "Sinais Vitais e Semiotécnica", "importance": "Média" },
+        { "name": "Sondagens (Vesical e Nasogástrica)", "importance": "Alta" },
+        { "name": "Feridas e Curativos (Coberturas)", "importance": "Alta" }
+      ],
+      "strategy": "Para Ética: memorize as penalidades e quem pode aplicá-las. Para Fundamentos: Treine cálculos todos os dias. Decore as indicações das coberturas de curativos.",
+      "dailyGoal": "25 Questões (sendo 5 de cálculo)"
+    },
+    {
+      "id": "public-health",
+      "title": "Módulo 3: Saúde Pública e Epidemiologia",
+      "description": "Vacinas, doenças transmissíveis e indicadores de saúde.",
+      "level": "Intermediário",
+      "icon": "Biohazard",
+      "color": "text-orange-500",
+      "topics": [
+        { "name": "Calendário Nacional de Vacinação (Criança/Adulto)", "importance": "Altíssima" },
+        { "name": "Doenças de Notificação Compulsória (Lista)", "importance": "Altíssima" },
+        { "name": "Tuberculose e Hanseníase (Tratamento/Diagnóstico)", "importance": "Alta" },
+        { "name": "Arboviroses (Dengue, Zika, Chikungunya)", "importance": "Alta" },
+        { "name": "Indicadores de Saúde (Mortalidade Materna/Infantil)", "importance": "Média" }
+      ],
+      "strategy": "Imprima o calendário vacinal e cole na parede. Associe as doenças de notificação aos prazos (Imediata vs Semanal). Estude a rede de frio.",
+      "dailyGoal": "30 Questões"
+    },
+    {
+      "id": "emergency",
+      "title": "Módulo 4: Urgência e Emergência",
+      "description": "Protocolos de suporte à vida e atendimento pré-hospitalar.",
+      "level": "Avançado",
+      "icon": "Siren",
+      "color": "text-red-600",
+      "topics": [
+        { "name": "PCR e RCP (Diretrizes AHA Atuais)", "importance": "Altíssima" },
+        { "name": "Trauma - PHTLS (XABCDE)", "importance": "Altíssima" },
+        { "name": "Queimaduras (Cálculo de superfície e Parkland)", "importance": "Alta" },
+        { "name": "Choque (Tipos e Sinais Clínicos)", "importance": "Alta" },
+        { "name": "IAM e AVC (Protocolos de tempo)", "importance": "Média" }
+      ],
+      "strategy": "Foque nos algoritmos de atendimento. Saiba a diferença entre ritmos chocáveis e não chocáveis. Decore o XABCDE do trauma.",
+      "dailyGoal": "20 Questões (Estudo de Caso)"
+    },
+    {
+      "id": "specific-groups",
+      "title": "Módulo 5: Grupos Específicos",
+      "description": "Saúde da Mulher, Criança, Idoso e Mental.",
+      "level": "Intermediário",
+      "icon": "Users",
+      "color": "text-purple-600",
+      "topics": [
+        { "name": "Pré-natal de Baixo Risco (MS)", "importance": "Alta" },
+        { "name": "Aleitamento Materno e Crescimento/Desenv.", "importance": "Alta" },
+        { "name": "Síndromes Hipertensivas na Gestação", "importance": "Média" },
+        { "name": "Estatuto do Idoso e Violência", "importance": "Média" },
+        { "name": "Saúde Mental (Reforma Psiquiátrica e CAPS)", "importance": "Média" }
+      ],
+      "strategy": "Para Saúde da Mulher: foque nos exames de pré-natal trimestre a trimestre. Para Criança: Marcos do desenvolvimento e aleitamento.",
+      "dailyGoal": "25 Questões"
+    }
+  ]
+}
