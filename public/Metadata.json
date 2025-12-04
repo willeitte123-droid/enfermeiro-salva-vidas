@@ -1,0 +1,7 @@
+{
+  "name": "Enfermagem Pro",
+  "description": "Sua plataforma completa de ferramentas, escalas e conhecimento para a prática de enfermagem.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
