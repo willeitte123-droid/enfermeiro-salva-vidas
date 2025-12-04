@@ -1,19 +1,18 @@
-const CACHE_NAME = 'enfermagem-pro-cache-v4';
+const CACHE_NAME = 'enfermagem-pro-cache-v5';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/logo.svg'
+  '/logo.svg',
+  '/offline.html'
 ];
 
 self.addEventListener('install', (event) => {
-  // Força o SW a se tornar ativo imediatamente após a instalação
-  self.skipWaiting();
+  self.skipWaiting(); // Força ativação imediata
   
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Cache aberto');
         return cache.addAll(urlsToCache);
       })
       .catch((err) => {
@@ -23,15 +22,14 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  // Reivindica o controle dos clientes imediatamente
-  event.waitUntil(clients.claim());
+  event.waitUntil(clients.claim()); // Controla as páginas imediatamente
 
-  const cacheWhitelist = [CACHE_NAME];
+  // Limpa caches antigos
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+          if (cacheName !== CACHE_NAME) {
             return caches.delete(cacheName);
           }
         })
@@ -41,37 +39,32 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache hit - retorna a resposta do cache
-        if (response) {
-          return response;
-        }
-        // Clone a requisição
-        const fetchRequest = event.request.clone();
+  // Estratégia: Network First, falling back to Cache (Melhor para apps dinâmicos)
+  // Exceto para assets estáticos, que podem ser Cache First
+  
+  const isStatic = event.request.url.match(/\.(png|jpg|jpeg|svg|css|js)$/);
 
-        return fetch(fetchRequest).then(
-          (response) => {
-            // Verifica se recebemos uma resposta válida
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone a resposta
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                // Apenas cacheia requisições GET http/https (evita chrome-extension, etc)
-                if (event.request.url.startsWith('http')) {
-                    cache.put(event.request, responseToCache);
-                }
-              });
-
-            return response;
-          }
-        );
+  if (isStatic) {
+    // Cache First para imagens e estilos
+    event.respondWith(
+      caches.match(event.request).then((response) => {
+        return response || fetch(event.request);
       })
-  );
+    );
+  } else {
+    // Network First para o resto (garante dados atualizados)
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => {
+          return caches.match(event.request)
+            .then((response) => {
+              if (response) return response;
+              // Se falhar tudo e for navegação, retorna página offline
+              if (event.request.mode === 'navigate') {
+                return caches.match('/offline.html');
+              }
+            });
+        })
+    );
+  }
 });
