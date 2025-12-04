@@ -1,4 +1,4 @@
-const CACHE_NAME = 'enfermagem-pro-cache-v5';
+const CACHE_NAME = 'enfermagem-pro-cache-v6';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -39,27 +39,26 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Estratégia: Network First, falling back to Cache (Melhor para apps dinâmicos)
-  // Exceto para assets estáticos, que podem ser Cache First
+  // Estratégia: Network First, falling back to Cache
+  // Importante: Não interceptar requisições de API ou externas se não necessário
   
-  const isStatic = event.request.url.match(/\.(png|jpg|jpeg|svg|css|js)$/);
+  const isStatic = event.request.url.match(/\.(png|jpg|jpeg|svg|css|js|json)$/);
 
   if (isStatic) {
-    // Cache First para imagens e estilos
+    // Cache First para imagens e estilos estáticos
     event.respondWith(
       caches.match(event.request).then((response) => {
         return response || fetch(event.request);
       })
     );
   } else {
-    // Network First para o resto (garante dados atualizados)
+    // Network First para navegação e dados (garante atualização)
     event.respondWith(
       fetch(event.request)
         .catch(() => {
           return caches.match(event.request)
             .then((response) => {
               if (response) return response;
-              // Se falhar tudo e for navegação, retorna página offline
               if (event.request.mode === 'navigate') {
                 return caches.match('/offline.html');
               }
