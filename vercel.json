@@ -1,24 +1,7 @@
 {
-  "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/images/:path*",
-      "destination": "/images/:path*"
-    },
-    {
-      "source": "/assets/:path*",
-      "destination": "/assets/:path*"
-    },
-    {
-      "source": "/sw.js",
-      "destination": "/sw.js"
-    },
-    {
-      "source": "/manifest.json",
-      "destination": "/manifest.json"
-    },
-    {
-      "source": "/(.*)",
+      "source": "/((?!assets/|images/|sw.js|manifest.json|logo.svg|robots.txt|offline.html|favicon.ico).*)",
       "destination": "/index.html"
     }
   ]

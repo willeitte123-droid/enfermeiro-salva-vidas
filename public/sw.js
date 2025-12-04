@@ -1,4 +1,4 @@
-const CACHE_NAME = 'enfermagem-pro-cache-v8';
+const CACHE_NAME = 'enfermagem-pro-cache-v9';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -38,12 +38,12 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Ignora requisições que não sejam GET ou que sejam para outros domínios (APIs)
   if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
     return;
   }
 
-  const isStatic = event.request.url.match(/\.(png|jpg|jpeg|svg|css|js|json)$/);
+  // Verifica extensões de arquivo estático
+  const isStatic = event.request.url.match(/\.(png|jpg|jpeg|svg|css|js|json|ico)$/);
 
   if (isStatic) {
     event.respondWith(
