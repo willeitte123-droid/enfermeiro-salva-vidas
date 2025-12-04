@@ -1,4 +1,4 @@
-const CACHE_NAME = 'enfermagem-pro-cache-v6';
+const CACHE_NAME = 'enfermagem-pro-cache-v7';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -8,7 +8,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // Força ativação imediata
+  self.skipWaiting();
   
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -22,9 +22,8 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(clients.claim()); // Controla as páginas imediatamente
+  event.waitUntil(clients.claim());
 
-  // Limpa caches antigos
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -39,20 +38,15 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Estratégia: Network First, falling back to Cache
-  // Importante: Não interceptar requisições de API ou externas se não necessário
-  
   const isStatic = event.request.url.match(/\.(png|jpg|jpeg|svg|css|js|json)$/);
 
   if (isStatic) {
-    // Cache First para imagens e estilos estáticos
     event.respondWith(
       caches.match(event.request).then((response) => {
         return response || fetch(event.request);
       })
     );
   } else {
-    // Network First para navegação e dados (garante atualização)
     event.respondWith(
       fetch(event.request)
         .catch(() => {
