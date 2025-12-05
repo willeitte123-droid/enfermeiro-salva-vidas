@@ -108,57 +108,76 @@
       "dailyGoal": "20 Questões"
     },
     {
-      "id": "nursing-fundamentals",
-      "title": "Módulo 2: Fundamentos e Ética",
-      "description": "A base da prática. Procedimentos, cálculos e legislação profissional.",
-      "level": "Essencial",
-      "icon": "Stethoscope",
-      "color": "text-emerald-600",
+      "id": "admin-nursing",
+      "title": "Módulo 2: Administração em Enfermagem",
+      "description": "Gestão de pessoas, dimensionamento e auditoria. Fundamental para concursos de liderança.",
+      "level": "Avançado",
+      "icon": "Calculator",
+      "color": "text-indigo-600",
       "dbCategory": "Fundamentos de Enfermagem",
       "questionCount": 20,
       "resources": [
-        { "type": "pdf", "title": "Guia de Bolso: Cálculos de Medicação" },
-        { "type": "pdf", "title": "Código de Ética Comentado" },
-        { "type": "video", "title": "Técnicas de Sondagem (Passo a Passo)" }
+        { "type": "pdf", "title": "Resolução COFEN 543/2017" },
+        { "type": "video", "title": "Cálculo de Dimensionamento na Prática" }
       ],
       "topics": [
         { 
-          "name": "Código de Ética (Res. 564/2017) - Penalidades", 
+          "name": "Dimensionamento de Pessoal (Res. 543/2017)", 
           "importance": "Altíssima",
-          "content": "Foque nas penalidades (Art. 108):<br>1. <strong>Advertência Verbal</strong><br>2. <strong>Multa</strong> (1 a 10 anuidades)<br>3. <strong>Censura</strong> (Publicação oficial)<br>4. <strong>Suspensão</strong> (até 90 dias)<br>5. <strong>Cassação</strong> (até 30 anos - competência exclusiva do COFEN).<br>Saber quem aplica cada uma é essencial."
+          "content": "Baseado no SCP (Fugulin). Horas de enfermagem por paciente/24h: <strong>Mínimos (4h)</strong>, <strong>Intermediários (6h)</strong>, <strong>Alta Dep (10h)</strong>, <strong>Semi-intensivo (10h)</strong>, <strong>Intensivo (18h)</strong>. Distribuição percentual de enfermeiros vs técnicos."
         },
         { 
-          "name": "Lei do Exercício Profissional (7.498/86)", 
+          "name": "Teorias de Administração e Liderança", 
           "importance": "Alta",
-          "content": "Define quem é quem na enfermagem. <strong>Privativo do Enfermeiro:</strong> Direção de órgãos de enfermagem, consulta de enfermagem, prescrição da assistência, cuidados a pacientes graves com risco de vida e cuidados de maior complexidade técnica."
+          "content": "<strong>Clássica (Fayol/Taylor):</strong> Foco na tarefa e estrutura. <strong>Relações Humanas:</strong> Foco nas pessoas. <strong>Estilos de Liderança:</strong> Autocrática, Democrática, Laissez-faire e Situacional (a mais cobrada)."
         },
         { 
-          "name": "Cálculo de Medicação e Gotejamento", 
-          "importance": "Altíssima",
-          "content": "<strong>Fórmulas Básicas:</strong><br>Gotas/min = Volume / (Tempo em horas x 3)<br>Microgotas/min = Volume / Tempo em horas<br>1 ml = 20 gotas = 60 microgotas.<br>Estude transformação de soro (regra de três) e diluição de redutores (Permanganato)."
-        },
-        { 
-          "name": "Sinais Vitais e Semiotécnica", 
+          "name": "Auditoria em Saúde", 
           "importance": "Média",
-          "content": "<strong>PA:</strong> Técnica correta, manguito adequado (80% circunferência).<br><strong>Pulso:</strong> Locais de aferição, terminologia (bradicardia/taquicardia, filiforme).<br><strong>Respiração:</strong> Padrões respiratórios (Cheyne-Stokes, Kussmaul, Biot).<br><strong>Temperatura:</strong> Valores de referência e tipos de febre."
+          "content": "Tipos: <strong>Prospectiva</strong> (prévia), <strong>Concorrente</strong> (durante a internação/beira-leito) e <strong>Retrospectiva</strong> (após alta/análise de prontuário). Glosas e custos."
         },
         { 
-          "name": "Sondagens (Vesical e Nasogástrica)", 
+          "name": "Educação Permanente vs Continuada", 
           "importance": "Alta",
-          "content": "<strong>SNG/SNE:</strong> Medição (nariz-lóbulo-xifoide), teste de posicionamento (ausculta e pH), fixação.<br><strong>SVD:</strong> Técnica asséptica rigorosa, sistema fechado, fixação (homem: abdome inferior/cista ilíaca; mulher: face interna da coxa)."
-        },
-        { 
-          "name": "Feridas e Curativos (Coberturas)", 
-          "importance": "Alta",
-          "content": "<strong>Classificação:</strong> Limpa, Contaminada, Infectada.<br><strong>Coberturas:</strong><br>• <em>Alginato:</em> Exsudato moderado/alto, hemostasia.<br>• <em>Hidrocoloide:</em> Exsudato leve/moderado, autólise.<br>• <em>Hidrogel:</em> Feridas secas/necrose, desbridamento.<br>• <em>Carvão Ativado:</em> Feridas infectadas com odor."
+          "content": "<strong>Continuada:</strong> Cursos pontuais, vertical, atualização técnica. <strong>Permanente:</strong> Aprender no trabalho, problematização da realidade, transformação das práticas."
         }
       ],
-      "strategy": "Para Ética: memorize as penalidades e quem pode aplicá-las. Para Fundamentos: Treine cálculos todos os dias. Decore as indicações das coberturas de curativos.",
-      "dailyGoal": "25 Questões (sendo 5 de cálculo)"
+      "strategy": "Decore a tabela de horas do dimensionamento. Entenda a diferença entre educação permanente (problematização) e continuada (cursos).",
+      "dailyGoal": "15 Questões"
+    },
+    {
+      "id": "ethics-legislation",
+      "title": "Módulo 3: Ética e Legislação",
+      "description": "Código de Ética, Lei do Exercício Profissional e Bioética.",
+      "level": "Essencial",
+      "icon": "Gavel",
+      "color": "text-slate-600",
+      "dbCategory": "Ética e Legislação",
+      "questionCount": 20,
+      "resources": [],
+      "topics": [
+        { 
+          "name": "Lei 7.498/86 (Exercício Profissional)", 
+          "importance": "Altíssima",
+          "content": "Atividades <strong>Privativas do Enfermeiro</strong>: Direção, Consulta, Prescrição da assistência, Cuidados a pacientes graves/risco de vida. Diferença entre Técnico e Auxiliar."
+        },
+        { 
+          "name": "Código de Ética (Penalidades)", 
+          "importance": "Altíssima",
+          "content": "<strong>Advertência Verbal</strong>, <strong>Multa</strong> (1-10 anuidades), <strong>Censura</strong>, <strong>Suspensão</strong> (até 90 dias), <strong>Cassação</strong> (até 30 anos - só Cofen). Prescrição em 5 anos."
+        },
+        { 
+          "name": "Bioética (Principialismo)", 
+          "importance": "Alta",
+          "content": "<strong>Beneficência</strong> (fazer o bem), <strong>Não-maleficência</strong> (não causar dano), <strong>Autonomia</strong> (consentimento) e <strong>Justiça</strong> (equidade)."
+        }
+      ],
+      "strategy": "Foque nas atividades privativas do enfermeiro e em quem pode aplicar cada penalidade ética.",
+      "dailyGoal": "20 Questões"
     },
     {
       "id": "public-health",
-      "title": "Módulo 3: Saúde Pública e Epidemiologia",
+      "title": "Módulo 4: Saúde Pública e Epidemiologia",
       "description": "Vacinas, doenças transmissíveis e indicadores de saúde.",
       "level": "Intermediário",
       "icon": "Biohazard",
@@ -202,7 +221,7 @@
     },
     {
       "id": "emergency",
-      "title": "Módulo 4: Urgência e Emergência",
+      "title": "Módulo 5: Urgência e Emergência",
       "description": "Protocolos de suporte à vida e atendimento pré-hospitalar.",
       "level": "Avançado",
       "icon": "Siren",
@@ -245,8 +264,108 @@
       "dailyGoal": "20 Questões (Estudo de Caso)"
     },
     {
+      "id": "adult-health",
+      "title": "Módulo 6: Saúde do Adulto (Crônicas)",
+      "description": "HAS, Diabetes, Renal e Feridas. O dia a dia da clínica médica.",
+      "level": "Essencial",
+      "icon": "Activity",
+      "color": "text-orange-500",
+      "dbCategory": "Saúde Pública",
+      "questionCount": 20,
+      "resources": [],
+      "topics": [
+        { 
+          "name": "Hipertensão e Diabetes (Cadernos AB)", 
+          "importance": "Altíssima",
+          "content": "<strong>HAS:</strong> Diagnóstico, metas pressóricas, crise hipertensiva vs urgência. <strong>DM:</strong> Diagnóstico (Jejum ≥ 126, HbA1c ≥ 6,5%), Insulinas (Rápida vs NPH), Cetoacidose Diabética (Sinais)."
+        },
+        { 
+          "name": "Doença Renal Crônica", 
+          "importance": "Alta",
+          "content": "Estadiamento pela TFG. Indicações de diálise. Cuidados com fístula arteriovenosa (trilho, frêmito)."
+        },
+        { 
+          "name": "Feridas e Estomias", 
+          "importance": "Alta",
+          "content": "Estadiamento de LPP. Coberturas (Carvão, Prata, Hidrogel, AGE). Classificação de estomas."
+        }
+      ],
+      "strategy": "Revise os Cadernos de Atenção Básica (CAB) de HAS e Diabetes. Foque nos critérios diagnósticos e insulinas.",
+      "dailyGoal": "20 Questões"
+    },
+    {
+      "id": "worker-health",
+      "title": "Módulo 7: Saúde do Trabalhador e Biossegurança",
+      "description": "NR-32, Doenças Ocupacionais e Controle de Infecção.",
+      "level": "Intermediário",
+      "icon": "Briefcase",
+      "color": "text-emerald-700",
+      "dbCategory": "Saúde Pública",
+      "questionCount": 15,
+      "resources": [],
+      "topics": [
+        { 
+          "name": "NR-32 (Segurança em Serviços de Saúde)", 
+          "importance": "Altíssima",
+          "content": "Vacinação obrigatória (Tétano, HepB). Proibição de adornos. Descarte de perfurocortantes (não reencapar). EPIs."
+        },
+        { 
+          "name": "Resíduos de Saúde (RDC 222/18)", 
+          "importance": "Alta",
+          "content": "<strong>Grupo A (Infectante):</strong> Saco branco. <strong>Grupo B (Químico):</strong> Galões. <strong>Grupo E (Perfurocortante):</strong> Caixa rígida. <strong>Grupo D (Comum):</strong> Saco preto."
+        },
+        { 
+          "name": "Doenças Ocupacionais (LER/DORT, PAIR)", 
+          "importance": "Média",
+          "content": "Notificação compulsória em unidades sentinelas. CAT (Comunicação de Acidente de Trabalho)."
+        },
+        { 
+          "name": "Infecção Hospitalar (Precauções)", 
+          "importance": "Alta",
+          "content": "<strong>Padrão:</strong> Todos. <strong>Contato:</strong> Bactérias multirresistentes (avental/luva). <strong>Gotículas:</strong> Meningite/Influenza (máscara cirúrgica <1m). <strong>Aerossóis:</strong> TB/Sarampo (N95 + Quarto pressão negativa)."
+        }
+      ],
+      "strategy": "Memorize as cores dos sacos de lixo e os tipos de precaução para cada doença chave (TB, Meningite, KPC).",
+      "dailyGoal": "15 Questões"
+    },
+    {
+      "id": "surgical-center",
+      "title": "Módulo 8: Centro Cirúrgico e CME",
+      "description": "Períodos cirúrgicos, esterilização e segurança do paciente.",
+      "level": "Avançado",
+      "icon": "Scissors",
+      "color": "text-fuchsia-600",
+      "dbCategory": "Centro Cirúrgico",
+      "questionCount": 20,
+      "resources": [],
+      "topics": [
+        { 
+          "name": "Cirurgia Segura (Checklist OMS)", 
+          "importance": "Altíssima",
+          "content": "<strong>Sign In:</strong> Antes da indução (identificação, sítio). <strong>Time Out:</strong> Antes da incisão (pausa cirúrgica). <strong>Sign Out:</strong> Antes de sair da sala (contagem de materiais)."
+        },
+        { 
+          "name": "Central de Material (CME) - RDC 15", 
+          "importance": "Alta",
+          "content": "Classificação de Spaulding (Críticos, Semicríticos, Não Críticos). Métodos de esterilização (Autoclave = físico). Monitoramento biológico (Geobacillus)."
+        },
+        { 
+          "name": "Tempos e Posições Cirúrgicas", 
+          "importance": "Média",
+          "content": "Diérese, Hemostasia, Exérese, Síntese. Posições: Trendelenburg, Litotomia, Prona."
+        },
+        { 
+          "name": "Recuperação Pós-Anestésica (SRPA)", 
+          "importance": "Alta",
+          "content": "Índice de Aldrete e Kroulik (nota > 8-9 para alta). Monitoramento de complicações imediatas."
+        }
+      ],
+      "strategy": "O Checklist de Cirurgia Segura cai muito. Saiba o que é verificado em cada etapa (Antes da anestesia, Antes do corte, Antes da saída).",
+      "dailyGoal": "20 Questões"
+    },
+    {
       "id": "specific-groups",
-      "title": "Módulo 5: Grupos Específicos",
+      "title": "Módulo 9: Grupos Específicos",
       "description": "Saúde da Mulher, Criança, Idoso e Mental.",
       "level": "Intermediário",
       "icon": "Users",

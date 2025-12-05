@@ -4,7 +4,8 @@ import {
   Map, Compass, Lightbulb, CheckCircle2, 
   ArrowRight, BookOpen, Target, CalendarDays, 
   Trophy, Flame, Scale, Stethoscope, Biohazard, 
-  Siren, Users, Lock, PlayCircle, Brain, Star, ChevronDown
+  Siren, Users, Lock, PlayCircle, Brain, Star, ChevronDown,
+  Calculator, Gavel, Briefcase, Scissors, Activity
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,7 +25,8 @@ interface Profile {
 }
 
 const iconMap: Record<string, React.ElementType> = {
-  Scale, Stethoscope, Biohazard, Siren, Users
+  Scale, Stethoscope, Biohazard, Siren, Users, 
+  Calculator, Gavel, Briefcase, Scissors, Activity
 };
 
 const StudyTracks = () => {
@@ -139,7 +141,7 @@ const StudyTracks = () => {
             <h2 className="text-xl font-bold flex items-center gap-2">
               <Target className="h-5 w-5 text-primary" /> Módulos de Aprendizagem
             </h2>
-            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">5 Módulos Disponíveis</span>
+            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">9 Módulos Disponíveis</span>
           </div>
 
           <div className="grid gap-6">
@@ -212,11 +214,11 @@ const StudyTracks = () => {
                                     value={`topic-${i}`} 
                                     className="border rounded-md bg-background overflow-hidden"
                                   >
-                                    <AccordionTrigger className="px-3 py-3 hover:no-underline hover:bg-accent/50 transition-colors text-sm [&[data-state=open]]:bg-accent/50">
-                                      <div className="flex items-start justify-between w-full text-left gap-3">
-                                        <span className="font-medium text-foreground/90 leading-snug">{topic.name}</span>
+                                    <AccordionTrigger className="px-3 py-2.5 hover:no-underline hover:bg-accent/50 transition-colors text-sm [&[data-state=open]]:bg-accent/50">
+                                      <div className="flex items-center justify-between w-full text-left gap-3">
+                                        <span className="font-medium text-foreground/90 truncate flex-1">{topic.name}</span>
                                         <Badge variant="outline" className={cn(
-                                          "text-[10px] uppercase tracking-wider shrink-0 mt-0.5",
+                                          "text-[10px] uppercase tracking-wider shrink-0",
                                           topic.importance === "Altíssima" ? "border-red-200 bg-red-50 text-red-600 dark:bg-red-900/20" :
                                           topic.importance === "Alta" ? "border-orange-200 bg-orange-50 text-orange-600 dark:bg-orange-900/20" :
                                           "border-blue-200 bg-blue-50 text-blue-600 dark:bg-blue-900/20"
