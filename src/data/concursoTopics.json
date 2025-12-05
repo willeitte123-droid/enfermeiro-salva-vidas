@@ -5,6 +5,17 @@
     "color": "text-blue-600",
     "topics": [
       {
+        "title": "Evolução Histórica das Políticas de Saúde",
+        "summary": "Do higienismo à criação do SUS: a linha do tempo que cai em prova.",
+        "keyPoints": [
+          "<strong>Era do Saneamento (República Velha):</strong> Modelo Campanhista (Oswaldo Cruz). Foco em epidemias (varíola, peste), ações autoritárias e pontuais.",
+          "<strong>Era da Previdência Social (1923-1988):</strong> Saúde vinculada ao trabalho formal (cidadania regulada).<br>1. <strong>CAPs (1923):</strong> Caixas de Aposentadoria e Pensões (por empresa).<br>2. <strong>IAPs (1933):</strong> Institutos (por categoria profissional - Vargas).<br>3. <strong>INPS (1966):</strong> Unificação da previdência (Ditadura).<br>4. <strong>INAMPS (1977):</strong> Foco na assistência médica curativa e hospitalocêntrica.",
+          "<strong>Reforma Sanitária (Década de 70/80):</strong> Movimento social contra a ditadura e pela saúde como direito. Marco: <strong>8ª Conferência Nacional de Saúde (1986)</strong> - primeira com participação popular, bases do SUS.",
+          "<strong>SUDS (1987):</strong> Estratégia ponte para a descentralização antes da Constituição de 88."
+        ],
+        "goldenTip": "Memorize a lógica: Antes de 88, a saúde pública (Ministério) cuidava dos pobres/indigentes e prevenção. A Previdência (INAMPS) cuidava dos trabalhadores formais (medicina curativa). O SUS unificou tudo: Saúde é direito de TODOS."
+      },
+      {
         "title": "Constituição Federal de 1988 (Art. 196 a 200)",
         "summary": "A base constitucional da Saúde no Brasil (Seção II - Da Saúde). Leitura obrigatória.",
         "keyPoints": [
@@ -81,6 +92,16 @@
           "<strong>Índice de Segurança Técnico (IST):</strong> Acrescentar no mínimo 15% ao total (para cobrir férias e ausências) ou 8,33% se o quadro já cobre férias."
         ],
         "goldenTip": "No Cuidado Intensivo, a equipe deve ser composta majoritariamente por Enfermeiros (mínimo 52%). É a única categoria onde Enfermeiros superam os Técnicos."
+      },
+      {
+        "title": "Educação Permanente vs. Continuada",
+        "summary": "Diferenças conceituais cruciais para concursos de gestão.",
+        "keyPoints": [
+          "<strong>Educação Continuada:</strong> Modelo tradicional, escolar. Foco na atualização técnica, pontual, uniprofissional e vertical (transmissão de conhecimento). Ex: Curso de atualização em feridas.",
+          "<strong>Educação Permanente em Saúde (EPS):</strong> Política do SUS. Foco na <strong>transformação das práticas</strong>. Parte dos problemas reais do cotidiano (problematização). Multiprofissional e horizontal. Aprendizagem NO trabalho e PARA o trabalho.",
+          "<strong>PNEPS:</strong> Política Nacional de Educação Permanente em Saúde. Ferramenta de gestão para mudar a realidade do serviço."
+        ],
+        "goldenTip": "Palavras-chave da EPS: 'Problematização', 'Cotidiano', 'Transformação', 'Rodas de Conversa'. Palavras-chave da Continuada: 'Curso', 'Técnica', 'Atualização', 'Transmissão'."
       },
       {
         "title": "Teorias de Administração e Liderança",
@@ -205,6 +226,40 @@
         "goldenTip": "A Rifampicina colore fluidos corporais (urina, suor, lágrima) de alaranjado. O Etambutol pode causar neurite óptica (alteração visual). Pirazinamida aumenta ácido úrico."
       },
       {
+        "title": "Hanseníase (Manejo Clínico)",
+        "summary": "Diagnóstico, classificação e tratamento (PQT).",
+        "keyPoints": [
+          "<strong>Diagnóstico:</strong> Clínico (lesão de pele com alteração de sensibilidade - Térmica, Dolorosa, Tátil) + Baciloscopia (sua negatividade não exclui).",
+          "<strong>Classificação Operacional:</strong><ul><li><strong>Paucibacilar (PB):</strong> Até 5 lesões de pele. Baciloscopia negativa. Tratamento: 6 doses de PQT em até 9 meses.</li><li><strong>Multibacilar (MB):</strong> Mais de 5 lesões. Baciloscopia positiva. Tratamento: 12 doses de PQT em até 18 meses.</li></ul>",
+          "<strong>Drogas (PQT):</strong> Rifampicina (mensal supervisionada), Dapsona (diária), Clofazimina (diária - causa coloração acobreada na pele).",
+          "<strong>Reações Hansênicas:</strong> Tipo 1 (Reversa - piora das lesões) e Tipo 2 (Eritema Nodoso - nódulos dolorosos). Tratar com corticoide e talidomida, respectivamente, sem suspender a PQT."
+        ],
+        "goldenTip": "A sensibilidade térmica é a primeira a ser perdida na hanseníase, seguida pela dolorosa e, por fim, a tátil. Teste com tubos de ensaio quente/frio."
+      },
+      {
+        "title": "Arboviroses (Dengue, Zika, Chikungunya)",
+        "summary": "Diferenciação clínica e manejo.",
+        "keyPoints": [
+          "<strong>Dengue:</strong> Febre alta súbita, mialgia, dor retro-orbital. Risco de <strong>Choque</strong> e Plaquetopenia. Prova do Laço positiva indica fragilidade capilar. Hidratação é a base do tratamento.",
+          "<strong>Chikungunya:</strong> Febre alta + <strong>Artralgia intensa</strong> (dor nas juntas) e edema articular. Pode cronificar (fase crônica > 3 meses).",
+          "<strong>Zika:</strong> Febre baixa ou ausente, exantema pruriginoso intenso (coceira), conjuntivite não purulenta. Risco de <strong>Microcefalia</strong> (gestante) e Guillain-Barré.",
+          "<strong>Sinais de Alarme (Dengue):</strong> Dor abdominal intensa, vômitos persistentes, hipotensão postural, hepatomegalia, sangramento de mucosas, aumento do hematócrito (hemoconcentração)."
+        ],
+        "goldenTip": "Na Dengue, a queda da febre (defervescência) marca o início da fase crítica, onde podem ocorrer os sinais de alarme e choque. Vigilância redobrada!"
+      },
+      {
+        "title": "Indicadores de Saúde",
+        "summary": "Conceitos básicos de epidemiologia para provas.",
+        "keyPoints": [
+          "<strong>Coeficiente de Mortalidade Infantil:</strong> (Óbitos < 1 ano / Nascidos Vivos) x 1.000. Melhor indicador de qualidade de vida e assistência.",
+          "<strong>Razão de Mortalidade Materna:</strong> (Óbitos maternos / Nascidos Vivos) x 100.000. Reflete a assistência à mulher.",
+          "<strong>Mortalidade Geral:</strong> (Óbitos totais / População total) x 1.000.",
+          "<strong>Letalidade:</strong> (Óbitos pela doença / Doentes) x 100. Mede a gravidade da doença.",
+          "<strong>Morbidade:</strong><ul><li><strong>Incidência:</strong> Casos NOVOS (risco de adoecer).</li><li><strong>Prevalência:</strong> Casos TOTAIS (novos + antigos) (carga da doença).</li></ul>"
+        ],
+        "goldenTip": "Neonatal Precoce (0-6 dias) é o componente que mais pesa na mortalidade infantil no Brasil hoje, refletindo a qualidade do parto e nascimento."
+      },
+      {
         "title": "Rede de Frio e Imunobiológicos",
         "summary": "Logística e conservação de vacinas.",
         "keyPoints": [
@@ -253,6 +308,16 @@
           "<strong>Fístula Arteriovenosa (FAV):</strong> Unir artéria e veia para hemodiálise. Cuidados: Avaliar frêmito (tato) e sopro (ausculta), não verificar PA ou puncionar no membro da FAV."
         ],
         "goldenTip": "A creatinina isolada não é o melhor marcador. Deve-se calcular a TFG (fórmulas CKD-EPI ou Cockcroft-Gault) para estadiar a doença."
+      },
+      {
+        "title": "Feridas e Estomias",
+        "summary": "Avaliação, tratamento e cuidados específicos.",
+        "keyPoints": [
+          "<strong>Tecidos do Leito:</strong> Granulação (Vermelho - Proteger), Esfacelo (Amarelo - Desbridar), Necrose (Preto - Desbridar).",
+          "<strong>Coberturas:</strong><ul><li><strong>Alginato de Cálcio:</strong> Absorvente, hemostático, para feridas exsudativas/cavitárias.</li><li><strong>Hidrocoloide:</strong> Oclusivo, autolítico, para feridas superficiais pouco exsudativas.</li><li><strong>Carvão Ativado:</strong> Feridas fétidas e infectadas.</li><li><strong>Hidrogel:</strong> Amolece necrose, hidrata leito seco.</li></ul>",
+          "<strong>Estomias:</strong> Avaliar cor (vermelho vivo é normal), protrusão e pele periestoma. Recortar a bolsa 2-3mm maior que o estoma. Esvaziar quando 1/3 cheia."
+        ],
+        "goldenTip": "O desbridamento enzimático pode ser feito com Papaína (concentração varia com o tecido: necrose ~10%, granulação NÃO usar) ou Colagenase (mais lenta, não agride bordas)."
       }
     ]
   },
@@ -282,6 +347,18 @@
           "<strong>Acidente com Material Biológico:</strong> Lavar com água e sabão (não espremer), avaliar risco (status sorológico da fonte), iniciar quimioprofilaxia (PEP) para HIV em até 2h (ideal) ou 72h (máximo) se indicado."
         ],
         "goldenTip": "A Comunicação de Acidente de Trabalho (CAT) deve ser emitida mesmo que não haja afastamento do trabalho."
+      },
+      {
+        "title": "Gerenciamento de Resíduos (RDC 222/2018)",
+        "summary": "Segregação e descarte correto de resíduos de saúde.",
+        "keyPoints": [
+          "<strong>Grupo A (Infectante):</strong> Saco branco leitoso. Ex: Sondas, curativos com sangue, culturas, peças anatômicas.",
+          "<strong>Grupo B (Químico):</strong> Galões rígidos ou sacos laranja. Ex: Medicamentos vencidos, reagentes, quimioterápicos, reveladores de RX.",
+          "<strong>Grupo C (Radioativo):</strong> Recipientes blindados com símbolo radioativo. Ex: Medicina nuclear.",
+          "<strong>Grupo D (Comum/Reciclável):</strong> Saco preto ou colorido da reciclagem. Ex: Papel de escritório, fraldas não sujas de fezes (exceto isolamento), gesso.",
+          "<strong>Grupo E (Perfurocortante):</strong> Caixa rígida (Descarpack). Encher até 2/3 da capacidade. Ex: Agulhas, lâminas, ampolas de vidro."
+        ],
+        "goldenTip": "Os resíduos do Grupo A (Infectantes) de unidades de isolamento, laboratórios de microbiologia ou com Príons exigem tratamento prévio (autoclave/incineração) antes do descarte final."
       }
     ]
   },
@@ -325,6 +402,15 @@
           "<strong>Queimadura Elétrica:</strong> O dano interno é maior que o externo. Risco de Rabdomiólise (urina escura) e Arritmias Cardíacas. Monitorização obrigatória."
         ],
         "goldenTip": "Na regra dos 9, a palma da mão do paciente (incluindo dedos) representa aproximadamente 1% da superfície corporal, útil para queimaduras irregulares."
+      },
+      {
+        "title": "Emergências Clínicas (IAM e AVC)",
+        "summary": "Protocolos de atendimento tempo-dependentes.",
+        "keyPoints": [
+          "<strong>IAM (Infarto Agudo do Miocárdio):</strong> Dor torácica típica. Meta: ECG em até 10 minutos. IAM com Supra de ST: Reperfusão imediata (Angioplastia em <90min ou Trombólise em <30min). MONAB: Morfina, O2 (se sat <90%), Nitrato, AAS (mastigar), Beta-bloqueador.",
+          "<strong>AVC (Acidente Vascular Cerebral):</strong> Déficit focal súbito. Escala de Cincinnati (Face, Braço, Fala). Meta: TC de crânio em até 20 minutos (avaliada em 45). Trombólise (rtPA) possível até 4,5h do início dos sintomas se AVC Isquêmico."
+        ],
+        "goldenTip": "No AVC, o controle da PA é permissivo (deixa-se alta até 220/120 mmHg) para manter a perfusão cerebral, exceto se for fazer trombólise (aí deve ser < 185/110)."
       },
       {
         "title": "Estados de Choque",
@@ -467,6 +553,26 @@
           "<strong>Posições:</strong><ul><li><strong>Supina/Dorsal:</strong> Mais comum. Cuidados com occipital, calcâneos e plexo braquial (braço < 90º).</li><li><strong>Prona/Ventral:</strong> Coluna. Cuidado com olhos, mamas, genitália e tubo traqueal.</li><li><strong>Litotomia:</strong> Ginecológica. Risco de lesão de nervo fibular e TVP.</li><li><strong>Trendelenburg:</strong> Cabeça para baixo. Cirurgia pélvica. Risco de edema cerebral e dispneia.</li></ul>"
         ],
         "goldenTip": "Na posição de Litotomia, as pernas devem ser elevadas e abaixadas simultaneamente e lentamente por duas pessoas para evitar hipotensão brusca e luxação de quadril."
+      },
+      {
+        "title": "Cirurgia Segura (Protocolo OMS)",
+        "summary": "Checklist de verificação de segurança em 3 etapas.",
+        "keyPoints": [
+          "<strong>Sign In (Antes da Indução Anestésica):</strong> Confirmar identidade, sítio cirúrgico, procedimento, consentimento. Checar alergias e risco de via aérea difícil. Oximetria instalada.",
+          "<strong>Time Out (Antes da Incisão):</strong> Pausa Cirúrgica. Toda a equipe para. Confirmação verbal: paciente certo, sítio certo, procedimento certo. Antibiótico profilático feito (até 60 min antes).",
+          "<strong>Sign Out (Antes de sair da sala):</strong> Contagem de instrumentais, agulhas e compressas. Identificação de amostras (biópsia). Registro de problemas com equipamentos."
+        ],
+        "goldenTip": "O Time Out (Pausa Cirúrgica) é o momento mais crítico para evitar erros como cirurgia em paciente errado ou lado errado."
+      },
+      {
+        "title": "Recuperação Pós-Anestésica (SRPA)",
+        "summary": "Cuidados imediatos e critérios de alta.",
+        "keyPoints": [
+          "<strong>Monitorização:</strong> Sinais vitais a cada 15 min na 1ª hora. Atenção à permeabilidade de vias aéreas (risco de laringoespasmo/vômito).",
+          "<strong>Índice de Aldrete e Kroulik:</strong> Avalia 5 parâmetros (Atividade motora, Respiração, Circulação, Consciência, Saturação). Nota máxima 10. Alta da SRPA geralmente com nota ≥ 8 ou 9.",
+          "<strong>Complicações:</strong> Hipotermia (tremores aumentam consumo de O2), Dor, Náuseas/Vômitos, Retenção Urinária."
+        ],
+        "goldenTip": "A posição lateral de segurança é indicada na SRPA para pacientes sonolentos para prevenir broncoaspiração em caso de vômito."
       }
     ]
   },
@@ -498,6 +604,16 @@
           "<strong>Falsas Contraindicações:</strong> Hepatite B (vacinar bebê + imunoglobulina), Tuberculose (usar máscara), Mastite (manter amamentação para drenar)."
         ],
         "goldenTip": "O colostro (primeiros dias) é rico em proteínas e imunoglobulinas (vacina natural). O leite posterior (final da mamada) é rico em gordura (saciedade e ganho de peso)."
+      },
+      {
+        "title": "Crescimento e Desenvolvimento (CD)",
+        "summary": "Marcos do desenvolvimento neuropsicomotor e antropometria.",
+        "keyPoints": [
+          "<strong>Crescimento:</strong> O bebê perde até 10% do peso na 1ª semana e recupera até o 10º dia. Dobra o peso de nascimento aos 5 meses e triplica aos 12 meses. Estatura aumenta 50% no 1º ano.",
+          "<strong>Marcos do Desenvolvimento (Denver II):</strong><ul><li><strong>1 mês:</strong> Fixa o olhar, postura fletida.</li><li><strong>3 meses:</strong> Sustenta a cabeça (controle cervical), sorriso social.</li><li><strong>6 meses:</strong> Senta sem apoio, rola, transfere objetos de mão.</li><li><strong>9 meses:</strong> Pinça (polegar-indicador), engatinha, estranha desconhecidos.</li><li><strong>12 meses:</strong> Anda com apoio, fala primeiras palavras (papá/mamá).</li></ul>",
+          "<strong>Reflexos Primitivos:</strong> Moro (abraço), Sucção, Busca, Preensão Palmar/Plantar. Devem desaparecer entre 3-6 meses (sinal de amadurecimento cortical)."
+        ],
+        "goldenTip": "A ausência do sorriso social aos 3 meses ou a persistência de reflexos primitivos após os 6 meses são sinais de alerta para problemas neurológicos."
       }
     ]
   },
@@ -506,6 +622,18 @@
     "icon": "Heart",
     "color": "text-pink-600",
     "topics": [
+      {
+        "title": "Pré-Natal de Baixo Risco (Rotinas)",
+        "summary": "Cronograma de consultas e exames preconizados pelo MS.",
+        "keyPoints": [
+          "<strong>Consultas:</strong> Mínimo de 6. Mensais até 28ª sem; Quinzenais da 28ª à 36ª; Semanais da 36ª até o parto.",
+          "<strong>Exames 1º Trimestre:</strong> Tipagem Sanguínea/Rh (Coombs se Rh-), Hemograma, Glicemia Jejum, VDRL, Anti-HIV, HBsAg, Toxoplasmose (IgM/IgG), Urina I e Urocultura.",
+          "<strong>Exames 2º Trimestre:</strong> TOTG 75g (24-28 sem) para rastreio de Diabetes Gestacional.",
+          "<strong>Exames 3º Trimestre:</strong> Repetir Hemograma, Glicemia, VDRL, HIV, HBsAg, Urina. Pesquisa de Streptococcus B (Swab vaginal/retal 35-37 sem).",
+          "<strong>Vacinas:</strong> dT (se esquema incompleto), dTpa (a partir de 20 sem, a cada gestação), Hepatite B, Influenza."
+        ],
+        "goldenTip": "A suplementação de Ácido Fólico deve ser iniciada preferencialmente 3 meses antes da concepção até 12 semanas de gestação para prevenir defeitos do tubo neural."
+      },
       {
         "title": "Câncer de Colo do Útero e Mama",
         "summary": "Diretrizes de Rastreamento (INCA/MS).",
