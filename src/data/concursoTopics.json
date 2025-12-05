@@ -463,5 +463,181 @@
         "goldenTip": "A droga de escolha para tratar a crise hipertensiva na gestação é a Hidralazina EV ou Nifedipino VO. O Sulfato de Magnésio não é anti-hipertensivo, é anticonvulsivante."
       }
     ]
+  },
+  {
+    "category": "Saúde Mental (RAPS)",
+    "icon": "Brain",
+    "color": "text-teal-500",
+    "topics": [
+      {
+        "title": "Reforma Psiquiátrica e Lei 10.216/2001",
+        "summary": "A mudança do modelo hospitalocêntrico para o modelo psicossocial.",
+        "keyPoints": [
+          "<strong>Princípios:</strong> Desinstitucionalização, cidadania, reinserção social e cuidado em liberdade.",
+          "<strong>Lei 10.216/2001:</strong> Dispõe sobre a proteção e os direitos das pessoas portadoras de transtornos mentais. Veda a internação em instituições com características asilares.",
+          "<strong>Tipos de Internação:</strong><ul><li><strong>Voluntária:</strong> Com consentimento do paciente.</li><li><strong>Involuntária:</strong> Sem consentimento, a pedido de terceiro. Comunicar ao Ministério Público em 72h.</li><li><strong>Compulsória:</strong> Determinada pela Justiça.</li></ul>"
+        ],
+        "goldenTip": "A internação psiquiátrica é recurso terapêutico de exceção (último caso), devendo durar apenas o tempo necessário para a recuperação do quadro agudo."
+      },
+      {
+        "title": "Rede de Atenção Psicossocial (RAPS)",
+        "summary": "Estrutura e componentes da rede de cuidado.",
+        "keyPoints": [
+          "<strong>Atenção Básica:</strong> Porta de entrada. Consultório na Rua, UBS, NASF.",
+          "<strong>Atenção Psicossocial Estratégica (CAPS):</strong> Ordenador do cuidado.<ul><li><strong>CAPS I:</strong> Municípios < 20 mil hab.</li><li><strong>CAPS II:</strong> > 70 mil hab.</li><li><strong>CAPS III:</strong> > 150 mil hab. (Acolhimento noturno/24h).</li><li><strong>CAPS i (Infanto-juvenil):</strong> > 70 mil hab.</li><li><strong>CAPS ad (Álcool e Drogas):</strong> > 70 mil hab. (III funciona 24h).</li></ul>",
+          "<strong>Urgência e Emergência:</strong> SAMU 192, UPA 24h, Salas de Estabilização.",
+          "<strong>Atenção Residencial:</strong> Serviços Residenciais Terapêuticos (SRT) para egressos de longas internações.",
+          "<strong>Estratégias de Reabilitação:</strong> Iniciativas de geração de trabalho e renda."
+        ],
+        "goldenTip": "O CAPS III, CAPS ad III e CAPSi (se município grande) funcionam 24 horas, oferecendo leitos de acolhimento para crises, evitando internações hospitalares."
+      },
+      {
+        "title": "Psicofármacos e Cuidados",
+        "summary": "Principais classes e efeitos adversos.",
+        "keyPoints": [
+          "<strong>Antipsicóticos (Neurolépticos):</strong> Ex: Haloperidol (Típico), Risperidona (Atípico). Risco de Sintomas Extrapiramidais (impregnação), Discinesia Tardia e Síndrome Neuroléptica Maligna.",
+          "<strong>Estabilizadores de Humor:</strong> Ex: Carbonato de Lítio. Janela terapêutica estreita (Litemia 0,6-1,2). Sinais de toxicidade: tremor grosseiro, náusea, ataxia.",
+          "<strong>Benzodiazepínicos:</strong> Ex: Diazepam, Clonazepam. Risco de dependência e tolerância. Antídoto: Flumazenil.",
+          "<strong>Antidepressivos:</strong> ISRS (Fluoxetina, Sertralina) e Tricíclicos (Amitriptilina). Risco de suicídio no início do tratamento (melhora da energia antes do humor)."
+        ],
+        "goldenTip": "Na administração de Haloperidol, monitorar sinais de impregnação (rigidez, tremor). O antídoto para efeitos extrapiramidais agudos é o Biperideno."
+      }
+    ]
+  },
+  {
+    "category": "Saúde do Idoso",
+    "icon": "Activity",
+    "color": "text-lime-600",
+    "topics": [
+      {
+        "title": "Estatuto do Idoso e Políticas Públicas",
+        "summary": "Direitos fundamentais e diretrizes da Política Nacional de Saúde da Pessoa Idosa.",
+        "keyPoints": [
+          "<strong>Idoso:</strong> Pessoa com idade igual ou superior a 60 anos.",
+          "<strong>Prioridade Especial:</strong> Maiores de 80 anos têm preferência sobre os demais idosos (exceto em emergências).",
+          "<strong>Violência:</strong> Suspeita ou confirmação de violência contra idoso é de <strong>Notificação Compulsória</strong> e comunicação obrigatória à autoridade policial, Ministério Público ou Conselho Municipal do Idoso.",
+          "<strong>Direito a Acompanhante:</strong> Garantido em tempo integral em internações e observação.",
+          "<strong>Capacidade Funcional:</strong> É o novo paradigma de saúde do idoso. Foco na manutenção da autonomia (decisão) e independência (execução)."
+        ],
+        "goldenTip": "O envelhecimento fisiológico (normal) chama-se Senescência. O envelhecimento patológico (doenças) chama-se Senilidade."
+      },
+      {
+        "title": "Avaliação Multidimensional e Grandes Síndromes",
+        "summary": "Os 'Gigantes da Geriatria' e avaliação funcional.",
+        "keyPoints": [
+          "<strong>Os 5 Is (Gigantes):</strong><ul><li><strong>I</strong>ncapacidade Cognitiva (Demências).</li><li><strong>I</strong>nstabilidade Postural (Quedas).</li><li><strong>I</strong>mobilidade.</li><li><strong>I</strong>ncontinência (Urinária/Fecal).</li><li><strong>I</strong>atrogenia (Polifarmácia/Interações).</li></ul>",
+          "<strong>AVD (Atividades de Vida Diária):</strong><ul><li><strong>Básicas (Katz):</strong> Banho, vestir-se, higiene, transferências, continência, alimentação. (Perda tardia).</li><li><strong>Instrumentais (Lawton):</strong> Telefonar, compras, cozinhar, finanças, transporte. (Perda precoce na demência).</li></ul>"
+        ],
+        "goldenTip": "A perda da capacidade funcional geralmente ocorre primeiro nas Atividades Instrumentais (AIVD) e depois nas Básicas (ABVD)."
+      },
+      {
+        "title": "Imunização do Idoso",
+        "summary": "Calendário específico para maiores de 60 anos.",
+        "keyPoints": [
+          "<strong>Influenza:</strong> Dose única anual (Campanha).",
+          "<strong>Pneumocócica 23-valente:</strong> Indicada para acamados/institucionalizados. Dose única + 1 reforço após 5 anos.",
+          "<strong>Dupla Adulto (dT):</strong> Reforço a cada 10 anos.",
+          "<strong>Hepatite B:</strong> Esquema completo se não vacinado (3 doses).",
+          "<strong>Febre Amarela:</strong> Avaliar risco/benefício (risco de eventos adversos graves viscerotrópicos)."
+        ],
+        "goldenTip": "A vacina Influenza no idoso tem como principal objetivo reduzir as complicações (pneumonia) e a mortalidade, não necessariamente impedir a doença leve."
+      }
+    ]
+  },
+  {
+    "category": "Saúde do Adolescente",
+    "icon": "Users",
+    "color": "text-cyan-500",
+    "topics": [
+      {
+        "title": "Marcos do Desenvolvimento e Puberdade",
+        "summary": "Transformações físicas e Estadiamento de Tanner.",
+        "keyPoints": [
+          "<strong>Puberdade:</strong> Fenômeno biológico. Adolescência: Fenômeno social/psicológico (10-19 anos OMS; 12-18 anos ECA).",
+          "<strong>Meninas:</strong> Primeiro sinal é a <strong>Telarca</strong> (broto mamário - M2). Seguido por Pubarca (pelos) e Menarca (menstruação - M4). Pico do estirão antes da menarca.",
+          "<strong>Meninos:</strong> Primeiro sinal é o <strong>aumento do volume testicular</strong> (>4ml - G2). Seguido por Pubarca e mudança da voz. Pico do estirão é tardio (G4).",
+          "<strong>Escala de Tanner:</strong> Avalia Mamas (M), Genitais (G) e Pelos Pubianos (P). Vai do estágio 1 (infantil) ao 5 (adulto)."
+        ],
+        "goldenTip": "A ginecomastia puberal (aumento das mamas em meninos) é comum, fisiológica e geralmente regride espontaneamente em até 2 anos."
+      },
+      {
+        "title": "Abordagem HEEADSSS e Direitos",
+        "summary": "Consulta do adolescente e aspectos legais.",
+        "keyPoints": [
+          "<strong>Método HEEADSSS:</strong> Home (Casa), Education (Escola), Eating (Alimentação), Activities (Atividades), Drugs (Drogas), Sexuality (Sexualidade), Suicide/Depression (Suicídio), Safety (Segurança).",
+          "<strong>Confidencialidade:</strong> O adolescente tem direito ao sigilo e a ser atendido sozinho, salvo se houver risco de vida ou dano grave a si/outros. Se necessário quebrar sigilo, o adolescente deve ser informado antes.",
+          "<strong>ECA (Estatuto da Criança e do Adolescente):</strong> Criança (até 12 anos incompletos), Adolescente (12 a 18 anos). Em casos excepcionais, aplica-se até 21 anos."
+        ],
+        "goldenTip": "Na consulta, peça para o responsável sair em um momento para garantir o espaço de fala confidencial do adolescente, explicando que isso faz parte da rotina."
+      }
+    ]
+  },
+  {
+    "category": "Terapia Intensiva (UTI)",
+    "icon": "Activity",
+    "color": "text-purple-700",
+    "topics": [
+      {
+        "title": "Drogas Vasoativas",
+        "summary": "Vasopressores e inotrópicos: cuidados críticos.",
+        "keyPoints": [
+          "<strong>Noradrenalina:</strong> Vasopressor potente (alfa-adrenérgico). Escolha no choque séptico. Diluir em SG 5% (protege da oxidação). Administrar em acesso central (risco de necrose periférica).",
+          "<strong>Dobutamina:</strong> Inotrópico (beta-1). Aumenta força de contração. Indicada em choque cardiogênico/ICC. Pode causar taquicardia.",
+          "<strong>Nitroprussiato (Nipride):</strong> Vasodilatador potente (emergência hipertensiva). Fotossensível (proteger da luz). Risco de intoxicação por cianeto.",
+          "<strong>Cuidados Gerais:</strong> Bomba de Infusão obrigatória. Monitorização de PA invasiva (PAM). Não bolusar o equipo."
+        ],
+        "goldenTip": "A Noradrenalina não deve ser suspensa abruptamente devido ao risco de hipotensão de rebote severa. O desmame deve ser gradual."
+      },
+      {
+        "title": "Ventilação Mecânica e Sedação",
+        "summary": "Conceitos básicos de suporte ventilatório.",
+        "keyPoints": [
+          "<strong>Modos Ventilatórios:</strong> VCV (Volume Controlado), PCV (Pressão Controlada), PSV (Pressão de Suporte - espontâneo).",
+          "<strong>Parâmetros:</strong> PEEP (Pressão expiratória final positiva - mantém alvéolo aberto), FiO2 (Fração de O2), FR, Volume Corrente (6ml/kg peso predito).",
+          "<strong>Prevenção de PAV (Pneumonia):</strong> Cabeceira 30-45º, Higiene oral com clorexidina, Cuff 20-30 cmH2O, Despertar diário.",
+          "<strong>Sedação:</strong> Escala de RASS (Agitação/Sedação). Alvo geralmente 0 a -2 (sedação leve). Propofol, Midazolam, Fentanil, Precedex."
+        ],
+        "goldenTip": "PEEP alta (>5-10) melhora a oxigenação, mas pode causar hipotensão (diminui retorno venoso) e barotrauma (pneumotórax)."
+      },
+      {
+        "title": "Monitorização Hemodinâmica",
+        "summary": "PAM, PVC e Sinais de Perfusão.",
+        "keyPoints": [
+          "<strong>PAM (Pressão Arterial Média):</strong> (PAS + 2xPAD) / 3. Alvo para perfusão: ≥ 65 mmHg.",
+          "<strong>PVC (Pressão Venosa Central):</strong> Mede pré-carga de VD. Valor normal: 8-12 mmHg. Cateter na veia cava superior. Zero no eixo flebostático (4º EIC linha axilar média).",
+          "<strong>Sinais de Má Perfusão:</strong> Lactato elevado, Tempo de Enchimento Capilar > 3s, Pele moteada, Oligúria (<0,5ml/kg/h), Alteração do nível de consciência."
+        ],
+        "goldenTip": "O Lactato é o melhor marcador laboratorial de hipoperfusão tecidual (choque) e guia para a ressuscitação volêmica na sepse."
+      }
+    ]
+  },
+  {
+    "category": "Sistematização (SAE)",
+    "icon": "ClipboardList",
+    "color": "text-cyan-700",
+    "topics": [
+      {
+        "title": "Processo de Enfermagem (5 Etapas)",
+        "summary": "Metodologia científica do cuidado (Res. COFEN 358/2009).",
+        "keyPoints": [
+          "<strong>1. Coleta de Dados (Histórico):</strong> Anamnese e Exame Físico.",
+          "<strong>2. Diagnóstico de Enfermagem:</strong> Julgamento clínico (NANDA-I). Problema + Etiologia + Sinais/Sintomas.",
+          "<strong>3. Planejamento:</strong> Determinação dos resultados esperados (NOC) e intervenções (NIC).",
+          "<strong>4. Implementação:</strong> Realização das ações/prescrições.",
+          "<strong>5. Avaliação:</strong> Análise da evolução e resultados. Processo contínuo e cíclico."
+        ],
+        "goldenTip": "A SAE é a organização do trabalho, o Processo de Enfermagem é o método. O PE é obrigatório em TODOS os ambientes onde ocorre o cuidado de enfermagem (público ou privado)."
+      },
+      {
+        "title": "Taxonomias (NANDA, NIC, NOC)",
+        "summary": "Linguagem padronizada da enfermagem.",
+        "keyPoints": [
+          "<strong>NANDA-I (Diagnósticos):</strong> Foco no problema, Risco ou Promoção da Saúde. Estrutura P (Título) + E (Fatores Relacionados) + S (Características Definidoras).",
+          "<strong>NOC (Resultados):</strong> Nursing Outcomes Classification. Metas mensuráveis (escalas Likert) para avaliar a eficácia do cuidado.",
+          "<strong>NIC (Intervenções):</strong> Nursing Interventions Classification. Ações que o enfermeiro realiza. Padronização do 'o que fazer'."
+        ],
+        "goldenTip": "Diagnósticos de RISCO não possuem 'Características Definidoras' (sinais/sintomas), pois o problema ainda não aconteceu. Possuem apenas 'Fatores de Risco'."
+      }
+    ]
   }
 ]
