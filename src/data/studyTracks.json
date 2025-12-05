@@ -73,12 +73,36 @@
         { "type": "video", "title": "Aula 2: Decreto 7.508 Descomplicado" }
       ],
       "topics": [
-        { "name": "Evolução Histórica das Políticas de Saúde", "importance": "Média" },
-        { "name": "Constituição Federal (Art. 196 a 200)", "importance": "Altíssima" },
-        { "name": "Lei 8.080/90 (Orgânica da Saúde)", "importance": "Altíssima" },
-        { "name": "Lei 8.142/90 (Controle Social)", "importance": "Alta" },
-        { "name": "Decreto 7.508/11 (Regulamentação)", "importance": "Alta" },
-        { "name": "PNAB (Política Nacional de Atenção Básica)", "importance": "Alta" }
+        { 
+          "name": "Evolução Histórica das Políticas de Saúde", 
+          "importance": "Média",
+          "content": "Compreenda a linha do tempo: <strong>Era do Saneamento</strong> (Oswaldo Cruz), <strong>Era da Previdência Social</strong> (CAPs -> IAPs -> INPS -> INAMPS) onde saúde era vinculada ao trabalho formal, e a <strong>Reforma Sanitária</strong> (década de 70/80) que culminou na 8ª Conferência Nacional de Saúde e na criação do SUS na Constituição de 88."
+        },
+        { 
+          "name": "Constituição Federal (Art. 196 a 200)", 
+          "importance": "Altíssima",
+          "content": "<strong>Art. 196:</strong> Saúde é direito de todos e dever do Estado.<br><strong>Art. 198:</strong> Diretrizes (Descentralização, Atendimento Integral e Participação da Comunidade).<br><strong>Art. 199:</strong> Assistência à saúde é livre à iniciativa privada (caráter complementar).<br><strong>Art. 200:</strong> Competências do SUS (fiscalizar, executar ações de vigilância, saneamento, etc.)."
+        },
+        { 
+          "name": "Lei 8.080/90 (Orgânica da Saúde)", 
+          "importance": "Altíssima",
+          "content": "Define as condições para promoção, proteção e recuperação da saúde. Estabelece os princípios doutrinários (Universalidade, Integralidade, Equidade) e organizativos (Descentralização, Regionalização, Hierarquização). Define as competências de cada esfera de governo."
+        },
+        { 
+          "name": "Lei 8.142/90 (Controle Social)", 
+          "importance": "Alta",
+          "content": "Regulamenta a participação da comunidade e transferências de recursos.<br><strong>Conferências de Saúde:</strong> 4 em 4 anos, define diretrizes.<br><strong>Conselhos de Saúde:</strong> Permanentes e deliberativos, fiscalizam a execução e gastos.<br>Ambos têm composição paritária (50% usuários)."
+        },
+        { 
+          "name": "Decreto 7.508/11 (Regulamentação)", 
+          "importance": "Alta",
+          "content": "Regulamenta a Lei 8.080. Define conceitos chaves: <strong>Região de Saúde</strong>, <strong>Contrato Organizativo da Ação Pública (COAP)</strong>, <strong>Portas de Entrada</strong> (Atenção Primária, Urgência, Psicossocial e Especiais de acesso aberto), <strong>Comissões Intergestores</strong> e <strong>Mapa da Saúde</strong>."
+        },
+        { 
+          "name": "PNAB (Política Nacional de Atenção Básica)", 
+          "importance": "Alta",
+          "content": "Base da Estratégia Saúde da Família (ESF). Define que a Atenção Básica é a <strong>porta de entrada preferencial</strong> e o <strong>centro de comunicação</strong> da rede. Princípios: Longitudinalidade, Coordenação do cuidado. Equipe mínima: Médico, Enfermeiro, Téc. Enfermagem e ACS."
+        }
       ],
       "strategy": "Comece decorando os artigos da Constituição. Depois, faça um paralelo entre a 8.080 e o Decreto 7.508. Foque nas competências de cada ente (União, Estado, Município).",
       "dailyGoal": "20 Questões"
@@ -98,12 +122,36 @@
         { "type": "video", "title": "Técnicas de Sondagem (Passo a Passo)" }
       ],
       "topics": [
-        { "name": "Código de Ética (Res. 564/2017) - Penalidades", "importance": "Altíssima" },
-        { "name": "Lei do Exercício Profissional (7.498/86)", "importance": "Alta" },
-        { "name": "Cálculo de Medicação e Gotejamento", "importance": "Altíssima" },
-        { "name": "Sinais Vitais e Semiotécnica", "importance": "Média" },
-        { "name": "Sondagens (Vesical e Nasogástrica)", "importance": "Alta" },
-        { "name": "Feridas e Curativos (Coberturas)", "importance": "Alta" }
+        { 
+          "name": "Código de Ética (Res. 564/2017) - Penalidades", 
+          "importance": "Altíssima",
+          "content": "Foque nas penalidades (Art. 108):<br>1. <strong>Advertência Verbal</strong><br>2. <strong>Multa</strong> (1 a 10 anuidades)<br>3. <strong>Censura</strong> (Publicação oficial)<br>4. <strong>Suspensão</strong> (até 90 dias)<br>5. <strong>Cassação</strong> (até 30 anos - competência exclusiva do COFEN).<br>Saber quem aplica cada uma é essencial."
+        },
+        { 
+          "name": "Lei do Exercício Profissional (7.498/86)", 
+          "importance": "Alta",
+          "content": "Define quem é quem na enfermagem. <strong>Privativo do Enfermeiro:</strong> Direção de órgãos de enfermagem, consulta de enfermagem, prescrição da assistência, cuidados a pacientes graves com risco de vida e cuidados de maior complexidade técnica."
+        },
+        { 
+          "name": "Cálculo de Medicação e Gotejamento", 
+          "importance": "Altíssima",
+          "content": "<strong>Fórmulas Básicas:</strong><br>Gotas/min = Volume / (Tempo em horas x 3)<br>Microgotas/min = Volume / Tempo em horas<br>1 ml = 20 gotas = 60 microgotas.<br>Estude transformação de soro (regra de três) e diluição de redutores (Permanganato)."
+        },
+        { 
+          "name": "Sinais Vitais e Semiotécnica", 
+          "importance": "Média",
+          "content": "<strong>PA:</strong> Técnica correta, manguito adequado (80% circunferência).<br><strong>Pulso:</strong> Locais de aferição, terminologia (bradicardia/taquicardia, filiforme).<br><strong>Respiração:</strong> Padrões respiratórios (Cheyne-Stokes, Kussmaul, Biot).<br><strong>Temperatura:</strong> Valores de referência e tipos de febre."
+        },
+        { 
+          "name": "Sondagens (Vesical e Nasogástrica)", 
+          "importance": "Alta",
+          "content": "<strong>SNG/SNE:</strong> Medição (nariz-lóbulo-xifoide), teste de posicionamento (ausculta e pH), fixação.<br><strong>SVD:</strong> Técnica asséptica rigorosa, sistema fechado, fixação (homem: abdome inferior/cista ilíaca; mulher: face interna da coxa)."
+        },
+        { 
+          "name": "Feridas e Curativos (Coberturas)", 
+          "importance": "Alta",
+          "content": "<strong>Classificação:</strong> Limpa, Contaminada, Infectada.<br><strong>Coberturas:</strong><br>• <em>Alginato:</em> Exsudato moderado/alto, hemostasia.<br>• <em>Hidrocoloide:</em> Exsudato leve/moderado, autólise.<br>• <em>Hidrogel:</em> Feridas secas/necrose, desbridamento.<br>• <em>Carvão Ativado:</em> Feridas infectadas com odor."
+        }
       ],
       "strategy": "Para Ética: memorize as penalidades e quem pode aplicá-las. Para Fundamentos: Treine cálculos todos os dias. Decore as indicações das coberturas de curativos.",
       "dailyGoal": "25 Questões (sendo 5 de cálculo)"
@@ -123,11 +171,31 @@
         { "type": "video", "title": "Epidemiologia: Indicadores de Saúde" }
       ],
       "topics": [
-        { "name": "Calendário Nacional de Vacinação (Criança/Adulto)", "importance": "Altíssima" },
-        { "name": "Doenças de Notificação Compulsória (Lista)", "importance": "Altíssima" },
-        { "name": "Tuberculose e Hanseníase (Tratamento/Diagnóstico)", "importance": "Alta" },
-        { "name": "Arboviroses (Dengue, Zika, Chikungunya)", "importance": "Alta" },
-        { "name": "Indicadores de Saúde (Mortalidade Materna/Infantil)", "importance": "Média" }
+        { 
+          "name": "Calendário Nacional de Vacinação (Criança/Adulto)", 
+          "importance": "Altíssima",
+          "content": "Foco nas mudanças recentes e doses de reforço. <strong>BCG/HepB</strong> ao nascer. <strong>Penta/VIP/Pneumo/Rota</strong> aos 2 e 4m. <strong>Meningo C</strong> aos 3 e 5m. <strong>Febre Amarela</strong> aos 9m. <strong>Tríplice Viral</strong> aos 12m. <strong>Tetra Viral/HepA</strong> aos 15m. Vacinação de gestantes (dTpa) e idosos (Influenza)."
+        },
+        { 
+          "name": "Doenças de Notificação Compulsória (Lista)", 
+          "importance": "Altíssima",
+          "content": "Memorize as de notificação <strong>IMEDIATA (24h)</strong>: Botulismo, Cólera, Sarampo, Rubéola, Raiva, Peste, Febre Amarela, Zika (gestante/óbito). E as <strong>SEMANAIS</strong>: Dengue, Hanseníase, Tuberculose, HIV, Esquistossomose."
+        },
+        { 
+          "name": "Tuberculose e Hanseníase (Tratamento/Diagnóstico)", 
+          "importance": "Alta",
+          "content": "<strong>Tuberculose:</strong> Transmissão aerossóis. Tratamento RIPE (2 meses) + RI (4 meses). Sintomático respiratório: tosse ≥ 3 semanas.<br><strong>Hanseníase:</strong> Transmissão gotículas (prolongado). Paucibacilar (até 5 lesões) vs Multibacilar (>5 lesões). Tratamento PQT (6 ou 12 doses)."
+        },
+        { 
+          "name": "Arboviroses (Dengue, Zika, Chikungunya)", 
+          "importance": "Alta",
+          "content": "<strong>Dengue:</strong> Febre alta súbita, dor retro-orbital, plaquetopenia/hemoconcentração. Prova do laço.<br><strong>Chikungunya:</strong> Artralgia intensa e incapacitante.<br><strong>Zika:</strong> Exantema pruriginoso, conjuntivite, risco de microcefalia."
+        },
+        { 
+          "name": "Indicadores de Saúde (Mortalidade Materna/Infantil)", 
+          "importance": "Média",
+          "content": "<strong>Mortalidade Infantil:</strong> Óbitos < 1 ano por 1.000 nascidos vivos (indicador de qualidade de vida).<br><strong>Mortalidade Materna:</strong> Óbitos maternos por 100.000 nascidos vivos.<br><strong>Letalidade:</strong> Mortes pela doença / Total de doentes (mede gravidade)."
+        }
       ],
       "strategy": "Imprima o calendário vacinal e cole na parede. Associe as doenças de notificação aos prazos (Imediata vs Semanal). Estude a rede de frio.",
       "dailyGoal": "30 Questões"
@@ -147,11 +215,31 @@
         { "type": "video", "title": "Atendimento ao Polítraumatizado (XABCDE)" }
       ],
       "topics": [
-        { "name": "PCR e RCP (Diretrizes AHA Atuais)", "importance": "Altíssima" },
-        { "name": "Trauma - PHTLS (XABCDE)", "importance": "Altíssima" },
-        { "name": "Queimaduras (Cálculo de superfície e Parkland)", "importance": "Alta" },
-        { "name": "Choque (Tipos e Sinais Clínicos)", "importance": "Alta" },
-        { "name": "IAM e AVC (Protocolos de tempo)", "importance": "Média" }
+        { 
+          "name": "PCR e RCP (Diretrizes AHA Atuais)", 
+          "importance": "Altíssima",
+          "content": "<strong>C-A-B:</strong> Compressões, Via Aérea, Respiração. Compressões de alta qualidade (100-120/min, 5-6cm).<br><strong>Ritmos Chocáveis:</strong> FV e TVSP (Desfibrilação imediata).<br><strong>Não Chocáveis:</strong> Assistolia e AESP (Adrenalina precoce, identificar causas 5H e 5T)."
+        },
+        { 
+          "name": "Trauma - PHTLS (XABCDE)", 
+          "importance": "Altíssima",
+          "content": "<strong>X:</strong> Hemorragia Exsanguinante (Torniquete).<br><strong>A:</strong> Vias Aéreas + Coluna Cervical.<br><strong>B:</strong> Boa Ventilação + O2.<br><strong>C:</strong> Circulação (Choque, pulso, pele) + Reposição.<br><strong>D:</strong> Neurológico (Glasgow, Pupilas).<br><strong>E:</strong> Exposição + Hipotermia."
+        },
+        { 
+          "name": "Queimaduras (Cálculo de superfície e Parkland)", 
+          "importance": "Alta",
+          "content": "<strong>Regra dos Nove (Adulto):</strong> Cabeça 9%, Tronco 36% (18 frente/18 trás), MMSS 18% (9 cada), MMII 36% (18 cada), Genitália 1%.<br><strong>Fórmula de Parkland:</strong> Volume = 4ml x Peso x SCQ. 50% nas primeiras 8h, 50% nas próximas 16h."
+        },
+        { 
+          "name": "Choque (Tipos e Sinais Clínicos)", 
+          "importance": "Alta",
+          "content": "<strong>Hipovolêmico:</strong> Perda de fluido (frio, taquicárdico, hipotenso).<br><strong>Cardiogênico:</strong> Falha de bomba (congestão pulmonar, turgência jugular).<br><strong>Distributivo:</strong> Séptico (fase quente/fria), Anafilático, Neurogênico (bradicardia + hipotensão)."
+        },
+        { 
+          "name": "IAM e AVC (Protocolos de tempo)", 
+          "importance": "Média",
+          "content": "<strong>IAM:</strong> Tempo porta-eletro < 10 min. MONAB (Morfina, O2 se <90%, Nitrato, AAS, Beta-bloq). Tempo porta-balão < 90 min.<br><strong>AVC:</strong> Escala de Cincinnati (Face, Braço, Fala). Tomografia imediata para diferenciar isquêmico/hemorrágico. Trombólise até 4,5h."
+        }
       ],
       "strategy": "Foque nos algoritmos de atendimento. Saiba a diferença entre ritmos chocáveis e não chocáveis. Decore o XABCDE do trauma.",
       "dailyGoal": "20 Questões (Estudo de Caso)"
@@ -171,11 +259,31 @@
         { "type": "video", "title": "Saúde Mental: Reforma Psiquiátrica" }
       ],
       "topics": [
-        { "name": "Pré-natal de Baixo Risco (MS)", "importance": "Alta" },
-        { "name": "Aleitamento Materno e Crescimento/Desenv.", "importance": "Alta" },
-        { "name": "Síndromes Hipertensivas na Gestação", "importance": "Média" },
-        { "name": "Estatuto do Idoso e Violência", "importance": "Média" },
-        { "name": "Saúde Mental (Reforma Psiquiátrica e CAPS)", "importance": "Média" }
+        { 
+          "name": "Pré-natal de Baixo Risco (MS)", 
+          "importance": "Alta",
+          "content": "Mínimo 6 consultas. Exames 1º tri: Tipagem, Coombs, VDRL, HIV, Toxo, HBsAg, Glicemia, Urina. Vacinas: dT, dTpa (20s), HepB, Influenza. Suplementação: Ácido Fólico e Ferro."
+        },
+        { 
+          "name": "Aleitamento Materno e Crescimento/Desenv.", 
+          "importance": "Alta",
+          "content": "<strong>Aleitamento:</strong> Exclusivo até 6 meses. Contraindicação absoluta: HIV/HTLV. Pega correta.<br><strong>Desenvolvimento:</strong> Sustenta cabeça (3m), Senta (6m), Anda (12m).<br><strong>Crescimento:</strong> Perde 10% peso ao nascer, recupera em 10 dias. Dobra peso aos 5m, triplica aos 12m."
+        },
+        { 
+          "name": "Síndromes Hipertensivas na Gestação", 
+          "importance": "Média",
+          "content": "<strong>Pré-eclâmpsia:</strong> PA > 140/90 após 20s + Proteinúria.<br><strong>Eclâmpsia:</strong> PE + Convulsões.<br><strong>Tratamento:</strong> Sulfato de Magnésio (prevenir convulsão). Antídoto: Gluconato de Cálcio. Sinais de intoxicação: oligúria, perda reflexo patelar, depressão respiratória."
+        },
+        { 
+          "name": "Estatuto do Idoso e Violência", 
+          "importance": "Média",
+          "content": "Prioridade especial > 80 anos. Direito a acompanhante. Violência contra idoso é de notificação compulsória imediata (autoridade policial/MP)."
+        },
+        { 
+          "name": "Saúde Mental (Reforma Psiquiátrica e CAPS)", 
+          "importance": "Média",
+          "content": "Lei 10.216/2001 (Reforma Psiquiátrica). Foco na desinstitucionalização e reinserção social. CAPS como ordenador da rede. Tipos de internação: Voluntária, Involuntária (comunicar MP em 72h) e Compulsória (judicial)."
+        }
       ],
       "strategy": "Para Saúde da Mulher: foque nos exames de pré-natal trimestre a trimestre. Para Criança: Marcos do desenvolvimento e aleitamento.",
       "dailyGoal": "25 Questões"

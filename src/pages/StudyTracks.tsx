@@ -4,7 +4,7 @@ import {
   Map, Compass, Lightbulb, CheckCircle2, 
   ArrowRight, BookOpen, Target, CalendarDays, 
   Trophy, Flame, Scale, Stethoscope, Biohazard, 
-  Siren, Users, Lock, PlayCircle, Brain, Star
+  Siren, Users, Lock, PlayCircle, Brain, Star, ChevronDown
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -40,7 +40,7 @@ const StudyTracks = () => {
     addActivity({ type: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
   }, [addActivity]);
 
-  // Simulação de progresso dos módulos (poderia vir do banco no futuro)
+  // Simulação de progresso dos módulos
   const getProgress = (moduleId: string) => {
     const hash = moduleId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return hash % 100;
@@ -49,10 +49,6 @@ const StudyTracks = () => {
   const handleStartSession = (category: string, count: number) => {
     navigate(`/simulado?category=${encodeURIComponent(category)}&count=${count}`);
   };
-
-  // Determinar o módulo de foco atual (o primeiro que não está 100% ou bloqueado)
-  const currentFocusIndex = 0; // Por enquanto fixo no primeiro ou baseado em lógica simples
-  const currentFocusModule = studyData.tracks[currentFocusIndex];
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
@@ -150,42 +146,39 @@ const StudyTracks = () => {
             {studyData.tracks.map((track, index) => {
               const Icon = iconMap[track.icon] || BookOpen;
               const progress = getProgress(track.id);
-              // Todos desbloqueados conforme solicitado
               const isLocked = false; 
 
               return (
                 <Card key={track.id} className={cn(
                   "border-l-4 transition-all duration-300 hover:shadow-lg overflow-hidden group",
-                  isLocked ? "border-l-muted opacity-80" : `border-l-${track.color.split('-')[1]}-500`
+                  `border-l-${track.color.split('-')[1]}-500`
                 )}>
                   <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="item-1" className="border-0">
+                    <AccordionItem value="module-content" className="border-0">
                       <div className="flex flex-col md:flex-row">
                         <AccordionTrigger className="hover:no-underline px-6 py-6 w-full">
                           <div className="flex items-start gap-4 w-full text-left">
                             <div className={cn(
                               "p-3 rounded-xl shrink-0 transition-colors",
-                              isLocked ? "bg-muted text-muted-foreground" : `bg-${track.color.split('-')[1]}-100 dark:bg-${track.color.split('-')[1]}-900/30 ${track.color}`
+                              `bg-${track.color.split('-')[1]}-100 dark:bg-${track.color.split('-')[1]}-900/30 ${track.color}`
                             )}>
-                              {isLocked ? <Lock className="h-6 w-6" /> : <Icon className="h-6 w-6" />}
+                              <Icon className="h-6 w-6" />
                             </div>
                             <div className="flex-1 min-w-0 space-y-1">
                               <div className="flex items-center gap-3 mb-1">
-                                <h3 className={cn("text-lg font-bold truncate", isLocked ? "text-muted-foreground" : "text-foreground")}>
+                                <h3 className="text-lg font-bold truncate text-foreground">
                                   {track.title}
                                 </h3>
-                                <Badge variant={isLocked ? "outline" : "default"} className={cn("text-[10px]", !isLocked && "bg-primary/10 text-primary hover:bg-primary/20")}>
+                                <Badge variant="default" className="text-[10px] bg-primary/10 text-primary hover:bg-primary/20">
                                   {track.level}
                                 </Badge>
                               </div>
                               <p className="text-sm text-muted-foreground line-clamp-1 pr-4">{track.description}</p>
                               
-                              {!isLocked && (
-                                <div className="flex items-center gap-4 mt-3 max-w-sm">
-                                  <Progress value={progress} className="h-2" />
-                                  <span className="text-xs font-bold text-muted-foreground w-12">{progress}%</span>
-                                </div>
-                              )}
+                              <div className="flex items-center gap-4 mt-3 max-w-sm">
+                                <Progress value={progress} className="h-2" />
+                                <span className="text-xs font-bold text-muted-foreground w-12">{progress}%</span>
+                              </div>
                             </div>
                           </div>
                         </AccordionTrigger>
@@ -205,28 +198,38 @@ const StudyTracks = () => {
 
                           <div className="grid md:grid-cols-2 gap-6">
                             
-                            {/* LISTA DE TÓPICOS */}
-                            <div className="space-y-6">
-                              <div className="space-y-3">
-                                <h4 className="font-bold text-sm flex items-center gap-2">
-                                  <BookOpen className="h-4 w-4" /> Tópicos Essenciais
-                                </h4>
-                                <div className="space-y-2">
-                                  {track.topics.map((topic, i) => (
-                                    <div key={i} className="flex items-center justify-between bg-background p-2.5 rounded border text-sm">
-                                      <span className="truncate flex-1 mr-2">{topic.name}</span>
-                                      <Badge variant="outline" className={cn(
-                                        "text-[10px] uppercase tracking-wider",
-                                        topic.importance === "Altíssima" ? "border-red-200 bg-red-50 text-red-600 dark:bg-red-900/20" :
-                                        topic.importance === "Alta" ? "border-orange-200 bg-orange-50 text-orange-600 dark:bg-orange-900/20" :
-                                        "border-blue-200 bg-blue-50 text-blue-600 dark:bg-blue-900/20"
-                                      )}>
-                                        {topic.importance}
-                                      </Badge>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
+                            {/* LISTA DE TÓPICOS (AGORA CLICÁVEIS) */}
+                            <div className="space-y-4">
+                              <h4 className="font-bold text-sm flex items-center gap-2">
+                                <BookOpen className="h-4 w-4" /> Tópicos Essenciais
+                              </h4>
+                              
+                              <Accordion type="single" collapsible className="w-full space-y-2">
+                                {track.topics.map((topic, i) => (
+                                  <AccordionItem 
+                                    key={i} 
+                                    value={`topic-${i}`} 
+                                    className="border rounded-md bg-background overflow-hidden"
+                                  >
+                                    <AccordionTrigger className="px-3 py-2.5 hover:no-underline hover:bg-accent/50 transition-colors text-sm [&[data-state=open]]:bg-accent/50">
+                                      <div className="flex items-center justify-between w-full text-left gap-3">
+                                        <span className="font-medium text-foreground/90 truncate flex-1">{topic.name}</span>
+                                        <Badge variant="outline" className={cn(
+                                          "text-[10px] uppercase tracking-wider shrink-0",
+                                          topic.importance === "Altíssima" ? "border-red-200 bg-red-50 text-red-600 dark:bg-red-900/20" :
+                                          topic.importance === "Alta" ? "border-orange-200 bg-orange-50 text-orange-600 dark:bg-orange-900/20" :
+                                          "border-blue-200 bg-blue-50 text-blue-600 dark:bg-blue-900/20"
+                                        )}>
+                                          {topic.importance}
+                                        </Badge>
+                                      </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="px-4 py-3 bg-muted/20 border-t text-sm text-muted-foreground leading-relaxed">
+                                      <div dangerouslySetInnerHTML={{ __html: topic.content || "Conteúdo em breve." }} />
+                                    </AccordionContent>
+                                  </AccordionItem>
+                                ))}
+                              </Accordion>
                             </div>
 
                             {/* CARD DE AÇÃO */}
@@ -244,7 +247,6 @@ const StudyTracks = () => {
                                 <CardFooter>
                                   <Button 
                                     className="w-full" 
-                                    disabled={isLocked}
                                     onClick={() => handleStartSession(track.dbCategory, track.questionCount)}
                                   >
                                     <PlayCircle className="mr-2 h-4 w-4" /> Iniciar Sessão Prática
@@ -263,7 +265,7 @@ const StudyTracks = () => {
           </div>
         </TabsContent>
 
-        {/* TAB 2: CRONOGRAMA */}
+        {/* TAB 2: CRONOGRAMA (MANTIDO IGUAL) */}
         <TabsContent value="schedule" className="animate-in slide-in-from-right-4 duration-500">
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
@@ -351,7 +353,7 @@ const StudyTracks = () => {
           </div>
         </TabsContent>
 
-        {/* TAB 3: MENTORIA */}
+        {/* TAB 3: MENTORIA (MANTIDO IGUAL) */}
         <TabsContent value="mentorship" className="animate-in slide-in-from-right-4 duration-500">
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="text-center space-y-2">
