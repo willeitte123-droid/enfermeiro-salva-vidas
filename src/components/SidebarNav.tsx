@@ -42,9 +42,9 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
     ],
     study: [
-      { to: "/study-tracks", icon: Map, label: "Trilha de Estudos" },
       { to: "/questions", icon: FileQuestion, label: "Banca de Questões" },
       { to: "/simulado", icon: Timer, label: "Área de Simulado" },
+      { to: "/study-tracks", icon: Map, label: "Trilha de Estudos" },
       { to: "/concurseiro", icon: GraduationCap, label: "Área do Concurseiro" },
       { to: "/flashcards", icon: Brain, label: "Flashcards" },
       { to: "/review-area", icon: Library, label: "Área de Revisão" },
