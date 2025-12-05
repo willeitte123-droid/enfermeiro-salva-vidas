@@ -165,15 +165,15 @@ const StudyTracks = () => {
                               <Icon className="h-6 w-6" />
                             </div>
                             <div className="flex-1 min-w-0 space-y-1">
-                              <div className="flex items-center gap-3 mb-1">
-                                <h3 className="text-lg font-bold truncate text-foreground">
+                              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
+                                <h3 className="text-lg font-bold text-foreground leading-tight">
                                   {track.title}
                                 </h3>
-                                <Badge variant="default" className="text-[10px] bg-primary/10 text-primary hover:bg-primary/20">
+                                <Badge variant="default" className="text-[10px] bg-primary/10 text-primary hover:bg-primary/20 shrink-0">
                                   {track.level}
                                 </Badge>
                               </div>
-                              <p className="text-sm text-muted-foreground line-clamp-1 pr-4">{track.description}</p>
+                              <p className="text-sm text-muted-foreground pr-4 leading-snug">{track.description}</p>
                               
                               <div className="flex items-center gap-4 mt-3 max-w-sm">
                                 <Progress value={progress} className="h-2" />
@@ -212,11 +212,11 @@ const StudyTracks = () => {
                                     value={`topic-${i}`} 
                                     className="border rounded-md bg-background overflow-hidden"
                                   >
-                                    <AccordionTrigger className="px-3 py-2.5 hover:no-underline hover:bg-accent/50 transition-colors text-sm [&[data-state=open]]:bg-accent/50">
-                                      <div className="flex items-center justify-between w-full text-left gap-3">
-                                        <span className="font-medium text-foreground/90 truncate flex-1">{topic.name}</span>
+                                    <AccordionTrigger className="px-3 py-3 hover:no-underline hover:bg-accent/50 transition-colors text-sm [&[data-state=open]]:bg-accent/50">
+                                      <div className="flex items-start justify-between w-full text-left gap-3">
+                                        <span className="font-medium text-foreground/90 leading-snug">{topic.name}</span>
                                         <Badge variant="outline" className={cn(
-                                          "text-[10px] uppercase tracking-wider shrink-0",
+                                          "text-[10px] uppercase tracking-wider shrink-0 mt-0.5",
                                           topic.importance === "Altíssima" ? "border-red-200 bg-red-50 text-red-600 dark:bg-red-900/20" :
                                           topic.importance === "Alta" ? "border-orange-200 bg-orange-50 text-orange-600 dark:bg-orange-900/20" :
                                           "border-blue-200 bg-blue-50 text-blue-600 dark:bg-blue-900/20"
