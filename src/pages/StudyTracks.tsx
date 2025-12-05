@@ -125,7 +125,8 @@ const StudyTracks = () => {
             {studyData.tracks.map((track, index) => {
               const Icon = iconMap[track.icon] || BookOpen;
               const progress = getProgress(track.id);
-              const isLocked = index > 0 && getProgress(studyData.tracks[index-1].id) < 50; 
+              // Unlock logic removed: all modules are now unlocked
+              const isLocked = false; 
 
               return (
                 <Card key={track.id} className={cn(
