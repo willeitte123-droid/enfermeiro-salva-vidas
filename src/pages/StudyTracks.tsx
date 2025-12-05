@@ -196,10 +196,11 @@ const StudyTracks = () => {
                             </div>
                           </div>
 
-                          <div className="grid md:grid-cols-2 gap-6">
+                          {/* Ajuste de Grid: 2/3 para Tópicos, 1/3 para Meta */}
+                          <div className="grid md:grid-cols-3 gap-6">
                             
-                            {/* LISTA DE TÓPICOS (AGORA CLICÁVEIS) */}
-                            <div className="space-y-4">
+                            {/* LISTA DE TÓPICOS (AGORA CLICÁVEIS) - 2 Colunas */}
+                            <div className="space-y-4 md:col-span-2">
                               <h4 className="font-bold text-sm flex items-center gap-2">
                                 <BookOpen className="h-4 w-4" /> Tópicos Essenciais
                               </h4>
@@ -232,7 +233,7 @@ const StudyTracks = () => {
                               </Accordion>
                             </div>
 
-                            {/* CARD DE AÇÃO */}
+                            {/* CARD DE AÇÃO - 1 Coluna */}
                             <div className="flex flex-col gap-4">
                               <Card className="bg-background border-dashed h-full flex flex-col justify-between">
                                 <div>
