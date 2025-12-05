@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { 
   Map, Compass, Lightbulb, CheckCircle2, 
   ArrowRight, BookOpen, Target, CalendarDays, 
   Trophy, Flame, Scale, Stethoscope, Biohazard, 
-  Siren, Users, Lock, Unlock, PlayCircle, Brain
+  Siren, Users, Lock, PlayCircle, Brain, FileText, Video
 } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import studyData from "@/data/studyTracks.json";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface Profile {
   id: string;
@@ -31,16 +31,27 @@ const StudyTracks = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
   const [activeTab, setActiveTab] = useState("tracks");
+  const navigate = useNavigate();
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
   }, [addActivity]);
 
-  // Simulação de progresso (em uma v2 isso viria do banco de dados)
+  // Simulação de progresso
   const getProgress = (moduleId: string) => {
-    // Retorna um valor aleatório consistente baseado na string para demo visual
     const hash = moduleId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return hash % 100;
+  };
+
+  const handleStartSession = (category: string, count: number) => {
+    // Redireciona para o Simulado com parâmetros de URL
+    navigate(`/simulado?category=${encodeURIComponent(category)}&count=${count}`);
+  };
+
+  const handleOpenResource = (title: string, type: string) => {
+    toast.info(`Abrindo ${type === 'video' ? 'Videoaula' : 'PDF'}: ${title}`, {
+      description: "Este recurso seria aberto em uma nova aba ou modal."
+    });
   };
 
   return (
@@ -121,7 +132,7 @@ const StudyTracks = () => {
             {studyData.tracks.map((track, index) => {
               const Icon = iconMap[track.icon] || BookOpen;
               const progress = getProgress(track.id);
-              const isLocked = index > 0 && getProgress(studyData.tracks[index-1].id) < 50; // Mock logic: lock if prev < 50%
+              const isLocked = index > 0 && getProgress(studyData.tracks[index-1].id) < 50; 
 
               return (
                 <Card key={track.id} className={cn(
@@ -131,7 +142,6 @@ const StudyTracks = () => {
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1" className="border-0">
                       <div className="flex flex-col md:flex-row">
-                        {/* Module Header / Trigger */}
                         <AccordionTrigger className="hover:no-underline px-6 py-6 w-full">
                           <div className="flex items-start gap-4 w-full text-left">
                             <div className={cn(
@@ -162,10 +172,10 @@ const StudyTracks = () => {
                         </AccordionTrigger>
                       </div>
 
-                      {/* Expanded Content */}
                       <AccordionContent className="px-0 pb-0">
                         <div className="border-t bg-muted/30 p-6 space-y-6">
-                          {/* Strategy Box */}
+                          
+                          {/* DICA DE ESTRATÉGIA */}
                           <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 p-4 rounded-lg flex gap-3">
                             <Lightbulb className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                             <div>
@@ -175,41 +185,74 @@ const StudyTracks = () => {
                           </div>
 
                           <div className="grid md:grid-cols-2 gap-6">
-                            {/* Topics List */}
-                            <div className="space-y-3">
-                              <h4 className="font-bold text-sm flex items-center gap-2">
-                                <BookOpen className="h-4 w-4" /> Tópicos Essenciais
-                              </h4>
-                              <div className="space-y-2">
-                                {track.topics.map((topic, i) => (
-                                  <div key={i} className="flex items-center justify-between bg-background p-2.5 rounded border text-sm">
-                                    <span className="truncate flex-1 mr-2">{topic.name}</span>
-                                    <Badge variant="outline" className={cn(
-                                      "text-[10px] uppercase tracking-wider",
-                                      topic.importance === "Altíssima" ? "border-red-200 bg-red-50 text-red-600 dark:bg-red-900/20" :
-                                      topic.importance === "Alta" ? "border-orange-200 bg-orange-50 text-orange-600 dark:bg-orange-900/20" :
-                                      "border-blue-200 bg-blue-50 text-blue-600 dark:bg-blue-900/20"
-                                    )}>
-                                      {topic.importance}
-                                    </Badge>
-                                  </div>
-                                ))}
+                            
+                            {/* LISTA DE TÓPICOS E MATERIAIS */}
+                            <div className="space-y-6">
+                              <div className="space-y-3">
+                                <h4 className="font-bold text-sm flex items-center gap-2">
+                                  <BookOpen className="h-4 w-4" /> Tópicos Essenciais
+                                </h4>
+                                <div className="space-y-2">
+                                  {track.topics.map((topic, i) => (
+                                    <div key={i} className="flex items-center justify-between bg-background p-2.5 rounded border text-sm">
+                                      <span className="truncate flex-1 mr-2">{topic.name}</span>
+                                      <Badge variant="outline" className={cn(
+                                        "text-[10px] uppercase tracking-wider",
+                                        topic.importance === "Altíssima" ? "border-red-200 bg-red-50 text-red-600 dark:bg-red-900/20" :
+                                        topic.importance === "Alta" ? "border-orange-200 bg-orange-50 text-orange-600 dark:bg-orange-900/20" :
+                                        "border-blue-200 bg-blue-50 text-blue-600 dark:bg-blue-900/20"
+                                      )}>
+                                        {topic.importance}
+                                      </Badge>
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
+
+                              {/* MATERIAL DE APOIO */}
+                              {track.resources && (
+                                <div className="space-y-3">
+                                  <h4 className="font-bold text-sm flex items-center gap-2">
+                                    <FileText className="h-4 w-4" /> Material de Apoio
+                                  </h4>
+                                  <div className="grid grid-cols-1 gap-2">
+                                    {track.resources.map((res, i) => (
+                                      <button 
+                                        key={i}
+                                        onClick={() => handleOpenResource(res.title, res.type)}
+                                        className="flex items-center gap-3 p-2.5 rounded border bg-background hover:bg-accent hover:text-accent-foreground text-left transition-colors group"
+                                      >
+                                        <div className="p-1.5 bg-muted rounded group-hover:bg-background">
+                                          {res.type === 'video' ? <Video className="h-4 w-4 text-blue-500"/> : <FileText className="h-4 w-4 text-red-500"/>}
+                                        </div>
+                                        <span className="text-sm font-medium flex-1">{res.title}</span>
+                                        <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                             </div>
 
-                            {/* Action Card */}
+                            {/* CARD DE AÇÃO */}
                             <div className="flex flex-col gap-4">
-                              <Card className="bg-background border-dashed h-full">
-                                <CardHeader className="pb-2">
-                                  <CardTitle className="text-sm uppercase tracking-wide text-muted-foreground">Meta Diária</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                  <div className="text-3xl font-black text-primary mb-1">{track.dailyGoal}</div>
-                                  <p className="text-xs text-muted-foreground">Para dominar este módulo.</p>
-                                </CardContent>
+                              <Card className="bg-background border-dashed h-full flex flex-col justify-between">
+                                <div>
+                                  <CardHeader className="pb-2">
+                                    <CardTitle className="text-sm uppercase tracking-wide text-muted-foreground">Meta Diária</CardTitle>
+                                  </CardHeader>
+                                  <CardContent>
+                                    <div className="text-3xl font-black text-primary mb-1">{track.dailyGoal}</div>
+                                    <p className="text-xs text-muted-foreground">Questões selecionadas especificamente para este módulo.</p>
+                                  </CardContent>
+                                </div>
                                 <CardFooter>
-                                  <Button className="w-full" disabled={isLocked}>
-                                    <PlayCircle className="mr-2 h-4 w-4" /> Iniciar Sessão de Questões
+                                  <Button 
+                                    className="w-full" 
+                                    disabled={isLocked}
+                                    onClick={() => handleStartSession(track.dbCategory, track.questionCount)}
+                                  >
+                                    <PlayCircle className="mr-2 h-4 w-4" /> Iniciar Sessão Prática
                                   </Button>
                                 </CardFooter>
                               </Card>

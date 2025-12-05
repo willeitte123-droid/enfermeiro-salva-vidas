@@ -1,25 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Timer, FileText, Info, PlayCircle, Building2 } from "lucide-react";
+import { Timer, FileText, Info, PlayCircle, Building2, BookOpen } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 
 interface SimuladoLobbyProps {
-  onStart: (config: { numQuestions: number; totalTime: number; banca: string }) => void;
+  onStart: (config: { numQuestions: number; totalTime: number; banca: string; category?: string }) => void;
 }
 
+// Lista de Categorias disponíveis no banco (para o Select)
+const CATEGORIES = [
+  "Todas",
+  "Legislação do SUS",
+  "Fundamentos de Enfermagem",
+  "Saúde Pública",
+  "Urgência e Emergência",
+  "Saúde da Mulher",
+  "Saúde da Criança",
+  "Saúde do Idoso",
+  "Saúde Mental",
+  "Centro Cirúrgico",
+  "Ética e Legislação"
+];
+
 const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
+  const [searchParams] = useSearchParams();
+  const initialCategory = searchParams.get("category");
+  const initialCount = searchParams.get("count");
+
   const [numQuestions, setNumQuestions] = useState("20");
   const [totalTime, setTotalTime] = useState("40");
   const [selectedBanca, setSelectedBanca] = useState("Todas");
+  const [selectedCategory, setSelectedCategory] = useState("Todas");
+
+  // Efeito para carregar configurações vindas da URL (Trilha de Estudos)
+  useEffect(() => {
+    if (initialCategory && CATEGORIES.includes(initialCategory)) {
+      setSelectedCategory(initialCategory);
+    }
+    if (initialCount) {
+      setNumQuestions(initialCount);
+      // Ajusta o tempo sugerido (2 min por questão)
+      setTotalTime(String(parseInt(initialCount) * 2));
+    }
+  }, [initialCategory, initialCount]);
 
   const handleStart = () => {
     onStart({
       numQuestions: parseInt(numQuestions),
       totalTime: parseInt(totalTime) * 60, // in seconds
       banca: selectedBanca,
+      category: selectedCategory === "Todas" ? undefined : selectedCategory
     });
   };
 
@@ -40,6 +74,21 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
         <CardContent className="grid md:grid-cols-2 gap-8">
           <div className="space-y-6">
             <div className="space-y-2">
+              <Label htmlFor="category" className="flex items-center gap-2 font-semibold">
+                <BookOpen className="h-5 w-5 text-primary" />
+                Disciplina / Assunto
+              </Label>
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger id="category"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {CATEGORIES.map(cat => (
+                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="num-questions" className="flex items-center gap-2 font-semibold">
                 <FileText className="h-5 w-5 text-primary" />
                 Número de Questões
@@ -49,6 +98,7 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
                 <SelectContent>
                   <SelectItem value="10">10 Questões (Rápido)</SelectItem>
                   <SelectItem value="20">20 Questões (Padrão)</SelectItem>
+                  <SelectItem value="30">30 Questões</SelectItem>
                   <SelectItem value="50">50 Questões (Concurso)</SelectItem>
                   <SelectItem value="100">100 Questões (Residência)</SelectItem>
                 </SelectContent>
@@ -84,10 +134,10 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
                   <SelectItem value="20">20 minutos</SelectItem>
                   <SelectItem value="40">40 minutos</SelectItem>
                   <SelectItem value="60">1 hora</SelectItem>
+                  <SelectItem value="90">1h 30min</SelectItem>
                   <SelectItem value="120">2 horas</SelectItem>
                   <SelectItem value="180">3 horas</SelectItem>
                   <SelectItem value="240">4 horas</SelectItem>
-                  <SelectItem value="300">5 horas</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -105,9 +155,15 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
                     <p className="text-sm opacity-80">Minutos</p>
                 </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-white/20 w-full">
-                <p className="text-sm opacity-80 uppercase tracking-wider text-[10px]">Banca Selecionada</p>
-                <p className="text-xl font-bold truncate">{selectedBanca === 'Todas' ? 'Multibancas' : selectedBanca}</p>
+            <div className="mt-4 pt-4 border-t border-white/20 w-full space-y-2">
+                <div>
+                  <p className="text-sm opacity-80 uppercase tracking-wider text-[10px]">Disciplina</p>
+                  <p className="text-lg font-bold truncate">{selectedCategory}</p>
+                </div>
+                <div>
+                  <p className="text-sm opacity-80 uppercase tracking-wider text-[10px]">Banca</p>
+                  <p className="text-lg font-bold truncate">{selectedBanca === 'Todas' ? 'Multibancas' : selectedBanca}</p>
+                </div>
             </div>
           </div>
         </CardContent>
@@ -121,7 +177,7 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
           </Alert>
           <Button onClick={handleStart} size="lg" className="w-full text-lg font-bold py-6">
             <PlayCircle className="mr-2 h-6 w-6" />
-            Iniciar Simulado
+            Iniciar Simulado Personalizado
           </Button>
         </CardFooter>
       </Card>

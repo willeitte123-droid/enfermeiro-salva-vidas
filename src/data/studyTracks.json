@@ -65,6 +65,13 @@
       "level": "Essencial",
       "icon": "Scale",
       "color": "text-blue-600",
+      "dbCategory": "Legislação do SUS",
+      "questionCount": 20,
+      "resources": [
+        { "type": "pdf", "title": "Resumo Esquematizado Lei 8.080" },
+        { "type": "video", "title": "Aula 1: História das Políticas de Saúde" },
+        { "type": "video", "title": "Aula 2: Decreto 7.508 Descomplicado" }
+      ],
       "topics": [
         { "name": "Evolução Histórica das Políticas de Saúde", "importance": "Média" },
         { "name": "Constituição Federal (Art. 196 a 200)", "importance": "Altíssima" },
@@ -83,6 +90,13 @@
       "level": "Essencial",
       "icon": "Stethoscope",
       "color": "text-emerald-600",
+      "dbCategory": "Fundamentos de Enfermagem",
+      "questionCount": 20,
+      "resources": [
+        { "type": "pdf", "title": "Guia de Bolso: Cálculos de Medicação" },
+        { "type": "pdf", "title": "Código de Ética Comentado" },
+        { "type": "video", "title": "Técnicas de Sondagem (Passo a Passo)" }
+      ],
       "topics": [
         { "name": "Código de Ética (Res. 564/2017) - Penalidades", "importance": "Altíssima" },
         { "name": "Lei do Exercício Profissional (7.498/86)", "importance": "Alta" },
@@ -101,6 +115,13 @@
       "level": "Intermediário",
       "icon": "Biohazard",
       "color": "text-orange-500",
+      "dbCategory": "Saúde Pública",
+      "questionCount": 20,
+      "resources": [
+        { "type": "pdf", "title": "Tabela de Doenças de Notificação Compulsória" },
+        { "type": "pdf", "title": "Calendário Vacinal Atualizado (PNI)" },
+        { "type": "video", "title": "Epidemiologia: Indicadores de Saúde" }
+      ],
       "topics": [
         { "name": "Calendário Nacional de Vacinação (Criança/Adulto)", "importance": "Altíssima" },
         { "name": "Doenças de Notificação Compulsória (Lista)", "importance": "Altíssima" },
@@ -118,6 +139,13 @@
       "level": "Avançado",
       "icon": "Siren",
       "color": "text-red-600",
+      "dbCategory": "Urgência e Emergência",
+      "questionCount": 20,
+      "resources": [
+        { "type": "pdf", "title": "Algoritmos do ACLS (Resumo)" },
+        { "type": "video", "title": "PCR: Ritmos Chocáveis vs Não Chocáveis" },
+        { "type": "video", "title": "Atendimento ao Polítraumatizado (XABCDE)" }
+      ],
       "topics": [
         { "name": "PCR e RCP (Diretrizes AHA Atuais)", "importance": "Altíssima" },
         { "name": "Trauma - PHTLS (XABCDE)", "importance": "Altíssima" },
@@ -135,6 +163,13 @@
       "level": "Intermediário",
       "icon": "Users",
       "color": "text-purple-600",
+      "dbCategory": "Saúde da Mulher",
+      "questionCount": 20,
+      "resources": [
+        { "type": "pdf", "title": "Marcos do Desenvolvimento Infantil" },
+        { "type": "pdf", "title": "Exames de Pré-Natal: Trimestre a Trimestre" },
+        { "type": "video", "title": "Saúde Mental: Reforma Psiquiátrica" }
+      ],
       "topics": [
         { "name": "Pré-natal de Baixo Risco (MS)", "importance": "Alta" },
         { "name": "Aleitamento Materno e Crescimento/Desenv.", "importance": "Alta" },

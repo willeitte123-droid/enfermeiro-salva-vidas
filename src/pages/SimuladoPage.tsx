@@ -14,6 +14,7 @@ interface QuizConfig {
   numQuestions: number;
   totalTime: number;
   banca: string;
+  category?: string;
 }
 
 interface QuizResults {
@@ -58,6 +59,7 @@ const SimuladoPage = () => {
         numQuestions={quizConfig.numQuestions} 
         totalTime={quizConfig.totalTime} 
         banca={quizConfig.banca}
+        category={quizConfig.category}
         onFinish={handleFinish} 
       />
     );
