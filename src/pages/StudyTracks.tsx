@@ -4,7 +4,7 @@ import {
   Map, Compass, Lightbulb, CheckCircle2, 
   ArrowRight, BookOpen, Target, CalendarDays, 
   Trophy, Flame, Scale, Stethoscope, Biohazard, 
-  Siren, Users, Lock, PlayCircle, Brain, FileText, Video
+  Siren, Users, Lock, PlayCircle, Brain
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,7 +16,6 @@ import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import studyData from "@/data/studyTracks.json";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 
 interface Profile {
   id: string;
@@ -46,12 +45,6 @@ const StudyTracks = () => {
   const handleStartSession = (category: string, count: number) => {
     // Redireciona para o Simulado com parâmetros de URL
     navigate(`/simulado?category=${encodeURIComponent(category)}&count=${count}`);
-  };
-
-  const handleOpenResource = (title: string, type: string) => {
-    toast.info(`Abrindo ${type === 'video' ? 'Videoaula' : 'PDF'}: ${title}`, {
-      description: "Este recurso seria aberto em uma nova aba ou modal."
-    });
   };
 
   return (
@@ -142,6 +135,7 @@ const StudyTracks = () => {
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1" className="border-0">
                       <div className="flex flex-col md:flex-row">
+                        {/* Module Header / Trigger */}
                         <AccordionTrigger className="hover:no-underline px-6 py-6 w-full">
                           <div className="flex items-start gap-4 w-full text-left">
                             <div className={cn(
@@ -172,6 +166,7 @@ const StudyTracks = () => {
                         </AccordionTrigger>
                       </div>
 
+                      {/* Expanded Content */}
                       <AccordionContent className="px-0 pb-0">
                         <div className="border-t bg-muted/30 p-6 space-y-6">
                           
@@ -186,7 +181,7 @@ const StudyTracks = () => {
 
                           <div className="grid md:grid-cols-2 gap-6">
                             
-                            {/* LISTA DE TÓPICOS E MATERIAIS */}
+                            {/* LISTA DE TÓPICOS */}
                             <div className="space-y-6">
                               <div className="space-y-3">
                                 <h4 className="font-bold text-sm flex items-center gap-2">
@@ -208,30 +203,6 @@ const StudyTracks = () => {
                                   ))}
                                 </div>
                               </div>
-
-                              {/* MATERIAL DE APOIO */}
-                              {track.resources && (
-                                <div className="space-y-3">
-                                  <h4 className="font-bold text-sm flex items-center gap-2">
-                                    <FileText className="h-4 w-4" /> Material de Apoio
-                                  </h4>
-                                  <div className="grid grid-cols-1 gap-2">
-                                    {track.resources.map((res, i) => (
-                                      <button 
-                                        key={i}
-                                        onClick={() => handleOpenResource(res.title, res.type)}
-                                        className="flex items-center gap-3 p-2.5 rounded border bg-background hover:bg-accent hover:text-accent-foreground text-left transition-colors group"
-                                      >
-                                        <div className="p-1.5 bg-muted rounded group-hover:bg-background">
-                                          {res.type === 'video' ? <Video className="h-4 w-4 text-blue-500"/> : <FileText className="h-4 w-4 text-red-500"/>}
-                                        </div>
-                                        <span className="text-sm font-medium flex-1">{res.title}</span>
-                                        <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                      </button>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
                             </div>
 
                             {/* CARD DE AÇÃO */}
