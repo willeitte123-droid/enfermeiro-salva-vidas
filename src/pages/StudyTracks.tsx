@@ -198,11 +198,11 @@ const StudyTracks = () => {
                             </div>
                           </div>
 
-                          {/* Ajuste de Grid: 2/3 para Tópicos, 1/3 para Meta */}
-                          <div className="grid md:grid-cols-3 gap-6">
+                          {/* Ajuste de Layout: Vertical para evitar sobreposição */}
+                          <div className="flex flex-col gap-6">
                             
-                            {/* LISTA DE TÓPICOS (AGORA CLICÁVEIS) - 2 Colunas */}
-                            <div className="space-y-4 md:col-span-2">
+                            {/* LISTA DE TÓPICOS (AGORA CLICÁVEIS) */}
+                            <div className="space-y-4">
                               <h4 className="font-bold text-sm flex items-center gap-2">
                                 <BookOpen className="h-4 w-4" /> Tópicos Essenciais
                               </h4>
@@ -235,21 +235,21 @@ const StudyTracks = () => {
                               </Accordion>
                             </div>
 
-                            {/* CARD DE AÇÃO - 1 Coluna */}
-                            <div className="flex flex-col gap-4">
-                              <Card className="bg-background border-dashed h-full flex flex-col justify-between">
-                                <div>
+                            {/* CARD DE AÇÃO */}
+                            <div className="w-full">
+                              <Card className="bg-background border-dashed flex flex-col sm:flex-row sm:items-center justify-between">
+                                <div className="flex-1">
                                   <CardHeader className="pb-2">
                                     <CardTitle className="text-sm uppercase tracking-wide text-muted-foreground">Meta Diária</CardTitle>
                                   </CardHeader>
-                                  <CardContent>
+                                  <CardContent className="pb-4 sm:pb-6">
                                     <div className="text-3xl font-black text-primary mb-1">{track.dailyGoal}</div>
                                     <p className="text-xs text-muted-foreground">Questões selecionadas especificamente para este módulo.</p>
                                   </CardContent>
                                 </div>
-                                <CardFooter>
+                                <CardFooter className="pt-0 sm:pt-6 sm:pb-6 px-6">
                                   <Button 
-                                    className="w-full h-auto py-3 flex items-center justify-center gap-2 whitespace-normal text-sm" 
+                                    className="w-full sm:w-auto h-auto py-3 px-6 flex items-center justify-center gap-2 whitespace-normal text-sm" 
                                     onClick={() => handleStartSession(track.dbCategory, track.questionCount)}
                                   >
                                     <PlayCircle className="h-4 w-4 shrink-0" /> 
