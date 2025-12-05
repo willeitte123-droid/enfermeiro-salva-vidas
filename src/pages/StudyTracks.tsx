@@ -215,10 +215,10 @@ const StudyTracks = () => {
                                     className="border rounded-md bg-background overflow-hidden"
                                   >
                                     <AccordionTrigger className="px-3 py-3 hover:no-underline hover:bg-accent/50 transition-colors text-sm [&[data-state=open]]:bg-accent/50">
-                                      <div className="flex items-start justify-between w-full text-left gap-2 sm:gap-3">
-                                        <span className="font-medium text-foreground/90 leading-snug text-xs sm:text-sm">{topic.name}</span>
+                                      <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full text-left gap-2 sm:gap-3">
+                                        <span className="font-medium text-foreground/90 text-xs sm:text-sm leading-snug">{topic.name}</span>
                                         <Badge variant="outline" className={cn(
-                                          "text-[9px] sm:text-[10px] uppercase tracking-wider shrink-0 mt-0.5 h-5 px-1.5",
+                                          "text-[9px] sm:text-[10px] uppercase tracking-wider w-fit shrink-0",
                                           topic.importance === "Altíssima" ? "border-red-200 bg-red-50 text-red-600 dark:bg-red-900/20" :
                                           topic.importance === "Alta" ? "border-orange-200 bg-orange-50 text-orange-600 dark:bg-orange-900/20" :
                                           "border-blue-200 bg-blue-50 text-blue-600 dark:bg-blue-900/20"
@@ -227,7 +227,7 @@ const StudyTracks = () => {
                                         </Badge>
                                       </div>
                                     </AccordionTrigger>
-                                    <AccordionContent className="px-3 sm:px-4 py-3 bg-muted/20 border-t text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                                    <AccordionContent className="px-3 sm:px-4 py-3 bg-muted/20 border-t text-xs sm:text-sm text-muted-foreground leading-relaxed break-words">
                                       <div dangerouslySetInnerHTML={{ __html: topic.content || "Conteúdo em breve." }} />
                                     </AccordionContent>
                                   </AccordionItem>
@@ -344,7 +344,7 @@ const StudyTracks = () => {
               </Card>
 
               <Card>
-                <CardHeader className="pb-2">
+                <CardHeader>
                   <CardTitle className="text-base">Dica de Organização</CardTitle>
                 </CardHeader>
                 <CardContent>
