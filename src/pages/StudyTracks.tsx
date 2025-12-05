@@ -4,7 +4,7 @@ import {
   Map, Compass, Lightbulb, CheckCircle2, 
   ArrowRight, BookOpen, Target, CalendarDays, 
   Trophy, Flame, Scale, Stethoscope, Biohazard, 
-  Siren, Users, Lock, PlayCircle, Brain
+  Siren, Users, Lock, PlayCircle, Brain, Star
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,6 +16,7 @@ import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import studyData from "@/data/studyTracks.json";
 import { cn } from "@/lib/utils";
+import { useUserLevel } from "@/hooks/useUserLevel";
 
 interface Profile {
   id: string;
@@ -32,24 +33,30 @@ const StudyTracks = () => {
   const [activeTab, setActiveTab] = useState("tracks");
   const navigate = useNavigate();
 
+  // Hook de Gamificação
+  const { data: levelData, isLoading: isLoadingLevel } = useUserLevel(profile?.id);
+
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
   }, [addActivity]);
 
-  // Simulação de progresso
+  // Simulação de progresso dos módulos (poderia vir do banco no futuro)
   const getProgress = (moduleId: string) => {
     const hash = moduleId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return hash % 100;
   };
 
   const handleStartSession = (category: string, count: number) => {
-    // Redireciona para o Simulado com parâmetros de URL
     navigate(`/simulado?category=${encodeURIComponent(category)}&count=${count}`);
   };
 
+  // Determinar o módulo de foco atual (o primeiro que não está 100% ou bloqueado)
+  const currentFocusIndex = 0; // Por enquanto fixo no primeiro ou baseado em lógica simples
+  const currentFocusModule = studyData.tracks[currentFocusIndex];
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
-      {/* Immersive Header */}
+      {/* Immersive Header Dinâmico */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-600 p-8 text-white shadow-xl">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
@@ -60,22 +67,40 @@ const StudyTracks = () => {
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight">Trilha de Estudos</h1>
             </div>
             <p className="text-emerald-100 max-w-xl text-sm sm:text-base leading-relaxed">
-              Seu GPS para a aprovação. Uma jornada estruturada com o que realmente importa, estratégias validadas e metas diárias.
+              Seu GPS para a aprovação. Avance nos níveis completando questões e desbloqueie novas conquistas.
             </p>
           </div>
           
-          <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
-            <div className="text-center">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20 w-full md:w-auto">
+            <div className="text-center min-w-[120px]">
               <p className="text-xs text-emerald-200 font-bold uppercase tracking-wider mb-1">Nível Atual</p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <Flame className="h-5 w-5 text-orange-400 fill-orange-400" />
-                <span className="font-bold text-lg">Iniciado</span>
+                <span className="font-bold text-lg">
+                  {isLoadingLevel ? "..." : levelData?.levelName || "Novato"}
+                </span>
               </div>
+              <div className="mt-2 w-full bg-black/20 h-1.5 rounded-full overflow-hidden">
+                <div 
+                  className="bg-orange-400 h-full rounded-full transition-all duration-1000" 
+                  style={{ width: `${levelData?.progressToNextLevel || 0}%` }}
+                />
+              </div>
+              <p className="text-[10px] text-emerald-100 mt-1">
+                {levelData ? `${Math.round(levelData.progressToNextLevel)}% para Nível ${levelData.currentLevel + 1}` : "Carregando..."}
+              </p>
             </div>
-            <div className="w-px h-10 bg-white/20 mx-2" />
+            
+            <div className="hidden sm:block w-px h-12 bg-white/20 mx-2" />
+            <div className="h-px w-full bg-white/20 sm:hidden my-2" />
+
             <div className="text-center">
-              <p className="text-xs text-emerald-200 font-bold uppercase tracking-wider mb-1">Foco Hoje</p>
-              <span className="font-bold text-lg">Módulo 1</span>
+              <p className="text-xs text-emerald-200 font-bold uppercase tracking-wider mb-1">XP Total</p>
+              <div className="flex items-center justify-center gap-2">
+                <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+                <span className="font-bold text-lg">{levelData?.currentXP || 0}</span>
+              </div>
+              <p className="text-[10px] text-emerald-100 mt-1">Acertos acumulados</p>
             </div>
           </div>
         </div>
@@ -125,7 +150,7 @@ const StudyTracks = () => {
             {studyData.tracks.map((track, index) => {
               const Icon = iconMap[track.icon] || BookOpen;
               const progress = getProgress(track.id);
-              // Unlock logic removed: all modules are now unlocked
+              // Todos desbloqueados conforme solicitado
               const isLocked = false; 
 
               return (
@@ -136,7 +161,6 @@ const StudyTracks = () => {
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1" className="border-0">
                       <div className="flex flex-col md:flex-row">
-                        {/* Module Header / Trigger */}
                         <AccordionTrigger className="hover:no-underline px-6 py-6 w-full">
                           <div className="flex items-start gap-4 w-full text-left">
                             <div className={cn(
@@ -167,7 +191,6 @@ const StudyTracks = () => {
                         </AccordionTrigger>
                       </div>
 
-                      {/* Expanded Content */}
                       <AccordionContent className="px-0 pb-0">
                         <div className="border-t bg-muted/30 p-6 space-y-6">
                           
@@ -283,19 +306,34 @@ const StudyTracks = () => {
             </div>
 
             <div className="space-y-6">
-              <Card className="bg-primary text-primary-foreground border-none shadow-lg">
+              {/* DESAFIO DINÂMICO */}
+              <Card className="bg-primary text-primary-foreground border-none shadow-lg overflow-hidden relative">
+                <div className="absolute top-0 right-0 p-8 opacity-10">
+                  <Trophy className="w-24 h-24" />
+                </div>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2"><Trophy className="h-5 w-5 text-yellow-300" /> Desafio da Semana</CardTitle>
+                  <CardTitle className="flex items-center gap-2 relative z-10"><Trophy className="h-5 w-5 text-yellow-300" /> Desafio da Semana</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm opacity-90">Complete 7 dias consecutivos de estudo para ganhar a medalha <strong>"Semana Perfeita"</strong>.</p>
+                <CardContent className="space-y-4 relative z-10">
+                  <p className="text-sm opacity-90 font-medium">
+                    Sua meta: Acertar <strong>{levelData?.weeklyTarget || 30} questões</strong> nesta semana para avançar mais rápido.
+                  </p>
                   <div className="space-y-2">
                     <div className="flex justify-between text-xs font-bold uppercase opacity-80">
                       <span>Progresso</span>
-                      <span>3/7 Dias</span>
+                      <span>{levelData?.weeklyProgress || 0}/{levelData?.weeklyTarget || 30} Acertos</span>
                     </div>
-                    <Progress value={42} className="h-3 bg-primary-foreground/20" indicatorClassName="bg-yellow-300" />
+                    <Progress 
+                      value={levelData ? Math.min(100, (levelData.weeklyProgress / levelData.weeklyTarget) * 100) : 0} 
+                      className="h-3 bg-primary-foreground/20" 
+                      indicatorClassName="bg-yellow-300" 
+                    />
                   </div>
+                  {levelData && levelData.weeklyProgress >= levelData.weeklyTarget && (
+                    <div className="flex items-center gap-2 bg-white/20 p-2 rounded-lg text-xs font-bold animate-pulse">
+                      <CheckCircle2 className="w-4 h-4 text-green-300" /> Meta Batida! Continue assim!
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
