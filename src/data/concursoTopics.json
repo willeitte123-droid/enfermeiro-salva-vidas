@@ -218,6 +218,74 @@
     ]
   },
   {
+    "category": "Saúde do Adulto (Crônicas)",
+    "icon": "Activity",
+    "color": "text-blue-500",
+    "topics": [
+      {
+        "title": "Hipertensão Arterial Sistêmica (HAS)",
+        "summary": "Diretrizes Brasileiras de Hipertensão (2020) e Caderno AB 37.",
+        "keyPoints": [
+          "<strong>Definição e Diagnóstico:</strong> Elevação sustentada dos níveis pressóricos ≥ 140 e/ou 90 mmHg. Medição em consultório (duas ou mais visitas) ou MRPA/MAPA (padrão ouro).",
+          "<strong>Classificação (Consultório):</strong> <ul><li><strong>Normal:</strong> ≤ 120/80.</li><li><strong>Pré-Hipertensão:</strong> 121-139 / 81-89.</li><li><strong>Estágio 1:</strong> 140-159 / 90-99.</li><li><strong>Estágio 2:</strong> 160-179 / 100-109.</li><li><strong>Estágio 3:</strong> ≥ 180 / ≥ 110.</li></ul>",
+          "<strong>Crise Hipertensiva:</strong> Elevação abrupta da PA (geralmente > 180/120). <ul><li><strong>Urgência:</strong> Sem lesão de órgão-alvo aguda. Baixar em 24h (oral).</li><li><strong>Emergência:</strong> Com lesão aguda (AVC, IAM, Edema Pulmonar). Baixar 25% na 1ª hora (IV).</li></ul>",
+          "<strong>Tratamento:</strong> MEV (dieta hipossódica, peso, exercício) + Fármacos (IECA/BRA, Diuréticos, BCC)."
+        ],
+        "goldenTip": "A medição correta da PA exige: bexiga vazia, repouso de 5 min, não ter fumado/bebido café (30 min), braço na altura do coração e manguito de tamanho adequado (cobre 80% do braço)."
+      },
+      {
+        "title": "Diabetes Mellitus (DM)",
+        "summary": "Caderno AB 36 e Diretrizes SBD. Diagnóstico e Manejo.",
+        "keyPoints": [
+          "<strong>Classificação:</strong> Tipo 1 (Autoimune, insulinodependente), Tipo 2 (Resistência à insulina + déficit secretor), Gestacional.",
+          "<strong>Critérios Diagnósticos:</strong> <ul><li>Glicemia de Jejum ≥ 126 mg/dL (confirmar).</li><li>TOTG 75g (2h) ≥ 200 mg/dL.</li><li>HbA1c ≥ 6,5%.</li><li>Glicemia casual ≥ 200 mg/dL + Sintomas clássicos (4 Ps: Poliúria, Polidipsia, Polifagia, Perda de peso).</li></ul>",
+          "<strong>Pé Diabético:</strong> Avaliação de sensibilidade (monofilamento 10g), pulsos e deformidades. Classificação de risco e orientação de autocuidado.",
+          "<strong>Complicações Agudas:</strong> Cetoacidose (mais comum no DM1, acidose, cetonúria) e Estado Hiperosmolar (mais comum no DM2, desidratação grave, sem acidose)."
+        ],
+        "goldenTip": "A meta de HbA1c para a maioria dos adultos é < 7%. Para idosos frágeis, o alvo é menos rígido (< 8% ou 8,5%) para evitar hipoglicemias."
+      },
+      {
+        "title": "Doença Renal Crônica (DRC)",
+        "summary": "Estadiamento e cuidados de enfermagem.",
+        "keyPoints": [
+          "<strong>Definição:</strong> Anormalidade estrutural ou funcional do rim por > 3 meses. Principal marcador: Taxa de Filtração Glomerular (TFG) e Albuminúria.",
+          "<strong>Estágios (TFG):</strong> <ul><li><strong>1:</strong> TFG ≥ 90 (Normal/Alto) + Lesão.</li><li><strong>2:</strong> TFG 60-89 (Leve).</li><li><strong>3a:</strong> TFG 45-59 (Leve a Moderada).</li><li><strong>3b:</strong> TFG 30-44 (Moderada a Grave).</li><li><strong>4:</strong> TFG 15-29 (Grave).</li><li><strong>5:</strong> TFG < 15 (Falência Renal - Diálise).</li></ul>",
+          "<strong>Fístula Arteriovenosa (FAV):</strong> Unir artéria e veia para hemodiálise. Cuidados: Avaliar frêmito (tato) e sopro (ausculta), não verificar PA ou puncionar no membro da FAV."
+        ],
+        "goldenTip": "A creatinina isolada não é o melhor marcador. Deve-se calcular a TFG (fórmulas CKD-EPI ou Cockcroft-Gault) para estadiar a doença."
+      }
+    ]
+  },
+  {
+    "category": "Saúde do Trabalhador",
+    "icon": "Briefcase",
+    "color": "text-emerald-700",
+    "topics": [
+      {
+        "title": "NR-32 (Segurança em Serviços de Saúde)",
+        "summary": "Norma Regulamentadora essencial para a enfermagem.",
+        "keyPoints": [
+          "<strong>Riscos Biológicos:</strong> Obrigatória a vacinação (Tétano, Difteria, Hepatite B) fornecida pelo empregador. Proibido o uso de adornos (anéis, relógios, crachás pendurados).",
+          "<strong>Perfurocortantes:</strong> É proibido o reencape de agulhas. Descarte em recipiente rígido, resistente e impermeável. Os dispositivos devem ter mecanismos de segurança.",
+          "<strong>Quimioterápicos:</strong> Exige EPIs específicos (avental impermeável, óculos, luvas de cano longo), Cabine de Segurança Biológica e Kit de Derramamento.",
+          "<strong>Radiação Ionizante:</strong> Monitorização individual (dosímetro), EPIs (chumbo), afastamento de gestantes."
+        ],
+        "goldenTip": "O empregador deve fornecer vestimenta de trabalho adequada e os EPIs gratuitamente. É vedado o consumo de alimentos e bebidas nos postos de trabalho."
+      },
+      {
+        "title": "Doenças e Acidentes de Trabalho",
+        "summary": "Notificação e principais agravos.",
+        "keyPoints": [
+          "<strong>CAT (Comunicação de Acidente de Trabalho):</strong> Deve ser emitida até o 1º dia útil seguinte ao da ocorrência. Em caso de morte, de imediato. Tipos: Típico, Trajeto e Doença Profissional.",
+          "<strong>LER/DORT:</strong> Lesões por Esforço Repetitivo / Distúrbios Osteomusculares Relacionados ao Trabalho. Causados por repetitividade, postura inadequada, força excessiva. Notificação Compulsória em unidades sentinelas.",
+          "<strong>PAIR:</strong> Perda Auditiva Induzida por Ruído. Perda neurossensorial, irreversível, bilateral e simétrica.",
+          "<strong>Acidente com Material Biológico:</strong> Lavar com água e sabão (não espremer), avaliar risco (status sorológico da fonte), iniciar quimioprofilaxia (PEP) para HIV em até 2h (ideal) ou 72h (máximo) se indicado."
+        ],
+        "goldenTip": "A Comunicação de Acidente de Trabalho (CAT) deve ser emitida mesmo que não haja afastamento do trabalho."
+      }
+    ]
+  },
+  {
     "category": "Urgência e Emergência",
     "icon": "Siren",
     "color": "text-red-600",
