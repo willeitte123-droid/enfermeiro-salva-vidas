@@ -247,10 +247,11 @@ const StudyTracks = () => {
                                 </div>
                                 <CardFooter>
                                   <Button 
-                                    className="w-full" 
+                                    className="w-full h-auto py-3 flex items-center justify-center gap-2 whitespace-normal text-sm" 
                                     onClick={() => handleStartSession(track.dbCategory, track.questionCount)}
                                   >
-                                    <PlayCircle className="mr-2 h-4 w-4" /> Iniciar Sessão Prática
+                                    <PlayCircle className="h-4 w-4 shrink-0" /> 
+                                    <span className="text-left sm:text-center leading-tight">Iniciar Sessão Prática</span>
                                   </Button>
                                 </CardFooter>
                               </Card>
