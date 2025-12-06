@@ -48,8 +48,8 @@ const StudyTracks = () => {
     return hash % 100;
   };
 
-  const handleStartSession = (category: string, count: number) => {
-    navigate(`/simulado?category=${encodeURIComponent(category)}&count=${count}`);
+  const handleStartSession = (category: string) => {
+    navigate(`/questions?category=${encodeURIComponent(category)}`);
   };
 
   return (
@@ -250,7 +250,7 @@ const StudyTracks = () => {
                                 <CardFooter className="pt-0 pb-4 px-4 sm:pt-6 sm:pb-6 sm:px-6">
                                   <Button 
                                     className="w-full sm:w-auto h-auto py-3 px-6 flex items-center justify-center gap-2 whitespace-normal text-sm" 
-                                    onClick={() => handleStartSession(track.dbCategory, track.questionCount)}
+                                    onClick={() => handleStartSession(track.dbCategory)}
                                   >
                                     <PlayCircle className="h-4 w-4 shrink-0" /> 
                                     <span className="text-center leading-tight">Iniciar Sessão</span>
