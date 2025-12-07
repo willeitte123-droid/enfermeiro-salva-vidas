@@ -5,7 +5,8 @@ import {
   ArrowRight, BookOpen, Target, CalendarDays, 
   Trophy, Flame, Scale, Stethoscope, Biohazard, 
   Siren, Users, Lock, PlayCircle, Brain, Star, ChevronDown,
-  Calculator, Gavel, Briefcase, Scissors, Activity
+  Calculator, Gavel, Briefcase, Scissors, Activity,
+  Clock, Zap, Coffee, Crosshair, HelpCircle, Repeat, Timer
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -98,7 +99,7 @@ const StudyTracks = () => {
                 <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
                 <span className="font-bold text-lg">{levelData?.currentXP || 0}</span>
               </div>
-              <p className="text-[10px] text-emerald-100 mt-1">Acertos acumulados</p>
+              <p className="text-sm text-emerald-100 mt-1">Acertos acumulados</p>
             </div>
           </div>
         </div>
@@ -148,7 +149,6 @@ const StudyTracks = () => {
             {studyData.tracks.map((track, index) => {
               const Icon = iconMap[track.icon] || BookOpen;
               const progress = getProgress(track.id);
-              const isLocked = false; 
 
               return (
                 <Card key={track.id} className={cn(
@@ -201,7 +201,7 @@ const StudyTracks = () => {
                           {/* Ajuste de Layout: Vertical */}
                           <div className="flex flex-col gap-6">
                             
-                            {/* LISTA DE TÓPICOS (AGORA CLICÁVEIS) */}
+                            {/* LISTA DE TÓPICOS */}
                             <div className="space-y-3">
                               <h4 className="font-bold text-sm flex items-center gap-2">
                                 <BookOpen className="h-4 w-4" /> Tópicos Essenciais
@@ -269,7 +269,7 @@ const StudyTracks = () => {
           </div>
         </TabsContent>
 
-        {/* TAB 2: CRONOGRAMA (MANTIDO IGUAL) */}
+        {/* TAB 2: CRONOGRAMA */}
         <TabsContent value="schedule" className="animate-in slide-in-from-right-4 duration-500">
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
@@ -357,44 +357,148 @@ const StudyTracks = () => {
           </div>
         </TabsContent>
 
-        {/* TAB 3: MENTORIA (MANTIDO IGUAL) */}
+        {/* TAB 3: MENTORIA - REFORMULADA */}
         <TabsContent value="mentorship" className="animate-in slide-in-from-right-4 duration-500">
-          <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+          <div className="space-y-8">
             <div className="text-center space-y-2">
-              <h2 className="text-xl sm:text-2xl font-bold">Sala de Mentoria</h2>
-              <p className="text-sm sm:text-base text-muted-foreground px-4">Estratégias de alta performance para acelerar sua aprovação.</p>
+              <h2 className="text-xl sm:text-2xl font-bold">Centro de Alta Performance</h2>
+              <p className="text-sm sm:text-base text-muted-foreground px-4">Técnicas, estratégias e mentalidade para ser aprovado.</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-              <Card className="md:col-span-2 bg-gradient-to-r from-violet-500 to-purple-600 text-white border-none">
+            {/* HERO DA MENTORIA */}
+            <Card className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white border-none shadow-lg relative overflow-hidden">
+              <div className="absolute right-0 top-0 h-full w-1/3 bg-white/5 skew-x-12" />
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-2xl z-10"><Brain className="h-6 w-6 text-yellow-300" /> Mindset de Aprovado</CardTitle>
+              </CardHeader>
+              <CardContent className="z-10 relative">
+                <blockquote className="text-sm sm:text-lg font-medium leading-relaxed italic border-l-4 border-yellow-400 pl-4 py-1">
+                  "O estudo para concurso não é uma corrida de 100 metros, é uma maratona. O seu maior adversário não é a banca, é o seu espelho. Controle a ansiedade, confie no processo e faça o básico bem feito todos os dias."
+                </blockquote>
+              </CardContent>
+            </Card>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              
+              {/* CARD TÉCNICAS DE ESTUDO */}
+              <Card className="hover:shadow-md transition-all border-t-4 border-t-blue-500 flex flex-col">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl"><Brain className="h-6 w-6" /> Mindset de Aprovado</CardTitle>
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full text-blue-600">
+                      <Zap className="h-4 w-4" />
+                    </div>
+                    Metodologias Ativas
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-sm sm:text-lg font-medium leading-relaxed opacity-90">
-                    "O estudo para concurso ou para a excelência profissional não é uma corrida de 100 metros, é uma maratona. O seu maior adversário não é a banca, é o seu espelho. Controle a ansiedade, confie no processo e faça o básico bem feito todos os dias."
-                  </p>
+                <CardContent className="space-y-4 flex-1">
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-sm">Pomodoro</h4>
+                    <p className="text-xs text-muted-foreground">Ciclos de 25 min de foco total + 5 min de pausa. Após 4 ciclos, pausa longa de 15 min. Evita fadiga mental.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-sm">Técnica Feynman</h4>
+                    <p className="text-xs text-muted-foreground">Tente explicar o conteúdo em voz alta como se ensinasse uma criança. Se travar, revise aquele ponto.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-sm">Estudo Intercalado</h4>
+                    <p className="text-xs text-muted-foreground">Não estude só uma matéria o dia todo. Misture 2 ou 3 disciplinas para manter o cérebro alerta.</p>
+                  </div>
                 </CardContent>
+                <CardFooter className="pt-0">
+                  <Badge variant="secondary" className="w-full justify-center">Foco: Retenção</Badge>
+                </CardFooter>
               </Card>
 
-              {studyData.mentorship.map((item, index) => (
-                <Card key={index} className="hover:shadow-md transition-all border-t-4 border-t-primary">
-                  <CardHeader>
-                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
-                      <div className="bg-primary/10 p-2 rounded-full text-primary">
-                        {index === 0 ? <Target className="h-4 w-4" /> : index === 1 ? <ArrowRight className="h-4 w-4" /> : <Lightbulb className="h-4 w-4" />}
-                      </div>
-                      {item.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                      {item.content}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+              {/* CARD HACKS DE PROVA */}
+              <Card className="hover:shadow-md transition-all border-t-4 border-t-emerald-500 flex flex-col">
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <div className="bg-emerald-100 dark:bg-emerald-900/30 p-2 rounded-full text-emerald-600">
+                      <Crosshair className="h-4 w-4" />
+                    </div>
+                    Estratégia de Prova
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 flex-1">
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-sm">Regra do 80/20 (Pareto)</h4>
+                    <p className="text-xs text-muted-foreground">20% dos assuntos caem em 80% das provas. Na Enfermagem: Imunização, Ética, SUS, Cálculos e Urgência.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-sm">Eliminação</h4>
+                    <p className="text-xs text-muted-foreground">Sempre risque as alternativas absurdas primeiro. Isso aumenta estatisticamente sua chance de chute.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-sm">Leitura Reversa</h4>
+                    <p className="text-xs text-muted-foreground">Em questões longas (estudo de caso), leia primeiro o comando da questão (o final) e depois o texto.</p>
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-0">
+                  <Badge variant="secondary" className="w-full justify-center">Foco: Pontuação</Badge>
+                </CardFooter>
+              </Card>
+
+              {/* CARD SAÚDE MENTAL */}
+              <Card className="hover:shadow-md transition-all border-t-4 border-t-pink-500 flex flex-col md:col-span-2 lg:col-span-1">
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <div className="bg-pink-100 dark:bg-pink-900/30 p-2 rounded-full text-pink-600">
+                      <Coffee className="h-4 w-4" />
+                    </div>
+                    Anti-Burnout
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 flex-1">
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-sm">Sono Sagrado</h4>
+                    <p className="text-xs text-muted-foreground">O aprendizado se consolida no sono REM. Dormir menos de 6h prejudica a memória de longo prazo.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-sm">Pausas Reais</h4>
+                    <p className="text-xs text-muted-foreground">Na pausa, saia das telas. Olhe o horizonte, beba água, alongue-se. Instagram não é descanso para o cérebro.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-sm">Não se compare</h4>
+                    <p className="text-xs text-muted-foreground">Cada um tem seu ritmo. O colega que "estuda 12h líquidas" provavelmente está mentindo ou estudando errado.</p>
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-0">
+                  <Badge variant="secondary" className="w-full justify-center">Foco: Consistência</Badge>
+                </CardFooter>
+              </Card>
             </div>
+
+            {/* SESSÃO DE REVISÃO */}
+            <Card className="bg-muted/50 border-dashed">
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Repeat className="h-5 w-5 text-primary" /> Curva do Esquecimento
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid sm:grid-cols-3 gap-4 text-center">
+                <div className="p-3 bg-background rounded-lg border">
+                  <p className="text-xs font-bold text-muted-foreground uppercase">Revisão 1</p>
+                  <p className="font-bold text-primary">24 horas</p>
+                  <p className="text-[10px] text-muted-foreground">Após o estudo</p>
+                </div>
+                <div className="p-3 bg-background rounded-lg border">
+                  <p className="text-xs font-bold text-muted-foreground uppercase">Revisão 2</p>
+                  <p className="font-bold text-primary">7 dias</p>
+                  <p className="text-[10px] text-muted-foreground">Para consolidar</p>
+                </div>
+                <div className="p-3 bg-background rounded-lg border">
+                  <p className="text-xs font-bold text-muted-foreground uppercase">Revisão 3</p>
+                  <p className="font-bold text-primary">30 dias</p>
+                  <p className="text-[10px] text-muted-foreground">Manutenção</p>
+                </div>
+              </CardContent>
+              <CardFooter className="justify-center pb-6">
+                <Button variant="outline" size="sm" onClick={() => navigate('/flashcards')}>
+                  <Brain className="mr-2 h-4 w-4" /> Usar Flashcards para Revisão
+                </Button>
+              </CardFooter>
+            </Card>
+
           </div>
         </TabsContent>
       </Tabs>
