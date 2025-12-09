@@ -127,12 +127,19 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
 const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnlocked: boolean; earnedDate?: string }) => {
   const Icon = badge.icon;
   
+  const difficultyColor = {
+    "Fácil": "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+    "Médio": "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+    "Difícil": "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
+    "Lendário": "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
+  };
+
   return (
     <div className={cn(
-      "relative p-4 rounded-xl border transition-all duration-300 overflow-hidden group",
+      "relative p-4 rounded-xl border transition-all duration-300 overflow-hidden group flex flex-col justify-between h-full",
       isUnlocked 
         ? `bg-gradient-to-br ${badge.bgGradient} border-primary/20 hover:shadow-lg hover:border-primary/40` 
-        : "bg-muted/30 border-dashed border-border opacity-70 grayscale hover:opacity-100"
+        : "bg-muted/30 border-dashed border-border opacity-80 hover:opacity-100"
     )}>
       {isUnlocked && (
         <div className="absolute top-0 right-0 p-2">
@@ -142,25 +149,30 @@ const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnloc
       
       <div className="flex items-start gap-4">
         <div className={cn(
-          "p-3 rounded-full shrink-0 transition-transform group-hover:scale-110",
-          isUnlocked ? "bg-background shadow-sm" : "bg-muted"
+          "p-3 rounded-full shrink-0 transition-transform group-hover:scale-110 relative",
+          isUnlocked ? "bg-background shadow-sm" : "bg-muted grayscale"
         )}>
           <Icon className={cn("w-6 h-6", isUnlocked ? badge.color : "text-muted-foreground")} />
+          {!isUnlocked && <Lock className="absolute -bottom-1 -right-1 w-4 h-4 text-muted-foreground bg-background rounded-full p-0.5" />}
         </div>
-        <div>
-          <h3 className={cn("font-bold text-sm", isUnlocked ? "text-foreground" : "text-muted-foreground")}>{badge.name}</h3>
+        <div className="flex-1">
+          <div className="flex justify-between items-start">
+            <h3 className={cn("font-bold text-sm", isUnlocked ? "text-foreground" : "text-muted-foreground")}>{badge.name}</h3>
+          </div>
           <p className="text-xs text-muted-foreground mt-1 leading-snug">{badge.description}</p>
-          {isUnlocked && earnedDate && (
-            <p className="text-[10px] text-primary/80 mt-2 font-medium">
-              Conquistado em {new Date(earnedDate).toLocaleDateString('pt-BR')}
-            </p>
-          )}
-          {!isUnlocked && (
-            <div className="flex items-center gap-1 mt-2 text-[10px] text-muted-foreground font-semibold uppercase tracking-wide">
-              <Lock className="w-3 h-3" /> Bloqueado
-            </div>
-          )}
         </div>
+      </div>
+
+      <div className="flex justify-between items-center mt-4 pt-3 border-t border-border/10">
+        <Badge variant="outline" className={cn("text-[9px] font-bold border-0 px-2 py-0.5", difficultyColor[badge.difficulty])}>
+          {badge.difficulty}
+        </Badge>
+        
+        {isUnlocked && earnedDate && (
+          <p className="text-[9px] text-primary/80 font-medium">
+            {new Date(earnedDate).toLocaleDateString('pt-BR')}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -228,10 +240,11 @@ const Ranking = () => {
           const newBadgeCode = payload.new.badge_code;
           const badgeInfo = BADGES.find(b => b.id === newBadgeCode);
           if (badgeInfo) {
-            toast.success(`Nova Conquista Desbloqueada!`, {
-                description: badgeInfo.name,
+            toast.success(`Nova Conquista: ${badgeInfo.name}`, {
+                description: badgeInfo.description,
                 icon: <Trophy className="h-5 w-5 text-yellow-500" />,
                 duration: 5000,
+                className: "border-l-4 border-yellow-500 bg-background"
             });
           }
         }
