@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Medal, Crown, Lock, Star, Target, CheckCircle2 } from "lucide-react";
+import { Trophy, Medal, Crown, Lock, Star, Target, CheckCircle2, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BADGES, BadgeDef } from "@/data/badges";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -31,7 +31,8 @@ interface UserBadge {
 }
 
 const fetchRanking = async () => {
-  const { data, error } = await supabase.rpc('get_weekly_ranking');
+  // Alterado para chamar a função de ranking global
+  const { data, error } = await supabase.rpc('get_global_ranking');
   if (error) throw error;
   return data as RankedUser[];
 };
@@ -78,7 +79,7 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
         <div className="flex flex-col items-center mt-1 space-y-1">
           <div className="flex flex-col items-center leading-none">
             <span className="font-black text-lg sm:text-xl text-primary">{user.score}</span>
-            <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-wide">Acertos</span>
+            <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-wide">Pontos</span>
           </div>
           
           <div className="flex items-center gap-1 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
@@ -118,7 +119,7 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
     </div>
     <div className="text-right">
       <p className="font-bold text-lg sm:text-xl text-primary leading-none">{user.score}</p>
-      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Acertos</p>
+      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Pontos Totais</p>
     </div>
   </div>
 );
@@ -175,7 +176,7 @@ const Ranking = () => {
   }, [addActivity]);
 
   const { data: ranking = [], isLoading: isLoadingRanking } = useQuery({
-    queryKey: ['weeklyRanking'],
+    queryKey: ['globalRanking'], // Changed query key
     queryFn: fetchRanking,
     refetchInterval: 30000, 
     refetchOnWindowFocus: true,
@@ -188,11 +189,10 @@ const Ranking = () => {
     refetchOnWindowFocus: true,
   });
 
-  // Configuração do Realtime para atualização instantânea e Notificações de Conquista
+  // Configuração do Realtime para atualização instantânea (Banca + Simulados)
   useEffect(() => {
     if (!profile) return;
 
-    // Canal para Ranking (Respostas)
     const rankingChannel = supabase.channel('ranking-updates')
       .on(
         'postgres_changes',
@@ -201,13 +201,19 @@ const Ranking = () => {
           schema: 'public',
           table: 'user_question_answers' 
         },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['weeklyRanking'] });
-        }
+        () => queryClient.invalidateQueries({ queryKey: ['globalRanking'] })
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*', 
+          schema: 'public',
+          table: 'user_simulations' // Agora escuta também os simulados
+        },
+        () => queryClient.invalidateQueries({ queryKey: ['globalRanking'] })
       )
       .subscribe();
 
-    // Canal dedicado para Medalhas (Badges)
     const badgesChannel = supabase.channel('badges-updates')
       .on(
         'postgres_changes',
@@ -218,13 +224,9 @@ const Ranking = () => {
           filter: `user_id=eq.${profile.id}`
         },
         (payload) => {
-          // Atualiza a lista de badges imediatamente
           queryClient.invalidateQueries({ queryKey: ['myBadges', profile.id] });
-          
-          // Mostra notificação de conquista
           const newBadgeCode = payload.new.badge_code;
           const badgeInfo = BADGES.find(b => b.id === newBadgeCode);
-          
           if (badgeInfo) {
             toast.success(`Nova Conquista Desbloqueada!`, {
                 description: badgeInfo.name,
@@ -253,9 +255,12 @@ const Ranking = () => {
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 p-8 text-white shadow-xl">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2">Hall da Fama</h1>
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2 flex items-center justify-center md:justify-start gap-3">
+              <Globe className="h-8 w-8 text-yellow-300" />
+              Ranking Geral
+            </h1>
             <p className="text-purple-100 max-w-md text-sm sm:text-base">
-              Dispute com outros estudantes, conquiste medalhas e mostre que você domina a Enfermagem!
+              Dispute com outros estudantes. Soma de pontos da Banca de Questões + Simulados em tempo real!
             </p>
           </div>
           
@@ -280,7 +285,7 @@ const Ranking = () => {
 
       <Tabs defaultValue="ranking" className="w-full">
         <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-8 bg-muted/50 p-1 rounded-full">
-          <TabsTrigger value="ranking" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-primary data-[state=active]:shadow-sm transition-all">Ranking Semanal</TabsTrigger>
+          <TabsTrigger value="ranking" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-primary data-[state=active]:shadow-sm transition-all">Ranking Geral</TabsTrigger>
           <TabsTrigger value="badges" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-primary data-[state=active]:shadow-sm transition-all">Minhas Conquistas</TabsTrigger>
         </TabsList>
 
@@ -314,7 +319,7 @@ const Ranking = () => {
               <div className="text-center py-12 text-muted-foreground animate-in fade-in zoom-in duration-500">
                 <Trophy className="w-16 h-16 mx-auto mb-4 opacity-20 text-yellow-500" />
                 <h3 className="text-lg font-semibold text-foreground">O Ranking está vazio</h3>
-                <p className="text-sm">Seja o primeiro a pontuar nesta semana!</p>
+                <p className="text-sm">Seja o primeiro a pontuar!</p>
               </div>
             ) : null}
           </div>
