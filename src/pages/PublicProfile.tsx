@@ -23,12 +23,6 @@ interface Profile {
   specializations?: string[];
 }
 
-interface CategoryStat {
-  name: string;
-  accuracy: number;
-  total: number;
-}
-
 interface UserBadge {
   badge_code: string;
   earned_at: string;
@@ -43,6 +37,11 @@ interface Simulation {
   created_at: string;
 }
 
+interface RankedUser {
+  user_id: string;
+  score: number;
+}
+
 const fetchUserProfile = async (userId: string) => {
   const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).single();
   if (error) throw error;
@@ -51,18 +50,11 @@ const fetchUserProfile = async (userId: string) => {
 
 const fetchUserStats = async (userId: string) => {
   // 1. Buscar Simulados (Histórico + Totais)
-  const { data: simulationsData, error: simError } = await supabase
+  const simulationsPromise = supabase
     .from("user_simulations")
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
-
-  if (simError) throw simError;
-  const simulations = (simulationsData as Simulation[]) || [];
-
-  // Calcular totais dos simulados
-  const simTotalQuestions = simulations.reduce((acc, sim) => acc + (sim.total_questions || 0), 0);
-  const simTotalCorrect = simulations.reduce((acc, sim) => acc + (sim.score || 0), 0);
 
   // 2. Buscar Dados da Banca (Questões Avulsas)
   const { count: bankTotalQuestions, error: bankCountError } = await supabase
@@ -80,30 +72,56 @@ const fetchUserStats = async (userId: string) => {
 
   if (bankCorrectError) throw bankCorrectError;
 
-  // 3. Buscar Badges
-  const { data: badgesData, error: badgesError } = await supabase
+  // 3. Buscar Conquistas
+  const badgesPromise = supabase
     .from("user_badges")
     .select('*')
     .eq('user_id', userId);
 
-  if (badgesError) throw badgesError;
+  // 4. Buscar Ranking Global para determinar posição
+  const rankingPromise = supabase.rpc('get_global_ranking');
 
-  // Totais Gerais Unificados
-  const grandTotalQuestions = (bankTotalQuestions || 0) + simTotalQuestions;
-  const grandTotalCorrect = (bankTotalCorrect || 0) + simTotalCorrect;
+  const [simulationsResult, badgesResult, rankingResult] = await Promise.all([
+    simulationsPromise, 
+    badgesPromise,
+    rankingPromise
+  ]);
+
+  if (simulationsResult.error) console.error("Simulations Error:", simulationsResult.error);
+  if (badgesResult.error) console.error("Badges Error:", badgesResult.error);
+  if (rankingResult.error) console.error("Ranking Error:", rankingResult.error);
+
+  const simulations = (simulationsResult.data as Simulation[]) || [];
+  const badges = (badgesResult.data as UserBadge[]) || [];
+  const rankingList = (rankingResult.data as RankedUser[]) || [];
+
+  // --- CÁLCULO UNIFICADO ---
   
-  // Precisão Global Real
+  // Totais dos Simulados
+  const simTotalQuestions = simulations.reduce((acc, sim) => acc + (sim.total_questions || 0), 0);
+  const simTotalCorrect = simulations.reduce((acc, sim) => acc + (sim.score || 0), 0);
+
+  // Totais Gerais
+  const grandTotalQuestions = (bankTotalQuestions || 0) + simTotalQuestions;
+  const grandTotalCorrect = (bankTotalCorrect || 0) + simTotalCorrect; // XP Total
+  
+  // Precisão Global
   const globalAccuracy = grandTotalQuestions > 0 
     ? Math.round((grandTotalCorrect / grandTotalQuestions) * 100) 
     : 0;
 
+  // Determinar Posição no Ranking
+  const userRankIndex = rankingList.findIndex(u => u.user_id === userId);
+  const rankingPosition = userRankIndex !== -1 ? userRankIndex + 1 : null;
+
   return {
     simulations,
-    badges: (badgesData as UserBadge[]) || [],
+    badges,
     grandTotalQuestions,
     grandTotalCorrect,
     globalAccuracy,
-    totalSimulations: simulations.length
+    totalSimulations: simulations.length,
+    rankingPosition
   };
 };
 
@@ -131,7 +149,8 @@ const PublicProfile = () => {
     grandTotalQuestions, 
     grandTotalCorrect, 
     globalAccuracy, 
-    totalSimulations 
+    totalSimulations,
+    rankingPosition
   } = stats || {};
 
   if (isLoadingProfile) {
@@ -287,6 +306,7 @@ const PublicProfile = () => {
               </CardContent>
             </Card>
 
+            {/* CARD ALTERADO: Ranking com Posição */}
             <Card className="bg-gradient-to-br from-card to-purple-50/50 dark:to-purple-950/10 border-l-4 border-l-purple-500 shadow-sm hover:shadow-md transition-all group">
               <CardContent className="p-4 flex flex-col justify-between h-full">
                 <div className="flex justify-between items-start mb-2">
@@ -295,9 +315,9 @@ const PublicProfile = () => {
                 </div>
                 <div>
                   <span className="text-2xl md:text-3xl font-bold text-foreground">
-                    {grandTotalCorrect || 0}
+                    {rankingPosition ? `${rankingPosition}º` : "-"}
                   </span>
-                  <p className="text-xs text-muted-foreground mt-1">Total de Acertos</p>
+                  <p className="text-xs text-muted-foreground mt-1">Posição Geral</p>
                 </div>
               </CardContent>
             </Card>
