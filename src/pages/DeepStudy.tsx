@@ -159,7 +159,6 @@ const DeepStudy = () => {
   };
 
   // Handler de Seleção de Texto Inteligente
-  // Converte a seleção visual em padrão Regex para encontrar no HTML bruto
   const handleMouseUp = () => {
     const selection = window.getSelection();
     if (!selection || selection.isCollapsed || !selectedDoc) {
@@ -174,14 +173,12 @@ const DeepStudy = () => {
       const escapedText = plainText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       
       // 2. Substitui espaços por um padrão que aceita tags HTML ou espaços
-      // Isso permite encontrar "Texto <b>Negrito</b>" selecionando apenas o texto visual
       const pattern = escapedText.replace(/\s+/g, '(?:<[^>]+>|\\s)+');
       
       // 3. Busca no conteúdo original HTML
-      const regex = new RegExp(pattern, 'i'); // Case insensitive para robustez
+      const regex = new RegExp(pattern, 'i');
       const match = selectedDoc.content.match(regex);
       
-      // Se encontrar match no HTML, usa o texto original (com tags), senão usa o texto simples (fallback)
       const textToSave = match ? match[0] : plainText;
 
       if (isHighlighterMode) {
@@ -202,7 +199,6 @@ const DeepStudy = () => {
     if (target.tagName === 'MARK' && window.getSelection()?.toString().trim() === '') {
       const markHtml = target.innerHTML;
       
-      // Compara HTML interno para garantir match correto mesmo com tags
       const idsToDelete = highlights
         .filter(h => markHtml.includes(h.selected_text) || h.selected_text.includes(markHtml))
         .map(h => h.id);
@@ -210,7 +206,7 @@ const DeepStudy = () => {
       if (idsToDelete.length > 0) {
         setHighlightToRemove({ 
             ids: idsToDelete, 
-            text: target.textContent || "" // Mostra texto limpo no modal
+            text: target.textContent || ""
         });
       }
     }
@@ -232,9 +228,6 @@ const DeepStudy = () => {
       if (!h.selected_text) return;
       const term = h.selected_text;
       let pos = content.indexOf(term);
-      
-      // Se não encontrar exato (devido a mudança em algo), tenta fallback simples
-      // Mas como salvamos o HTML exato no handleMouseUp, o indexOf deve funcionar na maioria dos casos
       while (pos !== -1) {
         ranges.push({ start: pos, end: pos + term.length });
         pos = content.indexOf(term, pos + 1);
@@ -264,10 +257,7 @@ const DeepStudy = () => {
       const { start, end } = mergedRanges[i];
       const segment = result.substring(start, end);
       
-      // Proteção para não quebrar tags HTML ao meio (ex: <str<mark>ong>)
-      // Só aplica se não estiver "quebrando" uma tag
       if (!segment.includes('<') && !segment.includes('>')) {
-         // Caso simples
          result = 
            result.substring(0, start) + 
            `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors" title="Clique para remover">` + 
@@ -275,8 +265,6 @@ const DeepStudy = () => {
            `</mark>` + 
            result.substring(end);
       } else {
-         // Caso complexo (contém tags): Aplica mark ao redor de tudo
-         // O CSS box-decoration-clone ajuda a manter o estilo em quebras de linha
          result = 
            result.substring(0, start) + 
            `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors box-decoration-clone" title="Clique para remover">` + 
@@ -298,7 +286,8 @@ const DeepStudy = () => {
 
   const categories = ["Todas", ...Array.from(new Set(libraryData.map(d => d.category)))];
 
-  const highlighterCursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 2-7 20-4-9-9-4Z"/><path d="M13 6 7 7"/></svg>') 0 32, text`;
+  // Cursor Realista de Marcador Amarelo (SVG)
+  const highlighterCursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M18.8 4l1.2 1.2c0.8 0.8 0.8 2 0 2.8L9.2 18.8 6 15.6 16.8 4.8c0.8-0.8 2-0.8 2.8 0z" fill="%23facc15" stroke="%23854d0e" stroke-width="1.5"/><path d="M9.2 18.8L6 15.6 3 21l6-2.2z" fill="%23fef9c3" stroke="%23854d0e" stroke-width="1.5"/><line x1="15.5" y1="7.5" x2="13.5" y2="9.5" stroke="%23a16207" stroke-width="1.5"/></svg>') 4 28, text`;
 
   // LEITOR IMERSIVO
   if (selectedDoc) {
