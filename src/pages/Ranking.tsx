@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -61,19 +61,21 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
 
   return (
     <div className="flex flex-col items-center justify-end group w-1/3 max-w-[140px] animate-in slide-in-from-bottom-4 duration-700 fade-in">
-      <div className="relative mb-3">
+      <Link to={`/user/${user.user_id}`} className="relative mb-3 cursor-pointer transition-transform hover:scale-105 active:scale-95">
         {position === 1 && <Crown className="absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 text-yellow-400 fill-yellow-400 animate-bounce" />}
-        <Avatar className={cn("w-14 h-14 sm:w-20 sm:h-20 border-4 transition-transform group-hover:scale-110", colors[position].split(' ')[2])}>
+        <Avatar className={cn("w-14 h-14 sm:w-20 sm:h-20 border-4 transition-all", colors[position].split(' ')[2])}>
           <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
           <AvatarFallback className="font-bold text-lg bg-card">{user.first_name?.[0]}</AvatarFallback>
         </Avatar>
         <div className={cn("absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg bg-gradient-to-br", colors[position])}>
           {position}
         </div>
-      </div>
+      </Link>
       
       <div className="text-center mb-2 w-full">
-        <p className="font-bold text-foreground truncate text-sm sm:text-base group-hover:text-primary transition-colors">{user.first_name}</p>
+        <Link to={`/user/${user.user_id}`} className="font-bold text-foreground truncate text-sm sm:text-base hover:text-primary hover:underline transition-colors block">
+          {user.first_name}
+        </Link>
         
         {/* Stats Container */}
         <div className="flex flex-col items-center mt-1 space-y-1">
@@ -102,21 +104,25 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
       : "bg-card border-border hover:border-primary/30"
   )}>
     <div className="font-bold text-muted-foreground w-6 text-center">{position}</div>
-    <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm group-hover:border-primary transition-colors">
-      <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
-      <AvatarFallback>{user.first_name?.[0]}</AvatarFallback>
-    </Avatar>
-    <div className="flex-1 min-w-0">
-      <p className={cn("font-semibold truncate group-hover:text-primary transition-colors", isCurrentUser && "text-primary")}>
-        {user.first_name} {user.last_name}
-        {isCurrentUser && <span className="ml-2 text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">Você</span>}
-      </p>
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <Badge variant="secondary" className="h-5 px-1.5 text-[10px] font-normal flex gap-1 items-center">
-            <Target className="w-3 h-3" /> {user.accuracy}% precisão
-        </Badge>
+    
+    <Link to={`/user/${user.user_id}`} className="flex flex-1 items-center gap-4 min-w-0 cursor-pointer">
+      <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm group-hover:border-primary transition-colors">
+        <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
+        <AvatarFallback>{user.first_name?.[0]}</AvatarFallback>
+      </Avatar>
+      <div className="flex-1 min-w-0">
+        <p className={cn("font-semibold truncate group-hover:text-primary group-hover:underline transition-colors", isCurrentUser && "text-primary")}>
+          {user.first_name} {user.last_name}
+          {isCurrentUser && <span className="ml-2 text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full no-underline">Você</span>}
+        </p>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <Badge variant="secondary" className="h-5 px-1.5 text-[10px] font-normal flex gap-1 items-center">
+              <Target className="w-3 h-3" /> {user.accuracy}% precisão
+          </Badge>
+        </div>
       </div>
-    </div>
+    </Link>
+
     <div className="text-right">
       <p className="font-bold text-lg sm:text-xl text-primary leading-none">{user.score}</p>
       <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Pontos Totais</p>
@@ -188,7 +194,7 @@ const Ranking = () => {
   }, [addActivity]);
 
   const { data: ranking = [], isLoading: isLoadingRanking } = useQuery({
-    queryKey: ['globalRanking'], // Changed query key
+    queryKey: ['globalRanking'], 
     queryFn: fetchRanking,
     refetchInterval: 30000, 
     refetchOnWindowFocus: true,
@@ -220,7 +226,7 @@ const Ranking = () => {
         {
           event: '*', 
           schema: 'public',
-          table: 'user_simulations' // Agora escuta também os simulados
+          table: 'user_simulations'
         },
         () => queryClient.invalidateQueries({ queryKey: ['globalRanking'] })
       )
