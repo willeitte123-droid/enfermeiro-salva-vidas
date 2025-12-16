@@ -88,7 +88,7 @@ const DeepStudy = () => {
     mutationFn: async (text: string) => {
       if (!profile || !selectedDoc) throw new Error("Usuário ou documento não identificado");
       
-      // Verifica duplicatas exatas
+      // Verifica duplicatas exatas locais
       const isDuplicate = highlights.some(h => h.selected_text === text);
       if (isDuplicate) return;
 
@@ -109,6 +109,7 @@ const DeepStudy = () => {
         toast.success("Texto grifado!");
       }
       
+      // Limpa a seleção visual do navegador para evitar confusão
       if (window.getSelection) {
         window.getSelection()?.removeAllRanges();
       }
@@ -140,10 +141,11 @@ const DeepStudy = () => {
 
     const text = selection.toString().trim();
     if (text.length > 0) {
-      // Se modo grifador ativo, salva direto
+      // No modo grifador, salva imediatamente
       if (isHighlighterMode) {
         addHighlightMutation.mutate(text);
       } else {
+        // Modo normal: exibe menu flutuante
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
         setSelectionRect(rect);
@@ -158,61 +160,72 @@ const DeepStudy = () => {
     }
   };
 
-  // Processamento inteligente do conteúdo para grifos
-  // Utiliza fusão de intervalos (Range Merging) para suportar sobreposições
+  // Algoritmo de Renderização de Grifos (Fusão de Intervalos)
+  // Resolve problemas de sobreposição e quebra de HTML
   const processedContent = useMemo(() => {
     if (!selectedDoc) return "";
-    let content = selectedDoc.content;
+    const content = selectedDoc.content;
     const ranges: {start: number, end: number}[] = [];
 
-    // 1. Encontrar todas as ocorrências de todos os grifos
+    // 1. Mapear todas as ocorrências de todos os grifos no texto original
     highlights.forEach(h => {
       if (!h.selected_text) return;
       const term = h.selected_text;
       let pos = content.indexOf(term);
       while (pos !== -1) {
         ranges.push({ start: pos, end: pos + term.length });
+        // Avança apenas 1 caractere para encontrar sobreposições internas se houver
         pos = content.indexOf(term, pos + 1);
       }
     });
 
     if (ranges.length === 0) return content;
 
-    // 2. Ordenar por início
+    // 2. Ordenar intervalos pelo início
     ranges.sort((a, b) => a.start - b.start);
 
-    // 3. Fundir intervalos sobrepostos
+    // 3. Fundir intervalos que se sobrepõem ou são adjacentes
     const mergedRanges: {start: number, end: number}[] = [];
-    let currentRange = ranges[0];
+    if (ranges.length > 0) {
+      let current = ranges[0];
+      for (let i = 1; i < ranges.length; i++) {
+        const next = ranges[i];
+        if (next.start < current.end) { // Sobreposição detectada
+          // Estende o final do atual se necessário
+          current.end = Math.max(current.end, next.end);
+        } else {
+          // Não sobrepõe, salva o atual e começa um novo
+          mergedRanges.push(current);
+          current = next;
+        }
+      }
+      mergedRanges.push(current);
+    }
 
-    for (let i = 1; i < ranges.length; i++) {
-      const nextRange = ranges[i];
-      if (nextRange.start <= currentRange.end) {
-        // Sobreposição: estende o final se necessário
-        currentRange.end = Math.max(currentRange.end, nextRange.end);
+    // 4. Reconstruir o HTML injetando as tags <mark> nas posições corretas
+    let result = "";
+    let lastIndex = 0;
+
+    mergedRanges.forEach(range => {
+      // Texto antes do grifo
+      result += content.substring(lastIndex, range.start);
+      
+      // O texto grifado
+      const highlightedSegment = content.substring(range.start, range.end);
+      
+      // Verifica se o segmento não quebra tags HTML (proteção básica)
+      // Se quebrar tags, aplicamos sem a mark para não destruir o layout
+      if (highlightedSegment.includes('<') || highlightedSegment.includes('>')) {
+         result += highlightedSegment;
       } else {
-        // Não sobrepõe: salva o atual e inicia novo
-        mergedRanges.push(currentRange);
-        currentRange = nextRange;
+         result += `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 box-decoration-clone">${highlightedSegment}</mark>`;
       }
-    }
-    mergedRanges.push(currentRange);
+      
+      lastIndex = range.end;
+    });
 
-    // 4. Aplicar as tags <mark> de trás para frente para não alterar índices
-    let result = content;
-    for (let i = mergedRanges.length - 1; i >= 0; i--) {
-      const { start, end } = mergedRanges[i];
-      // Verifica se não estamos quebrando uma tag HTML existente (segurança básica)
-      const segment = result.substring(start, end);
-      if (!segment.includes('<') && !segment.includes('>')) {
-         result = 
-           result.substring(0, start) + 
-           `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors" title="Texto grifado">` + 
-           result.substring(start, end) + 
-           `</mark>` + 
-           result.substring(end);
-      }
-    }
+    // Restante do texto
+    result += content.substring(lastIndex);
 
     return result;
   }, [selectedDoc, highlights]);
@@ -252,22 +265,20 @@ const DeepStudy = () => {
 
           <div className="flex items-center gap-2">
             {profile && (
-              <>
-                <Button 
-                  variant={isHighlighterMode ? "default" : "outline"} 
-                  size="sm" 
-                  className={cn("gap-2 transition-all", isHighlighterMode ? "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-500" : "")}
-                  onClick={() => {
-                    setIsHighlighterMode(!isHighlighterMode);
-                    if (!isHighlighterMode) {
-                        toast.info("Modo Grifador Ativado", { description: "Selecione o texto para grifar automaticamente." });
-                    }
-                  }}
-                >
-                  <PenTool className="h-4 w-4" />
-                  <span className="hidden sm:inline">{isHighlighterMode ? "Grifador Ativo" : "Usar Grifador"}</span>
-                </Button>
-              </>
+              <Button 
+                variant={isHighlighterMode ? "default" : "outline"} 
+                size="sm" 
+                className={cn("gap-2 transition-all", isHighlighterMode ? "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-500" : "")}
+                onClick={() => {
+                  setIsHighlighterMode(!isHighlighterMode);
+                  if (!isHighlighterMode) {
+                      toast.info("Modo Grifador Ativado", { description: "Selecione o texto para grifar automaticamente." });
+                  }
+                }}
+              >
+                <PenTool className="h-4 w-4" />
+                <span className="hidden sm:inline">{isHighlighterMode ? "Grifador Ativo" : "Usar Grifador"}</span>
+              </Button>
             )}
 
             {profile && (
