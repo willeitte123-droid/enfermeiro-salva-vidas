@@ -96,37 +96,61 @@ const DeepStudy = () => {
     enabled: !!selectedDoc && !!profile
   });
 
-  // Mutation to save highlight
+  // Mutation to save highlight with OPTIMISTIC UPDATES
   const addHighlightMutation = useMutation({
     mutationFn: async (text: string) => {
       if (!profile || !selectedDoc) throw new Error("Usuário ou documento não identificado");
       
-      const isDuplicate = highlights.some(h => h.selected_text === text);
-      if (isDuplicate) return;
-
-      const { error } = await supabase.from('user_highlights').insert({
+      const { data, error } = await supabase.from('user_highlights').insert({
         user_id: profile.id,
         document_id: selectedDoc.id,
         selected_text: text,
         color: 'yellow' 
-      }).select();
+      }).select().single();
+      
       if (error) throw error;
+      return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['highlights'] });
+    // Executado ANTES da mutação (Atualização Otimista)
+    onMutate: async (newText) => {
+      await queryClient.cancelQueries({ queryKey: ['highlights', selectedDoc?.id, profile?.id] });
+      
+      const previousHighlights = queryClient.getQueryData(['highlights', selectedDoc?.id, profile?.id]);
+
+      // Cria um highlight temporário para exibir imediatamente
+      if (profile && selectedDoc) {
+        queryClient.setQueryData(['highlights', selectedDoc.id, profile.id], (old: UserHighlight[] | undefined) => {
+          const newHighlight: UserHighlight = {
+            id: `temp-${Date.now()}`,
+            document_id: selectedDoc.id,
+            selected_text: newText,
+            color: 'yellow',
+            created_at: new Date().toISOString()
+          };
+          return old ? [...old, newHighlight] : [newHighlight];
+        });
+      }
+
+      // Limpa seleção visual
       setSelectionRect(null);
       setSelectedText("");
-      
-      if (!isHighlighterMode) {
-        toast.success("Texto grifado!");
-      }
-      
       if (window.getSelection) {
         window.getSelection()?.removeAllRanges();
       }
+
+      return { previousHighlights };
     },
-    onError: (error) => {
-      console.error("Erro ao salvar grifo:", error);
+    onError: (err, newText, context) => {
+      // Reverte se der erro
+      if (context?.previousHighlights) {
+        queryClient.setQueryData(['highlights', selectedDoc?.id, profile?.id], context.previousHighlights);
+      }
+      toast.error("Erro ao salvar grifo.");
+      console.error(err);
+    },
+    onSettled: () => {
+      // Sincroniza com o servidor no final para garantir IDs reais
+      queryClient.invalidateQueries({ queryKey: ['highlights', selectedDoc?.id, profile?.id] });
     }
   });
 
@@ -172,14 +196,25 @@ const DeepStudy = () => {
       // 1. Escapa caracteres especiais do regex
       const escapedText = plainText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       
-      // 2. Substitui espaços por um padrão que aceita tags HTML ou espaços
-      const pattern = escapedText.replace(/\s+/g, '(?:<[^>]+>|\\s)+');
+      // 2. Substitui espaços por um padrão robusto que aceita:
+      // - Espaços normais (\s)
+      // - Tags HTML (<[^>]+>)
+      // - Entidades HTML comuns como &nbsp; (?:&nbsp;|&#160;)
+      // Isso resolve falhas ao selecionar textos com formatação oculta
+      const pattern = escapedText.replace(/\s+/g, '(?:<[^>]+>|\\s|&nbsp;|&#160;)+');
       
       // 3. Busca no conteúdo original HTML
       const regex = new RegExp(pattern, 'i');
       const match = selectedDoc.content.match(regex);
       
       const textToSave = match ? match[0] : plainText;
+
+      // Evita duplicação exata local antes de enviar
+      const isDuplicate = highlights.some(h => h.selected_text === textToSave);
+      if (isDuplicate) {
+        window.getSelection()?.removeAllRanges();
+        return;
+      }
 
       if (isHighlighterMode) {
         addHighlightMutation.mutate(textToSave);
@@ -199,6 +234,7 @@ const DeepStudy = () => {
     if (target.tagName === 'MARK' && window.getSelection()?.toString().trim() === '') {
       const markHtml = target.innerHTML;
       
+      // Compara HTML interno para garantir match correto mesmo com tags
       const idsToDelete = highlights
         .filter(h => markHtml.includes(h.selected_text) || h.selected_text.includes(markHtml))
         .map(h => h.id);
@@ -206,7 +242,7 @@ const DeepStudy = () => {
       if (idsToDelete.length > 0) {
         setHighlightToRemove({ 
             ids: idsToDelete, 
-            text: target.textContent || ""
+            text: target.textContent || "" // Mostra texto limpo no modal
         });
       }
     }
@@ -224,39 +260,66 @@ const DeepStudy = () => {
     let content = selectedDoc.content;
     const ranges: {start: number, end: number}[] = [];
 
+    // Proteção contra highlights nulos ou inválidos
+    if (!highlights || highlights.length === 0) return content;
+
     highlights.forEach(h => {
       if (!h.selected_text) return;
       const term = h.selected_text;
       let pos = content.indexOf(term);
-      while (pos !== -1) {
-        ranges.push({ start: pos, end: pos + term.length });
-        pos = content.indexOf(term, pos + 1);
+      
+      // Fallback para busca se indexOf falhar (devido a ligeiras diferenças de encoding)
+      if (pos === -1) {
+         try {
+            // Tenta regex reverso simplificado
+            const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(escaped, 'g');
+            let match;
+            while ((match = regex.exec(content)) !== null) {
+               ranges.push({ start: match.index, end: match.index + term.length });
+            }
+         } catch (e) {
+            // Silently fail for invalid regex
+         }
+      } else {
+        while (pos !== -1) {
+          ranges.push({ start: pos, end: pos + term.length });
+          pos = content.indexOf(term, pos + 1);
+        }
       }
     });
 
     if (ranges.length === 0) return content;
 
+    // Ordena e funde intervalos sobrepostos
     ranges.sort((a, b) => a.start - b.start);
 
     const mergedRanges: {start: number, end: number}[] = [];
-    let currentRange = ranges[0];
-
-    for (let i = 1; i < ranges.length; i++) {
-      const nextRange = ranges[i];
-      if (nextRange.start <= currentRange.end) {
-        currentRange.end = Math.max(currentRange.end, nextRange.end);
-      } else {
+    if (ranges.length > 0) {
+        let currentRange = ranges[0];
+        for (let i = 1; i < ranges.length; i++) {
+        const nextRange = ranges[i];
+        if (nextRange.start <= currentRange.end) {
+            currentRange.end = Math.max(currentRange.end, nextRange.end);
+        } else {
+            mergedRanges.push(currentRange);
+            currentRange = nextRange;
+        }
+        }
         mergedRanges.push(currentRange);
-        currentRange = nextRange;
-      }
     }
-    mergedRanges.push(currentRange);
 
+    // Aplica as tags de mark
     let result = content;
+    // Processa de trás para frente para não alterar os índices dos próximos
     for (let i = mergedRanges.length - 1; i >= 0; i--) {
       const { start, end } = mergedRanges[i];
+      // Validação de limites
+      if (start < 0 || end > result.length) continue;
+
       const segment = result.substring(start, end);
       
+      // Proteção para não quebrar tags HTML ao meio
       if (!segment.includes('<') && !segment.includes('>')) {
          result = 
            result.substring(0, start) + 
@@ -265,6 +328,7 @@ const DeepStudy = () => {
            `</mark>` + 
            result.substring(end);
       } else {
+         // Se contém tags, usa box-decoration-clone para garantir estilo correto
          result = 
            result.substring(0, start) + 
            `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors box-decoration-clone" title="Clique para remover">` + 
@@ -286,7 +350,6 @@ const DeepStudy = () => {
 
   const categories = ["Todas", ...Array.from(new Set(libraryData.map(d => d.category)))];
 
-  // Cursor Realista de Marcador Amarelo (SVG)
   const highlighterCursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M18.8 4l1.2 1.2c0.8 0.8 0.8 2 0 2.8L9.2 18.8 6 15.6 16.8 4.8c0.8-0.8 2-0.8 2.8 0z" fill="%23facc15" stroke="%23854d0e" stroke-width="1.5"/><path d="M9.2 18.8L6 15.6 3 21l6-2.2z" fill="%23fef9c3" stroke="%23854d0e" stroke-width="1.5"/><line x1="15.5" y1="7.5" x2="13.5" y2="9.5" stroke="%23a16207" stroke-width="1.5"/></svg>') 4 28, text`;
 
   // LEITOR IMERSIVO
