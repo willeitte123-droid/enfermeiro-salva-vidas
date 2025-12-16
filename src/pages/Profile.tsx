@@ -79,7 +79,7 @@ const ProfilePage = () => {
     },
   });
 
-  // Sincroniza dados do perfil com o formulário, mas NÃO sobrescreve se estiver editando
+  // Sincroniza dados do perfil com o formulário
   useEffect(() => {
     if (profile && !isEditing) {
       form.reset({
@@ -133,23 +133,61 @@ const ProfilePage = () => {
     setSpecs(specs.filter(s => s !== specToRemove));
   };
 
-  // Submit do Formulário
+  // Função dedicada para salvar SOMENTE especializações (chamada pelo botão do card de especializações)
+  const handleSaveSpecializations = async () => {
+    if (!profile) return;
+    setIsLoading(true);
+
+    // Captura o valor que está no input se o usuário esqueceu de clicar no "+"
+    let finalSpecs = [...specs];
+    if (newSpec.trim() && !finalSpecs.includes(newSpec.trim())) {
+      finalSpecs.push(newSpec.trim());
+      setSpecs(finalSpecs); // Atualiza visualmente imediatamente
+      setNewSpec("");
+    }
+
+    try {
+      const { error } = await supabase.from('profiles').update({
+        specializations: finalSpecs
+      }).eq('id', profile.id);
+
+      if (error) throw error;
+
+      toast.success("Especializações salvas com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ['profile', profile.id] });
+      setIsEditing(false);
+    } catch (error: any) {
+      toast.error("Erro ao salvar especializações", { description: error.message });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Submit Geral do Formulário (chamado pelo botão do header)
   const onSubmit = async (values: z.infer<typeof profileSchema>) => {
     if (!profile) return;
     setIsLoading(true);
+
+    // Também verifica se há spec pendente no submit geral
+    let finalSpecs = [...specs];
+    if (newSpec.trim() && !finalSpecs.includes(newSpec.trim())) {
+      finalSpecs.push(newSpec.trim());
+    }
+
     try {
       const { error } = await supabase.from('profiles').update({
         first_name: values.firstName,
         last_name: values.lastName,
         bio: values.bio,
         profession: values.profession,
-        specializations: specs
+        specializations: finalSpecs
       }).eq('id', profile.id);
 
       if (error) throw error;
       
       toast.success("Perfil atualizado com sucesso!");
       setIsEditing(false);
+      setNewSpec(""); // Limpa input pendente
       queryClient.invalidateQueries({ queryKey: ['profile', profile.id] });
     } catch (error: any) {
       toast.error("Erro ao salvar", { description: error.message });
@@ -187,7 +225,7 @@ const ProfilePage = () => {
                 <X className="w-4 h-4 mr-2" /> Cancelar
               </Button>
               <Button variant="default" size="sm" onClick={form.handleSubmit(onSubmit)} disabled={isLoading} className="bg-green-600 hover:bg-green-700">
-                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} Salvar
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} Salvar Tudo
               </Button>
             </div>
           )}
@@ -312,7 +350,7 @@ const ProfilePage = () => {
                 
                 {isEditing && (
                   <div className="mt-4 flex justify-end border-t pt-3">
-                    <Button size="sm" onClick={form.handleSubmit(onSubmit)} disabled={isLoading} className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
+                    <Button size="sm" onClick={handleSaveSpecializations} disabled={isLoading} className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
                       {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                       Salvar Alterações
                     </Button>
