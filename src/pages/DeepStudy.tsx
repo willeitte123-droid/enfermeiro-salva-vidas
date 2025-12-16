@@ -89,16 +89,16 @@ const DeepStudy = () => {
     mutationFn: async (text: string) => {
       if (!profile || !selectedDoc) throw new Error("Usuário ou documento não identificado");
       
-      // Verifica duplicatas locais antes de enviar
+      // Verifica duplicatas exatas
       const isDuplicate = highlights.some(h => h.selected_text === text);
-      if (isDuplicate) return; // Não salva se já existe
+      if (isDuplicate) return;
 
       const { error } = await supabase.from('user_highlights').insert({
         user_id: profile.id,
         document_id: selectedDoc.id,
         selected_text: text,
         color: 'yellow' 
-      }).select(); // .select() é importante para confirmar a inserção
+      }).select();
       if (error) throw error;
     },
     onSuccess: () => {
@@ -106,18 +106,15 @@ const DeepStudy = () => {
       setSelectionRect(null);
       setSelectedText("");
       
-      // Se não estiver no modo contínuo, mostra toast
       if (!isHighlighterMode) {
         toast.success("Texto grifado!");
       }
       
-      // Limpar seleção visual
       if (window.getSelection) {
         window.getSelection()?.removeAllRanges();
       }
     },
     onError: (error) => {
-      // Ignora erro silenciosamente se for apenas seleção vazia, mas alerta se for erro de rede
       console.error("Erro ao salvar grifo:", error);
     }
   });
@@ -139,7 +136,6 @@ const DeepStudy = () => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     const progress = (scrollTop / (scrollHeight - clientHeight)) * 100;
     setScrollProgress(progress);
-    // Hide popover on scroll
     if (selectionRect) {
       setSelectionRect(null);
       setSelectedText("");
@@ -157,11 +153,10 @@ const DeepStudy = () => {
 
     const text = selection.toString().trim();
     if (text.length > 0) {
-      // Se o modo grifador estiver ATIVO, salva direto
+      // Se modo grifador ativo, salva direto
       if (isHighlighterMode) {
         addHighlightMutation.mutate(text);
       } else {
-        // Se NÃO estiver ativo, mostra o menu flutuante
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
         setSelectionRect(rect);
@@ -176,25 +171,63 @@ const DeepStudy = () => {
     }
   };
 
-  // Processar conteúdo para exibir grifos
+  // Processamento inteligente do conteúdo para grifos
+  // Utiliza fusão de intervalos (Range Merging) para suportar sobreposições
   const processedContent = useMemo(() => {
     if (!selectedDoc) return "";
     let content = selectedDoc.content;
+    const ranges: {start: number, end: number}[] = [];
 
-    // Ordenar highlights por tamanho (maiores primeiro) para evitar conflitos de replace
-    const sortedHighlights = [...highlights].sort((a, b) => b.selected_text.length - a.selected_text.length);
-
-    sortedHighlights.forEach(h => {
-      // Previne que a substituição quebre tags HTML existentes ou outros grifos
-      // Usamos uma estratégia de split/join segura
-      const parts = content.split(h.selected_text);
-      if (parts.length > 1) {
-        // Apenas substitui se encontrar o texto exato
-        content = parts.join(`<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors" title="Texto grifado">${h.selected_text}</mark>`);
+    // 1. Encontrar todas as ocorrências de todos os grifos
+    highlights.forEach(h => {
+      if (!h.selected_text) return;
+      const term = h.selected_text;
+      let pos = content.indexOf(term);
+      while (pos !== -1) {
+        ranges.push({ start: pos, end: pos + term.length });
+        pos = content.indexOf(term, pos + 1);
       }
     });
 
-    return content;
+    if (ranges.length === 0) return content;
+
+    // 2. Ordenar por início
+    ranges.sort((a, b) => a.start - b.start);
+
+    // 3. Fundir intervalos sobrepostos
+    const mergedRanges: {start: number, end: number}[] = [];
+    let currentRange = ranges[0];
+
+    for (let i = 1; i < ranges.length; i++) {
+      const nextRange = ranges[i];
+      if (nextRange.start <= currentRange.end) {
+        // Sobreposição: estende o final se necessário
+        currentRange.end = Math.max(currentRange.end, nextRange.end);
+      } else {
+        // Não sobrepõe: salva o atual e inicia novo
+        mergedRanges.push(currentRange);
+        currentRange = nextRange;
+      }
+    }
+    mergedRanges.push(currentRange);
+
+    // 4. Aplicar as tags <mark> de trás para frente para não alterar índices
+    let result = content;
+    for (let i = mergedRanges.length - 1; i >= 0; i--) {
+      const { start, end } = mergedRanges[i];
+      // Verifica se não estamos quebrando uma tag HTML existente (segurança básica)
+      const segment = result.substring(start, end);
+      if (!segment.includes('<') && !segment.includes('>')) {
+         result = 
+           result.substring(0, start) + 
+           `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors" title="Texto grifado">` + 
+           result.substring(start, end) + 
+           `</mark>` + 
+           result.substring(end);
+      }
+    }
+
+    return result;
   }, [selectedDoc, highlights]);
 
   const filteredDocs = libraryData.filter(doc => {
@@ -206,7 +239,7 @@ const DeepStudy = () => {
 
   const categories = ["Todas", ...Array.from(new Set(libraryData.map(d => d.category)))];
 
-  // SVG Cursor Data URI (Amarelo)
+  // SVG Cursor Data URI (Amarelo) para modo grifador
   const highlighterCursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 2-7 20-4-9-9-4Z"/><path d="M13 6 7 7"/></svg>') 0 32, text`;
 
   // LEITOR IMERSIVO
@@ -361,7 +394,7 @@ const DeepStudy = () => {
             className="max-w-3xl mx-auto px-6 py-10 sm:py-16" 
             ref={contentRef} 
             onMouseUp={handleMouseUp} 
-            onTouchEnd={handleMouseUp} // Suporte melhorado para mobile
+            onTouchEnd={handleMouseUp}
             style={{ cursor: isHighlighterMode ? highlighterCursor : 'text' }}
           >
             <div className="mb-8 border-b pb-4">
