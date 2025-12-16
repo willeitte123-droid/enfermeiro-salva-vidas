@@ -79,6 +79,45 @@ const ProfilePage = () => {
     },
   });
 
+  // Query para contar Medalhas (Conquistas)
+  const { data: badgeCount = 0 } = useQuery({
+    queryKey: ['badgeCount', profile?.id],
+    queryFn: async () => {
+      if (!profile) return 0;
+      const { count, error } = await supabase
+        .from('user_badges')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', profile.id);
+      
+      if (error) throw error;
+      return count || 0;
+    },
+    enabled: !!profile,
+  });
+
+  // Realtime para Medalhas
+  useEffect(() => {
+    if (!profile) return;
+    const channel = supabase.channel('profile-badges')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'user_badges',
+          filter: `user_id=eq.${profile.id}`
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['badgeCount', profile.id] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [profile, queryClient]);
+
   // Sincroniza dados do perfil com o formulário
   useEffect(() => {
     if (profile && !isEditing) {
@@ -133,16 +172,15 @@ const ProfilePage = () => {
     setSpecs(specs.filter(s => s !== specToRemove));
   };
 
-  // Função dedicada para salvar SOMENTE especializações (chamada pelo botão do card de especializações)
+  // Função dedicada para salvar SOMENTE especializações
   const handleSaveSpecializations = async () => {
     if (!profile) return;
     setIsLoading(true);
 
-    // Captura o valor que está no input se o usuário esqueceu de clicar no "+"
     let finalSpecs = [...specs];
     if (newSpec.trim() && !finalSpecs.includes(newSpec.trim())) {
       finalSpecs.push(newSpec.trim());
-      setSpecs(finalSpecs); // Atualiza visualmente imediatamente
+      setSpecs(finalSpecs);
       setNewSpec("");
     }
 
@@ -163,12 +201,11 @@ const ProfilePage = () => {
     }
   };
 
-  // Submit Geral do Formulário (chamado pelo botão do header)
+  // Submit Geral do Formulário
   const onSubmit = async (values: z.infer<typeof profileSchema>) => {
     if (!profile) return;
     setIsLoading(true);
 
-    // Também verifica se há spec pendente no submit geral
     let finalSpecs = [...specs];
     if (newSpec.trim() && !finalSpecs.includes(newSpec.trim())) {
       finalSpecs.push(newSpec.trim());
@@ -187,7 +224,7 @@ const ProfilePage = () => {
       
       toast.success("Perfil atualizado com sucesso!");
       setIsEditing(false);
-      setNewSpec(""); // Limpa input pendente
+      setNewSpec("");
       queryClient.invalidateQueries({ queryKey: ['profile', profile.id] });
     } catch (error: any) {
       toast.error("Erro ao salvar", { description: error.message });
@@ -414,8 +451,7 @@ const ProfilePage = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="text-3xl font-bold text-amber-800 dark:text-amber-300">
-                        {/* Placeholder count, you can fetch actual badge count later */}
-                        --
+                        {badgeCount}
                       </div>
                       <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">Medalhas desbloqueadas</p>
                     </CardContent>

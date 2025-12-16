@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { startOfWeek } from "date-fns";
+import { useEffect } from "react";
 
 export interface LevelData {
   currentXP: number;
@@ -25,6 +26,34 @@ const LEVELS = [
 ];
 
 export const useUserLevel = (userId?: string) => {
+  const queryClient = useQueryClient();
+
+  // Configuração do Realtime para atualizar XP/Meta instantaneamente
+  useEffect(() => {
+    if (!userId) return;
+
+    const channel = supabase
+      .channel('level-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT', // Escuta novas respostas
+          schema: 'public',
+          table: 'user_question_answers',
+          filter: `user_id=eq.${userId}`,
+        },
+        () => {
+          // Invalida a query para forçar o recarregamento dos dados
+          queryClient.invalidateQueries({ queryKey: ["userLevel", userId] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [userId, queryClient]);
+
   return useQuery({
     queryKey: ["userLevel", userId],
     queryFn: async (): Promise<LevelData> => {
@@ -86,6 +115,7 @@ export const useUserLevel = (userId?: string) => {
       };
     },
     enabled: !!userId,
-    refetchInterval: 10000, // Atualiza a cada 10s para refletir novos acertos
+    // Reduzimos o polling já que temos realtime, mas mantemos um fallback
+    staleTime: 60000, 
   });
 };
