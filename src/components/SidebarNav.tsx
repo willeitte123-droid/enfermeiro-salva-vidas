@@ -3,7 +3,7 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy, PieChart, Map, User
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy, PieChart, Map, User, BookOpen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -47,6 +47,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       { to: "/simulado", icon: Timer, label: "Área de Simulado" },
       { to: "/study-tracks", icon: Map, label: "Trilha de Estudos" },
       { to: "/concurseiro", icon: GraduationCap, label: "Área do Concurseiro" },
+      { to: "/library", icon: BookOpen, label: "Biblioteca (Na Íntegra)" },
       { to: "/flashcards", icon: Brain, label: "Flashcards" },
       { to: "/review-area", icon: Library, label: "Área de Revisão" },
       { to: "/anatomy", icon: Activity, label: "Anatomia e Fisiologia" },
@@ -102,7 +103,8 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       '/wound-care',
       '/medications',
       '/concurseiro',
-      '/study-tracks', // Adicionado ao plano PRO
+      '/study-tracks',
+      '/library', // Biblioteca é PRO
     ];
 
     // Função auxiliar para verificar se o path está na lista (incluindo sub-rotas)
