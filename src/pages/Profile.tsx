@@ -79,8 +79,9 @@ const ProfilePage = () => {
     },
   });
 
+  // Sincroniza dados do perfil com o formulário, mas NÃO sobrescreve se estiver editando
   useEffect(() => {
-    if (profile) {
+    if (profile && !isEditing) {
       form.reset({
         firstName: profile.first_name || "",
         lastName: profile.last_name || "",
@@ -89,7 +90,7 @@ const ProfilePage = () => {
       });
       setSpecs(profile.specializations || []);
     }
-  }, [profile, form]);
+  }, [profile, form, isEditing]);
 
   // Handlers de Imagem
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -147,7 +148,7 @@ const ProfilePage = () => {
 
       if (error) throw error;
       
-      toast.success("Perfil atualizado!");
+      toast.success("Perfil atualizado com sucesso!");
       setIsEditing(false);
       queryClient.invalidateQueries({ queryKey: ['profile', profile.id] });
     } catch (error: any) {
@@ -308,6 +309,15 @@ const ProfilePage = () => {
                     <p className="text-sm text-muted-foreground italic">Nenhuma especialização adicionada.</p>
                   )}
                 </div>
+                
+                {isEditing && (
+                  <div className="mt-4 flex justify-end border-t pt-3">
+                    <Button size="sm" onClick={form.handleSubmit(onSubmit)} disabled={isLoading} className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
+                      {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                      Salvar Alterações
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
