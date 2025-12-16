@@ -4,7 +4,7 @@ import {
   BookOpen, ArrowLeft, Search, Bookmark, 
   Type, Move, Grid, List, Clock, Scale, 
   Gavel, FileText, ChevronUp, ChevronDown, CheckCircle2,
-  Highlighter, Trash2, X, PenTool
+  Highlighter, Trash2, X, PenTool, Eraser
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import libraryData from "@/data/libraryData.json";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -63,6 +73,9 @@ const DeepStudy = () => {
   const [selectedText, setSelectedText] = useState("");
   const contentRef = useRef<HTMLDivElement>(null);
 
+  // State para remoção de grifos
+  const [highlightToRemove, setHighlightToRemove] = useState<{ids: string[], text: string} | null>(null);
+
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Biblioteca', path: '/library', icon: 'BookOpen' });
   }, [addActivity]);
@@ -88,7 +101,6 @@ const DeepStudy = () => {
     mutationFn: async (text: string) => {
       if (!profile || !selectedDoc) throw new Error("Usuário ou documento não identificado");
       
-      // Verifica duplicatas exatas locais
       const isDuplicate = highlights.some(h => h.selected_text === text);
       if (isDuplicate) return;
 
@@ -109,13 +121,29 @@ const DeepStudy = () => {
         toast.success("Texto grifado!");
       }
       
-      // Limpa a seleção visual do navegador para evitar confusão
       if (window.getSelection) {
         window.getSelection()?.removeAllRanges();
       }
     },
     onError: (error) => {
       console.error("Erro ao salvar grifo:", error);
+    }
+  });
+
+  // Mutation to delete highlights
+  const deleteHighlightMutation = useMutation({
+    mutationFn: async (ids: string[]) => {
+      const { error } = await supabase.from('user_highlights').delete().in('id', ids);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['highlights'] });
+      toast.success("Grifo removido.");
+      setHighlightToRemove(null);
+    },
+    onError: (error) => {
+      toast.error("Erro ao remover grifo.");
+      console.error(error);
     }
   });
 
@@ -141,15 +169,32 @@ const DeepStudy = () => {
 
     const text = selection.toString().trim();
     if (text.length > 0) {
-      // No modo grifador, salva imediatamente
       if (isHighlighterMode) {
         addHighlightMutation.mutate(text);
       } else {
-        // Modo normal: exibe menu flutuante
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
         setSelectionRect(rect);
         setSelectedText(text);
+      }
+    }
+  };
+
+  // Handler de Clique para Remover Grifo
+  const handleContentClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    // Verifica se clicou em um <mark> e se não está selecionando texto
+    if (target.tagName === 'MARK' && window.getSelection()?.toString().trim() === '') {
+      const text = target.textContent || "";
+      
+      // Encontra os IDs dos grifos que compõem este trecho visual
+      // A lógica de "includes" ajuda a identificar grifos que foram fundidos
+      const idsToDelete = highlights
+        .filter(h => text.includes(h.selected_text) || h.selected_text.includes(text))
+        .map(h => h.id);
+
+      if (idsToDelete.length > 0) {
+        setHighlightToRemove({ ids: idsToDelete, text: text.substring(0, 50) + (text.length > 50 ? "..." : "") });
       }
     }
   };
@@ -160,72 +205,53 @@ const DeepStudy = () => {
     }
   };
 
-  // Algoritmo de Renderização de Grifos (Fusão de Intervalos)
-  // Resolve problemas de sobreposição e quebra de HTML
+  // Processamento de conteúdo com fusão de intervalos
   const processedContent = useMemo(() => {
     if (!selectedDoc) return "";
-    const content = selectedDoc.content;
+    let content = selectedDoc.content;
     const ranges: {start: number, end: number}[] = [];
 
-    // 1. Mapear todas as ocorrências de todos os grifos no texto original
     highlights.forEach(h => {
       if (!h.selected_text) return;
       const term = h.selected_text;
       let pos = content.indexOf(term);
       while (pos !== -1) {
         ranges.push({ start: pos, end: pos + term.length });
-        // Avança apenas 1 caractere para encontrar sobreposições internas se houver
         pos = content.indexOf(term, pos + 1);
       }
     });
 
     if (ranges.length === 0) return content;
 
-    // 2. Ordenar intervalos pelo início
     ranges.sort((a, b) => a.start - b.start);
 
-    // 3. Fundir intervalos que se sobrepõem ou são adjacentes
     const mergedRanges: {start: number, end: number}[] = [];
-    if (ranges.length > 0) {
-      let current = ranges[0];
-      for (let i = 1; i < ranges.length; i++) {
-        const next = ranges[i];
-        if (next.start < current.end) { // Sobreposição detectada
-          // Estende o final do atual se necessário
-          current.end = Math.max(current.end, next.end);
-        } else {
-          // Não sobrepõe, salva o atual e começa um novo
-          mergedRanges.push(current);
-          current = next;
-        }
-      }
-      mergedRanges.push(current);
-    }
+    let currentRange = ranges[0];
 
-    // 4. Reconstruir o HTML injetando as tags <mark> nas posições corretas
-    let result = "";
-    let lastIndex = 0;
-
-    mergedRanges.forEach(range => {
-      // Texto antes do grifo
-      result += content.substring(lastIndex, range.start);
-      
-      // O texto grifado
-      const highlightedSegment = content.substring(range.start, range.end);
-      
-      // Verifica se o segmento não quebra tags HTML (proteção básica)
-      // Se quebrar tags, aplicamos sem a mark para não destruir o layout
-      if (highlightedSegment.includes('<') || highlightedSegment.includes('>')) {
-         result += highlightedSegment;
+    for (let i = 1; i < ranges.length; i++) {
+      const nextRange = ranges[i];
+      if (nextRange.start <= currentRange.end) {
+        currentRange.end = Math.max(currentRange.end, nextRange.end);
       } else {
-         result += `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 box-decoration-clone">${highlightedSegment}</mark>`;
+        mergedRanges.push(currentRange);
+        currentRange = nextRange;
       }
-      
-      lastIndex = range.end;
-    });
+    }
+    mergedRanges.push(currentRange);
 
-    // Restante do texto
-    result += content.substring(lastIndex);
+    let result = content;
+    for (let i = mergedRanges.length - 1; i >= 0; i--) {
+      const { start, end } = mergedRanges[i];
+      const segment = result.substring(start, end);
+      if (!segment.includes('<') && !segment.includes('>')) {
+         result = 
+           result.substring(0, start) + 
+           `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors" title="Clique para remover">` + 
+           result.substring(start, end) + 
+           `</mark>` + 
+           result.substring(end);
+      }
+    }
 
     return result;
   }, [selectedDoc, highlights]);
@@ -239,13 +265,38 @@ const DeepStudy = () => {
 
   const categories = ["Todas", ...Array.from(new Set(libraryData.map(d => d.category)))];
 
-  // SVG Cursor Data URI (Amarelo) para modo grifador
   const highlighterCursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 2-7 20-4-9-9-4Z"/><path d="M13 6 7 7"/></svg>') 0 32, text`;
 
   // LEITOR IMERSIVO
   if (selectedDoc) {
     return (
       <div className="fixed inset-0 z-50 bg-background flex flex-col animate-in fade-in duration-300">
+        
+        {/* Modal de Remoção */}
+        <AlertDialog open={!!highlightToRemove} onOpenChange={(open) => !open && setHighlightToRemove(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Remover Grifo</AlertDialogTitle>
+              <AlertDialogDescription>
+                Deseja remover o destaque do texto abaixo?
+                <div className="mt-4 p-3 bg-muted rounded-md text-sm italic font-medium">
+                  "{highlightToRemove?.text}"
+                </div>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction 
+                onClick={() => highlightToRemove && deleteHighlightMutation.mutate(highlightToRemove.ids)}
+                className="bg-destructive hover:bg-destructive/90"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Remover
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         {/* Barra de Progresso */}
         <div className="h-1 w-full bg-muted">
           <div className="h-full bg-primary transition-all duration-100 ease-out" style={{ width: `${scrollProgress}%` }} />
@@ -348,6 +399,7 @@ const DeepStudy = () => {
             ref={contentRef} 
             onMouseUp={handleMouseUp} 
             onTouchEnd={handleMouseUp}
+            onClick={handleContentClick}
             style={{ cursor: isHighlighterMode ? highlighterCursor : 'text' }}
           >
             <div className="mb-8 border-b pb-4">
