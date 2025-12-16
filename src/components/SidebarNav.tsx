@@ -3,7 +3,7 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy, PieChart, Map
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy, PieChart, Map, User
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -28,6 +28,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
   
   const navItems = {
     main: [
+      { to: "/profile", icon: User, label: "Meu Perfil" },
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
       { to: "/ranking", icon: Trophy, label: "Ranking e Conquistas" },
@@ -81,6 +82,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       '/', 
       '/favorites',
       '/ranking',
+      '/profile', // Perfil é básico
       '/questions', 
       '/simulado', 
       '/procedures', 
@@ -119,8 +121,8 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       return !checkAccess(baseAccess);
     }
 
-    // Plano Free ou desconhecido: Bloqueia tudo exceto Dashboard
-    if (path === '/') return false;
+    // Plano Free ou desconhecido: Bloqueia tudo exceto Dashboard e Perfil
+    if (path === '/' || path === '/profile') return false;
     return true; 
   };
 

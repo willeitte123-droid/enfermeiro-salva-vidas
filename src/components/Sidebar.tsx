@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   LogOut, Sun, Moon, Stethoscope
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabase";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useTheme } from "./ThemeProvider";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import SidebarNav from "./SidebarNav";
-import { SheetClose } from "./ui/sheet";
 import { useThemeCustomization } from "@/context/ThemeCustomizationContext";
 
 interface SidebarProps {
@@ -22,8 +20,8 @@ interface SidebarProps {
     plan?: string;
   } | null;
   isMobile?: boolean;
-  isCollapsed?: boolean; // Mantido para compatibilidade
-  onToggle?: () => void; // Mantido para compatibilidade
+  isCollapsed?: boolean;
+  onToggle?: () => void;
 }
 
 const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
@@ -34,15 +32,8 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   // No desktop, a sidebar expande se o mouse estiver em cima OU se o menu de tema estiver aberto.
-  // Isso impede que a sidebar feche quando o usuário move o mouse para o dropdown do tema.
   const isExpanded = isMobile ? true : (isHovered || isLockedOpen);
   const isCollapsed = !isExpanded;
-
-  const getInitials = () => {
-    const firstName = user?.first_name?.[0] || '';
-    const lastName = user?.last_name?.[0] || '';
-    return `${firstName}${lastName}`.toUpperCase();
-  };
 
   const handleLogout = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -51,26 +42,6 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
     navigate('/login');
   };
 
-  const UserProfileLink = (
-    <Link to="/profile" className={cn("flex items-center justify-between p-2 rounded-md hover:bg-sidebar-hover group", isCollapsed && "justify-center")}>
-      <div className="flex items-center gap-3">
-        <Avatar className="h-9 w-9 flex-shrink-0">
-          <AvatarImage src={user?.avatar_url} alt={`${user?.first_name} ${user?.last_name}`} className="object-cover" />
-          <AvatarFallback className="bg-primary text-primary-foreground">{getInitials()}</AvatarFallback>
-        </Avatar>
-        <div className={cn("transition-all duration-300 overflow-hidden whitespace-nowrap", isCollapsed ? "w-0 opacity-0 hidden" : "w-auto opacity-100")}>
-          <p className="text-sm font-medium text-white truncate">{`${user?.first_name || 'Usuário'} ${user?.last_name || ''}`}</p>
-          <p className="text-xs text-sidebar-foreground truncate">{isAdmin ? 'Administrador' : (user?.plan || 'Usuário')}</p>
-        </div>
-      </div>
-      {!isMobile && (
-        <Button variant="ghost" size="icon" onClick={handleLogout} className={cn("text-sidebar-foreground transition-opacity hover:bg-sidebar-hover hover:text-white", isCollapsed ? "hidden" : "opacity-0 group-hover:opacity-100")} title="Sair">
-          <LogOut className="h-5 w-5" />
-        </Button>
-      )}
-    </Link>
-  );
-
   return (
     <aside 
       onMouseEnter={() => !isMobile && setIsHovered(true)}
@@ -78,7 +49,6 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
       className={cn(
         "flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out",
         isMobile ? "h-full w-full" : "hidden md:flex border-r border-border/10 relative z-50",
-        // Largura baseada no estado de expansão (hover ou menu aberto)
         !isMobile && (isExpanded ? "w-64" : "w-20")
       )}
     >
@@ -113,14 +83,17 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {isMobile ? <SheetClose asChild>{UserProfileLink}</SheetClose> : UserProfileLink}
-        
-        {isMobile && (
-          <Button variant="ghost" onClick={handleLogout} className="w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-sidebar-hover hover:text-white">
-            <LogOut className="h-5 w-5" />
+        <Button 
+          variant="ghost" 
+          onClick={handleLogout} 
+          className={cn("w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive transition-all", isCollapsed && "justify-center px-0")}
+          title="Sair"
+        >
+          <LogOut className="h-5 w-5 flex-shrink-0" />
+          <span className={cn("text-sm font-medium whitespace-nowrap overflow-hidden transition-all duration-300", isCollapsed ? "w-0 opacity-0 hidden" : "w-auto opacity-100")}>
             Sair
-          </Button>
-        )}
+          </span>
+        </Button>
       </div>
     </aside>
   );
