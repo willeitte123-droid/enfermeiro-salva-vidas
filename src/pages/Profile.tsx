@@ -351,7 +351,7 @@ const ProfilePage = () => {
             <Card>
               <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
                 <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                  <GraduationCap className="w-4 h-4" /> Especializações / Interesses
+                  <GraduationCap className="w-4 h-4" /> Especializações
                 </CardTitle>
                 {!isEditing && (
                   <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-muted" onClick={() => setIsEditing(true)} title="Editar Especializações">
