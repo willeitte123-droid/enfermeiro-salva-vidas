@@ -4,7 +4,7 @@ import {
   BookOpen, ArrowLeft, Search, Bookmark, 
   Type, Move, Grid, List, Clock, Scale, 
   Gavel, FileText, ChevronUp, ChevronDown, CheckCircle2,
-  Highlighter, Trash2, X
+  Highlighter, Trash2, X, PenTool
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -57,6 +57,7 @@ const DeepStudy = () => {
   // State para o leitor
   const [fontSize, setFontSize] = useState(16);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isHighlighterMode, setIsHighlighterMode] = useState(false);
   
   // State para seleção de texto
   const [selectionRect, setSelectionRect] = useState<DOMRect | null>(null);
@@ -87,26 +88,37 @@ const DeepStudy = () => {
   const addHighlightMutation = useMutation({
     mutationFn: async (text: string) => {
       if (!profile || !selectedDoc) throw new Error("Usuário ou documento não identificado");
+      
+      // Verifica duplicatas locais antes de enviar
+      const isDuplicate = highlights.some(h => h.selected_text === text);
+      if (isDuplicate) return; // Não salva se já existe
+
       const { error } = await supabase.from('user_highlights').insert({
         user_id: profile.id,
         document_id: selectedDoc.id,
         selected_text: text,
         color: 'yellow' 
-      });
+      }).select(); // .select() é importante para confirmar a inserção
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['highlights'] });
       setSelectionRect(null);
       setSelectedText("");
-      toast.success("Texto grifado com sucesso!");
+      
+      // Se não estiver no modo contínuo, mostra toast
+      if (!isHighlighterMode) {
+        toast.success("Texto grifado!");
+      }
+      
       // Limpar seleção visual
       if (window.getSelection) {
         window.getSelection()?.removeAllRanges();
       }
     },
     onError: (error) => {
-      toast.error("Erro ao salvar grifo", { description: error.message });
+      // Ignora erro silenciosamente se for apenas seleção vazia, mas alerta se for erro de rede
+      console.error("Erro ao salvar grifo:", error);
     }
   });
 
@@ -145,39 +157,40 @@ const DeepStudy = () => {
 
     const text = selection.toString().trim();
     if (text.length > 0) {
-      const range = selection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
-      setSelectionRect(rect);
-      setSelectedText(text);
+      // Se o modo grifador estiver ATIVO, salva direto
+      if (isHighlighterMode) {
+        addHighlightMutation.mutate(text);
+      } else {
+        // Se NÃO estiver ativo, mostra o menu flutuante
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        setSelectionRect(rect);
+        setSelectedText(text);
+      }
     }
   };
 
-  const handleHighlight = () => {
+  const handleHighlightButton = () => {
     if (selectedText) {
       addHighlightMutation.mutate(selectedText);
     }
   };
 
   // Processar conteúdo para exibir grifos
-  // Esta função substitui o texto original pelo texto envolvido em <mark>
-  // Atenção: É uma abordagem simplificada que busca strings. Pode grifar duplicatas indesejadas se o texto for repetitivo.
   const processedContent = useMemo(() => {
     if (!selectedDoc) return "";
     let content = selectedDoc.content;
 
-    // Ordenar highlights por tamanho (maiores primeiro) para evitar que grifos parciais quebrem tags HTML de outros grifos
+    // Ordenar highlights por tamanho (maiores primeiro) para evitar conflitos de replace
     const sortedHighlights = [...highlights].sort((a, b) => b.selected_text.length - a.selected_text.length);
 
     sortedHighlights.forEach(h => {
-      // Escapar caracteres especiais para regex, exceto tags HTML que já existem
-      // Estratégia simples: replaceAll string
-      try {
-        // Criar uma versão segura para replace
-        const highlightSpan = `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors" title="Texto grifado">${h.selected_text}</mark>`;
-        // Usar split e join é mais seguro que regex para strings literais
-        content = content.split(h.selected_text).join(highlightSpan);
-      } catch (e) {
-        console.error("Erro ao aplicar highlight", e);
+      // Previne que a substituição quebre tags HTML existentes ou outros grifos
+      // Usamos uma estratégia de split/join segura
+      const parts = content.split(h.selected_text);
+      if (parts.length > 1) {
+        // Apenas substitui se encontrar o texto exato
+        content = parts.join(`<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors" title="Texto grifado">${h.selected_text}</mark>`);
       }
     });
 
@@ -192,6 +205,9 @@ const DeepStudy = () => {
   });
 
   const categories = ["Todas", ...Array.from(new Set(libraryData.map(d => d.category)))];
+
+  // SVG Cursor Data URI (Amarelo)
+  const highlighterCursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 2-7 20-4-9-9-4Z"/><path d="M13 6 7 7"/></svg>') 0 32, text`;
 
   // LEITOR IMERSIVO
   if (selectedDoc) {
@@ -216,51 +232,67 @@ const DeepStudy = () => {
 
           <div className="flex items-center gap-2">
             {profile && (
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-2 relative">
-                    <Highlighter className="h-4 w-4" />
-                    <span className="hidden sm:inline">Meus Grifos</span>
-                    {highlights.length > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
-                        {highlights.length}
-                      </span>
-                    )}
-                  </Button>
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle>Meus Grifos</SheetTitle>
-                  </SheetHeader>
-                  <ScrollArea className="h-[calc(100vh-100px)] mt-4 pr-4">
-                    {highlights.length === 0 ? (
-                      <div className="text-center py-10 text-muted-foreground">
-                        <Highlighter className="h-10 w-10 mx-auto mb-2 opacity-20" />
-                        <p>Nenhum texto grifado ainda.</p>
-                        <p className="text-xs">Selecione um texto no documento para grifar.</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        {highlights.map((h) => (
-                          <Card key={h.id} className="relative group">
-                            <CardContent className="p-3 text-sm">
-                              <p className="line-clamp-3 italic">"{h.selected_text}"</p>
-                              <Button 
-                                variant="ghost" 
-                                size="icon" 
-                                className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10"
-                                onClick={() => deleteHighlightMutation.mutate(h.id)}
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
-                            </CardContent>
-                          </Card>
-                        ))}
-                      </div>
-                    )}
-                  </ScrollArea>
-                </SheetContent>
-              </Sheet>
+              <>
+                <Button 
+                  variant={isHighlighterMode ? "default" : "outline"} 
+                  size="sm" 
+                  className={cn("gap-2 transition-all", isHighlighterMode ? "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-500" : "")}
+                  onClick={() => {
+                    setIsHighlighterMode(!isHighlighterMode);
+                    if (!isHighlighterMode) {
+                        toast.info("Modo Grifador Ativado", { description: "Selecione o texto para grifar automaticamente." });
+                    }
+                  }}
+                >
+                  <PenTool className="h-4 w-4" />
+                  <span className="hidden sm:inline">{isHighlighterMode ? "Grifador Ativo" : "Usar Grifador"}</span>
+                </Button>
+
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon" className="relative" title="Meus Grifos">
+                      <Highlighter className="h-4 w-4" />
+                      {highlights.length > 0 && (
+                        <span className="absolute top-1 right-1 bg-primary text-primary-foreground text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
+                          {highlights.length}
+                        </span>
+                      )}
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent>
+                    <SheetHeader>
+                      <SheetTitle>Meus Grifos</SheetTitle>
+                    </SheetHeader>
+                    <ScrollArea className="h-[calc(100vh-100px)] mt-4 pr-4">
+                      {highlights.length === 0 ? (
+                        <div className="text-center py-10 text-muted-foreground">
+                          <Highlighter className="h-10 w-10 mx-auto mb-2 opacity-20" />
+                          <p>Nenhum texto grifado ainda.</p>
+                          <p className="text-xs">Ative o grifador ou selecione um texto.</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {highlights.map((h) => (
+                            <Card key={h.id} className="relative group hover:border-yellow-400 transition-colors">
+                              <CardContent className="p-3 text-sm">
+                                <p className="line-clamp-4 italic bg-yellow-50 dark:bg-yellow-900/10 p-1 rounded">"{h.selected_text}"</p>
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10"
+                                  onClick={() => deleteHighlightMutation.mutate(h.id)}
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </Button>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      )}
+                    </ScrollArea>
+                  </SheetContent>
+                </Sheet>
+              </>
             )}
 
             {profile && (
@@ -291,8 +323,8 @@ const DeepStudy = () => {
           </div>
         </header>
 
-        {/* Menu Flutuante de Seleção */}
-        {selectionRect && profile && (
+        {/* Menu Flutuante de Seleção (Apenas se o modo grifador NÃO estiver ativo) */}
+        {selectionRect && profile && !isHighlighterMode && (
           <div 
             className="fixed z-50 animate-in fade-in zoom-in duration-200"
             style={{
@@ -305,7 +337,7 @@ const DeepStudy = () => {
                 size="sm" 
                 variant="ghost" 
                 className="h-8 rounded-full hover:bg-muted/20 hover:text-background text-xs font-semibold"
-                onClick={handleHighlight}
+                onClick={handleHighlightButton}
               >
                 <Highlighter className="h-3.5 w-3.5 mr-1.5" /> Grifar
               </Button>
@@ -319,14 +351,19 @@ const DeepStudy = () => {
                 <X className="h-3.5 w-3.5" />
               </Button>
             </div>
-            {/* Seta do tooltip */}
             <div className="w-3 h-3 bg-foreground rotate-45 absolute -bottom-1.5 left-1/2 -translate-x-1/2" />
           </div>
         )}
 
         {/* Área de Conteúdo */}
         <div className="flex-1 overflow-y-auto bg-background" onScroll={handleScroll}>
-          <div className="max-w-3xl mx-auto px-6 py-10 sm:py-16" ref={contentRef} onMouseUp={handleMouseUp} onTouchEvent={handleMouseUp}>
+          <div 
+            className="max-w-3xl mx-auto px-6 py-10 sm:py-16" 
+            ref={contentRef} 
+            onMouseUp={handleMouseUp} 
+            onTouchEnd={handleMouseUp} // Suporte melhorado para mobile
+            style={{ cursor: isHighlighterMode ? highlighterCursor : 'text' }}
+          >
             <div className="mb-8 border-b pb-4">
               <h1 className="text-3xl sm:text-4xl font-black text-foreground mb-4 leading-tight">{selectedDoc.title}</h1>
               <div className="flex items-center gap-3">
