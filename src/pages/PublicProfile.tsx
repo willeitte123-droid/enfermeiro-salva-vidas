@@ -24,12 +24,6 @@ interface Profile {
   specializations?: string[];
 }
 
-interface CategoryStat {
-  name: string;
-  accuracy: number;
-  total: number;
-}
-
 interface UserBadge {
   badge_code: string;
   earned_at: string;
@@ -76,62 +70,70 @@ const fetchUserProfile = async (userId: string) => {
 };
 
 const fetchUserStats = async (userId: string) => {
-  // 1. Busca Simulados
-  const simulationsPromise = supabase
+  // 1. Buscar Simulados (Histórico + Totais)
+  const { data: simulationsData, error: simError } = await supabase
     .from("user_simulations")
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
-    
-  // 2. Busca Estatísticas da Banca (Questões Avulsas)
-  const statsPromise = supabase.rpc('get_user_performance_stats', { p_user_id: userId });
 
-  // 3. Busca Conquistas
-  const badgesPromise = supabase
+  if (simError) throw simError;
+  const simulations = (simulationsData as Simulation[]) || [];
+
+  // Calcular totais dos simulados
+  const simTotalQuestions = simulations.reduce((acc, sim) => acc + (sim.total_questions || 0), 0);
+  const simTotalCorrect = simulations.reduce((acc, sim) => acc + (sim.score || 0), 0);
+
+  // 2. Buscar Dados da Banca (Questões Avulsas)
+  // Contagem total de respostas na banca
+  const { count: bankTotalQuestions, error: bankCountError } = await supabase
+    .from("user_question_answers")
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', userId);
+
+  if (bankCountError) throw bankCountError;
+
+  // Contagem de acertos na banca
+  const { count: bankTotalCorrect, error: bankCorrectError } = await supabase
+    .from("user_question_answers")
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', userId)
+    .eq('is_correct', true);
+
+  if (bankCorrectError) throw bankCorrectError;
+
+  // 3. Buscar Badges
+  const { data: badgesData, error: badgesError } = await supabase
     .from("user_badges")
     .select('*')
     .eq('user_id', userId);
 
-  const [simulationsResult, statsResult, badgesResult] = await Promise.all([
-    simulationsPromise, 
-    statsPromise,
-    badgesPromise
-  ]);
+  if (badgesError) throw badgesError;
 
-  if (simulationsResult.error) console.error("Simulations Error:", simulationsResult.error);
-  if (statsResult.error) console.error("Stats Error:", statsResult.error);
-  if (badgesResult.error) console.error("Badges Error:", badgesResult.error);
+  // 4. Buscar Stats por Categoria (Apenas para o gráfico)
+  const { data: rpcStats, error: rpcError } = await supabase.rpc('get_user_performance_stats', { p_user_id: userId });
+  if (rpcError) console.error("RPC Error:", rpcError);
 
-  const bankStats = statsResult.data || { totalQuestions: 0, correctQuestions: 0, categoryStats: [] };
-  const simulations = (simulationsResult.data as Simulation[]) || [];
-  const badges = (badgesResult.data as UserBadge[]) || [];
-
-  // --- CÁLCULO UNIFICADO (Banca + Simulados) ---
+  // Totais Gerais Unificados
+  const grandTotalQuestions = (bankTotalQuestions || 0) + simTotalQuestions;
+  const grandTotalCorrect = (bankTotalCorrect || 0) + simTotalCorrect;
   
-  // Totais dos Simulados
-  const simTotalQuestions = simulations.reduce((acc, sim) => acc + sim.total_questions, 0);
-  const simTotalCorrect = simulations.reduce((acc, sim) => acc + sim.score, 0);
-
-  // Totais Gerais
-  const grandTotalQuestions = (bankStats.totalQuestions || 0) + simTotalQuestions;
-  const grandTotalCorrect = (bankStats.correctQuestions || 0) + simTotalCorrect; // Este é o XP/Score do Ranking
-  
-  // Precisão Global
+  // Precisão Global Real
   const globalAccuracy = grandTotalQuestions > 0 
     ? Math.round((grandTotalCorrect / grandTotalQuestions) * 100) 
     : 0;
 
-  // Ordena categorias por aproveitamento
-  const sortedCategoryStats = bankStats.categoryStats 
-    ? bankStats.categoryStats.sort((a: CategoryStat, b: CategoryStat) => b.accuracy - a.accuracy) 
+  // Prepara dados do gráfico
+  const categoryStats = rpcStats?.categoryStats 
+    ? rpcStats.categoryStats.sort((a: any, b: any) => b.accuracy - a.accuracy) 
     : [];
 
   return {
     simulations,
-    categoryStats: sortedCategoryStats,
-    badges,
+    categoryStats,
+    badges: (badgesData as UserBadge[]) || [],
     grandTotalQuestions,
-    grandTotalCorrect, // XP Total
+    grandTotalCorrect,
     globalAccuracy,
     totalSimulations: simulations.length
   };
@@ -140,16 +142,14 @@ const fetchUserStats = async (userId: string) => {
 const PublicProfile = () => {
   const { userId } = useParams<{ userId: string }>();
 
-  // Query 1: Dados Básicos do Perfil
   const { data: profile, isLoading: isLoadingProfile, isError: isProfileError } = useQuery({
     queryKey: ['publicProfileBase', userId],
     queryFn: () => fetchUserProfile(userId!),
     enabled: !!userId,
-    staleTime: 0, 
+    staleTime: 0,
     refetchOnMount: true
   });
 
-  // Query 2: Estatísticas Calculadas
   const { data: stats, isLoading: isLoadingStats } = useQuery({
     queryKey: ['publicProfileStats', userId],
     queryFn: () => fetchUserStats(userId!),
@@ -286,7 +286,7 @@ const PublicProfile = () => {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Cards de Estatísticas Rápidas (Unificadas) */}
+          {/* Cards de Estatísticas Rápidas (Unificadas e Corrigidas) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card className="bg-gradient-to-br from-card to-blue-50/50 dark:to-blue-950/10 border-l-4 border-l-blue-500 shadow-sm hover:shadow-md transition-all group">
               <CardContent className="p-4 flex flex-col justify-between h-full">
@@ -391,7 +391,7 @@ const PublicProfile = () => {
 
             {/* Gráfico de Desempenho e Histórico */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Gráfico de Desempenho (Questões Avulsas) */}
+              {/* Gráfico de Desempenho (Banca de Questões) */}
               <Card className="shadow-md border-t-4 border-t-primary/50">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
