@@ -32,6 +32,7 @@ interface Profile {
   specializations?: string[];
   role: string;
   email?: string;
+  status?: string; // Adicionado status aqui
 }
 
 const profileSchema = z.object({
@@ -51,9 +52,31 @@ const uploadAvatar = async (userId: string, file: Blob) => {
   return data.publicUrl;
 };
 
+// Helpers para Status
+const getStatusLabel = (status?: string) => {
+  switch (status) {
+    case 'active': return 'Ativo';
+    case 'pending': return 'Pendente';
+    case 'suspended': return 'Suspenso';
+    case 'inactive': return 'Inativo';
+    default: return status || 'Desconhecido';
+  }
+};
+
+const getStatusColor = (status?: string) => {
+  switch (status) {
+    case 'active': return 'text-emerald-500';
+    case 'pending': return 'text-yellow-500';
+    case 'suspended': return 'text-red-500';
+    case 'inactive': return 'text-slate-500';
+    default: return 'text-muted-foreground';
+  }
+};
+
 const ProfilePage = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const queryClient = useQueryClient();
+  // Hook com Realtime já configurado para XP e Nível
   const { data: levelData } = useUserLevel(profile?.id);
   
   const [isEditing, setIsEditing] = useState(false);
@@ -329,7 +352,7 @@ const ProfilePage = () => {
                   </div>
                 )}
 
-                {/* Resumo de Estatísticas (Mini) */}
+                {/* Resumo de Estatísticas (Mini) - Agora Dinâmico */}
                 <div className="grid grid-cols-3 w-full border-t border-border pt-4">
                   <div className="text-center">
                     <p className="text-lg font-bold">{levelData?.currentXP || 0}</p>
@@ -340,7 +363,9 @@ const ProfilePage = () => {
                     <p className="text-[10px] uppercase text-muted-foreground font-bold">Nível</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-lg font-bold text-emerald-500">Ativo</p>
+                    <p className={`text-lg font-bold ${getStatusColor(profile?.status)}`}>
+                      {getStatusLabel(profile?.status)}
+                    </p>
                     <p className="text-[10px] uppercase text-muted-foreground font-bold">Status</p>
                   </div>
                 </div>
