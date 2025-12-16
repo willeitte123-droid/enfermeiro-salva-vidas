@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
 import { 
   BookOpen, ArrowLeft, Search, Bookmark, 
   Type, Move, Grid, List, Clock, Scale, 
-  Gavel, FileText, ChevronUp, ChevronDown, CheckCircle2 
+  Gavel, FileText, ChevronUp, ChevronDown, CheckCircle2,
+  Highlighter, Trash2, X
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,10 +14,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import libraryData from "@/data/libraryData.json";
 import FavoriteButton from "@/components/FavoriteButton";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/lib/supabase";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface Profile {
   id: string;
@@ -31,9 +36,18 @@ interface Document {
   content: string;
 }
 
+interface UserHighlight {
+  id: string;
+  document_id: string;
+  selected_text: string;
+  color: string;
+  created_at: string;
+}
+
 const DeepStudy = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
+  const queryClient = useQueryClient();
   
   // State para navegação
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
@@ -43,18 +57,132 @@ const DeepStudy = () => {
   // State para o leitor
   const [fontSize, setFontSize] = useState(16);
   const [scrollProgress, setScrollProgress] = useState(0);
+  
+  // State para seleção de texto
+  const [selectionRect, setSelectionRect] = useState<DOMRect | null>(null);
+  const [selectedText, setSelectedText] = useState("");
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Biblioteca', path: '/library', icon: 'BookOpen' });
   }, [addActivity]);
 
-  // Handler de Scroll para Barra de Progresso
+  // Fetch Highlights
+  const { data: highlights = [], isLoading: isLoadingHighlights } = useQuery({
+    queryKey: ['highlights', selectedDoc?.id, profile?.id],
+    queryFn: async () => {
+      if (!selectedDoc || !profile) return [];
+      const { data, error } = await supabase
+        .from('user_highlights')
+        .select('*')
+        .eq('user_id', profile.id)
+        .eq('document_id', selectedDoc.id);
+      if (error) throw error;
+      return data as UserHighlight[];
+    },
+    enabled: !!selectedDoc && !!profile
+  });
+
+  // Mutation to save highlight
+  const addHighlightMutation = useMutation({
+    mutationFn: async (text: string) => {
+      if (!profile || !selectedDoc) throw new Error("Usuário ou documento não identificado");
+      const { error } = await supabase.from('user_highlights').insert({
+        user_id: profile.id,
+        document_id: selectedDoc.id,
+        selected_text: text,
+        color: 'yellow' 
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['highlights'] });
+      setSelectionRect(null);
+      setSelectedText("");
+      toast.success("Texto grifado com sucesso!");
+      // Limpar seleção visual
+      if (window.getSelection) {
+        window.getSelection()?.removeAllRanges();
+      }
+    },
+    onError: (error) => {
+      toast.error("Erro ao salvar grifo", { description: error.message });
+    }
+  });
+
+  // Mutation to delete highlight
+  const deleteHighlightMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('user_highlights').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['highlights'] });
+      toast.success("Grifo removido.");
+    }
+  });
+
+  // Handler de Scroll
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     const progress = (scrollTop / (scrollHeight - clientHeight)) * 100;
     setScrollProgress(progress);
+    // Hide popover on scroll
+    if (selectionRect) {
+      setSelectionRect(null);
+      setSelectedText("");
+    }
   };
+
+  // Handler de Seleção de Texto
+  const handleMouseUp = () => {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed) {
+      setSelectionRect(null);
+      setSelectedText("");
+      return;
+    }
+
+    const text = selection.toString().trim();
+    if (text.length > 0) {
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      setSelectionRect(rect);
+      setSelectedText(text);
+    }
+  };
+
+  const handleHighlight = () => {
+    if (selectedText) {
+      addHighlightMutation.mutate(selectedText);
+    }
+  };
+
+  // Processar conteúdo para exibir grifos
+  // Esta função substitui o texto original pelo texto envolvido em <mark>
+  // Atenção: É uma abordagem simplificada que busca strings. Pode grifar duplicatas indesejadas se o texto for repetitivo.
+  const processedContent = useMemo(() => {
+    if (!selectedDoc) return "";
+    let content = selectedDoc.content;
+
+    // Ordenar highlights por tamanho (maiores primeiro) para evitar que grifos parciais quebrem tags HTML de outros grifos
+    const sortedHighlights = [...highlights].sort((a, b) => b.selected_text.length - a.selected_text.length);
+
+    sortedHighlights.forEach(h => {
+      // Escapar caracteres especiais para regex, exceto tags HTML que já existem
+      // Estratégia simples: replaceAll string
+      try {
+        // Criar uma versão segura para replace
+        const highlightSpan = `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors" title="Texto grifado">${h.selected_text}</mark>`;
+        // Usar split e join é mais seguro que regex para strings literais
+        content = content.split(h.selected_text).join(highlightSpan);
+      } catch (e) {
+        console.error("Erro ao aplicar highlight", e);
+      }
+    });
+
+    return content;
+  }, [selectedDoc, highlights]);
 
   const filteredDocs = libraryData.filter(doc => {
     const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -69,27 +197,72 @@ const DeepStudy = () => {
   if (selectedDoc) {
     return (
       <div className="fixed inset-0 z-50 bg-background flex flex-col animate-in fade-in duration-300">
-        {/* Barra de Progresso de Leitura */}
+        {/* Barra de Progresso */}
         <div className="h-1 w-full bg-muted">
-          <div 
-            className="h-full bg-primary transition-all duration-100 ease-out" 
-            style={{ width: `${scrollProgress}%` }}
-          />
+          <div className="h-full bg-primary transition-all duration-100 ease-out" style={{ width: `${scrollProgress}%` }} />
         </div>
 
-        {/* Toolbar do Leitor */}
-        <header className="flex items-center justify-between px-4 py-3 border-b bg-card/50 backdrop-blur-md">
-          <div className="flex items-center gap-4">
+        {/* Toolbar */}
+        <header className="flex items-center justify-between px-4 py-3 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
+          <div className="flex items-center gap-4 min-w-0">
             <Button variant="ghost" size="icon" onClick={() => setSelectedDoc(null)} title="Voltar para a estante">
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <div className="hidden sm:block">
-              <h1 className="font-bold text-sm sm:text-base truncate max-w-[200px] sm:max-w-md">{selectedDoc.title}</h1>
-              <p className="text-xs text-muted-foreground">{selectedDoc.category} • {selectedDoc.readTime}</p>
+            <div className="hidden sm:block min-w-0">
+              <h1 className="font-bold text-sm sm:text-base truncate">{selectedDoc.title}</h1>
+              <p className="text-xs text-muted-foreground truncate">{selectedDoc.category} • {selectedDoc.readTime}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
+            {profile && (
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-2 relative">
+                    <Highlighter className="h-4 w-4" />
+                    <span className="hidden sm:inline">Meus Grifos</span>
+                    {highlights.length > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
+                        {highlights.length}
+                      </span>
+                    )}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Meus Grifos</SheetTitle>
+                  </SheetHeader>
+                  <ScrollArea className="h-[calc(100vh-100px)] mt-4 pr-4">
+                    {highlights.length === 0 ? (
+                      <div className="text-center py-10 text-muted-foreground">
+                        <Highlighter className="h-10 w-10 mx-auto mb-2 opacity-20" />
+                        <p>Nenhum texto grifado ainda.</p>
+                        <p className="text-xs">Selecione um texto no documento para grifar.</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {highlights.map((h) => (
+                          <Card key={h.id} className="relative group">
+                            <CardContent className="p-3 text-sm">
+                              <p className="line-clamp-3 italic">"{h.selected_text}"</p>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10"
+                                onClick={() => deleteHighlightMutation.mutate(h.id)}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    )}
+                  </ScrollArea>
+                </SheetContent>
+              </Sheet>
+            )}
+
             {profile && (
               <FavoriteButton 
                 userId={profile.id}
@@ -101,26 +274,16 @@ const DeepStudy = () => {
             
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Type className="h-4 w-4" />
-                </Button>
+                <Button variant="outline" size="icon"><Type className="h-4 w-4" /></Button>
               </PopoverTrigger>
               <PopoverContent className="w-64">
                 <div className="space-y-4">
                   <h4 className="font-medium leading-none">Ajustes de Leitura</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>A-</span>
-                      <span>Tamanho da Fonte</span>
-                      <span>A+</span>
+                      <span>A-</span><span>Fonte</span><span>A+</span>
                     </div>
-                    <Slider 
-                      defaultValue={[fontSize]} 
-                      min={12} 
-                      max={24} 
-                      step={1} 
-                      onValueChange={(val) => setFontSize(val[0])} 
-                    />
+                    <Slider defaultValue={[fontSize]} min={14} max={28} step={1} onValueChange={(val) => setFontSize(val[0])} />
                   </div>
                 </div>
               </PopoverContent>
@@ -128,26 +291,54 @@ const DeepStudy = () => {
           </div>
         </header>
 
+        {/* Menu Flutuante de Seleção */}
+        {selectionRect && profile && (
+          <div 
+            className="fixed z-50 animate-in fade-in zoom-in duration-200"
+            style={{
+              top: `${selectionRect.top - 50}px`,
+              left: `${selectionRect.left + (selectionRect.width / 2) - 50}px`
+            }}
+          >
+            <div className="bg-foreground text-background rounded-full shadow-xl px-2 py-1.5 flex items-center gap-1">
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                className="h-8 rounded-full hover:bg-muted/20 hover:text-background text-xs font-semibold"
+                onClick={handleHighlight}
+              >
+                <Highlighter className="h-3.5 w-3.5 mr-1.5" /> Grifar
+              </Button>
+              <div className="w-px h-4 bg-background/20" />
+              <Button 
+                size="icon" 
+                variant="ghost" 
+                className="h-8 w-8 rounded-full hover:bg-muted/20 hover:text-background"
+                onClick={() => { setSelectionRect(null); setSelectedText(""); }}
+              >
+                <X className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+            {/* Seta do tooltip */}
+            <div className="w-3 h-3 bg-foreground rotate-45 absolute -bottom-1.5 left-1/2 -translate-x-1/2" />
+          </div>
+        )}
+
         {/* Área de Conteúdo */}
-        <div 
-          className="flex-1 overflow-y-auto" 
-          onScroll={handleScroll}
-        >
-          <div className="max-w-3xl mx-auto px-6 py-10 sm:py-16">
+        <div className="flex-1 overflow-y-auto bg-background" onScroll={handleScroll}>
+          <div className="max-w-3xl mx-auto px-6 py-10 sm:py-16" ref={contentRef} onMouseUp={handleMouseUp} onTouchEvent={handleMouseUp}>
             <div className="mb-8 border-b pb-4">
               <h1 className="text-3xl sm:text-4xl font-black text-foreground mb-4 leading-tight">{selectedDoc.title}</h1>
               <div className="flex items-center gap-3">
                 <Badge variant="secondary">{selectedDoc.category}</Badge>
-                <span className="text-sm text-muted-foreground flex items-center gap-1">
-                  <Clock className="h-3 w-3" /> Leitura estimada: {selectedDoc.readTime}
-                </span>
+                <span className="text-sm text-muted-foreground flex items-center gap-1"><Clock className="h-3 w-3" /> {selectedDoc.readTime}</span>
               </div>
             </div>
 
             <article 
-              className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary prose-strong:text-foreground marker:text-muted-foreground"
+              className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary prose-strong:text-foreground marker:text-muted-foreground select-text"
               style={{ fontSize: `${fontSize}px`, lineHeight: '1.8' }}
-              dangerouslySetInnerHTML={{ __html: selectedDoc.content }}
+              dangerouslySetInnerHTML={{ __html: processedContent }}
             />
 
             <div className="mt-16 pt-8 border-t flex flex-col items-center gap-4 text-center">
