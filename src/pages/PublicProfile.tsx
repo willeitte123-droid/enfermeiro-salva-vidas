@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, ArrowLeft, FileQuestion, Percent, Timer, Trophy, Calendar, Medal } from "lucide-react";
+import { Loader2, ArrowLeft, FileQuestion, Percent, Timer, Trophy, Calendar, Medal, Star, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -11,6 +11,7 @@ import { ptBR } from 'date-fns/locale';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
+import { BADGES } from "@/data/badges";
 
 interface Profile {
   id: string;
@@ -27,6 +28,11 @@ interface CategoryStat {
   name: string;
   accuracy: number;
   total: number;
+}
+
+interface UserBadge {
+  badge_code: string;
+  earned_at: string;
 }
 
 const getBarColor = (accuracy: number) => {
@@ -70,10 +76,20 @@ const fetchUserStats = async (userId: string) => {
     
   const statsPromise = supabase.rpc('get_user_performance_stats', { p_user_id: userId });
 
-  const [simulationsResult, statsResult] = await Promise.all([simulationsPromise, statsPromise]);
+  const badgesPromise = supabase
+    .from("user_badges")
+    .select('*')
+    .eq('user_id', userId);
+
+  const [simulationsResult, statsResult, badgesResult] = await Promise.all([
+    simulationsPromise, 
+    statsPromise,
+    badgesPromise
+  ]);
 
   if (simulationsResult.error) console.error("Simulations Error:", simulationsResult.error);
   if (statsResult.error) console.error("Stats Error:", statsResult.error);
+  if (badgesResult.error) console.error("Badges Error:", badgesResult.error);
 
   const { totalQuestions = 0, correctQuestions = 0, categoryStats = [] } = statsResult.data || {};
   
@@ -85,6 +101,7 @@ const fetchUserStats = async (userId: string) => {
   return {
     simulations: simulationsResult.data || [],
     categoryStats: sortedCategoryStats,
+    badges: (badgesResult.data as UserBadge[]) || [],
     totalQuestions,
     correctQuestions,
   };
@@ -98,7 +115,7 @@ const PublicProfile = () => {
     queryKey: ['publicProfileBase', userId],
     queryFn: () => fetchUserProfile(userId!),
     enabled: !!userId,
-    staleTime: 0, // Garante que sempre busca dados novos ao montar
+    staleTime: 0, 
     refetchOnMount: true
   });
 
@@ -107,11 +124,11 @@ const PublicProfile = () => {
     queryKey: ['publicProfileStats', userId],
     queryFn: () => fetchUserStats(userId!),
     enabled: !!userId,
-    staleTime: 0, // Garante que sempre busca dados novos ao montar
+    staleTime: 0,
     refetchOnMount: true
   });
 
-  const { simulations, categoryStats, totalQuestions, correctQuestions } = stats || {};
+  const { simulations, categoryStats, badges, totalQuestions, correctQuestions } = stats || {};
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -289,102 +306,150 @@ const PublicProfile = () => {
             </Card>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-6">
-            {/* Gráfico de Desempenho */}
-            <Card className="shadow-md border-t-4 border-t-primary/50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Medal className="h-5 w-5 text-primary" /> 
-                  Desempenho por Disciplina
-                </CardTitle>
-                <CardDescription>Análise de aproveitamento nas matérias estudadas.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {categoryStats && categoryStats.length > 0 ? (
-                  <div className="h-[350px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={categoryStats} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} strokeOpacity={0.3} />
-                        <XAxis type="number" domain={[0, 100]} hide />
-                        <YAxis 
-                          type="category" 
-                          dataKey="name" 
-                          width={100} 
-                          tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
-                          interval={0}
-                        />
-                        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted)/0.2)' }} />
-                        <Bar dataKey="accuracy" radius={[0, 4, 4, 0]} barSize={20}>
-                          <LabelList 
-                            dataKey="accuracy" 
-                            position="right" 
-                            formatter={(value: number) => `${value}%`} 
-                            fontSize={12} 
-                            className="fill-foreground font-bold" 
-                          />
-                          {categoryStats.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={getBarColor(entry.accuracy)} />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
-                    <FileQuestion className="h-10 w-10 mb-3 opacity-20" />
-                    <p className="text-sm">Nenhum dado de desempenho disponível ainda.</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Histórico Recente */}
-            <Card className="shadow-md border-t-4 border-t-amber-500/50 flex flex-col">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Calendar className="h-5 w-5 text-amber-500" />
-                  Últimos Simulados
-                </CardTitle>
-                <CardDescription>Histórico de atividades recentes.</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 p-0">
-                {simulations && simulations.length > 0 ? (
-                  <ScrollArea className="h-[350px]">
-                    <div className="divide-y divide-border/50">
-                      {simulations.slice(0, 10).map((sim: any) => (
-                        <div key={sim.id} className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors">
-                          <div className="flex flex-col gap-1">
-                            <span className="font-medium text-sm">Simulado #{sim.score}</span>
-                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              {format(new Date(sim.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}
-                            </span>
-                          </div>
+          <div className="grid lg:grid-cols-3 gap-6">
+            
+            {/* Seção de Conquistas (Badges) */}
+            <div className="lg:col-span-1">
+              <Card className="h-full border-t-4 border-t-purple-500 shadow-md">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Medal className="h-5 w-5 text-purple-500" />
+                    Conquistas
+                  </CardTitle>
+                  <CardDescription>{badges?.length || 0} medalhas desbloqueadas.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {badges && badges.length > 0 ? (
+                    <ScrollArea className="h-[400px]">
+                      <div className="grid grid-cols-2 gap-3 pr-4">
+                        {badges.map((userBadge) => {
+                          const badgeDef = BADGES.find(b => b.id === userBadge.badge_code);
+                          if (!badgeDef) return null;
+                          const Icon = badgeDef.icon;
                           
-                          <div className="flex items-center gap-4">
-                            <div className="text-right hidden sm:block">
-                              <span className="block text-xs text-muted-foreground uppercase font-bold">Tempo</span>
-                              <span className="text-sm font-mono">{formatTime(sim.time_taken_seconds)}</span>
+                          return (
+                            <div key={userBadge.badge_code} className={cn("flex flex-col items-center p-3 rounded-xl border text-center relative overflow-hidden group", `bg-gradient-to-br ${badgeDef.bgGradient} border-${badgeDef.color.split('-')[1]}-200 dark:border-${badgeDef.color.split('-')[1]}-800`)}>
+                              <div className="absolute top-1 right-1">
+                                <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                              </div>
+                              <div className="p-2 bg-background rounded-full mb-2 shadow-sm">
+                                <Icon className={cn("w-5 h-5", badgeDef.color)} />
+                              </div>
+                              <p className="text-xs font-bold leading-tight">{badgeDef.name}</p>
+                              <p className="text-[10px] text-muted-foreground mt-1">{format(new Date(userBadge.earned_at), "dd/MM/yy", { locale: ptBR })}</p>
                             </div>
-                            <div className="text-right">
-                              <Badge variant={sim.percentage >= 70 ? "default" : sim.percentage >= 50 ? "secondary" : "destructive"} className="text-xs font-bold px-2">
-                                {sim.percentage}%
-                              </Badge>
-                              <span className="block text-[10px] text-muted-foreground mt-0.5 text-center">Acerto</span>
+                          );
+                        })}
+                      </div>
+                    </ScrollArea>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground bg-muted/10 rounded-lg border border-dashed text-center p-4">
+                      <Lock className="h-8 w-8 mb-3 opacity-20" />
+                      <p className="text-sm">Este usuário ainda não desbloqueou conquistas.</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Gráfico de Desempenho e Histórico */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Gráfico de Desempenho */}
+              <Card className="shadow-md border-t-4 border-t-primary/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Trophy className="h-5 w-5 text-primary" /> 
+                    Desempenho por Disciplina
+                  </CardTitle>
+                  <CardDescription>Análise de aproveitamento nas matérias estudadas.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {categoryStats && categoryStats.length > 0 ? (
+                    <div className="h-[300px] w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={categoryStats} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
+                          <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} strokeOpacity={0.3} />
+                          <XAxis type="number" domain={[0, 100]} hide />
+                          <YAxis 
+                            type="category" 
+                            dataKey="name" 
+                            width={100} 
+                            tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                            interval={0}
+                          />
+                          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted)/0.2)' }} />
+                          <Bar dataKey="accuracy" radius={[0, 4, 4, 0]} barSize={20}>
+                            <LabelList 
+                              dataKey="accuracy" 
+                              position="right" 
+                              formatter={(value: number) => `${value}%`} 
+                              fontSize={12} 
+                              className="fill-foreground font-bold" 
+                            />
+                            {categoryStats.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={getBarColor(entry.accuracy)} />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
+                      <FileQuestion className="h-10 w-10 mb-3 opacity-20" />
+                      <p className="text-sm">Nenhum dado de desempenho disponível ainda.</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Histórico Completo de Simulados */}
+              <Card className="shadow-md border-t-4 border-t-amber-500/50 flex flex-col">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Calendar className="h-5 w-5 text-amber-500" />
+                    Histórico de Simulados
+                  </CardTitle>
+                  <CardDescription>Todos os simulados realizados pelo usuário.</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-1 p-0">
+                  {simulations && simulations.length > 0 ? (
+                    <ScrollArea className="h-[400px]">
+                      <div className="divide-y divide-border/50">
+                        {simulations.map((sim: any) => (
+                          <div key={sim.id} className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors">
+                            <div className="flex flex-col gap-1">
+                              <span className="font-medium text-sm">Simulado #{sim.score}</span>
+                              <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                {format(new Date(sim.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}
+                              </span>
+                            </div>
+                            
+                            <div className="flex items-center gap-4">
+                              <div className="text-right hidden sm:block">
+                                <span className="block text-xs text-muted-foreground uppercase font-bold">Tempo</span>
+                                <span className="text-sm font-mono">{formatTime(sim.time_taken_seconds)}</span>
+                              </div>
+                              <div className="text-right">
+                                <Badge variant={sim.percentage >= 70 ? "default" : sim.percentage >= 50 ? "secondary" : "destructive"} className="text-xs font-bold px-2">
+                                  {sim.percentage}%
+                                </Badge>
+                                <span className="block text-[10px] text-muted-foreground mt-0.5 text-center">Acerto</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-muted-foreground bg-muted/10">
+                      <Timer className="h-10 w-10 mb-3 opacity-20" />
+                      <p className="text-sm">Nenhum simulado realizado ainda.</p>
                     </div>
-                  </ScrollArea>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-muted-foreground bg-muted/10">
-                    <Timer className="h-10 w-10 mb-3 opacity-20" />
-                    <p className="text-sm">Nenhum simulado realizado ainda.</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       )}
