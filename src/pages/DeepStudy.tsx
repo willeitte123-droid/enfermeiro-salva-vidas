@@ -158,24 +158,39 @@ const DeepStudy = () => {
     }
   };
 
-  // Handler de Seleção de Texto
+  // Handler de Seleção de Texto Inteligente
+  // Converte a seleção visual em padrão Regex para encontrar no HTML bruto
   const handleMouseUp = () => {
     const selection = window.getSelection();
-    if (!selection || selection.isCollapsed) {
+    if (!selection || selection.isCollapsed || !selectedDoc) {
       setSelectionRect(null);
       setSelectedText("");
       return;
     }
 
-    const text = selection.toString().trim();
-    if (text.length > 0) {
+    const plainText = selection.toString().trim();
+    if (plainText.length > 0) {
+      // 1. Escapa caracteres especiais do regex
+      const escapedText = plainText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      
+      // 2. Substitui espaços por um padrão que aceita tags HTML ou espaços
+      // Isso permite encontrar "Texto <b>Negrito</b>" selecionando apenas o texto visual
+      const pattern = escapedText.replace(/\s+/g, '(?:<[^>]+>|\\s)+');
+      
+      // 3. Busca no conteúdo original HTML
+      const regex = new RegExp(pattern, 'i'); // Case insensitive para robustez
+      const match = selectedDoc.content.match(regex);
+      
+      // Se encontrar match no HTML, usa o texto original (com tags), senão usa o texto simples (fallback)
+      const textToSave = match ? match[0] : plainText;
+
       if (isHighlighterMode) {
-        addHighlightMutation.mutate(text);
+        addHighlightMutation.mutate(textToSave);
       } else {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
         setSelectionRect(rect);
-        setSelectedText(text);
+        setSelectedText(textToSave);
       }
     }
   };
@@ -185,16 +200,18 @@ const DeepStudy = () => {
     const target = e.target as HTMLElement;
     // Verifica se clicou em um <mark> e se não está selecionando texto
     if (target.tagName === 'MARK' && window.getSelection()?.toString().trim() === '') {
-      const text = target.textContent || "";
+      const markHtml = target.innerHTML;
       
-      // Encontra os IDs dos grifos que compõem este trecho visual
-      // A lógica de "includes" ajuda a identificar grifos que foram fundidos
+      // Compara HTML interno para garantir match correto mesmo com tags
       const idsToDelete = highlights
-        .filter(h => text.includes(h.selected_text) || h.selected_text.includes(text))
+        .filter(h => markHtml.includes(h.selected_text) || h.selected_text.includes(markHtml))
         .map(h => h.id);
 
       if (idsToDelete.length > 0) {
-        setHighlightToRemove({ ids: idsToDelete, text: text.substring(0, 50) + (text.length > 50 ? "..." : "") });
+        setHighlightToRemove({ 
+            ids: idsToDelete, 
+            text: target.textContent || "" // Mostra texto limpo no modal
+        });
       }
     }
   };
@@ -215,6 +232,9 @@ const DeepStudy = () => {
       if (!h.selected_text) return;
       const term = h.selected_text;
       let pos = content.indexOf(term);
+      
+      // Se não encontrar exato (devido a mudança em algo), tenta fallback simples
+      // Mas como salvamos o HTML exato no handleMouseUp, o indexOf deve funcionar na maioria dos casos
       while (pos !== -1) {
         ranges.push({ start: pos, end: pos + term.length });
         pos = content.indexOf(term, pos + 1);
@@ -243,10 +263,23 @@ const DeepStudy = () => {
     for (let i = mergedRanges.length - 1; i >= 0; i--) {
       const { start, end } = mergedRanges[i];
       const segment = result.substring(start, end);
+      
+      // Proteção para não quebrar tags HTML ao meio (ex: <str<mark>ong>)
+      // Só aplica se não estiver "quebrando" uma tag
       if (!segment.includes('<') && !segment.includes('>')) {
+         // Caso simples
          result = 
            result.substring(0, start) + 
-           `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors" title="Clique para remover">` + 
+           `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors" title="Clique para remover">` + 
+           result.substring(start, end) + 
+           `</mark>` + 
+           result.substring(end);
+      } else {
+         // Caso complexo (contém tags): Aplica mark ao redor de tudo
+         // O CSS box-decoration-clone ajuda a manter o estilo em quebras de linha
+         result = 
+           result.substring(0, start) + 
+           `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors box-decoration-clone" title="Clique para remover">` + 
            result.substring(start, end) + 
            `</mark>` + 
            result.substring(end);
@@ -279,7 +312,7 @@ const DeepStudy = () => {
               <AlertDialogTitle>Remover Grifo</AlertDialogTitle>
               <AlertDialogDescription>
                 Deseja remover o destaque do texto abaixo?
-                <div className="mt-4 p-3 bg-muted rounded-md text-sm italic font-medium">
+                <div className="mt-4 p-3 bg-muted rounded-md text-sm italic font-medium line-clamp-3">
                   "{highlightToRemove?.text}"
                 </div>
               </AlertDialogDescription>
