@@ -306,11 +306,11 @@ const PublicProfile = () => {
               </CardContent>
             </Card>
 
-            {/* CARD ALTERADO: Ranking com Posição */}
+            {/* CARD ALTERADO: Ranking Geral */}
             <Card className="bg-gradient-to-br from-card to-purple-50/50 dark:to-purple-950/10 border-l-4 border-l-purple-500 shadow-sm hover:shadow-md transition-all group">
               <CardContent className="p-4 flex flex-col justify-between h-full">
                 <div className="flex justify-between items-start mb-2">
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Ranking XP</span>
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Ranking Geral</span>
                   <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-md text-purple-600 group-hover:scale-110 transition-transform"><Trophy className="h-4 w-4" /></div>
                 </div>
                 <div>
