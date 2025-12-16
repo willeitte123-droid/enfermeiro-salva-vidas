@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, ArrowLeft, FileQuestion, Percent, Timer, Trophy, Calendar, Medal, Star, Lock } from "lucide-react";
+import { Loader2, ArrowLeft, FileQuestion, Percent, Timer, Trophy, Calendar, Medal, Star, Lock, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -33,6 +33,15 @@ interface CategoryStat {
 interface UserBadge {
   badge_code: string;
   earned_at: string;
+}
+
+interface Simulation {
+  id: string;
+  score: number;
+  total_questions: number;
+  percentage: number;
+  time_taken_seconds: number;
+  created_at: string;
 }
 
 const getBarColor = (accuracy: number) => {
@@ -67,15 +76,17 @@ const fetchUserProfile = async (userId: string) => {
 };
 
 const fetchUserStats = async (userId: string) => {
-  // Executa as queries em paralelo
+  // 1. Busca Simulados
   const simulationsPromise = supabase
     .from("user_simulations")
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
     
+  // 2. Busca Estatísticas da Banca (Questões Avulsas)
   const statsPromise = supabase.rpc('get_user_performance_stats', { p_user_id: userId });
 
+  // 3. Busca Conquistas
   const badgesPromise = supabase
     .from("user_badges")
     .select('*')
@@ -91,19 +102,38 @@ const fetchUserStats = async (userId: string) => {
   if (statsResult.error) console.error("Stats Error:", statsResult.error);
   if (badgesResult.error) console.error("Badges Error:", badgesResult.error);
 
-  const { totalQuestions = 0, correctQuestions = 0, categoryStats = [] } = statsResult.data || {};
+  const bankStats = statsResult.data || { totalQuestions: 0, correctQuestions: 0, categoryStats: [] };
+  const simulations = (simulationsResult.data as Simulation[]) || [];
+  const badges = (badgesResult.data as UserBadge[]) || [];
+
+  // --- CÁLCULO UNIFICADO (Banca + Simulados) ---
   
-  // Ordena categorias por aproveitamento (maior para menor)
-  const sortedCategoryStats = categoryStats 
-    ? categoryStats.sort((a: CategoryStat, b: CategoryStat) => b.accuracy - a.accuracy) 
+  // Totais dos Simulados
+  const simTotalQuestions = simulations.reduce((acc, sim) => acc + sim.total_questions, 0);
+  const simTotalCorrect = simulations.reduce((acc, sim) => acc + sim.score, 0);
+
+  // Totais Gerais
+  const grandTotalQuestions = (bankStats.totalQuestions || 0) + simTotalQuestions;
+  const grandTotalCorrect = (bankStats.correctQuestions || 0) + simTotalCorrect; // Este é o XP/Score do Ranking
+  
+  // Precisão Global
+  const globalAccuracy = grandTotalQuestions > 0 
+    ? Math.round((grandTotalCorrect / grandTotalQuestions) * 100) 
+    : 0;
+
+  // Ordena categorias por aproveitamento
+  const sortedCategoryStats = bankStats.categoryStats 
+    ? bankStats.categoryStats.sort((a: CategoryStat, b: CategoryStat) => b.accuracy - a.accuracy) 
     : [];
 
   return {
-    simulations: simulationsResult.data || [],
+    simulations,
     categoryStats: sortedCategoryStats,
-    badges: (badgesResult.data as UserBadge[]) || [],
-    totalQuestions,
-    correctQuestions,
+    badges,
+    grandTotalQuestions,
+    grandTotalCorrect, // XP Total
+    globalAccuracy,
+    totalSimulations: simulations.length
   };
 };
 
@@ -119,7 +149,7 @@ const PublicProfile = () => {
     refetchOnMount: true
   });
 
-  // Query 2: Estatísticas (Atualiza sempre)
+  // Query 2: Estatísticas Calculadas
   const { data: stats, isLoading: isLoadingStats } = useQuery({
     queryKey: ['publicProfileStats', userId],
     queryFn: () => fetchUserStats(userId!),
@@ -128,7 +158,15 @@ const PublicProfile = () => {
     refetchOnMount: true
   });
 
-  const { simulations, categoryStats, badges, totalQuestions, correctQuestions } = stats || {};
+  const { 
+    simulations, 
+    categoryStats, 
+    badges, 
+    grandTotalQuestions, 
+    grandTotalCorrect, 
+    globalAccuracy, 
+    totalSimulations 
+  } = stats || {};
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -168,21 +206,20 @@ const PublicProfile = () => {
     return `${firstName}${lastName}`.toUpperCase();
   };
 
-  const questionAccuracy = totalQuestions && totalQuestions > 0 ? Math.round((correctQuestions / totalQuestions) * 100) : 0;
-
   return (
     <div className="space-y-8 pb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
-      {/* Botão Voltar Flutuante */}
-      <div className="fixed bottom-6 right-6 z-50 md:hidden">
-        <Button asChild size="icon" className="rounded-full shadow-lg h-12 w-12">
-          <Link to="/ranking"><ArrowLeft className="h-6 w-6" /></Link>
-        </Button>
-      </div>
-
+      {/* Botão Voltar (Desktop) */}
       <div className="hidden md:block">
         <Button asChild variant="ghost" size="sm" className="hover:bg-transparent hover:text-primary pl-0">
           <Link to="/ranking" className="flex items-center gap-2"><ArrowLeft className="h-4 w-4" /> Voltar para o Ranking</Link>
+        </Button>
+      </div>
+
+      {/* Botão Voltar (Mobile Flutuante) */}
+      <div className="fixed bottom-6 right-6 z-50 md:hidden">
+        <Button asChild size="icon" className="rounded-full shadow-lg h-12 w-12">
+          <Link to="/ranking"><ArrowLeft className="h-6 w-6" /></Link>
         </Button>
       </div>
       
@@ -249,58 +286,58 @@ const PublicProfile = () => {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Cards de Estatísticas Rápidas */}
+          {/* Cards de Estatísticas Rápidas (Unificadas) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="bg-gradient-to-br from-card to-blue-50/50 dark:to-blue-950/10 border-l-4 border-l-blue-500 shadow-sm hover:shadow-md transition-all">
+            <Card className="bg-gradient-to-br from-card to-blue-50/50 dark:to-blue-950/10 border-l-4 border-l-blue-500 shadow-sm hover:shadow-md transition-all group">
               <CardContent className="p-4 flex flex-col justify-between h-full">
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Questões</span>
-                  <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-md text-blue-600"><FileQuestion className="h-4 w-4" /></div>
+                  <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-md text-blue-600 group-hover:scale-110 transition-transform"><FileQuestion className="h-4 w-4" /></div>
                 </div>
                 <div>
-                  <span className="text-2xl md:text-3xl font-bold text-foreground">{totalQuestions || 0}</span>
-                  <p className="text-xs text-muted-foreground mt-1">Resolvidas</p>
+                  <span className="text-2xl md:text-3xl font-bold text-foreground">{grandTotalQuestions || 0}</span>
+                  <p className="text-xs text-muted-foreground mt-1">Total Respondido</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-card to-green-50/50 dark:to-green-950/10 border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-all">
+            <Card className="bg-gradient-to-br from-card to-green-50/50 dark:to-green-950/10 border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-all group">
               <CardContent className="p-4 flex flex-col justify-between h-full">
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Precisão</span>
-                  <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded-md text-green-600"><Percent className="h-4 w-4" /></div>
+                  <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded-md text-green-600 group-hover:scale-110 transition-transform"><Percent className="h-4 w-4" /></div>
                 </div>
                 <div>
-                  <span className="text-2xl md:text-3xl font-bold text-foreground">{questionAccuracy}%</span>
-                  <p className="text-xs text-muted-foreground mt-1">Acerto Geral</p>
+                  <span className="text-2xl md:text-3xl font-bold text-foreground">{globalAccuracy || 0}%</span>
+                  <p className="text-xs text-muted-foreground mt-1">Média Geral</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-card to-amber-50/50 dark:to-amber-950/10 border-l-4 border-l-amber-500 shadow-sm hover:shadow-md transition-all">
+            <Card className="bg-gradient-to-br from-card to-amber-50/50 dark:to-amber-950/10 border-l-4 border-l-amber-500 shadow-sm hover:shadow-md transition-all group">
               <CardContent className="p-4 flex flex-col justify-between h-full">
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Simulados</span>
-                  <div className="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-md text-amber-600"><Timer className="h-4 w-4" /></div>
+                  <div className="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-md text-amber-600 group-hover:scale-110 transition-transform"><Timer className="h-4 w-4" /></div>
                 </div>
                 <div>
-                  <span className="text-2xl md:text-3xl font-bold text-foreground">{simulations?.length || 0}</span>
-                  <p className="text-xs text-muted-foreground mt-1">Realizados</p>
+                  <span className="text-2xl md:text-3xl font-bold text-foreground">{totalSimulations || 0}</span>
+                  <p className="text-xs text-muted-foreground mt-1">Concluídos</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-card to-purple-50/50 dark:to-purple-950/10 border-l-4 border-l-purple-500 shadow-sm hover:shadow-md transition-all">
+            <Card className="bg-gradient-to-br from-card to-purple-50/50 dark:to-purple-950/10 border-l-4 border-l-purple-500 shadow-sm hover:shadow-md transition-all group">
               <CardContent className="p-4 flex flex-col justify-between h-full">
                 <div className="flex justify-between items-start mb-2">
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Ranking</span>
-                  <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-md text-purple-600"><Trophy className="h-4 w-4" /></div>
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Ranking XP</span>
+                  <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-md text-purple-600 group-hover:scale-110 transition-transform"><Trophy className="h-4 w-4" /></div>
                 </div>
                 <div>
                   <span className="text-2xl md:text-3xl font-bold text-foreground">
-                    {correctQuestions}
+                    {grandTotalCorrect || 0}
                   </span>
-                  <p className="text-xs text-muted-foreground mt-1">Pontos (XP)</p>
+                  <p className="text-xs text-muted-foreground mt-1">Total de Acertos</p>
                 </div>
               </CardContent>
             </Card>
@@ -354,14 +391,14 @@ const PublicProfile = () => {
 
             {/* Gráfico de Desempenho e Histórico */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Gráfico de Desempenho */}
+              {/* Gráfico de Desempenho (Questões Avulsas) */}
               <Card className="shadow-md border-t-4 border-t-primary/50">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Trophy className="h-5 w-5 text-primary" /> 
-                    Desempenho por Disciplina
+                    <Target className="h-5 w-5 text-primary" /> 
+                    Desempenho por Disciplina (Banca)
                   </CardTitle>
-                  <CardDescription>Análise de aproveitamento nas matérias estudadas.</CardDescription>
+                  <CardDescription>Análise de aproveitamento nas questões da banca.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {categoryStats && categoryStats.length > 0 ? (
@@ -396,7 +433,7 @@ const PublicProfile = () => {
                   ) : (
                     <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
                       <FileQuestion className="h-10 w-10 mb-3 opacity-20" />
-                      <p className="text-sm">Nenhum dado de desempenho disponível ainda.</p>
+                      <p className="text-sm">Nenhum dado de desempenho da banca disponível.</p>
                     </div>
                   )}
                 </CardContent>
@@ -407,18 +444,18 @@ const PublicProfile = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Calendar className="h-5 w-5 text-amber-500" />
-                    Histórico de Simulados
+                    Histórico Completo de Simulados
                   </CardTitle>
                   <CardDescription>Todos os simulados realizados pelo usuário.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-1 p-0">
                   {simulations && simulations.length > 0 ? (
-                    <ScrollArea className="h-[400px]">
+                    <ScrollArea className="h-[350px]">
                       <div className="divide-y divide-border/50">
                         {simulations.map((sim: any) => (
                           <div key={sim.id} className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors">
                             <div className="flex flex-col gap-1">
-                              <span className="font-medium text-sm">Simulado #{sim.score}</span>
+                              <span className="font-medium text-sm">Pontuação: {sim.score}/{sim.total_questions}</span>
                               <span className="text-xs text-muted-foreground flex items-center gap-1">
                                 <Calendar className="h-3 w-3" />
                                 {format(new Date(sim.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}
