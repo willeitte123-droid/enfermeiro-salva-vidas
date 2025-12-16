@@ -240,9 +240,9 @@ const PublicProfile = () => {
 
             {/* Chips de Especialização */}
             {profile.specializations && profile.specializations.length > 0 && (
-              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start mt-2">
                 {profile.specializations.map((spec, i) => (
-                  <Badge key={i} variant="secondary" className="px-2 py-0.5 text-xs font-normal bg-secondary/50">
+                  <Badge key={i} variant="secondary" className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors border-0">
                     {spec}
                   </Badge>
                 ))}
