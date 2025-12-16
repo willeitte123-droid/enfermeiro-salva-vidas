@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -9,11 +9,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
-import { AvatarUpload } from "@/components/AvatarUpload";
+import { 
+  Loader2, Camera, MapPin, Briefcase, GraduationCap, 
+  Edit2, Save, X, Plus, Trash2, Medal, Zap, Target
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import ImageCropperDialog from "@/components/ImageCropperDialog";
-import { useQueryClient } from "@tanstack/react-query";
+import { useUserLevel } from "@/hooks/useUserLevel";
 
 interface Profile {
   id: string;
@@ -21,22 +28,45 @@ interface Profile {
   last_name?: string;
   avatar_url?: string;
   bio?: string;
+  profession?: string;
+  specializations?: string[];
+  role: string;
+  email?: string;
 }
 
 const profileSchema = z.object({
-  firstName: z.string().min(1, { message: "O nome é obrigatório." }),
-  lastName: z.string().min(1, { message: "O sobrenome é obrigatório." }),
-  bio: z.string().max(500, { message: "A biografia não pode ter mais de 500 caracteres." }).optional(),
+  firstName: z.string().min(1, { message: "Nome obrigatório." }),
+  lastName: z.string().min(1, { message: "Sobrenome obrigatório." }),
+  bio: z.string().max(500).optional(),
+  profession: z.string().optional(),
+  location: z.string().optional(),
 });
+
+// Funções auxiliares para upload
+const uploadAvatar = async (userId: string, file: Blob) => {
+  const filePath = `${userId}-${Date.now()}.jpg`;
+  const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file, { contentType: 'image/jpeg' });
+  if (uploadError) throw uploadError;
+  const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+  return data.publicUrl;
+};
 
 const ProfilePage = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const queryClient = useQueryClient();
+  const { data: levelData } = useUserLevel(profile?.id);
+  
+  const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | Blob | null>(null);
-  const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+  
+  // Avatar States
   const [isCropperOpen, setIsCropperOpen] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Specializations States
+  const [specs, setSpecs] = useState<string[]>([]);
+  const [newSpec, setNewSpec] = useState("");
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -44,6 +74,8 @@ const ProfilePage = () => {
       firstName: "",
       lastName: "",
       bio: "",
+      profession: "",
+      location: "",
     },
   });
 
@@ -53,12 +85,14 @@ const ProfilePage = () => {
         firstName: profile.first_name || "",
         lastName: profile.last_name || "",
         bio: profile.bio || "",
+        profession: profile.profession || "",
       });
-      setAvatarUrl(profile.avatar_url || null);
+      setSpecs(profile.specializations || []);
     }
   }, [profile, form]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Handlers de Imagem
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const reader = new FileReader();
@@ -67,173 +101,306 @@ const ProfilePage = () => {
         setIsCropperOpen(true);
       };
       reader.readAsDataURL(file);
-      event.target.value = ''; // Reset input
+      event.target.value = ''; 
     }
   };
 
-  const handleCropComplete = (croppedImage: Blob) => {
-    setSelectedFile(croppedImage);
-    setAvatarUrl(URL.createObjectURL(croppedImage));
+  const handleCropComplete = async (croppedBlob: Blob) => {
     setIsCropperOpen(false);
-  };
-
-  const handleDeleteAvatar = async () => {
     if (!profile) return;
-    setIsLoading(true);
-    const { error } = await supabase
-      .from('profiles')
-      .update({ avatar_url: null })
-      .eq('id', profile.id);
     
-    setIsLoading(false);
-    if (error) {
-      toast.error("Erro ao remover a foto", { description: error.message });
-    } else {
-      setAvatarUrl(null);
-      setSelectedFile(null);
-      toast.success("Foto de perfil removida.");
+    const toastId = toast.loading("Atualizando foto...");
+    try {
+      const publicUrl = await uploadAvatar(profile.id, croppedBlob);
+      await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', profile.id);
       queryClient.invalidateQueries({ queryKey: ['profile', profile.id] });
+      toast.success("Foto atualizada!", { id: toastId });
+    } catch (error: any) {
+      toast.error("Erro ao atualizar foto", { id: toastId, description: error.message });
     }
   };
 
-  async function onSubmit(values: z.infer<typeof profileSchema>) {
+  // Handlers de Especialização
+  const addSpec = () => {
+    if (newSpec.trim() && !specs.includes(newSpec.trim())) {
+      setSpecs([...specs, newSpec.trim()]);
+      setNewSpec("");
+    }
+  };
+
+  const removeSpec = (specToRemove: string) => {
+    setSpecs(specs.filter(s => s !== specToRemove));
+  };
+
+  // Submit do Formulário
+  const onSubmit = async (values: z.infer<typeof profileSchema>) => {
     if (!profile) return;
     setIsLoading(true);
-
-    let newAvatarUrl = avatarUrl;
-
-    if (selectedFile) {
-      const fileExt = 'jpg';
-      const filePath = `${profile.id}-${Date.now()}.${fileExt}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, selectedFile, { contentType: 'image/jpeg' });
-
-      if (uploadError) {
-        toast.error("Erro no upload da foto", { description: uploadError.message });
-        setIsLoading(false);
-        return;
-      }
-      
-      const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
-      newAvatarUrl = data.publicUrl;
-    }
-
-    const { error: updateError } = await supabase
-      .from('profiles')
-      .update({
+    try {
+      const { error } = await supabase.from('profiles').update({
         first_name: values.firstName,
         last_name: values.lastName,
         bio: values.bio,
-        avatar_url: newAvatarUrl,
-      })
-      .eq('id', profile.id);
+        profession: values.profession,
+        specializations: specs
+      }).eq('id', profile.id);
 
-    setIsLoading(false);
-
-    if (updateError) {
-      toast.error("Erro ao atualizar perfil", { description: updateError.message });
-    } else {
-      toast.success("Perfil atualizado com sucesso!");
-      setSelectedFile(null);
+      if (error) throw error;
+      
+      toast.success("Perfil atualizado!");
+      setIsEditing(false);
       queryClient.invalidateQueries({ queryKey: ['profile', profile.id] });
+    } catch (error: any) {
+      toast.error("Erro ao salvar", { description: error.message });
+    } finally {
+      setIsLoading(false);
     }
-  }
-  
+  };
+
   const getInitials = () => {
-    const firstName = form.getValues("firstName")?.[0] || '';
-    const lastName = form.getValues("lastName")?.[0] || '';
-    return `${firstName}${lastName}`.toUpperCase();
+    const f = profile?.first_name?.[0] || '';
+    const l = profile?.last_name?.[0] || '';
+    return `${f}${l}`.toUpperCase();
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <ImageCropperDialog
-        imageSrc={imageToCrop}
-        open={isCropperOpen}
-        onOpenChange={setIsCropperOpen}
-        onCropComplete={handleCropComplete}
+    <div className="min-h-screen pb-10 animate-in fade-in duration-500">
+      <ImageCropperDialog 
+        imageSrc={imageToCrop} 
+        open={isCropperOpen} 
+        onOpenChange={setIsCropperOpen} 
+        onCropComplete={handleCropComplete} 
       />
-      <div className="text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Meu Perfil</h1>
-        <p className="text-muted-foreground">Atualize suas informações pessoais e sua biografia.</p>
+
+      {/* Header / Capa */}
+      <div className="relative h-48 md:h-64 rounded-xl overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 shadow-lg">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
+        <div className="absolute top-4 right-4">
+          {!isEditing ? (
+            <Button variant="secondary" size="sm" onClick={() => setIsEditing(true)} className="shadow-lg backdrop-blur-md bg-white/20 hover:bg-white/30 text-white border-none">
+              <Edit2 className="w-4 h-4 mr-2" /> Editar Perfil
+            </Button>
+          ) : (
+            <div className="flex gap-2">
+              <Button variant="destructive" size="sm" onClick={() => setIsEditing(false)} disabled={isLoading}>
+                <X className="w-4 h-4 mr-2" /> Cancelar
+              </Button>
+              <Button variant="default" size="sm" onClick={form.handleSubmit(onSubmit)} disabled={isLoading} className="bg-green-600 hover:bg-green-700">
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} Salvar
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Foto de Perfil</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <AvatarUpload 
-                avatarUrl={avatarUrl}
-                onFileChange={handleFileChange}
-                onDelete={handleDeleteAvatar}
-                getInitials={getInitials}
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Informações Pessoais</CardTitle>
-              <CardDescription>Seu nome e biografia serão exibidos em seu perfil público.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nome</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Seu nome" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Sobrenome</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Seu sobrenome" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <FormField
-                control={form.control}
-                name="bio"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Biografia</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="Fale um pouco sobre você, sua área de atuação ou interesses na enfermagem..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
+      {/* Conteúdo Principal */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 -mt-24 relative z-10">
+        <div className="flex flex-col md:flex-row gap-6">
           
-          <div className="flex justify-end">
-            <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Salvar Alterações
-            </Button>
+          {/* Coluna Esquerda: Cartão de Identidade */}
+          <div className="w-full md:w-1/3 flex flex-col gap-6">
+            <Card className="border-none shadow-xl bg-card/95 backdrop-blur-sm overflow-visible">
+              <CardContent className="pt-0 flex flex-col items-center">
+                <div className="relative -mt-16 mb-4 group">
+                  <Avatar className="w-32 h-32 border-4 border-card shadow-lg cursor-pointer">
+                    <AvatarImage src={profile?.avatar_url || undefined} className="object-cover" />
+                    <AvatarFallback className="text-4xl bg-primary/20 text-primary">{getInitials()}</AvatarFallback>
+                  </Avatar>
+                  <div 
+                    className="absolute bottom-0 right-0 p-2 bg-primary text-white rounded-full shadow-lg cursor-pointer hover:bg-primary/90 transition-colors"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Camera className="w-5 h-5" />
+                  </div>
+                  <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    className="hidden" 
+                    accept="image/*" 
+                    onChange={handleFileSelect} 
+                  />
+                </div>
+
+                {isEditing ? (
+                  <div className="w-full space-y-3 px-2 pb-4">
+                    <div className="grid grid-cols-2 gap-2">
+                      <Input {...form.register("firstName")} placeholder="Nome" className="text-center" />
+                      <Input {...form.register("lastName")} placeholder="Sobrenome" className="text-center" />
+                    </div>
+                    <Select 
+                      onValueChange={(val) => form.setValue("profession", val)} 
+                      defaultValue={profile?.profession || ""}
+                    >
+                      <SelectTrigger><SelectValue placeholder="Selecione sua profissão" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Estudante de Enfermagem">Estudante de Enfermagem</SelectItem>
+                        <SelectItem value="Técnico de Enfermagem">Técnico de Enfermagem</SelectItem>
+                        <SelectItem value="Enfermeiro(a)">Enfermeiro(a)</SelectItem>
+                        <SelectItem value="Auxiliar de Enfermagem">Auxiliar de Enfermagem</SelectItem>
+                        <SelectItem value="Outro">Outro</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ) : (
+                  <div className="text-center pb-6">
+                    <h2 className="text-2xl font-bold text-foreground">{profile?.first_name} {profile?.last_name}</h2>
+                    <p className="text-muted-foreground font-medium flex items-center justify-center gap-1 mt-1">
+                      <Briefcase className="w-4 h-4" /> {profile?.profession || "Profissional de Saúde"}
+                    </p>
+                    <Badge variant="outline" className="mt-3 border-primary/30 bg-primary/5 text-primary">
+                      {levelData?.levelName || "Nível 1"} • {levelData?.currentXP || 0} XP
+                    </Badge>
+                  </div>
+                )}
+
+                {/* Resumo de Estatísticas (Mini) */}
+                <div className="grid grid-cols-3 w-full border-t border-border pt-4">
+                  <div className="text-center">
+                    <p className="text-lg font-bold">{levelData?.currentXP || 0}</p>
+                    <p className="text-[10px] uppercase text-muted-foreground font-bold">Acertos</p>
+                  </div>
+                  <div className="text-center border-l border-r border-border">
+                    <p className="text-lg font-bold">#{levelData?.currentLevel || 1}</p>
+                    <p className="text-[10px] uppercase text-muted-foreground font-bold">Nível</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-lg font-bold text-emerald-500">Ativo</p>
+                    <p className="text-[10px] uppercase text-muted-foreground font-bold">Status</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Card de Especializações */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                  <GraduationCap className="w-4 h-4" /> Especializações / Interesses
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {isEditing && (
+                  <div className="flex gap-2 mb-3">
+                    <Input 
+                      placeholder="Adicione (ex: UTI, Pediatria)" 
+                      value={newSpec} 
+                      onChange={(e) => setNewSpec(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addSpec())}
+                      className="h-8 text-sm"
+                    />
+                    <Button size="sm" variant="secondary" onClick={addSpec} type="button"><Plus className="w-4 h-4" /></Button>
+                  </div>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {specs.length > 0 ? specs.map((spec, i) => (
+                    <Badge key={i} variant="secondary" className="px-2 py-1 flex items-center gap-1">
+                      {spec}
+                      {isEditing && (
+                        <X className="w-3 h-3 cursor-pointer hover:text-destructive" onClick={() => removeSpec(spec)} />
+                      )}
+                    </Badge>
+                  )) : (
+                    <p className="text-sm text-muted-foreground italic">Nenhuma especialização adicionada.</p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </form>
-      </Form>
+
+          {/* Coluna Direita: Conteúdo Principal */}
+          <div className="flex-1 space-y-6">
+            
+            {/* Bio Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Sobre Mim</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {isEditing ? (
+                  <Textarea 
+                    {...form.register("bio")} 
+                    placeholder="Escreva um pouco sobre sua trajetória profissional, objetivos e paixões na enfermagem..."
+                    className="min-h-[150px] resize-none"
+                  />
+                ) : (
+                  <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                    {profile?.bio || "Olá! Ainda não escrevi minha biografia."}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Abas de Informações */}
+            <Tabs defaultValue="stats" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="stats">Estatísticas</TabsTrigger>
+                <TabsTrigger value="account">Conta</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="stats" className="mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg flex items-center gap-2 text-green-700 dark:text-green-400">
+                        <Target className="w-5 h-5" /> Meta Semanal
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-3xl font-bold text-green-800 dark:text-green-300">
+                        {levelData?.weeklyProgress || 0}<span className="text-sm text-muted-foreground font-normal">/{levelData?.weeklyTarget || 30}</span>
+                      </div>
+                      <p className="text-xs text-green-600 dark:text-green-400 mt-1">Questões acertadas esta semana</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-amber-200 dark:border-amber-800">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                        <Medal className="w-5 h-5" /> Conquistas
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-3xl font-bold text-amber-800 dark:text-amber-300">
+                        {/* Placeholder count, you can fetch actual badge count later */}
+                        --
+                      </div>
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">Medalhas desbloqueadas</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="account" className="mt-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Detalhes da Conta</CardTitle>
+                    <CardDescription>Informações de acesso e plano.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex justify-between py-2 border-b">
+                      <span className="font-medium text-sm text-muted-foreground">Email</span>
+                      <span className="text-sm font-semibold">{profile?.email || "Não disponível"}</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b">
+                      <span className="font-medium text-sm text-muted-foreground">Plano Atual</span>
+                      <Badge variant="outline" className="capitalize">{profile?.plan || "Free"}</Badge>
+                    </div>
+                    <div className="flex justify-between py-2 border-b">
+                      <span className="font-medium text-sm text-muted-foreground">Função</span>
+                      <span className="text-sm font-semibold capitalize">{profile?.role === 'admin' ? 'Administrador' : 'Usuário'}</span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-sm text-muted-foreground">ID de Usuário</span>
+                      <span className="text-xs font-mono bg-muted p-1 rounded text-muted-foreground">{profile?.id}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
