@@ -14,7 +14,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import libraryData from "@/data/libraryData.json";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -116,18 +115,6 @@ const DeepStudy = () => {
     },
     onError: (error) => {
       console.error("Erro ao salvar grifo:", error);
-    }
-  });
-
-  // Mutation to delete highlight
-  const deleteHighlightMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('user_highlights').delete().eq('id', id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['highlights'] });
-      toast.success("Grifo removido.");
     }
   });
 
@@ -280,51 +267,6 @@ const DeepStudy = () => {
                   <PenTool className="h-4 w-4" />
                   <span className="hidden sm:inline">{isHighlighterMode ? "Grifador Ativo" : "Usar Grifador"}</span>
                 </Button>
-
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="relative" title="Meus Grifos">
-                      <Highlighter className="h-4 w-4" />
-                      {highlights.length > 0 && (
-                        <span className="absolute top-1 right-1 bg-primary text-primary-foreground text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
-                          {highlights.length}
-                        </span>
-                      )}
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent>
-                    <SheetHeader>
-                      <SheetTitle>Meus Grifos</SheetTitle>
-                    </SheetHeader>
-                    <ScrollArea className="h-[calc(100vh-100px)] mt-4 pr-4">
-                      {highlights.length === 0 ? (
-                        <div className="text-center py-10 text-muted-foreground">
-                          <Highlighter className="h-10 w-10 mx-auto mb-2 opacity-20" />
-                          <p>Nenhum texto grifado ainda.</p>
-                          <p className="text-xs">Ative o grifador ou selecione um texto.</p>
-                        </div>
-                      ) : (
-                        <div className="space-y-4">
-                          {highlights.map((h) => (
-                            <Card key={h.id} className="relative group hover:border-yellow-400 transition-colors">
-                              <CardContent className="p-3 text-sm">
-                                <p className="line-clamp-4 italic bg-yellow-50 dark:bg-yellow-900/10 p-1 rounded">"{h.selected_text}"</p>
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon" 
-                                  className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10"
-                                  onClick={() => deleteHighlightMutation.mutate(h.id)}
-                                >
-                                  <Trash2 className="h-3 w-3" />
-                                </Button>
-                              </CardContent>
-                            </Card>
-                          ))}
-                        </div>
-                      )}
-                    </ScrollArea>
-                  </SheetContent>
-                </Sheet>
               </>
             )}
 
