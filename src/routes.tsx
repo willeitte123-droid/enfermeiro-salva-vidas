@@ -5,7 +5,7 @@ import { AuthContextType } from './context/AuthContext';
 // Layout
 import MainLayout from './components/MainLayout';
 
-// Importações diretas para pré-carregamento
+// Importações diretas
 import Dashboard from './pages/Dashboard';
 import Calculator from './pages/Calculator';
 import Emergency from './pages/Emergency';
@@ -72,22 +72,24 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
     );
   }
 
+  // Se NÃO estiver logado
   if (!session) {
     return (
       <Routes>
+        {/* A Raiz (/) agora é EXPLICITAMENTE o Login */}
+        <Route path="/" element={<Login />} />
+        
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/update-password" element={<UpdatePassword />} />
         
-        {/* CORREÇÃO AQUI: Redirecionamento explícito da Raiz para o Login */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        
-        {/* Captura qualquer outra rota desconhecida e joga para o login */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* Qualquer outra rota desconhecida joga para a raiz (Login) */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     );
   }
 
+  // Se ESTIVER logado
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
@@ -137,7 +139,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="update-password" element={<UpdatePassword />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      {/* Fallback extra de segurança */}
+      {/* Fallback extra de segurança para rotas de auth quando logado */}
       <Route path="/login" element={<Navigate to="/" replace />} />
       <Route path="/register" element={<Navigate to="/" replace />} />
     </Routes>
