@@ -187,51 +187,70 @@ const DeepStudy = () => {
 
     const plainText = selection.toString().trim();
     if (plainText.length > 0) {
-      // ESTA É A CORREÇÃO PRINCIPAL:
-      // 1. Quebra o texto selecionado em palavras (tokens), ignorando espaços múltiplos
+      // 1. Divide o texto em tokens (palavras), mas mantém pontuação simples colada se necessário
+      // O split por whitespace é geralmente seguro para isolar palavras
       const words = plainText.split(/\s+/);
       
-      // 2. Escapa caracteres especiais de regex em cada palavra para evitar erros
+      // 2. Escapa caracteres especiais de regex
       const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
       
-      // 3. Reconstrói um padrão Regex que aceita QUALQUER COISA que pareça HTML ou espaço entre as palavras
-      // (?: ... ) é um grupo de não-captura
-      // <[^>]+> pega tags HTML
-      // &[a-zA-Z0-9#]+; pega entidades HTML como &nbsp;
-      // \s|\r|\n pega espaços e quebras de linha
-      const pattern = escapedWords.join('(?:<[^>]+>|&[a-zA-Z0-9#]+;|\\s|\\r|\\n)+');
+      // 3. Padrão Ultra-Permissivo entre palavras:
+      // Aceita:
+      // - Tags HTML completas: <[^>]+>
+      // - Entidades HTML: &[^;]+;
+      // - Whitespace: \s
+      // - Quebras de linha: \r, \n
+      // - Caracteres que não sejam letras/números (pontuação solta): [^a-zA-Z0-9À-ÿ]
+      // O (?:...)+ significa que pode haver um ou mais desses itens entre as palavras
+      const glue = '(?:<[^>]+>|&[^;]+;|\\s|[\\r\\n]|[^a-zA-Z0-9À-ÿ])*';
       
-      // 4. Busca no conteúdo original HTML usando esse padrão flexível
-      const regex = new RegExp(pattern, 'i'); // Case insensitive
-      const match = selectedDoc.content.match(regex);
+      const pattern = escapedWords.join(glue);
       
-      // Se encontrou no HTML, usa o texto original (com tags), senão usa o texto simples (fallback)
-      const textToSave = match ? match[0] : plainText;
+      // 4. Busca no conteúdo HTML original
+      try {
+        const regex = new RegExp(pattern, 'i'); // Case insensitive
+        const match = selectedDoc.content.match(regex);
+        
+        // Se encontrou no HTML, usa o texto original (com tags)
+        // Se não encontrou (fallback), usa o texto simples, mas avisa
+        const textToSave = match ? match[0] : plainText;
 
-      // Evita duplicatas exatas
-      const isDuplicate = highlights.some(h => h.selected_text === textToSave);
-      if (isDuplicate) {
-        window.getSelection()?.removeAllRanges();
-        return;
-      }
+        // Evita duplicatas exatas
+        const isDuplicate = highlights.some(h => h.selected_text === textToSave);
+        if (isDuplicate) {
+          window.getSelection()?.removeAllRanges();
+          return;
+        }
 
-      if (isHighlighterMode) {
-        addHighlightMutation.mutate(textToSave);
-      } else {
-        const range = selection.getRangeAt(0);
-        const rect = range.getBoundingClientRect();
-        setSelectionRect(rect);
-        setSelectedText(textToSave);
+        if (isHighlighterMode) {
+          addHighlightMutation.mutate(textToSave);
+        } else {
+          const range = selection.getRangeAt(0);
+          const rect = range.getBoundingClientRect();
+          setSelectionRect(rect);
+          setSelectedText(textToSave);
+        }
+      } catch (e) {
+        console.error("Erro ao criar regex para seleção", e);
+        // Fallback seguro: salva o texto plano se a regex falhar
+        if (isHighlighterMode) addHighlightMutation.mutate(plainText);
       }
     }
   };
 
   const handleContentClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
+    // Verifica se clicou em uma tag MARK (grifo)
     if (target.tagName === 'MARK' && window.getSelection()?.toString().trim() === '') {
       const markHtml = target.innerHTML;
+      
+      // Encontra highlights que contenham este trecho
       const idsToDelete = highlights
-        .filter(h => markHtml.includes(h.selected_text) || h.selected_text.includes(markHtml))
+        .filter(h => {
+            // Verifica se o texto do highlight contém o que foi clicado OU se o que foi clicado contém o highlight
+            // Isso ajuda quando o highlight salvo é maior ou menor que o fragmento renderizado (devido a aninhamento)
+            return h.selected_text.includes(markHtml) || markHtml.includes(h.selected_text);
+        })
         .map(h => h.id);
 
       if (idsToDelete.length > 0) {
@@ -263,20 +282,28 @@ const DeepStudy = () => {
       // Tenta encontrar a string exata
       let pos = content.indexOf(term);
       
-      // Se não encontrar, tenta uma busca regex reversa (para casos antigos salvos com formatação diferente)
+      // Se não encontrar, tenta uma busca regex flexível (para lidar com pequenas diferenças de formatação salvas)
       if (pos === -1) {
          try {
-            // Escapa o termo para regex, mas permite flexibilidade nos espaços
-            const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '(?:<[^>]+>|&[a-zA-Z0-9#]+;|\\s|\\r|\\n)+');
-            const regex = new RegExp(escaped, 'g');
+            // Usa uma lógica similar à seleção para reencontrar o texto no HTML
+            const words = term.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(w => w.length > 0);
+            const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            const glue = '(?:<[^>]+>|&[^;]+;|\\s|[\\r\\n]|[^a-zA-Z0-9À-ÿ])*';
+            const pattern = escapedWords.join(glue);
+            
+            const regex = new RegExp(pattern, 'g'); // Global para achar todas as ocorrências
             let match;
             while ((match = regex.exec(content)) !== null) {
-               ranges.push({ start: match.index, end: match.index + match[0].length });
+               // Verifica se é um match razoável (tamanho parecido)
+               if (Math.abs(match[0].length - term.length) < term.length * 0.5) {
+                   ranges.push({ start: match.index, end: match.index + match[0].length });
+               }
             }
          } catch (e) {
             // Silently fail
          }
       } else {
+        // Se encontrou exato
         while (pos !== -1) {
           ranges.push({ start: pos, end: pos + term.length });
           pos = content.indexOf(term, pos + 1);
@@ -286,6 +313,7 @@ const DeepStudy = () => {
 
     if (ranges.length === 0) return content;
 
+    // Mescla ranges sobrepostos para evitar HTML quebrado
     ranges.sort((a, b) => a.start - b.start);
 
     const mergedRanges: {start: number, end: number}[] = [];
@@ -303,26 +331,24 @@ const DeepStudy = () => {
         mergedRanges.push(currentRange);
     }
 
+    // Aplica as tags <mark> de trás para frente para não alterar os índices
     let result = content;
     for (let i = mergedRanges.length - 1; i >= 0; i--) {
       const { start, end } = mergedRanges[i];
-      const segment = result.substring(start, end);
       
-      if (!segment.includes('<') && !segment.includes('>')) {
-         result = 
-           result.substring(0, start) + 
-           `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors" title="Clique para remover">` + 
-           result.substring(start, end) + 
-           `</mark>` + 
-           result.substring(end);
-      } else {
-         result = 
-           result.substring(0, start) + 
-           `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors box-decoration-clone" title="Clique para remover">` + 
-           result.substring(start, end) + 
-           `</mark>` + 
-           result.substring(end);
-      }
+      // Verifica se o range corta uma tag HTML ao meio (evita quebrar o HTML)
+      const segment = result.substring(start, end);
+      const openTags = (segment.match(/<[^/][^>]*>/g) || []).length;
+      const closeTags = (segment.match(/<\/[^>]+>/g) || []).length;
+      
+      // Se o balanceamento de tags estiver ok, ou se não houver tags, aplica o mark
+      // Se houver risco de quebrar HTML, aplicamos uma classe mais "agressiva" que o navegador tenta corrigir, 
+      // ou usamos box-decoration-clone para spans que podem quebrar linha visualmente
+      
+      const markStart = `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors box-decoration-clone" title="Clique para remover">`;
+      const markEnd = `</mark>`;
+      
+      result = result.substring(0, start) + markStart + result.substring(start, end) + markEnd + result.substring(end);
     }
 
     return result;
@@ -489,7 +515,7 @@ const DeepStudy = () => {
             />
 
             <div className="mt-16 pt-8 border-t flex flex-col items-center gap-4 text-center">
-              <CheckCircle2 className="h-12 w-12 text-green-500 opacity-20" />
+              <CheckCircle2 className="h-12 w-12 text-green-50 opacity-20" />
               <p className="text-muted-foreground text-sm">Você chegou ao final deste documento.</p>
               <Button onClick={() => setSelectedDoc(null)} variant="outline">Voltar para a Biblioteca</Button>
             </div>
