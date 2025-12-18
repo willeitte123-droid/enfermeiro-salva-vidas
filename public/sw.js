@@ -1,4 +1,4 @@
-const CACHE_NAME = 'enfermagem-pro-cache-v10';
+const CACHE_NAME = 'enfermagem-pro-cache-v12'; // Versão incrementada para forçar atualização
 const urlsToCache = [
   '/',
   '/index.html',
@@ -8,6 +8,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', (event) => {
+  // Força o SW a ativar imediatamente, ignorando a espera
   self.skipWaiting();
   
   event.waitUntil(
@@ -22,13 +23,16 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
+  // Assume o controle de todas as abas abertas imediatamente
   event.waitUntil(clients.claim());
 
+  // Limpa caches antigos (como a versão que mostra a tela Blick)
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
+            console.log('Deletando cache antigo:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -38,12 +42,34 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Ignora requisições que não sejam do mesmo domínio ou métodos diferentes de GET
   if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
     return;
   }
 
-  // Verifica extensões de arquivo estático
-  const isStatic = event.request.url.match(/\.(png|jpg|jpeg|svg|css|js|json|ico)$/);
+  const requestUrl = new URL(event.request.url);
+
+  // ESTRATÉGIA PARA NAVEGAÇÃO (HTML): Network First, then Cache (App Shell)
+  // Isso resolve o problema de links do Google ou rotas diretas
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          return networkResponse;
+        })
+        .catch(() => {
+          // Se estiver offline ou rede falhar, retorna o index.html (SPA)
+          return caches.match('/index.html')
+            .then((cachedResponse) => {
+              return cachedResponse || caches.match('/offline.html');
+            });
+        })
+    );
+    return;
+  }
+
+  // ESTRATÉGIA PARA ARQUIVOS ESTÁTICOS: Cache First, then Network
+  const isStatic = requestUrl.pathname.match(/\.(png|jpg|jpeg|svg|css|js|json|ico|woff2)$/);
 
   if (isStatic) {
     event.respondWith(
@@ -52,25 +78,9 @@ self.addEventListener('fetch', (event) => {
       })
     );
   } else {
-    // Estratégia Network First para navegação e API
+    // Padrão: Network First
     event.respondWith(
-      fetch(event.request)
-        .catch(() => {
-          return caches.match(event.request)
-            .then((response) => {
-              if (response) return response;
-              
-              // CRITICAL FIX FOR SPA: 
-              // Se for uma navegação (HTML), retorna o index.html do cache (App Shell)
-              // Isso permite que o React Router assuma o controle mesmo offline ou em rotas profundas
-              if (event.request.mode === 'navigate') {
-                return caches.match('/index.html')
-                  .then((indexResponse) => {
-                    return indexResponse || caches.match('/offline.html');
-                  });
-              }
-            });
-        })
+      fetch(event.request).catch(() => caches.match(event.request))
     );
   }
 });

@@ -187,32 +187,30 @@ const DeepStudy = () => {
 
     const plainText = selection.toString().trim();
     if (plainText.length > 0) {
-      // 1. Divide o texto em tokens (palavras), mas mantém pontuação simples colada se necessário
-      // O split por whitespace é geralmente seguro para isolar palavras
-      const words = plainText.split(/\s+/);
+      // 1. Divide o texto em tokens (palavras)
+      // O split por whitespace é mais seguro para pegar palavras isoladas
+      const words = plainText.split(/\s+/).filter(w => w.trim().length > 0);
       
-      // 2. Escapa caracteres especiais de regex
+      if (words.length === 0) return;
+
+      // 2. Escapa caracteres especiais de regex para cada palavra
       const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
       
-      // 3. Padrão Ultra-Permissivo entre palavras:
-      // Aceita:
-      // - Tags HTML completas: <[^>]+>
-      // - Entidades HTML: &[^;]+;
-      // - Whitespace: \s
-      // - Quebras de linha: \r, \n
-      // - Caracteres que não sejam letras/números (pontuação solta): [^a-zA-Z0-9À-ÿ]
-      // O (?:...)+ significa que pode haver um ou mais desses itens entre as palavras
-      const glue = '(?:<[^>]+>|&[^;]+;|\\s|[\\r\\n]|[^a-zA-Z0-9À-ÿ])*';
+      // 3. Padrão Ultra-Permissivo ("Cola") entre palavras:
+      // Permite: Tags HTML (<...>), Espaços (\s), Quebras de linha, Especiais HTML (&...;)
+      // O [\s\S]*? permite qualquer coisa (incluindo quebra de linha) de forma não gulosa
+      const glue = '(?:<[^>]+>|&[^;]+;|\\s|[\\r\\n]|[^a-zA-Z0-9À-ÿ])*?';
       
       const pattern = escapedWords.join(glue);
       
       // 4. Busca no conteúdo HTML original
       try {
-        const regex = new RegExp(pattern, 'i'); // Case insensitive
+        // 's' flag (dotAll) permite que . match newlines, mas aqui usamos [\s\S] manualmente
+        const regex = new RegExp(pattern, 'gi'); // Global + Case Insensitive
         const match = selectedDoc.content.match(regex);
         
         // Se encontrou no HTML, usa o texto original (com tags)
-        // Se não encontrou (fallback), usa o texto simples, mas avisa
+        // Se não encontrou, tenta fallback para o texto simples (menos preciso para renderizar depois)
         const textToSave = match ? match[0] : plainText;
 
         // Evita duplicatas exatas
@@ -232,7 +230,6 @@ const DeepStudy = () => {
         }
       } catch (e) {
         console.error("Erro ao criar regex para seleção", e);
-        // Fallback seguro: salva o texto plano se a regex falhar
         if (isHighlighterMode) addHighlightMutation.mutate(plainText);
       }
     }
@@ -248,7 +245,6 @@ const DeepStudy = () => {
       const idsToDelete = highlights
         .filter(h => {
             // Verifica se o texto do highlight contém o que foi clicado OU se o que foi clicado contém o highlight
-            // Isso ajuda quando o highlight salvo é maior ou menor que o fragmento renderizado (devido a aninhamento)
             return h.selected_text.includes(markHtml) || markHtml.includes(h.selected_text);
         })
         .map(h => h.id);
@@ -279,28 +275,26 @@ const DeepStudy = () => {
       if (!h.selected_text) return;
       const term = h.selected_text;
       
-      // Tenta encontrar a string exata
+      // Tenta encontrar a string exata primeiro
       let pos = content.indexOf(term);
       
-      // Se não encontrar, tenta uma busca regex flexível (para lidar com pequenas diferenças de formatação salvas)
       if (pos === -1) {
+         // Se não encontrou exato (provavelmente tem tags HTML ou formatação diferente),
+         // usa a mesma lógica de Regex da seleção para reencontrar
          try {
-            // Usa uma lógica similar à seleção para reencontrar o texto no HTML
-            const words = term.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(w => w.length > 0);
+            const words = term.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(w => w.trim().length > 0);
             const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-            const glue = '(?:<[^>]+>|&[^;]+;|\\s|[\\r\\n]|[^a-zA-Z0-9À-ÿ])*';
+            const glue = '(?:<[^>]+>|&[^;]+;|\\s|[\\r\\n]|[^a-zA-Z0-9À-ÿ])*?';
             const pattern = escapedWords.join(glue);
             
-            const regex = new RegExp(pattern, 'g'); // Global para achar todas as ocorrências
+            const regex = new RegExp(pattern, 'gi'); 
             let match;
             while ((match = regex.exec(content)) !== null) {
-               // Verifica se é um match razoável (tamanho parecido)
-               if (Math.abs(match[0].length - term.length) < term.length * 0.5) {
-                   ranges.push({ start: match.index, end: match.index + match[0].length });
-               }
+               // Validação de sanidade: o match deve ter tamanho similar
+               ranges.push({ start: match.index, end: match.index + match[0].length });
             }
          } catch (e) {
-            // Silently fail
+            // Falha silenciosa
          }
       } else {
         // Se encontrou exato
@@ -335,15 +329,6 @@ const DeepStudy = () => {
     let result = content;
     for (let i = mergedRanges.length - 1; i >= 0; i--) {
       const { start, end } = mergedRanges[i];
-      
-      // Verifica se o range corta uma tag HTML ao meio (evita quebrar o HTML)
-      const segment = result.substring(start, end);
-      const openTags = (segment.match(/<[^/][^>]*>/g) || []).length;
-      const closeTags = (segment.match(/<\/[^>]+>/g) || []).length;
-      
-      // Se o balanceamento de tags estiver ok, ou se não houver tags, aplica o mark
-      // Se houver risco de quebrar HTML, aplicamos uma classe mais "agressiva" que o navegador tenta corrigir, 
-      // ou usamos box-decoration-clone para spans que podem quebrar linha visualmente
       
       const markStart = `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors box-decoration-clone" title="Clique para remover">`;
       const markEnd = `</mark>`;
