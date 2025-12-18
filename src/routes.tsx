@@ -78,6 +78,11 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/update-password" element={<UpdatePassword />} />
+        
+        {/* CORREÇÃO AQUI: Redirecionamento explícito da Raiz para o Login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        
+        {/* Captura qualquer outra rota desconhecida e joga para o login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     );
@@ -132,6 +137,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="update-password" element={<UpdatePassword />} />
         <Route path="*" element={<NotFound />} />
       </Route>
+      {/* Fallback extra de segurança */}
       <Route path="/login" element={<Navigate to="/" replace />} />
       <Route path="/register" element={<Navigate to="/" replace />} />
     </Routes>
