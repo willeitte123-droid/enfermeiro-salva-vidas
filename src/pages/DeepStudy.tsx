@@ -64,7 +64,7 @@ const DeepStudy = () => {
   const [activeCategory, setActiveCategory] = useState("Todas");
   
   // State para o leitor
-  const [fontSize, setFontSize] = useState(18); // Aumentei o default para melhor leitura
+  const [fontSize, setFontSize] = useState(18);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isHighlighterMode, setIsHighlighterMode] = useState(false);
   
@@ -96,7 +96,7 @@ const DeepStudy = () => {
     enabled: !!selectedDoc && !!profile
   });
 
-  // Mutation to save highlight with OPTIMISTIC UPDATES
+  // Mutation to save highlight
   const addHighlightMutation = useMutation({
     mutationFn: async (text: string) => {
       if (!profile || !selectedDoc) throw new Error("Usuário ou documento não identificado");
@@ -176,7 +176,7 @@ const DeepStudy = () => {
     }
   };
 
-  // Handler de Seleção de Texto Otimizado
+  // Handler de Seleção de Texto
   const handleMouseUp = () => {
     const selection = window.getSelection();
     if (!selection || selection.isCollapsed || !selectedDoc) {
@@ -529,9 +529,9 @@ const DeepStudy = () => {
           {/* Abas com Scroll Horizontal - Usando ScrollArea para experiência mobile premium */}
           <div className="w-full md:w-auto order-2 md:order-1 -mx-4 md:mx-0">
             <Tabs defaultValue="Todas" value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-              <ScrollArea className="w-full whitespace-nowrap rounded-none sm:rounded-full bg-transparent">
-                <div className="px-4 md:px-0">
-                  <TabsList className="flex w-max space-x-2 bg-transparent p-0 h-auto items-center">
+              <div className="w-full max-w-[calc(100vw-2rem)] mx-auto px-4 md:px-0">
+                <ScrollArea className="w-full whitespace-nowrap rounded-xl bg-transparent">
+                  <div className="flex w-max space-x-2 bg-transparent p-1">
                     {categories.map(cat => (
                       <TabsTrigger 
                         key={cat} 
@@ -541,10 +541,10 @@ const DeepStudy = () => {
                         {cat}
                       </TabsTrigger>
                     ))}
-                  </TabsList>
-                </div>
-                <ScrollBar orientation="horizontal" className="invisible" />
-              </ScrollArea>
+                  </div>
+                  <ScrollBar orientation="horizontal" className="hidden" />
+                </ScrollArea>
+              </div>
             </Tabs>
           </div>
         </div>
