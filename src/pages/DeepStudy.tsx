@@ -526,22 +526,25 @@ const DeepStudy = () => {
             />
           </div>
 
-          {/* Abas com Scroll Horizontal Otimizado */}
-          <div className="w-full md:w-auto order-2 md:order-1 -mx-4 md:mx-0 overflow-hidden">
+          {/* Abas com Scroll Horizontal - Usando ScrollArea para experiência mobile premium */}
+          <div className="w-full md:w-auto order-2 md:order-1 -mx-4 md:mx-0">
             <Tabs defaultValue="Todas" value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-              <div className="w-full overflow-x-auto pb-2 px-4 md:px-0 flex items-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                <TabsList className="flex w-max space-x-2 bg-transparent p-0 h-auto items-center">
-                  {categories.map(cat => (
-                    <TabsTrigger 
-                      key={cat} 
-                      value={cat} 
-                      className="rounded-full border border-border/50 bg-background/50 px-4 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all focus:outline-none focus:ring-0 active:scale-95 touch-manipulation"
-                    >
-                      {cat}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </div>
+              <ScrollArea className="w-full whitespace-nowrap rounded-none sm:rounded-full bg-transparent">
+                <div className="px-4 md:px-0">
+                  <TabsList className="flex w-max space-x-2 bg-transparent p-0 h-auto items-center">
+                    {categories.map(cat => (
+                      <TabsTrigger 
+                        key={cat} 
+                        value={cat} 
+                        className="rounded-full border border-border/50 bg-background/50 px-4 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all focus:outline-none focus:ring-0 active:scale-95 touch-manipulation"
+                      >
+                        {cat}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </div>
+                <ScrollBar orientation="horizontal" className="invisible" />
+              </ScrollArea>
             </Tabs>
           </div>
         </div>
