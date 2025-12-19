@@ -47,7 +47,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       { to: "/simulado", icon: Timer, label: "Área de Simulado" },
       { to: "/study-tracks", icon: Map, label: "Trilha de Estudos" },
       { to: "/concurseiro", icon: GraduationCap, label: "Área do Concurseiro" },
-      { to: "/library", icon: BookOpen, label: "Biblioteca (Na Íntegra)" },
+      { to: "/library", icon: BookOpen, label: "Biblioteca Digital" },
       { to: "/flashcards", icon: Brain, label: "Flashcards" },
       { to: "/review-area", icon: Library, label: "Área de Revisão" },
       { to: "/anatomy", icon: Activity, label: "Anatomia e Fisiologia" },
