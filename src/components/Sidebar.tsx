@@ -10,6 +10,7 @@ import { useTheme } from "./ThemeProvider";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import SidebarNav from "./SidebarNav";
 import { useThemeCustomization } from "@/context/ThemeCustomizationContext";
+import { SheetClose } from "@/components/ui/sheet";
 
 interface SidebarProps {
   isAdmin: boolean;
@@ -41,6 +42,20 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
     await supabase.auth.signOut();
     // A navegação automática ocorrerá via AuthContext quando o status mudar para deslogado
   };
+
+  const LogoutButton = (
+    <Button 
+      variant="ghost" 
+      onClick={handleLogout} 
+      className={cn("w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive transition-all", isCollapsed && "justify-center px-0")}
+      title="Sair"
+    >
+      <LogOut className="h-5 w-5 flex-shrink-0" />
+      <span className={cn("text-sm font-medium whitespace-nowrap overflow-hidden transition-all duration-300", isCollapsed ? "w-0 opacity-0 hidden" : "w-auto opacity-100")}>
+        Sair
+      </span>
+    </Button>
+  );
 
   return (
     <aside 
@@ -83,17 +98,13 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button 
-          variant="ghost" 
-          onClick={handleLogout} 
-          className={cn("w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive transition-all", isCollapsed && "justify-center px-0")}
-          title="Sair"
-        >
-          <LogOut className="h-5 w-5 flex-shrink-0" />
-          <span className={cn("text-sm font-medium whitespace-nowrap overflow-hidden transition-all duration-300", isCollapsed ? "w-0 opacity-0 hidden" : "w-auto opacity-100")}>
-            Sair
-          </span>
-        </Button>
+        {isMobile ? (
+          <SheetClose asChild>
+            {LogoutButton}
+          </SheetClose>
+        ) : (
+          LogoutButton
+        )}
       </div>
     </aside>
   );
