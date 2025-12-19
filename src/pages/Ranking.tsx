@@ -54,39 +54,39 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
   };
 
   const height = {
-    1: "h-40",
-    2: "h-32",
-    3: "h-28"
+    1: "h-32 sm:h-40",
+    2: "h-24 sm:h-32",
+    3: "h-20 sm:h-28"
   };
 
   return (
-    <div className="flex flex-col items-center justify-end group w-1/3 max-w-[140px] animate-in slide-in-from-bottom-4 duration-700 fade-in">
-      <Link to={`/user/${user.user_id}`} className="relative mb-3 cursor-pointer transition-transform hover:scale-105 active:scale-95">
-        {position === 1 && <Crown className="absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 text-yellow-400 fill-yellow-400 animate-bounce" />}
-        <Avatar className={cn("w-14 h-14 sm:w-20 sm:h-20 border-4 transition-all", colors[position].split(' ')[2])}>
+    <div className="flex flex-col items-center justify-end group w-1/3 max-w-[140px] animate-in slide-in-from-bottom-4 duration-700 fade-in relative z-10">
+      <Link to={`/user/${user.user_id}`} className="relative mb-2 sm:mb-3 cursor-pointer transition-transform hover:scale-105 active:scale-95">
+        {position === 1 && <Crown className="absolute -top-6 sm:-top-8 left-1/2 -translate-x-1/2 w-6 h-6 sm:w-8 sm:h-8 text-yellow-400 fill-yellow-400 animate-bounce" />}
+        <Avatar className={cn("w-12 h-12 sm:w-20 sm:h-20 border-2 sm:border-4 transition-all", colors[position].split(' ')[2])}>
           <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
-          <AvatarFallback className="font-bold text-lg bg-card">{user.first_name?.[0]}</AvatarFallback>
+          <AvatarFallback className="font-bold text-sm sm:text-lg bg-card">{user.first_name?.[0]}</AvatarFallback>
         </Avatar>
-        <div className={cn("absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg bg-gradient-to-br", colors[position])}>
+        <div className={cn("absolute -bottom-2 sm:-bottom-3 left-1/2 -translate-x-1/2 w-5 h-5 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white font-bold text-[10px] sm:text-sm shadow-lg bg-gradient-to-br", colors[position])}>
           {position}
         </div>
       </Link>
       
-      <div className="text-center mb-2 w-full">
-        <Link to={`/user/${user.user_id}`} className="font-bold text-foreground truncate text-sm sm:text-base hover:text-primary hover:underline transition-colors block">
+      <div className="text-center mb-1 sm:mb-2 w-full px-1">
+        <Link to={`/user/${user.user_id}`} className="font-bold text-foreground truncate text-xs sm:text-base hover:text-primary hover:underline transition-colors block">
           {user.first_name}
         </Link>
         
         {/* Stats Container */}
-        <div className="flex flex-col items-center mt-1 space-y-1">
+        <div className="flex flex-col items-center mt-0.5 sm:mt-1 space-y-0.5 sm:space-y-1">
           <div className="flex flex-col items-center leading-none">
-            <span className="font-black text-lg sm:text-xl text-primary">{user.score}</span>
-            <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-wide">Pontos</span>
+            <span className="font-black text-sm sm:text-xl text-primary">{user.score}</span>
+            <span className="text-[8px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-wide">pts</span>
           </div>
           
-          <div className="flex items-center gap-1 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
-            <Target className="w-3 h-3 text-green-600 dark:text-green-400" />
-            <span className="text-[10px] font-bold text-green-700 dark:text-green-300">{user.accuracy}%</span>
+          <div className="flex items-center gap-1 bg-green-100 dark:bg-green-900/30 px-1.5 py-0.5 rounded-full">
+            <Target className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-green-600 dark:text-green-400" />
+            <span className="text-[9px] sm:text-[10px] font-bold text-green-700 dark:text-green-300">{user.accuracy}%</span>
           </div>
         </div>
       </div>
@@ -98,34 +98,37 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
 
 const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; position: number; isCurrentUser: boolean }) => (
   <div className={cn(
-    "flex items-center gap-4 p-3 sm:p-4 rounded-xl border transition-all hover:scale-[1.01] group",
+    "flex items-center gap-3 sm:gap-4 p-2.5 sm:p-4 rounded-xl border transition-all hover:scale-[1.01] group",
     isCurrentUser 
       ? "bg-primary/10 border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.2)]" 
       : "bg-card border-border hover:border-primary/30"
   )}>
-    <div className="font-bold text-muted-foreground w-6 text-center">{position}</div>
+    <div className="font-bold text-muted-foreground w-5 sm:w-6 text-center text-sm sm:text-base">{position}</div>
     
-    <Link to={`/user/${user.user_id}`} className="flex flex-1 items-center gap-4 min-w-0 cursor-pointer">
-      <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm group-hover:border-primary transition-colors">
+    <Link to={`/user/${user.user_id}`} className="flex flex-1 items-center gap-3 sm:gap-4 min-w-0 cursor-pointer">
+      <Avatar className="h-9 w-9 sm:h-12 sm:w-12 border-2 border-background shadow-sm group-hover:border-primary transition-colors shrink-0">
         <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
         <AvatarFallback>{user.first_name?.[0]}</AvatarFallback>
       </Avatar>
       <div className="flex-1 min-w-0">
-        <p className={cn("font-semibold truncate group-hover:text-primary group-hover:underline transition-colors", isCurrentUser && "text-primary")}>
-          {user.first_name} {user.last_name}
-          {isCurrentUser && <span className="ml-2 text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full no-underline">Você</span>}
-        </p>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Badge variant="secondary" className="h-5 px-1.5 text-[10px] font-normal flex gap-1 items-center">
-              <Target className="w-3 h-3" /> {user.accuracy}% precisão
+        <div className="flex items-center gap-2">
+          <p className={cn("font-semibold text-sm sm:text-base truncate group-hover:text-primary group-hover:underline transition-colors", isCurrentUser && "text-primary")}>
+            {user.first_name} {user.last_name}
+          </p>
+          {isCurrentUser && <span className="hidden sm:inline-block text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full no-underline">Você</span>}
+        </div>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+          <Badge variant="secondary" className="h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] font-normal flex gap-1 items-center bg-muted">
+              <Target className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> {user.accuracy}%
           </Badge>
         </div>
       </div>
     </Link>
 
     <div className="text-right">
-      <p className="font-bold text-lg sm:text-xl text-primary leading-none">{user.score}</p>
-      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Pontos Totais</p>
+      <p className="font-bold text-base sm:text-xl text-primary leading-none">{user.score}</p>
+      <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase font-bold tracking-wider hidden sm:block">Pontos Totais</p>
+      <p className="text-[9px] text-muted-foreground sm:hidden">pts</p>
     </div>
   </div>
 );
@@ -142,35 +145,35 @@ const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnloc
 
   return (
     <div className={cn(
-      "relative p-4 rounded-xl border transition-all duration-300 overflow-hidden group flex flex-col justify-between h-full",
+      "relative p-3 sm:p-4 rounded-xl border transition-all duration-300 overflow-hidden group flex flex-col justify-between h-full",
       isUnlocked 
         ? `bg-gradient-to-br ${badge.bgGradient} border-primary/20 hover:shadow-lg hover:border-primary/40` 
         : "bg-muted/30 border-dashed border-border opacity-80 hover:opacity-100"
     )}>
       {isUnlocked && (
         <div className="absolute top-0 right-0 p-2">
-          <Star className="w-4 h-4 text-yellow-400 fill-yellow-400 animate-pulse-subtle" />
+          <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400 animate-pulse-subtle" />
         </div>
       )}
       
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 text-center sm:text-left">
         <div className={cn(
-          "p-3 rounded-full shrink-0 transition-transform group-hover:scale-110 relative",
+          "p-2 sm:p-3 rounded-full shrink-0 transition-transform group-hover:scale-110 relative",
           isUnlocked ? "bg-background shadow-sm" : "bg-muted grayscale"
         )}>
-          <Icon className={cn("w-6 h-6", isUnlocked ? badge.color : "text-muted-foreground")} />
-          {!isUnlocked && <Lock className="absolute -bottom-1 -right-1 w-4 h-4 text-muted-foreground bg-background rounded-full p-0.5" />}
+          <Icon className={cn("w-5 h-5 sm:w-6 sm:h-6", isUnlocked ? badge.color : "text-muted-foreground")} />
+          {!isUnlocked && <Lock className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground bg-background rounded-full p-0.5" />}
         </div>
-        <div className="flex-1">
-          <div className="flex justify-between items-start">
-            <h3 className={cn("font-bold text-sm", isUnlocked ? "text-foreground" : "text-muted-foreground")}>{badge.name}</h3>
+        <div className="flex-1 min-w-0">
+          <div className="flex justify-center sm:justify-between items-start">
+            <h3 className={cn("font-bold text-sm leading-tight", isUnlocked ? "text-foreground" : "text-muted-foreground")}>{badge.name}</h3>
           </div>
-          <p className="text-xs text-muted-foreground mt-1 leading-snug">{badge.description}</p>
+          <p className="text-xs text-muted-foreground mt-1 leading-snug line-clamp-2">{badge.description}</p>
         </div>
       </div>
 
-      <div className="flex justify-between items-center mt-4 pt-3 border-t border-border/10">
-        <Badge variant="outline" className={cn("text-[9px] font-bold border-0 px-2 py-0.5", difficultyColor[badge.difficulty])}>
+      <div className="flex justify-between items-center mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-border/10 w-full">
+        <Badge variant="outline" className={cn("text-[8px] sm:text-[9px] font-bold border-0 px-1.5 py-0.5", difficultyColor[badge.difficulty])}>
           {badge.difficulty}
         </Badge>
         
@@ -269,29 +272,31 @@ const Ranking = () => {
   const myRank = myRankIndex !== -1 ? ranking[myRankIndex] : null;
 
   return (
-    <div className="space-y-8 pb-10 animate-in fade-in duration-500">
-      {/* Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 p-8 text-white shadow-xl">
-        <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-center md:text-left">
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2 flex items-center justify-center md:justify-start gap-3">
-              <Globe className="h-8 w-8 text-yellow-300" />
-              Ranking Geral
-            </h1>
-            <p className="text-purple-100 max-w-md text-sm sm:text-base">
-              Dispute com outros estudantes. Soma de pontos da Banca de Questões + Simulados em tempo real!
+    <div className="space-y-6 sm:space-y-8 pb-10 animate-in fade-in duration-500">
+      {/* Header Otimizado */}
+      <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 p-6 sm:p-8 text-white shadow-xl">
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
+          <div className="text-center md:text-left w-full">
+            <div className="flex items-center justify-center md:justify-start gap-2 sm:gap-3 mb-2">
+              <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
+                <Globe className="h-5 w-5 sm:h-7 sm:w-7 text-yellow-300" />
+              </div>
+              <h1 className="text-2xl sm:text-4xl font-black tracking-tight">Ranking Geral</h1>
+            </div>
+            <p className="text-purple-100 text-xs sm:text-base max-w-md mx-auto md:mx-0">
+              Dispute com outros estudantes. Pontos da Banca + Simulados em tempo real!
             </p>
           </div>
           
           {myRank && (
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 flex items-center gap-4 min-w-[200px]">
-              <div className="text-center border-r border-white/20 pr-4">
-                <p className="text-xs text-purple-200 font-bold uppercase">Sua Posição</p>
-                <p className="text-2xl font-black">#{myRankIndex + 1}</p>
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 sm:p-4 border border-white/20 flex items-center gap-3 sm:gap-4 w-full md:w-auto justify-center">
+              <div className="text-center border-r border-white/20 pr-3 sm:pr-4">
+                <p className="text-[10px] sm:text-xs text-purple-200 font-bold uppercase">Sua Posição</p>
+                <p className="text-xl sm:text-2xl font-black">#{myRankIndex + 1}</p>
               </div>
               <div className="text-center">
-                <p className="text-xs text-purple-200 font-bold uppercase">Seus Pontos</p>
-                <p className="text-2xl font-black text-yellow-300">{myRank.score}</p>
+                <p className="text-[10px] sm:text-xs text-purple-200 font-bold uppercase">Seus Pontos</p>
+                <p className="text-xl sm:text-2xl font-black text-yellow-300">{myRank.score}</p>
               </div>
             </div>
           )}
@@ -303,28 +308,30 @@ const Ranking = () => {
       </div>
 
       <Tabs defaultValue="ranking" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-8 bg-muted/50 p-1 rounded-full">
-          <TabsTrigger value="ranking" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-primary data-[state=active]:shadow-sm transition-all">Ranking Geral</TabsTrigger>
-          <TabsTrigger value="badges" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-primary data-[state=active]:shadow-sm transition-all">Minhas Conquistas</TabsTrigger>
-        </TabsList>
+        <div className="flex justify-center mb-6">
+          <TabsList className="grid w-full max-w-xs sm:max-w-md grid-cols-2 bg-muted/50 p-1 rounded-full h-10 sm:h-11">
+            <TabsTrigger value="ranking" className="rounded-full text-xs sm:text-sm font-semibold data-[state=active]:bg-white dark:data-[state=active]:bg-primary data-[state=active]:shadow-sm transition-all">Ranking Geral</TabsTrigger>
+            <TabsTrigger value="badges" className="rounded-full text-xs sm:text-sm font-semibold data-[state=active]:bg-white dark:data-[state=active]:bg-primary data-[state=active]:shadow-sm transition-all">Minhas Conquistas</TabsTrigger>
+          </TabsList>
+        </div>
 
-        <TabsContent value="ranking" className="space-y-8">
-          {/* Podium - Exibe dinamicamente conforme usuários disponíveis */}
+        <TabsContent value="ranking" className="space-y-6 sm:space-y-8">
+          {/* Podium Mobile Friendly */}
           {top3.length > 0 && (
-            <div className="flex justify-center items-end gap-2 sm:gap-4 pb-6 border-b border-dashed px-2">
-              {/* 2º Lugar (Esquerda) */}
+            <div className="flex justify-center items-end gap-1 sm:gap-4 pb-4 sm:pb-6 border-b border-dashed px-1">
+              {/* 2º Lugar */}
               {top3[1] && <PodiumItem user={top3[1]} position={2} />}
               
-              {/* 1º Lugar (Centro - Destaque) */}
+              {/* 1º Lugar */}
               {top3[0] && <PodiumItem user={top3[0]} position={1} />}
               
-              {/* 3º Lugar (Direita) */}
+              {/* 3º Lugar */}
               {top3[2] && <PodiumItem user={top3[2]} position={3} />}
             </div>
           )}
 
-          {/* List */}
-          <div className="max-w-3xl mx-auto space-y-3">
+          {/* Listagem */}
+          <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3">
             {restOfRanking.length > 0 ? (
               restOfRanking.map((user, index) => (
                 <RankingItem 
@@ -336,16 +343,16 @@ const Ranking = () => {
               ))
             ) : ranking.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground animate-in fade-in zoom-in duration-500">
-                <Trophy className="w-16 h-16 mx-auto mb-4 opacity-20 text-yellow-500" />
-                <h3 className="text-lg font-semibold text-foreground">O Ranking está vazio</h3>
-                <p className="text-sm">Seja o primeiro a pontuar!</p>
+                <Trophy className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-20 text-yellow-500" />
+                <h3 className="text-base sm:text-lg font-semibold text-foreground">O Ranking está vazio</h3>
+                <p className="text-xs sm:text-sm">Seja o primeiro a pontuar!</p>
               </div>
             ) : null}
           </div>
         </TabsContent>
 
         <TabsContent value="badges">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {BADGES.map((badge) => {
               const userBadge = myBadges.find(b => b.badge_code === badge.id);
               return (
