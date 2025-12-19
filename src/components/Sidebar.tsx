@@ -39,7 +39,7 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
     e.preventDefault();
     e.stopPropagation();
     await supabase.auth.signOut();
-    navigate('/login');
+    // A navegação automática ocorrerá via AuthContext quando o status mudar para deslogado
   };
 
   return (
