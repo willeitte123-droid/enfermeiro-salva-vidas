@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, Loader2, Mail, Lock, CheckCircle2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import {
@@ -128,21 +128,6 @@ const Login = () => {
           <p className="text-lg sm:text-xl font-medium text-blue-100 mb-6 leading-relaxed">
             Domine a arte e a ciência do cuidar.
           </p>
-          
-          <div className="hidden sm:flex flex-wrap justify-center gap-4 text-sm text-slate-400">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
-              <span>Cálculos</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
-              <span>Protocolos</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
-              <span>Concursos</span>
-            </div>
-          </div>
         </div>
       </div>
 
