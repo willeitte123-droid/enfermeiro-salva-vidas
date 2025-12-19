@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { 
   Bandage, Info, CheckCircle, Zap, XCircle, Search, 
   AlertTriangle, ShieldAlert, Scale, Clock, ArrowDown, ArrowUp, 
-  Heart, Activity, Footprints, Microscope, Droplet
+  Heart, Activity, Footprints, Microscope, Droplet, Scissors, Layers, 
+  AlertOctagon, ScanLine, Ruler
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -137,6 +138,58 @@ const diabeticFootData = {
   ]
 };
 
+// Novos Dados: Desbridamento e Biofilme
+const debridementTypes = [
+  { 
+    type: "Autolítico", 
+    icon: Droplet,
+    mechanism: "Utiliza enzimas e umidade do próprio organismo para liquefazer o tecido desvitalizado. Promovido por curativos oclusivos/semioclusivos.", 
+    indication: "Feridas com pouco esfacelo, pacientes sensíveis à dor, áreas de difícil acesso.",
+    products: "Hidrogel, Hidrocoloide, Filmes, AGE.",
+    pros: "Indolor, seletivo, fácil aplicação.",
+    cons: "Lento (dias/semanas), risco de maceração se mal gerenciado."
+  },
+  { 
+    type: "Enzimático (Químico)", 
+    icon: FlaskConical,
+    mechanism: "Aplicação tópica de enzimas exógenas que degradam o colágeno ou proteínas do tecido necrótico.", 
+    indication: "Necrose ou esfacelo aderido, quando o autolítico é muito lento.",
+    products: "Colagenase (Clostridiopeptidase A), Papaína (concentração varia com o tecido).",
+    pros: "Mais rápido que o autolítico, seletivo (especialmente colagenase).",
+    cons: "Custo, necessidade de troca diária (colagenase) ou frequente, potencial irritação (papaína)."
+  },
+  { 
+    type: "Instrumental (Sharp)", 
+    icon: Scissors,
+    mechanism: "Remoção conservadora de tecido morto usando bisturi, tesoura ou cureta à beira do leito.", 
+    indication: "Necrose espessa, esfacelo extenso, calosidades em pé diabético.",
+    products: "Material cirúrgico estéril.",
+    pros: "Rápido, converte ferida crônica em aguda.",
+    cons: "Dor, risco de sangramento, exige competência técnica (Enfermeiro habilitado/Médico)."
+  },
+  { 
+    type: "Mecânico", 
+    icon: Layers,
+    mechanism: "Uso de força física para remover tecido. Ex: Fricção, Irrigação de alta pressão, Wet-to-dry (úmido-seco).", 
+    indication: "Em desuso como primeira linha devido ao trauma e dor.",
+    products: "Gaze, soro fisiológico.",
+    pros: "Baixo custo.",
+    cons: "Não seletivo (remove tecido bom junto), doloroso, traumático."
+  }
+];
+
+// Novos Dados: LPP x IAD
+const differentialDiagnosis = [
+  { feature: "Causa Principal", lpp: "Pressão e cisalhamento (Isquemia).", iad: "Umidade e irritação química (Urina/Fezes)." },
+  { feature: "Localização Típica", lpp: "Sobre proeminências ósseas (sacro, calcâneo, trocânter).", iad: "Regiões de dobras, perianal, glúteos (onde a fralda toca)." },
+  { feature: "Apresentação", lpp: "Bordas definidas, pode ter necrose/esfacelo, profundidade variável.", iad: "Bordas difusas/irregulares, vermelhidão brilhante, erosão superficial ('assadura')." },
+  { feature: "Cor", lpp: "Vermelho/Púrpura (não branqueável) ou Preto/Amarelo.", iad: "Vermelho vivo/Rosado, pode ter áreas brancas (maceração)." },
+  { feature: "Sintomas", lpp: "Dor localizada, desconforto à pressão.", iad: "Dor em queimação, ardor, prurido." },
+  { feature: "Prevenção", lpp: "Mudança de decúbito, superfícies de suporte.", iad: "Higiene frequente, cremes de barreira, fraldas de alta absorção." }
+];
+
+import { FlaskConical } from "lucide-react";
+
 const WoundCare = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [selectedTissue, setSelectedTissue] = useState(tissueTypes[0]);
@@ -216,22 +269,29 @@ const WoundCare = () => {
               <TabsTrigger value="pressure-injury" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-red-100 data-[state=active]:text-red-700 data-[state=active]:border-red-200 dark:data-[state=active]:bg-red-900/40 dark:data-[state=active]:text-red-300 dark:data-[state=active]:border-red-700 hover:bg-accent">
                 <ShieldAlert className="mr-1.5 h-3.5 w-3.5" /> LPP
               </TabsTrigger>
+              <TabsTrigger value="diff-dx" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-orange-100 data-[state=active]:text-orange-700 data-[state=active]:border-orange-200 dark:data-[state=active]:bg-orange-900/40 dark:data-[state=active]:text-orange-300 dark:data-[state=active]:border-orange-700 hover:bg-accent">
+                <ScanLine className="mr-1.5 h-3.5 w-3.5" /> Diferencial (LPP x IAD)
+              </TabsTrigger>
+              <TabsTrigger value="debridement" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-purple-100 data-[state=active]:text-purple-700 data-[state=active]:border-purple-200 dark:data-[state=active]:bg-purple-900/40 dark:data-[state=active]:text-purple-300 dark:data-[state=active]:border-purple-700 hover:bg-accent">
+                <Scissors className="mr-1.5 h-3.5 w-3.5" /> Desbridamento
+              </TabsTrigger>
+              <TabsTrigger value="dressings" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-700 data-[state=active]:border-emerald-200 dark:data-[state=active]:bg-emerald-900/40 dark:data-[state=active]:text-emerald-300 dark:data-[state=active]:border-emerald-700 hover:bg-accent">
+                <Bandage className="mr-1.5 h-3.5 w-3.5" /> Coberturas
+              </TabsTrigger>
               <TabsTrigger value="diabetic-foot" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-amber-100 data-[state=active]:text-amber-700 data-[state=active]:border-amber-200 dark:data-[state=active]:bg-amber-900/40 dark:data-[state=active]:text-amber-300 dark:data-[state=active]:border-amber-700 hover:bg-accent">
                 <Footprints className="mr-1.5 h-3.5 w-3.5" /> Pé Diabético
               </TabsTrigger>
               <TabsTrigger value="vascular-ulcers" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-violet-100 data-[state=active]:text-violet-700 data-[state=active]:border-violet-200 dark:data-[state=active]:bg-violet-900/40 dark:data-[state=active]:text-violet-300 dark:data-[state=active]:border-violet-700 hover:bg-accent">
                 <Activity className="mr-1.5 h-3.5 w-3.5" /> Úlceras
               </TabsTrigger>
-              <TabsTrigger value="dressings" className="rounded-full border border-border/50 px-3 py-1.5 text-xs sm:text-sm font-medium transition-all data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-700 data-[state=active]:border-emerald-200 dark:data-[state=active]:bg-emerald-900/40 dark:data-[state=active]:text-emerald-300 dark:data-[state=active]:border-emerald-700 hover:bg-accent">
-                <Bandage className="mr-1.5 h-3.5 w-3.5" /> Coberturas
-              </TabsTrigger>
             </TabsList>
             <ScrollBar orientation="horizontal" className="hidden" />
           </ScrollArea>
         </div>
 
+        {/* TAB 1: AVALIAÇÃO DE TECIDOS */}
         <TabsContent value="tissues" className="mt-2 space-y-6">
-          {/* Modern TIME Principle Card - Responsive Grid */}
+          {/* Card Princípios TIME */}
           <Card className="overflow-hidden border-l-4 border-l-primary shadow-md">
             <div className="bg-primary/5 p-3 border-b border-primary/10">
               <h3 className="flex items-center gap-2 text-sm sm:text-lg font-bold text-primary">
@@ -258,8 +318,23 @@ const WoundCare = () => {
             </CardContent>
           </Card>
 
+          {/* Dica de Mensuração (Novo) */}
+          <Card className="bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-900">
+            <CardHeader className="py-3 px-4">
+              <CardTitle className="text-sm sm:text-base text-blue-700 dark:text-blue-300 flex items-center gap-2">
+                <Ruler className="h-4 w-4" /> Técnica de Mensuração: Método do Relógio
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="py-3 px-4 text-xs sm:text-sm text-muted-foreground">
+              <p>Para descrever túneis (sinus) e descolamentos (undermining), imagine a ferida como um relógio, onde a <strong>cabeça do paciente é às 12:00</strong> e os <strong>pés às 06:00</strong>.</p>
+              <div className="mt-2 p-2 bg-background/50 rounded border border-blue-100 dark:border-blue-800 text-xs font-mono">
+                Exemplo: "Túnel de 3cm às 09:00" (Lado direito do paciente, se vista frontal).
+              </div>
+            </CardContent>
+          </Card>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-            {/* Mobile: Horizontal scrollable selector or Compact Vertical list */}
+            {/* Seletor de Tecido */}
             <div className="lg:col-span-1 grid grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-3">
               {tissueTypes.map((tissue) => (
                 <button
@@ -286,7 +361,7 @@ const WoundCare = () => {
               ))}
             </div>
             
-            {/* Details Card */}
+            {/* Detalhes do Tecido */}
             <div className="lg:col-span-2">
               <Card className={cn("shadow-lg border-t-4 h-full", selectedTissue.borderColor)}>
                 <CardHeader className={cn("p-4 lg:pb-4", selectedTissue.lightBg)}>
@@ -316,6 +391,7 @@ const WoundCare = () => {
           </div>
         </TabsContent>
 
+        {/* TAB 2: LPP */}
         <TabsContent value="pressure-injury" className="mt-4 space-y-4">
           <Card className="border-destructive/20 bg-destructive/5 shadow-sm">
             <CardHeader className="p-4 pb-2">
@@ -375,6 +451,109 @@ const WoundCare = () => {
           </div>
         </TabsContent>
 
+        {/* TAB 3: DIAGNÓSTICO DIFERENCIAL (NOVA) */}
+        <TabsContent value="diff-dx" className="mt-4">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <AlertOctagon className="h-5 w-5 text-orange-500" />
+                LPP vs. IAD (Dermatite Associada à Incontinência)
+              </CardTitle>
+              <CardDescription>
+                Distinção crucial para a escolha do tratamento correto. IAD é frequentemente confundida com LPP Estágio 1 ou 2.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-lg border overflow-hidden">
+                <Table>
+                  <TableHeader className="bg-muted/50">
+                    <TableRow>
+                      <TableHead className="w-[100px]">Característica</TableHead>
+                      <TableHead className="text-red-600 font-bold">Lesão por Pressão (LPP)</TableHead>
+                      <TableHead className="text-orange-600 font-bold">Dermatite (IAD)</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {differentialDiagnosis.map((item, index) => (
+                      <TableRow key={index} className="text-xs sm:text-sm">
+                        <TableCell className="font-medium bg-muted/20">{item.feature}</TableCell>
+                        <TableCell>{item.lpp}</TableCell>
+                        <TableCell>{item.iad}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              <div className="mt-4 p-3 bg-orange-50 dark:bg-orange-950/20 rounded-lg border border-orange-200 dark:border-orange-900 text-xs sm:text-sm text-muted-foreground">
+                <strong>Dica de Ouro:</strong> Se a lesão estiver em uma dobra de pele ou onde a fralda toca, provavelmente é IAD. Se estiver exatamente sobre o osso (sacro), provavelmente é LPP. Ambas podem coexistir.
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* TAB 4: DESBRIDAMENTO (NOVA) */}
+        <TabsContent value="debridement" className="mt-4 space-y-6">
+          <Card className="border-l-4 border-l-purple-500 bg-gradient-to-r from-purple-50 to-transparent dark:from-purple-950/20">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-400">
+                <AlertOctagon className="h-5 w-5" /> O Inimigo Oculto: Biofilme
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+                Biofilme é uma comunidade de bactérias envolta por uma matriz protetora que adere ao leito da ferida. É a principal causa de feridas estagnadas (não cicatrizam).
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary" className="bg-background">Invisível a olho nu</Badge>
+                <Badge variant="secondary" className="bg-background">Resistente a antibióticos</Badge>
+                <Badge variant="secondary" className="bg-background">Requer desbridamento frequente</Badge>
+                <Badge variant="secondary" className="bg-background">Usar PHMB ou Prata</Badge>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {debridementTypes.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <Card key={index} className="hover:shadow-md transition-shadow">
+                  <CardHeader className="pb-2 flex flex-row items-center gap-3 space-y-0">
+                    <div className="p-2 bg-muted rounded-full">
+                      <Icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-base font-bold">{item.type}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-xs sm:text-sm space-y-3">
+                    <p className="text-muted-foreground">{item.mechanism}</p>
+                    
+                    <div className="grid grid-cols-[70px_1fr] gap-2 items-baseline">
+                      <span className="font-bold text-green-600 text-[10px] uppercase">Indicação</span>
+                      <span>{item.indication}</span>
+                    </div>
+                    
+                    <div className="grid grid-cols-[70px_1fr] gap-2 items-baseline">
+                      <span className="font-bold text-blue-600 text-[10px] uppercase">Produtos</span>
+                      <span>{item.products}</span>
+                    </div>
+
+                    <div className="flex gap-2 pt-2 border-t">
+                      <div className="flex-1 bg-green-50 dark:bg-green-950/30 p-2 rounded text-[10px]">
+                        <span className="font-bold text-green-700 block mb-1">Vantagens</span>
+                        {item.pros}
+                      </div>
+                      <div className="flex-1 bg-red-50 dark:bg-red-950/30 p-2 rounded text-[10px]">
+                        <span className="font-bold text-red-700 block mb-1">Desvantagens</span>
+                        {item.cons}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </TabsContent>
+
+        {/* TAB 5: PÉ DIABÉTICO */}
         <TabsContent value="diabetic-foot" className="mt-4 space-y-4">
           <Card className="border-l-4 border-l-destructive shadow-md bg-gradient-to-r from-destructive/5 to-transparent">
             <CardHeader className="p-4 pb-2">
@@ -433,6 +612,7 @@ const WoundCare = () => {
           </div>
         </TabsContent>
 
+        {/* TAB 6: ÚLCERAS */}
         <TabsContent value="vascular-ulcers" className="mt-4 space-y-4">
           <Card className="border-blue-200 bg-blue-50/50 dark:bg-blue-950/30 shadow-sm">
             <CardHeader className="p-4 pb-2">
@@ -542,6 +722,7 @@ const WoundCare = () => {
           </div>
         </TabsContent>
 
+        {/* TAB 7: COBERTURAS */}
         <TabsContent value="dressings" className="mt-4 space-y-4">
           <div className="relative mb-4">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
