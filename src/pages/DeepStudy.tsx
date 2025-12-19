@@ -77,7 +77,7 @@ const DeepStudy = () => {
   const [highlightToRemove, setHighlightToRemove] = useState<{ids: string[], text: string} | null>(null);
 
   useEffect(() => {
-    addActivity({ type: 'Estudo', title: 'Biblioteca', path: '/library', icon: 'BookOpen' });
+    addActivity({ type: 'Estudo', title: 'Biblioteca Digital', path: '/library', icon: 'BookOpen' });
   }, [addActivity]);
 
   // Fetch Highlights
@@ -526,20 +526,23 @@ const DeepStudy = () => {
             />
           </div>
 
-          {/* Abas com Scroll Horizontal - Pills Style */}
-          <div className="w-full md:w-auto overflow-x-auto pb-1 md:pb-0 no-scrollbar order-2 md:order-1 -mx-4 px-4 md:mx-0 md:px-0">
+          {/* Abas com Scroll Horizontal - Pills Style Otimizado */}
+          <div className="w-full md:w-auto order-2 md:order-1 -mx-4 px-4 md:mx-0 md:px-0">
             <Tabs defaultValue="Todas" value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-              <TabsList className="bg-transparent sm:bg-muted/50 p-0 sm:p-1 h-auto rounded-none sm:rounded-full inline-flex gap-2 sm:gap-0">
-                {categories.map(cat => (
-                  <TabsTrigger 
-                    key={cat} 
-                    value={cat} 
-                    className="rounded-full border sm:border-0 border-border px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm whitespace-nowrap data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:data-[state=active]:bg-background sm:data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all"
-                  >
-                    {cat}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+              <ScrollArea className="w-full whitespace-nowrap rounded-none sm:rounded-full bg-transparent">
+                <TabsList className="flex w-max space-x-2 bg-transparent sm:bg-muted/50 p-0 sm:p-1 h-auto">
+                  {categories.map(cat => (
+                    <TabsTrigger 
+                      key={cat} 
+                      value={cat} 
+                      className="rounded-full border sm:border-0 border-border px-4 py-2 text-xs sm:text-sm whitespace-nowrap data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:data-[state=active]:bg-background sm:data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all"
+                    >
+                      {cat}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+                <ScrollBar orientation="horizontal" className="hidden" />
+              </ScrollArea>
             </Tabs>
           </div>
         </div>
