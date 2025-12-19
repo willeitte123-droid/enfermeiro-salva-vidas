@@ -267,7 +267,8 @@ const Ranking = () => {
   }, [profile, queryClient]);
 
   const top3 = ranking.slice(0, 3);
-  const restOfRanking = ranking.slice(3);
+  // AQUI FOI APLICADO O FILTRO: Pegar do índice 3 (4º lugar) até o índice 10 (10º lugar), excluindo o restante.
+  const restOfRanking = ranking.slice(3, 10);
   const myRankIndex = ranking.findIndex(u => u.user_id === profile?.id);
   const myRank = myRankIndex !== -1 ? ranking[myRankIndex] : null;
 
@@ -284,7 +285,7 @@ const Ranking = () => {
               <h1 className="text-2xl sm:text-4xl font-black tracking-tight">Ranking Geral</h1>
             </div>
             <p className="text-purple-100 text-xs sm:text-base max-w-md mx-auto md:mx-0">
-              Dispute com outros estudantes. Pontos da Banca + Simulados em tempo real!
+              Dispute com outros estudantes. Mostrando o Top 10 Global!
             </p>
           </div>
           
@@ -330,17 +331,31 @@ const Ranking = () => {
             </div>
           )}
 
-          {/* Listagem */}
+          {/* Listagem (Limitada até o 10º colocado) */}
           <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3">
             {restOfRanking.length > 0 ? (
-              restOfRanking.map((user, index) => (
-                <RankingItem 
-                  key={user.user_id} 
-                  user={user} 
-                  position={index + 4} 
-                  isCurrentUser={user.user_id === profile?.id}
-                />
-              ))
+              <>
+                {restOfRanking.map((user, index) => (
+                  <RankingItem 
+                    key={user.user_id} 
+                    user={user} 
+                    position={index + 4} 
+                    isCurrentUser={user.user_id === profile?.id}
+                  />
+                ))}
+                
+                {/* Se o usuário estiver abaixo do Top 10, mostramos um divisor e a posição dele (Opcional, mas boa prática de UX) */}
+                {myRankIndex >= 10 && myRank && (
+                  <>
+                    <div className="flex items-center justify-center py-2 text-muted-foreground text-xs">...</div>
+                    <RankingItem 
+                      user={myRank} 
+                      position={myRankIndex + 1} 
+                      isCurrentUser={true}
+                    />
+                  </>
+                )}
+              </>
             ) : ranking.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground animate-in fade-in zoom-in duration-500">
                 <Trophy className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-20 text-yellow-500" />
