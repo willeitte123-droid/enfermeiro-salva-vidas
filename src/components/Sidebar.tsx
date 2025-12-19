@@ -36,11 +36,13 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
   const isExpanded = isMobile ? true : (isHovered || isLockedOpen);
   const isCollapsed = !isExpanded;
 
-  const handleLogout = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    await supabase.auth.signOut();
-    // A navegação automática ocorrerá via AuthContext quando o status mudar para deslogado
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      // O redirecionamento será tratado automaticamente pelo AuthContext/Routes
+    } catch (error) {
+      console.error("Erro ao sair:", error);
+    }
   };
 
   const LogoutButton = (
