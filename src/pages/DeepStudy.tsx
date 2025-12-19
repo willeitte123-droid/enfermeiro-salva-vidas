@@ -4,13 +4,13 @@ import {
   BookOpen, ArrowLeft, Search, Bookmark, 
   Type, Move, Grid, List, Clock, Scale, 
   Gavel, FileText, ChevronUp, ChevronDown, CheckCircle2,
-  Highlighter, Trash2, X, PenTool, Eraser
+  Highlighter, Trash2, X, PenTool, Eraser, Library
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -64,7 +64,7 @@ const DeepStudy = () => {
   const [activeCategory, setActiveCategory] = useState("Todas");
   
   // State para o leitor
-  const [fontSize, setFontSize] = useState(16);
+  const [fontSize, setFontSize] = useState(18); // Aumentei o default para melhor leitura
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isHighlighterMode, setIsHighlighterMode] = useState(false);
   
@@ -187,33 +187,18 @@ const DeepStudy = () => {
 
     const plainText = selection.toString().trim();
     if (plainText.length > 0) {
-      // 1. Divide o texto em tokens (palavras)
-      // O split por whitespace é mais seguro para pegar palavras isoladas
       const words = plainText.split(/\s+/).filter(w => w.trim().length > 0);
-      
       if (words.length === 0) return;
 
-      // 2. Escapa caracteres especiais de regex para cada palavra
       const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-      
-      // 3. Padrão Ultra-Permissivo ("Cola") entre palavras:
-      // Permite: Tags HTML (<...>), Espaços (\s), Quebras de linha, Especiais HTML (&...;)
-      // O [\s\S]*? permite qualquer coisa (incluindo quebra de linha) de forma não gulosa
       const glue = '(?:<[^>]+>|&[^;]+;|\\s|[\\r\\n]|[^a-zA-Z0-9À-ÿ])*?';
-      
       const pattern = escapedWords.join(glue);
       
-      // 4. Busca no conteúdo HTML original
       try {
-        // 's' flag (dotAll) permite que . match newlines, mas aqui usamos [\s\S] manualmente
-        const regex = new RegExp(pattern, 'gi'); // Global + Case Insensitive
+        const regex = new RegExp(pattern, 'gi'); 
         const match = selectedDoc.content.match(regex);
-        
-        // Se encontrou no HTML, usa o texto original (com tags)
-        // Se não encontrou, tenta fallback para o texto simples (menos preciso para renderizar depois)
         const textToSave = match ? match[0] : plainText;
 
-        // Evita duplicatas exatas
         const isDuplicate = highlights.some(h => h.selected_text === textToSave);
         if (isDuplicate) {
           window.getSelection()?.removeAllRanges();
@@ -237,23 +222,14 @@ const DeepStudy = () => {
 
   const handleContentClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    // Verifica se clicou em uma tag MARK (grifo)
     if (target.tagName === 'MARK' && window.getSelection()?.toString().trim() === '') {
       const markHtml = target.innerHTML;
-      
-      // Encontra highlights que contenham este trecho
       const idsToDelete = highlights
-        .filter(h => {
-            // Verifica se o texto do highlight contém o que foi clicado OU se o que foi clicado contém o highlight
-            return h.selected_text.includes(markHtml) || markHtml.includes(h.selected_text);
-        })
+        .filter(h => h.selected_text.includes(markHtml) || markHtml.includes(h.selected_text))
         .map(h => h.id);
 
       if (idsToDelete.length > 0) {
-        setHighlightToRemove({ 
-            ids: idsToDelete, 
-            text: target.textContent || "" 
-        });
+        setHighlightToRemove({ ids: idsToDelete, text: target.textContent || "" });
       }
     }
   };
@@ -274,30 +250,21 @@ const DeepStudy = () => {
     highlights.forEach(h => {
       if (!h.selected_text) return;
       const term = h.selected_text;
-      
-      // Tenta encontrar a string exata primeiro
       let pos = content.indexOf(term);
       
       if (pos === -1) {
-         // Se não encontrou exato (provavelmente tem tags HTML ou formatação diferente),
-         // usa a mesma lógica de Regex da seleção para reencontrar
          try {
             const words = term.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(w => w.trim().length > 0);
             const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
             const glue = '(?:<[^>]+>|&[^;]+;|\\s|[\\r\\n]|[^a-zA-Z0-9À-ÿ])*?';
             const pattern = escapedWords.join(glue);
-            
             const regex = new RegExp(pattern, 'gi'); 
             let match;
             while ((match = regex.exec(content)) !== null) {
-               // Validação de sanidade: o match deve ter tamanho similar
                ranges.push({ start: match.index, end: match.index + match[0].length });
             }
-         } catch (e) {
-            // Falha silenciosa
-         }
+         } catch (e) {}
       } else {
-        // Se encontrou exato
         while (pos !== -1) {
           ranges.push({ start: pos, end: pos + term.length });
           pos = content.indexOf(term, pos + 1);
@@ -307,9 +274,7 @@ const DeepStudy = () => {
 
     if (ranges.length === 0) return content;
 
-    // Mescla ranges sobrepostos para evitar HTML quebrado
     ranges.sort((a, b) => a.start - b.start);
-
     const mergedRanges: {start: number, end: number}[] = [];
     if (ranges.length > 0) {
         let currentRange = ranges[0];
@@ -325,14 +290,11 @@ const DeepStudy = () => {
         mergedRanges.push(currentRange);
     }
 
-    // Aplica as tags <mark> de trás para frente para não alterar os índices
     let result = content;
     for (let i = mergedRanges.length - 1; i >= 0; i--) {
       const { start, end } = mergedRanges[i];
-      
-      const markStart = `<mark class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-100 rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 transition-colors box-decoration-clone" title="Clique para remover">`;
+      const markStart = `<mark class="bg-yellow-200 dark:bg-yellow-500/30 text-inherit rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 dark:hover:bg-yellow-500/50 transition-colors box-decoration-clone decoration-clone" title="Clique para remover">`;
       const markEnd = `</mark>`;
-      
       result = result.substring(0, start) + markStart + result.substring(start, end) + markEnd + result.substring(end);
     }
 
@@ -353,7 +315,7 @@ const DeepStudy = () => {
   // LEITOR IMERSIVO
   if (selectedDoc) {
     return (
-      <div className="fixed inset-0 z-50 bg-background flex flex-col animate-in fade-in duration-300">
+      <div className="fixed inset-0 z-50 bg-background flex flex-col animate-in fade-in zoom-in-95 duration-300">
         
         {/* Modal de Remoção */}
         <AlertDialog open={!!highlightToRemove} onOpenChange={(open) => !open && setHighlightToRemove(null)}>
@@ -362,7 +324,7 @@ const DeepStudy = () => {
               <AlertDialogTitle>Remover Grifo</AlertDialogTitle>
               <AlertDialogDescription>
                 Deseja remover o destaque do texto abaixo?
-                <div className="mt-4 p-3 bg-muted rounded-md text-sm italic font-medium line-clamp-3">
+                <div className="mt-4 p-4 bg-muted/50 rounded-lg border text-sm italic font-medium line-clamp-3 text-foreground/80">
                   "{highlightToRemove?.text}"
                 </div>
               </AlertDialogDescription>
@@ -381,28 +343,31 @@ const DeepStudy = () => {
         </AlertDialog>
 
         {/* Barra de Progresso */}
-        <div className="h-1 w-full bg-muted">
-          <div className="h-full bg-primary transition-all duration-100 ease-out" style={{ width: `${scrollProgress}%` }} />
+        <div className="h-1 w-full bg-muted/30 fixed top-0 z-[60]">
+          <div className="h-full bg-primary transition-all duration-150 ease-out shadow-[0_0_10px_rgba(var(--primary),0.5)]" style={{ width: `${scrollProgress}%` }} />
         </div>
 
-        {/* Toolbar */}
-        <header className="flex items-center justify-between px-4 py-3 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
+        {/* Toolbar Flutuante */}
+        <header className="sticky top-0 z-50 px-4 py-3 bg-background/80 backdrop-blur-md border-b flex items-center justify-between transition-all">
           <div className="flex items-center gap-4 min-w-0">
-            <Button variant="ghost" size="icon" onClick={() => setSelectedDoc(null)} title="Voltar para a estante">
+            <Button variant="ghost" size="icon" onClick={() => setSelectedDoc(null)} title="Voltar para a biblioteca" className="rounded-full hover:bg-muted">
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="hidden sm:block min-w-0">
-              <h1 className="font-bold text-sm sm:text-base truncate">{selectedDoc.title}</h1>
-              <p className="text-xs text-muted-foreground truncate">{selectedDoc.category} • {selectedDoc.readTime}</p>
+              <h1 className="font-bold text-sm sm:text-base truncate max-w-md">{selectedDoc.title}</h1>
+              <p className="text-xs text-muted-foreground truncate flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary/50"></span>
+                {selectedDoc.category}
+              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             {profile && (
               <Button 
-                variant={isHighlighterMode ? "default" : "outline"} 
+                variant={isHighlighterMode ? "secondary" : "ghost"} 
                 size="sm" 
-                className={cn("gap-2 transition-all", isHighlighterMode ? "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-500" : "")}
+                className={cn("gap-2 rounded-full transition-all border", isHighlighterMode ? "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800" : "border-transparent")}
                 onClick={() => {
                   setIsHighlighterMode(!isHighlighterMode);
                   if (!isHighlighterMode) {
@@ -411,7 +376,7 @@ const DeepStudy = () => {
                 }}
               >
                 <PenTool className="h-4 w-4" />
-                <span className="hidden sm:inline">{isHighlighterMode ? "Grifador Ativo" : "Usar Grifador"}</span>
+                <span className="hidden sm:inline font-medium">{isHighlighterMode ? "Grifando..." : "Grifar"}</span>
               </Button>
             )}
 
@@ -421,21 +386,24 @@ const DeepStudy = () => {
                 itemId={`/library/${selectedDoc.id}`}
                 itemType="Documento"
                 itemTitle={selectedDoc.title}
+                className="hover:bg-muted rounded-full"
               />
             )}
             
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="icon"><Type className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted"><Type className="h-4 w-4" /></Button>
               </PopoverTrigger>
-              <PopoverContent className="w-64">
+              <PopoverContent className="w-72 p-4" align="end">
                 <div className="space-y-4">
-                  <h4 className="font-medium leading-none">Ajustes de Leitura</h4>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>A-</span><span>Fonte</span><span>A+</span>
+                  <div className="flex items-center justify-between border-b pb-2">
+                    <h4 className="font-semibold text-sm">Aparência do Texto</h4>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between text-xs text-muted-foreground uppercase font-bold tracking-wider">
+                      <span>Pequeno</span><span>Tamanho</span><span>Grande</span>
                     </div>
-                    <Slider defaultValue={[fontSize]} min={14} max={28} step={1} onValueChange={(val) => setFontSize(val[0])} />
+                    <Slider defaultValue={[fontSize]} min={14} max={28} step={1} onValueChange={(val) => setFontSize(val[0])} className="cursor-pointer" />
                   </div>
                 </div>
               </PopoverContent>
@@ -443,66 +411,77 @@ const DeepStudy = () => {
           </div>
         </header>
 
-        {/* Menu Flutuante de Seleção (Apenas se o modo grifador NÃO estiver ativo) */}
+        {/* Menu Flutuante de Seleção */}
         {selectionRect && profile && !isHighlighterMode && (
           <div 
-            className="fixed z-50 animate-in fade-in zoom-in duration-200"
+            className="fixed z-[60] animate-in fade-in zoom-in duration-200 drop-shadow-lg"
             style={{
               top: `${selectionRect.top - 50}px`,
               left: `${selectionRect.left + (selectionRect.width / 2) - 50}px`
             }}
           >
-            <div className="bg-foreground text-background rounded-full shadow-xl px-2 py-1.5 flex items-center gap-1">
+            <div className="bg-foreground text-background rounded-full px-1.5 py-1 flex items-center gap-1">
               <Button 
                 size="sm" 
                 variant="ghost" 
-                className="h-8 rounded-full hover:bg-muted/20 hover:text-background text-xs font-semibold"
+                className="h-8 rounded-full hover:bg-background/20 hover:text-background text-xs font-semibold px-3"
                 onClick={handleHighlightButton}
               >
-                <Highlighter className="h-3.5 w-3.5 mr-1.5" /> Grifar
+                <Highlighter className="h-3.5 w-3.5 mr-2" /> Destacar
               </Button>
               <div className="w-px h-4 bg-background/20" />
               <Button 
                 size="icon" 
                 variant="ghost" 
-                className="h-8 w-8 rounded-full hover:bg-muted/20 hover:text-background"
+                className="h-8 w-8 rounded-full hover:bg-background/20 hover:text-background"
                 onClick={() => { setSelectionRect(null); setSelectedText(""); }}
               >
                 <X className="h-3.5 w-3.5" />
               </Button>
             </div>
-            <div className="w-3 h-3 bg-foreground rotate-45 absolute -bottom-1.5 left-1/2 -translate-x-1/2" />
+            <div className="w-2 h-2 bg-foreground rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2" />
           </div>
         )}
 
-        {/* Área de Conteúdo */}
-        <div className="flex-1 overflow-y-auto bg-background" onScroll={handleScroll}>
+        {/* Área de Leitura */}
+        <div className="flex-1 overflow-y-auto bg-background scroll-smooth" onScroll={handleScroll}>
           <div 
-            className="max-w-3xl mx-auto px-6 py-10 sm:py-16" 
+            className="max-w-3xl mx-auto px-6 py-12 sm:py-16 selection:bg-primary/20 selection:text-foreground" 
             ref={contentRef} 
             onMouseUp={handleMouseUp} 
             onTouchEnd={handleMouseUp}
             onClick={handleContentClick}
             style={{ cursor: isHighlighterMode ? highlighterCursor : 'text' }}
           >
-            <div className="mb-8 border-b pb-4">
-              <h1 className="text-3xl sm:text-4xl font-black text-foreground mb-4 leading-tight">{selectedDoc.title}</h1>
-              <div className="flex items-center gap-3">
-                <Badge variant="secondary">{selectedDoc.category}</Badge>
-                <span className="text-sm text-muted-foreground flex items-center gap-1"><Clock className="h-3 w-3" /> {selectedDoc.readTime}</span>
+            <div className="mb-10 text-center sm:text-left">
+              <Badge variant="outline" className="mb-4 bg-primary/5 border-primary/20 text-primary px-3 py-1 text-xs uppercase tracking-widest font-semibold">
+                {selectedDoc.category}
+              </Badge>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-6 leading-[1.1] tracking-tight">
+                {selectedDoc.title}
+              </h1>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground border-y py-4 justify-center sm:justify-start">
+                <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" /> {selectedDoc.readTime} de leitura</span>
+                <span className="w-1 h-1 rounded-full bg-muted-foreground/30"></span>
+                <span className="flex items-center gap-1.5"><FileText className="h-4 w-4" /> Documento Oficial</span>
               </div>
             </div>
 
             <article 
-              className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary prose-strong:text-foreground marker:text-muted-foreground select-text"
-              style={{ fontSize: `${fontSize}px`, lineHeight: '1.8' }}
+              className="prose prose-slate dark:prose-invert max-w-none prose-lg prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:bg-muted/30 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:rounded-r-lg marker:text-primary/50 leading-loose"
+              style={{ fontSize: `${fontSize}px` }}
               dangerouslySetInnerHTML={{ __html: processedContent }}
             />
 
-            <div className="mt-16 pt-8 border-t flex flex-col items-center gap-4 text-center">
-              <CheckCircle2 className="h-12 w-12 text-green-50 opacity-20" />
-              <p className="text-muted-foreground text-sm">Você chegou ao final deste documento.</p>
-              <Button onClick={() => setSelectedDoc(null)} variant="outline">Voltar para a Biblioteca</Button>
+            <div className="mt-20 p-8 rounded-2xl bg-muted/30 border border-dashed flex flex-col items-center gap-4 text-center">
+              <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-full text-green-600 dark:text-green-400">
+                <CheckCircle2 className="h-8 w-8" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-bold text-lg">Leitura Concluída</h3>
+                <p className="text-muted-foreground text-sm">Você chegou ao final deste documento.</p>
+              </div>
+              <Button onClick={() => setSelectedDoc(null)} variant="outline" className="mt-2">Voltar para a Biblioteca</Button>
             </div>
           </div>
         </div>
@@ -513,89 +492,115 @@ const DeepStudy = () => {
   // MODO ESTANTE (LIBRARY)
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
-      {/* Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-800 to-gray-900 p-8 text-white shadow-xl">
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
-              <BookOpen className="h-8 w-8 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold">Biblioteca de Aprofundamento</h1>
+      {/* Modern Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-slate-950 p-8 sm:p-12 text-white shadow-2xl isolate">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-600/30 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 -z-10" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-600/20 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/3 -z-10" />
+        
+        <div className="max-w-3xl relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-indigo-200 mb-6">
+            <Library className="h-3.5 w-3.5" /> Biblioteca Digital
           </div>
-          <p className="max-w-xl text-gray-300 text-lg">
-            Acesso a documentos na íntegra, leis, códigos e protocolos para estudo detalhado.
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">
+            Aprofunde seus <br className="hidden sm:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-teal-300">Conhecimentos</span>
+          </h1>
+          <p className="text-lg text-slate-300 max-w-xl leading-relaxed">
+            Acesso completo a leis, códigos de ética, protocolos e manuais técnicos essenciais para sua formação e prática profissional.
           </p>
         </div>
-        <div className="absolute top-0 right-0 opacity-10">
-          <Scale className="w-64 h-64 -translate-y-12 translate-x-12" />
+      </div>
+
+      {/* Sticky Search & Filter Bar */}
+      <div className="sticky top-0 z-20 py-4 -mx-4 px-4 sm:mx-0 sm:px-0 bg-background/80 backdrop-blur-lg border-b sm:border-none sm:bg-transparent">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="w-full md:w-auto overflow-x-auto pb-2 md:pb-0 no-scrollbar">
+            <Tabs defaultValue="Todas" value={activeCategory} onValueChange={setActiveCategory} className="w-full">
+              <TabsList className="bg-muted/50 p-1 h-auto rounded-full inline-flex">
+                {categories.map(cat => (
+                  <TabsTrigger 
+                    key={cat} 
+                    value={cat} 
+                    className="rounded-full px-4 py-2 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all"
+                  >
+                    {cat}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+
+          <div className="relative w-full md:w-80 group">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+            <Input
+              placeholder="Buscar documentos..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 h-11 bg-card border-transparent shadow-sm ring-1 ring-border/50 focus:bg-background focus:ring-primary/50 transition-all rounded-xl"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Filtros e Busca */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between sticky top-0 z-20 bg-background/95 backdrop-blur py-2 border-b md:border-none md:bg-transparent">
-        <Tabs defaultValue="Todas" value={activeCategory} onValueChange={setActiveCategory} className="w-full md:w-auto">
-          <TabsList className="w-full md:w-auto bg-muted/50 p-1 h-10">
-            {categories.map(cat => (
-              <TabsTrigger key={cat} value={cat} className="text-xs sm:text-sm">{cat}</TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-
-        <div className="relative w-full md:w-72">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Buscar documentos..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 h-10"
-          />
-        </div>
-      </div>
-
-      {/* Grid de Documentos */}
+      {/* Grid de Documentos Moderno */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredDocs.map((doc) => (
-          <Card 
-            key={doc.id} 
-            className="group hover:shadow-lg transition-all duration-300 border-t-4 border-t-primary cursor-pointer hover:-translate-y-1 flex flex-col"
+        {filteredDocs.map((doc, idx) => (
+          <div 
+            key={doc.id}
             onClick={() => setSelectedDoc(doc)}
+            className="group relative bg-card hover:bg-card/50 border rounded-2xl p-1 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer overflow-hidden ring-1 ring-border/50 hover:ring-primary/50"
           >
-            <CardHeader>
-              <div className="flex justify-between items-start mb-2">
-                <Badge variant="outline" className="bg-primary/5">{doc.category}</Badge>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <div className="relative h-full flex flex-col p-5 rounded-xl bg-card/50 backdrop-blur-sm">
+              <div className="flex justify-between items-start mb-4">
+                <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors border-0">
+                  {doc.category}
+                </Badge>
                 {profile && (
-                  <div onClick={(e) => e.stopPropagation()}>
+                  <div onClick={(e) => e.stopPropagation()} className="relative z-20">
                     <FavoriteButton 
                       userId={profile.id}
                       itemId={`/library/${doc.id}`}
                       itemType="Documento"
                       itemTitle={doc.title}
+                      className="h-8 w-8 hover:bg-background"
                     />
                   </div>
                 )}
               </div>
-              <CardTitle className="text-xl leading-tight group-hover:text-primary transition-colors">{doc.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
+              
+              <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
+                {doc.title}
+              </h3>
+              
+              <p className="text-sm text-muted-foreground line-clamp-3 mb-6 flex-1 leading-relaxed">
                 {doc.description}
               </p>
-            </CardContent>
-            <CardFooter className="border-t pt-4 text-xs text-muted-foreground flex justify-between items-center bg-muted/20">
-              <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {doc.readTime} de leitura</span>
-              <span className="font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                Ler Agora <ArrowLeft className="h-3 w-3 rotate-180" />
-              </span>
-            </CardFooter>
-          </Card>
+              
+              <div className="flex items-center justify-between pt-4 border-t border-border/50 mt-auto">
+                <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                  <Clock className="h-3.5 w-3.5" /> {doc.readTime}
+                </span>
+                <span className="text-xs font-bold text-primary flex items-center gap-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                  Ler Agora <ArrowLeft className="h-3.5 w-3.5 rotate-180" />
+                </span>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
 
       {filteredDocs.length === 0 && (
-        <div className="text-center py-20 bg-muted/30 rounded-xl border border-dashed">
-          <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
-          <h3 className="text-lg font-semibold text-muted-foreground">Nenhum documento encontrado</h3>
-          <p className="text-sm text-muted-foreground/80">Tente buscar por outro termo.</p>
+        <div className="flex flex-col items-center justify-center py-20 bg-muted/20 rounded-3xl border border-dashed text-center animate-in fade-in zoom-in duration-500">
+          <div className="bg-muted p-4 rounded-full mb-4">
+            <Search className="h-8 w-8 text-muted-foreground opacity-50" />
+          </div>
+          <h3 className="text-lg font-semibold text-foreground">Nenhum documento encontrado</h3>
+          <p className="text-sm text-muted-foreground mt-1 max-w-xs">Tente ajustar seus termos de busca ou filtros.</p>
+          <Button variant="link" onClick={() => { setSearchTerm(""); setActiveCategory("Todas"); }} className="mt-2">
+            Limpar filtros
+          </Button>
         </div>
       )}
     </div>
