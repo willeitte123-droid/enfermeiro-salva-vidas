@@ -531,7 +531,7 @@ const DeepStudy = () => {
             <Tabs defaultValue="Todas" value={activeCategory} onValueChange={setActiveCategory} className="w-full">
               <div className="w-full max-w-[calc(100vw-2rem)] mx-auto px-4 md:px-0">
                 <ScrollArea className="w-full whitespace-nowrap rounded-xl bg-transparent">
-                  <div className="flex w-max space-x-2 bg-transparent p-1">
+                  <TabsList className="flex w-max space-x-2 bg-transparent p-1 h-auto">
                     {categories.map(cat => (
                       <TabsTrigger 
                         key={cat} 
@@ -541,7 +541,7 @@ const DeepStudy = () => {
                         {cat}
                       </TabsTrigger>
                     ))}
-                  </div>
+                  </TabsList>
                   <ScrollBar orientation="horizontal" className="hidden" />
                 </ScrollArea>
               </div>
