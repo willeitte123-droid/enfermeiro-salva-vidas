@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, Lock, Stethoscope, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import {
@@ -71,7 +71,7 @@ const Login = () => {
 
     if (error) {
       toast.error("Falha no login", {
-        description: "Por favor, verifique seus dados e tente novamente.",
+        description: "Credenciais inválidas. Verifique seus dados.",
       });
     }
   }
@@ -86,146 +86,199 @@ const Login = () => {
       redirectTo: `${window.location.origin}/update-password`,
     });
     setIsResetting(false);
-    setCooldown(60); // Start 60-second cooldown
+    setCooldown(60);
 
     if (error) {
       toast.error("Erro ao enviar e-mail", { description: error.message });
     } else {
-      toast.success("E-mail de recuperação enviado!", {
-        description: "Verifique sua caixa de entrada para redefinir sua senha.",
+      toast.success("Link enviado!", {
+        description: "Verifique sua caixa de entrada (e spam) para redefinir a senha.",
       });
       setIsResetDialogOpen(false);
     }
   }
 
   return (
-    <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
-      <div className="w-full min-h-screen flex flex-col bg-muted/40">
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Redefinir sua senha</AlertDialogTitle>
-            <AlertDialogDescription>
-              Digite seu e-mail abaixo. Se ele estiver em nosso sistema, enviaremos um link para você redefinir sua senha.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <div className="space-y-2">
-            <Label htmlFor="reset-email">E-mail</Label>
-            <Input
-              id="reset-email"
-              type="email"
-              placeholder="seu@email.com"
-              value={resetEmail}
-              onChange={(e) => setResetEmail(e.target.value)}
-            />
-          </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handlePasswordReset} disabled={isResetting || cooldown > 0}>
-              {isResetting ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : cooldown > 0 ? (
-                `Aguarde ${cooldown}s...`
-              ) : (
-                "Enviar E-mail"
-              )}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
+    <div className="w-full min-h-screen flex flex-col lg:grid lg:grid-cols-2">
+      {/* Coluna Visual (Esquerda/Topo) */}
+      <div className="relative flex flex-col items-center justify-center p-10 text-white bg-slate-900 overflow-hidden min-h-[40vh] lg:min-h-screen order-first lg:order-last">
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-700 via-slate-900 to-slate-950 opacity-90"></div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/medical-icons.png')] opacity-5"></div>
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
 
-        <div className="flex flex-col items-center justify-center bg-blue-800 text-white p-6 text-center shadow-md">
-          {isThemeLoading ? (
-            <Skeleton className="h-32 w-32 rounded-full mb-6 bg-white/20" />
-          ) : (
-            <img 
-              src={themeSettings.logo_url || "/logo.svg"} 
-              alt="Logo" 
-              className="h-32 w-32 rounded-full object-cover mb-6 bg-white border-4 border-white shadow-xl animate-in fade-in zoom-in duration-500" 
-            />
-          )}
-          <h1 className="text-3xl font-bold">Enfermagem Pro</h1>
-          <p className="mt-4 text-base font-medium text-blue-100 max-w-lg">
-            Sua plataforma completa de ferramentas e conhecimento para a prática de enfermagem.
+        {/* Content */}
+        <div className="relative z-10 max-w-lg text-center lg:text-left flex flex-col items-center lg:items-start">
+          <div className="mb-8 p-4 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl animate-in fade-in zoom-in duration-700">
+            {isThemeLoading ? (
+              <Skeleton className="h-24 w-24 rounded-xl bg-white/20" />
+            ) : (
+              <img 
+                src={themeSettings.logo_url || "/logo.svg"} 
+                alt="Logo Enfermagem Pro" 
+                className="h-24 w-24 object-contain drop-shadow-md" 
+              />
+            )}
+          </div>
+          
+          <h1 className="text-4xl lg:text-6xl font-black tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
+            Enfermagem Pro
+          </h1>
+          
+          <p className="text-lg lg:text-2xl font-medium text-blue-100 mb-6 leading-relaxed">
+            Domine a arte e a ciência do cuidar.
           </p>
-        </div>
-        <div className="flex-1 flex items-center justify-center py-12 px-4">
-          <div className="mx-auto w-full max-w-md space-y-6">
-            <div className="space-y-2 text-center">
-              <h1 className="text-3xl font-bold">Acesse sua conta</h1>
-              <p className="text-muted-foreground">
-                Bem-vindo de volta! Insira seus dados para continuar.
-              </p>
+          
+          <div className="hidden lg:flex flex-col gap-3 mt-4 text-sm text-slate-400">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
+              <span>Ferramentas de cálculo avançadas</span>
             </div>
-            <div className="bg-background p-6 rounded-lg shadow-sm border">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="seu@email.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex items-center justify-between">
-                          <FormLabel>Senha</FormLabel>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="link" className="text-sm text-primary hover:underline p-0 h-auto">
-                              Esqueceu a senha?
-                            </Button>
-                          </AlertDialogTrigger>
-                        </div>
-                        <div className="relative">
-                          <FormControl>
-                            <Input
-                              type={showPassword ? "text" : "password"}
-                              placeholder="********"
-                              {...field}
-                            />
-                          </FormControl>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="absolute top-0 right-0 h-full px-3"
-                            onClick={() => setShowPassword(!showPassword)}
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <Eye className="h-4 w-4 text-muted-foreground" />
-                            )}
-                          </Button>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Entrando..." : "Entrar"}
-                  </Button>
-                </form>
-              </Form>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
+              <span>Protocolos e escalas atualizados</span>
             </div>
-            <div className="mt-4 text-center text-sm">
-              Não tem uma conta?{" "}
-              <Link to="/register" className="underline text-primary">
-                Cadastre-se
-              </Link>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
+              <span>Conteúdo exclusivo para concursos</span>
             </div>
           </div>
         </div>
       </div>
-    </AlertDialog>
+
+      {/* Coluna do Formulário (Direita/Baixo) */}
+      <div className="flex items-center justify-center p-6 lg:p-12 bg-background order-last lg:order-first">
+        <div className="mx-auto w-full max-w-md space-y-8 animate-in slide-in-from-left-8 duration-500">
+          <div className="text-center lg:text-left">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground">Bem-vindo de volta</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Acesse sua conta para continuar seus estudos e consultas.
+            </p>
+          </div>
+
+          <div className="grid gap-6">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            placeholder="seu@email.com" 
+                            className="pl-9 h-11 bg-muted/30 border-muted-foreground/20 focus:bg-background transition-all" 
+                            {...field} 
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Senha</FormLabel>
+                        <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="link" className="text-xs font-medium text-primary px-0 h-auto" tabIndex={-1}>
+                              Esqueceu a senha?
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Redefinir Senha</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Enviaremos um link seguro para o seu e-mail para que você possa criar uma nova senha.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <div className="space-y-3 py-2">
+                              <Label htmlFor="reset-email">Seu e-mail cadastrado</Label>
+                              <Input
+                                id="reset-email"
+                                type="email"
+                                placeholder="exemplo@email.com"
+                                value={resetEmail}
+                                onChange={(e) => setResetEmail(e.target.value)}
+                              />
+                            </div>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction onClick={handlePasswordReset} disabled={isResetting || cooldown > 0}>
+                                {isResetting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : cooldown > 0 ? `Aguarde ${cooldown}s` : "Enviar Link"}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                      <div className="relative">
+                        <FormControl>
+                          <div className="relative">
+                            <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                              type={showPassword ? "text" : "password"}
+                              placeholder="••••••••"
+                              className="pl-9 pr-10 h-11 bg-muted/30 border-muted-foreground/20 focus:bg-background transition-all"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="absolute top-0 right-0 h-full px-3 text-muted-foreground hover:text-foreground"
+                          onClick={() => setShowPassword(!showPassword)}
+                          tabIndex={-1}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <Button type="submit" className="w-full h-11 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all" disabled={isLoading}>
+                  {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Entrando...</> : "Acessar Plataforma"}
+                </Button>
+              </form>
+            </Form>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-muted" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Primeiro acesso?
+                </span>
+              </div>
+            </div>
+
+            <Button variant="outline" className="w-full h-11 border-muted-foreground/20 hover:bg-muted/50" asChild>
+              <Link to="/register">Criar nova conta</Link>
+            </Button>
+          </div>
+          
+          <p className="text-center text-xs text-muted-foreground px-4">
+            Ao continuar, você concorda com nossos <a href="#" className="underline hover:text-primary">Termos de Serviço</a> e <a href="#" className="underline hover:text-primary">Política de Privacidade</a>.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
 
