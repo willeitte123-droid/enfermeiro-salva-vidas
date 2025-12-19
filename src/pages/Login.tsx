@@ -12,8 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
-import { Eye, EyeOff, Loader2, Mail, Lock, Stethoscope, CheckCircle2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, Lock, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import {
@@ -256,21 +255,6 @@ const Login = () => {
                 </Button>
               </form>
             </Form>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-muted" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Primeiro acesso?
-                </span>
-              </div>
-            </div>
-
-            <Button variant="outline" className="w-full h-11 border-muted-foreground/20 hover:bg-muted/50" asChild>
-              <Link to="/register">Criar nova conta</Link>
-            </Button>
           </div>
           
           <p className="text-center text-xs text-muted-foreground px-4">
