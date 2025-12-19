@@ -98,61 +98,61 @@ const Login = () => {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col lg:grid lg:grid-cols-2">
-      {/* Coluna Visual (Esquerda/Topo) */}
-      <div className="relative flex flex-col items-center justify-center p-10 text-white bg-slate-900 overflow-hidden min-h-[40vh] lg:min-h-screen order-first lg:order-last">
+    <div className="w-full min-h-screen flex flex-col bg-background">
+      {/* Seção Visual (Topo) */}
+      <div className="relative w-full flex flex-col items-center justify-center pt-16 pb-12 px-6 bg-slate-900 overflow-hidden shrink-0">
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-700 via-slate-900 to-slate-950 opacity-90"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-800 via-slate-900 to-slate-950 opacity-90"></div>
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/medical-icons.png')] opacity-5"></div>
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
 
         {/* Content */}
-        <div className="relative z-10 max-w-lg text-center lg:text-left flex flex-col items-center lg:items-start">
-          <div className="mb-8 p-4 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl animate-in fade-in zoom-in duration-700">
+        <div className="relative z-10 max-w-2xl text-center flex flex-col items-center">
+          <div className="mb-6 p-4 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl animate-in fade-in zoom-in duration-700">
             {isThemeLoading ? (
-              <Skeleton className="h-24 w-24 rounded-xl bg-white/20" />
+              <Skeleton className="h-20 w-20 rounded-xl bg-white/20" />
             ) : (
               <img 
                 src={themeSettings.logo_url || "/logo.svg"} 
                 alt="Logo Enfermagem Pro" 
-                className="h-24 w-24 object-contain drop-shadow-md" 
+                className="h-20 w-20 object-contain drop-shadow-md" 
               />
             )}
           </div>
           
-          <h1 className="text-4xl lg:text-6xl font-black tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
             Enfermagem Pro
           </h1>
           
-          <p className="text-lg lg:text-2xl font-medium text-blue-100 mb-6 leading-relaxed">
+          <p className="text-lg sm:text-xl font-medium text-blue-100 mb-6 leading-relaxed">
             Domine a arte e a ciência do cuidar.
           </p>
           
-          <div className="hidden lg:flex flex-col gap-3 mt-4 text-sm text-slate-400">
+          <div className="hidden sm:flex flex-wrap justify-center gap-4 text-sm text-slate-400">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
-              <span>Ferramentas de cálculo avançadas</span>
+              <span>Cálculos</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
-              <span>Protocolos e escalas atualizados</span>
+              <span>Protocolos</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
-              <span>Conteúdo exclusivo para concursos</span>
+              <span>Concursos</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Coluna do Formulário (Direita/Baixo) */}
-      <div className="flex items-center justify-center p-6 lg:p-12 bg-background order-last lg:order-first">
-        <div className="mx-auto w-full max-w-md space-y-8 animate-in slide-in-from-left-8 duration-500">
-          <div className="text-center lg:text-left">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground">Bem-vindo de volta</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Acesse sua conta para continuar seus estudos e consultas.
+      {/* Seção do Formulário (Baixo) */}
+      <div className="flex-1 flex items-start justify-center p-6 sm:p-10 -mt-8 z-20">
+        <div className="bg-card w-full max-w-md p-8 rounded-xl shadow-xl border border-border/50 animate-in slide-in-from-bottom-8 duration-500">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">Acesse sua conta</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Insira suas credenciais para continuar.
             </p>
           </div>
 
@@ -257,7 +257,7 @@ const Login = () => {
             </Form>
           </div>
           
-          <p className="text-center text-xs text-muted-foreground px-4">
+          <p className="text-center text-xs text-muted-foreground mt-8 px-4">
             Ao continuar, você concorda com nossos <a href="#" className="underline hover:text-primary">Termos de Serviço</a> e <a href="#" className="underline hover:text-primary">Política de Privacidade</a>.
           </p>
         </div>
