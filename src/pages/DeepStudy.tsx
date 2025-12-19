@@ -526,16 +526,16 @@ const DeepStudy = () => {
             />
           </div>
 
-          {/* Abas com Scroll Horizontal - Native Scrolling for better mobile feel */}
-          <div className="w-full md:w-auto order-2 md:order-1 -mx-4 md:mx-0">
+          {/* Abas com Scroll Horizontal Otimizado */}
+          <div className="w-full md:w-auto order-2 md:order-1 -mx-4 md:mx-0 overflow-hidden">
             <Tabs defaultValue="Todas" value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-              <div className="w-full overflow-x-auto pb-2 px-4 md:px-0 no-scrollbar">
-                <TabsList className="flex w-max space-x-2 bg-transparent p-0 h-auto">
+              <div className="w-full overflow-x-auto pb-2 px-4 md:px-0 flex items-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <TabsList className="flex w-max space-x-2 bg-transparent p-0 h-auto items-center">
                   {categories.map(cat => (
                     <TabsTrigger 
                       key={cat} 
                       value={cat} 
-                      className="rounded-full border border-border/50 bg-background/50 px-4 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all"
+                      className="rounded-full border border-border/50 bg-background/50 px-4 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all focus:outline-none focus:ring-0 active:scale-95 touch-manipulation"
                     >
                       {cat}
                     </TabsTrigger>
