@@ -285,7 +285,7 @@ const Ranking = () => {
               <h1 className="text-2xl sm:text-4xl font-black tracking-tight">Ranking Geral</h1>
             </div>
             <p className="text-purple-100 text-xs sm:text-base max-w-md mx-auto md:mx-0">
-              Dispute com outros estudantes. Mostrando o Top 10 Global!
+              Supere seus limites e conquiste seu lugar entre os melhores da Enfermagem.
             </p>
           </div>
           
