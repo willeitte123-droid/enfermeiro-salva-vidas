@@ -512,7 +512,7 @@ const DeepStudy = () => {
       </div>
 
       {/* Sticky Search & Filter Bar Mobile-Friendly */}
-      <div className="sticky top-0 z-20 py-2 sm:py-4 -mx-4 px-4 sm:mx-0 sm:px-0 bg-background/80 backdrop-blur-lg border-b sm:border-none sm:bg-transparent">
+      <div className="sticky top-0 z-20 py-2 sm:py-4 -mx-4 px-4 sm:mx-0 sm:px-0 bg-background/80 backdrop-blur-lg border-b sm:border-none sm:bg-transparent transition-all">
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-between">
           
           {/* Barra de Busca - Full width no mobile */}
@@ -526,23 +526,22 @@ const DeepStudy = () => {
             />
           </div>
 
-          {/* Abas com Scroll Horizontal - Pills Style Otimizado */}
-          <div className="w-full md:w-auto order-2 md:order-1 -mx-4 px-4 md:mx-0 md:px-0">
+          {/* Abas com Scroll Horizontal - Native Scrolling for better mobile feel */}
+          <div className="w-full md:w-auto order-2 md:order-1 -mx-4 md:mx-0">
             <Tabs defaultValue="Todas" value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-              <ScrollArea className="w-full whitespace-nowrap rounded-none sm:rounded-full bg-transparent">
-                <TabsList className="flex w-max space-x-2 bg-transparent sm:bg-muted/50 p-0 sm:p-1 h-auto">
+              <div className="w-full overflow-x-auto pb-2 px-4 md:px-0 no-scrollbar">
+                <TabsList className="flex w-max space-x-2 bg-transparent p-0 h-auto">
                   {categories.map(cat => (
                     <TabsTrigger 
                       key={cat} 
                       value={cat} 
-                      className="rounded-full border sm:border-0 border-border px-4 py-2 text-xs sm:text-sm whitespace-nowrap data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:data-[state=active]:bg-background sm:data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all"
+                      className="rounded-full border border-border/50 bg-background/50 px-4 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all"
                     >
                       {cat}
                     </TabsTrigger>
                   ))}
                 </TabsList>
-                <ScrollBar orientation="horizontal" className="hidden" />
-              </ScrollArea>
+              </div>
             </Tabs>
           </div>
         </div>
