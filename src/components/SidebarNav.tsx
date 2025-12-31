@@ -73,17 +73,17 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
     
     const plan = userPlan.toLowerCase();
 
-    // 1. Plano Premium Anual: Acesso TOTAL
-    if (plan.includes('premium') && plan.includes('anual')) {
+    // 1. Planos com Acesso TOTAL: Premium Anual e Plano Essencial
+    if ((plan.includes('premium') && plan.includes('anual')) || plan.includes('essencial')) {
       return false;
     }
 
-    // Definição dos grupos de acesso
+    // Definição dos grupos de acesso para outros planos (ex: Pro, ou futuros planos limitados)
     const baseAccess = [
       '/', 
       '/favorites',
       '/ranking',
-      '/profile', // Perfil é básico
+      '/profile', 
       '/questions', 
       '/simulado', 
       '/procedures', 
@@ -94,7 +94,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       '/technical-terms',
       '/review-area',
       '/anatomy',
-      '/flashcards', // Acesso básico
+      '/flashcards',
     ];
 
     const proAdditions = [
@@ -104,7 +104,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       '/medications',
       '/concurseiro',
       '/study-tracks',
-      '/library', // Biblioteca é PRO
+      '/library',
     ];
 
     // Função auxiliar para verificar se o path está na lista (incluindo sub-rotas)
@@ -112,15 +112,10 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       return allowedPaths.some(allowed => path === allowed || path.startsWith(allowed + '/'));
     };
 
-    // 2. Plano Pro Anual (Base + Adições Específicas)
+    // 2. Plano Pro Anual (Exemplo de plano parcial, se necessário manter lógica)
     if (plan.includes('pro') && plan.includes('anual')) {
       const allowed = [...baseAccess, ...proAdditions];
       return !checkAccess(allowed);
-    }
-
-    // 3. Plano Essencial (Apenas Base)
-    if (plan.includes('essencial')) {
-      return !checkAccess(baseAccess);
     }
 
     // Plano Free ou desconhecido: Bloqueia tudo exceto Dashboard e Perfil
@@ -158,7 +153,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
               </div>
             </TooltipTrigger>
             <TooltipContent side="right" className="bg-primary text-primary-foreground border-primary">
-              <p className="font-semibold">Adquira o plano premium e tenha acesso</p>
+              <p className="font-semibold">Funcionalidade exclusiva para assinantes</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
