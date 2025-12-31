@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { BADGES, BadgeDef } from "@/data/badges";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Profile {
   id: string;
@@ -45,6 +46,47 @@ const fetchUserBadges = async (userId: string) => {
   if (error) throw error;
   return data as UserBadge[];
 };
+
+const RankingSkeleton = () => (
+  <div className="space-y-8 animate-pulse">
+    {/* Podium Skeleton */}
+    <div className="flex justify-center items-end gap-4 pb-6 border-b border-dashed px-1 h-48">
+      {/* 2nd Place */}
+      <div className="flex flex-col items-center gap-2">
+        <Skeleton className="w-16 h-16 rounded-full" />
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-24 w-20 rounded-t-lg bg-muted/50" />
+      </div>
+      {/* 1st Place */}
+      <div className="flex flex-col items-center gap-2">
+        <Skeleton className="w-20 h-20 rounded-full" />
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-32 w-24 rounded-t-lg bg-muted/50" />
+      </div>
+      {/* 3rd Place */}
+      <div className="flex flex-col items-center gap-2">
+        <Skeleton className="w-16 h-16 rounded-full" />
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-20 w-20 rounded-t-lg bg-muted/50" />
+      </div>
+    </div>
+
+    {/* List Skeleton */}
+    <div className="max-w-3xl mx-auto space-y-3">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <div key={i} className="flex items-center gap-4 p-4 rounded-xl border bg-card/50">
+          <Skeleton className="h-6 w-6 rounded" />
+          <Skeleton className="h-10 w-10 rounded-full" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+          <Skeleton className="h-6 w-12" />
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 }) => {
   const colors = {
@@ -173,7 +215,7 @@ const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnloc
       </div>
 
       <div className="flex justify-between items-center mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-border/10 w-full">
-        <Badge variant="outline" className={cn("text-[8px] sm:text-[9px] font-bold border-0 px-1.5 py-0.5", difficultyColor[badge.difficulty])}>
+        <Badge variant="outline" className={cn("text-[8px] sm:text-9px font-bold border-0 px-1.5 py-0.5", difficultyColor[badge.difficulty])}>
           {badge.difficulty}
         </Badge>
         
@@ -317,53 +359,59 @@ const Ranking = () => {
         </div>
 
         <TabsContent value="ranking" className="space-y-6 sm:space-y-8">
-          {/* Podium Mobile Friendly */}
-          {top3.length > 0 && (
-            <div className="flex justify-center items-end gap-1 sm:gap-4 pb-4 sm:pb-6 border-b border-dashed px-1">
-              {/* 2º Lugar */}
-              {top3[1] && <PodiumItem user={top3[1]} position={2} />}
-              
-              {/* 1º Lugar */}
-              {top3[0] && <PodiumItem user={top3[0]} position={1} />}
-              
-              {/* 3º Lugar */}
-              {top3[2] && <PodiumItem user={top3[2]} position={3} />}
-            </div>
-          )}
+          {isLoadingRanking ? (
+            <RankingSkeleton />
+          ) : (
+            <>
+              {/* Podium Mobile Friendly */}
+              {top3.length > 0 && (
+                <div className="flex justify-center items-end gap-1 sm:gap-4 pb-4 sm:pb-6 border-b border-dashed px-1">
+                  {/* 2º Lugar */}
+                  {top3[1] && <PodiumItem user={top3[1]} position={2} />}
+                  
+                  {/* 1º Lugar */}
+                  {top3[0] && <PodiumItem user={top3[0]} position={1} />}
+                  
+                  {/* 3º Lugar */}
+                  {top3[2] && <PodiumItem user={top3[2]} position={3} />}
+                </div>
+              )}
 
-          {/* Listagem (Limitada até o 10º colocado) */}
-          <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3">
-            {restOfRanking.length > 0 ? (
-              <>
-                {restOfRanking.map((user, index) => (
-                  <RankingItem 
-                    key={user.user_id} 
-                    user={user} 
-                    position={index + 4} 
-                    isCurrentUser={user.user_id === profile?.id}
-                  />
-                ))}
-                
-                {/* Se o usuário estiver abaixo do Top 10, mostramos um divisor e a posição dele (Opcional, mas boa prática de UX) */}
-                {myRankIndex >= 10 && myRank && (
+              {/* Listagem (Limitada até o 10º colocado) */}
+              <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3">
+                {restOfRanking.length > 0 ? (
                   <>
-                    <div className="flex items-center justify-center py-2 text-muted-foreground text-xs">...</div>
-                    <RankingItem 
-                      user={myRank} 
-                      position={myRankIndex + 1} 
-                      isCurrentUser={true}
-                    />
+                    {restOfRanking.map((user, index) => (
+                      <RankingItem 
+                        key={user.user_id} 
+                        user={user} 
+                        position={index + 4} 
+                        isCurrentUser={user.user_id === profile?.id}
+                      />
+                    ))}
+                    
+                    {/* Se o usuário estiver abaixo do Top 10, mostramos um divisor e a posição dele (Opcional, mas boa prática de UX) */}
+                    {myRankIndex >= 10 && myRank && (
+                      <>
+                        <div className="flex items-center justify-center py-2 text-muted-foreground text-xs">...</div>
+                        <RankingItem 
+                          user={myRank} 
+                          position={myRankIndex + 1} 
+                          isCurrentUser={true}
+                        />
+                      </>
+                    )}
                   </>
-                )}
-              </>
-            ) : ranking.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground animate-in fade-in zoom-in duration-500">
-                <Trophy className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-20 text-yellow-500" />
-                <h3 className="text-base sm:text-lg font-semibold text-foreground">O Ranking está vazio</h3>
-                <p className="text-xs sm:text-sm">Seja o primeiro a pontuar!</p>
+                ) : ranking.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground animate-in fade-in zoom-in duration-500">
+                    <Trophy className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-20 text-yellow-500" />
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground">O Ranking está vazio</h3>
+                    <p className="text-xs sm:text-sm">Seja o primeiro a pontuar!</p>
+                  </div>
+                ) : null}
               </div>
-            ) : null}
-          </div>
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="badges">
