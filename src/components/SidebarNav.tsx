@@ -68,58 +68,26 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
   };
 
   const isLinkLocked = (path: string) => {
+    // 1. Admin tem acesso total
     if (isAdmin) return false;
-    if (!userPlan) return true; // Bloqueia se não tiver plano
-    
-    const plan = userPlan.toLowerCase();
 
-    // 1. Planos com Acesso TOTAL: Premium Anual e Plano Essencial
-    if ((plan.includes('premium') && plan.includes('anual')) || plan.includes('essencial')) {
+    const plan = userPlan ? userPlan.toLowerCase() : 'free';
+
+    // 2. Se o plano NÃO for 'free' (ou seja, é pago: Essencial, Pro, Premium, etc.), tem acesso TOTAL.
+    if (plan !== 'free') {
       return false;
     }
 
-    // Definição dos grupos de acesso para outros planos (ex: Pro, ou futuros planos limitados)
-    const baseAccess = [
-      '/', 
-      '/favorites',
-      '/ranking',
-      '/profile', 
-      '/questions', 
-      '/simulado', 
-      '/procedures', 
-      '/ecg',
-      '/calculator', 
-      '/scales', 
-      '/tools',
-      '/technical-terms',
-      '/review-area',
-      '/anatomy',
-      '/flashcards',
-    ];
-
-    const proAdditions = [
-      '/semiology',
-      '/semiotechnique',
-      '/wound-care',
-      '/medications',
-      '/concurseiro',
-      '/study-tracks',
-      '/library',
-    ];
-
-    // Função auxiliar para verificar se o path está na lista (incluindo sub-rotas)
-    const checkAccess = (allowedPaths: string[]) => {
-      return allowedPaths.some(allowed => path === allowed || path.startsWith(allowed + '/'));
-    };
-
-    // 2. Plano Pro Anual (Exemplo de plano parcial, se necessário manter lógica)
-    if (plan.includes('pro') && plan.includes('anual')) {
-      const allowed = [...baseAccess, ...proAdditions];
-      return !checkAccess(allowed);
+    // 3. Regras para Plano FREE (Restrito)
+    // Rotas permitidas: Dashboard e Perfil
+    const allowedPathsForFree = ['/', '/profile'];
+    
+    // Se o path estiver na lista de permitidos, não bloqueia
+    if (allowedPathsForFree.includes(path)) {
+      return false;
     }
 
-    // Plano Free ou desconhecido: Bloqueia tudo exceto Dashboard e Perfil
-    if (path === '/' || path === '/profile') return false;
+    // Bloqueia todo o resto para usuários Free
     return true; 
   };
 
