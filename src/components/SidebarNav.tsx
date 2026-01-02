@@ -31,7 +31,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       { to: "/profile", icon: User, label: "Meu Perfil" },
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
-      { to: "/ranking", icon: Trophy, label: "Ranking e Conquistas" },
+      { to: "/ranking", icon: Trophy, label: "Ranking Geral" },
     ],
     tools: [
       { to: "/tools/performance", icon: PieChart, label: "Meu Desempenho" },
