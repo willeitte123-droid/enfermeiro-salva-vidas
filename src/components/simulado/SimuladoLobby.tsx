@@ -10,14 +10,31 @@ import {
 } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
 
 interface SimuladoLobbyProps {
   onStart: (config: { numQuestions: number; totalTime: number; banca: string; category?: string }) => void;
 }
 
-// Categorias fixas para manter a ordem didática, mas poderíamos buscar do banco também se preferir
+// Lista Fixa das Principais Bancas de Enfermagem
+const BANCAS_POPULARES = [
+  "Todas",
+  "IBFC",
+  "Vunesp",
+  "Cebraspe (Cespe)",
+  "FGV",
+  "FCC (Fundação Carlos Chagas)",
+  "Cesgranrio",
+  "AOCP",
+  "Instituto Mais",
+  "IDECAN",
+  "FUNDATEC",
+  "CONSULPAM",
+  "COPESE",
+  "FUMARC",
+  "VUNESP",
+  "EBSERH (Nacional)"
+];
+
 const CATEGORIES = [
   "Todas",
   "Legislação do SUS",
@@ -41,32 +58,6 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
   const [totalTime, setTotalTime] = useState("40");
   const [selectedBanca, setSelectedBanca] = useState("Todas");
   const [selectedCategory, setSelectedCategory] = useState("Todas");
-
-  // Buscar Bancas Dinamicamente
-  const { data: availableBancas = ["Todas"], isLoading: isLoadingBancas } = useQuery({
-    queryKey: ['availableBancas'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('questions')
-        .select('banca')
-        .not('banca', 'is', null);
-
-      if (error) {
-        console.error('Erro ao buscar bancas:', error);
-        return ["Todas"];
-      }
-
-      // Filtra valores vazios e cria um Set para remover duplicatas
-      const uniqueBancas = Array.from(new Set(
-        data
-          .map(item => item.banca)
-          .filter(b => b && b.trim() !== '')
-      ));
-
-      return ["Todas", ...uniqueBancas.sort()];
-    },
-    staleTime: 1000 * 60 * 5, // Cache de 5 minutos
-  });
 
   useEffect(() => {
     if (initialCategory && CATEGORIES.includes(initialCategory)) {
@@ -136,23 +127,17 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
                 </Select>
               </div>
 
-              {/* Banca (Dinâmica) */}
+              {/* Banca */}
               <div className="space-y-3 group">
                 <Label htmlFor="banca" className="flex items-center gap-2 text-sm font-semibold text-muted-foreground group-hover:text-primary transition-colors">
                   <Building2 className="h-4 w-4" /> Banca Examinadora
                 </Label>
-                <Select value={selectedBanca} onValueChange={setSelectedBanca} disabled={isLoadingBancas}>
+                <Select value={selectedBanca} onValueChange={setSelectedBanca}>
                   <SelectTrigger id="banca" className="h-12 border-muted-foreground/20 bg-background hover:border-primary/50 transition-all shadow-sm">
-                    {isLoadingBancas ? (
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Loader2 className="h-4 w-4 animate-spin" /> Carregando bancas...
-                      </div>
-                    ) : (
-                      <SelectValue placeholder="Selecione a banca" />
-                    )}
+                    <SelectValue placeholder="Selecione a banca" />
                   </SelectTrigger>
                   <SelectContent className="max-h-[300px]">
-                    {availableBancas.map(banca => <SelectItem key={banca} value={banca}>{banca}</SelectItem>)}
+                    {BANCAS_POPULARES.map(banca => <SelectItem key={banca} value={banca}>{banca}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -247,7 +232,7 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
                   <div>
                     <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Banca</p>
                     <p className="font-semibold text-sm sm:text-base leading-tight">
-                      {isLoadingBancas ? "Carregando..." : selectedBanca}
+                      {selectedBanca}
                     </p>
                   </div>
                 </div>
@@ -257,11 +242,10 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
             <CardFooter className="pt-2 pb-6 relative z-10">
               <Button 
                 onClick={handleStart} 
-                disabled={isLoadingBancas}
                 size="lg" 
                 className="w-full h-14 text-lg font-bold bg-green-600 hover:bg-green-500 text-white shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:shadow-[0_0_30px_rgba(34,197,94,0.6)] transition-all duration-300 group border-t border-white/20"
               >
-                {isLoadingBancas ? <Loader2 className="mr-2 h-6 w-6 animate-spin" /> : <PlayCircle className="mr-2 h-6 w-6 group-hover:scale-110 transition-transform" />}
+                <PlayCircle className="mr-2 h-6 w-6 group-hover:scale-110 transition-transform" />
                 INICIAR SIMULADO
               </Button>
             </CardFooter>

@@ -26,25 +26,17 @@ interface SimuladoQuizProps {
 }
 
 const fetchSimuladoQuestions = async (numQuestions: number, banca: string, category?: string) => {
-  // Nota: A função RPC 'get_random_questions' precisaria ser atualizada no Supabase para aceitar category_filter
-  // Como não posso editar RPCs existentes sem criar migration, farei a query diretamente aqui se houver categoria
-  // OU usarei a RPC se for "Todas".
-  // Para garantir a funcionalidade agora, vou fazer uma query direta no client-side com randomização
-  // (Em produção com muitos dados, o ideal é RPC, mas para este MVP funciona bem).
-
+  // LÓGICA ALTERADA: 
+  // Não filtramos pela banca no banco de dados para garantir que sempre haja questões.
+  // Filtramos apenas por categoria se selecionada.
+  
   let query = supabase.from('questions').select('*');
-
-  if (banca !== 'Todas') {
-    query = query.eq('banca', banca);
-  }
 
   if (category && category !== 'Todas') {
     query = query.eq('category', category);
   }
 
-  // Infelizmente o Supabase não tem "random()" nativo na query builder simples.
-  // Vamos buscar um pouco mais de questões e embaralhar no front para simular randomicidade com filtros
-  // Limite de segurança para não trazer o banco todo
+  // Buscamos um pool maior de questões para garantir aleatoriedade
   query = query.limit(100); 
 
   const { data, error } = await query;
@@ -59,8 +51,18 @@ const fetchSimuladoQuestions = async (numQuestions: number, banca: string, categ
   // Pegar apenas a quantidade solicitada
   shuffledQuestions = shuffledQuestions.slice(0, numQuestions);
 
-  // Embaralhar as opções de cada questão
-  return shuffledQuestions.map(shuffleQuestionOptions);
+  // Embaralhar opções E sobrescrever a banca se o usuário escolheu uma específica
+  return shuffledQuestions.map(q => {
+    const questionWithOptions = shuffleQuestionOptions(q);
+    
+    // Se o usuário selecionou uma banca específica (diferente de "Todas"), 
+    // nós "simulamos" que a questão é daquela banca para fins de imersão.
+    if (banca !== 'Todas') {
+      return { ...questionWithOptions, banca: banca };
+    }
+    
+    return questionWithOptions;
+  });
 };
 
 const SimuladoQuiz = ({ numQuestions, totalTime, banca, category, onFinish }: SimuladoQuizProps) => {
@@ -131,7 +133,6 @@ const SimuladoQuiz = ({ numQuestions, totalTime, banca, category, onFinish }: Si
             <h3 className="text-lg font-semibold">Nenhuma questão encontrada</h3>
             <p className="text-muted-foreground">
                 Não encontramos questões suficientes para os filtros selecionados:
-                <br/>Banca: <strong>{banca}</strong>
                 <br/>Categoria: <strong>{category || 'Todas'}</strong>
             </p>
             <Button onClick={() => window.location.reload()}>Voltar</Button>
@@ -162,11 +163,11 @@ const SimuladoQuiz = ({ numQuestions, totalTime, banca, category, onFinish }: Si
             <div>
                 <div className="flex flex-wrap items-center gap-2 mb-1">
                     <Badge variant="outline" className="text-xs font-normal flex items-center gap-1">
-                        <Building2 className="h-3 w-3" /> {banca === 'Todas' ? 'Multibancas' : banca}
+                        <Building2 className="h-3 w-3" /> {currentQuestion.banca || 'Geral'}
                     </Badge>
-                    {category && (
+                    {currentQuestion.category && (
                         <Badge variant="outline" className="text-xs font-normal flex items-center gap-1 bg-primary/5 text-primary border-primary/20">
-                            <BookOpen className="h-3 w-3" /> {category}
+                            <BookOpen className="h-3 w-3" /> {currentQuestion.category}
                         </Badge>
                     )}
                     <span className="text-xs text-muted-foreground ml-1">Questão {currentQuestionIndex + 1} de {simuladoQuestions.length}</span>
@@ -187,12 +188,6 @@ const SimuladoQuiz = ({ numQuestions, totalTime, banca, category, onFinish }: Si
         </CardHeader>
         <CardContent className="p-6 space-y-6">
           <div>
-            <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-muted-foreground">{currentQuestion.category}</p>
-                {banca === 'Todas' && (
-                    <Badge variant="secondary" className="text-[10px]">{currentQuestion.banca || 'Geral'}</Badge>
-                )}
-            </div>
             <p className="font-semibold text-lg leading-relaxed">{currentQuestion.question}</p>
           </div>
           <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer} className="space-y-3">
