@@ -5,7 +5,7 @@ import { Link, useOutletContext } from "react-router-dom";
 import { 
   Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, 
   ClipboardList, Loader2, History, Sparkles, Activity, 
-  ChevronRight, Brain, Zap, Clock
+  ChevronRight, Brain, Zap, Clock, GraduationCap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
@@ -44,13 +44,13 @@ const quickAccessLinks = [
     border: "group-hover:border-emerald-200 dark:group-hover:border-emerald-800"
   },
   {
-    title: "Banca de Questões",
-    icon: FileQuestion,
-    path: "/questions",
-    description: "Treine para provas e concursos.",
-    color: "text-violet-500",
-    bg: "bg-violet-50 dark:bg-violet-950/30",
-    border: "group-hover:border-violet-200 dark:group-hover:border-violet-800"
+    title: "Área do Concurseiro",
+    icon: GraduationCap,
+    path: "/concurseiro",
+    description: "Resumos, leis e dicas para aprovação.",
+    color: "text-indigo-500",
+    bg: "bg-indigo-50 dark:bg-indigo-950/30",
+    border: "group-hover:border-indigo-200 dark:group-hover:border-indigo-800"
   },
   {
     title: "Procedimentos",
