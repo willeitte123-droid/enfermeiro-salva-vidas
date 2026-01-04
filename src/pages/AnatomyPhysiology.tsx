@@ -1,225 +1,329 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { 
   HeartPulse, Wind, Brain, Droplet, Utensils, Shield, 
-  Activity, Stethoscope, Microscope, Info 
+  Activity, Microscope, Zap, AlertTriangle, BookOpen, 
+  Lightbulb, ChevronRight, Eye, EyeOff, Layers, Stethoscope,
+  ArrowRight
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import anatomyData from "@/data/anatomy.json";
 import { cn } from "@/lib/utils";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 interface Profile {
   id: string;
 }
 
-interface PhysiologyProcess {
+interface AnatomyItem {
+  part: string;
+  detail: string;
+}
+
+interface PhysiologyItem {
   title: string;
-  description: string;
+  content: string;
+}
+
+interface PathologyItem {
+  condition: string;
+  mechanism: string;
 }
 
 interface AnatomySystem {
   id: string;
   name: string;
   icon: string;
-  color: string;
-  bgColor: string;
+  theme: string;
   description: string;
-  anatomy: { part: string; function: string }[];
-  physiology: PhysiologyProcess[] | string;
-  nursingFocus: string[];
+  anatomy: AnatomyItem[];
+  physiology: PhysiologyItem[];
+  pathology: PathologyItem[];
+  clinical_pearls: string[];
+  red_flags: string[];
 }
 
 const iconMap: Record<string, React.ElementType> = {
   HeartPulse, Wind, Brain, Droplet, Utensils, Shield
 };
 
+// Mapeamento de cores baseado no tema do JSON
+const themeStyles: Record<string, any> = {
+  rose: {
+    bg: "bg-rose-500",
+    lightBg: "bg-rose-50 dark:bg-rose-950/30",
+    border: "border-rose-500",
+    text: "text-rose-600 dark:text-rose-400",
+    gradient: "from-rose-500 to-red-600",
+    subtle: "bg-rose-100 dark:bg-rose-900/50 text-rose-800 dark:text-rose-200"
+  },
+  sky: {
+    bg: "bg-sky-500",
+    lightBg: "bg-sky-50 dark:bg-sky-950/30",
+    border: "border-sky-500",
+    text: "text-sky-600 dark:text-sky-400",
+    gradient: "from-sky-500 to-blue-600",
+    subtle: "bg-sky-100 dark:bg-sky-900/50 text-sky-800 dark:text-sky-200"
+  },
+  violet: {
+    bg: "bg-violet-500",
+    lightBg: "bg-violet-50 dark:bg-violet-950/30",
+    border: "border-violet-500",
+    text: "text-violet-600 dark:text-violet-400",
+    gradient: "from-violet-500 to-purple-600",
+    subtle: "bg-violet-100 dark:bg-violet-900/50 text-violet-800 dark:text-violet-200"
+  },
+  amber: {
+    bg: "bg-amber-500",
+    lightBg: "bg-amber-50 dark:bg-amber-950/30",
+    border: "border-amber-500",
+    text: "text-amber-600 dark:text-amber-400",
+    gradient: "from-amber-500 to-yellow-600",
+    subtle: "bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200"
+  },
+  orange: {
+    bg: "bg-orange-500",
+    lightBg: "bg-orange-50 dark:bg-orange-950/30",
+    border: "border-orange-500",
+    text: "text-orange-600 dark:text-orange-400",
+    gradient: "from-orange-500 to-red-600",
+    subtle: "bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200"
+  },
+  emerald: {
+    bg: "bg-emerald-500",
+    lightBg: "bg-emerald-50 dark:bg-emerald-950/30",
+    border: "border-emerald-500",
+    text: "text-emerald-600 dark:text-emerald-400",
+    gradient: "from-emerald-500 to-green-600",
+    subtle: "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200"
+  }
+};
+
 const AnatomyPhysiology = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
   const [activeSystem, setActiveSystem] = useState<AnatomySystem>(anatomyData[0] as unknown as AnatomySystem);
+  const [recallMode, setRecallMode] = useState(false); // Modo de estudo ativo
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Anatomia e Fisiologia', path: '/anatomy', icon: 'Activity' });
   }, [addActivity]);
 
-  useEffect(() => {
-    const currentInJson = anatomyData.find(sys => sys.id === activeSystem.id);
-    if (currentInJson) {
-      setActiveSystem(currentInJson as unknown as AnatomySystem);
-    }
-  }, [activeSystem.id]);
+  const currentTheme = themeStyles[activeSystem.theme] || themeStyles.rose;
+  const SystemIcon = iconMap[activeSystem.icon] || Activity;
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-8">
-      {/* Modern Gradient Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 p-6 sm:p-8 text-white shadow-lg">
-        <div className="relative z-10 flex flex-col items-center text-center sm:items-start sm:text-left">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-              <Activity className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-            </div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Anatomia e Fisiologia</h1>
-          </div>
-          <p className="max-w-2xl text-violet-100 text-xs sm:text-sm md:text-base mb-4">
-            Estrutura e função do corpo humano aplicadas à prática clínica de enfermagem.
-          </p>
-        </div>
-        
-        {/* Decorative Elements */}
-        <div className="absolute right-0 top-0 h-64 w-64 -translate-y-1/2 translate-x-1/4 rounded-full bg-white/10 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-32 w-32 translate-y-1/4 -translate-x-1/4 rounded-full bg-violet-400/20 blur-2xl" />
-        
-        {profile && (
-          <div className="absolute top-4 right-4 z-20">
-            <FavoriteButton
-              userId={profile.id}
-              itemId="/anatomy"
-              itemType="Guia"
-              itemTitle="Anatomia e Fisiologia"
-              className="text-white hover:text-yellow-300"
-            />
-          </div>
-        )}
-      </div>
-
-      {/* System Selector - Horizontal Scroll with Mobile Constraint */}
-      <div className="w-full max-w-[calc(100vw-2rem)] mx-auto">
-        <ScrollArea className="w-full whitespace-nowrap rounded-xl border-0 bg-transparent mb-2">
-          <div className="flex w-max space-x-2 sm:space-x-4 p-1">
-            {anatomyData.map((system) => {
-              const Icon = iconMap[system.icon];
-              const isActive = activeSystem.id === system.id;
-              return (
-                <button
-                  key={system.id}
-                  onClick={() => setActiveSystem(system as unknown as AnatomySystem)}
-                  className={cn(
-                    "flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-300 w-20 h-20 sm:w-24 sm:h-24 border-2",
-                    isActive 
-                      ? `border-primary ${system.bgColor} shadow-md scale-[1.02] ring-1 ring-primary/20` 
-                      : "border-transparent bg-card hover:bg-accent hover:border-muted-foreground/10 shadow-sm"
-                  )}
-                >
-                  <div className={cn("p-1.5 sm:p-2 rounded-full mb-1 transition-colors", isActive ? "bg-background/80 backdrop-blur-sm" : "bg-muted")}>
-                    <Icon className={cn("h-5 w-5 sm:h-6 sm:w-6 transition-colors", isActive ? system.color : "text-muted-foreground")} />
-                  </div>
-                  <span className={cn("text-[9px] sm:text-xs font-semibold text-wrap text-center leading-tight line-clamp-2 max-w-full px-1", isActive ? "text-foreground" : "text-muted-foreground")}>
-                    {system.name.replace('Sistema ', '')}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-          <ScrollBar orientation="horizontal" className="hidden" />
-        </ScrollArea>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Left Column: Overview & Anatomy */}
-        <div className="lg:col-span-2 space-y-6">
-          <Card className="border-t-4 border-t-primary shadow-md overflow-hidden">
-            <CardHeader className="p-4 sm:p-6 bg-muted/10 border-b">
-              <div className="flex items-start gap-3 sm:gap-4">
-                <div className={cn("p-2 sm:p-3 rounded-xl shrink-0 shadow-sm bg-background border", activeSystem.color)}>
-                  {(() => {
-                    const Icon = iconMap[activeSystem.icon];
-                    return <Icon className={cn("h-6 w-6 sm:h-8 sm:w-8", activeSystem.color)} />;
-                  })()}
-                </div>
-                <div>
-                  <CardTitle className="text-lg sm:text-2xl leading-tight">{activeSystem.name}</CardTitle>
-                  <CardDescription className="text-xs sm:text-sm mt-1 leading-relaxed">{activeSystem.description}</CardDescription>
-                </div>
+    <div className="space-y-6 animate-in fade-in duration-500 pb-12">
+      
+      {/* 1. Header Dinâmico */}
+      <div className={cn("relative overflow-hidden rounded-2xl p-6 sm:p-8 text-white shadow-lg transition-colors duration-500", `bg-gradient-to-r ${currentTheme.gradient}`)}>
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm shadow-sm">
+                <SystemIcon className="h-8 w-8 text-white" />
               </div>
-            </CardHeader>
-            <CardContent className="p-0">
-              <Tabs defaultValue="physiology" className="w-full">
-                <div className="px-4 pt-2 bg-muted/5 border-b">
-                  <TabsList className="grid w-full grid-cols-2 mb-2 h-10">
-                    <TabsTrigger value="physiology" className="text-xs sm:text-sm font-semibold"><Activity className="mr-2 h-3.5 w-3.5"/> Função</TabsTrigger>
-                    <TabsTrigger value="anatomy" className="text-xs sm:text-sm font-semibold"><Microscope className="mr-2 h-3.5 w-3.5"/> Estrutura</TabsTrigger>
-                  </TabsList>
-                </div>
-                
-                <TabsContent value="anatomy" className="p-4 sm:p-6 space-y-3 m-0 bg-card min-h-[300px]">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {activeSystem.anatomy.map((item, index) => (
-                      <div key={index} className="p-3 sm:p-4 rounded-lg border bg-background hover:bg-accent/50 transition-colors shadow-sm">
-                        <h3 className={cn("font-bold mb-1.5 flex items-center gap-2 text-sm", activeSystem.color)}>
-                          <div className="h-1.5 w-1.5 rounded-full bg-current shrink-0" />
-                          {item.part}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          {item.function}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="physiology" className="p-4 sm:p-6 space-y-3 m-0 bg-card min-h-[300px]">
-                  {Array.isArray(activeSystem.physiology) ? (
-                    activeSystem.physiology.map((process, idx) => (
-                      <div key={idx} className="relative overflow-hidden rounded-lg border bg-background p-3 sm:p-4 shadow-sm group hover:shadow-md transition-all">
-                        <div className={cn("absolute left-0 top-0 h-full w-1 transition-all group-hover:w-1.5", activeSystem.bgColor.replace('bg-', 'bg-slate-300'))} />
-                        <div className="flex gap-3 sm:gap-4 pl-2">
-                          <div className={cn("flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full font-bold text-xs text-white mt-0.5 shadow-sm", activeSystem.color.replace('text-', 'bg-'))}>
-                            {idx + 1}
-                          </div>
-                          <div>
-                            <h4 className="text-sm sm:text-base font-bold text-foreground mb-1">
-                              {process.title}
-                            </h4>
-                            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed text-justify">
-                              {process.description}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="p-4 rounded-lg bg-card border leading-relaxed text-sm">
-                      <p>{activeSystem.physiology}</p>
-                    </div>
-                  )}
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
+              <h1 className="text-3xl sm:text-4xl font-black tracking-tight">{activeSystem.name}</h1>
+            </div>
+            <p className="text-white/90 font-medium max-w-xl text-sm sm:text-base leading-relaxed">
+              {activeSystem.description}
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="secondary" 
+              size="sm" 
+              className="bg-white/20 hover:bg-white/30 text-white border-0 backdrop-blur-md"
+              onClick={() => setRecallMode(!recallMode)}
+            >
+              {recallMode ? <Eye className="mr-2 h-4 w-4" /> : <EyeOff className="mr-2 h-4 w-4" />}
+              {recallMode ? "Modo Leitura" : "Modo Estudo (Ocultar)"}
+            </Button>
+            {profile && (
+              <FavoriteButton
+                userId={profile.id}
+                itemId={`/anatomy#${activeSystem.id}`}
+                itemType="Guia"
+                itemTitle={`Anatomia: ${activeSystem.name}`}
+                className="bg-white/20 hover:bg-white/30 text-white border-0 h-9 w-9 rounded-full"
+              />
+            )}
+          </div>
         </div>
+        
+        {/* Background Patterns */}
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-64 h-64 bg-black/10 rounded-full blur-3xl" />
+      </div>
 
-        {/* Right Column: Nursing Focus */}
-        <div className="lg:col-span-1">
-          <Card className="h-full border-l-4 border-l-emerald-500 bg-gradient-to-b from-emerald-50/50 to-transparent dark:from-emerald-950/20 shadow-sm">
-            <CardHeader className="p-4 pb-2 sm:p-5 sm:pb-3">
-              <CardTitle className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 text-base sm:text-lg">
-                <Stethoscope className="h-5 w-5" />
-                Foco na Enfermagem
+      {/* 2. Seletor de Sistemas (Menu Biológico) */}
+      <ScrollArea className="w-full whitespace-nowrap rounded-xl bg-transparent">
+        <div className="flex w-max space-x-3 p-1 mb-2">
+          {anatomyData.map((system) => {
+            const Icon = iconMap[system.icon];
+            const isActive = activeSystem.id === system.id;
+            const theme = themeStyles[system.theme];
+            
+            return (
+              <button
+                key={system.id}
+                onClick={() => setActiveSystem(system as unknown as AnatomySystem)}
+                className={cn(
+                  "flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-all duration-300 w-24 sm:w-28 border-2 group",
+                  isActive 
+                    ? `bg-background border-${system.theme}-500 shadow-md scale-105` 
+                    : "bg-card border-transparent hover:bg-accent/50 hover:border-border"
+                )}
+              >
+                <div className={cn(
+                  "p-2 rounded-full transition-colors",
+                  isActive ? theme.bg : "bg-muted group-hover:bg-muted/80"
+                )}>
+                  <Icon className={cn("h-5 w-5", isActive ? "text-white" : "text-muted-foreground")} />
+                </div>
+                <span className={cn(
+                  "text-[10px] sm:text-xs font-bold uppercase tracking-wide truncate max-w-full",
+                  isActive ? theme.text : "text-muted-foreground"
+                )}>
+                  {system.name.replace("Sistema ", "")}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        <ScrollBar orientation="horizontal" className="hidden" />
+      </ScrollArea>
+
+      {/* 3. Conteúdo Principal - Grid Bento */}
+      <div className="grid lg:grid-cols-12 gap-6">
+        
+        {/* Coluna Esquerda: Estrutura e Função (8 colunas) */}
+        <div className="lg:col-span-8 space-y-6">
+          
+          {/* Seção de Anatomia */}
+          <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Microscope className={cn("h-5 w-5", currentTheme.text)} /> Estruturas Chave
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-4 sm:p-5 pt-0 space-y-3">
-              <ul className="space-y-2.5">
-                {activeSystem.nursingFocus.map((point, index) => (
-                  <li key={index} className="flex gap-3 items-start p-3 rounded-lg bg-background/80 border shadow-sm hover:bg-background transition-colors">
-                    <Info className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-sm leading-snug text-foreground/90">{point}</span>
+            <CardContent className="grid sm:grid-cols-2 gap-4">
+              {activeSystem.anatomy.map((item, idx) => (
+                <div key={idx} className="bg-background border rounded-lg p-4 hover:shadow-md transition-shadow relative group overflow-hidden">
+                  <div className={cn("absolute left-0 top-0 w-1 h-full", currentTheme.bg)} />
+                  <h3 className="font-bold text-sm mb-1 pr-2">{item.part}</h3>
+                  <div className={cn("text-xs text-muted-foreground leading-relaxed", recallMode && "blur-sm select-none group-hover:blur-none transition-all duration-300")}>
+                    {item.detail}
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Seção de Fisiologia (Processos) */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 px-2">
+              <Activity className={cn("h-5 w-5", currentTheme.text)} />
+              <h2 className="font-bold text-lg">Fisiologia em Ação</h2>
+            </div>
+            
+            <div className="grid gap-4">
+              {activeSystem.physiology.map((process, idx) => (
+                <div key={idx} className="bg-card border rounded-xl p-4 sm:p-5 relative overflow-hidden group hover:border-primary/30 transition-colors">
+                  <div className="flex gap-4">
+                    <div className={cn("flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm", currentTheme.bg)}>
+                      {idx + 1}
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="font-bold text-base">{process.title}</h3>
+                      <p 
+                        className={cn("text-sm text-muted-foreground leading-relaxed", recallMode && "blur-sm select-none group-hover:blur-none transition-all duration-300 cursor-help")}
+                        dangerouslySetInnerHTML={{ __html: process.content }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Seção de Fisiopatologia (Doenças) */}
+          <Card className="border-dashed">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-lg text-slate-700 dark:text-slate-300">
+                <Layers className="h-5 w-5" /> Principais Patologias
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {activeSystem.pathology.map((path, idx) => (
+                <div key={idx} className="bg-muted/30 p-3 rounded-lg border text-sm">
+                  <span className="font-bold block mb-1 text-foreground/90">{path.condition}</span>
+                  <span className={cn("text-xs text-muted-foreground", recallMode && "blur-sm hover:blur-none transition-all")}>{path.mechanism}</span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+        </div>
+
+        {/* Coluna Direita: Foco na Enfermagem (4 colunas) */}
+        <div className="lg:col-span-4 space-y-6">
+          
+          {/* Card de Alerta (Red Flags) */}
+          <Card className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800/50 shadow-sm overflow-hidden">
+            <div className="bg-red-100 dark:bg-red-900/30 p-3 border-b border-red-200 dark:border-red-800/50 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
+              <h3 className="font-bold text-sm text-red-800 dark:text-red-300">Sinais de Alerta (Red Flags)</h3>
+            </div>
+            <CardContent className="p-0">
+              <ul className="divide-y divide-red-200/50 dark:divide-red-800/50">
+                {activeSystem.red_flags.map((flag, idx) => (
+                  <li key={idx} className="p-3 text-sm text-red-900/80 dark:text-red-200 flex items-start gap-2">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                    <span className={cn(recallMode && "blur-sm hover:blur-none transition-all")}>{flag}</span>
                   </li>
                 ))}
               </ul>
-              
-              <div className="mt-6 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 shadow-sm">
-                <p className="text-[10px] sm:text-xs text-yellow-800 dark:text-yellow-200 font-medium text-center flex items-center justify-center gap-2">
-                  <Info className="h-3 w-3" />
-                  Relacione sempre os sinais vitais com a fisiologia.
-                </p>
-              </div>
             </CardContent>
           </Card>
+
+          {/* Pérolas Clínicas (Dicas) */}
+          <Card className="border-t-4 border-t-amber-500 shadow-sm bg-gradient-to-b from-amber-50/50 to-transparent dark:from-amber-950/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-base text-amber-700 dark:text-amber-400">
+                <Lightbulb className="h-5 w-5" /> Pérolas Clínicas
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {activeSystem.clinical_pearls.map((pearl, idx) => (
+                <div key={idx} className="bg-background/80 p-3 rounded-lg border shadow-sm text-sm text-muted-foreground italic relative">
+                  <span className="absolute -left-1 top-4 w-2 h-2 bg-amber-400 rounded-r-full" />
+                  "{pearl}"
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Foco de Enfermagem (CTA para Prática) */}
+          <div className={cn("p-5 rounded-2xl text-center space-y-3 border", currentTheme.subtle, currentTheme.border)}>
+            <Stethoscope className="h-8 w-8 mx-auto opacity-80" />
+            <h3 className="font-bold text-base">Aplicação Prática</h3>
+            <p className="text-xs opacity-90 leading-relaxed">
+              Conecte a teoria à prática. Avalie sempre relacionando sinais vitais com a fisiologia.
+            </p>
+            <Button size="sm" variant="outline" className="w-full bg-background/50 hover:bg-background border-current opacity-80 hover:opacity-100" asChild>
+              <a href="/semiology">
+                Ir para Semiologia <ArrowRight className="ml-2 h-3 w-3" />
+              </a>
+            </Button>
+          </div>
+
         </div>
       </div>
     </div>
