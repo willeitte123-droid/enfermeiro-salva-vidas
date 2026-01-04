@@ -7,7 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { 
   HeartPulse, Activity, Wind, Thermometer, Brain, 
   ArrowRight, AlertTriangle, CheckCircle2, XCircle, 
-  RotateCcw, Trophy, Stethoscope, PlayCircle
+  RotateCcw, Trophy, Stethoscope, PlayCircle, Droplet
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CLINICAL_CASES, ClinicalCase, CaseNode } from "@/data/clinicalCases";
