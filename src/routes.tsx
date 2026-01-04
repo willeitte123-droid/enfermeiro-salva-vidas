@@ -53,6 +53,7 @@ import UpdatePassword from './pages/UpdatePassword';
 import TechnicalTerms from './pages/TechnicalTerms';
 import StudyTracks from './pages/StudyTracks';
 import DeepStudy from './pages/DeepStudy';
+import ClinicalCases from './pages/ClinicalCases';
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -136,6 +137,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="nursing-notes" element={<NursingNotesGuide />} />
         <Route path="technical-terms" element={<TechnicalTerms />} />
         <Route path="study-tracks" element={<StudyTracks />} />
+        <Route path="clinical-cases" element={<ClinicalCases />} />
         <Route path="update-password" element={<UpdatePassword />} />
         <Route path="*" element={<NotFound />} />
       </Route>
