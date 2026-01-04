@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { HeartPulse, AlertTriangle, MapPin, Waves, Clock, Zap, Repeat, Activity, Syringe, Stethoscope, Thermometer } from "lucide-react";
+import { HeartPulse, AlertTriangle, MapPin, Waves, Clock, Zap, Repeat, Activity, Syringe, Stethoscope, Thermometer, Droplet } from "lucide-react";
 import EcgStrip from "@/components/EcgStrip";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
