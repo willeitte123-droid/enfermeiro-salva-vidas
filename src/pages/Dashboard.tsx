@@ -70,6 +70,16 @@ const clinicalTips = [
   "A hipoglicemia pode mimetizar sintomas neurológicos. Sempre verifique a glicemia capilar em pacientes com alteração de consciência.",
   "O antídoto para intoxicação por opioides é a Naloxona. Para benzodiazepínicos, é o Flumazenil.",
   "Em caso de suspeita de sepse, lembre-se do 'Hour-1 Bundle': Lactato, Hemoculturas, Antibiótico e Volume na primeira hora.",
+  "Para gestantes em decúbito dorsal, lembre-se da Síndrome da Hipotensão Supina: lateralize para a esquerda para descomprimir a veia cava.",
+  "O Sinal de Blumberg positivo (dor à descompressão súbita no Ponto de McBurney) é um forte indicativo de apendicite aguda.",
+  "A insulina NPH tem aspecto leitoso e deve ser homogeneizada suavemente antes do uso. A Regular é límpida e transparente.",
+  "Em pediatria, a frequência cardíaca e respiratória são mais elevadas que no adulto. Consulte sempre a tabela de sinais vitais por idade.",
+  "A higiene das mãos é a medida isolada mais eficaz para prevenir infecções hospitalares. Pratique os 5 momentos da OMS.",
+  "Nunca reencape agulhas após o uso. O descarte deve ser imediato em coletor rígido (Perfurocortante).",
+  "Na administração de Potássio (KCl) endovenoso, nunca faça em bolus. O risco de parada cardíaca é iminente. Dilua e infunda lentamente.",
+  "O posicionamento em Fowler (cabeceira elevada 30-45º) melhora a expansibilidade torácica e previne broncoaspiração na dieta enteral.",
+  "Lesão por Pressão Estágio 1: Pele íntegra com eritema que NÃO embranquece ao toque. Alivie a pressão imediatamente.",
+  "A troca do cateter venoso periférico deve ocorrer a cada 72-96h ou imediatamente se houver sinais de flebite (dor, calor, rubor).",
 ];
 
 const fetchRandomQuestion = async (): Promise<Question | null> => {
@@ -86,6 +96,7 @@ const Dashboard = () => {
   const { activities } = useActivityTracker();
   const recentActivities = activities.slice(0, 4);
   const [randomTip, setRandomTip] = useState("");
+  const [greeting, setGreeting] = useState("");
 
   const { data: randomQuestion, isLoading: isLoadingQuestion } = useQuery({
     queryKey: ['randomQuestion'],
@@ -95,6 +106,12 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
+    // Definir saudação baseada na hora
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Bom dia");
+    else if (hour < 18) setGreeting("Boa tarde");
+    else setGreeting("Boa noite");
+
     // Set initial tip
     setRandomTip(clinicalTips[Math.floor(Math.random() * clinicalTips.length)]);
 
@@ -124,7 +141,7 @@ const Dashboard = () => {
             </div>
             
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight w-full text-center lg:text-left">
-              Bem-vindo de volta, <br />
+              {greeting}, <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-indigo-200 to-white">
                 {profile?.first_name || 'Colega'}!
               </span>
