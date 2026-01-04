@@ -524,5 +524,176 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         options: []
       }
     }
+  },
+  {
+    id: "pneumotorax-trauma",
+    title: "Trauma Torácico Fechado",
+    difficulty: "Avançado",
+    category: "Urgência",
+    description: "Vítima de agressão física com dor torácica intensa e dificuldade respiratória progressiva. Sem exames de imagem disponíveis.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Jovem, 20 anos, vítima de espancamento (socos e chutes). Queixa-se de muita dor no hemitórax direito e falta de ar que está piorando rapidamente.\n\nExame: Turgência Jugular presente. Ausculta: Murmúrio Vesicular abolido à direita. Percussão: Hipertimpânico à direita.\n\nSSVV: FC 130 | PA 80/50 | SpO2 85% | FR 32.",
+        vitals: { hr: 130, bp: "80/50", spo2: 85, resp: 32, temp: 36.5, status: "critical" },
+        options: [
+          { label: "Realizar Descompressão Torácica com agulha (2º ou 5º EIC)", nextNodeId: "needle_decompression", type: "intervention" },
+          { label: "Solicitar Raio-X de Tórax urgente", nextNodeId: "xray_death", type: "assessment" },
+          { label: "Intubar (IOT) devido à hipóxia grave", nextNodeId: "intubation_worsens", type: "critical" }
+        ]
+      },
+      "needle_decompression": {
+        id: "needle_decompression",
+        text: "Você identificou clinicamente o Pneumotórax Hipertensivo (Choque Obstrutivo). Inseriu um jelco 14 no 2º EIC (linha hemiclavicular) ou 5º EIC (linha axilar anterior).\n\nOuviu-se um 'shhh' de saída de ar.\n\nSSVV: FC 100 | PA 110/70 | SpO2 94%.",
+        vitals: { hr: 100, bp: "110/70", spo2: 94, resp: 20, temp: 36.5, status: "stable" },
+        options: [
+          { label: "Preparar material para Drenagem Torácica selada em água", nextNodeId: "chest_tube", type: "intervention" },
+          { label: "Retirar a agulha pois o paciente melhorou", nextNodeId: "remove_needle_error", type: "critical" }
+        ]
+      },
+      "xray_death": {
+        id: "xray_death",
+        text: "Enquanto o paciente era posicionado para o Raio-X, ele fez uma PCR em AESP.\n\nO Pneumotórax Hipertensivo é um diagnóstico CLÍNICO. Não se deve esperar imagem para tratar se o paciente está instável.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        feedback: "Hipotensão + Turgência Jugular + Ausência de Murmúrio = Choque Obstrutivo. Ação imediata necessária.",
+        options: []
+      },
+      "intubation_worsens": {
+        id: "intubation_worsens",
+        text: "Você intubou. A ventilação com pressão positiva aumentou a pressão dentro do tórax, transformando o pneumotórax em hipertensivo grave, colapsando a veia cava.\n\nO paciente parou imediatamente após a intubação.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        feedback: "Nunca intube um pneumotórax hipertensivo antes de descomprimir (drenar/puncionar) o tórax.",
+        options: []
+      },
+      "chest_tube": {
+        id: "chest_tube",
+        text: "Dreno de tórax inserido no 5º espaço intercostal. Oscilação presente no selo d'água. Pulmão reexpandido.\n\nPaciente estabilizado e encaminhado para observação.",
+        vitals: { hr: 85, bp: "120/80", spo2: 98, resp: 16, temp: 36.5, status: "recovered" },
+        options: []
+      },
+      "remove_needle_error": {
+        id: "remove_needle_error",
+        text: "Ao retirar a agulha sem o dreno definitivo, o ar voltou a acumular (efeito válvula). O paciente chocou novamente em minutos.",
+        vitals: { hr: 140, bp: "60/40", spo2: 80, resp: 40, temp: 36.5, status: "critical" },
+        options: [
+          { label: "Puncionar novamente", nextNodeId: "needle_decompression", type: "intervention" }
+        ]
+      }
+    }
+  },
+  {
+    id: "status-epilepticus",
+    title: "Estado de Mal Epiléptico",
+    difficulty: "Intermediário",
+    category: "Urgência",
+    description: "Paciente em crise convulsiva tônico-clônica generalizada há mais de 5 minutos na sala de espera.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Homem, 40 anos, cai na sala de espera convulsionando. Tônico-clônico generalizado. A crise já dura 8 minutos contínuos (Status Epilepticus).\n\nAcesso venoso obtido com dificuldade.\n\nSSVV: FC 130 | SpO2 88% | Cianose labial.",
+        vitals: { hr: 130, bp: "140/90", spo2: 88, resp: 0, temp: 37.0, status: "critical" },
+        options: [
+          { label: "Administrar Diazepam 10mg IV lento (1ª Linha)", nextNodeId: "benzo_ok", type: "medication" },
+          { label: "Administrar Fenitoína IV direto (2ª Linha)", nextNodeId: "phenytoin_slow", type: "medication" },
+          { label: "Colocar cânula de Guedel à força para abrir a boca", nextNodeId: "guedel_error", type: "intervention" }
+        ]
+      },
+      "benzo_ok": {
+        id: "benzo_ok",
+        text: "A crise cessou após 2 minutos do Diazepam. O paciente está em fase pós-ictal (sonolento), respirando melhor com O2 suplementar.\n\nAgora precisamos prevenir a recorrência.",
+        vitals: { hr: 100, bp: "130/80", spo2: 95, resp: 18, temp: 37.0, status: "stable" },
+        options: [
+          { label: "Hidantalização (Fenitoína 20mg/kg) diluída em SF 0,9%", nextNodeId: "hidantal_ok", type: "medication" },
+          { label: "Liberar para casa assim que acordar", nextNodeId: "discharge_seizure", type: "critical" }
+        ]
+      },
+      "phenytoin_slow": {
+        id: "phenytoin_slow",
+        text: "A Fenitoína demora cerca de 20 minutos para infundir (risco de arritmia se rápido). Durante esse tempo, o paciente continuou convulsionando, sofrendo dano cerebral hipóxico.",
+        vitals: { hr: 150, bp: "160/100", spo2: 80, resp: 0, temp: 37.5, status: "critical" },
+        feedback: "A 1ª linha para PARAR a crise é sempre um Benzodiazepínico (ação rápida). A Fenitoína serve para evitar que ela volte.",
+        options: [
+          { label: "Fazer Diazepam agora", nextNodeId: "benzo_ok", type: "medication" }
+        ]
+      },
+      "guedel_error": {
+        id: "guedel_error",
+        text: "Ao tentar forçar a abertura da boca no trismo, você quebrou dois dentes do paciente, que foram aspirados. A obstrução da via aérea piorou.",
+        vitals: { hr: 160, bp: "180/110", spo2: 70, resp: 0, temp: 37.0, status: "critical" },
+        feedback: "Nunca introduza objetos na boca durante a crise. Apenas lateralize a cabeça e proteja de traumas.",
+        options: []
+      },
+      "hidantal_ok": {
+        id: "hidantal_ok",
+        text: "Dose de ataque realizada corretamente (em SF 0,9%, pois precipita em glicose). Paciente desperta confuso mas estável. Encaminhado para TC e avaliação neurológica.",
+        vitals: { hr: 80, bp: "120/80", spo2: 98, resp: 16, temp: 37.0, status: "recovered" },
+        options: []
+      },
+      "discharge_seizure": {
+        id: "discharge_seizure",
+        text: "O paciente teve nova crise na porta do hospital, bateu a cabeça e sofreu um TCE grave.",
+        vitals: { hr: 100, bp: "120/80", spo2: 95, resp: 18, temp: 37.0, status: "critical" },
+        feedback: "Status epilepticus exige investigação e observação hospitalar.",
+        options: []
+      }
+    }
+  },
+  {
+    id: "tep-pos-op",
+    title: "Dispneia Súbita no Pós-Operatório",
+    difficulty: "Avançado",
+    category: "Clínica",
+    description: "Paciente no 3º dia de pós-operatório de Artroplastia de Quadril apresenta falta de ar súbita e dor torácica.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Sr. Antônio, 70 anos, 3º DPO de Prótese de Quadril. Chama a enfermagem referindo falta de ar súbita e dor no peito ao respirar.\n\nExame: Pulmões LIMPOS à ausculta. Panturrilha direita empastada.\n\nSSVV: FC 120 | PA 100/60 | SpO2 86% | FR 30.",
+        vitals: { hr: 120, bp: "100/60", spo2: 86, resp: 30, temp: 36.5, status: "critical" },
+        options: [
+          { label: "Oxigênio + Heparina (Suspeita de TEP)", nextNodeId: "heparin_start", type: "medication" },
+          { label: "Furosemida IV (Suspeita de Edema Agudo)", nextNodeId: "lasix_error", type: "medication" },
+          { label: "Nebulização com Berotec (Suspeita de Broncoespasmo)", nextNodeId: "nebulization_delay", type: "medication" }
+        ]
+      },
+      "heparin_start": {
+        id: "heparin_start",
+        text: "A suspeita clínica de Tromboembolismo Pulmonar (TEP) foi precisa (DPO ortopédico + Dispneia súbita + Pulmão limpo + TVP provável).\n\nIniciada anticoagulação plena e O2. Paciente estabilizou SpO2 em 94%.",
+        vitals: { hr: 100, bp: "110/70", spo2: 94, resp: 22, temp: 36.5, status: "stable" },
+        options: [
+          { label: "Encaminhar para Angiotomografia de Tórax (Confirmar)", nextNodeId: "angiotc_confirm", type: "assessment" }
+        ]
+      },
+      "lasix_error": {
+        id: "lasix_error",
+        text: "Você administrou diurético. Como não era congestão (pulmão estava limpo!), a volemia caiu.\n\nO TEP maciço depende de pré-carga para manter o débito do VD. O paciente fez hipotensão severa (Choque Obstrutivo).",
+        vitals: { hr: 140, bp: "60/30", spo2: 80, resp: 40, temp: 36.5, status: "critical" },
+        feedback: "Cuidado! Ausculta limpa com hipóxia grave sugere TEP, não EAP. Diurético pode ser fatal no TEP maciço.",
+        options: [
+          { label: "Volume rápido e Noradrenalina", nextNodeId: "shock_rescue", type: "intervention" }
+        ]
+      },
+      "nebulization_delay": {
+        id: "nebulization_delay",
+        text: "A nebulização não resolveu nada (não havia broncoespasmo). Durante o procedimento, o paciente piorou a hipóxia e evoluiu para PCR.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        feedback: "Sibilos localizados podem ocorrer no TEP, mas 'pulmão limpo' com hipóxia grave é a chave.",
+        options: []
+      },
+      "angiotc_confirm": {
+        id: "angiotc_confirm",
+        text: "AngioTC confirmou falha de enchimento na artéria pulmonar direita. O tratamento precoce evitou a progressão para choque e morte. O paciente teve alta após 10 dias anticoagulado.",
+        vitals: { hr: 80, bp: "120/80", spo2: 96, resp: 16, temp: 36.5, status: "recovered" },
+        options: []
+      },
+      "shock_rescue": {
+        id: "shock_rescue",
+        text: "O paciente foi estabilizado a duras penas na UTI e precisou de trombólise sistêmica (alto risco de sangramento na cirurgia do quadril). Sobreviveu com sequelas renais.",
+        vitals: { hr: 110, bp: "90/60", spo2: 92, resp: 24, temp: 36.5, status: "warning" },
+        options: []
+      }
+    }
   }
 ];
