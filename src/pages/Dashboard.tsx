@@ -96,6 +96,7 @@ const Dashboard = () => {
   const { activities } = useActivityTracker();
   const recentActivities = activities.slice(0, 4);
   const [randomTip, setRandomTip] = useState("");
+  const [greeting, setGreeting] = useState("");
 
   const { data: randomQuestion, isLoading: isLoadingQuestion } = useQuery({
     queryKey: ['randomQuestion'],
@@ -105,6 +106,12 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
+    // Definir saudação baseada na hora
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Bom dia");
+    else if (hour < 18) setGreeting("Boa tarde");
+    else setGreeting("Boa noite");
+
     // Set initial tip
     setRandomTip(clinicalTips[Math.floor(Math.random() * clinicalTips.length)]);
 
@@ -127,32 +134,32 @@ const Dashboard = () => {
 
         <div className="relative z-10 grid lg:grid-cols-5 gap-8 p-6 sm:p-10 items-center">
           {/* Saudação e Info - CENTRALIZADO */}
-          <div className="lg:col-span-3 space-y-4 flex flex-col items-center text-center">
+          <div className="lg:col-span-3 space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-blue-200">
               <Sparkles className="w-3 h-3 text-yellow-300" />
               <span>Painel de Controle Profissional</span>
             </div>
             
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight w-full text-center">
-              Bem-vindo, <br />
+            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight w-full text-center lg:text-left">
+              {greeting}, <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-indigo-200 to-white">
                 {profile?.first_name || 'Colega'}!
               </span>
             </h1>
             
-            <p className="text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed text-center">
+            <p className="text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed text-center lg:text-left">
               Prepare-se para o plantão ou seus estudos. Você tem acesso rápido às ferramentas essenciais da enfermagem moderna.
             </p>
 
-            <div className="flex flex-wrap gap-3 pt-2 justify-center">
+            <div className="flex flex-wrap gap-3 pt-2 justify-center lg:justify-start">
               <Button asChild className="bg-white text-slate-900 hover:bg-blue-50 font-bold rounded-full shadow-lg shadow-white/10 transition-all hover:scale-105">
                 <Link to="/simulado">
                   <Brain className="mr-2 h-4 w-4" /> Iniciar Simulado
                 </Link>
               </Button>
               <Button asChild variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 rounded-full">
-                <Link to="/library">
-                  <ArrowRight className="mr-2 h-4 w-4" /> Biblioteca
+                <Link to="/questions">
+                  <FileQuestion className="mr-2 h-4 w-4" /> Banca de Questões
                 </Link>
               </Button>
             </div>
