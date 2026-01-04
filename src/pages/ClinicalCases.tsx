@@ -209,7 +209,9 @@ const ClinicalCases = () => {
 
   // --- MODO JOGO (Caso Ativo) ---
   const currentNode = activeCase.nodes[currentNodeId || activeCase.initialNodeId];
-  const isGameOver = currentNode.vitals?.status === "dead" || currentNode.vitals?.status === "recovered";
+  const isFailure = currentNode.vitals?.status === "dead";
+  const isSuccess = currentNode.vitals?.status === "recovered";
+  const isGameOver = isFailure || isSuccess;
   
   // Cores de status baseadas no estado do paciente
   const statusColor = {
@@ -253,21 +255,40 @@ const ClinicalCases = () => {
           </div>
 
           {/* Feedback Section (if game over) */}
-          {isGameOver && currentNode.feedback && (
+          {isGameOver && (
             <Alert className={cn(
               "border-l-4", 
-              currentNode.vitals?.status === "recovered" 
+              isSuccess
                 ? "bg-emerald-100 dark:bg-emerald-900/20 border-emerald-500 text-emerald-800 dark:text-emerald-300"
-                : "bg-red-100 dark:bg-red-900/20 border-red-500 text-red-800 dark:text-red-300"
+                : "bg-red-50 dark:bg-red-950/20 border-red-500 text-red-900 dark:text-red-200"
             )}>
-              <div className="flex gap-3">
-                {currentNode.vitals?.status === "recovered" ? <Trophy className="h-5 w-5" /> : <AlertTriangle className="h-5 w-5" />}
-                <div>
-                  <AlertTitle className="font-bold mb-1">
-                    {currentNode.vitals?.status === "recovered" ? "Sucesso Clínico!" : "Desfecho Desfavorável"}
+              <div className="flex gap-4">
+                <div className="mt-1 shrink-0">
+                  {isSuccess ? <Trophy className="h-6 w-6" /> : <AlertTriangle className="h-6 w-6" />}
+                </div>
+                <div className="flex-1">
+                  <AlertTitle className="font-bold text-lg mb-2">
+                    {isSuccess ? "Sucesso Clínico!" : "Conduta Inadequada"}
                   </AlertTitle>
-                  <AlertDescription className="text-sm leading-relaxed">
-                    {currentNode.feedback}
+                  
+                  <AlertDescription className="text-base">
+                    {isFailure ? (
+                      <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-top-2">
+                        <div>
+                          <p className="font-bold text-xl mb-1">Você errou a conduta, você precisa estudar mais!!</p>
+                          <p className="font-medium text-lg">O paciente está em suas mãos, o que você vai fazer?</p>
+                        </div>
+                        
+                        {currentNode.feedback && (
+                          <div className="mt-2 p-3 bg-black/5 dark:bg-white/5 rounded border border-black/10 dark:border-white/10 text-sm leading-relaxed">
+                            <span className="font-bold text-xs uppercase tracking-wider opacity-70 block mb-1">Análise Técnica:</span>
+                            {currentNode.feedback}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="leading-relaxed">{currentNode.feedback}</span>
+                    )}
                   </AlertDescription>
                 </div>
               </div>
@@ -286,7 +307,6 @@ const ClinicalCases = () => {
                   variant="outline" 
                   className={cn(
                     "w-full justify-start h-auto py-4 px-4 text-left whitespace-normal border-2 hover:border-primary hover:bg-primary/5 transition-all text-sm sm:text-base",
-                    // Visual clues for option types (optional, maybe keep neutral for difficulty)
                   )}
                   onClick={() => handleOptionClick(option.nextNodeId)}
                 >
@@ -300,9 +320,9 @@ const ClinicalCases = () => {
               ))}
             </div>
           ) : (
-            <Button size="lg" onClick={handleReset} className="w-full gap-2 font-bold text-lg h-14 shadow-lg">
+            <Button size="lg" onClick={handleReset} className={cn("w-full gap-2 font-bold text-lg h-14 shadow-lg", isFailure ? "bg-red-600 hover:bg-red-700 text-white" : "bg-primary")}>
               <RotateCcw className="h-5 w-5" />
-              {currentNode.vitals?.status === "recovered" ? "Finalizar e Voltar" : "Tentar Novamente"}
+              {isSuccess ? "Finalizar e Voltar" : "Tentar Salvar o Paciente Novamente"}
             </Button>
           )}
         </CardFooter>
