@@ -7,7 +7,7 @@ import {
   Bandage, Info, CheckCircle, Zap, XCircle, Search, 
   AlertTriangle, ShieldAlert, Scale, Clock, ArrowDown, ArrowUp, 
   Heart, Activity, Footprints, Microscope, Droplet, Scissors, Layers, 
-  AlertOctagon, ScanLine, Ruler
+  AlertOctagon, ScanLine, Ruler, FlaskConical, ChevronsRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -188,8 +188,6 @@ const differentialDiagnosis = [
   { feature: "Prevenção", lpp: "Mudança de decúbito, superfícies de suporte.", iad: "Higiene frequente, cremes de barreira, fraldas de alta absorção." }
 ];
 
-import { FlaskConical } from "lucide-react";
-
 const WoundCare = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [selectedTissue, setSelectedTissue] = useState(tissueTypes[0]);
@@ -256,6 +254,14 @@ const WoundCare = () => {
             />
           </div>
         )}
+      </div>
+
+      {/* Seta discreta para indicar rolagem no mobile */}
+      <div className="flex justify-end px-4 sm:hidden animate-pulse">
+        <div className="flex items-center gap-1 bg-muted/50 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] text-muted-foreground">Mais opções</span>
+          <ChevronsRight className="h-3 w-3 text-muted-foreground" />
+        </div>
       </div>
 
       <Tabs defaultValue="tissues" className="w-full">
