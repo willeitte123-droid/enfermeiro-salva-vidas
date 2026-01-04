@@ -96,7 +96,6 @@ const Dashboard = () => {
   const { activities } = useActivityTracker();
   const recentActivities = activities.slice(0, 4);
   const [randomTip, setRandomTip] = useState("");
-  const [greeting, setGreeting] = useState("");
 
   const { data: randomQuestion, isLoading: isLoadingQuestion } = useQuery({
     queryKey: ['randomQuestion'],
@@ -106,12 +105,6 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    // Definir saudação baseada na hora
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Bom dia");
-    else if (hour < 18) setGreeting("Boa tarde");
-    else setGreeting("Boa noite");
-
     // Set initial tip
     setRandomTip(clinicalTips[Math.floor(Math.random() * clinicalTips.length)]);
 
@@ -141,7 +134,7 @@ const Dashboard = () => {
             </div>
             
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight w-full text-center lg:text-left">
-              {greeting}, <br />
+              Bem-vindo, <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-indigo-200 to-white">
                 {profile?.first_name || 'Colega'}!
               </span>
