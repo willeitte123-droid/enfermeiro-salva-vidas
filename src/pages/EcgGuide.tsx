@@ -3,11 +3,13 @@ import { useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { HeartPulse, AlertTriangle, MapPin, Waves, Clock, Zap, Repeat } from "lucide-react";
+import { HeartPulse, AlertTriangle, MapPin, Waves, Clock, Zap, Repeat, Activity, Syringe, Stethoscope, Thermometer } from "lucide-react";
 import EcgStrip from "@/components/EcgStrip";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface Profile {
   id: string;
@@ -21,31 +23,62 @@ const EcgGuide = () => {
     addActivity({ type: 'Guia', title: 'Guia Rápido de ECG', path: '/ecg', icon: 'BookHeart' });
   }, [addActivity]);
 
-  const lethalRhythms = [
+  const shockableRhythms = [
     {
       name: "Fibrilação Ventricular (FV)",
       svgPath: "M0,30 q3,-8 6,2 q3,10 6,-2 q3,-12 6,0 q3,8 6,-4 q3,-12 6,2 q3,10 6,-2 q3,-12 6,0 q3,8 6,-4 q3,-12 6,2 q3,10 6,-2 q3,-12 6,0 q3,8 6,-4 q3,-12 6,2 q3,10 6,-2 q3,-12 6,0 q3,8 6,-4",
-      description: "Atividade elétrica caótica e desorganizada. O coração 'treme' e não bombeia sangue.",
-      treatment: "RCP de alta qualidade e desfibrilação imediata."
+      description: "Atividade elétrica ventricular totalmente caótica. O coração apenas 'treme' e não ejeta sangue.",
+      criteria: ["Ritmo: Irregular/Caótico", "Frequência: Impossível contar", "Onda P: Ausente", "QRS: Não identificável", "Linha de base: Ondulatória grosseira ou fina"],
+      action: "CHOQUE IMEDIATO",
+      drugs: ["Adrenalina 1mg (3-5 min)", "Amiodarona 300mg (1ª) / 150mg (2ª)"],
+      priority: "Desfibrilação"
     },
     {
-      name: "Taquicardia Ventricular sem Pulso (TVSP)",
+      name: "Taquicardia Ventricular s/ Pulso (TVSP)",
       svgPath: "M0,30 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0 q5,30 10,0 q5,-30 10,0",
-      description: "Ritmo ventricular rápido e organizado, mas sem pulso central. O coração bate tão rápido que não há tempo para enchimento.",
-      treatment: "RCP de alta qualidade e desfibrilação imediata."
+      description: "Ritmo ventricular rápido organizado. Ocorre reentrada ou automatismo anormal. Sem pulso detectável.",
+      criteria: ["Ritmo: Regular", "Frequência: > 100 bpm (geralmente > 150)", "Onda P: Dissociada ou ausente", "QRS: Alargado (> 0,12s)", "Morfologia: Dentes de serra largos"],
+      action: "CHOQUE IMEDIATO",
+      drugs: ["Adrenalina 1mg (3-5 min)", "Amiodarona 300mg (1ª) / 150mg (2ª)"],
+      priority: "Desfibrilação"
+    }
+  ];
+
+  const nonShockableRhythms = [
+    {
+      name: "Assistolia",
+      svgPath: "M0,30 l50,0.5 l50,-0.5 l50,0.2 l50,-0.4 l50,0.1 l50,-0.2 l50,0",
+      description: "Ausência total de atividade elétrica ventricular. Prognóstico reservado.",
+      criteria: ["Linha reta (ou quase)", "Sem QRS", "Pode haver Onda P isolada (raro)", "IMPORTANTE: Protocolo da Linha Reta (Checar Cabos, Ganho, Derivação)"],
+      action: "RCP + ADRENALINA PRECOCE",
+      drugs: ["Adrenalina 1mg (assim que possível)", "Repetir a cada 3-5 min"],
+      priority: "Compressões de Alta Qualidade"
     },
     {
       name: "Atividade Elétrica Sem Pulso (AESP)",
       svgPath: "M0,30 l20,0 q5,-25 10,0 q5,25 10,0 l20,0 l20,0 q5,-25 10,0 q5,25 10,0 l20,0 l20,0 q5,-25 10,0 q5,25 10,0 l20,0",
-      description: "Presença de um ritmo organizado no monitor, mas o paciente não tem pulso. Dissociação eletromecânica.",
-      treatment: "RCP de alta qualidade, adrenalina e busca ativa pelas causas reversíveis (5Hs e 5Ts)."
-    },
-    {
-      name: "Assistolia",
-      svgPath: "M0,30 l50,0.5 l50,-0.5 l50,0.2 l50,-0.4 l50,0.1 l50,-0.2",
-      description: "Ausência completa de atividade elétrica ('linha reta').",
-      treatment: "RCP de alta qualidade, adrenalina e busca por causas reversíveis. Confirmar em mais de uma derivação."
+      description: "Qualquer ritmo organizado (exceto FV/TV) no monitor, mas o paciente NÃO tem pulso palpável.",
+      criteria: ["Pode parecer Sinusal, Bradicardia, FA, etc.", "A chave é clínica: SEM PULSO CENTRAL", "Dissociação Eletromecânica"],
+      action: "RCP + ADRENALINA PRECOCE",
+      drugs: ["Adrenalina 1mg (assim que possível)", "Repetir a cada 3-5 min"],
+      priority: "Identificar Causas (5Hs e 5Ts)"
     }
+  ];
+
+  const causes5H = [
+    { title: "Hipovolemia", detail: "Hemorragia, desidratação. Tto: Volume/Sangue." },
+    { title: "Hipóxia", detail: "Falta de O2. Tto: Via aérea avançada + O2." },
+    { title: "Hidrogênio (Acidose)", detail: "Acidose metabólica. Tto: Ventilação / Bicarbonato (se indicado)." },
+    { title: "Hipo/Hipercalemia", detail: "K+ baixo ou alto. Tto: Reposição ou Gluconato de Cálcio/Insulina." },
+    { title: "Hipotermia", detail: "Baixa temperatura. Tto: Reaquecimento." }
+  ];
+
+  const causes5T = [
+    { title: "Tensão (Pneumotórax)", detail: "Hipertensivo. Tto: Descompressão torácica." },
+    { title: "Tamponamento Cardíaco", detail: "Líquido no pericárdio. Tto: Pericardiocentese." },
+    { title: "Toxinas", detail: "Drogas/Venenos. Tto: Antídotos específicos." },
+    { title: "Trombose Pulmonar (TEP)", detail: "Embolia. Tto: Fibrinólise/Embolectomia." },
+    { title: "Trombose Coronária (IAM)", detail: "Infarto. Tto: Angioplastia (pós-RCE)." }
   ];
 
   const waveComponents = [
@@ -78,11 +111,12 @@ const EcgGuide = () => {
         <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card p-2 shadow-sm">
           <TabsList className="flex w-max space-x-2 h-auto bg-transparent p-0">
             <TabsTrigger value="fundamentals" className="px-4 py-2 text-green-700 hover:bg-green-50 data-[state=active]:bg-green-600 data-[state=active]:text-white font-semibold rounded-md transition-colors">Fundamentos</TabsTrigger>
-            <TabsTrigger value="lethal" className="px-4 py-2 text-red-700 hover:bg-red-50 data-[state=active]:bg-red-600 data-[state=active]:text-white font-semibold rounded-md transition-colors">Arritmias Letais</TabsTrigger>
+            <TabsTrigger value="lethal" className="px-4 py-2 text-red-700 hover:bg-red-50 data-[state=active]:bg-red-600 data-[state=active]:text-white font-semibold rounded-md transition-colors">Arritmias Letais (PCR)</TabsTrigger>
           </TabsList>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
 
+        {/* --- ABA DE FUNDAMENTOS --- */}
         <TabsContent value="fundamentals" className="space-y-6">
           <Card className="overflow-hidden">
             <CardHeader>
@@ -167,28 +201,158 @@ const EcgGuide = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="lethal" className="space-y-4">
-          <Card className="border-destructive/50 bg-destructive/5">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-destructive"><AlertTriangle className="h-5 w-5"/> Ritmos de Parada Cardíaca</CardTitle>
-              <CardDescription className="text-destructive/90">Identificação e tratamento imediato são cruciais.</CardDescription>
-            </CardHeader>
-          </Card>
-          <div className="grid md:grid-cols-2 gap-4">
-            {lethalRhythms.map((rhythm, index) => (
-              <Card key={index} className="border-l-4 border-destructive">
-                <CardHeader><CardTitle>{rhythm.name}</CardTitle></CardHeader>
-                <CardContent className="space-y-3">
-                  <EcgStrip path={rhythm.svgPath} />
-                  <p className="text-sm">{rhythm.description}</p>
-                  <div>
-                    <h4 className="font-semibold text-sm mb-1 text-destructive">Tratamento Imediato</h4>
-                    <p className="text-sm font-semibold" dangerouslySetInnerHTML={{ __html: rhythm.treatment }} />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+        {/* --- ABA DE ARRITMIAS LETAIS (REFORMULADA) --- */}
+        <TabsContent value="lethal" className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            
+            {/* Ritmos Chocáveis */}
+            <div className="space-y-4">
+              <div className="bg-red-600/10 border-l-4 border-red-600 p-3 rounded-r-lg">
+                <h3 className="font-bold text-red-600 dark:text-red-400 flex items-center gap-2">
+                  <Zap className="h-5 w-5 fill-current" /> RITMOS CHOCÁVEIS
+                </h3>
+                <p className="text-xs text-muted-foreground mt-1">A desfibrilação é a prioridade absoluta.</p>
+              </div>
+              
+              {shockableRhythms.map((rhythm, index) => (
+                <Card key={index} className="border-red-200 dark:border-red-900/50 shadow-sm overflow-hidden group hover:shadow-md transition-all">
+                  <CardHeader className="bg-gradient-to-r from-red-50 to-transparent dark:from-red-950/20 py-3">
+                    <CardTitle className="text-base text-red-800 dark:text-red-300">{rhythm.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 space-y-4">
+                    <EcgStrip path={rhythm.svgPath} />
+                    
+                    <Accordion type="single" collapsible className="w-full border rounded-lg bg-card/50">
+                      <AccordionItem value="details" className="border-0">
+                        <AccordionTrigger className="px-3 py-2 text-sm font-semibold hover:no-underline hover:bg-accent/50">
+                          Critérios de Identificação
+                        </AccordionTrigger>
+                        <AccordionContent className="px-3 pb-3">
+                          <ul className="space-y-1 mt-2">
+                            {rhythm.criteria.map((c, i) => (
+                              <li key={i} className="text-xs text-muted-foreground flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" /> {c}
+                              </li>
+                            ))}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+
+                    <div className="space-y-2 pt-2 border-t">
+                      <div className="flex justify-between items-center">
+                        <Badge variant="destructive" className="animate-pulse font-bold">{rhythm.action}</Badge>
+                        <span className="text-[10px] uppercase font-bold text-muted-foreground">{rhythm.priority}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {rhythm.drugs.map((drug, i) => (
+                          <div key={i} className="flex items-center gap-1.5 text-xs bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300 px-2 py-1 rounded">
+                            <Syringe className="h-3 w-3" /> {drug}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Ritmos Não Chocáveis */}
+            <div className="space-y-4">
+              <div className="bg-blue-600/10 border-l-4 border-blue-600 p-3 rounded-r-lg">
+                <h3 className="font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2">
+                  <Activity className="h-5 w-5" /> NÃO CHOCÁVEIS
+                </h3>
+                <p className="text-xs text-muted-foreground mt-1">Foco em RCP de alta qualidade e causas.</p>
+              </div>
+
+              {nonShockableRhythms.map((rhythm, index) => (
+                <Card key={index} className="border-blue-200 dark:border-blue-900/50 shadow-sm overflow-hidden group hover:shadow-md transition-all">
+                  <CardHeader className="bg-gradient-to-r from-blue-50 to-transparent dark:from-blue-950/20 py-3">
+                    <CardTitle className="text-base text-blue-800 dark:text-blue-300">{rhythm.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 space-y-4">
+                    <EcgStrip path={rhythm.svgPath} />
+                    
+                    <Accordion type="single" collapsible className="w-full border rounded-lg bg-card/50">
+                      <AccordionItem value="details" className="border-0">
+                        <AccordionTrigger className="px-3 py-2 text-sm font-semibold hover:no-underline hover:bg-accent/50">
+                          Critérios de Identificação
+                        </AccordionTrigger>
+                        <AccordionContent className="px-3 pb-3">
+                          <ul className="space-y-1 mt-2">
+                            {rhythm.criteria.map((c, i) => (
+                              <li key={i} className="text-xs text-muted-foreground flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" /> {c}
+                              </li>
+                            ))}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+
+                    <div className="space-y-2 pt-2 border-t">
+                      <div className="flex justify-between items-center">
+                        <Badge className="bg-blue-600 hover:bg-blue-700 font-bold">{rhythm.action}</Badge>
+                        <span className="text-[10px] uppercase font-bold text-muted-foreground">{rhythm.priority}</span>
+                      </div>
+                      <div className="grid grid-cols-1 gap-2">
+                        {rhythm.drugs.map((drug, i) => (
+                          <div key={i} className="flex items-center gap-1.5 text-xs bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 px-2 py-1 rounded">
+                            <Syringe className="h-3 w-3" /> {drug}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
+
+          {/* Seção 5Hs e 5Ts */}
+          <Card className="border-t-4 border-t-amber-500 shadow-md">
+            <CardHeader className="bg-amber-50/50 dark:bg-amber-950/10 pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg text-amber-700 dark:text-amber-400">
+                <Stethoscope className="h-5 w-5" /> Causas Reversíveis (5Hs e 5Ts)
+              </CardTitle>
+              <CardDescription>A chave para o sucesso na ressuscitação de AESP e Assistolia.</CardDescription>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x border-t">
+                
+                {/* 5Hs */}
+                <div className="p-4 space-y-3">
+                  <h4 className="font-bold text-primary flex items-center gap-2 mb-2">
+                    <Droplet className="h-4 w-4" /> 5 Hs (Fisiológicos)
+                  </h4>
+                  <ul className="space-y-2">
+                    {causes5H.map((cause, i) => (
+                      <li key={i} className="text-sm border-l-2 border-primary/30 pl-3 py-0.5">
+                        <span className="font-bold block">{cause.title}</span>
+                        <span className="text-xs text-muted-foreground">{cause.detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* 5Ts */}
+                <div className="p-4 space-y-3">
+                  <h4 className="font-bold text-primary flex items-center gap-2 mb-2">
+                    <AlertTriangle className="h-4 w-4" /> 5 Ts (Mecânicos/Tóxicos)
+                  </h4>
+                  <ul className="space-y-2">
+                    {causes5T.map((cause, i) => (
+                      <li key={i} className="text-sm border-l-2 border-primary/30 pl-3 py-0.5">
+                        <span className="font-bold block">{cause.title}</span>
+                        <span className="text-xs text-muted-foreground">{cause.detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
