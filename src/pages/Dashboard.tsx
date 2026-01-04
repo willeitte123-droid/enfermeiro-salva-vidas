@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, ClipboardList, Loader2, History } from "lucide-react";
+import { 
+  Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, 
+  ClipboardList, Loader2, History, Sparkles, Activity, 
+  ChevronRight, Brain, Zap, Clock
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import * as LucideIcons from "lucide-react";
 import { Question } from "@/context/QuestionsContext";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Profile {
   id: string;
@@ -23,45 +29,37 @@ const quickAccessLinks = [
     title: "Medicamentos",
     icon: Syringe,
     path: "/medications",
-    description: "Guia rápido de fármacos.",
-    colorClasses: {
-      bg: "bg-red-100 dark:bg-red-900/30",
-      text: "text-red-600 dark:text-red-400",
-      hoverBorder: "hover:border-red-400 dark:hover:border-red-600",
-    },
+    description: "Guia rápido de fármacos e diluições.",
+    color: "text-rose-500",
+    bg: "bg-rose-50 dark:bg-rose-950/30",
+    border: "group-hover:border-rose-200 dark:group-hover:border-rose-800"
   },
   {
     title: "Escalas Clínicas",
     icon: ListChecks,
     path: "/scales",
-    description: "Avaliações padronizadas.",
-    colorClasses: {
-      bg: "bg-emerald-100 dark:bg-emerald-900/30",
-      text: "text-emerald-600 dark:text-emerald-400",
-      hoverBorder: "hover:border-emerald-400 dark:hover:border-emerald-600",
-    },
+    description: "Braden, Glasgow, Fugulin e mais.",
+    color: "text-emerald-500",
+    bg: "bg-emerald-50 dark:bg-emerald-950/30",
+    border: "group-hover:border-emerald-200 dark:group-hover:border-emerald-800"
   },
   {
     title: "Banca de Questões",
     icon: FileQuestion,
     path: "/questions",
-    description: "Teste seus conhecimentos.",
-    colorClasses: {
-      bg: "bg-violet-100 dark:bg-violet-900/30",
-      text: "text-violet-600 dark:text-violet-400",
-      hoverBorder: "hover:border-violet-400 dark:hover:border-violet-600",
-    },
+    description: "Treine para provas e concursos.",
+    color: "text-violet-500",
+    bg: "bg-violet-50 dark:bg-violet-950/30",
+    border: "group-hover:border-violet-200 dark:group-hover:border-violet-800"
   },
   {
     title: "Procedimentos",
     icon: ClipboardList,
     path: "/procedures",
-    description: "Guias passo a passo.",
-    colorClasses: {
-      bg: "bg-cyan-100 dark:bg-cyan-900/30",
-      text: "text-cyan-600 dark:text-cyan-400",
-      hoverBorder: "hover:border-cyan-400 dark:hover:border-cyan-600",
-    },
+    description: "POP's e passo a passo técnico.",
+    color: "text-cyan-500",
+    bg: "bg-cyan-50 dark:bg-cyan-950/30",
+    border: "group-hover:border-cyan-200 dark:group-hover:border-cyan-800"
   },
 ];
 
@@ -71,6 +69,7 @@ const clinicalTips = [
   "Sempre verifique a compatibilidade de medicamentos antes de administrá-los na mesma linha endovenosa.",
   "A hipoglicemia pode mimetizar sintomas neurológicos. Sempre verifique a glicemia capilar em pacientes com alteração de consciência.",
   "O antídoto para intoxicação por opioides é a Naloxona. Para benzodiazepínicos, é o Flumazenil.",
+  "Em caso de suspeita de sepse, lembre-se do 'Hour-1 Bundle': Lactato, Hemoculturas, Antibiótico e Volume na primeira hora.",
 ];
 
 const fetchRandomQuestion = async (): Promise<Question | null> => {
@@ -85,96 +84,122 @@ const fetchRandomQuestion = async (): Promise<Question | null> => {
 const Dashboard = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { activities } = useActivityTracker();
-  const recentActivities = activities.slice(0, 3);
+  const recentActivities = activities.slice(0, 4);
   const [randomTip, setRandomTip] = useState("");
+  const [greeting, setGreeting] = useState("");
 
   const { data: randomQuestion, isLoading: isLoadingQuestion } = useQuery({
     queryKey: ['randomQuestion'],
     queryFn: fetchRandomQuestion,
-    refetchInterval: 15000, // Rotate question every 15 seconds
+    refetchInterval: 30000, // Rotate question every 30 seconds
     staleTime: 10000,
   });
 
   useEffect(() => {
+    // Definir saudação baseada na hora
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Bom dia");
+    else if (hour < 18) setGreeting("Boa tarde");
+    else setGreeting("Boa noite");
+
     // Set initial tip
     setRandomTip(clinicalTips[Math.floor(Math.random() * clinicalTips.length)]);
 
     const intervalId = setInterval(() => {
       setRandomTip(clinicalTips[Math.floor(Math.random() * clinicalTips.length)]);
-    }, 15000); // Change tip every 15 seconds
+    }, 20000); 
 
     return () => clearInterval(intervalId);
   }, []);
 
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Olá, {profile?.first_name || 'Profissional'}!</h1>
-        <p className="text-muted-foreground">Bem-vindo(a) de volta ao seu ambiente de estudo e trabalho.</p>
-      </div>
+    <div className="space-y-8 animate-in fade-in duration-700 pb-10">
+      
+      {/* 1. Hero Section Imersiva */}
+      <div className="relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl">
+        {/* Background Gradients & Patterns */}
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-blue-600/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card className="bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
-              <History className="h-6 w-6" />
-              Continue de onde parou
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {recentActivities.length > 0 ? (
-              <div className="space-y-3">
-                {recentActivities.map((activity) => {
-                  const Icon = LucideIcons[activity.icon] as LucideIcons.LucideIcon;
-                  return (
-                    <Link to={activity.path} key={activity.path} className="block p-3 rounded-md bg-background/50 hover:bg-background/70 transition-colors">
-                      <div className="flex items-center gap-4">
-                        {Icon && <Icon className="h-5 w-5 text-muted-foreground" />}
-                        <div>
-                          <p className="font-semibold text-sm">{activity.title}</p>
-                          <p className="text-xs text-muted-foreground">{activity.type}</p>
-                        </div>
-                        <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground" />
-                      </div>
-                    </Link>
-                  );
-                })}
+        <div className="relative z-10 grid lg:grid-cols-5 gap-8 p-6 sm:p-10 items-center">
+          {/* Saudação e Info */}
+          <div className="lg:col-span-3 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-blue-200">
+              <Sparkles className="w-3 h-3 text-yellow-300" />
+              <span>Painel de Controle Profissional</span>
+            </div>
+            
+            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+              {greeting}, <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-indigo-200 to-white">
+                {profile?.first_name || 'Colega'}!
+              </span>
+            </h1>
+            
+            <p className="text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed">
+              Prepare-se para o plantão ou seus estudos. Você tem acesso rápido às ferramentas essenciais da enfermagem moderna.
+            </p>
+
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button asChild className="bg-white text-slate-900 hover:bg-blue-50 font-bold rounded-full shadow-lg shadow-white/10 transition-all hover:scale-105">
+                <Link to="/simulado">
+                  <Brain className="mr-2 h-4 w-4" /> Iniciar Simulado
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 rounded-full">
+                <Link to="/library">
+                  <ArrowRight className="mr-2 h-4 w-4" /> Biblioteca
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          {/* Card Flutuante de Dica (Insight) */}
+          <div className="lg:col-span-2">
+            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 shadow-xl relative overflow-hidden group hover:bg-white/15 transition-colors">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Lightbulb className="w-24 h-24 text-yellow-300 rotate-12" />
               </div>
-            ) : (
-              <p className="text-sm text-muted-foreground text-center py-8">
-                Sua atividade recente aparecerá aqui conforme você navega pela plataforma.
-              </p>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="h-full bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
-              <Lightbulb className="h-5 w-5" />
-              Dica Clínica
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-blue-900 dark:text-blue-200 italic">"{randomTip}"</p>
-          </CardContent>
-        </Card>
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 text-yellow-300 font-bold uppercase text-xs tracking-wider mb-3">
+                  <Zap className="w-4 h-4" /> Insight Clínico
+                </div>
+                <p className="text-sm sm:text-base font-medium text-white leading-relaxed italic">
+                  "{randomTip}"
+                </p>
+                <div className="mt-4 flex items-center gap-2 text-[10px] text-slate-400">
+                  <Clock className="w-3 h-3" /> Atualiza a cada 20s
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
+      {/* 2. Grid de Acesso Rápido */}
       <div>
-        <h2 className="text-2xl font-semibold text-foreground mb-4">Acesso Rápido</h2>
+        <div className="flex items-center justify-between mb-4 px-1">
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <Activity className="h-5 w-5 text-primary" /> Acesso Rápido
+          </h2>
+        </div>
+        
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {quickAccessLinks.map((link) => {
             const Icon = link.icon;
             return (
-              <Link to={link.path} key={link.title}>
-                <Card className={cn("h-full bg-card hover:bg-accent transition-all group border-2 border-transparent", link.colorClasses.hoverBorder)}>
-                  <CardContent className="flex flex-col items-center justify-center text-center p-3 sm:p-4">
-                    <div className={cn("p-2 sm:p-3 rounded-lg mb-2 sm:mb-3 transition-colors", link.colorClasses.bg)}>
-                      <Icon className={cn("h-5 w-5 sm:h-6 sm:w-6 transition-colors", link.colorClasses.text)} />
+              <Link to={link.path} key={link.title} className="group outline-none">
+                <Card className={cn("h-full border-2 border-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-lg bg-card", link.border)}>
+                  <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center gap-3">
+                    <div className={cn("p-3 rounded-2xl transition-transform group-hover:scale-110 shadow-sm", link.bg, link.color)}>
+                      <Icon className="h-6 w-6 sm:h-8 sm:w-8" />
                     </div>
-                    <p className="font-semibold text-xs sm:text-sm text-foreground">{link.title}</p>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">{link.description}</p>
+                    <div>
+                      <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-primary transition-colors">{link.title}</h3>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 line-clamp-2">{link.description}</p>
+                    </div>
                   </CardContent>
                 </Card>
               </Link>
@@ -183,39 +208,112 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <Card className="w-full max-w-4xl mx-auto shadow-lg bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-blue-700 dark:text-blue-400">
-            <FileQuestion className="h-6 w-6" />
-            Questão em Destaque
-          </CardTitle>
-          <CardDescription className="text-blue-900/80 dark:text-blue-200/80">
-            Um novo desafio a cada 15 segundos para testar seus conhecimentos.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="min-h-[150px] flex items-center justify-center">
-          {isLoadingQuestion ? (
-            <Loader2 className="h-6 w-6 animate-spin text-primary" />
-          ) : randomQuestion ? (
-            <div className="space-y-4 animate-in fade-in-50 duration-500 w-full">
-              <p className="text-center font-semibold text-blue-900 dark:text-blue-200">
-                {randomQuestion.question}
-              </p>
-            </div>
-          ) : (
-            <p className="text-center text-muted-foreground">
-              Não foi possível carregar uma questão. Tente novamente mais tarde.
-            </p>
-          )}
-        </CardContent>
-        <CardFooter className="p-4 flex justify-end">
-          <Button asChild disabled={isLoadingQuestion || !randomQuestion}>
-            <Link to={randomQuestion ? `/questions?id=${randomQuestion.id}` : "/questions"}>
-              Responder essa Questão <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        </CardFooter>
-      </Card>
+      {/* 3. Seção Mista: Desafio + Histórico */}
+      <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
+        
+        {/* Coluna Esquerda: Desafio da Questão */}
+        <div className="lg:col-span-2">
+          <Card className="h-full border-l-4 border-l-primary bg-gradient-to-br from-card to-secondary/5 shadow-md flex flex-col">
+            <CardHeader>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-xl">
+                    <Brain className="h-6 w-6 text-primary" /> Desafio Rápido
+                  </CardTitle>
+                  <CardDescription>Teste seu conhecimento agora.</CardDescription>
+                </div>
+                <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20">
+                  Nova a cada 30s
+                </Badge>
+              </div>
+            </CardHeader>
+            
+            <CardContent className="flex-1 flex flex-col justify-center min-h-[120px]">
+              {isLoadingQuestion ? (
+                <div className="flex flex-col items-center justify-center gap-2 text-muted-foreground py-8">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary/50" />
+                  <span className="text-xs">Carregando desafio...</span>
+                </div>
+              ) : randomQuestion ? (
+                <div className="space-y-4 animate-in fade-in duration-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="outline" className="text-[10px] uppercase tracking-wider text-muted-foreground border-primary/20">
+                      {randomQuestion.category}
+                    </Badge>
+                    {randomQuestion.banca && (
+                        <Badge variant="outline" className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                            {randomQuestion.banca}
+                        </Badge>
+                    )}
+                  </div>
+                  <p className="font-semibold text-base sm:text-lg text-foreground leading-relaxed line-clamp-4">
+                    {randomQuestion.question}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-center text-muted-foreground py-8">Questão indisponível no momento.</p>
+              )}
+            </CardContent>
+            
+            <CardFooter className="pt-2 border-t bg-muted/20">
+              <Button asChild className="w-full sm:w-auto ml-auto group" disabled={isLoadingQuestion || !randomQuestion}>
+                <Link to={randomQuestion ? `/questions?id=${randomQuestion.id}` : "/questions"}>
+                  Responder Agora <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        {/* Coluna Direita: Atividade Recente */}
+        <div className="lg:col-span-1">
+          <Card className="h-full flex flex-col shadow-sm">
+            <CardHeader className="pb-3 border-b">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <History className="h-5 w-5 text-muted-foreground" /> Retomar
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0 flex-1">
+              <ScrollArea className="h-full max-h-[300px] lg:max-h-[250px]">
+                {recentActivities.length > 0 ? (
+                  <div className="flex flex-col divide-y">
+                    {recentActivities.map((activity, i) => {
+                      const Icon = LucideIcons[activity.icon] as LucideIcons.LucideIcon;
+                      return (
+                        <Link 
+                          to={activity.path} 
+                          key={`${activity.path}-${i}`} 
+                          className="flex items-center gap-3 p-4 hover:bg-muted/50 transition-colors group"
+                        >
+                          <div className="p-2 rounded-lg bg-muted group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                            {Icon ? <Icon className="h-4 w-4" /> : <Activity className="h-4 w-4" />}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate group-hover:text-primary transition-colors">
+                              {activity.title}
+                            </p>
+                            <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                              {activity.type}
+                            </p>
+                          </div>
+                          <ChevronRight className="h-4 w-4 text-muted-foreground/50 group-hover:text-primary transition-colors" />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-40 text-muted-foreground p-4 text-center">
+                    <History className="h-8 w-8 mb-2 opacity-20" />
+                    <p className="text-sm">Nenhuma atividade recente.</p>
+                    <p className="text-xs mt-1">Navegue pela plataforma para ver seu histórico aqui.</p>
+                  </div>
+                )}
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
+
+      </div>
     </div>
   );
 };
