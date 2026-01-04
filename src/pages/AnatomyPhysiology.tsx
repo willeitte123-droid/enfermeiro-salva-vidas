@@ -108,7 +108,6 @@ const AnatomyPhysiology = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
   const [activeSystem, setActiveSystem] = useState<AnatomySystem>(anatomyData[0] as unknown as AnatomySystem);
-  const [recallMode, setRecallMode] = useState(false); // Modo de estudo ativo
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Anatomia e Fisiologia', path: '/anatomy', icon: 'Activity' });
@@ -136,15 +135,6 @@ const AnatomyPhysiology = () => {
           </div>
           
           <div className="flex items-center gap-3">
-            <Button 
-              variant="secondary" 
-              size="sm" 
-              className="bg-white/20 hover:bg-white/30 text-white border-0 backdrop-blur-md"
-              onClick={() => setRecallMode(!recallMode)}
-            >
-              {recallMode ? <Eye className="mr-2 h-4 w-4" /> : <EyeOff className="mr-2 h-4 w-4" />}
-              {recallMode ? "Modo Leitura" : "Modo Estudo (Ocultar)"}
-            </Button>
             {profile && (
               <FavoriteButton
                 userId={profile.id}
@@ -218,7 +208,7 @@ const AnatomyPhysiology = () => {
                 <div key={idx} className="bg-background border rounded-lg p-4 hover:shadow-md transition-shadow relative group overflow-hidden">
                   <div className={cn("absolute left-0 top-0 w-1 h-full", currentTheme.bg)} />
                   <h3 className="font-bold text-sm mb-1 pr-2">{item.part}</h3>
-                  <div className={cn("text-xs text-muted-foreground leading-relaxed", recallMode && "blur-sm select-none group-hover:blur-none transition-all duration-300")}>
+                  <div className="text-xs text-muted-foreground leading-relaxed">
                     {item.detail}
                   </div>
                 </div>
@@ -243,7 +233,7 @@ const AnatomyPhysiology = () => {
                     <div className="space-y-1">
                       <h3 className="font-bold text-base">{process.title}</h3>
                       <p 
-                        className={cn("text-sm text-muted-foreground leading-relaxed", recallMode && "blur-sm select-none group-hover:blur-none transition-all duration-300 cursor-help")}
+                        className="text-sm text-muted-foreground leading-relaxed cursor-help"
                         dangerouslySetInnerHTML={{ __html: process.content }}
                       />
                     </div>
@@ -264,7 +254,7 @@ const AnatomyPhysiology = () => {
               {activeSystem.pathology.map((path, idx) => (
                 <div key={idx} className="bg-muted/30 p-3 rounded-lg border text-sm">
                   <span className="font-bold block mb-1 text-foreground/90">{path.condition}</span>
-                  <span className={cn("text-xs text-muted-foreground", recallMode && "blur-sm hover:blur-none transition-all")}>{path.mechanism}</span>
+                  <span className="text-xs text-muted-foreground">{path.mechanism}</span>
                 </div>
               ))}
             </CardContent>
@@ -286,7 +276,7 @@ const AnatomyPhysiology = () => {
                 {activeSystem.red_flags.map((flag, idx) => (
                   <li key={idx} className="p-3 text-sm text-red-900/80 dark:text-red-200 flex items-start gap-2">
                     <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
-                    <span className={cn(recallMode && "blur-sm hover:blur-none transition-all")}>{flag}</span>
+                    <span>{flag}</span>
                   </li>
                 ))}
               </ul>
