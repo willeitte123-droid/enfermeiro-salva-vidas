@@ -23,7 +23,7 @@ export interface ClinicalCase {
   id: string;
   title: string;
   difficulty: "Iniciante" | "Intermediário" | "Avançado";
-  category: "Urgência" | "UTI" | "Clínica" | "Pediatria";
+  category: "Urgência" | "UTI" | "Clínica" | "Pediatria" | "Obstetrícia";
   description: string;
   initialNodeId: string;
   nodes: Record<string, CaseNode>;
@@ -351,6 +351,177 @@ export const CLINICAL_CASES: ClinicalCase[] = [
           options: [
               { label: "Reaplicar torniquete e correr para CC", nextNodeId: "torniquete", type: "intervention" }
           ]
+      }
+    }
+  },
+  {
+    id: "hpp-obstetricia",
+    title: "Hemorragia Pós-Parto (HPP)",
+    difficulty: "Avançado",
+    category: "Obstetrícia",
+    description: "Puerpera imediata apresenta sangramento vaginal intenso após parto normal. O tempo de resposta define o prognóstico.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Ana, 28 anos, G2P2, parto normal há 30 minutos. Recém-nascido no colo. Você nota lençol encharcado de sangue vivo.\n\nExame: Paciente pálida, queixando de tontura. Útero amolecido acima da cicatriz umbilical.\n\nSSVV: FC 110 | PA 90/60.",
+        vitals: { hr: 110, bp: "90/60", spo2: 96, resp: 20, temp: 36.5, status: "critical" },
+        options: [
+          { label: "Massagem Uterina Externa + Ocitocina IV/IM Imediata", nextNodeId: "massagem_ocitocina", type: "intervention" },
+          { label: "Colocar em Trendelenburg e aumentar hidratação", nextNodeId: "trendelenburg_only", type: "intervention" },
+          { label: "Solicitar tipagem sanguínea e aguardar médico", nextNodeId: "wait_doctor", type: "assessment" }
+        ]
+      },
+      "massagem_ocitocina": {
+        id: "massagem_ocitocina",
+        text: "Você realizou a Massagem Bimanual (manobra de Hamilton) e administrou Ocitocina. O sangramento diminuiu, mas o útero ainda relaxa quando você para a massagem.\n\nDiagnóstico provável: Atonia Uterina (causa de 70% das HPPs).",
+        vitals: { hr: 105, bp: "95/60", spo2: 97, resp: 18, temp: 36.5, status: "warning" },
+        options: [
+          { label: "Administrar Ácido Tranexâmico + Misoprostol Retal", nextNodeId: "second_line_meds", type: "medication" },
+          { label: "Continuar apenas com massagem", nextNodeId: "massage_fail", type: "intervention" }
+        ]
+      },
+      "second_line_meds": {
+        id: "second_line_meds",
+        text: "Com a associação do antifibrinolítico (Tranexâmico) e a segunda linha de uterotônicos (Misoprostol), o útero contraiu firmemente (Globo de segurança de Pinard).\n\nO sangramento parou. Você repôs cristaloide aquecido.",
+        vitals: { hr: 90, bp: "110/70", spo2: 98, resp: 16, temp: 36.5, status: "recovered" },
+        feedback: "A sequência do manejo da HPP (Atonia): Massagem + Ocitocina -> Ácido Tranexâmico -> Misoprostol/Ergotamina -> Balão de Bakri -> Cirurgia.",
+        options: []
+      },
+      "trendelenburg_only": {
+        id: "trendelenburg_only",
+        text: "A posição melhorou o retorno venoso momentaneamente, mas a causa (Atonia) não foi tratada. O útero continua sangrando massivamente (como uma torneira aberta).\n\nPaciente entra em choque grau III.",
+        vitals: { hr: 140, bp: "70/40", spo2: 90, resp: 30, temp: 36.0, status: "critical" },
+        options: [
+          { label: "Iniciar protocolo de Transfusão Maciça e Massagem agora", nextNodeId: "late_rescue_hpp", type: "intervention" }
+        ]
+      },
+      "wait_doctor": {
+        id: "wait_doctor",
+        text: "Enquanto você aguardava ou preenchia papéis, a paciente perdeu mais 1000ml de sangue.\n\nA HPP mata em minutos. A enfermagem deve iniciar o manejo (massagem/ocitocina) imediatamente.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 35.0, status: "dead" },
+        feedback: "Na HPP, a 'Hora de Ouro' é na verdade o 'Minuto de Ouro'. Atonia uterina exige ação mecânica e farmacológica imediata.",
+        options: []
+      },
+      "late_rescue_hpp": {
+        id: "late_rescue_hpp",
+        text: "A paciente foi levada às pressas para Histerectomia de emergência. Sobreviveu, mas perdeu o útero e precisou de UTI.",
+        vitals: { hr: 120, bp: "90/50", spo2: 95, resp: 24, temp: 36.0, status: "stable" },
+        feedback: "O atraso no tratamento da atonia frequentemente leva à perda do órgão ou morte.",
+        options: []
+      },
+      "massage_fail": {
+        id: "massage_fail",
+        text: "A massagem sozinha não foi suficiente para manter o tônus. O sangramento voltou a aumentar, exigindo medidas invasivas.",
+        vitals: { hr: 125, bp: "85/50", spo2: 94, resp: 22, temp: 36.5, status: "warning" },
+        options: [
+           { label: "Escalonar para Misoprostol/Ergotamina", nextNodeId: "second_line_meds", type: "medication" }
+        ]
+      }
+    }
+  },
+  {
+    id: "avc-agudo",
+    title: "AVC: O Tempo é Cérebro",
+    difficulty: "Intermediário",
+    category: "Urgência",
+    description: "Senhora de 65 anos apresenta desvio de rima labial e perda de força súbita no braço direito.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Dona Lúcia, 65 anos, hipertensa. Estava almoçando quando 'a boca tortou' e o braço direito caiu. Fala enrolada (disartria). Chega ao PS 40 minutos após os sintomas.\n\nSSVV: PA 190/100 mmHg | FC 88 bpm | HGT 110 mg/dL.",
+        vitals: { hr: 88, bp: "190/100", spo2: 96, resp: 18, temp: 36.5, status: "warning" },
+        options: [
+          { label: "Acionar Código AVC e encaminhar para Tomografia (TC) Imediata", nextNodeId: "tc_scan", type: "intervention" },
+          { label: "Administrar Captopril SL para baixar a pressão antes de tudo", nextNodeId: "pressure_drop_error", type: "medication" },
+          { label: "Aguardar melhora espontânea (pode ser paralisia de Bell)", nextNodeId: "wait_error", type: "assessment" }
+        ]
+      },
+      "tc_scan": {
+        id: "tc_scan",
+        text: "TC de Crânio realizada em 15 minutos (Meta!).\n\nResultado: Ausência de sangramento (AVC Isquêmico). O médico indica Trombólise (Alteplase).\n\nA PA está 190/100. Para trombolisar, a PA deve estar abaixo de 185/110.",
+        vitals: { hr: 90, bp: "190/100", spo2: 96, resp: 18, temp: 36.5, status: "critical" },
+        options: [
+          { label: "Administrar Anti-hipertensivo venoso (ex: Nitroprussiato/Labetalol) suavemente", nextNodeId: "thrombolysis_success", type: "medication" },
+          { label: "Iniciar Trombólise mesmo com a PA alta", nextNodeId: "bleed_complication", type: "critical" }
+        ]
+      },
+      "pressure_drop_error": {
+        id: "pressure_drop_error",
+        text: "Você baixou a pressão para 130/80 bruscamente. No AVC isquêmico, a hipertensão é um mecanismo de defesa para manter a perfusão cerebral na área de penumbra.\n\nAo baixar a pressão, a área de infarto aumentou. A paciente perdeu a fala completamente (Afasia).",
+        vitals: { hr: 80, bp: "130/80", spo2: 96, resp: 16, temp: 36.5, status: "critical" },
+        feedback: "No AVC agudo, só tratamos a PA se > 220/120 (ou > 185/110 se for trombolisar). A redução deve ser lenta e controlada.",
+        options: []
+      },
+      "wait_error": {
+        id: "wait_error",
+        text: "Você esperou 3 horas. Os sintomas persistiram. Quando a TC foi feita, já havia passado a janela terapêutica de 4,5h para trombólise.\n\nA paciente ficou com sequelas motoras definitivas que poderiam ter sido evitadas.",
+        vitals: { hr: 80, bp: "180/100", spo2: 96, resp: 16, temp: 36.5, status: "stable" },
+        feedback: "Tempo é cérebro. Cada minuto perdido no AVC significa milhões de neurônios mortos.",
+        options: []
+      },
+      "thrombolysis_success": {
+        id: "thrombolysis_success",
+        text: "PA controlada para 175/95 mmHg. Trombólise iniciada dentro da janela.\n\n1 hora após o fim da infusão, a paciente recuperou a força no braço e a fala. O déficit neurológico foi revertido.",
+        vitals: { hr: 80, bp: "160/90", spo2: 98, resp: 16, temp: 36.5, status: "recovered" },
+        options: []
+      },
+      "bleed_complication": {
+        id: "bleed_complication",
+        text: "Ao trombolisar com PA > 185/110, o risco de transformação hemorrágica aumenta drasticamente.\n\nA paciente evoluiu com cefaleia súbita e rebaixamento do nível de consciência (AVC Hemorrágico secundário).",
+        vitals: { hr: 60, bp: "210/120", spo2: 92, resp: 10, temp: 36.5, status: "critical" },
+        feedback: "Respeitar os critérios de exclusão e parâmetros de segurança da trombólise é vital.",
+        options: []
+      }
+    }
+  },
+  {
+    id: "reacao-transfusional",
+    title: "Reação Transfusional no Leito",
+    difficulty: "Intermediário",
+    category: "Clínica",
+    description: "Paciente em enfermaria recebendo Concentrado de Hemácias começa a apresentar sintomas 15 minutos após o início.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Sr. Carlos, internado por anemia grave, recebe CH. A infusão começou há 15 minutos.\n\nEle chama você referindo 'dor nas costas', calafrios e sensação de morte iminente. Você nota a urina na bolsa coletora ficando escura.\n\nSSVV: FC 130 | PA 80/50 | Tax 38.8°C.",
+        vitals: { hr: 130, bp: "80/50", spo2: 92, resp: 24, temp: 38.8, status: "critical" },
+        options: [
+          { label: "Interromper a transfusão IMEDIATAMENTE e manter acesso com SF 0,9%", nextNodeId: "stop_transfusion", type: "intervention" },
+          { label: "Diminuir o gotejamento e administrar Dipirona para a febre", nextNodeId: "slow_down_error", type: "medication" },
+          { label: "Acelerar a infusão para terminar logo", nextNodeId: "speed_up_error", type: "critical" }
+        ]
+      },
+      "stop_transfusion": {
+        id: "stop_transfusion",
+        text: "Você parou o sangue, trocou o equipo e manteve a veia aberta com Soro Fisiológico.\n\nNotificou o médico e o Banco de Sangue. Checou os dados da bolsa novamente e percebeu erro na identificação (Troca de bolsa).\n\nO paciente está estabilizando com volume e corticoide.",
+        vitals: { hr: 110, bp: "95/60", spo2: 95, resp: 20, temp: 38.0, status: "stable" },
+        options: [
+          { label: "Enviar bolsa e amostras de sangue/urina ao laboratório", nextNodeId: "investigation", type: "assessment" }
+        ]
+      },
+      "slow_down_error": {
+        id: "slow_down_error",
+        text: "Você apenas diminuiu o gotejamento. O paciente continuou recebendo o sangue incompatível.\n\nA reação hemolítica aguda evoluiu para Coagulação Intravascular Disseminada (CIVD) e Insuficiência Renal Aguda. O paciente faleceu.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 39.0, status: "dead" },
+        feedback: "Qualquer sinal de reação transfusional exige a PARADA IMEDIATA da infusão. Não trate apenas o sintoma.",
+        options: []
+      },
+      "speed_up_error": {
+        id: "speed_up_error",
+        text: "Acelerar a infusão aumentou a carga de hemoglobina livre e complexos antígeno-anticorpo. O choque foi fulminante.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 39.5, status: "dead" },
+        feedback: "Nunca acelere uma infusão se o paciente apresenta queixas.",
+        options: []
+      },
+      "investigation": {
+        id: "investigation",
+        text: "As amostras confirmaram incompatibilidade ABO. Graças à sua interrupção rápida (nos primeiros 15 min), a quantidade infundida foi pequena.\n\nO paciente recuperou-se sem sequelas renais permanentes.",
+        vitals: { hr: 80, bp: "120/80", spo2: 98, resp: 16, temp: 36.5, status: "recovered" },
+        feedback: "A dupla checagem à beira-leito (Dois profissionais conferindo bolsa e pulseira) é a melhor prevenção para este erro.",
+        options: []
       }
     }
   }
