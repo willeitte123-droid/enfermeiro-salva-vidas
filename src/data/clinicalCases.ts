@@ -107,6 +107,130 @@ export const CLINICAL_CASES: ClinicalCase[] = [
     }
   },
   {
+    id: "hipoglicemia-enfermaria",
+    title: "Alteração de Consciência Súbita",
+    difficulty: "Iniciante",
+    category: "Clínica",
+    description: "Paciente diabético em uso de insulina apresenta confusão mental e sudorese profusa na enfermaria.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Sr. José, 62 anos, DM2 em uso de Insulina NPH e Regular. Você o encontra no leito agitado, confuso e com sudorese fria profusa. A hora do almoço atrasou.\n\nSSVV: FC 115 | PA 130/80 | SpO2 96%.",
+        vitals: { hr: 115, bp: "130/80", spo2: 96, resp: 20, temp: 36.0, status: "warning" },
+        options: [
+          { label: "Verificar Glicemia Capilar (HGT) imediatamente", nextNodeId: "check_hgt", type: "assessment" },
+          { label: "Administrar a Insulina Regular prescrita para o almoço", nextNodeId: "insulin_error", type: "medication" },
+          { label: "Conter o paciente mecanicamente (agitação)", nextNodeId: "restraint_error", type: "intervention" }
+        ]
+      },
+      "check_hgt": {
+        id: "check_hgt",
+        text: "HGT realizado: 42 mg/dL.\n\nO paciente ainda está consciente, mas confuso e com dificuldade para engolir.",
+        vitals: { hr: 118, bp: "125/75", spo2: 96, resp: 20, temp: 36.0, status: "critical" },
+        options: [
+          { label: "Oferecer suco de laranja com açúcar (VO)", nextNodeId: "oral_risk", type: "intervention" },
+          { label: "Puncionar acesso e administrar Glicose 50% IV", nextNodeId: "glucose_iv", type: "medication" }
+        ]
+      },
+      "insulin_error": {
+        id: "insulin_error",
+        text: "ERRO GRAVE! Você administrou insulina em um paciente que já estava hipoglicêmico.\n\nA glicemia caiu para níveis indetectáveis (< 20 mg/dL). O paciente convulsionou e entrou em coma profundo.",
+        vitals: { hr: 140, bp: "90/50", spo2: 85, resp: 10, temp: 36.0, status: "critical" },
+        feedback: "Nunca administre insulina em paciente com alteração de consciência sem checar a glicemia antes.",
+        options: []
+      },
+      "restraint_error": {
+        id: "restraint_error",
+        text: "Você conteve o paciente, interpretando a agitação como psiquiátrica. A hipoglicemia continuou agindo no cérebro (neuroglicopenia).\n\nApós 30 minutos, o paciente 'acalmou' porque entrou em coma hipoglicêmico.",
+        vitals: { hr: 50, bp: "80/40", spo2: 90, resp: 8, temp: 35.5, status: "critical" },
+        options: [
+          { label: "Verificar HGT agora", nextNodeId: "check_hgt", type: "assessment" }
+        ]
+      },
+      "oral_risk": {
+        id: "oral_risk",
+        text: "Como o paciente estava confuso e com disfagia leve, ele engasgou com o suco.\n\nEvoluiu com broncoaspiração, queda da saturação e necessidade de aspiração de vias aéreas, complicando o quadro.",
+        vitals: { hr: 130, bp: "140/90", spo2: 85, resp: 30, temp: 36.0, status: "warning" },
+        feedback: "Em pacientes com rebaixamento do nível de consciência ou disfagia, a via oral é contraindicada pelo risco de aspiração. Use a via IV.",
+        options: [
+          { label: "Realizar Glicose IV agora", nextNodeId: "glucose_iv", type: "medication" }
+        ]
+      },
+      "glucose_iv": {
+        id: "glucose_iv",
+        text: "Você administrou 2 a 4 ampolas de Glicose 50% IV em bolus.\n\nEm poucos minutos, o paciente recuperou a consciência, a sudorese cessou e ele perguntou o que aconteceu.\n\nHGT de controle (15 min depois): 120 mg/dL.",
+        vitals: { hr: 80, bp: "120/80", spo2: 98, resp: 16, temp: 36.5, status: "recovered" },
+        feedback: "A Glicose 50% IV é o tratamento de escolha para hipoglicemia grave sintomática em ambiente hospitalar.",
+        options: []
+      }
+    }
+  },
+  {
+    id: "sepse-foco-urinario",
+    title: "Febre e Hipotensão no Idoso",
+    difficulty: "Intermediário",
+    category: "Clínica",
+    description: "Paciente idosa institucionalizada chega com história de febre e prostração. Identificação de Sepse.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Dona Maria, 82 anos, vem do asilo. História de urina com odor forte há 3 dias. Hoje ficou sonolenta e teve febre.\n\nSSVV: PA 90/50 | FC 115 | FR 26 | Temp 38.5°C | SpO2 92%.\n\nqSOFA positivo (PAS<100, FR>22, Alteração Mental).",
+        vitals: { hr: 115, bp: "90/50", spo2: 92, resp: 26, temp: 38.5, status: "warning" },
+        options: [
+          { label: "Abrir Protocolo de Sepse (Pacote da 1ª Hora)", nextNodeId: "sepsis_bundle", type: "intervention" },
+          { label: "Administrar Dipirona e observar a febre baixar", nextNodeId: "dipyrone_only", type: "medication" },
+          { label: "Coletar Urocultura e aguardar resultado em casa", nextNodeId: "discharge_sepsis", type: "critical" }
+        ]
+      },
+      "dipyrone_only": {
+        id: "dipyrone_only",
+        text: "A febre baixou, mas a hipotensão piorou (choque séptico). Você perdeu a hora de ouro.\n\nA paciente evoluiu com oligúria e acidose metabólica.",
+        vitals: { hr: 130, bp: "70/40", spo2: 88, resp: 30, temp: 36.0, status: "critical" },
+        options: [
+          { label: "Iniciar ressuscitação volêmica agressiva agora", nextNodeId: "late_resuscitation", type: "intervention" }
+        ]
+      },
+      "sepsis_bundle": {
+        id: "sepsis_bundle",
+        text: "Você iniciou o pacote: 1. Lactato; 2. Hemoculturas; 3. Antibiótico amplo espectro; 4. Volume (30ml/kg de cristalóide) para hipotensão.\n\nApós 1000ml de Ringer Lactato, a PA foi para 100/60 mmHg e a FC para 95 bpm.",
+        vitals: { hr: 95, bp: "100/60", spo2: 95, resp: 20, temp: 37.5, status: "stable" },
+        options: [
+          { label: "Manter monitorização e aguardar exames", nextNodeId: "sepsis_success", type: "assessment" },
+          { label: "Suspender hidratação para não encharcar o pulmão", nextNodeId: "stop_fluids_early", type: "intervention" }
+        ]
+      },
+      "discharge_sepsis": {
+        id: "discharge_sepsis",
+        text: "Você mandou uma paciente séptica para casa. Ela faleceu durante a noite por falência de múltiplos órgãos.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 0, status: "dead" },
+        feedback: "Sepse é emergência médica. qSOFA positivo ou sinais de disfunção orgânica exigem internação imediata.",
+        options: []
+      },
+      "late_resuscitation": {
+        id: "late_resuscitation",
+        text: "A ressuscitação tardia não foi suficiente para reverter a lesão renal e o choque. A paciente precisou de UTI, Diálise e Noradrenalina em doses altas. Prognóstico reservado.",
+        vitals: { hr: 120, bp: "85/50", spo2: 90, resp: 28, temp: 36.5, status: "critical" },
+        options: []
+      },
+      "stop_fluids_early": {
+        id: "stop_fluids_early",
+        text: "Ao suspender o volume precocemente, a perfusão tecidual caiu novamente. Lactato subiu de 2 para 4 mmol/L.\n\nOtimização volêmica guiada por metas é essencial.",
+        vitals: { hr: 110, bp: "90/50", spo2: 94, resp: 24, temp: 37.0, status: "warning" },
+        options: [
+          { label: "Retomar volume e considerar vasopressor se necessário", nextNodeId: "sepsis_bundle", type: "intervention" }
+        ]
+      },
+      "sepsis_success": {
+        id: "sepsis_success",
+        text: "Conduta exemplar. A antibioticoterapia precoce e a reposição volêmica adequada estabilizaram a hemodinâmica.\n\nA paciente foi internada na enfermaria, urinou bem e está lúcida.",
+        vitals: { hr: 80, bp: "120/70", spo2: 97, resp: 16, temp: 36.5, status: "recovered" },
+        options: []
+      }
+    }
+  },
+  {
     "id": "choque-septico",
     "title": "Paciente Hipotenso na UTI",
     "difficulty": "Avançado",

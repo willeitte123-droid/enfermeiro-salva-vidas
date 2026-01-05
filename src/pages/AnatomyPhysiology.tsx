@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { 
   HeartPulse, Wind, Brain, Droplet, Utensils, Shield, 
   Activity, Microscope, AlertTriangle, Lightbulb, 
   Layers, Stethoscope, ArrowRight, CheckCircle2,
-  Info, ChevronsRight
+  ChevronsRight
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -25,13 +24,15 @@ const iconMap: Record<string, React.ElementType> = {
   HeartPulse, Wind, Brain, Droplet, Utensils, Shield
 };
 
-// Configurações de tema vibrantes
+// Configurações de tema vibrantes (Design Anterior restaurado)
 const themeStyles: Record<string, any> = {
   rose: {
     gradient: "from-rose-600 to-red-600",
     text: "text-rose-700 dark:text-rose-400",
     bg: "bg-rose-100 dark:bg-rose-900/30",
     border: "border-rose-200 dark:border-rose-800",
+    iconBg: "bg-rose-100 dark:bg-rose-900/40",
+    iconColor: "text-rose-600 dark:text-rose-300",
     activeTab: "data-[state=active]:bg-rose-100 data-[state=active]:text-rose-700 data-[state=active]:border-rose-200 dark:data-[state=active]:bg-rose-900/40 dark:data-[state=active]:text-rose-300 dark:data-[state=active]:border-rose-700"
   },
   sky: {
@@ -39,6 +40,8 @@ const themeStyles: Record<string, any> = {
     text: "text-sky-700 dark:text-sky-400",
     bg: "bg-sky-100 dark:bg-sky-900/30",
     border: "border-sky-200 dark:border-sky-800",
+    iconBg: "bg-sky-100 dark:bg-sky-900/40",
+    iconColor: "text-sky-600 dark:text-sky-300",
     activeTab: "data-[state=active]:bg-sky-100 data-[state=active]:text-sky-700 data-[state=active]:border-sky-200 dark:data-[state=active]:bg-sky-900/40 dark:data-[state=active]:text-sky-300 dark:data-[state=active]:border-sky-700"
   },
   violet: {
@@ -46,6 +49,8 @@ const themeStyles: Record<string, any> = {
     text: "text-violet-700 dark:text-violet-400",
     bg: "bg-violet-100 dark:bg-violet-900/30",
     border: "border-violet-200 dark:border-violet-800",
+    iconBg: "bg-violet-100 dark:bg-violet-900/40",
+    iconColor: "text-violet-600 dark:text-violet-300",
     activeTab: "data-[state=active]:bg-violet-100 data-[state=active]:text-violet-700 data-[state=active]:border-violet-200 dark:data-[state=active]:bg-violet-900/40 dark:data-[state=active]:text-violet-300 dark:data-[state=active]:border-violet-700"
   },
   amber: {
@@ -53,6 +58,8 @@ const themeStyles: Record<string, any> = {
     text: "text-amber-700 dark:text-amber-400",
     bg: "bg-amber-100 dark:bg-amber-900/30",
     border: "border-amber-200 dark:border-amber-800",
+    iconBg: "bg-amber-100 dark:bg-amber-900/40",
+    iconColor: "text-amber-700 dark:text-amber-300",
     activeTab: "data-[state=active]:bg-amber-100 data-[state=active]:text-amber-700 data-[state=active]:border-amber-200 dark:data-[state=active]:bg-amber-900/40 dark:data-[state=active]:text-amber-300 dark:data-[state=active]:border-amber-700"
   },
   orange: {
@@ -60,6 +67,8 @@ const themeStyles: Record<string, any> = {
     text: "text-orange-700 dark:text-orange-400",
     bg: "bg-orange-100 dark:bg-orange-900/30",
     border: "border-orange-200 dark:border-orange-800",
+    iconBg: "bg-orange-100 dark:bg-orange-900/40",
+    iconColor: "text-orange-700 dark:text-orange-300",
     activeTab: "data-[state=active]:bg-orange-100 data-[state=active]:text-orange-700 data-[state=active]:border-orange-200 dark:data-[state=active]:bg-orange-900/40 dark:data-[state=active]:text-orange-300 dark:data-[state=active]:border-orange-700"
   },
   emerald: {
@@ -67,6 +76,8 @@ const themeStyles: Record<string, any> = {
     text: "text-emerald-700 dark:text-emerald-400",
     bg: "bg-emerald-100 dark:bg-emerald-900/30",
     border: "border-emerald-200 dark:border-emerald-800",
+    iconBg: "bg-emerald-100 dark:bg-emerald-900/40",
+    iconColor: "text-emerald-700 dark:text-emerald-300",
     activeTab: "data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-700 data-[state=active]:border-emerald-200 dark:data-[state=active]:bg-emerald-900/40 dark:data-[state=active]:text-emerald-300 dark:data-[state=active]:border-emerald-700"
   }
 };
@@ -85,9 +96,9 @@ const AnatomyPhysiology = () => {
   const SystemIcon = iconMap[activeSystem.icon] || Activity;
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-8">
+    <div className="space-y-6 animate-in fade-in duration-500 pb-12">
       
-      {/* 1. Header Imersivo (Igual WoundCare) */}
+      {/* 1. Header Imersivo (Restaurado e Adaptado) */}
       <div className={cn("relative overflow-hidden rounded-2xl p-6 sm:p-8 text-white shadow-lg transition-colors duration-500", `bg-gradient-to-r ${currentTheme.gradient}`)}>
         <div className="relative z-10 flex flex-col items-center text-center sm:items-start sm:text-left">
           <div className="flex items-center gap-3 mb-2">
@@ -101,7 +112,7 @@ const AnatomyPhysiology = () => {
           </p>
         </div>
         
-        {/* Decorative Elements */}
+        {/* Elementos Decorativos */}
         <div className="absolute right-0 top-0 h-64 w-64 -translate-y-1/2 translate-x-1/4 rounded-full bg-white/10 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-32 w-32 translate-y-1/4 -translate-x-1/4 rounded-full bg-black/10 blur-2xl" />
         
@@ -121,12 +132,12 @@ const AnatomyPhysiology = () => {
       {/* Indicador de rolagem no mobile */}
       <div className="flex justify-end px-4 sm:hidden animate-pulse">
         <div className="flex items-center gap-1 bg-muted/50 px-2 py-0.5 rounded-full">
-          <span className="text-[10px] text-muted-foreground">Sistemas</span>
+          <span className="text-[10px] text-muted-foreground">Deslize para ver sistemas</span>
           <ChevronsRight className="h-3 w-3 text-muted-foreground" />
         </div>
       </div>
 
-      {/* 2. Navegação por Abas Scrolláveis */}
+      {/* 2. Navegação Responsiva (ScrollArea como em Curativos) */}
       <Tabs defaultValue={anatomyData[0].id} value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="w-full max-w-[calc(100vw-2rem)] mx-auto">
           <ScrollArea className="w-full whitespace-nowrap rounded-xl border-0 bg-transparent mb-4">
@@ -153,61 +164,61 @@ const AnatomyPhysiology = () => {
           </ScrollArea>
         </div>
 
-        {/* 3. Conteúdo do Sistema Ativo */}
-        <div className="space-y-6">
+        {/* 3. Conteúdo do Sistema Ativo (Layout Grid Responsivo) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
-          {/* Card: Anatomia e Fisiologia (Accordions) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            <Card className="border-t-4 border-t-primary shadow-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Microscope className="h-5 w-5 text-primary" /> Estruturas (Anatomia)
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <Accordion type="single" collapsible className="w-full">
-                  {activeSystem.anatomy.map((item, idx) => (
-                    <AccordionItem value={`anat-${idx}`} key={idx} className="px-4 border-b last:border-0">
-                      <AccordionTrigger className="hover:no-underline py-3">
-                        <span className="text-sm font-semibold text-left">{item.part}</span>
-                      </AccordionTrigger>
-                      <AccordionContent className="text-sm text-muted-foreground pb-3">
-                        {item.detail}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </CardContent>
-            </Card>
-
-            <Card className="border-t-4 border-t-blue-500 shadow-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-lg text-blue-700 dark:text-blue-400">
-                  <Activity className="h-5 w-5" /> Funções (Fisiologia)
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <Accordion type="single" collapsible className="w-full">
-                  {activeSystem.physiology.map((item, idx) => (
-                    <AccordionItem value={`physio-${idx}`} key={idx} className="px-4 border-b last:border-0">
-                      <AccordionTrigger className="hover:no-underline py-3">
-                        <span className="text-sm font-semibold text-left">{item.title}</span>
-                      </AccordionTrigger>
-                      <AccordionContent className="text-sm text-muted-foreground pb-3">
-                        <div dangerouslySetInnerHTML={{ __html: item.content }} />
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Patologia e Foco Clínico */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          {/* Coluna Principal (8 cols) */}
+          <div className="lg:col-span-8 space-y-6">
             
+            {/* Card: Anatomia e Fisiologia */}
+            <div className="grid grid-cols-1 gap-6">
+              <Card className="border-t-4 border-t-primary shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Microscope className="h-5 w-5 text-primary" /> Estruturas (Anatomia)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <Accordion type="single" collapsible className="w-full">
+                    {activeSystem.anatomy.map((item, idx) => (
+                      <AccordionItem value={`anat-${idx}`} key={idx} className="px-4 border-b last:border-0">
+                        <AccordionTrigger className="hover:no-underline py-3">
+                          <span className="text-sm font-semibold text-left">{item.part}</span>
+                        </AccordionTrigger>
+                        <AccordionContent className="text-sm text-muted-foreground pb-3">
+                          {item.detail}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </CardContent>
+              </Card>
+
+              <Card className="border-t-4 border-t-blue-500 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center gap-2 text-lg text-blue-700 dark:text-blue-400">
+                    <Activity className="h-5 w-5" /> Funções (Fisiologia)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <Accordion type="single" collapsible className="w-full">
+                    {activeSystem.physiology.map((item, idx) => (
+                      <AccordionItem value={`physio-${idx}`} key={idx} className="px-4 border-b last:border-0">
+                        <AccordionTrigger className="hover:no-underline py-3">
+                          <span className="text-sm font-semibold text-left">{item.title}</span>
+                        </AccordionTrigger>
+                        <AccordionContent className="text-sm text-muted-foreground pb-3">
+                          <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </CardContent>
+              </Card>
+            </div>
+
             {/* Patologias */}
-            <Card className="lg:col-span-2 border-dashed border-2 bg-muted/10 shadow-none">
+            <Card className="border-dashed border-2 bg-muted/10 shadow-none">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-lg text-slate-700 dark:text-slate-300">
                   <Layers className="h-5 w-5" /> Principais Patologias
@@ -223,53 +234,63 @@ const AnatomyPhysiology = () => {
               </CardContent>
             </Card>
 
-            {/* Red Flags e Dicas (Sidebar) */}
-            <div className="space-y-4">
-              <Card className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800/50 shadow-sm overflow-hidden">
-                <div className="bg-red-100 dark:bg-red-900/30 p-3 border-b border-red-200 dark:border-red-800/50 flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
-                  <h3 className="font-bold text-sm text-red-800 dark:text-red-300 uppercase tracking-wide">Sinais de Alerta</h3>
-                </div>
-                <CardContent className="p-0">
-                  <ul className="divide-y divide-red-200/50 dark:divide-red-800/50">
-                    {activeSystem.red_flags.map((flag, idx) => (
-                      <li key={idx} className="p-3 text-xs sm:text-sm text-red-900/80 dark:text-red-200 flex items-start gap-2">
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
-                        <span className="leading-snug">{flag}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+          </div>
 
-              <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/50">
-                <CardHeader className="p-3 pb-0">
-                  <CardTitle className="flex items-center gap-2 text-sm text-amber-700 dark:text-amber-400">
-                    <Lightbulb className="h-4 w-4" /> Dicas Práticas
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 space-y-2">
-                  {activeSystem.clinical_pearls.map((pearl, idx) => (
-                    <div key={idx} className="bg-background/60 p-2 rounded border border-amber-100 dark:border-amber-800/50 text-xs text-muted-foreground italic">
-                      "{pearl}"
-                    </div>
+          {/* Coluna Lateral (4 cols) - Sinais de Alerta e Dicas */}
+          <div className="lg:col-span-4 space-y-6">
+            
+            {/* Red Flags */}
+            <Card className="border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/10 overflow-hidden">
+              <CardHeader className="bg-red-100/50 dark:bg-red-900/30 p-4 border-b border-red-200 dark:border-red-900/50">
+                <CardTitle className="flex items-center gap-2 text-base font-bold text-red-700 dark:text-red-400">
+                  <AlertTriangle className="h-5 w-5" /> Sinais de Alerta
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <ul className="divide-y divide-red-200/50 dark:divide-red-800/50">
+                  {activeSystem.red_flags.map((flag, idx) => (
+                    <li key={idx} className="p-3 text-xs sm:text-sm text-red-900/80 dark:text-red-200 flex items-start gap-2">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                      <span className="leading-snug">{flag}</span>
+                    </li>
                   ))}
-                </CardContent>
-              </Card>
+                </ul>
+              </CardContent>
+            </Card>
 
-              {/* CTA */}
-              <div className="p-4 rounded-xl text-center space-y-2 border bg-card shadow-sm">
-                <Stethoscope className="h-6 w-6 mx-auto text-primary opacity-80" />
-                <h3 className="font-bold text-sm">Aplicação Prática</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
+            {/* Dicas Clínicas */}
+            <Card className="border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/10 overflow-hidden">
+              <CardHeader className="bg-amber-100/50 dark:bg-amber-900/30 p-4 border-b border-amber-200 dark:border-amber-900/50">
+                <CardTitle className="flex items-center gap-2 text-base font-bold text-amber-700 dark:text-amber-400">
+                  <Lightbulb className="h-5 w-5" /> Dicas Práticas
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 space-y-3">
+                {activeSystem.clinical_pearls.map((pearl, idx) => (
+                  <div key={idx} className="flex gap-3 text-sm text-muted-foreground">
+                    <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                    <p className="leading-snug italic">"{pearl}"</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* CTA */}
+            <div className={cn("border rounded-xl p-5 text-center space-y-3 shadow-sm", currentTheme.bg, currentTheme.border)}>
+              <div className={cn("w-12 h-12 rounded-full flex items-center justify-center mx-auto bg-white/50 backdrop-blur")}>
+                <Stethoscope className={cn("h-6 w-6", currentTheme.iconColor)} />
+              </div>
+              <div>
+                <h3 className={cn("font-bold text-base", currentTheme.text)}>Aplicação Prática</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                   Aprenda a avaliar este sistema no exame físico.
                 </p>
-                <Button size="sm" variant="outline" className="w-full text-xs h-8" asChild>
-                  <a href="/semiology">
-                    Ir para Semiologia <ArrowRight className="ml-2 h-3 w-3" />
-                  </a>
-                </Button>
               </div>
+              <Button variant="outline" className="w-full gap-2 text-xs sm:text-sm h-10 bg-white/50 hover:bg-white/80" asChild>
+                <a href="/semiology">
+                  Ir para Semiologia <ArrowRight className="h-3 w-3" />
+                </a>
+              </Button>
             </div>
 
           </div>
