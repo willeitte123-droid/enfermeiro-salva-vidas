@@ -231,13 +231,13 @@ export const CLINICAL_CASES: ClinicalCase[] = [
     }
   },
   {
-    "id": "choque-septico",
-    "title": "Paciente Hipotenso na UTI",
-    "difficulty": "Avançado",
-    "category": "UTI",
-    "description": "Paciente internado por pneumonia evolui com rebaixamento do nível de consciência e hipotensão. Manejo do Choque Séptico.",
-    "initialNodeId": "start",
-    "nodes": {
+    id: "choque-septico",
+    title: "Paciente Hipotenso na UTI",
+    difficulty: "Avançado",
+    category: "UTI",
+    description: "Paciente internado por pneumonia evolui com rebaixamento do nível de consciência e hipotensão. Manejo do Choque Séptico.",
+    initialNodeId: "start",
+    nodes: {
       "start": {
         id: "start",
         text: "Dona Maria, 72 anos, D5 de internação por Pneumonia. O técnico chama você: 'A paciente está estranha, sonolenta e a pressão caiu'.\n\nAo exame: Sonolenta, pele quente, tempo de enchimento capilar 4 seg.\n\nSSVV: PA 80/40 mmHg | FC 125 bpm | SpO2 88% | Tax 38.5°C.",
