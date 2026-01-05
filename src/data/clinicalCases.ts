@@ -30,6 +30,166 @@ export interface ClinicalCase {
 }
 
 export const CLINICAL_CASES: ClinicalCase[] = [
+  // --- NOVOS CASOS ADICIONADOS AGORA ---
+  {
+    id: "eap-hipertensivo",
+    title: "Edema Agudo de Pulmão",
+    difficulty: "Avançado",
+    category: "Urgência",
+    description: "Paciente chega com dispneia súbita, 'afogando-se' em secreção e hipertensão severa.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Sr. Mário, 68 anos, ICC prévia. Chega trazido pelo SAMU sentado na maca, agônico, com muita falta de ar. Tosse com expectoração rósea espumosa.\n\nExame: Estertores crepitantes até ápices pulmonares (ambos os lados).\n\nSSVV: PA 220/120 mmHg | FC 110 bpm | SpO2 82% (aa) | FR 35.",
+        vitals: { hr: 110, bp: "220/120", spo2: 82, resp: 35, temp: 36.5, status: "critical" },
+        options: [
+          { label: "Sentar o paciente (pernas pendentes) + O2 + Furosemida/Nitrato", nextNodeId: "management_correct", type: "intervention" },
+          { label: "Deitar o paciente para melhorar o retorno venoso", nextNodeId: "position_error", type: "intervention" },
+          { label: "Administrar Betabloqueador para baixar a FC", nextNodeId: "betablocker_error", type: "medication" }
+        ]
+      },
+      "management_correct": {
+        id: "management_correct",
+        text: "Você posicionou o paciente sentado (diminui retorno venoso), instalou VNI (Ventilação Não Invasiva) ou máscara reservatório e iniciou vasodilatador (Tridil) + Diurético conforme prescrição.\n\nA pré e pós-carga diminuíram, aliviando o coração.\n\n30 min depois: PA 160/90, SpO2 94%, paciente mais calmo.",
+        vitals: { hr: 90, bp: "160/90", spo2: 94, resp: 22, temp: 36.5, status: "recovered" },
+        options: []
+      },
+      "position_error": {
+        id: "position_error",
+        text: "Ao deitar o paciente (decúbito dorsal), o retorno venoso aumentou subitamente, encharcando ainda mais os pulmões.\n\nO paciente evoluiu para PCR imediata por hipóxia refratária.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
+        feedback: "No EAP, o paciente DEVE ficar sentado (Fowler alto ou pernas pendentes) para reduzir a pré-carga.",
+        options: []
+      },
+      "betablocker_error": {
+        id: "betablocker_error",
+        text: "O betabloqueador reduziu a contratilidade cardíaca em um coração que já estava falhando agudamente.\n\nO paciente entrou em Choque Cardiogênico grave.",
+        vitals: { hr: 50, bp: "70/40", spo2: 80, resp: 40, temp: 36.0, status: "critical" },
+        feedback: "Betabloqueadores são contraindicados na fase aguda descompensada da IC ('paciente úmido e frio' ou com baixo débito).",
+        options: [
+           { label: "Suspender BB e iniciar Dobutamina", nextNodeId: "management_correct", type: "intervention" }
+        ]
+      }
+    }
+  },
+  {
+    id: "sne-seguranca",
+    title: "Segurança na Sondagem Enteral",
+    difficulty: "Iniciante",
+    category: "Clínica",
+    description: "Paciente idosa com AVC arranca a sonda nasoenteral. Ela precisa receber medicação anticonvulsivante urgente.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Dona Ana, 78 anos, pós-AVC, disfagia grave. Arrancou a SNE (Sonda Nasoenteral) acidentalmente. Está na hora da Fenitoína.\n\nVocê repassa a sonda. Na ausculta epigástrica, ouve-se ruído de borbulha positivo.\n\nO Raio-X vai demorar 2 horas.",
+        vitals: { hr: 80, bp: "130/80", spo2: 96, resp: 18, temp: 36.5, status: "stable" },
+        options: [
+          { label: "Liberar a medicação, pois a ausculta foi positiva", nextNodeId: "auscultation_error", type: "intervention" },
+          { label: "Aguardar o Raio-X para confirmar o posicionamento", nextNodeId: "xray_wait", type: "assessment" },
+          { label: "Realizar teste de pH do aspirado gástrico", nextNodeId: "ph_test", type: "assessment" }
+        ]
+      },
+      "auscultation_error": {
+        id: "auscultation_error",
+        text: "Você administrou a medicação e a dieta. A sonda estava na traqueia (o som da ausculta é similar).\n\nA paciente broncoaspirou a dieta, evoluiu com pneumonia aspirativa grave e foi para a UTI.",
+        vitals: { hr: 130, bp: "110/70", spo2: 85, resp: 35, temp: 38.0, status: "critical" },
+        feedback: "A ausculta com injeção de ar NÃO é método seguro para confirmar posicionamento de sonda para dieta/medicação.",
+        options: []
+      },
+      "xray_wait": {
+        id: "xray_wait",
+        text: "Decisão segura. O atraso de uma dose de fenitoína é menos arriscado que uma broncoaspiração maciça.\n\nO Raio-X confirmou a sonda em posição pós-pilórica. Terapia liberada com segurança.",
+        vitals: { hr: 80, bp: "130/80", spo2: 96, resp: 18, temp: 36.5, status: "recovered" },
+        options: []
+      },
+      "ph_test": {
+        id: "ph_test",
+        text: "O pH deu 4.0 (ácido), sugerindo posição gástrica. É um método melhor que a ausculta, mas para SNE (pós-pilórica) o Raio-X continua sendo o padrão-ouro.\n\nVocê manteve a sonda fechada até o RX.",
+        vitals: { hr: 80, bp: "130/80", spo2: 96, resp: 18, temp: 36.5, status: "stable" },
+        options: [
+           { label: "Aguardar Raio-X", nextNodeId: "xray_wait", type: "assessment" }
+        ]
+      }
+    }
+  },
+  {
+    id: "queda-anticoagulante",
+    title: "Queda em Idoso Anticoagulado",
+    difficulty: "Intermediário",
+    category: "Urgência",
+    description: "Paciente em uso de Varfarina cai no banheiro. Aparentemente está bem, mas o risco é invisível.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Sr. Pedro, 75 anos, FA crônica em uso de Varfarina (Marevan). Escorregou no banheiro e bateu a cabeça levemente. Chega caminhando, GCS 15.\n\nFamília pergunta se pode levá-lo para casa.",
+        vitals: { hr: 80, bp: "140/80", spo2: 97, resp: 16, temp: 36.5, status: "stable" },
+        options: [
+          { label: "Dar alta com orientações de vigilância (GCS 15)", nextNodeId: "discharge_hematoma", type: "critical" },
+          { label: "Manter em observação e solicitar TC de Crânio urgente", nextNodeId: "tc_scan_success", type: "assessment" }
+        ]
+      },
+      "discharge_hematoma": {
+        id: "discharge_hematoma",
+        text: "O paciente foi para casa. Durante a noite, o pequeno sangramento subdural aumentou (devido à anticoagulação).\n\nEle foi encontrado torporoso pela manhã. Retornou com anisocoria e coma.",
+        vitals: { hr: 50, bp: "190/110", spo2: 92, resp: 10, temp: 36.0, status: "critical" },
+        feedback: "TCE em idoso anticoagulado é TC de Crânio obrigatória, mesmo com exame neurológico normal inicial.",
+        options: []
+      },
+      "tc_scan_success": {
+        id: "tc_scan_success",
+        text: "A TC mostrou um pequeno hematoma subdural laminar. O INR estava 4.5 (supraterapêutico).\n\nO paciente foi internado para reversão da anticoagulação e monitorização. O hematoma não expandiu e ele teve alta segura em 48h.",
+        vitals: { hr: 80, bp: "135/80", spo2: 98, resp: 16, temp: 36.5, status: "recovered" },
+        options: []
+      }
+    }
+  },
+  {
+    id: "extravasamento-quimio",
+    title: "Extravasamento de Quimioterápico",
+    difficulty: "Avançado",
+    category: "Clínica",
+    description: "Durante a infusão de Doxorrubicina (vesicante), paciente queixa-se de ardência no local do acesso.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Paciente em quimioterapia ambulatorial recebendo Doxorrubicina (vesicante) em acesso periférico no dorso da mão. Refere queimação local.\n\nVocê observa edema leve e vermelhidão ao redor do cateter.",
+        vitals: { hr: 88, bp: "120/80", spo2: 98, resp: 18, temp: 36.5, status: "stable" },
+        options: [
+          { label: "Lavar o acesso com 10ml de SF 0,9% para desobstruir", nextNodeId: "flush_error", type: "intervention" },
+          { label: "Parar infusão, aspirar pelo cateter e retirar acesso", nextNodeId: "stop_aspirate", type: "intervention" },
+          { label: "Diminuir a velocidade da infusão e observar", nextNodeId: "slow_error", type: "critical" }
+        ]
+      },
+      "flush_error": {
+        id: "flush_error",
+        text: "Ao injetar soro ('flush'), você empurrou o quimioterápico vesicante para os tecidos vizinhos, aumentando a área de lesão.\n\nO paciente evoluiu com necrose extensa do dorso da mão e perda funcional.",
+        vitals: { hr: 100, bp: "130/80", spo2: 98, resp: 20, temp: 36.5, status: "warning" },
+        feedback: "NUNCA faça flush se houver suspeita de extravasamento. Isso espalha a droga.",
+        options: []
+      },
+      "slow_error": {
+        id: "slow_error",
+        text: "O extravasamento continuou, mesmo que mais lento. A lesão tecidual se tornou irreversível.",
+        vitals: { hr: 90, bp: "120/80", spo2: 98, resp: 18, temp: 36.5, status: "warning" },
+        options: [
+           { label: "Parar agora e aspirar", nextNodeId: "stop_aspirate", type: "intervention" }
+        ]
+      },
+      "stop_aspirate": {
+        id: "stop_aspirate",
+        text: "Conduta correta! Você parou imediatamente, aspirou 3ml de sangue/droga residual e só então retirou o cateter.\n\nAplicou compressa fria (indicada para Doxorrubicina) e notificou o médico. A lesão foi mínima e cicatrizou bem.",
+        vitals: { hr: 85, bp: "120/80", spo2: 99, resp: 16, temp: 36.5, status: "recovered" },
+        feedback: "A aspiração tenta remover o máximo da droga vesicante antes que ela se espalhe.",
+        options: []
+      }
+    }
+  },
+
+  // --- CASOS ANTERIORES MANTIDOS ---
   {
     id: "iam-com-supra",
     title: "Dor Torácica no Pronto Socorro",
