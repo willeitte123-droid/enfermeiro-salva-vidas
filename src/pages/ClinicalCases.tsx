@@ -232,8 +232,8 @@ const ClinicalCases = () => {
           <ArrowRight className="h-4 w-4 mr-2 rotate-180" /> Voltar ao Lobby
         </Button>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-muted-foreground">Caso:</span>
-          <Badge variant="outline">{activeCase.title}</Badge>
+          <span className="text-sm font-medium text-muted-foreground hidden sm:inline">Caso:</span>
+          <Badge variant="outline" className="truncate max-w-[200px]">{activeCase.title}</Badge>
         </div>
       </div>
 
@@ -255,7 +255,7 @@ const ClinicalCases = () => {
             {currentNode.text}
           </div>
 
-          {/* Feedback Section (if game over) */}
+          {/* Feedback Section (if game over) - OTIMIZADO PARA MOBILE */}
           {isGameOver && (
             <div className={cn(
               "rounded-xl p-1 shadow-inner",
@@ -264,36 +264,41 @@ const ClinicalCases = () => {
               "bg-red-50 dark:bg-red-950/20"
             )}>
               <Alert className={cn(
-                "border-l-4 border-0 shadow-none", 
+                "border-l-4 border-0 shadow-none p-4 sm:p-6", 
                 isSuccess
                   ? "border-l-emerald-500 bg-transparent text-emerald-800 dark:text-emerald-300"
                   : isDead 
                     ? "border-l-red-900 bg-black text-red-600 dark:text-red-500" 
                     : "border-l-red-500 bg-transparent text-red-900 dark:text-red-200"
               )}>
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start text-center sm:text-left">
                   <div className="mt-1 shrink-0">
-                    {isSuccess ? <Trophy className="h-8 w-8" /> : 
-                     isDead ? <Skull className="h-12 w-12 animate-pulse" /> : 
-                     <AlertTriangle className="h-8 w-8" />}
+                    {isSuccess ? <Trophy className="h-10 w-10 sm:h-12 sm:w-12" /> : 
+                     isDead ? <Skull className="h-16 w-16 sm:h-20 sm:w-20 animate-pulse text-red-600" /> : 
+                     <AlertTriangle className="h-10 w-10 sm:h-12 sm:w-12" />}
                   </div>
-                  <div className="flex-1">
-                    <AlertTitle className={cn("font-black text-xl sm:text-2xl mb-3 tracking-tight", isDead && "text-3xl sm:text-4xl text-red-600 uppercase")}>
+                  <div className="flex-1 w-full">
+                    <AlertTitle className={cn(
+                      "font-black tracking-tight mb-2 sm:mb-3 leading-tight", 
+                      isDead 
+                        ? "text-2xl sm:text-4xl uppercase text-red-600 break-words" 
+                        : "text-xl sm:text-2xl"
+                    )}>
                       {isSuccess ? "Sucesso Clínico!" : 
                        isDead ? "PACIENTE FALECEU" : 
                        "VOCÊ COMETEU UM ERRO GRAVE"}
                     </AlertTitle>
                     
-                    <AlertDescription className="text-base sm:text-lg">
+                    <AlertDescription className="text-sm sm:text-lg w-full">
                       {isFailure ? (
-                        <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-top-2">
+                        <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-top-2 w-full">
                           <div>
                             {isDead ? (
-                              <p className="font-bold text-lg sm:text-xl text-red-500/90 leading-relaxed">
+                              <p className="font-bold text-base sm:text-xl text-red-500/90 leading-relaxed">
                                 Sua conduta levou ao desfecho fatal do paciente.
                               </p>
                             ) : (
-                              <p className="font-bold text-lg mb-1">
+                              <p className="font-bold text-base sm:text-lg mb-1">
                                 Sua conduta colocou o paciente em risco extremo.
                               </p>
                             )}
@@ -301,11 +306,11 @@ const ClinicalCases = () => {
                           
                           {currentNode.feedback && (
                             <div className={cn(
-                              "p-4 rounded-lg border text-sm leading-relaxed",
+                              "p-3 sm:p-4 rounded-lg border text-sm text-left leading-relaxed w-full",
                               isDead ? "bg-red-900/20 border-red-900/50 text-red-200" : "bg-white/50 dark:bg-black/20 border-black/10 dark:border-white/10"
                             )}>
-                              <span className="font-bold text-xs uppercase tracking-wider opacity-70 block mb-2">
-                                <Stethoscope className="h-3 w-3 inline mr-1" /> Análise Técnica:
+                              <span className="font-bold text-xs uppercase tracking-wider opacity-70 block mb-2 flex items-center gap-1">
+                                <Stethoscope className="h-3 w-3" /> Análise Técnica:
                               </span>
                               {currentNode.feedback}
                             </div>
