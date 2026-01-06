@@ -85,7 +85,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "air_embolism": {
         id: "air_embolism",
         text: "Ao retirar o cateter com o paciente sentado e inspirando (pressão negativa no tórax), o ar entrou rapidamente pela veia.\n\nO paciente apresentou dispneia súbita, cianose e perdeu a consciência (Embolia Gasosa Maciça).",
-        vitals: { hr: 150, bp: "60/40", spo2: 70, resp: 40, temp: 36.5, status: "critical" },
+        vitals: { hr: 150, bp: "60/40", spo2: 70, resp: 40, temp: 36.5, status: "warning" },
         feedback: "Nunca retire CVC de jugular/subclávia com paciente sentado ou inspirando. O risco de embolia gasosa é altíssimo.",
         options: [
            { label: "Decúbito Lateral Esquerdo + Trendelenburg + O2 100%", nextNodeId: "rescue_maneuver", type: "intervention" }
@@ -181,7 +181,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "vagal_bradycardia": {
         id: "vagal_bradycardia",
         text: "Aspiração prolongada causou hipóxia severa e estímulo vagal.\n\nO paciente fez bradicardia súbita (FC 35) e hipotensão.",
-        vitals: { hr: 35, bp: "60/40", spo2: 75, resp: 10, temp: 37.0, status: "critical" },
+        vitals: { hr: 35, bp: "60/40", spo2: 75, resp: 10, temp: 37.0, status: "warning" },
         feedback: "O tempo de aspiração não deve exceder 10-15 segundos. O paciente não respira enquanto você aspira.",
         options: [
            { label: "Parar, reconectar ventilador e dar O2 100%", nextNodeId: "rescue_brady", type: "intervention" }
@@ -277,7 +277,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "betablocker_error": {
         id: "betablocker_error",
         text: "O betabloqueador reduziu a contratilidade cardíaca em um coração que já estava falhando agudamente.\n\nO paciente entrou em Choque Cardiogênico grave.",
-        vitals: { hr: 50, bp: "70/40", spo2: 80, resp: 40, temp: 36.0, status: "critical" },
+        vitals: { hr: 50, bp: "70/40", spo2: 80, resp: 40, temp: 36.0, status: "warning" },
         feedback: "Betabloqueadores são contraindicados na fase aguda descompensada da IC ('paciente úmido e frio' ou com baixo débito).",
         options: [
            { label: "Suspender BB e iniciar Dobutamina", nextNodeId: "management_correct", type: "intervention" }
@@ -324,9 +324,9 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "ecg_done": {
         id: "ecg_done",
         text: "O ECG é impresso em menos de 10 minutos (Meta Atingida!).\n\nResultado: Supradesnivelamento do segmento ST de 3mm em DII, DIII e aVF.\n\nDiagnóstico: IAM com Supra de ST (Parede Inferior).",
-        vitals: { hr: 112, bp: "150/90", spo2: 94, resp: 22, temp: 36.5, status: "critical" },
+        vitals: { hr: 112, bp: "150/90", spo2: 94, resp: 22, temp: 36.5, status: "warning" },
         options: [
-          { label: "Iniciar Protocolo MONAB e preparar para Angioplastia/Trombólise", nextNodeId: "monab_success", type: "critical" },
+          { label: "Iniciar Protocolo MONAB e preparar para Angioplastia/Trombólise", nextNodeId: "monab_success", type: "intervention" },
           { label: "Aguardar resultado da Troponina para confirmar", nextNodeId: "wait_troponin", type: "assessment" }
         ]
       },
@@ -382,7 +382,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "check_hgt": {
         id: "check_hgt",
         text: "HGT realizado: 42 mg/dL.\n\nO paciente ainda está consciente, mas confuso e com dificuldade para engolir.",
-        vitals: { hr: 118, bp: "125/75", spo2: 96, resp: 20, temp: 36.0, status: "critical" },
+        vitals: { hr: 118, bp: "125/75", spo2: 96, resp: 20, temp: 36.0, status: "warning" },
         options: [
           { label: "Oferecer suco de laranja com açúcar (VO)", nextNodeId: "oral_risk", type: "intervention" },
           { label: "Puncionar acesso e administrar Glicose 50% IV", nextNodeId: "glucose_iv", type: "medication" }
@@ -559,7 +559,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
     nodes: {
       "start": {
         id: "start",
-        text: "Pedro, 6 anos, trazido pela mãe. Histórico de asma. Há 2 dias com tosse, hoje piorou o cansaço.\n\nExame: Tiragem subcostal, batimento de asa de nariz, sibilância difusa, fala entrecortada.\n\nSSVV: FC 140 bpm | FR 40 irpm | SpO2 89% (ar ambiente) | Temp 37.0°C.",
+        text: "Pedro, 6 anos, trazido pelo mãe. Histórico de asma. Há 2 dias com tosse, hoje piorou o cansaço.\n\nExame: Tiragem subcostal, batimento de asa de nariz, sibilância difusa, fala entrecortada.\n\nSSVV: FC 140 bpm | FR 40 irpm | SpO2 89% (ar ambiente) | Temp 37.0°C.",
         vitals: { hr: 140, bp: "100/60", spo2: 89, resp: 40, temp: 37.0, status: "warning" },
         options: [
           { label: "Oxigênio sob máscara + Salbutamol (Beta-2) inalatório imediato", nextNodeId: "beta2_o2", type: "intervention" },
@@ -585,23 +585,23 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "iot_early": {
         id: "iot_early",
-        text: "Você optou por intubar uma criança em crise asmática sem tentar resgate farmacológico.\n\nDurante o procedimento, houve laringoespasmo grave e hipóxia profunda, evoluindo para bradicardia e parada.",
-        vitals: { hr: 40, bp: "50/30", spo2: 60, resp: 0, temp: 36.5, status: "critical" },
-        feedback: "A IOT na asma é a última linha (falência respiratória iminente ou PCR). É um procedimento de altíssimo risco devido ao aprisionamento de ar e acidose.",
+        text: "Você optou por intubar uma criança em crise asmática sem tentar resgate farmacológico.\n\nDurante o procedimento, houve laringoespasmo grave e hipóxia profunda, evoluindo para bradicardia.",
+        vitals: { hr: 60, bp: "50/30", spo2: 60, resp: 0, temp: 36.5, status: "warning" },
+        feedback: "A IOT na asma é a última linha. É um procedimento de altíssimo risco. Tente ventilar com máscara e ambu + O2 100%.",
         options: [
-           { label: "Iniciar RCP", nextNodeId: "cpr_asthma", type: "intervention" }
+           { label: "Ventilar com bolsa-válvula-máscara e O2 100%", nextNodeId: "cpr_asthma", type: "intervention" }
         ]
       },
       "cpr_asthma": {
           id: "cpr_asthma",
-          text: "Apesar dos esforços, a acidose grave e o barotrauma dificultaram a reanimação. Desfecho desfavorável.",
-          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+          text: "A criança respondeu à ventilação de resgate, a FC subiu e a saturação melhorou para 85%. Foi transferida para UTI.",
+          vitals: { hr: 120, bp: "90/60", spo2: 85, resp: 0, temp: 36.0, status: "critical" },
           options: []
       },
       "delay_exam": {
           id: "delay_exam",
-          text: "Você enviou a criança instável para o Raio-X. No caminho, a hipóxia piorou.\n\nO tratamento da asma é clínico e imediato. Exames não devem atrasar o broncodilatador.",
-          vitals: { hr: 160, bp: "90/50", spo2: 82, resp: 50, temp: 37.0, status: "critical" },
+          text: "Você enviou a criança instável para o Raio-X. No caminho, a hipóxia piorou significativamente.\n\nO tratamento da asma é clínico e imediato. Exames não devem atrasar o broncodilatador.",
+          vitals: { hr: 160, bp: "90/50", spo2: 82, resp: 50, temp: 37.0, status: "warning" },
           options: [
               { label: "Retornar e iniciar protocolo de asma grave agora", nextNodeId: "beta2_o2", type: "intervention" }
           ]
@@ -609,7 +609,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "stop_meds": {
           id: "stop_meds",
           text: "Você suspendeu o tratamento precocemente. O efeito do broncodilatador passou e a obstrução retornou pior (efeito rebote).",
-          vitals: { hr: 150, bp: "95/55", spo2: 85, resp: 45, temp: 37.0, status: "critical" },
+          vitals: { hr: 150, bp: "95/55", spo2: 85, resp: 45, temp: 37.0, status: "warning" },
           options: [
                { label: "Reiniciar protocolo agressivo + Magnésio IV", nextNodeId: "corticoid_added", type: "intervention" }
           ]
@@ -659,8 +659,8 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "insulin_bolus_error": {
           id: "insulin_bolus_error",
-          text: "Você fez insulina sem hidratar e sem ver o potássio. A glicemia caiu rápido, mas a desidratação persistiu e o risco de hipocalemia não foi avaliado.\n\nO paciente hipotendeu e fez uma arritmia.",
-          vitals: { hr: 140, bp: "70/40", spo2: 90, resp: 30, temp: 36.5, status: "critical" },
+          text: "Você fez insulina sem hidratar e sem ver o potássio. A glicemia caiu rápido, mas a desidratação persistiu e o risco de hipocalemia não foi avaliado.\n\nO paciente hipotendeu e fez uma arritmia leve.",
+          vitals: { hr: 140, bp: "70/40", spo2: 90, resp: 30, temp: 36.5, status: "warning" },
           options: [
               { label: "Suspender insulina, Volume + K+", nextNodeId: "hydration", type: "intervention" }
           ]
@@ -668,7 +668,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "bicarb_error": {
           id: "bicarb_error",
           text: "O uso de Bicarbonato na CAD só é indicado se pH < 6.9. O uso desnecessário piora a acidose intracelular e o edema cerebral.\n\nO paciente rebaixou o nível de consciência.",
-          vitals: { hr: 110, bp: "100/60", spo2: 95, resp: 12, temp: 36.5, status: "critical" },
+          vitals: { hr: 110, bp: "100/60", spo2: 95, resp: 12, temp: 36.5, status: "warning" },
           feedback: "Bicarbonato não é tratamento de rotina para cetoacidose.",
           options: [
                { label: "Focar na Hidratação e Insulina", nextNodeId: "hydration", type: "intervention" }
@@ -726,7 +726,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "tourniquet_off": {
           id: "tourniquet_off",
           text: "Ao soltar o torniquete fora do centro cirúrgico, o paciente voltou a sangrar massivamente e os coágulos formados se soltaram.\n\nChoque descompensado.",
-          vitals: { hr: 150, bp: "60/30", spo2: 85, resp: 30, temp: 35.5, status: "critical" },
+          vitals: { hr: 150, bp: "60/30", spo2: 85, resp: 30, temp: 35.5, status: "warning" },
           options: [
               { label: "Reaplicar torniquete e correr para CC", nextNodeId: "torniquete", type: "intervention" }
           ]
@@ -770,7 +770,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "trendelenburg_only": {
         id: "trendelenburg_only",
         text: "A posição melhorou o retorno venoso momentaneamente, mas a causa (Atonia) não foi tratada. O útero continua sangrando massivamente (como uma torneira aberta).\n\nPaciente entra em choque grau III.",
-        vitals: { hr: 140, bp: "70/40", spo2: 90, resp: 30, temp: 36.0, status: "critical" },
+        vitals: { hr: 140, bp: "70/40", spo2: 90, resp: 30, temp: 36.0, status: "warning" },
         options: [
           { label: "Iniciar protocolo de Transfusão Maciça e Massagem agora", nextNodeId: "late_rescue_hpp", type: "intervention" }
         ]
@@ -820,7 +820,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "tc_scan": {
         id: "tc_scan",
         text: "TC de Crânio realizada em 15 minutos (Meta!).\n\nResultado: Ausência de sangramento (AVC Isquêmico). O médico indica Trombólise (Alteplase).\n\nA PA está 190/100. Para trombolisar, a PA deve estar abaixo de 185/110.",
-        vitals: { hr: 90, bp: "190/100", spo2: 96, resp: 18, temp: 36.5, status: "critical" },
+        vitals: { hr: 90, bp: "190/100", spo2: 96, resp: 18, temp: 36.5, status: "warning" },
         options: [
           { label: "Administrar Anti-hipertensivo venoso (ex: Nitroprussiato/Labetalol) suavemente", nextNodeId: "thrombolysis_success", type: "medication" },
           { label: "Iniciar Trombólise mesmo com a PA alta", nextNodeId: "bleed_complication", type: "critical" }
@@ -954,7 +954,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "remove_needle_error": {
         id: "remove_needle_error",
         text: "Ao retirar a agulha sem o dreno definitivo, o ar voltou a acumular (efeito válvula). O paciente chocou novamente em minutos.",
-        vitals: { hr: 140, bp: "60/40", spo2: 80, resp: 40, temp: 36.5, status: "critical" },
+        vitals: { hr: 140, bp: "60/40", spo2: 80, resp: 40, temp: 36.5, status: "warning" },
         options: [
           { label: "Puncionar novamente", nextNodeId: "needle_decompression", type: "intervention" }
         ]
@@ -991,7 +991,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "phenytoin_slow": {
         id: "phenytoin_slow",
         text: "A Fenitoína demora cerca de 20 minutos para infundir (risco de arritmia se rápido). Durante esse tempo, o paciente continuou convulsionando, sofrendo dano cerebral hipóxico.",
-        vitals: { hr: 150, bp: "160/100", spo2: 80, resp: 0, temp: 37.5, status: "critical" },
+        vitals: { hr: 150, bp: "160/100", spo2: 80, resp: 0, temp: 37.5, status: "warning" },
         feedback: "A 1ª linha para PARAR a crise é sempre um Benzodiazepínico (ação rápida). A Fenitoína serve para evitar que ela volte.",
         options: [
           { label: "Fazer Diazepam agora", nextNodeId: "benzo_ok", type: "medication" }
@@ -1048,7 +1048,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "lasix_error": {
         id: "lasix_error",
         text: "Você administrou diurético. Como não era congestão (pulmão estava limpo!), a volemia caiu.\n\nO TEP maciço depende de pré-carga para manter o débito do VD. O paciente fez hipotensão severa (Choque Obstrutivo).",
-        vitals: { hr: 140, bp: "60/30", spo2: 80, resp: 40, temp: 36.5, status: "critical" },
+        vitals: { hr: 140, bp: "60/30", spo2: 80, resp: 40, temp: 36.5, status: "warning" },
         feedback: "Cuidado! Ausculta limpa com hipóxia grave sugere TEP, não EAP. Diurético pode ser fatal no TEP maciço.",
         options: [
           { label: "Volume rápido e Noradrenalina", nextNodeId: "shock_rescue", type: "intervention" }
