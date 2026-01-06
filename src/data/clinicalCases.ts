@@ -242,7 +242,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
     }
   },
 
-  // --- CASOS ANTERIORES (MANTIDOS) ---
+  // --- CASOS ANTERIORES CORRIGIDOS (Status Inicial: Critical -> Warning) ---
   {
     id: "eap-hipertensivo",
     title: "Edema Agudo de Pulmão",
@@ -254,7 +254,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Sr. Mário, 68 anos, ICC prévia. Chega trazido pelo SAMU sentado na maca, agônico, com muita falta de ar. Tosse com expectoração rósea espumosa.\n\nExame: Estertores crepitantes até ápices pulmonares (ambos os lados).\n\nSSVV: PA 220/120 mmHg | FC 110 bpm | SpO2 82% (aa) | FR 35.",
-        vitals: { hr: 110, bp: "220/120", spo2: 82, resp: 35, temp: 36.5, status: "critical" },
+        vitals: { hr: 110, bp: "220/120", spo2: 82, resp: 35, temp: 36.5, status: "warning" },
         options: [
           { label: "Sentar o paciente (pernas pendentes) + O2 + Furosemida/Nitrato", nextNodeId: "management_correct", type: "intervention" },
           { label: "Deitar o paciente para melhorar o retorno venoso", nextNodeId: "position_error", type: "intervention" },
@@ -496,7 +496,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Dona Maria, 72 anos, D5 de internação por Pneumonia. O técnico chama você: 'A paciente está estranha, sonolenta e a pressão caiu'.\n\nAo exame: Sonolenta, pele quente, tempo de enchimento capilar 4 seg.\n\nSSVV: PA 80/40 mmHg | FC 125 bpm | SpO2 88% | Tax 38.5°C.",
-        vitals: { hr: 125, bp: "80/40", spo2: 88, resp: 28, temp: 38.5, status: "critical" },
+        vitals: { hr: 125, bp: "80/40", spo2: 88, resp: 28, temp: 38.5, status: "warning" },
         options: [
           { label: "Iniciar Noradrenalina imediata em acesso periférico", nextNodeId: "nora_perif", type: "medication" },
           { label: "Expansão Volêmica (Ringer Lactato 30ml/kg) + O2", nextNodeId: "volume_ok", type: "intervention" },
@@ -687,7 +687,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Cena segura. Paciente no chão, gemendo. Amputação traumática parcial de perna direita com sangramento arterial pulsátil (esguicho).\n\nSSVV: FC 140 | PA 70/40 | SpO2 88% | Pele pálida e fria.",
-        vitals: { hr: 140, bp: "70/40", spo2: 88, resp: 28, temp: 35.5, status: "critical" },
+        vitals: { hr: 140, bp: "70/40", spo2: 88, resp: 28, temp: 35.5, status: "warning" },
         options: [
           { label: "Aplicar Torniquete imediatamente acima da lesão (X)", nextNodeId: "torniquete", type: "intervention" },
           { label: "Puncionar dois acessos venosos calibrosos (C)", nextNodeId: "acesso_fail", type: "intervention" },
@@ -744,7 +744,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Ana, 28 anos, G2P2, parto normal há 30 minutos. Recém-nascido no colo. Você nota lençol encharcado de sangue vivo.\n\nExame: Paciente pálida, queixando de tontura. Útero amolecido acima da cicatriz umbilical.\n\nSSVV: FC 110 | PA 90/60.",
-        vitals: { hr: 110, bp: "90/60", spo2: 96, resp: 20, temp: 36.5, status: "critical" },
+        vitals: { hr: 110, bp: "90/60", spo2: 96, resp: 20, temp: 36.5, status: "warning" },
         options: [
           { label: "Massagem Uterina Externa + Ocitocina IV/IM Imediata", nextNodeId: "massagem_ocitocina", type: "intervention" },
           { label: "Colocar em Trendelenburg e aumentar hidratação", nextNodeId: "trendelenburg_only", type: "intervention" },
@@ -866,7 +866,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Sr. Carlos, internado por anemia grave, recebe CH. A infusão começou há 15 minutos.\n\nEle chama você referindo 'dor nas costas', calafrios e sensação de morte iminente. Você nota a urina na bolsa coletora ficando escura.\n\nSSVV: FC 130 | PA 80/50 | Tax 38.8°C.",
-        vitals: { hr: 130, bp: "80/50", spo2: 92, resp: 24, temp: 38.8, status: "critical" },
+        vitals: { hr: 130, bp: "80/50", spo2: 92, resp: 24, temp: 38.8, status: "warning" },
         options: [
           { label: "Interromper a transfusão IMEDIATAMENTE e manter acesso com SF 0,9%", nextNodeId: "stop_transfusion", type: "intervention" },
           { label: "Diminuir o gotejamento e administrar Dipirona para a febre", nextNodeId: "slow_down_error", type: "medication" },
@@ -915,7 +915,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Jovem, 20 anos, vítima de espancamento (socos e chutes). Queixa-se de muita dor no hemitórax direito e falta de ar que está piorando rapidamente.\n\nExame: Turgência Jugular presente. Ausculta: Murmúrio Vesicular abolido à direita. Percussão: Hipertimpânico à direita.\n\nSSVV: FC 130 | PA 80/50 | SpO2 85% | FR 32.",
-        vitals: { hr: 130, bp: "80/50", spo2: 85, resp: 32, temp: 36.5, status: "critical" },
+        vitals: { hr: 130, bp: "80/50", spo2: 85, resp: 32, temp: 36.5, status: "warning" },
         options: [
           { label: "Realizar Descompressão Torácica com agulha (2º ou 5º EIC)", nextNodeId: "needle_decompression", type: "intervention" },
           { label: "Solicitar Raio-X de Tórax urgente", nextNodeId: "xray_death", type: "assessment" },
@@ -972,7 +972,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Homem, 40 anos, cai na sala de espera convulsionando. Tônico-clônico generalizado. A crise já dura 8 minutos contínuos (Status Epilepticus).\n\nAcesso venoso obtido com dificuldade.\n\nSSVV: FC 130 | SpO2 88% | Cianose labial.",
-        vitals: { hr: 130, bp: "140/90", spo2: 88, resp: 0, temp: 37.0, status: "critical" },
+        vitals: { hr: 130, bp: "140/90", spo2: 88, resp: 0, temp: 37.0, status: "warning" },
         options: [
           { label: "Administrar Diazepam 10mg IV lento (1ª Linha)", nextNodeId: "benzo_ok", type: "medication" },
           { label: "Administrar Fenitoína IV direto (2ª Linha)", nextNodeId: "phenytoin_slow", type: "medication" },
@@ -1030,7 +1030,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Sr. Antônio, 70 anos, 3º DPO de Prótese de Quadril. Chama a enfermagem referindo falta de ar súbita e dor no peito ao respirar.\n\nExame: Pulmões LIMPOS à ausculta. Panturrilha direita empastada.\n\nSSVV: FC 120 | PA 100/60 | SpO2 86% | FR 30.",
-        vitals: { hr: 120, bp: "100/60", spo2: 86, resp: 30, temp: 36.5, status: "critical" },
+        vitals: { hr: 120, bp: "100/60", spo2: 86, resp: 30, temp: 36.5, status: "warning" },
         options: [
           { label: "Oxigênio + Heparina (Suspeita de TEP)", nextNodeId: "heparin_start", type: "medication" },
           { label: "Furosemida IV (Suspeita de Edema Agudo)", nextNodeId: "lasix_error", type: "medication" },
@@ -1146,47 +1146,6 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 85, bp: "120/80", spo2: 99, resp: 16, temp: 36.5, status: "recovered" },
         feedback: "A aspiração tenta remover o máximo da droga vesicante antes que ela se espalhe.",
         options: []
-      }
-    }
-  },
-  {
-    id: "sne-seguranca",
-    title: "Segurança na Sondagem Enteral",
-    difficulty: "Iniciante",
-    category: "Clínica",
-    description: "Paciente idosa com AVC arranca a sonda nasoenteral. Ela precisa receber medicação anticonvulsivante urgente.",
-    initialNodeId: "start",
-    nodes: {
-      "start": {
-        id: "start",
-        text: "Dona Ana, 78 anos, pós-AVC, disfagia grave. Arrancou a SNE (Sonda Nasoenteral) acidentalmente. Está na hora da Fenitoína.\n\nVocê repassa a sonda. Na ausculta epigástrica, ouve-se ruído de borbulha positivo.\n\nO Raio-X vai demorar 2 horas.",
-        vitals: { hr: 80, bp: "130/80", spo2: 96, resp: 18, temp: 36.5, status: "stable" },
-        options: [
-          { label: "Liberar a medicação, pois a ausculta foi positiva", nextNodeId: "auscultation_error", type: "intervention" },
-          { label: "Aguardar o Raio-X para confirmar o posicionamento", nextNodeId: "xray_wait", type: "assessment" },
-          { label: "Realizar teste de pH do aspirado gástrico", nextNodeId: "ph_test", type: "assessment" }
-        ]
-      },
-      "auscultation_error": {
-        id: "auscultation_error",
-        text: "Você administrou a medicação e a dieta. A sonda estava na traqueia (o som da ausculta é similar).\n\nA paciente broncoaspirou a dieta, evoluiu com pneumonia aspirativa grave e foi para a UTI.",
-        vitals: { hr: 130, bp: "110/70", spo2: 85, resp: 35, temp: 38.0, status: "critical" },
-        feedback: "A ausculta com injeção de ar NÃO é método seguro para confirmar posicionamento de sonda para dieta/medicação.",
-        options: []
-      },
-      "xray_wait": {
-        id: "xray_wait",
-        text: "Decisão segura. O atraso de uma dose de fenitoína é menos arriscado que uma broncoaspiração maciça.\n\nO Raio-X confirmou a sonda em posição pós-pilórica. Terapia liberada com segurança.",
-        vitals: { hr: 80, bp: "130/80", spo2: 96, resp: 18, temp: 36.5, status: "recovered" },
-        options: []
-      },
-      "ph_test": {
-        id: "ph_test",
-        text: "O pH deu 4.0 (ácido), sugerindo posição gástrica. É um método melhor que a ausculta, mas para SNE (pós-pilórica) o Raio-X continua sendo o padrão-ouro.\n\nVocê manteve a sonda fechada até o RX.",
-        vitals: { hr: 80, bp: "130/80", spo2: 96, resp: 18, temp: 36.5, status: "stable" },
-        options: [
-           { label: "Aguardar Raio-X", nextNodeId: "xray_wait", type: "assessment" }
-        ]
       }
     }
   }
