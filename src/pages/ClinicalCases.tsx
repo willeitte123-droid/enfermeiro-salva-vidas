@@ -7,7 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { 
   HeartPulse, Activity, Wind, Thermometer, Brain, 
   ArrowRight, AlertTriangle, CheckCircle2, XCircle, 
-  RotateCcw, Trophy, Stethoscope, PlayCircle, Droplet
+  RotateCcw, Trophy, Stethoscope, PlayCircle, Droplet, Skull
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CLINICAL_CASES, ClinicalCase, CaseNode } from "@/data/clinicalCases";
@@ -209,7 +209,8 @@ const ClinicalCases = () => {
 
   // --- MODO JOGO (Caso Ativo) ---
   const currentNode = activeCase.nodes[currentNodeId || activeCase.initialNodeId];
-  const isFailure = currentNode.vitals?.status === "dead";
+  const isDead = currentNode.vitals?.status === "dead";
+  const isFailure = isDead || currentNode.vitals?.status === "critical"; // Consideramos critical como falha no contexto de feedback
   const isSuccess = currentNode.vitals?.status === "recovered";
   const isGameOver = isFailure || isSuccess;
   
@@ -218,7 +219,7 @@ const ClinicalCases = () => {
     stable: "border-green-500/50 bg-green-500/5",
     warning: "border-yellow-500/50 bg-yellow-500/5",
     critical: "border-red-500/50 bg-red-500/5",
-    dead: "border-gray-800 bg-gray-900/50 grayscale",
+    dead: "border-gray-900 bg-gray-950 grayscale",
     recovered: "border-emerald-500 bg-emerald-500/10"
   }[currentNode.vitals?.status || "stable"];
 
@@ -244,7 +245,7 @@ const ClinicalCases = () => {
         <CardHeader className="pb-2">
           <div className="flex items-center gap-2 mb-2">
             {currentNode.vitals?.status === "critical" && <Badge variant="destructive" className="animate-pulse">CRÍTICO</Badge>}
-            {currentNode.vitals?.status === "dead" && <Badge variant="destructive" className="bg-black">ÓBITO</Badge>}
+            {currentNode.vitals?.status === "dead" && <Badge variant="destructive" className="bg-black text-white hover:bg-black">ÓBITO</Badge>}
             {currentNode.vitals?.status === "recovered" && <Badge className="bg-emerald-500 hover:bg-emerald-600">ESTÁVEL</Badge>}
           </div>
           <CardTitle className="text-xl sm:text-2xl leading-tight">Situação Atual</CardTitle>
@@ -256,43 +257,68 @@ const ClinicalCases = () => {
 
           {/* Feedback Section (if game over) */}
           {isGameOver && (
-            <Alert className={cn(
-              "border-l-4", 
-              isSuccess
-                ? "bg-emerald-100 dark:bg-emerald-900/20 border-emerald-500 text-emerald-800 dark:text-emerald-300"
-                : "bg-red-50 dark:bg-red-950/20 border-red-500 text-red-900 dark:text-red-200"
+            <div className={cn(
+              "rounded-xl p-1 shadow-inner",
+              isSuccess ? "bg-emerald-100/50 dark:bg-emerald-900/10" : 
+              isDead ? "bg-black" : 
+              "bg-red-50 dark:bg-red-950/20"
             )}>
-              <div className="flex gap-4">
-                <div className="mt-1 shrink-0">
-                  {isSuccess ? <Trophy className="h-6 w-6" /> : <AlertTriangle className="h-6 w-6" />}
-                </div>
-                <div className="flex-1">
-                  <AlertTitle className="font-bold text-lg mb-2">
-                    {isSuccess ? "Sucesso Clínico!" : "Conduta Inadequada"}
-                  </AlertTitle>
-                  
-                  <AlertDescription className="text-base">
-                    {isFailure ? (
-                      <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-top-2">
-                        <div>
-                          <p className="font-bold text-xl mb-1">Você errou a conduta, você precisa estudar mais!!</p>
-                          <p className="font-medium text-lg">O paciente está em suas mãos, o que você vai fazer?</p>
-                        </div>
-                        
-                        {currentNode.feedback && (
-                          <div className="mt-2 p-3 bg-black/5 dark:bg-white/5 rounded border border-black/10 dark:border-white/10 text-sm leading-relaxed">
-                            <span className="font-bold text-xs uppercase tracking-wider opacity-70 block mb-1">Análise Técnica:</span>
-                            {currentNode.feedback}
+              <Alert className={cn(
+                "border-l-4 border-0 shadow-none", 
+                isSuccess
+                  ? "border-l-emerald-500 bg-transparent text-emerald-800 dark:text-emerald-300"
+                  : isDead 
+                    ? "border-l-red-900 bg-black text-red-600 dark:text-red-500" 
+                    : "border-l-red-500 bg-transparent text-red-900 dark:text-red-200"
+              )}>
+                <div className="flex gap-4">
+                  <div className="mt-1 shrink-0">
+                    {isSuccess ? <Trophy className="h-8 w-8" /> : 
+                     isDead ? <Skull className="h-12 w-12 animate-pulse" /> : 
+                     <AlertTriangle className="h-8 w-8" />}
+                  </div>
+                  <div className="flex-1">
+                    <AlertTitle className={cn("font-black text-xl sm:text-2xl mb-3 tracking-tight", isDead && "text-3xl sm:text-4xl text-red-600 uppercase")}>
+                      {isSuccess ? "Sucesso Clínico!" : 
+                       isDead ? "PACIENTE FALECEU" : 
+                       "VOCÊ COMETEU UM ERRO GRAVE"}
+                    </AlertTitle>
+                    
+                    <AlertDescription className="text-base sm:text-lg">
+                      {isFailure ? (
+                        <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-top-2">
+                          <div>
+                            {isDead ? (
+                              <p className="font-bold text-lg sm:text-xl text-red-500/90 leading-relaxed">
+                                Sua conduta levou ao desfecho fatal do paciente.
+                              </p>
+                            ) : (
+                              <p className="font-bold text-lg mb-1">
+                                Sua conduta colocou o paciente em risco extremo.
+                              </p>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    ) : (
-                      <span className="leading-relaxed">{currentNode.feedback}</span>
-                    )}
-                  </AlertDescription>
+                          
+                          {currentNode.feedback && (
+                            <div className={cn(
+                              "p-4 rounded-lg border text-sm leading-relaxed",
+                              isDead ? "bg-red-900/20 border-red-900/50 text-red-200" : "bg-white/50 dark:bg-black/20 border-black/10 dark:border-white/10"
+                            )}>
+                              <span className="font-bold text-xs uppercase tracking-wider opacity-70 block mb-2">
+                                <Stethoscope className="h-3 w-3 inline mr-1" /> Análise Técnica:
+                              </span>
+                              {currentNode.feedback}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="leading-relaxed font-medium">{currentNode.feedback}</span>
+                      )}
+                    </AlertDescription>
+                  </div>
                 </div>
-              </div>
-            </Alert>
+              </Alert>
+            </div>
           )}
         </CardContent>
         
