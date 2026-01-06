@@ -1,4 +1,4 @@
-import { LucideIcon, Trophy, Moon, Brain, Flame, Target, BookOpen, Crown, Zap, Layers, Rocket, Medal } from "lucide-react";
+import { LucideIcon, Trophy, Moon, Brain, Flame, Target, BookOpen, Crown, Zap, Layers, Rocket, Medal, Pill, HeartCrack, Siren, Infinity, Timer, Gavel } from "lucide-react";
 
 export interface BadgeDef {
   id: string;
@@ -63,18 +63,27 @@ export const BADGES: BadgeDef[] = [
   // DIFÍCIL
   {
     id: "sus_master",
-    name: "Mestre do SUS",
-    description: "Acertou 50 questões sobre Legislação do SUS.",
-    icon: BookOpen,
-    color: "text-cyan-400",
-    bgGradient: "from-cyan-400/20 to-blue-600/20",
+    name: "Legislador",
+    description: "Acertou 50 questões de Legislação do SUS ou Ética.",
+    icon: Gavel,
+    color: "text-blue-600",
+    bgGradient: "from-blue-400/20 to-cyan-600/20",
     difficulty: "Difícil"
   },
   {
-    id: "dedicated",
-    name: "Semana Perfeita",
-    description: "Respondeu questões por 7 dias consecutivos.",
-    icon: Flame,
+    id: "pharma_master",
+    name: "Mestre dos Fármacos",
+    description: "Acertou 50 questões de Farmacologia e Medicamentos.",
+    icon: Pill,
+    color: "text-rose-500",
+    bgGradient: "from-rose-400/20 to-pink-600/20",
+    difficulty: "Difícil"
+  },
+  {
+    id: "urgency_master",
+    name: "Socorrista de Elite",
+    description: "Acertou 50 questões de Urgência e Emergência.",
+    icon: Siren,
     color: "text-red-500",
     bgGradient: "from-red-500/20 to-orange-600/20",
     difficulty: "Difícil"
@@ -86,6 +95,15 @@ export const BADGES: BadgeDef[] = [
     icon: Target,
     color: "text-emerald-500",
     bgGradient: "from-emerald-500/20 to-green-600/20",
+    difficulty: "Difícil"
+  },
+  {
+    id: "dedicated",
+    name: "Semana Perfeita",
+    description: "Respondeu questões por 7 dias consecutivos.",
+    icon: Flame,
+    color: "text-orange-500",
+    bgGradient: "from-orange-500/20 to-yellow-600/20",
     difficulty: "Difícil"
   },
 
@@ -100,8 +118,26 @@ export const BADGES: BadgeDef[] = [
     difficulty: "Lendário"
   },
   {
+    id: "thousand_club",
+    name: "Lenda Milenar",
+    description: "Alcançou a marca histórica de 1.000 questões corretas.",
+    icon: Infinity,
+    color: "text-violet-400",
+    bgGradient: "from-violet-500/20 to-purple-800/20",
+    difficulty: "Lendário"
+  },
+  {
+    id: "marathoner",
+    name: "Maratonista",
+    description: "Concluiu 50 simulados completos.",
+    icon: Timer,
+    color: "text-cyan-400",
+    bgGradient: "from-cyan-400/20 to-blue-500/20",
+    difficulty: "Lendário"
+  },
+  {
     id: "top_rank",
-    name: "Lenda Viva",
+    name: "O Escolhido",
     description: "Chegou ao Top 1 do Ranking Geral.",
     icon: Crown,
     color: "text-amber-300",
