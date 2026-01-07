@@ -194,7 +194,7 @@ const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnloc
 
   return (
     <div className={cn(
-      "relative p-3 sm:p-4 rounded-xl border transition-all duration-300 overflow-hidden group flex flex-col justify-between h-full min-h-[110px]",
+      "relative p-3 sm:p-4 rounded-xl border transition-all duration-300 overflow-hidden group flex flex-col justify-between h-full min-h-[120px] sm:min-h-[110px]",
       isUnlocked 
         ? `bg-gradient-to-br ${badge.bgGradient} border-primary/20 hover:shadow-lg hover:border-primary/40` 
         : "bg-muted/30 border-dashed border-border opacity-80 hover:opacity-100"
@@ -215,7 +215,7 @@ const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnloc
         </div>
         <div className="w-full min-w-0">
           <h3 className={cn("font-bold text-xs sm:text-sm leading-tight truncate px-1", isUnlocked ? "text-foreground" : "text-muted-foreground")}>{badge.name}</h3>
-          <p className="text-[10px] text-muted-foreground mt-1 leading-snug line-clamp-2 hidden sm:block">{badge.description}</p>
+          <p className="text-[10px] text-muted-foreground mt-1 leading-snug line-clamp-3 sm:line-clamp-2">{badge.description}</p>
         </div>
       </div>
 
