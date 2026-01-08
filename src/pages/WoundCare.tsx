@@ -470,11 +470,11 @@ const WoundCare = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="rounded-lg border overflow-hidden">
-                <Table>
+              <div className="rounded-lg border overflow-x-auto">
+                <Table className="min-w-[600px]">
                   <TableHeader className="bg-muted/50">
                     <TableRow>
-                      <TableHead className="w-[100px]">Característica</TableHead>
+                      <TableHead className="w-[150px]">Característica</TableHead>
                       <TableHead className="text-red-600 font-bold">Lesão por Pressão (LPP)</TableHead>
                       <TableHead className="text-orange-600 font-bold">Dermatite (IAD)</TableHead>
                     </TableRow>
