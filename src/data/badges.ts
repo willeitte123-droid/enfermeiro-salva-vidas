@@ -11,36 +11,7 @@ export interface BadgeDef {
 }
 
 export const BADGES: BadgeDef[] = [
-  // FÁCIL
-  {
-    id: "first_win",
-    name: "Primeiros Passos",
-    description: "Acertou sua primeira questão na plataforma.",
-    icon: Zap,
-    color: "text-yellow-400",
-    bgGradient: "from-yellow-400/20 to-orange-500/20",
-    difficulty: "Fácil"
-  },
-  {
-    id: "simulation_starter",
-    name: "Deu a Largada",
-    description: "Concluiu seu primeiro simulado completo.",
-    icon: Rocket,
-    color: "text-blue-400",
-    bgGradient: "from-blue-400/20 to-indigo-500/20",
-    difficulty: "Fácil"
-  },
-  
   // MÉDIO
-  {
-    id: "generalist",
-    name: "Generalista",
-    description: "Acertou questões de 3 disciplinas diferentes.",
-    icon: Layers,
-    color: "text-purple-400",
-    bgGradient: "from-purple-400/20 to-pink-500/20",
-    difficulty: "Médio"
-  },
   {
     id: "night_owl",
     name: "Plantão 24h",
