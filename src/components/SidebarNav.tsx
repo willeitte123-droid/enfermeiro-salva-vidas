@@ -31,6 +31,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       { to: "/profile", icon: User, label: "Meu Perfil" },
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
+      { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
       { to: "/ranking", icon: Trophy, label: "Ranking Geral" },
     ],
     tools: [
@@ -40,7 +41,6 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       { to: "/tools/dose-calculator", icon: FlaskConical, label: "Calculadora de Doses" },
       { to: "/tools/integrated-calculators", icon: CalculatorIcon, label: "DUM e IMC" },
       { to: "/tools/lab-values", icon: FileText, label: "Valores Laboratoriais" },
-      { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
     ],
     study: [
       { to: "/clinical-cases", icon: Stethoscope, label: "Casos Clínicos" },
