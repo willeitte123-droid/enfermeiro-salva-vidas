@@ -31,11 +31,11 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
       { to: "/profile", icon: User, label: "Meu Perfil" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
-      { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
       { to: "/ranking", icon: Trophy, label: "Ranking Geral" },
     ],
     tools: [
       { to: "/tools/performance", icon: PieChart, label: "Meu Desempenho" },
+      { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
       { to: "/calculator", icon: Calculator, label: "Gotejamento" },
       { to: "/scales", icon: ListChecks, label: "Escalas Clínicas" },
       { to: "/tools/dose-calculator", icon: FlaskConical, label: "Calculadora de Doses" },
