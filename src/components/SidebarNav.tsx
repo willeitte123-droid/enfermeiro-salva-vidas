@@ -28,8 +28,8 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
   
   const navItems = {
     main: [
-      { to: "/profile", icon: User, label: "Meu Perfil" },
       { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
+      { to: "/profile", icon: User, label: "Meu Perfil" },
       { to: "/favorites", icon: Star, label: "Meus Favoritos" },
       { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
       { to: "/ranking", icon: Trophy, label: "Ranking Geral" },
