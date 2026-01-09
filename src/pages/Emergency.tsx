@@ -143,7 +143,7 @@ const Emergency = () => {
   }, [searchTerm, activeTab]);
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-700 pb-12">
+    <div className="space-y-6 animate-in fade-in duration-700 pb-12 w-full max-w-full overflow-x-hidden">
       
       {/* 1. Header Imersivo */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-red-700 via-orange-600 to-rose-600 p-8 sm:p-10 text-white shadow-2xl">
@@ -192,14 +192,14 @@ const Emergency = () => {
           <div className="relative flex-1 group">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <Input
-              placeholder="Buscar protocolo (ex: PCR, IAM, Choque...)"
+              placeholder="Buscar protocolo..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 h-12 text-base bg-card border-border/50 shadow-sm focus:ring-2 focus:ring-red-500/20 rounded-xl"
             />
           </div>
           
-          <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 no-scrollbar">
+          <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 no-scrollbar max-w-full">
             {quickFilters.map((filter) => {
               const Icon = filter.icon;
               return (
@@ -209,7 +209,7 @@ const Emergency = () => {
                   size="sm"
                   onClick={() => setSearchTerm(filter.term)}
                   className={cn(
-                    "rounded-full h-10 px-4 gap-2 bg-card border-border/50 shadow-sm hover:border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 whitespace-nowrap",
+                    "rounded-full h-10 px-4 gap-2 bg-card border-border/50 shadow-sm hover:border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 whitespace-nowrap shrink-0",
                     searchTerm === filter.term && "bg-red-100 border-red-500 text-red-700 dark:bg-red-900/40 dark:text-red-300"
                   )}
                 >
@@ -218,7 +218,7 @@ const Emergency = () => {
               );
             })}
             {searchTerm && (
-              <Button variant="ghost" size="sm" onClick={() => setSearchTerm("")} className="rounded-full h-10 px-3 text-muted-foreground">
+              <Button variant="ghost" size="sm" onClick={() => setSearchTerm("")} className="rounded-full h-10 px-3 text-muted-foreground shrink-0">
                 Limpar
               </Button>
             )}
@@ -308,7 +308,7 @@ const Emergency = () => {
       ) : (
         // Se não houver busca, mostra estrutura de Abas
         <Tabs defaultValue={emergencyProtocols[0].category} value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <div className="w-full max-w-[calc(100vw-2rem)] mx-auto">
+            <div className="w-full">
                 <ScrollArea className="w-full whitespace-nowrap rounded-xl border-0 bg-transparent mb-4">
                     <TabsList className="flex w-max space-x-2 h-auto bg-transparent p-1">
                         {emergencyProtocols.map(cat => {
@@ -329,7 +329,7 @@ const Emergency = () => {
                             );
                         })}
                     </TabsList>
-                    <ScrollBar orientation="horizontal" className="hidden" />
+                    <ScrollBar orientation="horizontal" className="invisible" />
                 </ScrollArea>
             </div>
 
