@@ -30,7 +30,91 @@ export interface ClinicalCase {
 }
 
 export const CLINICAL_CASES: ClinicalCase[] = [
-  // --- NOVOS CASOS DE PROCEDIMENTOS (5) ---
+  // --- NOVOS CASOS COMPLEXOS (2) ---
+  {
+    id: "iam-vd-choque",
+    title: "A Armadilha do Nitrato (IAM de VD)",
+    difficulty: "Avançado",
+    category: "Urgência",
+    description: "Paciente com Infarto Inferior evolui com choque súbito após medicação padrão. O manejo de volume é contra-intuitivo.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Sr. Roberto, 62 anos, chega com dor torácica típica. ECG: Supra de ST em DII, DIII e aVF (Parede Inferior). PA inicial: 110/70 mmHg.\n\nO residente prescreve 'Isordil (Nitrato) 5mg SL' para dor.\n\n5 minutos após a administração, o paciente fica pálido, diaforético e rebaixa nível de consciência.\n\nExame: Turgência Jugular + Pulmões LIMPOS.",
+        vitals: { hr: 55, bp: "60/30", spo2: 94, resp: 22, temp: 36.0, status: "critical" },
+        options: [
+          { label: "Administrar Noradrenalina imediata", nextNodeId: "vasopressor_early", type: "medication" },
+          { label: "Colocar em Trendelenburg e correr 500ml de SF 0,9% rápido", nextNodeId: "volume_rescue", type: "intervention" },
+          { label: "Administrar Furosemida (suspeita de congestão pela jugular)", nextNodeId: "diuretic_death", type: "critical" }
+        ]
+      },
+      "diuretic_death": {
+        id: "diuretic_death",
+        text: "ERRO FATAL.\n\nO paciente tinha um Infarto de Ventrículo Direito (comum em IAM Inferior). O VD falhou e depende de pré-carga (volume) para empurrar sangue.\n\nO diurético 'secou' o ventrículo. O débito cardíaco zerou -> AESP -> Óbito.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        feedback: "A Tríade do IAM de VD é: Hipotensão + Pulmões Limpos + Turgência Jugular. O tratamento é VOLUME, nunca diurético ou nitrato.",
+        options: []
+      },
+      "vasopressor_early": {
+        id: "vasopressor_early",
+        text: "A Noradrenalina aumentou a RVS, mas o ventrículo direito está 'vazio' e não consegue bombear contra a resistência pulmonar aumentada.\n\nA pressão subiu artificialmente, mas a perfusão piorou (Lactato subindo). O paciente continua chocado.",
+        vitals: { hr: 60, bp: "80/50", spo2: 92, resp: 24, temp: 36.0, status: "warning" },
+        feedback: "No IAM de VD, a prioridade absoluta é encher o ventrículo (Volume) antes de usar vasopressor. Lei de Frank-Starling.",
+        options: [
+           { label: "Iniciar expansão volêmica vigorosa agora", nextNodeId: "volume_rescue", type: "intervention" }
+        ]
+      },
+      "volume_rescue": {
+        id: "volume_rescue",
+        text: "PERFEITO. Você reconheceu o IAM de VD (associado ao IAM Inferior).\n\nO VD infartado funciona como um conduto passivo e precisa de muita pré-carga (volume) para vencer a pressão pulmonar e encher o VE.\n\nApós 1000ml de volume, a PA subiu para 100/60 mmHg e a perfusão melhorou.",
+        vitals: { hr: 70, bp: "100/60", spo2: 96, resp: 18, temp: 36.5, status: "recovered" },
+        options: []
+      }
+    }
+  },
+  {
+    id: "tce-cushing",
+    title: "Herniação Cerebral Iminente",
+    difficulty: "Avançado",
+    category: "UTI",
+    description: "Paciente com TCE grave apresenta deterioração súbita. Os sinais vitais enganam quem não conhece a Tríade de Cushing.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Paciente jovem, TCE grave pós-acidente moto (D3 de UTI). Sedação suspensa para avaliação.\n\nSubitamente, o monitor dispara. Pupila direita dilatou (Midríase - Anisocoria).\n\nSSVV: PA 220/110 mmHg | FC 45 bpm (Bradicardia) | FR Irregular (Cheyne-Stokes).",
+        vitals: { hr: 45, bp: "220/110", spo2: 98, resp: 10, temp: 37.0, status: "critical" },
+        options: [
+          { label: "Administrar Nitroprussiato (Nipride) para baixar a PA urgente", nextNodeId: "hypotension_death", type: "medication" },
+          { label: "Administrar Atropina para corrigir a Bradicardia", nextNodeId: "atropine_useless", type: "medication" },
+          { label: "Hiperventilação transitória + Manitol + Cabeceira elevada", nextNodeId: "icp_control", type: "intervention" }
+        ]
+      },
+      "hypotension_death": {
+        id: "hypotension_death",
+        text: "ERRO CRÍTICO.\n\nA hipertensão era um reflexo de defesa (Reflexo de Cushing) para manter o sangue chegando ao cérebro contra a alta pressão intracraniana (PIC).\n\nAo baixar a PA, você matou a Perfusão Cerebral (PPC = PAM - PIC). O cérebro isque miou e herniou fatalmente.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
+        feedback: "A Tríade de Cushing (Hipertensão + Bradicardia + Resp. Irregular) indica HIC grave. Nunca baixe a pressão sem monitorar a PIC ou tratar a causa.",
+        options: []
+      },
+      "atropine_useless": {
+        id: "atropine_useless",
+        text: "A atropina não teve efeito. A bradicardia é central (compressão do tronco encefálico), não cardíaca.\n\nEnquanto você tentava tratar o coração, o cérebro herniou (uncus comprimiu o tronco). O paciente parou.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
+        feedback: "Não trate o sinal vital isolado. Entenda o contexto neurológico.",
+        options: []
+      },
+      "icp_control": {
+        id: "icp_control",
+        text: "SALVOU A VIDA.\n\nVocê reconheceu a herniação uncal. A hiperventilação (alvo PCO2 30-35) causa vasoconstrição cerebral e reduz a PIC agudamente.\n\nO Manitol 'puxou' líquido do cérebro. A pupila voltou ao normal e o paciente foi para TC/Cirurgia descompressiva a tempo.",
+        vitals: { hr: 80, bp: "140/90", spo2: 98, resp: 16, temp: 36.5, status: "recovered" },
+        options: []
+      }
+    }
+  },
+
+  // --- CASOS EXISTENTES ---
   {
     id: "trauma-pelve-sonda",
     title: "Sondagem em Trauma Pélvico",
@@ -241,8 +325,6 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       }
     }
   },
-
-  // --- CASOS ANTERIORES CORRIGIDOS (Status Inicial: Critical -> Warning) ---
   {
     id: "eap-hipertensivo",
     title: "Edema Agudo de Pulmão",
@@ -323,7 +405,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "ecg_done": {
         id: "ecg_done",
-        text: "O ECG é impresso em menos de 10 minutos (Meta Atingida!).\n\nResultado: Supradesnivelamento do segmento ST de 3mm em DII, DIII e aVF.\n\nDiagnóstico: IAM com Supra de ST (Parede Inferior).",
+        text: "O ECG é impresso em menos de 10 minutos (Meta!).\n\nResultado: Supradesnivelamento do segmento ST de 3mm em DII, DIII e aVF.\n\nDiagnóstico: IAM com Supra de ST (Parede Inferior).",
         vitals: { hr: 112, bp: "150/90", spo2: 94, resp: 22, temp: 36.5, status: "warning" },
         options: [
           { label: "Iniciar Protocolo MONAB e preparar para Angioplastia/Trombólise", nextNodeId: "monab_success", type: "intervention" },
