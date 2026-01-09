@@ -45,8 +45,16 @@ const CATEGORIES = [
   "Saúde da Criança",
   "Saúde do Idoso",
   "Saúde Mental",
-  "Centro Cirúrgico",
-  "Ética e Legislação"
+  "Saúde do Adulto (Clínica Médica)",
+  "Centro Cirúrgico e CME",
+  "Ética e Legislação",
+  "Administração em Enfermagem",
+  "Farmacologia",
+  "Biossegurança e Controle de Infecção",
+  "Saúde do Trabalhador",
+  "Imunização",
+  "Sistematização da Assistência (SAE)",
+  "Terapia Intensiva (UTI)"
 ];
 
 const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
@@ -121,7 +129,7 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
                   <SelectTrigger id="category" className="h-12 border-muted-foreground/20 bg-background hover:border-primary/50 transition-all shadow-sm">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="max-h-[300px]">
                     {CATEGORIES.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
                   </SelectContent>
                 </Select>
@@ -158,7 +166,6 @@ const SimuladoLobby = ({ onStart }: SimuladoLobbyProps) => {
                     <SelectItem value="20">20 Questões (Padrão)</SelectItem>
                     <SelectItem value="30">30 Questões (Intenso)</SelectItem>
                     <SelectItem value="50">50 Questões (Maratona)</SelectItem>
-                    <SelectItem value="100">100 Questões (Simulado Real)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
