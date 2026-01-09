@@ -4,8 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { 
   AlertCircle, Search, Siren, HeartPulse, Zap, 
-  Thermometer, Activity, ShieldAlert, Brain, 
-  Stethoscope, Flame, AlertTriangle
+  Thermometer, Activity, ShieldAlert, Brain
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -55,37 +54,52 @@ const categoryStyles: Record<string, any> = {
   "Emergências Cardiovasculares": {
     icon: HeartPulse,
     style: "data-[state=active]:bg-red-100 data-[state=active]:text-red-700 data-[state=active]:border-red-200 dark:data-[state=active]:bg-red-900/40 dark:data-[state=active]:text-red-300 dark:data-[state=active]:border-red-700",
-    border: "border-red-200 dark:border-red-800",
+    cardBorder: "border-red-200 dark:border-red-800",
+    topBorder: "border-t-red-500",
     headerBg: "bg-red-50 dark:bg-red-950/20",
-    titleColor: "text-red-700 dark:text-red-400"
+    titleColor: "text-red-700 dark:text-red-400",
+    iconColor: "text-red-600 dark:text-red-400",
+    accordionTriggerHover: "hover:bg-red-50/50 dark:hover:bg-red-900/10"
   },
   "Emergências Neurológicas": {
     icon: Brain,
     style: "data-[state=active]:bg-violet-100 data-[state=active]:text-violet-700 data-[state=active]:border-violet-200 dark:data-[state=active]:bg-violet-900/40 dark:data-[state=active]:text-violet-300 dark:data-[state=active]:border-violet-700",
-    border: "border-violet-200 dark:border-violet-800",
+    cardBorder: "border-violet-200 dark:border-violet-800",
+    topBorder: "border-t-violet-500",
     headerBg: "bg-violet-50 dark:bg-violet-950/20",
-    titleColor: "text-violet-700 dark:text-violet-400"
+    titleColor: "text-violet-700 dark:text-violet-400",
+    iconColor: "text-violet-600 dark:text-violet-400",
+    accordionTriggerHover: "hover:bg-violet-50/50 dark:hover:bg-violet-900/10"
   },
   "Emergências Respiratórias": {
-    icon: Activity, // Wind não é tão comum, Activity serve bem ou Stethoscope
+    icon: Activity,
     style: "data-[state=active]:bg-cyan-100 data-[state=active]:text-cyan-700 data-[state=active]:border-cyan-200 dark:data-[state=active]:bg-cyan-900/40 dark:data-[state=active]:text-cyan-300 dark:data-[state=active]:border-cyan-700",
-    border: "border-cyan-200 dark:border-cyan-800",
+    cardBorder: "border-cyan-200 dark:border-cyan-800",
+    topBorder: "border-t-cyan-500",
     headerBg: "bg-cyan-50 dark:bg-cyan-950/20",
-    titleColor: "text-cyan-700 dark:text-cyan-400"
+    titleColor: "text-cyan-700 dark:text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
+    accordionTriggerHover: "hover:bg-cyan-50/50 dark:hover:bg-cyan-900/10"
   },
   "Emergências Metabólicas e Sistêmicas": {
     icon: Thermometer,
     style: "data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-700 data-[state=active]:border-emerald-200 dark:data-[state=active]:bg-emerald-900/40 dark:data-[state=active]:text-emerald-300 dark:data-[state=active]:border-emerald-700",
-    border: "border-emerald-200 dark:border-emerald-800",
+    cardBorder: "border-emerald-200 dark:border-emerald-800",
+    topBorder: "border-t-emerald-500",
     headerBg: "bg-emerald-50 dark:bg-emerald-950/20",
-    titleColor: "text-emerald-700 dark:text-emerald-400"
+    titleColor: "text-emerald-700 dark:text-emerald-400",
+    iconColor: "text-emerald-600 dark:text-emerald-400",
+    accordionTriggerHover: "hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10"
   },
   "Trauma e Ambiente": {
     icon: ShieldAlert,
     style: "data-[state=active]:bg-amber-100 data-[state=active]:text-amber-700 data-[state=active]:border-amber-200 dark:data-[state=active]:bg-amber-900/40 dark:data-[state=active]:text-amber-300 dark:data-[state=active]:border-amber-700",
-    border: "border-amber-200 dark:border-amber-800",
+    cardBorder: "border-amber-200 dark:border-amber-800",
+    topBorder: "border-t-amber-500",
     headerBg: "bg-amber-50 dark:bg-amber-950/20",
-    titleColor: "text-amber-700 dark:text-amber-400"
+    titleColor: "text-amber-700 dark:text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
+    accordionTriggerHover: "hover:bg-amber-50/50 dark:hover:bg-amber-900/10"
   }
 };
 
@@ -116,18 +130,12 @@ const Emergency = () => {
 
   const favoriteSet = useMemo(() => new Set(favoritesData || []), [favoritesData]);
 
-  // Se houver busca, mostramos todos os itens que dão match, ignorando a aba ativa (ou mudamos a visualização)
-  // Para manter consistência com o design de abas, se houver busca, vamos filtrar dentro da aba ativa? 
-  // Não, melhor mostrar tudo que corresponde à busca.
-  
   const displayItems = useMemo(() => {
     if (!searchTerm) {
-        // Retorna apenas os itens da aba ativa
         const category = emergencyProtocols.find(c => c.category === activeTab);
         return category ? category.items : [];
     }
     
-    // Se tem busca, retorna tudo que combina
     return emergencyProtocols.flatMap(cat => cat.items).filter(item => 
         item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.content.some(c => c.text.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -237,19 +245,23 @@ const Emergency = () => {
                 displayItems.map((item, index) => {
                     const Icon = LucideIcons[item.icon] as LucideIcons.LucideIcon;
                     const itemId = `/emergency#${item.title.toLowerCase().replace(/\s+/g, '-')}`;
+                    // Encontrar a categoria original para estilizar corretamente na busca
+                    const originalCategory = emergencyProtocols.find(cat => cat.items.some(i => i.title === item.title))?.category || "Emergências Cardiovasculares";
+                    const style = categoryStyles[originalCategory] || categoryStyles["Emergências Cardiovasculares"];
+
                     return (
-                        <Card key={index} className="border-t-4 border-t-transparent shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group border-l-4 border-l-red-500">
+                        <Card key={index} className={cn("border-t-4 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group", style.cardBorder, style.topBorder)}>
+                            <CardHeader className={cn("pb-3 border-b", style.headerBg)}>
+                                <CardTitle className={cn("flex items-center gap-2 text-lg", style.titleColor)}>
+                                    {Icon && <Icon className={cn("h-5 w-5", style.iconColor)} />} {item.title}
+                                </CardTitle>
+                            </CardHeader>
                             <CardContent className="p-0 flex-1">
                                 <Accordion type="single" collapsible className="w-full">
                                     <AccordionItem value={item.title} className="border-0 px-4 bg-card">
                                         <div className="flex items-center w-full py-1">
-                                            <AccordionTrigger className="flex-1 hover:no-underline text-left py-4 group-data-[state=open]:text-primary transition-colors">
-                                                <div className="flex items-center gap-4">
-                                                    <div className={cn("p-2.5 rounded-xl bg-muted group-hover:bg-muted/80 transition-all shrink-0 text-red-600 dark:text-red-400")}>
-                                                        {Icon && <Icon className="h-5 w-5 sm:h-6 sm:w-6" />}
-                                                    </div>
-                                                    <span className="font-bold text-base sm:text-lg">{item.title}</span>
-                                                </div>
+                                            <AccordionTrigger className={cn("flex-1 hover:no-underline text-left py-4 transition-colors text-sm font-medium text-muted-foreground group-data-[state=open]:text-primary", style.accordionTriggerHover)}>
+                                                Ver Protocolo Completo
                                             </AccordionTrigger>
                                             <div className="pl-2">
                                                 {profile && (
@@ -330,16 +342,16 @@ const Emergency = () => {
                                 const Icon = LucideIcons[item.icon] as LucideIcons.LucideIcon;
                                 const itemId = `/emergency#${item.title.toLowerCase().replace(/\s+/g, '-')}`;
                                 return (
-                                    <Card key={index} className={cn("border-t-4 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group", style.border)} style={{ borderTopColor: 'currentColor' }}>
+                                    <Card key={index} className={cn("border-t-4 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group", style.cardBorder, style.topBorder)}>
                                         <CardHeader className={cn("pb-3 border-b", style.headerBg)}>
                                             <CardTitle className={cn("flex items-center gap-2 text-lg", style.titleColor)}>
-                                                {Icon && <Icon className="h-5 w-5" />} {item.title}
+                                                {Icon && <Icon className={cn("h-5 w-5", style.iconColor)} />} {item.title}
                                             </CardTitle>
                                         </CardHeader>
                                         <CardContent className="p-0 flex-1">
                                             <Accordion type="single" collapsible className="w-full">
                                                 <AccordionItem value="details" className="border-0 px-4 bg-card">
-                                                    <AccordionTrigger className="flex-1 hover:no-underline text-left py-4 transition-colors text-sm font-medium text-muted-foreground">
+                                                    <AccordionTrigger className={cn("flex-1 hover:no-underline text-left py-4 transition-colors text-sm font-medium text-muted-foreground group-data-[state=open]:text-primary", style.accordionTriggerHover)}>
                                                         Ver Protocolo Completo
                                                     </AccordionTrigger>
                                                     <AccordionContent className="pt-0 pb-6 animate-accordion-down">
