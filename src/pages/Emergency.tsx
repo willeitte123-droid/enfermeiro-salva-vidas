@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { 
   AlertCircle, Search, Siren, HeartPulse, Zap, 
-  Thermometer, Activity, ShieldAlert, Brain
+  Thermometer, Activity, ShieldAlert, Brain, X
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -42,13 +42,6 @@ interface EmergencyCategory {
 }
 
 const emergencyProtocols: EmergencyCategory[] = emergencyProtocolsData;
-
-const quickFilters = [
-  { label: "PCR", icon: HeartPulse, term: "Parada" },
-  { label: "Choque", icon: Zap, term: "Choque" },
-  { label: "Trauma", icon: ShieldAlert, term: "Trauma" },
-  { label: "Respiratório", icon: Activity, term: "Asmática" },
-];
 
 const categoryStyles: Record<string, any> = {
   "Emergências Cardiovasculares": {
@@ -146,7 +139,7 @@ const Emergency = () => {
     <div className="space-y-6 animate-in fade-in duration-700 pb-12 w-full max-w-full overflow-hidden">
       
       {/* 1. Header Imersivo - Responsivo */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-red-700 via-orange-600 to-rose-600 p-6 sm:p-10 text-white shadow-2xl">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-red-700 via-orange-600 to-rose-600 p-8 sm:p-10 text-white shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-red-50">
@@ -155,7 +148,7 @@ const Emergency = () => {
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
               Urgência e <br className="hidden sm:block" /> Emergência
             </h1>
-            <p className="text-red-100 max-w-lg text-xs sm:text-base lg:text-lg leading-relaxed">
+            <p className="text-red-100 max-w-lg text-sm sm:text-lg leading-relaxed">
               Guias essenciais para tomada de decisão em situações críticas. Tempo é vida.
             </p>
           </div>
@@ -186,45 +179,26 @@ const Emergency = () => {
         )}
       </div>
 
-      {/* 2. Barra de Busca e Filtros - Sticky simplificado e seguro */}
+      {/* 2. Barra de Busca Simplificada */}
       <div className="sticky top-0 z-30 py-2 bg-background/95 backdrop-blur-sm border-b transition-all -mx-4 px-4 sm:mx-0 sm:px-0 sm:bg-transparent sm:border-b-0 sm:static">
-        <div className="flex flex-col gap-3">
-          <div className="relative w-full group">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-            <Input
-              placeholder="Buscar protocolo..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 h-10 sm:h-12 text-sm sm:text-base bg-card border-border/50 shadow-sm focus:ring-2 focus:ring-red-500/20 rounded-xl w-full"
-            />
-          </div>
-          
-          <div className="w-full overflow-x-auto pb-1 no-scrollbar">
-            <div className="flex gap-2 min-w-max">
-              {quickFilters.map((filter) => {
-                const Icon = filter.icon;
-                return (
-                  <Button 
-                    key={filter.label}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSearchTerm(filter.term)}
-                    className={cn(
-                      "rounded-full h-8 sm:h-10 px-3 sm:px-4 gap-2 bg-card border-border/50 shadow-sm hover:border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 whitespace-nowrap text-xs sm:text-sm",
-                      searchTerm === filter.term && "bg-red-100 border-red-500 text-red-700 dark:bg-red-900/40 dark:text-red-300"
-                    )}
-                  >
-                    <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {filter.label}
-                  </Button>
-                );
-              })}
-              {searchTerm && (
-                <Button variant="ghost" size="sm" onClick={() => setSearchTerm("")} className="rounded-full h-8 sm:h-10 px-3 text-muted-foreground text-xs sm:text-sm">
-                  Limpar
-                </Button>
-              )}
-            </div>
-          </div>
+        <div className="relative w-full group">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+          <Input
+            placeholder="Buscar protocolo..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 h-10 sm:h-12 text-sm sm:text-base bg-card border-border/50 shadow-sm focus:ring-2 focus:ring-red-500/20 rounded-xl w-full"
+          />
+          {searchTerm && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 hover:bg-transparent"
+              onClick={() => setSearchTerm("")}
+            >
+              <X className="h-4 w-4 text-muted-foreground" />
+            </Button>
+          )}
         </div>
       </div>
 
