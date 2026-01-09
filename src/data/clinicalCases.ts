@@ -42,7 +42,8 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Sr. Roberto, 62 anos, chega com dor torácica típica. ECG: Supra de ST em DII, DIII e aVF (Parede Inferior). PA inicial: 110/70 mmHg.\n\nO residente prescreve 'Isordil (Nitrato) 5mg SL' para dor.\n\n5 minutos após a administração, o paciente fica pálido, diaforético e rebaixa nível de consciência.\n\nExame: Turgência Jugular + Pulmões LIMPOS.",
-        vitals: { hr: 55, bp: "60/30", spo2: 94, resp: 22, temp: 36.0, status: "critical" },
+        // CORREÇÃO: Status alterado de 'critical' para 'warning' para permitir interação
+        vitals: { hr: 55, bp: "60/30", spo2: 94, resp: 22, temp: 36.0, status: "warning" },
         options: [
           { label: "Administrar Noradrenalina imediata", nextNodeId: "vasopressor_early", type: "medication" },
           { label: "Colocar em Trendelenburg e correr 500ml de SF 0,9% rápido", nextNodeId: "volume_rescue", type: "intervention" },
@@ -84,7 +85,8 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Paciente jovem, TCE grave pós-acidente moto (D3 de UTI). Sedação suspensa para avaliação.\n\nSubitamente, o monitor dispara. Pupila direita dilatou (Midríase - Anisocoria).\n\nSSVV: PA 220/110 mmHg | FC 45 bpm (Bradicardia) | FR Irregular (Cheyne-Stokes).",
-        vitals: { hr: 45, bp: "220/110", spo2: 98, resp: 10, temp: 37.0, status: "critical" },
+        // CORREÇÃO: Status alterado de 'critical' para 'warning' para permitir interação
+        vitals: { hr: 45, bp: "220/110", spo2: 98, resp: 10, temp: 37.0, status: "warning" },
         options: [
           { label: "Administrar Nitroprussiato (Nipride) para baixar a PA urgente", nextNodeId: "hypotension_death", type: "medication" },
           { label: "Administrar Atropina para corrigir a Bradicardia", nextNodeId: "atropine_useless", type: "medication" },
