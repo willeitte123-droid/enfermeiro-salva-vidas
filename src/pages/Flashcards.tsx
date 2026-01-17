@@ -221,9 +221,18 @@ const Flashcards = () => {
           )}
         </div>
         
-        <p className="mt-6 text-sm text-muted-foreground italic">
-          {isFlipped ? "Avalie sua resposta honestamente para agendar a próxima revisão." : "Tente lembrar a resposta antes de virar."}
-        </p>
+        <div className="mt-6 text-center">
+          {isFlipped ? (
+            <p className="text-sm text-muted-foreground italic">
+              Avalie sua resposta honestamente para agendar a próxima revisão.
+            </p>
+          ) : (
+            <p className="text-sm font-semibold text-primary/80 animate-pulse bg-primary/5 px-4 py-2 rounded-full inline-flex items-center">
+              <Brain className="w-3.5 h-3.5 mr-2" />
+              Tente lembrar a resposta antes de virar.
+            </p>
+          )}
+        </div>
       </div>
     );
   }
