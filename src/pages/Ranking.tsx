@@ -39,6 +39,27 @@ const AVATAR_COLORS = [
   "bg-pink-600", "bg-rose-600"
 ];
 
+// Lista de estilos para os Badges de porcentagem (Fundo claro + Texto escuro)
+const BADGE_STYLES = [
+  "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+  "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
+  "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
+  "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300",
+  "bg-lime-100 text-lime-700 dark:bg-lime-900/30 dark:text-lime-300",
+  "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+  "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
+  "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300",
+  "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300",
+  "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300",
+  "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+  "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300",
+  "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300",
+  "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
+  "bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900/30 dark:text-fuchsia-300",
+  "bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300",
+  "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300"
+];
+
 // Função para obter uma cor consistente baseada no ID do usuário
 const getUserColor = (userId: string) => {
   let hash = 0;
@@ -47,6 +68,16 @@ const getUserColor = (userId: string) => {
   }
   const index = Math.abs(hash) % AVATAR_COLORS.length;
   return AVATAR_COLORS[index];
+};
+
+// Função para obter estilo do badge
+const getBadgeStyle = (userId: string) => {
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    hash = userId.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % BADGE_STYLES.length;
+  return BADGE_STYLES[index];
 };
 
 const fetchRanking = async () => {
@@ -165,6 +196,7 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
 
 const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; position: number; isCurrentUser: boolean }) => {
   const fallbackColor = getUserColor(user.user_id);
+  const badgeStyle = getBadgeStyle(user.user_id);
 
   return (
     <div className={cn(
@@ -190,7 +222,7 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
             {isCurrentUser && <span className="text-[9px] sm:text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full no-underline shrink-0">Você</span>}
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-            <Badge variant="secondary" className="h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] font-normal flex gap-1 items-center bg-muted border-0">
+            <Badge variant="secondary" className={cn("h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] font-normal flex gap-1 items-center border-0", badgeStyle)}>
                 <Target className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> {user.accuracy}%
             </Badge>
           </div>
