@@ -31,6 +31,24 @@ interface UserBadge {
   earned_at: string;
 }
 
+// Lista de cores para avatares (garantindo contraste com texto branco)
+const AVATAR_COLORS = [
+  "bg-red-500", "bg-orange-500", "bg-amber-600", "bg-yellow-600", "bg-lime-600",
+  "bg-green-600", "bg-emerald-600", "bg-teal-600", "bg-cyan-600", "bg-sky-600",
+  "bg-blue-600", "bg-indigo-600", "bg-violet-600", "bg-purple-600", "bg-fuchsia-600",
+  "bg-pink-600", "bg-rose-600"
+];
+
+// Função para obter uma cor consistente baseada no ID do usuário
+const getUserColor = (userId: string) => {
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    hash = userId.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[index];
+};
+
 const fetchRanking = async () => {
   const { data, error } = await supabase.rpc('get_global_ranking');
   if (error) throw error;
@@ -106,13 +124,15 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
     3: "w-12 h-12 sm:w-16 sm:h-16"
   };
 
+  const fallbackColor = getUserColor(user.user_id);
+
   return (
     <div className="flex flex-col items-center justify-end group w-1/3 max-w-[140px] animate-in slide-in-from-bottom-4 duration-700 fade-in relative z-10">
       <Link to={`/user/${user.user_id}`} className="relative mb-2 sm:mb-3 cursor-pointer transition-transform hover:scale-105 active:scale-95 flex flex-col items-center">
         {position === 1 && <Crown className="absolute -top-6 sm:-top-8 left-1/2 -translate-x-1/2 w-6 h-6 sm:w-8 sm:h-8 text-yellow-400 fill-yellow-400 animate-bounce" />}
         <Avatar className={cn("border-2 sm:border-4 transition-all shadow-md", colors[position].split(' ')[2], avatarSize[position])}>
           <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
-          <AvatarFallback className="font-bold text-sm sm:text-lg bg-card">{user.first_name?.[0]}</AvatarFallback>
+          <AvatarFallback className={cn("font-bold text-sm sm:text-lg text-white", fallbackColor)}>{user.first_name?.[0]}</AvatarFallback>
         </Avatar>
         <div className={cn("absolute -bottom-2 sm:-bottom-3 left-1/2 -translate-x-1/2 w-5 h-5 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white font-bold text-[10px] sm:text-sm shadow-lg bg-gradient-to-br", colors[position])}>
           {position}
@@ -143,44 +163,48 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
   );
 };
 
-const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; position: number; isCurrentUser: boolean }) => (
-  <div className={cn(
-    "flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border transition-all hover:scale-[1.01] group",
-    isCurrentUser 
-      ? "bg-primary/10 border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.2)]" 
-      : "bg-card border-border hover:border-primary/30"
-  )}>
-    <div className={cn("font-bold text-center text-sm sm:text-base w-6 sm:w-8", position <= 3 ? "text-primary" : "text-muted-foreground")}>
-      {position}º
-    </div>
-    
-    <Link to={`/user/${user.user_id}`} className="flex flex-1 items-center gap-3 sm:gap-4 min-w-0 cursor-pointer">
-      <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm group-hover:border-primary transition-colors shrink-0">
-        <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
-        <AvatarFallback>{user.first_name?.[0]}</AvatarFallback>
-      </Avatar>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <p className={cn("font-semibold text-sm sm:text-base truncate group-hover:text-primary group-hover:underline transition-colors max-w-[120px] sm:max-w-none", isCurrentUser && "text-primary")}>
-            {user.first_name} {user.last_name}
-          </p>
-          {isCurrentUser && <span className="text-[9px] sm:text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full no-underline shrink-0">Você</span>}
-        </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-          <Badge variant="secondary" className="h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] font-normal flex gap-1 items-center bg-muted border-0">
-              <Target className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> {user.accuracy}%
-          </Badge>
-        </div>
-      </div>
-    </Link>
+const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; position: number; isCurrentUser: boolean }) => {
+  const fallbackColor = getUserColor(user.user_id);
 
-    <div className="text-right pl-2">
-      <p className="font-bold text-base sm:text-xl text-primary leading-none">{user.score}</p>
-      <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase font-bold tracking-wider hidden sm:block">Pontos</p>
-      <p className="text-[9px] text-muted-foreground sm:hidden">pts</p>
+  return (
+    <div className={cn(
+      "flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border transition-all hover:scale-[1.01] group",
+      isCurrentUser 
+        ? "bg-primary/10 border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.2)]" 
+        : "bg-card border-border hover:border-primary/30"
+    )}>
+      <div className={cn("font-bold text-center text-sm sm:text-base w-6 sm:w-8", position <= 3 ? "text-primary" : "text-muted-foreground")}>
+        {position}º
+      </div>
+      
+      <Link to={`/user/${user.user_id}`} className="flex flex-1 items-center gap-3 sm:gap-4 min-w-0 cursor-pointer">
+        <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm group-hover:border-primary transition-colors shrink-0">
+          <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
+          <AvatarFallback className={cn("text-white font-medium", fallbackColor)}>{user.first_name?.[0]}</AvatarFallback>
+        </Avatar>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <p className={cn("font-semibold text-sm sm:text-base truncate group-hover:text-primary group-hover:underline transition-colors max-w-[120px] sm:max-w-none", isCurrentUser && "text-primary")}>
+              {user.first_name} {user.last_name}
+            </p>
+            {isCurrentUser && <span className="text-[9px] sm:text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full no-underline shrink-0">Você</span>}
+          </div>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+            <Badge variant="secondary" className="h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] font-normal flex gap-1 items-center bg-muted border-0">
+                <Target className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> {user.accuracy}%
+            </Badge>
+          </div>
+        </div>
+      </Link>
+
+      <div className="text-right pl-2">
+        <p className="font-bold text-base sm:text-xl text-primary leading-none">{user.score}</p>
+        <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase font-bold tracking-wider hidden sm:block">Pontos</p>
+        <p className="text-[9px] text-muted-foreground sm:hidden">pts</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnlocked: boolean; earnedDate?: string }) => {
   const Icon = badge.icon;
