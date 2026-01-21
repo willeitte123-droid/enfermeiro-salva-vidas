@@ -14,11 +14,11 @@ import { Loader2 } from "lucide-react";
 // --- CORES PARA GRÁFICOS ---
 const COLORS = ['#0ea5e9', '#6366f1', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#64748b'];
 
-// --- VALORES DOS PLANOS ---
+// --- VALORES DOS PLANOS (Configure aqui os preços reais) ---
 const PLAN_PRICES: Record<string, number> = {
-  'plano premium anual': 197.00,
-  'plano pro anual': 97.00,
-  'plano essencial': 67.00,
+  'premium': 197.00,
+  'pro': 97.00,
+  'essencial': 67.00,
   'free': 0.00
 };
 
@@ -109,11 +109,13 @@ const AdminDashboard = () => {
     
     // Cálculo de Receita (MRR Estimado / Valor total de contratos ativos)
     let totalRevenue = 0;
-    const revenueByPlan = {
-      premium: 0,
-      essencial: 0,
-      pro: 0,
-      outros: 0
+    
+    // Estrutura para armazenar valor e quantidade
+    const revenueStats = {
+      premium: { value: 0, count: 0 },
+      pro: { value: 0, count: 0 },
+      essencial: { value: 0, count: 0 },
+      outros: { value: 0, count: 0 }
     };
     
     profiles.forEach(p => {
@@ -123,23 +125,25 @@ const AdminDashboard = () => {
       if (isActive && p.plan) {
         const planKey = p.plan.toLowerCase().trim();
         let price = 0;
-        let category: keyof typeof revenueByPlan = 'outros';
+        let category: keyof typeof revenueStats = 'outros';
 
-        if (PLAN_PRICES[planKey] !== undefined) {
-           price = PLAN_PRICES[planKey];
-        } else {
-           // Fallback simples
-           if (planKey.includes('premium')) price = 197.00;
-           else if (planKey.includes('pro')) price = 97.00;
-           else if (planKey.includes('essencial')) price = 67.00;
+        // Lógica de Categorização Robusta
+        if (planKey.includes('premium')) {
+          category = 'premium';
+          price = PLAN_PRICES.premium;
+        } else if (planKey.includes('pro')) {
+          category = 'pro';
+          price = PLAN_PRICES.pro;
+        } else if (planKey.includes('essencial')) {
+          category = 'essencial';
+          price = PLAN_PRICES.essencial;
         }
 
-        if (planKey.includes('premium')) category = 'premium';
-        else if (planKey.includes('essencial')) category = 'essencial';
-        else if (planKey.includes('pro')) category = 'pro';
-
-        totalRevenue += price;
-        revenueByPlan[category] += price;
+        if (price > 0) {
+            totalRevenue += price;
+            revenueStats[category].value += price;
+            revenueStats[category].count += 1;
+        }
       }
     });
 
@@ -229,7 +233,7 @@ const AdminDashboard = () => {
       totalUsers,
       activeUsers,
       totalRevenue,
-      revenueByPlan,
+      revenueStats,
       planDistribution,
       planStatsTable,
       dailyUsageData,
@@ -305,7 +309,7 @@ const AdminDashboard = () => {
             <DollarSign className="w-24 h-24" />
           </div>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Receita (Planos Ativos)</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Receita Estimada (Ativos)</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex justify-between items-end mb-4">
@@ -314,18 +318,27 @@ const AdminDashboard = () => {
               </div>
               <TrendingUp className="h-6 w-6 text-emerald-500 mb-1" />
             </div>
-            <div className="space-y-1.5 text-xs text-muted-foreground border-t border-border/50 pt-2">
+            <div className="space-y-2 text-xs text-muted-foreground border-t border-border/50 pt-3">
                 <div className="flex justify-between items-center">
-                    <span>Premium Anual:</span>
-                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueByPlan.premium)}</span>
+                    <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Premium:</span>
+                    <div className="flex gap-2">
+                        <span className="font-mono text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueStats.premium.value)}</span>
+                        <span className="bg-muted px-1.5 rounded text-[10px] flex items-center">{stats.revenueStats.premium.count} un.</span>
+                    </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span>Pro Anual:</span>
-                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueByPlan.pro)}</span>
+                    <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Pro:</span>
+                    <div className="flex gap-2">
+                        <span className="font-mono text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueStats.pro.value)}</span>
+                        <span className="bg-muted px-1.5 rounded text-[10px] flex items-center">{stats.revenueStats.pro.count} un.</span>
+                    </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span>Essencial:</span>
-                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueByPlan.essencial)}</span>
+                    <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span> Essencial:</span>
+                    <div className="flex gap-2">
+                        <span className="font-mono text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueStats.essencial.value)}</span>
+                        <span className="bg-muted px-1.5 rounded text-[10px] flex items-center">{stats.revenueStats.essencial.count} un.</span>
+                    </div>
                 </div>
             </div>
           </CardContent>
