@@ -43,8 +43,7 @@ const fetchDashboardData = async () => {
   const today = new Date();
   const thirtyDaysAgo = subDays(today, 30).toISOString();
 
-  // 1. Perfis (Planos, Status, Localização) - Essencial para MRR e KPIs
-  // CORREÇÃO: Removido 'created_at' que causava erro 400
+  // 1. Perfis (Planos, Status, Localização)
   const { data: profiles, error: profilesError } = await supabase
     .from('profiles')
     .select('id, plan, status, location');
@@ -54,12 +53,12 @@ const fetchDashboardData = async () => {
     throw profilesError;
   }
 
-  // 2. Atividade Recente (Questões) - Limitado a colunas leves
+  // 2. Atividade Recente (Questões)
   const { data: recentAnswers, error: answersError } = await supabase
     .from('user_question_answers')
     .select('created_at')
     .gte('created_at', thirtyDaysAgo)
-    .limit(5000); // Limite de segurança
+    .limit(5000);
 
   if (answersError) console.error("Erro ao buscar respostas:", answersError);
 
@@ -72,7 +71,7 @@ const fetchDashboardData = async () => {
 
   if (simulationsError) console.error("Erro ao buscar simulados:", simulationsError);
 
-  // 4. Totais Gerais (Count Exact)
+  // 4. Totais Gerais
   const { count: totalQuestions } = await supabase
     .from('user_question_answers')
     .select('*', { count: 'exact', head: true });
@@ -94,7 +93,7 @@ const AdminDashboard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['adminDashboardStatsReal'],
     queryFn: fetchDashboardData,
-    refetchInterval: 60000, // Atualiza a cada 1 minuto
+    refetchInterval: 60000,
     retry: 1
   });
 
@@ -110,24 +109,37 @@ const AdminDashboard = () => {
     
     // Cálculo de Receita (MRR Estimado / Valor total de contratos ativos)
     let totalRevenue = 0;
+    const revenueByPlan = {
+      premium: 0,
+      essencial: 0,
+      pro: 0,
+      outros: 0
+    };
     
     profiles.forEach(p => {
-      // Verifica se o status é ativo (considerando possíveis espaços em branco)
+      // Verifica se o status é ativo
       const isActive = p.status && p.status.trim().toLowerCase() === 'active';
       
       if (isActive && p.plan) {
         const planKey = p.plan.toLowerCase().trim();
-        // Procura o preço exato ou parcial se necessário
         let price = 0;
+        let category: keyof typeof revenueByPlan = 'outros';
+
         if (PLAN_PRICES[planKey] !== undefined) {
            price = PLAN_PRICES[planKey];
         } else {
-           // Fallback simples para tentar encontrar por inclusão de string se a chave exata falhar
+           // Fallback simples
            if (planKey.includes('premium')) price = 197.00;
            else if (planKey.includes('pro')) price = 97.00;
            else if (planKey.includes('essencial')) price = 67.00;
         }
+
+        if (planKey.includes('premium')) category = 'premium';
+        else if (planKey.includes('essencial')) category = 'essencial';
+        else if (planKey.includes('pro')) category = 'pro';
+
         totalRevenue += price;
+        revenueByPlan[category] += price;
       }
     });
 
@@ -160,7 +172,7 @@ const AdminDashboard = () => {
       name, ...counts
     }));
 
-    // 4. Uso Diário (Line Chart - Últimos 30 dias)
+    // 4. Uso Diário
     const dailyUsageMap: Record<string, { questions: number, simulations: number }> = {};
     for (let i = 29; i >= 0; i--) {
       const dateKey = format(subDays(new Date(), i), 'dd/MM');
@@ -183,7 +195,7 @@ const AdminDashboard = () => {
       simulations: counts.simulations
     }));
 
-    // 5. Pico Horário (Bar Chart)
+    // 5. Pico Horário
     const hourlyMap = new Array(24).fill(0);
     recentAnswers.forEach(a => {
       const hour = getHours(parseISO(a.created_at));
@@ -197,7 +209,7 @@ const AdminDashboard = () => {
       isPeak: maxActivity > 0 && count >= maxActivity * 0.8
     }));
 
-    // 6. Geografia (Top Cidades)
+    // 6. Geografia
     const locationCounts: Record<string, number> = {};
     profiles.forEach(p => {
       if (p.location) {
@@ -217,6 +229,7 @@ const AdminDashboard = () => {
       totalUsers,
       activeUsers,
       totalRevenue,
+      revenueByPlan,
       planDistribution,
       planStatsTable,
       dailyUsageData,
@@ -245,6 +258,8 @@ const AdminDashboard = () => {
 
   const today = new Date();
   const thirtyDaysAgo = subDays(today, 30);
+
+  const formatCurrency = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -293,11 +308,25 @@ const AdminDashboard = () => {
             <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Receita (Planos Ativos)</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between items-end mb-4">
               <div className="text-4xl font-black text-foreground">
-                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats.totalRevenue)}
+                {formatCurrency(stats.totalRevenue)}
               </div>
               <TrendingUp className="h-6 w-6 text-emerald-500 mb-1" />
+            </div>
+            <div className="space-y-1.5 text-xs text-muted-foreground border-t border-border/50 pt-2">
+                <div className="flex justify-between items-center">
+                    <span>Premium Anual:</span>
+                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueByPlan.premium)}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                    <span>Pro Anual:</span>
+                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueByPlan.pro)}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                    <span>Essencial:</span>
+                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueByPlan.essencial)}</span>
+                </div>
             </div>
           </CardContent>
         </Card>
