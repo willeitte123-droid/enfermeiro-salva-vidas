@@ -4,7 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   LineChart, Line, PieChart, Pie, Cell, Tooltip as RechartsTooltip 
 } from "recharts";
-import { Users, CheckCircle2, Activity, Calendar, MapPin, Brain, DollarSign, TrendingUp } from "lucide-react";
+import { Users, CheckCircle2, Activity, Calendar, MapPin, Brain, DollarSign, TrendingUp, AlertOctagon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
@@ -109,13 +109,11 @@ const AdminDashboard = () => {
     
     // Cálculo de Receita (MRR Estimado / Valor total de contratos ativos)
     let totalRevenue = 0;
-    
-    // Estrutura para armazenar valor e quantidade
-    const revenueStats = {
-      premium: { value: 0, count: 0 },
-      pro: { value: 0, count: 0 },
-      essencial: { value: 0, count: 0 },
-      outros: { value: 0, count: 0 }
+    const revenueByPlan = {
+      premium: 0,
+      essencial: 0,
+      pro: 0,
+      outros: 0
     };
     
     profiles.forEach(p => {
@@ -125,25 +123,23 @@ const AdminDashboard = () => {
       if (isActive && p.plan) {
         const planKey = p.plan.toLowerCase().trim();
         let price = 0;
-        let category: keyof typeof revenueStats = 'outros';
+        let category: keyof typeof revenueByPlan = 'outros';
 
-        // Lógica de Categorização Robusta
-        if (planKey.includes('premium')) {
-          category = 'premium';
-          price = PLAN_PRICES.premium;
-        } else if (planKey.includes('pro')) {
-          category = 'pro';
-          price = PLAN_PRICES.pro;
-        } else if (planKey.includes('essencial')) {
-          category = 'essencial';
-          price = PLAN_PRICES.essencial;
+        if (PLAN_PRICES[planKey] !== undefined) {
+           price = PLAN_PRICES[planKey];
+        } else {
+           // Fallback simples
+           if (planKey.includes('premium')) price = 197.00;
+           else if (planKey.includes('pro')) price = 97.00;
+           else if (planKey.includes('essencial')) price = 67.00;
         }
 
-        if (price > 0) {
-            totalRevenue += price;
-            revenueStats[category].value += price;
-            revenueStats[category].count += 1;
-        }
+        if (planKey.includes('premium')) category = 'premium';
+        else if (planKey.includes('essencial')) category = 'essencial';
+        else if (planKey.includes('pro')) category = 'pro';
+
+        totalRevenue += price;
+        revenueByPlan[category] += price;
       }
     });
 
@@ -172,9 +168,12 @@ const AdminDashboard = () => {
       else if (status === 'inactive') planStatsMap[plan].bloq++;
     });
 
+    // Converte para array, calcula total de não-ativos e ordena por volume de problemas
     const planStatsTable = Object.entries(planStatsMap).map(([name, counts]) => ({
-      name, ...counts
-    }));
+      name, 
+      ...counts,
+      totalIssues: counts.pend + counts.susp + counts.bloq
+    })).sort((a, b) => b.totalIssues - a.totalIssues);
 
     // 4. Uso Diário
     const dailyUsageMap: Record<string, { questions: number, simulations: number }> = {};
@@ -233,7 +232,7 @@ const AdminDashboard = () => {
       totalUsers,
       activeUsers,
       totalRevenue,
-      revenueStats,
+      revenueByPlan,
       planDistribution,
       planStatsTable,
       dailyUsageData,
@@ -318,27 +317,18 @@ const AdminDashboard = () => {
               </div>
               <TrendingUp className="h-6 w-6 text-emerald-500 mb-1" />
             </div>
-            <div className="space-y-2 text-xs text-muted-foreground border-t border-border/50 pt-3">
+            <div className="space-y-1.5 text-xs text-muted-foreground border-t border-border/50 pt-2">
                 <div className="flex justify-between items-center">
-                    <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Premium:</span>
-                    <div className="flex gap-2">
-                        <span className="font-mono text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueStats.premium.value)}</span>
-                        <span className="bg-muted px-1.5 rounded text-[10px] flex items-center">{stats.revenueStats.premium.count} un.</span>
-                    </div>
+                    <span>Premium Anual:</span>
+                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueByPlan.premium)}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Pro:</span>
-                    <div className="flex gap-2">
-                        <span className="font-mono text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueStats.pro.value)}</span>
-                        <span className="bg-muted px-1.5 rounded text-[10px] flex items-center">{stats.revenueStats.pro.count} un.</span>
-                    </div>
+                    <span>Pro Anual:</span>
+                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueByPlan.pro)}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span> Essencial:</span>
-                    <div className="flex gap-2">
-                        <span className="font-mono text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueStats.essencial.value)}</span>
-                        <span className="bg-muted px-1.5 rounded text-[10px] flex items-center">{stats.revenueStats.essencial.count} un.</span>
-                    </div>
+                    <span>Essencial:</span>
+                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.revenueByPlan.essencial)}</span>
                 </div>
             </div>
           </CardContent>
@@ -390,29 +380,31 @@ const AdminDashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Tabela Status Geral */}
+        {/* Tabela Status Geral - Atualizada */}
         <Card className="border-t-4 border-t-amber-500">
           <CardHeader className="pb-3 border-b border-border/50">
             <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-amber-500"></div>
-              <h3 className="font-bold text-sm uppercase text-amber-500">Status Geral das Assinaturas</h3>
+              <AlertOctagon className="h-4 w-4 text-amber-500" />
+              <h3 className="font-bold text-sm uppercase text-amber-500">Monitor de Assinaturas (Problemas)</h3>
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="text-xs uppercase font-bold text-muted-foreground grid grid-cols-[1fr_50px_50px_50px] gap-2 px-6 py-3 border-b border-border/50 text-right">
+            <div className="text-xs uppercase font-bold text-muted-foreground grid grid-cols-[1fr_1fr_1fr_1fr_auto] gap-1 px-4 py-3 border-b border-border/50 text-center">
               <span className="text-left">Plano</span>
-              <span className="text-yellow-500" title="Pendente">Pen.</span>
-              <span className="text-orange-500" title="Suspenso">Sus.</span>
-              <span className="text-red-500" title="Inativo">Ina.</span>
+              <span className="text-yellow-600 font-extrabold" title="Pendente">Pend.</span>
+              <span className="text-orange-600 font-extrabold" title="Suspenso">Susp.</span>
+              <span className="text-red-600 font-extrabold" title="Inativo">Inat.</span>
+              <span className="text-muted-foreground pl-2" title="Total de não ativos">Total</span>
             </div>
             <ScrollArea className="h-[250px]">
               <div className="divide-y divide-border/30">
                 {stats.planStatsTable.map((plan, i) => (
-                  <div key={i} className="grid grid-cols-[1fr_50px_50px_50px] gap-2 px-6 py-3 hover:bg-muted/50 transition-colors text-sm text-right">
-                    <span className="font-medium text-foreground text-left truncate" title={plan.name}>{plan.name}</span>
-                    <span className="text-muted-foreground">{plan.pend}</span>
-                    <span className="text-muted-foreground">{plan.susp}</span>
-                    <span className="text-muted-foreground">{plan.bloq}</span>
+                  <div key={i} className="grid grid-cols-[1fr_1fr_1fr_1fr_auto] gap-1 px-4 py-3 hover:bg-muted/50 transition-colors text-sm text-center items-center">
+                    <span className="font-medium text-foreground text-left truncate text-xs sm:text-sm" title={plan.name}>{plan.name}</span>
+                    <span className="text-yellow-600 font-bold bg-yellow-50 dark:bg-yellow-900/20 rounded py-0.5">{plan.pend}</span>
+                    <span className="text-orange-600 font-bold bg-orange-50 dark:bg-orange-900/20 rounded py-0.5">{plan.susp}</span>
+                    <span className="text-red-600 font-bold bg-red-50 dark:bg-red-900/20 rounded py-0.5">{plan.bloq}</span>
+                    <span className="text-muted-foreground font-mono text-xs pl-2">{plan.totalIssues}</span>
                   </div>
                 ))}
               </div>
