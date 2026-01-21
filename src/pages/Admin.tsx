@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Users, Search, AlertTriangle, Edit, Save, Copy, Webhook, Info } from "lucide-react";
+import { Loader2, Users, Search, AlertTriangle, Edit, Save, Copy, Webhook, Info, LayoutDashboard } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -19,6 +19,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import AdminDashboard from "./admin/AdminDashboard";
 
 interface AppUser {
   id: string;
@@ -275,8 +276,14 @@ const KiwifySettings = () => {
 const Admin = () => (
   <div className="space-y-6">
     <div className="text-center"><h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Painel de Administração</h1><p className="text-muted-foreground">Gerenciamento de usuários e integrações da plataforma.</p></div>
-    <Tabs defaultValue="users" className="w-full">
-      <TabsList className="grid w-full grid-cols-2"><TabsTrigger value="users"><Users className="mr-2 h-4 w-4" />Gerenciar Usuários</TabsTrigger><TabsTrigger value="kiwify"><Webhook className="mr-2 h-4 w-4" />Integração Kiwify</TabsTrigger></TabsList>
+    <Tabs defaultValue="dashboard" className="w-full">
+      <TabsList className="grid w-full grid-cols-3">
+        <TabsTrigger value="dashboard"><LayoutDashboard className="mr-2 h-4 w-4" />Dashboard</TabsTrigger>
+        <TabsTrigger value="users"><Users className="mr-2 h-4 w-4" />Gerenciar Usuários</TabsTrigger>
+        <TabsTrigger value="kiwify"><Webhook className="mr-2 h-4 w-4" />Integração Kiwify</TabsTrigger>
+      </TabsList>
+      
+      <TabsContent value="dashboard" className="mt-4"><AdminDashboard /></TabsContent>
       <TabsContent value="users" className="mt-4"><UserManagement /></TabsContent>
       <TabsContent value="kiwify" className="mt-4"><KiwifySettings /></TabsContent>
     </Tabs>
