@@ -10,6 +10,7 @@ import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import SuspendedAccount from "@/pages/SuspendedAccount";
 import { TimeTracker } from "@/components/TimeTracker";
+import { IpTracker } from "@/components/IpTracker";
 
 const ContentLoader = () => (
   <div className="flex items-center justify-center h-full w-full">
@@ -20,27 +21,31 @@ const ContentLoader = () => (
 const MainLayout = () => {
   const { session } = useAuth();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const { data: profile, isLoading: isLoadingProfile } = useProfile(session);
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
 
   const isAdmin = profile?.role === 'admin';
   const user = profile ? { 
     first_name: profile.first_name, 
     last_name: profile.last_name,
-    avatar_url: profile.avatar_url 
+    avatar_url: profile.avatar_url,
+    plan: profile.plan
   } : null;
 
   return (
     <div className="flex min-h-screen w-full bg-muted/40">
       <TimeTracker />
-      <Sidebar 
-        isAdmin={isAdmin} 
-        user={user} 
-      />
+      <IpTracker />
+      <Sidebar isAdmin={isAdmin} user={user} isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
       <main className="flex-1 flex flex-col">
         <Header onSearchClick={() => setIsSearchOpen(true)} isAdmin={isAdmin} user={user} />
         <GlobalSearch open={isSearchOpen} setOpen={setIsSearchOpen} />
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
           {isLoadingProfile ? (
             <ContentLoader />
           ) : profile?.status === 'pending' ? (

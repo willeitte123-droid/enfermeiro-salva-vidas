@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Users, Search, AlertTriangle, Edit, Save, Copy, Webhook, Info, LayoutDashboard } from "lucide-react";
+import { Loader2, Users, Search, AlertTriangle, Edit, Save, Copy, Webhook, Info, LayoutDashboard, MapPin, Globe } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -31,6 +31,9 @@ interface AppUser {
   avatar_url: string | null;
   email: string | null;
   access_expires_at: string | null;
+  plan_start_date: string | null;
+  last_ip: string | null;
+  location: string | null;
 }
 
 const editUserSchema = z.object({
@@ -155,42 +158,63 @@ const UserManagement = () => {
   if (error) return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro de Acesso</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+    <Card className="overflow-hidden">
+      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div><CardTitle className="flex items-center gap-2"><Users className="h-5 w-5" /> Usuários ({filteredUsers.length})</CardTitle><CardDescription>Gerencie todos os usuários registrados.</CardDescription></div>
-        <div className="flex items-center gap-2">
-          <div className="relative w-full sm:w-auto max-w-xs"><Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar por email..." className="pl-8" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /></div>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-auto max-w-xs"><Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar por email..." className="pl-8" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /></div>
           <Button variant="outline" size="icon" onClick={handleRefresh} title="Atualizar Lista"><Loader2 className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} /></Button>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="border rounded-md"><Table><TableHeader><TableRow><TableHead>Nome</TableHead><TableHead>Email</TableHead><TableHead>Plano</TableHead><TableHead>Status</TableHead><TableHead>Função</TableHead><TableHead>Expira em</TableHead><TableHead>Ações</TableHead></TableRow></TableHeader>
-          <TableBody>
-            {filteredUsers.length > 0 ? filteredUsers.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="font-medium">
-                  <div className="flex flex-col">
-                    <span>{user.first_name} {user.last_name}</span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="text-[10px] text-muted-foreground font-mono cursor-help truncate w-20">{user.id.substring(0, 8)}...</span>
-                        </TooltipTrigger>
-                        <TooltipContent><p>ID Completo: {user.id}</p></TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                </TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell><Badge variant="outline">{user.plan}</Badge></TableCell>
-                <TableCell><Badge variant={getStatusVariant(user.status)}>{user.status}</Badge></TableCell>
-                <TableCell><Badge variant={user.role === 'admin' ? 'destructive' : 'secondary'}>{user.role}</Badge></TableCell>
-                <TableCell>{user.access_expires_at ? format(new Date(user.access_expires_at), "dd/MM/yy", { locale: ptBR }) : "-"}</TableCell>
-                <TableCell><Button variant="outline" size="icon" onClick={() => setEditingUser(user)}><Edit className="h-4 w-4" /></Button></TableCell>
+        <div className="border rounded-md overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nome</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Plano</TableHead>
+                <TableHead>Localização / IP</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Início</TableHead>
+                <TableHead>Vencimento</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
               </TableRow>
-            )) : <TableRow><TableCell colSpan={7} className="h-24 text-center">Nenhum usuário encontrado.</TableCell></TableRow>}
-          </TableBody>
-        </Table></div>
+            </TableHeader>
+            <TableBody>
+              {filteredUsers.length > 0 ? filteredUsers.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell className="font-medium whitespace-nowrap">
+                    <div className="flex flex-col">
+                      <span>{user.first_name} {user.last_name}</span>
+                      <span className="text-[10px] text-muted-foreground font-mono truncate w-20">{user.id.substring(0, 8)}...</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell><Badge variant="outline" className="whitespace-nowrap">{user.plan}</Badge></TableCell>
+                  <TableCell>
+                    <div className="flex flex-col text-xs">
+                      {user.location ? (
+                        <div className="flex items-center gap-1"><MapPin className="h-3 w-3 text-muted-foreground" /><span className="truncate max-w-[120px]" title={user.location}>{user.location}</span></div>
+                      ) : <span className="text-muted-foreground italic">-</span>}
+                      {user.last_ip ? (
+                        <div className="flex items-center gap-1 text-muted-foreground"><Globe className="h-3 w-3" />{user.last_ip}</div>
+                      ) : null}
+                    </div>
+                  </TableCell>
+                  <TableCell><Badge variant={getStatusVariant(user.status)}>{user.status}</Badge></TableCell>
+                  <TableCell className="text-xs whitespace-nowrap">
+                    {user.plan_start_date ? format(new Date(user.plan_start_date), "dd/MM/yy", { locale: ptBR }) : "-"}
+                  </TableCell>
+                  <TableCell className="text-xs whitespace-nowrap">
+                    {user.access_expires_at ? format(new Date(user.access_expires_at), "dd/MM/yy", { locale: ptBR }) : "-"}
+                  </TableCell>
+                  <TableCell className="text-right"><Button variant="outline" size="icon" onClick={() => setEditingUser(user)}><Edit className="h-4 w-4" /></Button></TableCell>
+                </TableRow>
+              )) : <TableRow><TableCell colSpan={8} className="h-24 text-center">Nenhum usuário encontrado.</TableCell></TableRow>}
+            </TableBody>
+          </Table>
+        </div>
         <EditUserDialog user={editingUser} open={!!editingUser} onOpenChange={() => setEditingUser(null)} />
       </CardContent>
     </Card>

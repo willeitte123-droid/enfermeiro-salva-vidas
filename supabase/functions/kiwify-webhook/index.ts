@@ -104,7 +104,7 @@ serve(async (req: Request) => {
 
     } else if (isApprovedEvent) {
       let userId;
-      // Busca ID exato via RPC - CORREÇÃO PRINCIPAL
+      // Busca ID exato via RPC
       const { data: existingUserId, error: rpcError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
       if (rpcError) throw rpcError;
 
@@ -117,16 +117,16 @@ serve(async (req: Request) => {
         
         if (inviteError) {
            if (inviteError.message.includes('already been registered')) {
-              // Race condition: usuário criado entre a busca e o convite
-              const { data: retryId, error: retryError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
+              // Race condition
+              const { data: retryId } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
               if (retryId) userId = retryId;
-              else throw new Error(`Erro de concorrência: usuário existe mas não foi encontrado via RPC: ${inviteError.message}`);
+              else throw new Error(`Erro de concorrência: ${inviteError.message}`);
            } else {
               throw new Error(`Falha no convite: ${inviteError.message}`);
            }
         } else {
-            // Convite enviado, busca ID novamente para garantir
-             const { data: newId, error: findAgainError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
+             // Busca ID novamente para garantir
+             const { data: newId } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
              if (!newId) throw new Error("Usuário convidado mas ID não encontrado via RPC.");
              userId = newId;
         }
@@ -138,6 +138,7 @@ serve(async (req: Request) => {
       const lastName = nameParts.slice(1).join(' ') || '';
       const planName = body?.Subscription?.plan?.name || body?.Product?.product_name || 'Plano PRO';
       const expiresAt = body?.Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
+      const startDate = new Date().toISOString(); // Data de início do plano (hoje)
 
       const { error: upsertProfileError } = await supabaseAdmin.from('profiles').upsert({
           id: userId,
@@ -145,7 +146,8 @@ serve(async (req: Request) => {
           last_name: lastName,
           status: 'active',
           plan: planName,
-          access_expires_at: expiresAt
+          access_expires_at: expiresAt,
+          plan_start_date: startDate // Salvando a data de início
       }, { onConflict: 'id' });
 
       if (upsertProfileError) {
