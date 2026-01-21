@@ -44,9 +44,10 @@ const fetchDashboardData = async () => {
   const thirtyDaysAgo = subDays(today, 30).toISOString();
 
   // 1. Perfis (Planos, Status, Localização) - Essencial para MRR e KPIs
+  // CORREÇÃO: Removido 'created_at' que causava erro 400
   const { data: profiles, error: profilesError } = await supabase
     .from('profiles')
-    .select('id, plan, status, location, created_at');
+    .select('id, plan, status, location');
 
   if (profilesError) {
     console.error("Erro ao buscar perfis:", profilesError);
@@ -58,7 +59,7 @@ const fetchDashboardData = async () => {
     .from('user_question_answers')
     .select('created_at')
     .gte('created_at', thirtyDaysAgo)
-    .limit(5000); // Limite de segurança para performance do gráfico
+    .limit(5000); // Limite de segurança
 
   if (answersError) console.error("Erro ao buscar respostas:", answersError);
 
@@ -71,7 +72,7 @@ const fetchDashboardData = async () => {
 
   if (simulationsError) console.error("Erro ao buscar simulados:", simulationsError);
 
-  // 4. Totais Gerais (Count Exact) - Mais rápido que baixar tudo
+  // 4. Totais Gerais (Count Exact)
   const { count: totalQuestions } = await supabase
     .from('user_question_answers')
     .select('*', { count: 'exact', head: true });
@@ -90,11 +91,11 @@ const fetchDashboardData = async () => {
 };
 
 const AdminDashboard = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['adminDashboardStatsReal'],
     queryFn: fetchDashboardData,
     refetchInterval: 60000, // Atualiza a cada 1 minuto
-    retry: 2
+    retry: 1
   });
 
   // --- PROCESSAMENTO DOS DADOS ---
@@ -105,18 +106,27 @@ const AdminDashboard = () => {
 
     // 1. KPIs de Usuários e Receita
     const totalUsers = profiles.length;
-    const activeUsers = profiles.filter(p => p.status === 'active' || p.status === 'active ').length; // Tratamento de string seguro
+    const activeUsers = profiles.filter(p => p.status === 'active' || p.status === 'active ').length; 
     
-    // Cálculo de Receita (MRR Estimado)
-    // Assumindo que os valores anuais são divididos por 12 para MRR, e mensal é integral.
-    // Se quiser o valor total de contratos, basta somar o price.
-    // Aqui vou calcular o Valor Total de Contratos Ativos (Run Rate)
+    // Cálculo de Receita (MRR Estimado / Valor total de contratos ativos)
     let totalRevenue = 0;
     
     profiles.forEach(p => {
-      if (p.status === 'active' && p.plan) {
+      // Verifica se o status é ativo (considerando possíveis espaços em branco)
+      const isActive = p.status && p.status.trim().toLowerCase() === 'active';
+      
+      if (isActive && p.plan) {
         const planKey = p.plan.toLowerCase().trim();
-        const price = PLAN_PRICES[planKey] || 0;
+        // Procura o preço exato ou parcial se necessário
+        let price = 0;
+        if (PLAN_PRICES[planKey] !== undefined) {
+           price = PLAN_PRICES[planKey];
+        } else {
+           // Fallback simples para tentar encontrar por inclusão de string se a chave exata falhar
+           if (planKey.includes('premium')) price = 197.00;
+           else if (planKey.includes('pro')) price = 97.00;
+           else if (planKey.includes('essencial')) price = 67.00;
+        }
         totalRevenue += price;
       }
     });
@@ -192,7 +202,7 @@ const AdminDashboard = () => {
     profiles.forEach(p => {
       if (p.location) {
         const loc = p.location.trim();
-        if (loc.length > 2) { // Ignora strings vazias ou muito curtas
+        if (loc.length > 2) { 
              locationCounts[loc] = (locationCounts[loc] || 0) + 1;
         }
       }
@@ -215,11 +225,20 @@ const AdminDashboard = () => {
     };
   }, [data]);
 
-  if (isLoading || !stats) {
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] gap-4 animate-in fade-in duration-500">
         <Loader2 className="h-10 w-10 animate-spin text-primary" />
         <p className="text-muted-foreground text-sm font-medium">Sincronizando dados em tempo real...</p>
+      </div>
+    );
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
+        <div className="text-red-500 font-bold">Erro ao carregar dados</div>
+        <p className="text-muted-foreground text-sm">{(error as Error)?.message || "Erro desconhecido"}</p>
       </div>
     );
   }
@@ -271,7 +290,7 @@ const AdminDashboard = () => {
             <DollarSign className="w-24 h-24" />
           </div>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Valor em Assinaturas Ativas</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Receita (Planos Ativos)</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex justify-between items-end">
