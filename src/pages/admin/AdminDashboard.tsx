@@ -1,19 +1,26 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   LineChart, Line, PieChart, Pie, Cell, Tooltip as RechartsTooltip 
 } from "recharts";
-import { Users, CheckCircle2, Activity, Calendar, MapPin, Brain } from "lucide-react";
+import { Users, CheckCircle2, Activity, Calendar, MapPin, Brain, DollarSign, TrendingUp } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
-import { subDays, format, parseISO, getHours, startOfDay, endOfDay } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { subDays, format, parseISO, getHours } from "date-fns";
 import { Loader2 } from "lucide-react";
 
 // --- CORES PARA GRÁFICOS ---
 const COLORS = ['#0ea5e9', '#6366f1', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#64748b'];
+
+// --- VALORES DOS PLANOS ---
+const PLAN_PRICES: Record<string, number> = {
+  'plano premium anual': 197.00,
+  'plano pro anual': 97.00,
+  'plano essencial': 67.00,
+  'free': 0.00
+};
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -36,31 +43,35 @@ const fetchDashboardData = async () => {
   const today = new Date();
   const thirtyDaysAgo = subDays(today, 30).toISOString();
 
-  // 1. Perfis (Planos, Status, Localização)
+  // 1. Perfis (Planos, Status, Localização) - Essencial para MRR e KPIs
   const { data: profiles, error: profilesError } = await supabase
     .from('profiles')
     .select('id, plan, status, location, created_at');
 
-  if (profilesError) throw profilesError;
+  if (profilesError) {
+    console.error("Erro ao buscar perfis:", profilesError);
+    throw profilesError;
+  }
 
-  // 2. Atividade Recente (Questões - Últimos 30 dias para gráfico diário)
-  // Limitamos para não estourar payload, mas idealmente seria um RPC de contagem agrupada
+  // 2. Atividade Recente (Questões) - Limitado a colunas leves
   const { data: recentAnswers, error: answersError } = await supabase
     .from('user_question_answers')
     .select('created_at')
-    .gte('created_at', thirtyDaysAgo);
+    .gte('created_at', thirtyDaysAgo)
+    .limit(5000); // Limite de segurança para performance do gráfico
 
-  if (answersError) throw answersError;
+  if (answersError) console.error("Erro ao buscar respostas:", answersError);
 
-  // 3. Atividade Recente (Simulados - Últimos 30 dias)
+  // 3. Atividade Recente (Simulados)
   const { data: recentSimulations, error: simulationsError } = await supabase
     .from('user_simulations')
     .select('created_at')
-    .gte('created_at', thirtyDaysAgo);
+    .gte('created_at', thirtyDaysAgo)
+    .limit(1000);
 
-  if (simulationsError) throw simulationsError;
+  if (simulationsError) console.error("Erro ao buscar simulados:", simulationsError);
 
-  // 4. Totais Gerais (Count Exact)
+  // 4. Totais Gerais (Count Exact) - Mais rápido que baixar tudo
   const { count: totalQuestions } = await supabase
     .from('user_question_answers')
     .select('*', { count: 'exact', head: true });
@@ -80,21 +91,35 @@ const fetchDashboardData = async () => {
 
 const AdminDashboard = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ['adminDashboardStats'],
+    queryKey: ['adminDashboardStatsReal'],
     queryFn: fetchDashboardData,
     refetchInterval: 60000, // Atualiza a cada 1 minuto
+    retry: 2
   });
 
   // --- PROCESSAMENTO DOS DADOS ---
-
   const stats = useMemo(() => {
     if (!data) return null;
 
     const { profiles, recentAnswers, recentSimulations } = data;
 
-    // 1. KPIs
+    // 1. KPIs de Usuários e Receita
     const totalUsers = profiles.length;
-    const activeUsers = profiles.filter(p => p.status === 'active').length;
+    const activeUsers = profiles.filter(p => p.status === 'active' || p.status === 'active ').length; // Tratamento de string seguro
+    
+    // Cálculo de Receita (MRR Estimado)
+    // Assumindo que os valores anuais são divididos por 12 para MRR, e mensal é integral.
+    // Se quiser o valor total de contratos, basta somar o price.
+    // Aqui vou calcular o Valor Total de Contratos Ativos (Run Rate)
+    let totalRevenue = 0;
+    
+    profiles.forEach(p => {
+      if (p.status === 'active' && p.plan) {
+        const planKey = p.plan.toLowerCase().trim();
+        const price = PLAN_PRICES[planKey] || 0;
+        totalRevenue += price;
+      }
+    });
 
     // 2. Distribuição de Planos (Pie Chart)
     const planCounts: Record<string, number> = {};
@@ -105,7 +130,7 @@ const AdminDashboard = () => {
     
     const planDistribution = Object.entries(planCounts)
       .map(([name, value]) => ({ name, value }))
-      .sort((a, b) => b.value - a.value); // Mais populares primeiro
+      .sort((a, b) => b.value - a.value);
 
     // 3. Status dos Planos (Tabela)
     const planStatsMap: Record<string, { active: number, pend: number, susp: number, bloq: number }> = {};
@@ -113,10 +138,12 @@ const AdminDashboard = () => {
       const plan = p.plan || 'Sem Plano';
       if (!planStatsMap[plan]) planStatsMap[plan] = { active: 0, pend: 0, susp: 0, bloq: 0 };
       
-      if (p.status === 'active') planStatsMap[plan].active++;
-      else if (p.status === 'pending') planStatsMap[plan].pend++;
-      else if (p.status === 'suspended') planStatsMap[plan].susp++;
-      else if (p.status === 'inactive') planStatsMap[plan].bloq++;
+      const status = (p.status || '').trim().toLowerCase();
+      
+      if (status === 'active') planStatsMap[plan].active++;
+      else if (status === 'pending') planStatsMap[plan].pend++;
+      else if (status === 'suspended') planStatsMap[plan].susp++;
+      else if (status === 'inactive') planStatsMap[plan].bloq++;
     });
 
     const planStatsTable = Object.entries(planStatsMap).map(([name, counts]) => ({
@@ -125,7 +152,6 @@ const AdminDashboard = () => {
 
     // 4. Uso Diário (Line Chart - Últimos 30 dias)
     const dailyUsageMap: Record<string, { questions: number, simulations: number }> = {};
-    // Inicializa os últimos 30 dias com 0
     for (let i = 29; i >= 0; i--) {
       const dateKey = format(subDays(new Date(), i), 'dd/MM');
       dailyUsageMap[dateKey] = { questions: 0, simulations: 0 };
@@ -147,7 +173,7 @@ const AdminDashboard = () => {
       simulations: counts.simulations
     }));
 
-    // 5. Pico Horário (Bar Chart - Baseado nas respostas recentes)
+    // 5. Pico Horário (Bar Chart)
     const hourlyMap = new Array(24).fill(0);
     recentAnswers.forEach(a => {
       const hour = getHours(parseISO(a.created_at));
@@ -158,28 +184,29 @@ const AdminDashboard = () => {
     const hourlyData = hourlyMap.map((count, i) => ({
       hour: `${i}h`,
       actions: count,
-      isPeak: count > 0 && count >= maxActivity * 0.8 // Destaca se for >= 80% do máximo
+      isPeak: maxActivity > 0 && count >= maxActivity * 0.8
     }));
 
-    // 6. Geografia (Top Cidades e Países) - Baseado no campo 'location' do perfil (texto livre)
-    // Isso é uma aproximação, pois depende do que o usuário digitou.
+    // 6. Geografia (Top Cidades)
     const locationCounts: Record<string, number> = {};
     profiles.forEach(p => {
       if (p.location) {
-        // Tenta normalizar simples
         const loc = p.location.trim();
-        locationCounts[loc] = (locationCounts[loc] || 0) + 1;
+        if (loc.length > 2) { // Ignora strings vazias ou muito curtas
+             locationCounts[loc] = (locationCounts[loc] || 0) + 1;
+        }
       }
     });
 
     const geoLocations = Object.entries(locationCounts)
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count)
-      .slice(0, 10); // Top 10
+      .slice(0, 10);
 
     return {
       totalUsers,
       activeUsers,
+      totalRevenue,
       planDistribution,
       planStatsTable,
       dailyUsageData,
@@ -190,9 +217,9 @@ const AdminDashboard = () => {
 
   if (isLoading || !stats) {
     return (
-      <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground text-sm">Carregando dados da plataforma...</p>
+      <div className="flex flex-col items-center justify-center h-[50vh] gap-4 animate-in fade-in duration-500">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+        <p className="text-muted-foreground text-sm font-medium">Sincronizando dados em tempo real...</p>
       </div>
     );
   }
@@ -241,17 +268,17 @@ const AdminDashboard = () => {
 
         <Card className="bg-card border-l-4 border-l-emerald-500 shadow-lg relative overflow-hidden group">
           <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <CheckCircle2 className="w-24 h-24" />
+            <DollarSign className="w-24 h-24" />
           </div>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Questões Respondidas</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Valor em Assinaturas Ativas</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex justify-between items-end">
               <div className="text-4xl font-black text-foreground">
-                {data?.totalQuestions.toLocaleString('pt-BR')}
+                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats.totalRevenue)}
               </div>
-              <CheckCircle2 className="h-6 w-6 text-emerald-500 mb-1" />
+              <TrendingUp className="h-6 w-6 text-emerald-500 mb-1" />
             </div>
           </CardContent>
         </Card>
@@ -261,13 +288,14 @@ const AdminDashboard = () => {
             <Brain className="w-24 h-24" />
           </div>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Simulados Realizados</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Engajamento Total</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex justify-between items-end">
-              <div className="text-4xl font-black text-foreground">{data?.totalSimulations.toLocaleString('pt-BR')}</div>
-              <Brain className="h-6 w-6 text-blue-500 mb-1" />
+              <div className="text-4xl font-black text-foreground">{data?.totalQuestions.toLocaleString('pt-BR')}</div>
+              <Activity className="h-6 w-6 text-blue-500 mb-1" />
             </div>
+            <p className="text-xs text-muted-foreground mt-1">Questões respondidas na plataforma</p>
           </CardContent>
         </Card>
       </div>
@@ -292,7 +320,7 @@ const AdminDashboard = () => {
               <div className="divide-y divide-border/30">
                 {stats.planStatsTable.map((plan, i) => (
                   <div key={i} className="grid grid-cols-[1fr_auto] gap-4 px-6 py-3 hover:bg-muted/50 transition-colors text-sm">
-                    <span className="font-medium text-foreground">{plan.name}</span>
+                    <span className="font-medium text-foreground truncate">{plan.name}</span>
                     <span className="font-bold text-emerald-600 dark:text-emerald-400">{plan.active}</span>
                   </div>
                 ))}
@@ -310,17 +338,17 @@ const AdminDashboard = () => {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="text-xs uppercase font-bold text-muted-foreground grid grid-cols-[1fr_60px_60px_60px] gap-2 px-6 py-3 border-b border-border/50 text-right">
+            <div className="text-xs uppercase font-bold text-muted-foreground grid grid-cols-[1fr_50px_50px_50px] gap-2 px-6 py-3 border-b border-border/50 text-right">
               <span className="text-left">Plano</span>
-              <span className="text-yellow-500">Pend.</span>
-              <span className="text-orange-500">Susp.</span>
-              <span className="text-red-500">Inat.</span>
+              <span className="text-yellow-500" title="Pendente">Pen.</span>
+              <span className="text-orange-500" title="Suspenso">Sus.</span>
+              <span className="text-red-500" title="Inativo">Ina.</span>
             </div>
             <ScrollArea className="h-[250px]">
               <div className="divide-y divide-border/30">
                 {stats.planStatsTable.map((plan, i) => (
-                  <div key={i} className="grid grid-cols-[1fr_60px_60px_60px] gap-2 px-6 py-3 hover:bg-muted/50 transition-colors text-sm text-right">
-                    <span className="font-medium text-foreground text-left truncate">{plan.name}</span>
+                  <div key={i} className="grid grid-cols-[1fr_50px_50px_50px] gap-2 px-6 py-3 hover:bg-muted/50 transition-colors text-sm text-right">
+                    <span className="font-medium text-foreground text-left truncate" title={plan.name}>{plan.name}</span>
                     <span className="text-muted-foreground">{plan.pend}</span>
                     <span className="text-muted-foreground">{plan.susp}</span>
                     <span className="text-muted-foreground">{plan.bloq}</span>
@@ -339,7 +367,7 @@ const AdminDashboard = () => {
         <Card className="bg-card border-none ring-1 ring-border shadow-md">
           <CardHeader>
             <CardTitle className="text-sm font-bold text-muted-foreground flex items-center gap-2">
-              <Activity className="w-4 h-4" /> Atividade por Hora (Últimos 30 dias)
+              <Activity className="w-4 h-4" /> Atividade Recente por Hora (Últimos 30 dias)
             </CardTitle>
           </CardHeader>
           <CardContent className="h-[300px]">
