@@ -14,6 +14,7 @@ import FavoriteButton from "@/components/FavoriteButton";
 import { CONCURSOS_MOCK, Concurso } from "@/data/concursosData";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 interface Profile {
   id: string;
