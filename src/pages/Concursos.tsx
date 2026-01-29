@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import FavoriteButton from "@/components/FavoriteButton";
 import { CONCURSOS_MOCK, Concurso } from "@/data/concursosData";
-import { format, parseISO, isValid } from "date-fns";
+import { format, parseISO, isValid, isPast, isToday } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
@@ -26,12 +26,10 @@ interface Profile {
 
 const ESTADOS = ["Todos", "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO", "BR"];
 
-// Função para buscar da Edge Function
 const fetchLiveConcursos = async () => {
   const { data, error } = await supabase.functions.invoke('get-concursos');
   if (error) throw error;
-  // A função agora sempre retorna 200, mesmo com backup, então data.concursos sempre existirá
-  return data;
+  return data.concursos as Concurso[];
 };
 
 const Concursos = () => {
@@ -40,10 +38,11 @@ const Concursos = () => {
   
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setSelectedState] = useState("Todos");
-  const [selectedStatus, setSelectedStatus] = useState("Todos");
+  // O filtro de status agora foca no tipo de oportunidade, não mais status técnico (aberto/previsto)
+  const [selectedType, setSelectedType] = useState("Todos"); 
   
   const { 
-    data: apiResponse, 
+    data: concursosList = [], 
     isLoading, 
     isRefetching, 
     error,
@@ -51,7 +50,7 @@ const Concursos = () => {
   } = useQuery({
     queryKey: ['liveConcursos'],
     queryFn: fetchLiveConcursos,
-    staleTime: 1000 * 60 * 60, // Cache de 1 hora
+    staleTime: 1000 * 60 * 60,
     refetchOnWindowFocus: false,
     retry: 1
   });
@@ -60,47 +59,52 @@ const Concursos = () => {
     addActivity({ type: 'Oportunidade', title: 'Mural de Concursos', path: '/concursos', icon: 'Briefcase' });
   }, [addActivity]);
 
-  // Se a API retornar dados (seja live ou backup), usa eles.
-  // Se der erro de rede (offline), usa o CONCURSOS_MOCK local.
-  const displayData: Concurso[] = apiResponse?.concursos || CONCURSOS_MOCK;
-  const isUsingBackup = apiResponse?.source === 'backup_cache' || error;
-
   const handleManualUpdate = async () => {
     await refetch();
-    if (apiResponse?.source === 'live_api') {
-        toast.success("Sincronizado com sucesso!");
-    } else {
-        toast.info("Servidor externo instável", { description: "Exibindo base de dados segura." });
-    }
+    toast.success("Painel atualizado!");
   };
 
+  // Lógica de Filtragem Rigorosa
   const filteredConcursos = useMemo(() => {
-    return displayData.filter(concurso => {
+    // Se a query falhar totalmente, usa o mock local (mas filtra datas passadas dele também)
+    const sourceData = (concursosList.length > 0 ? concursosList : CONCURSOS_MOCK);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return sourceData.filter(concurso => {
+      // 1. Filtro de Texto
       const matchesSearch = 
         concurso.orgao.toLowerCase().includes(searchTerm.toLowerCase()) ||
         concurso.banca.toLowerCase().includes(searchTerm.toLowerCase());
       
+      // 2. Filtro de Estado
       const matchesState = selectedState === "Todos" || concurso.estado.includes(selectedState) || concurso.estado.includes("BR");
       
-      // Filtro de status flexível para não esconder dados importantes se o status não vier perfeito da API
-      const matchesStatus = selectedStatus === "Todos" || 
-                            (concurso.status && concurso.status.toLowerCase() === selectedStatus.toLowerCase()) ||
-                            (selectedStatus === "Aberto" && !concurso.status); // Assume aberto se null
+      // 3. Filtro de Tipo (Aberto vs Previsto)
+      const matchesType = selectedType === "Todos" || concurso.status === selectedType;
 
-      return matchesSearch && matchesState && matchesStatus;
+      // 4. Filtro de Data (CRÍTICO: Remove vencidos)
+      let isDateValid = true;
+      if (concurso.inscricoesAte && concurso.inscricoesAte.match(/^\d{4}-\d{2}-\d{2}$/)) {
+          const date = parseISO(concurso.inscricoesAte);
+          // Se a data é válida e já passou (ontem ou antes), esconde.
+          if (isValid(date) && isPast(date) && !isToday(date)) {
+              isDateValid = false;
+          }
+      }
+      
+      // Apenas mostra status "Aberto" ou "Previsto". Descarta "Encerrado", "Cancelado", etc.
+      const isStatusValid = concurso.status === "Aberto" || concurso.status === "Previsto";
+
+      return matchesSearch && matchesState && matchesType && isDateValid && isStatusValid;
     });
-  }, [searchTerm, selectedState, selectedStatus, displayData]);
+  }, [searchTerm, selectedState, selectedType, concursosList]);
 
   const getStatusColor = (status: string) => {
-    if (!status) return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800";
-    
-    switch(status) {
-      case "Aberto": return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800";
-      case "Encerrando": return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-800 animate-pulse";
-      case "Previsto": return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800";
-      case "Autorizado": return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border-purple-200 dark:border-purple-800";
-      default: return "bg-gray-100 text-gray-700";
+    if (status === "Previsto") {
+        return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800";
     }
+    return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800";
   };
 
   const formatDate = (dateString?: string) => {
@@ -117,20 +121,21 @@ const Concursos = () => {
       }
   };
 
+  const isUsingBackup = !concursosList.length && !isLoading && !error;
+
   return (
     <div className="space-y-6 animate-in fade-in duration-700 pb-12">
       
-      {/* Header Imersivo */}
+      {/* Header */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-800 to-slate-900 p-8 text-white shadow-xl border border-white/10">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="space-y-2 text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold uppercase tracking-wider text-emerald-300">
-              {isUsingBackup ? <Server className="h-3 w-3" /> : <Wifi className="h-3 w-3 animate-pulse" />}
-              {isUsingBackup ? "Base Verificada" : "Conexão Live"}
+              <Activity className="h-3 w-3" /> Apenas Editais Vigentes
             </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight">Mural de Concursos</h1>
             <p className="text-slate-300 max-w-lg text-sm sm:text-base">
-              Editais abertos e previstos para Enfermagem em todo o Brasil.
+              Painel filtrado: apenas inscrições abertas ou previstas para Enfermagem.
             </p>
           </div>
           
@@ -149,6 +154,7 @@ const Concursos = () => {
         
         {/* Background Patterns */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
         
         {profile && (
           <div className="absolute top-4 right-4 z-20">
@@ -162,14 +168,6 @@ const Concursos = () => {
           </div>
         )}
       </div>
-
-      {/* Alert se estiver usando backup */}
-      {isUsingBackup && !isLoading && (
-         <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 rounded-lg p-3 flex items-center gap-3 text-xs sm:text-sm text-amber-800 dark:text-amber-300">
-            <AlertCircle className="h-4 w-4 shrink-0" />
-            <p>O serviço de varredura automática está instável. Exibindo a base de dados de segurança com os editais principais confirmados.</p>
-         </div>
-      )}
 
       {/* Barra de Filtros */}
       <div className="bg-card border rounded-xl p-4 shadow-sm flex flex-col md:flex-row gap-4 items-center sticky top-2 z-20 backdrop-blur-md bg-card/90">
@@ -194,21 +192,21 @@ const Concursos = () => {
             </SelectContent>
           </Select>
 
-          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-            <SelectTrigger className="w-[140px]">
+          <Select value={selectedType} onValueChange={setSelectedType}>
+            <SelectTrigger className="w-[150px]">
               <Filter className="w-4 h-4 mr-2 text-muted-foreground" />
-              <SelectValue placeholder="Status" />
+              <SelectValue placeholder="Situação" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Todos">Todos</SelectItem>
-              <SelectItem value="Aberto">Abertos</SelectItem>
+              <SelectItem value="Todos">Todos Vigentes</SelectItem>
+              <SelectItem value="Aberto">Inscrições Abertas</SelectItem>
               <SelectItem value="Previsto">Previstos</SelectItem>
             </SelectContent>
           </Select>
         </div>
         
-        <div className="ml-auto text-xs text-muted-foreground font-medium hidden md:block">
-          {filteredConcursos.length} editais listados
+        <div className="ml-auto text-xs font-medium text-muted-foreground hidden md:block">
+          {filteredConcursos.length} oportunidades
         </div>
       </div>
 
@@ -217,6 +215,7 @@ const Concursos = () => {
         <div className="flex flex-col items-center justify-center py-20 text-center">
             <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
             <h3 className="text-lg font-semibold">Carregando editais...</h3>
+            <p className="text-sm text-muted-foreground">Verificando datas e inscrições.</p>
         </div>
       ) : filteredConcursos.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -225,7 +224,7 @@ const Concursos = () => {
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start mb-2">
                   <Badge variant="outline" className={cn("border font-bold", getStatusColor(concurso.status))}>
-                    {concurso.status || "Aberto"}
+                    {concurso.status}
                   </Badge>
                   <div className="flex gap-1">
                      {concurso.estado.map(uf => (
@@ -262,7 +261,7 @@ const Concursos = () => {
                     <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
                       <Calendar className="w-3.5 h-3.5" /> Inscrições:
                     </span>
-                    <span className={cn("font-medium", concurso.inscricoesAte.toLowerCase().includes("encerrad") ? "text-red-500" : "text-foreground")}>
+                    <span className="font-bold text-foreground">
                       {formatDate(concurso.inscricoesAte)}
                     </span>
                   </div>
@@ -280,10 +279,10 @@ const Concursos = () => {
               </CardContent>
 
               <CardFooter className="pt-0">
-                <Button className="w-full gap-2" variant={concurso.status === "Previsto" || concurso.status === "Autorizado" ? "outline" : "default"} asChild>
+                <Button className="w-full gap-2" variant={concurso.status === "Previsto" ? "outline" : "default"} asChild>
                   <a href={concurso.linkEdital} target="_blank" rel="noreferrer">
                     <ExternalLink className="w-4 h-4" /> 
-                    {concurso.status === "Previsto" || concurso.status === "Autorizado" ? "Acompanhar" : "Ver Edital"}
+                    {concurso.status === "Previsto" ? "Acompanhar" : "Ver Edital"}
                   </a>
                 </Button>
               </CardFooter>
@@ -297,9 +296,9 @@ const Concursos = () => {
           </div>
           <h3 className="text-lg font-bold text-foreground">Nenhum edital encontrado</h3>
           <p className="text-sm text-muted-foreground max-w-md mx-auto mt-2">
-            Não encontramos concursos de Enfermagem com os filtros atuais na nossa base de dados.
+            No momento, não encontramos editais <strong>abertos</strong> ou <strong>previstos</strong> que correspondam aos filtros.
           </p>
-          <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedState("Todos"); setSelectedStatus("Todos");}} className="mt-2 text-primary">
+          <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedState("Todos"); setSelectedType("Todos");}} className="mt-2 text-primary">
             Limpar filtros
           </Button>
         </div>

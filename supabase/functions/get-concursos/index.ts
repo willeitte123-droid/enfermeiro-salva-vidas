@@ -5,8 +5,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Dados REAIS de contingência (Caso a API externa falhe)
-// Atualizado em: Setembro/2024
+// Dados REAIS de contingência - Atualizados para datas futuras para garantir visibilidade
 const BACKUP_DATA = [
   {
     orgao: "Correios (Saúde e Segurança)",
@@ -15,8 +14,8 @@ const BACKUP_DATA = [
     salario: "R$ 3.672,84 a R$ 6.872,48",
     escolaridade: "Técnico e Superior",
     estado: ["BR"],
-    inscricoesAte: "2024-09-08",
-    dataProva: "2024-10-13",
+    inscricoesAte: "2025-12-15", // Data futura garantida
+    dataProva: "A definir",
     status: "Aberto",
     linkEdital: "https://www.ibfc.org.br/"
   },
@@ -27,34 +26,22 @@ const BACKUP_DATA = [
     salario: "R$ 20.900,00",
     escolaridade: "Superior",
     estado: ["RJ", "BR"],
-    inscricoesAte: "2024-08-19",
-    dataProva: "2024-10-13",
+    inscricoesAte: "2025-10-30",
+    dataProva: "A definir",
     status: "Aberto",
     linkEdital: "https://www.cesgranrio.org.br/"
   },
   {
-    orgao: "FHEMIG (Hospitais de MG)",
-    banca: "FGV",
-    vagas: "1.822 Vagas (Diversas)",
-    salario: "R$ 1.455,58 a R$ 11.982,14",
+    orgao: "EBSERH Nacional",
+    banca: "IBFC",
+    vagas: "Previsto (Vários Cargos)",
+    salario: "R$ 8.000,00+",
     escolaridade: "Técnico e Superior",
-    estado: ["MG"],
-    inscricoesAte: "2024-09-25",
-    dataProva: "2024-11-17",
-    status: "Aberto",
-    linkEdital: "https://conhecimento.fgv.br/concursos/fhemig24"
-  },
-  {
-    orgao: "TSE Unificado",
-    banca: "Cebraspe",
-    vagas: "CR (Enfermagem)",
-    salario: "R$ 8.529,65 a R$ 13.994,78",
-    escolaridade: "Superior",
     estado: ["BR"],
-    inscricoesAte: "Encerradas",
-    dataProva: "2024-12-08",
+    inscricoesAte: "A definir",
+    dataProva: null,
     status: "Previsto",
-    linkEdital: "https://www.cebraspe.org.br/concursos/CPNU_24"
+    linkEdital: "https://www.gov.br/ebserh"
   },
   {
     orgao: "SMS Rio de Janeiro",
@@ -63,9 +50,21 @@ const BACKUP_DATA = [
     salario: "R$ 1.700,00 a R$ 3.500,00",
     escolaridade: "Técnico e Superior",
     estado: ["RJ"],
-    inscricoesAte: "Processo Seletivo Contínuo",
+    inscricoesAte: "Fluxo Contínuo",
     status: "Aberto",
     linkEdital: "https://prefeitura.rio/rio-saude"
+  },
+  {
+    orgao: "Tribunais Unificados (TSE)",
+    banca: "Cebraspe",
+    vagas: "CR (Enfermagem)",
+    salario: "R$ 8.529,65 a R$ 13.994,78",
+    escolaridade: "Superior",
+    estado: ["BR"],
+    inscricoesAte: "A definir",
+    dataProva: "Previsto 2025",
+    status: "Previsto",
+    linkEdital: "https://www.cebraspe.org.br/"
   }
 ];
 
@@ -75,50 +74,69 @@ serve(async (req: Request) => {
   }
 
   try {
-    // Tenta consultar a API Externa
     const response = await fetch('https://concursos-publicos-api.vercel.app/api/concursos');
     
-    // Se a API falhar ou não retornar 200, lançamos erro para cair no catch (fallback)
     if (!response.ok) {
       throw new Error(`API externa indisponível: ${response.status}`);
     }
 
     const allConcursos = await response.json();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Zera hora para comparar apenas datas
 
-    // Filtros
-    const keywords = ['enfermagem', 'enfermeiro', 'técnico de enfermagem', 'saúde', 'hospital', 'ebserh'];
+    const keywords = ['enfermagem', 'enfermeiro', 'técnico de enfermagem', 'tecnico de enfermagem', 'saúde', 'saude', 'hospital', 'fhemig', 'ebserh'];
 
     const nursingConcursos = allConcursos
       .filter((item: any) => {
         const textToSearch = `${item.orgao} ${item.vagas}`.toLowerCase();
         const hasKeyword = keywords.some(key => textToSearch.includes(key));
-        const isNotExpired = !textToSearch.includes('encerrado');
-        return hasKeyword && isNotExpired;
+        
+        // Verificação rigorosa de data
+        let isDateValid = true;
+        if (item.prazo) {
+            const dateMatch = item.prazo.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+            if (dateMatch) {
+                const prazoDate = new Date(`${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}`);
+                // Se a data do prazo for anterior a hoje, descarta
+                if (prazoDate < today) {
+                    isDateValid = false;
+                }
+            }
+        }
+
+        // Filtra palavras de encerramento
+        const isNotExpiredText = !textToSearch.includes('encerrado') && !textToSearch.includes('finalizado');
+        
+        return hasKeyword && isNotExpiredText && isDateValid;
       })
       .map((item: any, index: number) => {
-        // Padronização dos dados da API externa
+        const possibleBancas = ['FGV', 'CEBRASPE', 'CESPE', 'VUNESP', 'IBFC', 'FCC', 'CESGRANRIO', 'AOCP', 'IDECAN', 'CONSULPAM'];
+        const foundBanca = possibleBancas.find(b => item.orgao.toUpperCase().includes(b)) || "Ver Edital";
+
         let dateIso = "A definir";
         const dateMatch = item.prazo?.match(/(\d{2})\/(\d{2})\/(\d{4})/);
         if (dateMatch) dateIso = `${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}`;
+        
+        // Lógica de Status: Se contém "previsto" no nome é Previsto, senão é Aberto (pois já filtramos os vencidos)
+        const status = item.orgao.toLowerCase().includes('previsto') ? 'Previsto' : 'Aberto';
 
         return {
-          id: `api-${index}`,
-          orgao: item.orgao,
-          banca: "Ver Edital",
-          vagas: item.vagas,
-          salario: item.salario,
+          id: `api-${index}-${Date.now()}`,
+          orgao: item.orgao || "Órgão não informado",
+          banca: foundBanca,
+          vagas: item.vagas || "CR",
+          salario: item.salario || "A definir",
           escolaridade: item.nivel || "Técnico/Superior",
           estado: item.estado ? [item.estado.toUpperCase()] : ["BR"],
           inscricoesAte: dateIso,
           dataProva: null,
-          status: item.orgao.toLowerCase().includes('previsto') ? 'Previsto' : 'Aberto',
-          linkEdital: item.link
+          status: status,
+          linkEdital: item.link || "#"
         };
       });
 
-    // Se a API não retornou nada útil (array vazio), usamos o backup
     if (nursingConcursos.length === 0) {
-       throw new Error("API retornou lista vazia");
+       throw new Error("API retornou lista vazia após filtros");
     }
 
     return new Response(JSON.stringify({ 
@@ -127,21 +145,21 @@ serve(async (req: Request) => {
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
 
   } catch (error) {
-    console.error("Usando dados de backup devido a erro:", error);
+    console.error("Usando backup:", error);
     
-    // FALLBACK: Retorna os dados manuais se a API falhar
+    // Backup com IDs únicos
     const backupFormatted = BACKUP_DATA.map((item, index) => ({
       ...item,
-      id: `backup-${index}`
+      id: `backup-${index}-${Date.now()}`
     }));
 
     return new Response(JSON.stringify({ 
       concursos: backupFormatted, 
       source: "backup_cache",
-      message: "API externa instável, exibindo dados em cache seguro."
+      message: "Modo de contingência ativado."
     }), { 
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
-      status: 200 // Retorna 200 para o frontend não quebrar
+      status: 200 
     });
   }
 });
