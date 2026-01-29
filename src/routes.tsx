@@ -54,6 +54,8 @@ import TechnicalTerms from './pages/TechnicalTerms';
 import StudyTracks from './pages/StudyTracks';
 import DeepStudy from './pages/DeepStudy';
 import ClinicalCases from './pages/ClinicalCases';
+import StudyRoom from './pages/StudyRoom';
+import Concursos from './pages/Concursos';
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -138,6 +140,8 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="technical-terms" element={<TechnicalTerms />} />
         <Route path="study-tracks" element={<StudyTracks />} />
         <Route path="clinical-cases" element={<ClinicalCases />} />
+        <Route path="study-room" element={<StudyRoom />} />
+        <Route path="concursos" element={<Concursos />} />
         <Route path="update-password" element={<UpdatePassword />} />
         <Route path="*" element={<NotFound />} />
       </Route>

@@ -3,7 +3,7 @@ import {
   Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
   LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
   FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy, PieChart, Map, User, BookOpen, Stethoscope
+  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy, PieChart, Map, User, BookOpen, Stethoscope, Headphones, Briefcase
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -43,6 +43,8 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
       { to: "/tools/lab-values", icon: FileText, label: "Valores Laboratoriais" },
     ],
     study: [
+      { to: "/concursos", icon: Briefcase, label: "Mural de Concursos" },
+      { to: "/study-room", icon: Headphones, label: "Sala de Estudos (Foco)" },
       { to: "/clinical-cases", icon: Stethoscope, label: "Casos Clínicos" },
       { to: "/questions", icon: FileQuestion, label: "Banca de Questões" },
       { to: "/simulado", icon: Timer, label: "Área de Simulado" },
