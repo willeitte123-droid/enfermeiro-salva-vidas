@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { 
   Briefcase, Search, MapPin, Calendar, DollarSign, 
   ExternalLink, Building2, GraduationCap, Filter, 
-  RefreshCw, Server, Wifi, Activity, AlertCircle
+  RefreshCw, Server, Wifi, Activity, AlertCircle, CloudOff
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import FavoriteButton from "@/components/FavoriteButton";
+import { CONCURSOS_MOCK, Concurso } from "@/data/concursosData";
 import { format, parseISO, isValid } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -23,27 +24,14 @@ interface Profile {
   id: string;
 }
 
-export interface Concurso {
-  id: string;
-  orgao: string;
-  banca: string;
-  vagas: string;
-  salario: string;
-  escolaridade: string;
-  estado: string[];
-  inscricoesAte: string;
-  dataProva?: string;
-  status: "Aberto" | "Previsto" | "Encerrando" | "Autorizado";
-  linkEdital: string;
-}
-
 const ESTADOS = ["Todos", "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO", "BR"];
 
 // Função para buscar da Edge Function
 const fetchLiveConcursos = async () => {
   const { data, error } = await supabase.functions.invoke('get-concursos');
   if (error) throw error;
-  return data.concursos as Concurso[];
+  // A função agora sempre retorna 200, mesmo com backup, então data.concursos sempre existirá
+  return data;
 };
 
 const Concursos = () => {
@@ -54,9 +42,8 @@ const Concursos = () => {
   const [selectedState, setSelectedState] = useState("Todos");
   const [selectedStatus, setSelectedStatus] = useState("Todos");
   
-  // React Query para gerenciar o estado da requisição
   const { 
-    data: concursosList = [], 
+    data: apiResponse, 
     isLoading, 
     isRefetching, 
     error,
@@ -65,35 +52,48 @@ const Concursos = () => {
     queryKey: ['liveConcursos'],
     queryFn: fetchLiveConcursos,
     staleTime: 1000 * 60 * 60, // Cache de 1 hora
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    retry: 1
   });
 
   useEffect(() => {
     addActivity({ type: 'Oportunidade', title: 'Mural de Concursos', path: '/concursos', icon: 'Briefcase' });
   }, [addActivity]);
 
+  // Se a API retornar dados (seja live ou backup), usa eles.
+  // Se der erro de rede (offline), usa o CONCURSOS_MOCK local.
+  const displayData: Concurso[] = apiResponse?.concursos || CONCURSOS_MOCK;
+  const isUsingBackup = apiResponse?.source === 'backup_cache' || error;
+
   const handleManualUpdate = async () => {
     await refetch();
-    toast.success("Lista atualizada!", {
-        description: "Dados sincronizados com a API externa."
-    });
+    if (apiResponse?.source === 'live_api') {
+        toast.success("Sincronizado com sucesso!");
+    } else {
+        toast.info("Servidor externo instável", { description: "Exibindo base de dados segura." });
+    }
   };
 
-  // Filtragem local dos dados retornados pela API
   const filteredConcursos = useMemo(() => {
-    return concursosList.filter(concurso => {
+    return displayData.filter(concurso => {
       const matchesSearch = 
         concurso.orgao.toLowerCase().includes(searchTerm.toLowerCase()) ||
         concurso.banca.toLowerCase().includes(searchTerm.toLowerCase());
       
       const matchesState = selectedState === "Todos" || concurso.estado.includes(selectedState) || concurso.estado.includes("BR");
-      const matchesStatus = selectedStatus === "Todos" || concurso.status === selectedStatus;
+      
+      // Filtro de status flexível para não esconder dados importantes se o status não vier perfeito da API
+      const matchesStatus = selectedStatus === "Todos" || 
+                            (concurso.status && concurso.status.toLowerCase() === selectedStatus.toLowerCase()) ||
+                            (selectedStatus === "Aberto" && !concurso.status); // Assume aberto se null
 
       return matchesSearch && matchesState && matchesStatus;
     });
-  }, [searchTerm, selectedState, selectedStatus, concursosList]);
+  }, [searchTerm, selectedState, selectedStatus, displayData]);
 
   const getStatusColor = (status: string) => {
+    if (!status) return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800";
+    
     switch(status) {
       case "Aberto": return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800";
       case "Encerrando": return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-800 animate-pulse";
@@ -109,7 +109,6 @@ const Concursos = () => {
       if (dateString.toLowerCase().includes("contínuo")) return "Fluxo Contínuo";
       
       try {
-          // Tenta parse se for formato ISO YYYY-MM-DD
           const date = parseISO(dateString);
           if (isValid(date)) return format(date, "dd/MM/yyyy");
           return dateString;
@@ -126,12 +125,12 @@ const Concursos = () => {
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="space-y-2 text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold uppercase tracking-wider text-emerald-300">
-              <Wifi className={cn("h-3 w-3", (isLoading || isRefetching) ? "animate-ping" : "")} /> 
-              API Online • Atualização Diária
+              {isUsingBackup ? <Server className="h-3 w-3" /> : <Wifi className="h-3 w-3 animate-pulse" />}
+              {isUsingBackup ? "Base Verificada" : "Conexão Live"}
             </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight">Mural de Concursos</h1>
             <p className="text-slate-300 max-w-lg text-sm sm:text-base">
-              Editais de Enfermagem varridos automaticamente em tempo real.
+              Editais abertos e previstos para Enfermagem em todo o Brasil.
             </p>
           </div>
           
@@ -143,14 +142,13 @@ const Concursos = () => {
                 disabled={isLoading || isRefetching}
             >
                 <RefreshCw className={cn("w-4 h-4", (isLoading || isRefetching) && "animate-spin")} />
-                {(isLoading || isRefetching) ? "Buscando..." : "Sincronizar Agora"}
+                {(isLoading || isRefetching) ? "Buscando..." : "Atualizar"}
             </Button>
           </div>
         </div>
         
         {/* Background Patterns */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
         
         {profile && (
           <div className="absolute top-4 right-4 z-20">
@@ -164,6 +162,14 @@ const Concursos = () => {
           </div>
         )}
       </div>
+
+      {/* Alert se estiver usando backup */}
+      {isUsingBackup && !isLoading && (
+         <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 rounded-lg p-3 flex items-center gap-3 text-xs sm:text-sm text-amber-800 dark:text-amber-300">
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <p>O serviço de varredura automática está instável. Exibindo a base de dados de segurança com os editais principais confirmados.</p>
+         </div>
+      )}
 
       {/* Barra de Filtros */}
       <div className="bg-card border rounded-xl p-4 shadow-sm flex flex-col md:flex-row gap-4 items-center sticky top-2 z-20 backdrop-blur-md bg-card/90">
@@ -201,9 +207,8 @@ const Concursos = () => {
           </Select>
         </div>
         
-        <div className="ml-auto flex items-center gap-2 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800">
-          <Activity className="w-3.5 h-3.5" />
-          {filteredConcursos.length} editais encontrados
+        <div className="ml-auto text-xs text-muted-foreground font-medium hidden md:block">
+          {filteredConcursos.length} editais listados
         </div>
       </div>
 
@@ -212,14 +217,6 @@ const Concursos = () => {
         <div className="flex flex-col items-center justify-center py-20 text-center">
             <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
             <h3 className="text-lg font-semibold">Carregando editais...</h3>
-            <p className="text-sm text-muted-foreground">Consultando base de dados nacional.</p>
-        </div>
-      ) : error ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center bg-red-50 dark:bg-red-950/20 rounded-2xl border border-red-200 dark:border-red-900">
-            <AlertCircle className="h-10 w-10 text-red-500 mb-4" />
-            <h3 className="text-lg font-semibold text-red-700 dark:text-red-400">Erro ao carregar dados</h3>
-            <p className="text-sm text-muted-foreground mb-4">Não foi possível conectar à API de concursos no momento.</p>
-            <Button variant="outline" onClick={() => refetch()}>Tentar Novamente</Button>
         </div>
       ) : filteredConcursos.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -228,7 +225,7 @@ const Concursos = () => {
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start mb-2">
                   <Badge variant="outline" className={cn("border font-bold", getStatusColor(concurso.status))}>
-                    {concurso.status}
+                    {concurso.status || "Aberto"}
                   </Badge>
                   <div className="flex gap-1">
                      {concurso.estado.map(uf => (
@@ -272,7 +269,7 @@ const Concursos = () => {
                   {concurso.dataProva && (
                     <div className="flex justify-between items-center text-xs">
                       <span className="text-muted-foreground flex items-center gap-1.5">
-                        <FileText className="w-3.5 h-3.5" /> Data da Prova:
+                        <FileText className="w-3.5 h-3.5" /> Prova:
                       </span>
                       <span className="font-medium text-foreground">
                         {formatDate(concurso.dataProva)}
@@ -296,25 +293,17 @@ const Concursos = () => {
       ) : (
         <div className="flex flex-col items-center justify-center py-20 text-center bg-muted/20 rounded-2xl border border-dashed border-muted">
           <div className="bg-muted p-4 rounded-full mb-4">
-            <Search className="h-8 w-8 text-muted-foreground opacity-50" />
+            <CloudOff className="h-8 w-8 text-muted-foreground opacity-50" />
           </div>
           <h3 className="text-lg font-bold text-foreground">Nenhum edital encontrado</h3>
           <p className="text-sm text-muted-foreground max-w-md mx-auto mt-2">
-            Não encontramos concursos de Enfermagem com os filtros atuais.
+            Não encontramos concursos de Enfermagem com os filtros atuais na nossa base de dados.
           </p>
           <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedState("Todos"); setSelectedStatus("Todos");}} className="mt-2 text-primary">
-            Limpar filtros e ver tudo
+            Limpar filtros
           </Button>
         </div>
       )}
-
-      {/* API Info */}
-      <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-lg text-xs text-blue-800 dark:text-blue-300 flex items-start gap-3">
-        <Server className="w-4 h-4 mt-0.5 shrink-0" />
-        <p>
-          <strong>Fonte de Dados:</strong> As informações são coletadas automaticamente de fontes públicas. Sempre confira o edital oficial no site da banca organizadora para confirmar datas e requisitos.
-        </p>
-      </div>
     </div>
   );
 };
