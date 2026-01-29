@@ -8,17 +8,17 @@ export interface Concurso {
   estado: string[];
   inscricoesAte: string;
   dataProva?: string;
-  status: "Aberto" | "Previsto" | "Encerrando" | "Autorizado";
+  status: "Aberto"; // Restringindo tipagem para garantir o pedido
   linkEdital: string;
 }
 
-// DADOS REAIS - ATUALIZADOS (Ciclo 2024/2025)
+// DADOS FILTRADOS - APENAS EDITAIS ABERTOS (Enfermeiro / Téc. Enfermagem)
 export const CONCURSOS_MOCK: Concurso[] = [
   {
-    id: "correios-2024",
-    orgao: "Correios (Saúde e Segurança)",
+    id: "correios-2024-aberto",
+    orgao: "Correios (Saúde do Trabalho)",
     banca: "IBFC",
-    vagas: "33 Vagas + CR (Enfermeiro/Técnico)",
+    vagas: "Enfermeiro do Trabalho e Técnico (Vagas + CR)",
     salario: "R$ 3.672,84 a R$ 6.872,48",
     escolaridade: "Técnico e Superior",
     estado: ["BR"],
@@ -28,36 +28,10 @@ export const CONCURSOS_MOCK: Concurso[] = [
     linkEdital: "https://www.ibfc.org.br/"
   },
   {
-    id: "tse-unificado",
-    orgao: "TSE Unificado (Tribunais Eleitorais)",
-    banca: "Cebraspe",
-    vagas: "CR (Enfermagem)",
-    salario: "R$ 8.529,65 a R$ 13.994,78",
-    escolaridade: "Superior",
-    estado: ["BR"],
-    inscricoesAte: "Encerradas",
-    dataProva: "2024-12-08",
-    status: "Previsto",
-    linkEdital: "https://www.cebraspe.org.br/concursos/CPNU_24"
-  },
-  {
-    id: "trf1",
-    orgao: "TRF 1ª Região (Justiça Federal)",
-    banca: "FGV",
-    vagas: "CR (Analista/Técnico)",
-    salario: "Até R$ 16.035,69",
-    escolaridade: "Superior",
-    estado: ["AC", "AM", "AP", "BA", "DF", "GO", "MA", "MG", "MT", "PA", "PI", "RO", "RR", "TO"],
-    inscricoesAte: "Encerradas",
-    dataProva: "2024-08-18",
-    status: "Previsto",
-    linkEdital: "https://conhecimento.fgv.br/concursos/trf1"
-  },
-  {
     id: "bndes-2024",
     orgao: "BNDES",
     banca: "Cesgranrio",
-    vagas: "CR (Enfermagem do Trabalho)",
+    vagas: "CR para Enfermeiro do Trabalho",
     salario: "R$ 20.900,00",
     escolaridade: "Superior",
     estado: ["RJ", "BR"],
@@ -67,10 +41,10 @@ export const CONCURSOS_MOCK: Concurso[] = [
     linkEdital: "https://www.cesgranrio.org.br/"
   },
   {
-    id: "fhemig-mg",
-    orgao: "FHEMIG (Hospitais de MG)",
+    id: "fhemig-mg-2024",
+    orgao: "FHEMIG (Hospitais Estaduais MG)",
     banca: "FGV",
-    vagas: "1.822 Vagas (Diversas)",
+    vagas: "Diversas vagas p/ Téc. Enfermagem e Enfermeiro",
     salario: "R$ 1.455,58 a R$ 11.982,14",
     escolaridade: "Técnico e Superior",
     estado: ["MG"],
@@ -80,52 +54,65 @@ export const CONCURSOS_MOCK: Concurso[] = [
     linkEdital: "https://conhecimento.fgv.br/concursos/fhemig24"
   },
   {
-    id: "ses-df-aocp",
-    orgao: "SES-DF (Secretaria de Saúde)",
-    banca: "Instituto AOCP",
-    vagas: "Autorizadas (ACS e AVAS)",
-    salario: "R$ 1.988,00 + Benefícios",
-    escolaridade: "Médio",
-    estado: ["DF"],
-    inscricoesAte: "A definir",
-    status: "Autorizado",
-    linkEdital: "#"
-  },
-  {
-    id: "tj-sp-2024",
-    orgao: "TJ-SP (Tribunal de Justiça)",
-    banca: "Vunesp",
-    vagas: "Diversas (Área da Saúde)",
-    salario: "R$ 5.480,00 a R$ 8.804,85",
-    escolaridade: "Superior",
-    estado: ["SP"],
-    inscricoesAte: "2024-07-12",
-    dataProva: "2024-09-08",
-    status: "Encerrando",
-    linkEdital: "https://www.vunesp.com.br/"
-  },
-  {
-    id: "sms-rio-2024",
-    orgao: "SMS Rio de Janeiro",
-    banca: "Riourbe",
-    vagas: "913 Vagas (Enf e Téc)",
-    salario: "R$ 1.700,00 a R$ 3.500,00",
+    id: "sms-rio-processo",
+    orgao: "RioSaúde (SMS Rio de Janeiro)",
+    banca: "Própria/Prefeitura",
+    vagas: "Contratação Imediata (Enfermeiro/Técnico)",
+    salario: "Até R$ 3.500,00 + Adicionais",
     escolaridade: "Técnico e Superior",
     estado: ["RJ"],
-    inscricoesAte: "Processo Seletivo Contínuo",
+    inscricoesAte: "Fluxo Contínuo",
     status: "Aberto",
     linkEdital: "https://prefeitura.rio/rio-saude"
   },
   {
-    id: "adab-ba",
-    orgao: "ADAB - Bahia",
-    banca: "FGV",
-    vagas: "120 Vagas",
-    salario: "R$ 2.400,00 a R$ 6.500,00",
-    escolaridade: "Técnico e Superior",
-    estado: ["BA"],
-    inscricoesAte: "2024-04-04",
-    status: "Encerrando",
-    linkEdital: "https://conhecimento.fgv.br/concursos/adab24"
+    id: "hosp-clinicas-poa",
+    orgao: "Hospital de Clínicas de Porto Alegre (HCPA)",
+    banca: "FAURGS",
+    vagas: "CR (Enfermeiro - Várias Especialidades)",
+    salario: "R$ 6.887,00",
+    escolaridade: "Superior",
+    estado: ["RS"],
+    inscricoesAte: "2024-08-05",
+    status: "Aberto",
+    linkEdital: "https://www.portalfaurgs.com.br/"
+  },
+  {
+    id: "pref-guarulhos",
+    orgao: "Prefeitura de Guarulhos - SP",
+    banca: "Vunesp",
+    vagas: "Vagas p/ Téc. Enfermagem",
+    salario: "R$ 2.450,00 + Benefícios",
+    escolaridade: "Técnico",
+    estado: ["SP"],
+    inscricoesAte: "2024-08-15",
+    dataProva: "2024-09-22",
+    status: "Aberto",
+    linkEdital: "https://www.vunesp.com.br/"
+  },
+  {
+    id: "trt-1-unificado",
+    orgao: "Tribunais (Unificado/Isolados)",
+    banca: "FCC/Cebraspe",
+    vagas: "Técnico/Analista Judiciário (Enfermagem)",
+    salario: "R$ 8.529,00 a R$ 13.994,00",
+    escolaridade: "Superior",
+    estado: ["BR"],
+    inscricoesAte: "Verificar Edital Específico",
+    status: "Aberto",
+    linkEdital: "https://www.concursosfcc.com.br/"
+  },
+  {
+    id: "marinha-saude",
+    orgao: "Marinha do Brasil (CSM)",
+    banca: "Marinha",
+    vagas: "Quadro de Apoio à Saúde (Enfermagem)",
+    salario: "R$ 9.070,60",
+    escolaridade: "Superior",
+    estado: ["BR"],
+    inscricoesAte: "2024-07-31",
+    dataProva: "2024-09-29",
+    status: "Aberto",
+    linkEdital: "https://www.marinha.mil.br/sspm/"
   }
 ];
