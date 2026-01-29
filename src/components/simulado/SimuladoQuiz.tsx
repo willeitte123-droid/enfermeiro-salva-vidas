@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Loader2, Timer, AlertTriangle, Building2, BookOpen } from "lucide-react";
+import { Loader2, Timer, AlertTriangle, Building2, BookOpen, CheckCircle2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import { Question } from "@/context/QuestionsContext";
@@ -22,41 +22,88 @@ interface SimuladoQuizProps {
   totalTime: number;
   banca: string;
   category?: string;
+  userId?: string;
   onFinish: (results: { userAnswers: UserAnswer[]; questions: Question[]; timeTaken: number }) => void;
 }
 
-const fetchSimuladoQuestions = async (numQuestions: number, banca: string, category?: string) => {
-  // LÓGICA ALTERADA: 
-  // Não filtramos pela banca no banco de dados para garantir que sempre haja questões.
-  // Filtramos apenas por categoria se selecionada.
+const fetchSimuladoQuestions = async (numQuestions: number, banca: string, category?: string, userId?: string) => {
+  // 1. Buscar IDs de questões que o usuário JÁ respondeu
+  let answeredIds: number[] = [];
   
+  if (userId) {
+    const { data: answeredData } = await supabase
+      .from('user_question_answers')
+      .select('question_id')
+      .eq('user_id', userId);
+    
+    if (answeredData && answeredData.length > 0) {
+      answeredIds = answeredData.map(a => a.question_id);
+    }
+  }
+
+  // 2. Tentar buscar questões INÉDITAS (excluindo as respondidas)
   let query = supabase.from('questions').select('*');
 
   if (category && category !== 'Todas') {
     query = query.eq('category', category);
   }
 
-  // Buscamos um pool maior de questões para garantir aleatoriedade
-  query = query.limit(100); 
-
-  const { data, error } = await query;
-  
-  if (error) {
-    throw new Error(error.message);
+  // Se a lista de respondidas não for vazia, aplicamos o filtro NOT IN
+  if (answeredIds.length > 0) {
+    // Supabase aceita string de ids separados por vírgula para filtros 'in' e 'not.in'
+    // Limitamos o tamanho do filtro para evitar erro de URL muito longa se houver milhares
+    // Se houver muitas, pegamos as últimas 1000 por exemplo, ou confiamos no limite do POST do supabase
+    query = query.not('id', 'in', `(${answeredIds.join(',')})`);
   }
 
-  // Embaralhar as questões trazidas
-  let shuffledQuestions = (data as Question[]).sort(() => 0.5 - Math.random());
+  // Buscamos um pouco mais do que o necessário para garantir aleatoriedade
+  query = query.limit(numQuestions * 2);
+
+  const { data: newQuestionsData, error: newQuestionsError } = await query;
   
-  // Pegar apenas a quantidade solicitada
+  if (newQuestionsError) {
+    console.error("Erro ao buscar questões novas:", newQuestionsError);
+    // Se der erro (ex: lista muito longa), fazemos fallback para busca normal
+  }
+
+  let finalQuestions: Question[] = newQuestionsData ? (newQuestionsData as Question[]) : [];
+
+  // 3. Se não houver questões inéditas suficientes, completamos com questões repetidas
+  if (finalQuestions.length < numQuestions) {
+    const missingCount = numQuestions - finalQuestions.length;
+    
+    let retryQuery = supabase.from('questions').select('*');
+    if (category && category !== 'Todas') {
+      retryQuery = retryQuery.eq('category', category);
+    }
+    // Buscamos questões gerais sem filtro de exclusão
+    retryQuery = retryQuery.limit(missingCount + 20); // Margem de segurança
+
+    const { data: fillerData } = await retryQuery;
+    
+    if (fillerData) {
+      const fillerQuestions = fillerData as Question[];
+      // Adicionamos apenas as que já não estão na lista (para evitar duplicação imediata)
+      const currentIds = new Set(finalQuestions.map(q => q.id));
+      const validFillers = fillerQuestions.filter(q => !currentIds.has(q.id));
+      
+      finalQuestions = [...finalQuestions, ...validFillers];
+    }
+  }
+
+  // Embaralhar as questões
+  let shuffledQuestions = finalQuestions.sort(() => 0.5 - Math.random());
+  
+  // Cortar para o tamanho do simulado
   shuffledQuestions = shuffledQuestions.slice(0, numQuestions);
 
-  // Embaralhar opções E sobrescrever a banca se o usuário escolheu uma específica
+  // Processar opções e banca visual
   return shuffledQuestions.map(q => {
     const questionWithOptions = shuffleQuestionOptions(q);
     
     // Se o usuário selecionou uma banca específica (diferente de "Todas"), 
-    // nós "simulamos" que a questão é daquela banca para fins de imersão.
+    // nós "simulamos" que a questão é daquela banca para fins de imersão visual,
+    // já que o banco de dados pode não ter questões suficientes de cada banca específica ainda.
     if (banca !== 'Todas') {
       return { ...questionWithOptions, banca: banca };
     }
@@ -65,11 +112,11 @@ const fetchSimuladoQuestions = async (numQuestions: number, banca: string, categ
   });
 };
 
-const SimuladoQuiz = ({ numQuestions, totalTime, banca, category, onFinish }: SimuladoQuizProps) => {
+const SimuladoQuiz = ({ numQuestions, totalTime, banca, category, userId, onFinish }: SimuladoQuizProps) => {
   const { data: simuladoQuestions = [], isLoading: isLoadingQuestions } = useQuery({
-    queryKey: ['simuladoQuestions', numQuestions, banca, category],
-    queryFn: () => fetchSimuladoQuestions(numQuestions, banca, category),
-    staleTime: Infinity,
+    queryKey: ['simuladoQuestions', numQuestions, banca, category, userId], // Adicionado userId à chave para refetch se mudar
+    queryFn: () => fetchSimuladoQuestions(numQuestions, banca, category, userId),
+    staleTime: 0, // Não cachear para forçar busca nova e aleatória
     refetchOnWindowFocus: false,
   });
 
@@ -123,7 +170,15 @@ const SimuladoQuiz = ({ numQuestions, totalTime, banca, category, onFinish }: Si
   };
 
   if (isLoadingQuestions) {
-    return <div className="flex items-center justify-center h-full"><Loader2 className="h-8 w-8 animate-spin" /> <span className="ml-2">Preparando seu simulado...</span></div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-4">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" /> 
+        <div className="text-center">
+          <p className="font-semibold text-lg">Preparando seu simulado...</p>
+          <p className="text-sm text-muted-foreground">Selecionando questões inéditas para você.</p>
+        </div>
+      </div>
+    );
   }
 
   if (simuladoQuestions.length === 0) {
@@ -144,7 +199,7 @@ const SimuladoQuiz = ({ numQuestions, totalTime, banca, category, onFinish }: Si
   const progress = ((currentQuestionIndex + 1) / simuladoQuestions.length) * 100;
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
+    <div className="flex flex-col items-center justify-center w-full h-full animate-in fade-in duration-500">
       <AlertDialog open={showTimeUpDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -157,50 +212,59 @@ const SimuladoQuiz = ({ numQuestions, totalTime, banca, category, onFinish }: Si
         </AlertDialogContent>
       </AlertDialog>
 
-      <Card className="w-full max-w-3xl shadow-2xl">
-        <CardHeader className="border-b">
+      <Card className="w-full max-w-3xl shadow-2xl border-t-4 border-t-primary">
+        <CardHeader className="border-b bg-muted/10 pb-4">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <div>
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <Badge variant="outline" className="text-xs font-normal flex items-center gap-1">
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <Badge variant="outline" className="text-xs font-medium flex items-center gap-1 bg-background px-2 py-1">
                         <Building2 className="h-3 w-3" /> {currentQuestion.banca || 'Geral'}
                     </Badge>
                     {currentQuestion.category && (
-                        <Badge variant="outline" className="text-xs font-normal flex items-center gap-1 bg-primary/5 text-primary border-primary/20">
+                        <Badge variant="secondary" className="text-xs font-medium flex items-center gap-1 px-2 py-1">
                             <BookOpen className="h-3 w-3" /> {currentQuestion.category}
                         </Badge>
                     )}
-                    <span className="text-xs text-muted-foreground ml-1">Questão {currentQuestionIndex + 1} de {simuladoQuestions.length}</span>
                 </div>
-                <CardTitle className="text-lg">Simulado em Andamento</CardTitle>
+                <div className="flex items-baseline gap-2">
+                   <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Questão {currentQuestionIndex + 1}</span>
+                   <span className="text-xs text-muted-foreground">de {simuladoQuestions.length}</span>
+                </div>
             </div>
-            <div className="flex items-center gap-2 font-bold text-lg bg-destructive/10 text-destructive border border-destructive/20 px-3 py-1 rounded-md self-start md:self-auto">
+            <div className="flex items-center gap-2 font-mono font-bold text-xl bg-destructive/5 text-destructive border border-destructive/20 px-4 py-2 rounded-lg shadow-inner self-start md:self-auto">
               <Timer className="h-5 w-5" />
               {formatTime(timeLeft)}
             </div>
           </div>
-          <ProgressPrimitive.Root value={progress} className="relative h-4 w-full overflow-hidden rounded-full bg-muted mt-4">
-            <ProgressPrimitive.Indicator
-              className="h-full w-full flex-1 bg-gradient-to-r from-green-400 to-blue-500 transition-all"
-              style={{ transform: `translateX(-${100 - (progress || 0)}%)` }}
-            />
-          </ProgressPrimitive.Root>
+          <div className="mt-4 flex items-center gap-3">
+             <ProgressPrimitive.Root value={progress} className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+                <ProgressPrimitive.Indicator
+                className="h-full w-full flex-1 bg-primary transition-all duration-500 ease-in-out"
+                style={{ transform: `translateX(-${100 - (progress || 0)}%)` }}
+                />
+             </ProgressPrimitive.Root>
+             <span className="text-xs font-bold text-muted-foreground w-8 text-right">{Math.round(progress)}%</span>
+          </div>
         </CardHeader>
-        <CardContent className="p-6 space-y-6">
+        <CardContent className="p-6 sm:p-8 space-y-8">
           <div>
-            <p className="font-semibold text-lg leading-relaxed">{currentQuestion.question}</p>
+            <p className="font-medium text-lg sm:text-xl leading-relaxed text-foreground/90">{currentQuestion.question}</p>
           </div>
           <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer} className="space-y-3">
             {currentQuestion.options.map((option) => (
-              <Label key={option.id} className="flex items-center space-x-3 p-4 rounded-lg border-2 border-border hover:border-primary hover:bg-accent transition-all cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:scale-[1.02]">
-                <RadioGroupItem value={option.id} />
-                <span className="font-medium">{option.text}</span>
+              <Label key={option.id} className="flex items-start space-x-3 p-4 rounded-xl border-2 border-transparent bg-muted/30 hover:bg-muted hover:border-primary/30 transition-all cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:shadow-sm group">
+                <RadioGroupItem value={option.id} className="mt-1" />
+                <span className="text-base group-has-[:checked]:font-medium">{option.text}</span>
               </Label>
             ))}
           </RadioGroup>
         </CardContent>
-        <div className="p-6 border-t flex justify-end">
-          <Button onClick={handleNext} disabled={!selectedAnswer} size="lg">
+        <div className="p-6 border-t bg-muted/10 flex justify-between items-center">
+          <span className="text-xs text-muted-foreground italic hidden sm:block">
+             <CheckCircle2 className="inline h-3 w-3 mr-1"/>
+             Selecione uma alternativa para avançar
+          </span>
+          <Button onClick={handleNext} disabled={!selectedAnswer} size="lg" className="w-full sm:w-auto font-bold shadow-lg shadow-primary/20">
             {currentQuestionIndex === simuladoQuestions.length - 1 ? "Finalizar Simulado" : "Próxima Questão"}
           </Button>
         </div>

@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import SimuladoLobby from "@/components/simulado/SimuladoLobby";
 import SimuladoQuiz from "@/components/simulado/SimuladoQuiz";
 import SimuladoResultado from "@/components/simulado/SimuladoResultado";
 import { Question } from "@/context/QuestionsContext";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+
+interface Profile {
+  id: string;
+}
 
 interface UserAnswer {
   questionId: number;
@@ -24,6 +29,7 @@ interface QuizResults {
 }
 
 const SimuladoPage = () => {
+  const { profile } = useOutletContext<{ profile: Profile | null }>();
   const [gameState, setGameState] = useState<"lobby" | "quiz" | "results">("lobby");
   const [quizConfig, setQuizConfig] = useState<QuizConfig | null>(null);
   const [quizResults, setQuizResults] = useState<QuizResults | null>(null);
@@ -60,6 +66,7 @@ const SimuladoPage = () => {
         totalTime={quizConfig.totalTime} 
         banca={quizConfig.banca}
         category={quizConfig.category}
+        userId={profile?.id}
         onFinish={handleFinish} 
       />
     );
