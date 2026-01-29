@@ -12,8 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import FavoriteButton from "@/components/FavoriteButton";
-import { CONCURSOS_MOCK, Concurso } from "@/data/concursosData";
-import { format, parseISO, isValid, isPast, isToday } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
@@ -22,6 +20,20 @@ import { Loader2 } from "lucide-react";
 
 interface Profile {
   id: string;
+}
+
+export interface Concurso {
+  id: string;
+  orgao: string;
+  banca: string;
+  vagas: string;
+  salario: string;
+  escolaridade: string;
+  estado: string[];
+  inscricoesAte: string;
+  dataProva?: string;
+  status: string;
+  linkEdital: string;
 }
 
 const ESTADOS = ["Todos", "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO", "BR"];
@@ -38,8 +50,7 @@ const Concursos = () => {
   
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setSelectedState] = useState("Todos");
-  // O filtro de status agora foca no tipo de oportunidade, não mais status técnico (aberto/previsto)
-  const [selectedType, setSelectedType] = useState("Todos"); 
+  const [selectedStatus, setSelectedStatus] = useState("Todos");
   
   const { 
     data: concursosList = [], 
@@ -48,9 +59,9 @@ const Concursos = () => {
     error,
     refetch 
   } = useQuery({
-    queryKey: ['liveConcursos'],
+    queryKey: ['liveConcursosAggregated'], // Chave nova para forçar refresh
     queryFn: fetchLiveConcursos,
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 30, // 30 min
     refetchOnWindowFocus: false,
     retry: 1
   });
@@ -61,67 +72,33 @@ const Concursos = () => {
 
   const handleManualUpdate = async () => {
     await refetch();
-    toast.success("Painel atualizado!");
+    toast.success("Painel atualizado com fontes nacionais!");
   };
 
-  // Lógica de Filtragem Rigorosa
   const filteredConcursos = useMemo(() => {
-    // Se a query falhar totalmente, usa o mock local (mas filtra datas passadas dele também)
-    const sourceData = (concursosList.length > 0 ? concursosList : CONCURSOS_MOCK);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    return sourceData.filter(concurso => {
-      // 1. Filtro de Texto
+    return concursosList.filter(concurso => {
+      // Filtro de Texto
       const matchesSearch = 
         concurso.orgao.toLowerCase().includes(searchTerm.toLowerCase()) ||
         concurso.banca.toLowerCase().includes(searchTerm.toLowerCase());
       
-      // 2. Filtro de Estado
+      // Filtro de Estado
       const matchesState = selectedState === "Todos" || concurso.estado.includes(selectedState) || concurso.estado.includes("BR");
       
-      // 3. Filtro de Tipo (Aberto vs Previsto)
-      const matchesType = selectedType === "Todos" || concurso.status === selectedType;
+      // Filtro de Status
+      const matchesStatus = selectedStatus === "Todos" || 
+                            (concurso.status && concurso.status.toLowerCase().includes(selectedStatus.toLowerCase()));
 
-      // 4. Filtro de Data (CRÍTICO: Remove vencidos)
-      let isDateValid = true;
-      if (concurso.inscricoesAte && concurso.inscricoesAte.match(/^\d{4}-\d{2}-\d{2}$/)) {
-          const date = parseISO(concurso.inscricoesAte);
-          // Se a data é válida e já passou (ontem ou antes), esconde.
-          if (isValid(date) && isPast(date) && !isToday(date)) {
-              isDateValid = false;
-          }
-      }
-      
-      // Apenas mostra status "Aberto" ou "Previsto". Descarta "Encerrado", "Cancelado", etc.
-      const isStatusValid = concurso.status === "Aberto" || concurso.status === "Previsto";
-
-      return matchesSearch && matchesState && matchesType && isDateValid && isStatusValid;
+      return matchesSearch && matchesState && matchesStatus;
     });
-  }, [searchTerm, selectedState, selectedType, concursosList]);
+  }, [searchTerm, selectedState, selectedStatus, concursosList]);
 
   const getStatusColor = (status: string) => {
-    if (status === "Previsto") {
-        return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800";
-    }
-    return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800";
+    const s = status.toLowerCase();
+    if (s.includes("previsto")) return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800";
+    if (s.includes("aberto")) return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800";
+    return "bg-gray-100 text-gray-700";
   };
-
-  const formatDate = (dateString?: string) => {
-      if (!dateString) return "A definir";
-      if (dateString.toLowerCase().includes("ver edital")) return "Ver Edital";
-      if (dateString.toLowerCase().includes("contínuo")) return "Fluxo Contínuo";
-      
-      try {
-          const date = parseISO(dateString);
-          if (isValid(date)) return format(date, "dd/MM/yyyy");
-          return dateString;
-      } catch {
-          return dateString;
-      }
-  };
-
-  const isUsingBackup = !concursosList.length && !isLoading && !error;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-700 pb-12">
@@ -131,11 +108,11 @@ const Concursos = () => {
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="space-y-2 text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold uppercase tracking-wider text-emerald-300">
-              <Activity className="h-3 w-3" /> Apenas Editais Vigentes
+              <Activity className="h-3 w-3" /> Monitoramento Nacional
             </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight">Mural de Concursos</h1>
             <p className="text-slate-300 max-w-lg text-sm sm:text-base">
-              Painel filtrado: apenas inscrições abertas ou previstas para Enfermagem.
+              Varredura de editais de Enfermagem (Prefeituras, Estados e Federal).
             </p>
           </div>
           
@@ -147,14 +124,12 @@ const Concursos = () => {
                 disabled={isLoading || isRefetching}
             >
                 <RefreshCw className={cn("w-4 h-4", (isLoading || isRefetching) && "animate-spin")} />
-                {(isLoading || isRefetching) ? "Buscando..." : "Atualizar"}
+                {(isLoading || isRefetching) ? "Atualizando..." : "Sincronizar"}
             </Button>
           </div>
         </div>
         
-        {/* Background Patterns */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
         
         {profile && (
           <div className="absolute top-4 right-4 z-20">
@@ -174,7 +149,7 @@ const Concursos = () => {
         <div className="relative w-full md:w-96">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
-            placeholder="Filtrar por órgão ou banca..." 
+            placeholder="Filtrar por cidade, cargo..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -192,21 +167,21 @@ const Concursos = () => {
             </SelectContent>
           </Select>
 
-          <Select value={selectedType} onValueChange={setSelectedType}>
+          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
             <SelectTrigger className="w-[150px]">
               <Filter className="w-4 h-4 mr-2 text-muted-foreground" />
-              <SelectValue placeholder="Situação" />
+              <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Todos">Todos Vigentes</SelectItem>
-              <SelectItem value="Aberto">Inscrições Abertas</SelectItem>
+              <SelectItem value="Todos">Todos</SelectItem>
+              <SelectItem value="Aberto">Abertos</SelectItem>
               <SelectItem value="Previsto">Previstos</SelectItem>
             </SelectContent>
           </Select>
         </div>
         
         <div className="ml-auto text-xs font-medium text-muted-foreground hidden md:block">
-          {filteredConcursos.length} oportunidades
+          {filteredConcursos.length} editais encontrados
         </div>
       </div>
 
@@ -215,7 +190,7 @@ const Concursos = () => {
         <div className="flex flex-col items-center justify-center py-20 text-center">
             <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
             <h3 className="text-lg font-semibold">Carregando editais...</h3>
-            <p className="text-sm text-muted-foreground">Verificando datas e inscrições.</p>
+            <p className="text-sm text-muted-foreground">Consultando bases de dados (API + RSS).</p>
         </div>
       ) : filteredConcursos.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -232,7 +207,7 @@ const Concursos = () => {
                      ))}
                   </div>
                 </div>
-                <CardTitle className="text-lg font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-[3.5rem]" title={concurso.orgao}>
+                <CardTitle className="text-base sm:text-lg font-bold leading-tight group-hover:text-primary transition-colors line-clamp-3 min-h-[3.5rem]" title={concurso.orgao}>
                   {concurso.orgao}
                 </CardTitle>
                 <div className="text-sm text-muted-foreground flex items-center gap-2 pt-1">
@@ -261,28 +236,18 @@ const Concursos = () => {
                     <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
                       <Calendar className="w-3.5 h-3.5" /> Inscrições:
                     </span>
-                    <span className="font-bold text-foreground">
-                      {formatDate(concurso.inscricoesAte)}
+                    <span className="font-medium text-foreground">
+                      {concurso.inscricoesAte}
                     </span>
                   </div>
-                  {concurso.dataProva && (
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-muted-foreground flex items-center gap-1.5">
-                        <FileText className="w-3.5 h-3.5" /> Prova:
-                      </span>
-                      <span className="font-medium text-foreground">
-                        {formatDate(concurso.dataProva)}
-                      </span>
-                    </div>
-                  )}
                 </div>
               </CardContent>
 
               <CardFooter className="pt-0">
-                <Button className="w-full gap-2" variant={concurso.status === "Previsto" ? "outline" : "default"} asChild>
+                <Button className="w-full gap-2" variant="default" asChild>
                   <a href={concurso.linkEdital} target="_blank" rel="noreferrer">
                     <ExternalLink className="w-4 h-4" /> 
-                    {concurso.status === "Previsto" ? "Acompanhar" : "Ver Edital"}
+                    Ver Edital / Notícia
                   </a>
                 </Button>
               </CardFooter>
@@ -296,9 +261,9 @@ const Concursos = () => {
           </div>
           <h3 className="text-lg font-bold text-foreground">Nenhum edital encontrado</h3>
           <p className="text-sm text-muted-foreground max-w-md mx-auto mt-2">
-            No momento, não encontramos editais <strong>abertos</strong> ou <strong>previstos</strong> que correspondam aos filtros.
+            Tente mudar o estado ou limpar o filtro de busca.
           </p>
-          <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedState("Todos"); setSelectedType("Todos");}} className="mt-2 text-primary">
+          <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedState("Todos"); setSelectedStatus("Todos");}} className="mt-2 text-primary">
             Limpar filtros
           </Button>
         </div>
@@ -306,28 +271,5 @@ const Concursos = () => {
     </div>
   );
 };
-
-function FileText(props: any) {
-    return (
-      <svg
-        {...props}
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" x2="8" y1="13" y2="13" />
-        <line x1="16" x2="8" y1="17" y2="17" />
-        <line x1="10" x2="8" y1="9" y2="9" />
-      </svg>
-    )
-}
 
 export default Concursos;
