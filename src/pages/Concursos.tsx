@@ -3,7 +3,8 @@ import { useOutletContext } from "react-router-dom";
 import { 
   Briefcase, Search, MapPin, Calendar, DollarSign, 
   ExternalLink, Building2, GraduationCap, Filter, 
-  RefreshCw, Server, Wifi, Activity, AlertCircle, CloudOff
+  RefreshCw, Server, Wifi, Activity, AlertCircle, CloudOff,
+  Landmark
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -37,6 +38,7 @@ export interface Concurso {
 }
 
 const ESTADOS = ["Todos", "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO", "BR"];
+const BANCAS = ["Todas", "FGV", "Cebraspe", "Vunesp", "IBFC", "FCC", "Cesgranrio", "AOCP", "IDECAN", "Consulplan", "Fundatec", "Ver Edital"];
 
 const fetchLiveConcursos = async () => {
   const { data, error } = await supabase.functions.invoke('get-concursos');
@@ -51,6 +53,7 @@ const Concursos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setSelectedState] = useState("Todos");
   const [selectedStatus, setSelectedStatus] = useState("Todos");
+  const [selectedBanca, setSelectedBanca] = useState("Todas");
   
   const { 
     data: concursosList = [], 
@@ -59,9 +62,9 @@ const Concursos = () => {
     error,
     refetch 
   } = useQuery({
-    queryKey: ['liveConcursosAggregated'], // Chave nova para forçar refresh
+    queryKey: ['liveConcursosV3'], 
     queryFn: fetchLiveConcursos,
-    staleTime: 1000 * 60 * 30, // 30 min
+    staleTime: 1000 * 60 * 60,
     refetchOnWindowFocus: false,
     retry: 1
   });
@@ -72,30 +75,34 @@ const Concursos = () => {
 
   const handleManualUpdate = async () => {
     await refetch();
-    toast.success("Painel atualizado com fontes nacionais!");
+    toast.success("Lista de concursos atualizada!");
   };
 
   const filteredConcursos = useMemo(() => {
     return concursosList.filter(concurso => {
-      // Filtro de Texto
+      // 1. Texto
       const matchesSearch = 
         concurso.orgao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        concurso.banca.toLowerCase().includes(searchTerm.toLowerCase());
+        concurso.vagas.toLowerCase().includes(searchTerm.toLowerCase());
       
-      // Filtro de Estado
+      // 2. Estado
       const matchesState = selectedState === "Todos" || concurso.estado.includes(selectedState) || concurso.estado.includes("BR");
       
-      // Filtro de Status
+      // 3. Status
       const matchesStatus = selectedStatus === "Todos" || 
                             (concurso.status && concurso.status.toLowerCase().includes(selectedStatus.toLowerCase()));
 
-      return matchesSearch && matchesState && matchesStatus;
+      // 4. Banca
+      const matchesBanca = selectedBanca === "Todas" || 
+                           concurso.banca.toLowerCase().includes(selectedBanca.toLowerCase());
+
+      return matchesSearch && matchesState && matchesStatus && matchesBanca;
     });
-  }, [searchTerm, selectedState, selectedStatus, concursosList]);
+  }, [searchTerm, selectedState, selectedStatus, selectedBanca, concursosList]);
 
   const getStatusColor = (status: string) => {
     const s = status.toLowerCase();
-    if (s.includes("previsto")) return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800";
+    if (s.includes("previsto") || s.includes("autorizado")) return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800";
     if (s.includes("aberto")) return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800";
     return "bg-gray-100 text-gray-700";
   };
@@ -112,7 +119,7 @@ const Concursos = () => {
             </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight">Mural de Concursos</h1>
             <p className="text-slate-300 max-w-lg text-sm sm:text-base">
-              Varredura de editais de Enfermagem (Prefeituras, Estados e Federal).
+              Prefeituras, Estados e Federais. Encontre vagas para Enfermeiro e Técnico.
             </p>
           </div>
           
@@ -124,12 +131,14 @@ const Concursos = () => {
                 disabled={isLoading || isRefetching}
             >
                 <RefreshCw className={cn("w-4 h-4", (isLoading || isRefetching) && "animate-spin")} />
-                {(isLoading || isRefetching) ? "Atualizando..." : "Sincronizar"}
+                {(isLoading || isRefetching) ? "Buscando..." : "Atualizar Lista"}
             </Button>
           </div>
         </div>
         
+        {/* Background Patterns */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
         
         {profile && (
           <div className="absolute top-4 right-4 z-20">
@@ -144,33 +153,43 @@ const Concursos = () => {
         )}
       </div>
 
-      {/* Barra de Filtros */}
-      <div className="bg-card border rounded-xl p-4 shadow-sm flex flex-col md:flex-row gap-4 items-center sticky top-2 z-20 backdrop-blur-md bg-card/90">
-        <div className="relative w-full md:w-96">
+      {/* Barra de Filtros - Agora com Banca */}
+      <div className="bg-card border rounded-xl p-4 shadow-sm flex flex-col lg:flex-row gap-4 items-center sticky top-2 z-20 backdrop-blur-md bg-card/90">
+        <div className="relative w-full lg:w-1/3">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
-            placeholder="Filtrar por cidade, cargo..." 
+            placeholder="Buscar por prefeitura, órgão..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
           />
         </div>
 
-        <div className="flex w-full md:w-auto gap-2 overflow-x-auto pb-2 md:pb-0">
+        <div className="flex w-full lg:w-auto gap-2 overflow-x-auto pb-2 lg:pb-0 flex-1">
           <Select value={selectedState} onValueChange={setSelectedState}>
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger className="w-[100px] min-w-[100px]">
               <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
-              <SelectValue placeholder="Estado" />
+              <SelectValue placeholder="UF" />
             </SelectTrigger>
             <SelectContent>
               {ESTADOS.map(uf => <SelectItem key={uf} value={uf}>{uf}</SelectItem>)}
             </SelectContent>
           </Select>
 
+          <Select value={selectedBanca} onValueChange={setSelectedBanca}>
+            <SelectTrigger className="w-[140px] min-w-[140px]">
+              <Landmark className="w-4 h-4 mr-2 text-muted-foreground" />
+              <SelectValue placeholder="Banca" />
+            </SelectTrigger>
+            <SelectContent>
+              {BANCAS.map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+            </SelectContent>
+          </Select>
+
           <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-[130px] min-w-[130px]">
               <Filter className="w-4 h-4 mr-2 text-muted-foreground" />
-              <SelectValue placeholder="Status" />
+              <SelectValue placeholder="Situação" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="Todos">Todos</SelectItem>
@@ -180,8 +199,8 @@ const Concursos = () => {
           </Select>
         </div>
         
-        <div className="ml-auto text-xs font-medium text-muted-foreground hidden md:block">
-          {filteredConcursos.length} editais encontrados
+        <div className="ml-auto text-xs font-medium text-muted-foreground hidden lg:block whitespace-nowrap">
+          {filteredConcursos.length} editais
         </div>
       </div>
 
@@ -190,12 +209,12 @@ const Concursos = () => {
         <div className="flex flex-col items-center justify-center py-20 text-center">
             <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
             <h3 className="text-lg font-semibold">Carregando editais...</h3>
-            <p className="text-sm text-muted-foreground">Consultando bases de dados (API + RSS).</p>
+            <p className="text-sm text-muted-foreground">Buscando prefeituras e órgãos em todo o Brasil.</p>
         </div>
       ) : filteredConcursos.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredConcursos.map((concurso) => (
-            <Card key={concurso.id} className="group hover:border-primary/50 transition-all duration-300 hover:shadow-lg flex flex-col border-t-4 border-t-primary/80">
+          {filteredConcursos.map((concurso, idx) => (
+            <Card key={idx} className="group hover:border-primary/50 transition-all duration-300 hover:shadow-lg flex flex-col border-t-4 border-t-primary/80">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start mb-2">
                   <Badge variant="outline" className={cn("border font-bold", getStatusColor(concurso.status))}>
@@ -207,7 +226,7 @@ const Concursos = () => {
                      ))}
                   </div>
                 </div>
-                <CardTitle className="text-base sm:text-lg font-bold leading-tight group-hover:text-primary transition-colors line-clamp-3 min-h-[3.5rem]" title={concurso.orgao}>
+                <CardTitle className="text-base sm:text-lg font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-[3.5rem]" title={concurso.orgao}>
                   {concurso.orgao}
                 </CardTitle>
                 <div className="text-sm text-muted-foreground flex items-center gap-2 pt-1">
@@ -236,18 +255,25 @@ const Concursos = () => {
                     <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
                       <Calendar className="w-3.5 h-3.5" /> Inscrições:
                     </span>
-                    <span className="font-medium text-foreground">
+                    <span className={cn("font-medium", concurso.inscricoesAte.toLowerCase().includes("encerrad") ? "text-red-500" : "text-foreground")}>
                       {concurso.inscricoesAte}
                     </span>
                   </div>
                 </div>
+
+                {concurso.vagas.includes("Verificar") && (
+                   <div className="flex items-start gap-2 bg-blue-50 dark:bg-blue-900/20 p-2 rounded text-[10px] text-blue-800 dark:text-blue-300">
+                      <AlertCircle className="w-3 h-3 mt-0.5 shrink-0" />
+                      <p>Este é um edital geral. Verifique se há vagas para Enf/Téc no link.</p>
+                   </div>
+                )}
               </CardContent>
 
               <CardFooter className="pt-0">
-                <Button className="w-full gap-2" variant="default" asChild>
+                <Button className="w-full gap-2" variant={concurso.status.includes("Previsto") ? "outline" : "default"} asChild>
                   <a href={concurso.linkEdital} target="_blank" rel="noreferrer">
                     <ExternalLink className="w-4 h-4" /> 
-                    Ver Edital / Notícia
+                    {concurso.status.includes("Previsto") ? "Acompanhar" : "Ver Edital"}
                   </a>
                 </Button>
               </CardFooter>
@@ -261,9 +287,9 @@ const Concursos = () => {
           </div>
           <h3 className="text-lg font-bold text-foreground">Nenhum edital encontrado</h3>
           <p className="text-sm text-muted-foreground max-w-md mx-auto mt-2">
-            Tente mudar o estado ou limpar o filtro de busca.
+            Tente mudar o estado ou a banca.
           </p>
-          <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedState("Todos"); setSelectedStatus("Todos");}} className="mt-2 text-primary">
+          <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedState("Todos"); setSelectedStatus("Todos"); setSelectedBanca("Todas");}} className="mt-2 text-primary">
             Limpar filtros
           </Button>
         </div>
