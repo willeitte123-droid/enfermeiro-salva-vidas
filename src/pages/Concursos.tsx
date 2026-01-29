@@ -116,7 +116,7 @@ const Concursos = () => {
             </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight">Mural de Concursos</h1>
             <p className="text-slate-300 max-w-lg text-sm sm:text-base">
-              Varredura automática de notícias sobre concursos na área da saúde.
+              Monitoramento inteligente de editais e vagas para Enfermeiros e Técnicos em todo o Brasil.
             </p>
           </div>
           
@@ -275,7 +275,7 @@ const Concursos = () => {
           </div>
           <h3 className="text-lg font-bold text-foreground">Nenhum edital encontrado</h3>
           <p className="text-sm text-muted-foreground max-w-md mx-auto mt-2">
-            Não encontramos notícias recentes com esses filtros. Tente mudar o estado.
+            Tente mudar o estado ou limpar o filtro de busca.
           </p>
           <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedState("Todos"); setSelectedStatus("Todos");}} className="mt-2 text-primary">
             Limpar filtros
