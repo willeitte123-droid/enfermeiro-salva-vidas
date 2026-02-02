@@ -15,7 +15,8 @@ import { VIDEO_LIBRARY, VideoLesson } from "@/data/videoLibrary";
 import FavoriteButton from "@/components/FavoriteButton";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden"; 
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import YouTube, { YouTubePlayer, YouTubeEvent } from 'react-youtube';
 
 interface Profile {
   id: string;
@@ -78,7 +79,6 @@ const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: ()
           alt={video.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           onError={(e) => {
-             // Fallback se maxresdefault não existir
              (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
           }}
         />
@@ -97,10 +97,8 @@ const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: ()
           </div>
         )}
 
-        {/* Gradiente Inferior para legibilidade */}
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 z-10" />
 
-        {/* Play Overlay */}
         <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-white shadow-lg scale-90 group-hover:scale-100 transition-transform">
             <Play className="h-5 w-5 fill-current ml-1" />
@@ -135,7 +133,6 @@ const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: ()
   );
 };
 
-// Item da Playlist (Lista Lateral/Inferior)
 const PlaylistItem = ({ video, isActive, onClick }: { video: VideoLesson, isActive: boolean, onClick: () => void }) => {
   return (
     <div 
@@ -185,6 +182,7 @@ const VideoLibrary = () => {
   // Estado do Player
   const [selectedVideo, setSelectedVideo] = useState<VideoLesson | null>(null);
   const [currentPlaylist, setCurrentPlaylist] = useState<VideoLesson[]>([]);
+  const playerRef = useRef<YouTubePlayer | null>(null);
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Biblioteca de Vídeos', path: '/video-library', icon: 'MonitorPlay' });
@@ -200,12 +198,9 @@ const VideoLibrary = () => {
     });
   }, [searchTerm, activeCategory]);
 
-  // Agrupa por categoria para o modo "Todos"
   const groupedVideos = useMemo(() => {
     if (activeCategory !== "Todos") return { [activeCategory]: filteredVideos };
-    
     const groups: Record<string, VideoLesson[]> = {};
-    // Garante a ordem das categorias
     CATEGORIES.filter(c => c !== "Todos").forEach(cat => {
         const vids = filteredVideos.filter(v => v.category === cat);
         if (vids.length > 0) groups[cat] = vids;
@@ -213,7 +208,6 @@ const VideoLibrary = () => {
     return groups;
   }, [filteredVideos, activeCategory]);
 
-  // Handlers do Player
   const handleOpenVideo = (video: VideoLesson, playlist: VideoLesson[]) => {
     setSelectedVideo(video);
     setCurrentPlaylist(playlist);
@@ -231,6 +225,11 @@ const VideoLibrary = () => {
     const currentIndex = currentPlaylist.findIndex(v => v.id === selectedVideo.id);
     const prevIndex = (currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
     setSelectedVideo(currentPlaylist[prevIndex]);
+  };
+
+  const onPlayerReady = (event: YouTubeEvent) => {
+    playerRef.current = event.target;
+    event.target.playVideo();
   };
 
   return (
@@ -281,16 +280,12 @@ const VideoLibrary = () => {
                             : "bg-card text-muted-foreground border-border/50 hover:border-primary/30 hover:text-foreground"
                         )}
                     >
-                        {/* Background Ativo (Gradiente) */}
                         {isActive && (
                             <div className={cn("absolute inset-0 bg-gradient-to-r opacity-100 transition-opacity", style.gradient)} />
                         )}
-                        
-                        {/* Background Hover (Sutil) */}
                         {!isActive && (
                            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                         )}
-
                         <span className="relative z-10 flex items-center gap-2">
                             <Icon className={cn("h-4 w-4 transition-transform duration-300 group-hover:scale-110", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
                             {cat}
@@ -347,22 +342,22 @@ const VideoLibrary = () => {
         })}
 
         {Object.keys(groupedVideos).length === 0 && (
-           <div className="flex flex-col items-center justify-center py-20 text-center bg-muted/20 rounded-2xl border border-dashed border-muted mx-4 sm:mx-0">
-             <div className="bg-muted p-4 rounded-full mb-4">
-               <MonitorPlay className="h-8 w-8 text-muted-foreground opacity-50" />
+           <div className="flex flex-col items-center justify-center py-24 text-center bg-muted/20 rounded-3xl border border-dashed border-muted mx-1">
+             <div className="bg-background p-4 rounded-full mb-4 shadow-sm">
+               <MonitorPlay className="h-10 w-10 text-muted-foreground/50" />
              </div>
-             <h3 className="text-lg font-bold text-foreground">Nenhum vídeo encontrado</h3>
-             <p className="text-sm text-muted-foreground max-w-md mx-auto mt-2">
-               Tente ajustar sua busca ou mudar a categoria.
+             <h3 className="text-lg font-bold text-foreground">Nenhuma aula encontrada</h3>
+             <p className="text-sm text-muted-foreground max-w-md mx-auto mt-2 px-4">
+               Não encontramos vídeos para "{searchTerm}" nesta categoria.
              </p>
-             <Button variant="link" onClick={() => {setSearchTerm(""); setActiveCategory("Todos");}} className="mt-2 text-primary">
+             <Button variant="outline" onClick={() => {setSearchTerm(""); setActiveCategory("Todos");}} className="mt-4">
                Limpar filtros
              </Button>
            </div>
         )}
       </div>
 
-      {/* Disclaimer Legal com Destaque */}
+      {/* Disclaimer Legal */}
       <div className="mt-12 border-t border-border/40 pt-8 px-1">
         <Alert className="bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900/50 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
@@ -372,18 +367,18 @@ const VideoLibrary = () => {
                     <AlertTitle className="text-amber-800 dark:text-amber-200 font-bold text-xs uppercase tracking-wide mb-1">Nota Legal</AlertTitle>
                     <AlertDescription className="text-xs sm:text-sm text-amber-700/90 dark:text-amber-300/90 leading-relaxed font-medium">
                         EnfermagemPro utiliza a tecnologia de incorporação (embed) para reproduzir conteúdos públicos hospedados no YouTube.
-                        Não hospedamos, armazenamos ou comercializamos estes arquivos de mídia.
                     </AlertDescription>
                 </div>
             </div>
         </Alert>
       </div>
 
-      {/* PLAYER MODAL: 100% Responsivo, Imersivo e Z-Index Elevado */}
+      {/* PLAYER MODAL: REFORMULADO PARA MOBILE */}
+      {/* Usando classes utilitárias para forçar o posicionamento top-0 left-0 e anular o comportamento de centralização do Shadcn */}
       <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
         <DialogContent 
-            className="w-screen h-[100dvh] max-w-none m-0 p-0 border-none bg-black flex flex-col gap-0 rounded-none sm:rounded-lg sm:h-[85vh] sm:w-[90vw] sm:max-w-5xl sm:border sm:border-slate-800 overflow-hidden outline-none z-[150]"
-            onOpenAutoFocus={(e) => e.preventDefault()} // Evita foco automático que pode bagunçar layout mobile
+            className="fixed top-0 left-0 translate-x-0 translate-y-0 w-full h-[100dvh] max-w-none m-0 p-0 border-none bg-black flex flex-col gap-0 rounded-none sm:rounded-lg sm:h-[85vh] sm:w-[90vw] sm:max-w-5xl sm:border sm:border-slate-800 sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%] overflow-hidden outline-none z-[150]"
+            onOpenAutoFocus={(e) => e.preventDefault()} 
         >
           <VisuallyHidden.Root>
             <DialogTitle>{selectedVideo?.title || "Video Player"}</DialogTitle>
@@ -391,20 +386,30 @@ const VideoLibrary = () => {
 
           {selectedVideo && (
             <>
-              {/* VIDEO AREA - Sticky on top mobile */}
-              <div className="relative w-full aspect-video bg-black shrink-0 relative shadow-2xl z-20">
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src={`https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                  title={selectedVideo.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                ></iframe>
+              {/* VIDEO AREA - React Youtube para suporte mobile robusto */}
+              <div className="relative w-full aspect-video bg-black shrink-0 shadow-2xl z-20">
+                <YouTube
+                    videoId={selectedVideo.id}
+                    opts={{
+                        height: '100%',
+                        width: '100%',
+                        playerVars: {
+                            autoplay: 1,
+                            playsinline: 1, // CRUCIAL para iOS
+                            modestbranding: 1,
+                            rel: 0,
+                            controls: 1,
+                        },
+                    }}
+                    onReady={onPlayerReady}
+                    className="absolute inset-0 w-full h-full"
+                    iframeClassName="w-full h-full"
+                />
                 
-                {/* Botão Fechar Flutuante - Posicionado para evitar conflito com UI nativa */}
+                {/* Botão Fechar Flutuante */}
                 <button 
                   onClick={() => setSelectedVideo(null)}
-                  className="absolute top-4 right-4 sm:top-4 sm:right-4 p-2.5 bg-black/60 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition-all z-30 active:scale-95 touch-manipulation border border-white/10"
+                  className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 bg-black/60 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition-all z-30 active:scale-95 touch-manipulation border border-white/10"
                   aria-label="Fechar vídeo"
                 >
                   <X className="h-5 w-5" />
