@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { 
   Play, Search, MonitorPlay, Youtube, X, 
   SkipBack, SkipForward, ListMusic, Clock, AlertCircle, Sparkles,
-  Gavel, Globe, BookOpen, Heart, ShieldCheck, Layers
+  Gavel, Globe, BookOpen, Heart, ShieldCheck, Layers, ChevronUp, ChevronDown
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { VIDEO_LIBRARY, VideoLesson } from "@/data/videoLibrary";
 import FavoriteButton from "@/components/FavoriteButton";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import YouTube, { YouTubePlayer, YouTubeEvent } from 'react-youtube';
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -172,20 +173,193 @@ const PlaylistItem = ({ video, isActive, onClick }: { video: VideoLesson, isActi
   )
 }
 
-const PlayerContent = ({ 
+// --- NOVO COMPONENTE MINIPLAYER ---
+const MiniVideoPlayer = ({ 
   selectedVideo, 
   currentPlaylist, 
   onClose, 
   onNext, 
   onPrev, 
-  onPlayerReady, 
-  profile,
-  isMobile 
+  onVideoChange 
+}: {
+  selectedVideo: VideoLesson;
+  currentPlaylist: VideoLesson[];
+  onClose: () => void;
+  onNext: () => void;
+  onPrev: () => void;
+  onVideoChange: (video: VideoLesson) => void;
+}) => {
+  const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
+  const playerRef = useRef<YouTubePlayer | null>(null);
+
+  const onReady = (event: YouTubeEvent) => {
+    playerRef.current = event.target;
+    event.target.playVideo();
+  };
+
+  const hasNext = currentPlaylist.length > 0 && currentPlaylist[currentPlaylist.length - 1].id !== selectedVideo.id;
+  const hasPrev = currentPlaylist.length > 0 && currentPlaylist[0].id !== selectedVideo.id;
+
+  const handleStateChange = (event: YouTubeEvent) => {
+    // 0 = Ended
+    if (event.data === 0) {
+      onNext();
+    }
+  };
+
+  return (
+    <div className="fixed bottom-2 right-2 sm:bottom-6 sm:right-6 z-[100] flex flex-col items-end animate-in slide-in-from-bottom-10 fade-in duration-500 w-[calc(100vw-1rem)] sm:w-[380px] max-w-md shadow-2xl">
+      
+      {/* PLAYER CARD */}
+      <div className="bg-card border border-border shadow-2xl rounded-2xl overflow-hidden w-full flex flex-col relative z-20 ring-1 ring-black/5">
+          <div className="relative aspect-video bg-black group">
+               <YouTube 
+                  key={selectedVideo.id} // Força re-render ao mudar video
+                  videoId={selectedVideo.id} 
+                  opts={{
+                      height: '100%',
+                      width: '100%',
+                      playerVars: {
+                          autoplay: 1,
+                          controls: 1,
+                          modestbranding: 1,
+                          rel: 0,
+                          playsinline: 1, // Vital para mobile
+                      },
+                  }} 
+                  onReady={onReady}
+                  onStateChange={handleStateChange}
+                  className="w-full h-full"
+                  iframeClassName="w-full h-full absolute inset-0"
+               />
+               <button 
+                  onClick={onClose}
+                  className="absolute top-2 right-2 bg-black/60 hover:bg-red-600 text-white rounded-full p-1.5 transition-colors z-10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+               >
+                  <X size={14} />
+               </button>
+          </div>
+          
+          <div className="p-3 bg-card text-card-foreground">
+              <div className="flex justify-between items-center mb-2">
+                  <div className="flex-1 pr-2 overflow-hidden">
+                      <p className="text-sm font-bold truncate text-foreground">{selectedVideo.title}</p>
+                      <p className="text-[10px] text-muted-foreground truncate">{selectedVideo.author}</p>
+                  </div>
+                  
+                  <div className="flex gap-1 shrink-0">
+                      <Button 
+                          size="sm" variant="ghost" 
+                          disabled={!hasPrev} onClick={onPrev} 
+                          className="h-8 w-8 p-0 hover:bg-muted"
+                      >
+                          <SkipBack size={16} />
+                      </Button>
+                      <Button 
+                          size="sm" variant="ghost" 
+                          disabled={!hasNext} onClick={onNext} 
+                          className="h-8 w-8 p-0 hover:bg-muted"
+                      >
+                          <SkipForward size={16} />
+                      </Button>
+                  </div>
+              </div>
+
+              <div className="flex justify-between items-center pt-2 border-t border-border/40">
+                  <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => setIsPlaylistOpen(!isPlaylistOpen)}
+                      className={cn(
+                          "h-6 px-2 text-xs gap-2 rounded-full transition-all border",
+                          isPlaylistOpen ? "bg-primary text-primary-foreground hover:bg-primary/90 border-primary" : "text-muted-foreground hover:bg-muted border-transparent"
+                      )}
+                  >
+                      <ListMusic size={12} /> Playlist {isPlaylistOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                  </Button>
+
+                  <a href={`https://www.youtube.com/watch?v=${selectedVideo.id}`} target="_blank" rel="noreferrer">
+                      <div className="flex items-center gap-1 text-[10px] text-muted-foreground hover:text-red-500 transition-colors cursor-pointer font-medium">
+                          <Youtube size={12} /> Abrir no App
+                      </div>
+                  </a>
+              </div>
+          </div>
+      </div>
+
+      {/* PLAYLIST DROPDOWN */}
+      {isPlaylistOpen && (
+          <div className="w-[95%] bg-card/95 backdrop-blur-md border-x border-b border-border/50 rounded-b-xl shadow-xl mt-[-10px] pt-4 relative z-10 animate-in slide-in-from-top-2 overflow-hidden mx-auto">
+              <div className="px-3 pb-2 text-[10px] uppercase tracking-widest text-muted-foreground font-bold border-b border-border/30">
+                  A seguir ({currentPlaylist.length})
+              </div>
+              <ScrollArea className="h-48 w-full">
+                  <div className="flex flex-col p-1">
+                      {currentPlaylist.map((item, idx) => {
+                          const isActive = item.id === selectedVideo.id;
+                          return (
+                              <button
+                                  key={`${item.id}-${idx}`}
+                                  onClick={() => onVideoChange(item)}
+                                  className={cn(
+                                      "flex items-center gap-3 p-2 rounded-lg text-left transition-all group",
+                                      isActive 
+                                          ? "bg-primary/10 border border-primary/20" 
+                                          : "hover:bg-muted/50 border border-transparent"
+                                  )}
+                              >
+                                  <div className="relative shrink-0">
+                                      <img 
+                                          src={`https://img.youtube.com/vi/${item.id}/default.jpg`} 
+                                          className={cn("w-10 h-10 rounded object-cover", isActive ? "opacity-100" : "opacity-70 grayscale group-hover:grayscale-0")}
+                                          alt="thumb"
+                                      />
+                                      {isActive && (
+                                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded">
+                                              <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                                          </div>
+                                      )}
+                                  </div>
+                                  <div className="flex-1 overflow-hidden">
+                                      <p className={cn("text-xs font-bold truncate", isActive ? "text-primary" : "text-foreground")}>
+                                          {item.title}
+                                      </p>
+                                      <p className="text-[10px] text-muted-foreground truncate">
+                                          {item.author}
+                                      </p>
+                                  </div>
+                                  {isActive && <Play size={10} className="text-primary fill-current" />}
+                              </button>
+                          );
+                      })}
+                  </div>
+              </ScrollArea>
+          </div>
+      )}
+    </div>
+  );
+};
+
+// Player Content para Desktop (Mantido para telas grandes)
+const DesktopPlayerContent = ({ 
+  selectedVideo, 
+  currentPlaylist, 
+  onClose, 
+  onNext, 
+  onPrev, 
+  onVideoChange,
+  profile
 }: any) => {
+  const playerRef = useRef<YouTubePlayer | null>(null);
+  
+  const onReady = (event: YouTubeEvent) => {
+    playerRef.current = event.target;
+    event.target.playVideo();
+  };
+
   return (
     <>
-      {/* VIDEO AREA */}
-      <div className={cn("relative w-full bg-black shrink-0 shadow-2xl z-20", isMobile ? "sticky top-0 aspect-video" : "aspect-video")}>
+      <div className="relative w-full aspect-video bg-black shrink-0 shadow-2xl z-20">
         <YouTube
             videoId={selectedVideo.id}
             opts={{
@@ -199,84 +373,47 @@ const PlayerContent = ({
                     controls: 1,
                 },
             }}
-            onReady={onPlayerReady}
+            onReady={onReady}
+            onEnd={onNext}
             className="absolute inset-0 w-full h-full"
             iframeClassName="w-full h-full"
         />
-        
-        {/* Botão Fechar Flutuante */}
         <button 
           onClick={onClose}
-          className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition-all z-30 active:scale-95 touch-manipulation border border-white/10"
-          aria-label="Fechar vídeo"
+          className="absolute top-4 right-4 p-2 bg-black/60 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition-all z-30"
         >
           <X className="h-5 w-5" />
         </button>
       </div>
 
-      {/* ÁREA DE CONTEÚDO SCROLLÁVEL */}
       <div className="bg-background sm:bg-card flex flex-col flex-1 min-h-0 overflow-hidden relative z-10">
-        
-        {/* INFO + CONTROLS */}
         <div className="p-4 border-b border-border/50 bg-card shrink-0">
            <div className="flex justify-between gap-4">
               <div className="flex-1 space-y-1.5 min-w-0">
-                 <h2 className="text-base sm:text-xl font-bold leading-tight line-clamp-2 pr-2" title={selectedVideo.title}>
-                    {selectedVideo.title}
-                 </h2>
+                 <h2 className="text-xl font-bold leading-tight line-clamp-2 pr-2">{selectedVideo.title}</h2>
                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-                    <span className="font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded truncate max-w-[150px]">{selectedVideo.author}</span>
-                    <span className="hidden xs:inline text-border">•</span>
-                    <span className="truncate max-w-[120px] bg-muted px-2 py-0.5 rounded">{selectedVideo.category}</span>
-                    {selectedVideo.duration && (
-                      <>
-                         <span className="hidden xs:inline text-border">•</span>
-                         <span className="flex items-center gap-1 font-mono"><Clock className="h-3 w-3" /> {selectedVideo.duration}</span>
-                      </>
-                    )}
+                    <span className="font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">{selectedVideo.author}</span>
+                    <span className="text-border">•</span>
+                    <span className="bg-muted px-2 py-0.5 rounded">{selectedVideo.category}</span>
                  </div>
               </div>
-
               {profile && (
                  <div className="shrink-0 pt-0.5">
-                    <FavoriteButton 
-                        userId={profile.id} 
-                        itemId={`video-${selectedVideo.id}`} 
-                        itemType="Vídeo Aula" 
-                        itemTitle={selectedVideo.title}
-                        className="h-10 w-10 border bg-muted/20 hover:bg-muted/40"
-                    />
+                    <FavoriteButton userId={profile.id} itemId={`video-${selectedVideo.id}`} itemType="Vídeo Aula" itemTitle={selectedVideo.title} className="h-10 w-10 border bg-muted/20 hover:bg-muted/40" />
                  </div>
               )}
            </div>
-
-           {/* Mobile Controls */}
-           <div className="grid grid-cols-2 gap-3 mt-4">
-                <Button variant="outline" onClick={onPrev} className="w-full h-10 gap-2 text-xs font-semibold" disabled={currentPlaylist.length <= 1}>
-                   <SkipBack className="h-4 w-4" /> Anterior
-                </Button>
-                <Button variant="outline" onClick={onNext} className="w-full h-10 gap-2 text-xs font-semibold" disabled={currentPlaylist.length <= 1}>
-                   Próximo <SkipForward className="h-4 w-4" />
-                </Button>
-           </div>
         </div>
 
-        {/* PLAYLIST */}
         <div className="flex-1 flex flex-col bg-muted/5 min-h-0">
           <div className="px-4 py-2 border-b border-border/50 bg-muted/30 flex items-center gap-2 sticky top-0 backdrop-blur-sm z-10 shrink-0">
             <ListMusic className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-muted-foreground">A seguir ({currentPlaylist.length})</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A seguir ({currentPlaylist.length})</span>
           </div>
-          
           <ScrollArea className="flex-1 w-full">
-            <div className="p-3 sm:p-4 space-y-2 pb-safe-area">
+            <div className="p-4 space-y-2 pb-safe-area">
               {currentPlaylist.map((video: VideoLesson) => (
-                <PlaylistItem 
-                  key={video.id} 
-                  video={video} 
-                  isActive={video.id === selectedVideo.id}
-                  onClick={() => onPlayerReady({ target: { playVideo: () => {} } } as any) || handleOpenVideo(video, currentPlaylist)} // Hack: we handle click in parent
-                />
+                <PlaylistItem key={video.id} video={video} isActive={video.id === selectedVideo.id} onClick={() => onVideoChange(video)} />
               ))}
             </div>
           </ScrollArea>
@@ -297,7 +434,6 @@ const VideoLibrary = () => {
   // Estado do Player
   const [selectedVideo, setSelectedVideo] = useState<VideoLesson | null>(null);
   const [currentPlaylist, setCurrentPlaylist] = useState<VideoLesson[]>([]);
-  const playerRef = useRef<YouTubePlayer | null>(null);
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Biblioteca de Vídeos', path: '/video-library', icon: 'MonitorPlay' });
@@ -308,7 +444,6 @@ const VideoLibrary = () => {
       const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                             video.author.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = activeCategory === "Todos" || video.category === activeCategory;
-      
       return matchesSearch && matchesCategory;
     });
   }, [searchTerm, activeCategory]);
@@ -328,6 +463,10 @@ const VideoLibrary = () => {
     setCurrentPlaylist(playlist);
   };
 
+  const handleVideoChange = (video: VideoLesson) => {
+    setSelectedVideo(video);
+  };
+
   const handleNext = () => {
     if (!selectedVideo || currentPlaylist.length === 0) return;
     const currentIndex = currentPlaylist.findIndex(v => v.id === selectedVideo.id);
@@ -342,13 +481,8 @@ const VideoLibrary = () => {
     setSelectedVideo(currentPlaylist[prevIndex]);
   };
 
-  const onPlayerReady = (event: YouTubeEvent) => {
-    playerRef.current = event.target;
-    event.target.playVideo();
-  };
-
   return (
-    <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500 pb-20 w-full max-w-full overflow-x-hidden">
+    <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500 pb-32 w-full max-w-full overflow-x-hidden">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 px-1">
@@ -395,8 +529,12 @@ const VideoLibrary = () => {
                             : "bg-card text-muted-foreground border-border/50 hover:border-primary/30 hover:text-foreground"
                         )}
                     >
-                        {isActive && <div className={cn("absolute inset-0 bg-gradient-to-r opacity-100 transition-opacity", style.gradient)} />}
-                        {!isActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />}
+                        {isActive && (
+                            <div className={cn("absolute inset-0 bg-gradient-to-r opacity-100 transition-opacity", style.gradient)} />
+                        )}
+                        {!isActive && (
+                           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        )}
                         <span className="relative z-10 flex items-center gap-2">
                             <Icon className={cn("h-4 w-4 transition-transform duration-300 group-hover:scale-110", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
                             {cat}
@@ -439,37 +577,18 @@ const VideoLibrary = () => {
         })}
       </div>
 
-      <div className="mt-12 border-t border-border/40 pt-8 px-1">
-        <Alert className="bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900/50 shadow-sm relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
-            <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 shrink-0" />
-                <div>
-                    <AlertTitle className="text-amber-800 dark:text-amber-200 font-bold text-xs uppercase tracking-wide mb-1">Nota Legal</AlertTitle>
-                    <AlertDescription className="text-xs sm:text-sm text-amber-700/90 dark:text-amber-300/90 leading-relaxed font-medium">
-                        EnfermagemPro utiliza a tecnologia de incorporação (embed) para reproduzir conteúdos públicos hospedados no YouTube.
-                    </AlertDescription>
-                </div>
-            </div>
-        </Alert>
-      </div>
-
-      {/* RENDERIZAÇÃO CONDICIONAL DO PLAYER */}
+      {/* RENDERIZAÇÃO DO PLAYER */}
       {selectedVideo && (
         isMobile ? (
-          // MOBILE: OVERLAY NATIVO (Sem Dialog/Radix)
-          <div className="fixed inset-0 z-[200] bg-background flex flex-col animate-in slide-in-from-bottom-full duration-300">
-             <PlayerContent 
-                selectedVideo={selectedVideo} 
-                currentPlaylist={currentPlaylist}
-                onClose={() => setSelectedVideo(null)}
-                onNext={handleNext}
-                onPrev={handlePrev}
-                onPlayerReady={onPlayerReady}
-                profile={profile}
-                isMobile={true}
-             />
-          </div>
+          // MOBILE: MINIPLAYER FLUTUANTE
+          <MiniVideoPlayer 
+             selectedVideo={selectedVideo}
+             currentPlaylist={currentPlaylist}
+             onClose={() => setSelectedVideo(null)}
+             onNext={handleNext}
+             onPrev={handlePrev}
+             onVideoChange={handleVideoChange}
+          />
         ) : (
           // DESKTOP: MODAL PADRÃO
           <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
@@ -481,15 +600,14 @@ const VideoLibrary = () => {
                 <DialogTitle>{selectedVideo?.title || "Video Player"}</DialogTitle>
               </VisuallyHidden.Root>
               
-              <PlayerContent 
+              <DesktopPlayerContent 
                   selectedVideo={selectedVideo} 
                   currentPlaylist={currentPlaylist}
                   onClose={() => setSelectedVideo(null)}
                   onNext={handleNext}
                   onPrev={handlePrev}
-                  onPlayerReady={onPlayerReady}
+                  onVideoChange={handleVideoChange}
                   profile={profile}
-                  isMobile={false}
               />
             </DialogContent>
           </Dialog>
