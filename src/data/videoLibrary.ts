@@ -108,5 +108,12 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
     author: "Enfermagem Prática",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 8 min"
+  },
+  {
+    id: "bDfDvhCeYAU",
+    title: "Sondagem Vesical de Demora (Técnica Completa)",
+    author: "Enfermagem Prática",
+    category: "Procedimentos de enfermagem",
+    duration: "Aprox. 10 min"
   }
 ];
