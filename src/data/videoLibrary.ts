@@ -10,35 +10,35 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   // Legislação do SUS
   {
     id: "jHMqEVgDjd8",
-    title: "Princípios e Diretrizes do SUS",
+    title: "PRINCÍPIOS E DIRETRIZES DO SUS - PREPARA ENFERMAGEM",
     author: "Enfermagem para Concursos",
     category: "Legislação do SUS",
     duration: "Aprox. 20 min"
   },
   {
     id: "TdlgCMJ3jHg",
-    title: "Lei 8.080/90 - Visão Geral",
+    title: "LEI 8080/90 - DISPOSIÇÃO PRELIMINAR E DISPOSIÇÕES GERAIS - PREPARA ENFERMAGEM",
     author: "Enfermagem para Concursos",
     category: "Legislação do SUS",
     duration: "Aprox. 15 min"
   },
   {
     id: "76qaxgE2jK4",
-    title: "Lei 8.080/90 - Art. 5º e 6º (Objetivos e Atribuições)",
+    title: "LEI 8080/90 - OBJETIVOS E ATRIBUIÇÕES - PREPARA ENFERMAGEM",
     author: "Enfermagem para Concursos",
     category: "Legislação do SUS",
     duration: "Aprox. 12 min"
   },
   {
     id: "EI4IOCGh4ZU",
-    title: "Lei 8.080/90 - Art. 7º ao 13 (Princípios e Organização)",
+    title: "LEI 8080/90 - PRINCÍPIOS E DIRETRIZES - PREPARA ENFERMAGEM",
     author: "Enfermagem para Concursos",
     category: "Legislação do SUS",
     duration: "Aprox. 18 min"
   },
   {
     id: "DC1EEaXzJWY",
-    title: "Lei 8.142/90 - Controle Social e Financiamento",
+    title: "LEI 8142/90 - PREPARA ENFERMAGEM",
     author: "Enfermagem para Concursos",
     category: "Legislação do SUS",
     duration: "Aprox. 10 min"
@@ -47,7 +47,7 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   // Saúde Pública
   {
     id: "3d-l0vl4oGs",
-    title: "PNAB para Concursos (Atenção Básica)",
+    title: "PNAB - Política Nacional de Atenção Básica (Portaria 2.436/2017) - Parte 1",
     author: "Prof. Especialista",
     category: "Saúde Pública",
     duration: "Aprox. 25 min"
@@ -56,7 +56,7 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   // Fundamentos e SAE
   {
     id: "5LyJQ2Q1UIY",
-    title: "SAE e Processo de Enfermagem",
+    title: "SAE - Sistematização da Assistência de Enfermagem - Resolução 358/2009 COFEN",
     author: "Prof. Especialista",
     category: "Fundamentos e SAE",
     duration: "Aprox. 20 min"
@@ -65,7 +65,7 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   // Saúde da Mulher
   {
     id: "Hi_doaILEUk",
-    title: "Saúde da Mulher: Aspectos Essenciais",
+    title: "SAÚDE DA MULHER - POLÍTICA NACIONAL DE ATENÇÃO INTEGRAL À SAÚDE DA MULHER - PNAISM",
     author: "Prof. Especialista",
     category: "Saúde da Mulher",
     duration: "Aprox. 22 min"
@@ -74,14 +74,14 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   // Biossegurança e CME
   {
     id: "xhPQbBu7YE0",
-    title: "Artigos Hospitalares e Processamento",
+    title: "Central de Material e Esterilização - CME - RDC 15/2012 - Parte 1",
     author: "Prof. Especialista",
     category: "Biossegurança e CME",
     duration: "Aprox. 15 min"
   },
   {
     id: "obYQqvphdYY",
-    title: "Indicadores Químicos e Biológicos (CME)",
+    title: "Central de Material e Esterilização - CME - RDC 15/2012 - Parte 2",
     author: "Prof. Especialista",
     category: "Biossegurança e CME",
     duration: "Aprox. 14 min"
