@@ -14,10 +14,8 @@ import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { VIDEO_LIBRARY, VideoLesson } from "@/data/videoLibrary";
 import FavoriteButton from "@/components/FavoriteButton";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import YouTube, { YouTubePlayer, YouTubeEvent } from 'react-youtube';
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Profile {
   id: string;
@@ -173,7 +171,7 @@ const PlaylistItem = ({ video, isActive, onClick }: { video: VideoLesson, isActi
   )
 }
 
-// --- NOVO COMPONENTE MINIPLAYER ---
+// --- MINIPLAYER FLUTUANTE (PICTURE-IN-PICTURE STYLE) ---
 const MiniVideoPlayer = ({ 
   selectedVideo, 
   currentPlaylist, 
@@ -208,10 +206,11 @@ const MiniVideoPlayer = ({
   };
 
   return (
-    <div className="fixed bottom-2 right-2 sm:bottom-6 sm:right-6 z-[100] flex flex-col items-end animate-in slide-in-from-bottom-10 fade-in duration-500 w-[calc(100vw-1rem)] sm:w-[380px] max-w-md shadow-2xl">
+    // FIXA O PLAYER NA PARTE INFERIOR - COMPORTAMENTO MOBILE E DESKTOP COMPACTO
+    <div className="fixed bottom-[80px] sm:bottom-6 right-2 sm:right-6 z-[200] flex flex-col items-end animate-in slide-in-from-bottom-10 fade-in duration-500 w-[calc(100vw-1rem)] sm:w-[380px] max-w-md shadow-2xl">
       
       {/* PLAYER CARD */}
-      <div className="bg-card border border-border shadow-2xl rounded-2xl overflow-hidden w-full flex flex-col relative z-20 ring-1 ring-black/5">
+      <div className="bg-card border border-border shadow-2xl rounded-2xl overflow-hidden w-full flex flex-col relative z-20 ring-1 ring-black/10 dark:ring-white/10">
           <div className="relative aspect-video bg-black group">
                <YouTube 
                   key={selectedVideo.id} // Força re-render ao mudar video
@@ -224,7 +223,8 @@ const MiniVideoPlayer = ({
                           controls: 1,
                           modestbranding: 1,
                           rel: 0,
-                          playsinline: 1, // Vital para mobile
+                          playsinline: 1, // Vital para mobile não forçar fullscreen
+                          fs: 1 // Permite fullscreen se o user clicar
                       },
                   }} 
                   onReady={onReady}
@@ -234,7 +234,7 @@ const MiniVideoPlayer = ({
                />
                <button 
                   onClick={onClose}
-                  className="absolute top-2 right-2 bg-black/60 hover:bg-red-600 text-white rounded-full p-1.5 transition-colors z-10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+                  className="absolute top-2 right-2 bg-black/60 hover:bg-red-600 text-white rounded-full p-1.5 transition-colors z-10 opacity-100 shadow-md"
                >
                   <X size={14} />
                </button>
@@ -340,7 +340,7 @@ const MiniVideoPlayer = ({
   );
 };
 
-// Player Content para Desktop (Mantido para telas grandes)
+// Player Content para Desktop (Mantido para telas grandes APENAS)
 const DesktopPlayerContent = ({ 
   selectedVideo, 
   currentPlaylist, 
@@ -426,7 +426,21 @@ const DesktopPlayerContent = ({
 const VideoLibrary = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
-  const isMobile = useIsMobile();
+  
+  // Custom hook ou lógica para detecção de tamanho de tela mais agressiva
+  const [isCompactMode, setIsCompactMode] = useState(false);
+
+  useEffect(() => {
+      // Força modo compacto para qualquer tela menor que 1024px (Tablets e Mobiles)
+      // Isso resolve o problema do Chrome Mobile reportar-se como Desktop às vezes
+      const checkSize = () => {
+          setIsCompactMode(window.innerWidth < 1024);
+      };
+      
+      checkSize();
+      window.addEventListener('resize', checkSize);
+      return () => window.removeEventListener('resize', checkSize);
+  }, []);
   
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [searchTerm, setSearchTerm] = useState("");
@@ -529,12 +543,8 @@ const VideoLibrary = () => {
                             : "bg-card text-muted-foreground border-border/50 hover:border-primary/30 hover:text-foreground"
                         )}
                     >
-                        {isActive && (
-                            <div className={cn("absolute inset-0 bg-gradient-to-r opacity-100 transition-opacity", style.gradient)} />
-                        )}
-                        {!isActive && (
-                           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                        )}
+                        {isActive && <div className={cn("absolute inset-0 bg-gradient-to-r opacity-100 transition-opacity", style.gradient)} />}
+                        {!isActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />}
                         <span className="relative z-10 flex items-center gap-2">
                             <Icon className={cn("h-4 w-4 transition-transform duration-300 group-hover:scale-110", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
                             {cat}
@@ -577,10 +587,10 @@ const VideoLibrary = () => {
         })}
       </div>
 
-      {/* RENDERIZAÇÃO DO PLAYER */}
+      {/* RENDERIZAÇÃO CONDICIONAL DO PLAYER */}
       {selectedVideo && (
-        isMobile ? (
-          // MOBILE: MINIPLAYER FLUTUANTE
+        isCompactMode ? (
+          // MOBILE & TABLET: MINIPLAYER FLUTUANTE
           <MiniVideoPlayer 
              selectedVideo={selectedVideo}
              currentPlaylist={currentPlaylist}
