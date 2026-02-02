@@ -16,10 +16,9 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { 
   Loader2, Plus, Edit, Trash2, Eye, EyeOff, Youtube, 
-  Search, RefreshCw, Layers, Save, Video, Database, AlertTriangle
+  Search, RefreshCw, Layers, Save, Video, Database, AlertTriangle, CheckCircle
 } from "lucide-react";
 import { toast } from "sonner";
-import { VIDEO_LIBRARY } from "@/data/videoLibrary"; // Dados estáticos para migração
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -64,13 +63,11 @@ export default function VideoManager() {
     retry: 1
   });
 
-  // Calcular categorias únicas baseadas nos vídeos existentes
   const existingCategories = useMemo(() => {
     const cats = new Set(videos.map(v => v.category));
     return Array.from(cats).sort();
   }, [videos]);
 
-  // Mutações (CRUD)
   const saveVideoMutation = useMutation({
     mutationFn: async (video: Partial<VideoData>) => {
       if (video.id) {
@@ -156,38 +153,19 @@ export default function VideoManager() {
     onError: (err) => toast.error("Erro: " + err.message)
   });
 
-  // Migração de Dados (Seed)
-  const seedDatabase = async () => {
-    const toastId = toast.loading("Migrando dados locais...");
-    try {
-      const formattedData = VIDEO_LIBRARY.map(v => ({
-        youtube_id: v.id,
-        title: v.title,
-        author: v.author,
-        category: v.category,
-        duration: v.duration || "N/A",
-        is_public: true
-      }));
-
-      const { error } = await supabase.from("videos").insert(formattedData);
-      if (error) throw error;
-      
-      toast.success("Migração concluída!", { id: toastId });
-      refetch();
-    } catch (err: any) {
-      toast.error("Erro na migração: " + err.message, { id: toastId });
-    }
-  };
-
-  // 5. Configurar Banco de Dados (Run SQL via Edge Function)
+  // Configurar Banco de Dados e Restaurar Vídeos
   const setupDatabase = async () => {
-    const toastId = toast.loading("Configurando banco de dados...");
+    const toastId = toast.loading("Configurando e restaurando vídeos...");
     try {
       const { data, error } = await supabase.functions.invoke('setup-database');
       if (error) throw error;
       
-      toast.success("Tabela criada com sucesso!", { id: toastId });
-      refetch();
+      if (data.success) {
+        toast.success(data.message, { id: toastId });
+        refetch(); // Recarrega a lista para mostrar os vídeos restaurados
+      } else {
+        throw new Error(data.error || "Erro desconhecido");
+      }
     } catch (err: any) {
       toast.error("Falha ao configurar: " + err.message, { id: toastId });
     }
@@ -221,15 +199,33 @@ export default function VideoManager() {
       {isError && (
         <Alert variant="destructive" className="border-red-200 bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-200">
           <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Configuração Necessária</AlertTitle>
+          <AlertTitle>Banco de Dados Não Detectado</AlertTitle>
           <AlertDescription className="mt-2 flex flex-col gap-3">
-            <p>O banco de dados de vídeos ainda não foi criado. Clique abaixo para configurar automaticamente.</p>
+            <p>A tabela de vídeos ainda não existe no seu banco de dados Supabase.</p>
             <Button 
               onClick={setupDatabase} 
               variant="outline" 
               className="w-fit bg-white text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
             >
-              <Database className="mr-2 h-4 w-4" /> Configurar Tabela "Videos"
+              <Database className="mr-2 h-4 w-4" /> Criar Tabela e Restaurar Vídeos
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* SUCCESS STATE BUT EMPTY */}
+      {!isError && videos.length === 0 && !isLoading && (
+        <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950/20 text-blue-800 dark:text-blue-200">
+          <Database className="h-4 w-4" />
+          <AlertTitle>Tabela Vazia</AlertTitle>
+          <AlertDescription className="mt-2 flex flex-col gap-3">
+            <p>A tabela existe mas não tem vídeos. Você pode restaurar os vídeos originais agora.</p>
+            <Button 
+              onClick={setupDatabase} 
+              variant="outline" 
+              className="w-fit bg-white text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+            >
+              <RefreshCw className="mr-2 h-4 w-4" /> Restaurar Vídeos Padrão
             </Button>
           </AlertDescription>
         </Alert>
@@ -243,12 +239,6 @@ export default function VideoManager() {
           <p className="text-sm text-muted-foreground">Adicione aulas, organize categorias e controle o acesso.</p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          {/* Botão de Importação só aparece se a tabela existe (sem erro) mas está vazia */}
-          {!isError && videos.length === 0 && (
-             <Button variant="outline" onClick={seedDatabase} className="flex-1 sm:flex-none">
-               <RefreshCw className="mr-2 h-4 w-4" /> Importar Dados Locais
-             </Button>
-          )}
           <Button variant="outline" onClick={() => setIsCategoryDialogOpen(true)} className="flex-1 sm:flex-none" disabled={isError}>
             <Layers className="mr-2 h-4 w-4" /> Categorias
           </Button>
@@ -275,7 +265,7 @@ export default function VideoManager() {
         {isLoading ? (
           <div className="p-8 text-center"><Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" /></div>
         ) : isError ? (
-          <div className="p-12 text-center text-muted-foreground">Tabela não encontrada. Use o botão de configuração acima.</div>
+          <div className="p-12 text-center text-muted-foreground">Aguardando configuração...</div>
         ) : filteredVideos.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground">Nenhum vídeo encontrado.</div>
         ) : (
