@@ -2,7 +2,8 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import { 
   Play, Search, MonitorPlay, Youtube, X, 
-  SkipBack, SkipForward, ListMusic, Pause, Clock, AlertCircle, Sparkles
+  SkipBack, SkipForward, ListMusic, Pause, Clock, AlertCircle, Sparkles,
+  Gavel, Globe, BookOpen, Heart, ShieldCheck, Layers
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,40 @@ const CATEGORIES = [
   "Saúde da Mulher", 
   "Biossegurança e CME"
 ];
+
+// Configuração Visual das Categorias
+const CATEGORY_STYLES: Record<string, { icon: any, gradient: string, shadow: string }> = {
+  "Todos": { 
+    icon: Layers, 
+    gradient: "from-slate-700 to-slate-900",
+    shadow: "shadow-slate-500/20"
+  },
+  "Legislação do SUS": { 
+    icon: Gavel, 
+    gradient: "from-blue-600 to-indigo-700",
+    shadow: "shadow-blue-500/30"
+  },
+  "Saúde Pública": { 
+    icon: Globe, 
+    gradient: "from-emerald-500 to-teal-700",
+    shadow: "shadow-emerald-500/30"
+  },
+  "Fundamentos e SAE": { 
+    icon: BookOpen, 
+    gradient: "from-violet-600 to-purple-700",
+    shadow: "shadow-violet-500/30"
+  },
+  "Saúde da Mulher": { 
+    icon: Heart, 
+    gradient: "from-pink-500 to-rose-700",
+    shadow: "shadow-pink-500/30"
+  },
+  "Biossegurança e CME": { 
+    icon: ShieldCheck, 
+    gradient: "from-amber-500 to-orange-700",
+    shadow: "shadow-orange-500/30"
+  }
+};
 
 const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: () => void; userId?: string }) => {
   return (
@@ -206,25 +241,43 @@ const VideoLibrary = () => {
         </div>
       </div>
 
-      {/* Filtros em Pílulas */}
-      <div className="w-full overflow-hidden">
+      {/* Filtros em Pílulas Modernas */}
+      <div className="w-full overflow-hidden py-2">
         <ScrollArea className="w-full whitespace-nowrap">
-            <div className="flex w-max space-x-2 pb-4">
-            {CATEGORIES.map((cat) => (
-                <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={cn(
-                    "inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    activeCategory === cat
-                    ? "bg-foreground text-background shadow-md scale-105"
-                    : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
-                )}
-                >
-                {activeCategory === cat && cat !== "Todos" && <MonitorPlay className="mr-2 h-3.5 w-3.5" />}
-                {cat}
-                </button>
-            ))}
+            <div className="flex w-max space-x-3 pb-2 px-1">
+            {CATEGORIES.map((cat) => {
+                const style = CATEGORY_STYLES[cat] || CATEGORY_STYLES["Todos"];
+                const Icon = style.icon;
+                const isActive = activeCategory === cat;
+
+                return (
+                    <button
+                        key={cat}
+                        onClick={() => setActiveCategory(cat)}
+                        className={cn(
+                            "group relative flex items-center gap-2.5 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-300 overflow-hidden border border-transparent",
+                            isActive
+                            ? `text-white ${style.shadow} shadow-lg scale-105 ring-2 ring-white/20`
+                            : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground hover:border-border/50"
+                        )}
+                    >
+                        {/* Background Ativo (Gradiente) */}
+                        {isActive && (
+                            <div className={cn("absolute inset-0 bg-gradient-to-r opacity-100 transition-opacity", style.gradient)} />
+                        )}
+                        
+                        {/* Background Hover (Sutil) */}
+                        {!isActive && (
+                           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        )}
+
+                        <span className="relative z-10 flex items-center gap-2">
+                            <Icon className={cn("h-4 w-4 transition-transform duration-300 group-hover:scale-110", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
+                            {cat}
+                        </span>
+                    </button>
+                );
+            })}
             </div>
             <ScrollBar orientation="horizontal" className="hidden" />
         </ScrollArea>
@@ -232,39 +285,45 @@ const VideoLibrary = () => {
 
       {/* Conteúdo: Listas Horizontais */}
       <div className="space-y-10">
-        {Object.entries(groupedVideos).map(([category, videos]) => (
-          <div key={category} className="space-y-4">
-            <div className="flex items-center justify-between">
-                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground border-l-4 border-primary pl-3">
-                {category}
-                </h2>
-                {activeCategory === "Todos" && (
-                    <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-xs text-muted-foreground hover:text-primary transition-colors no-underline hover:no-underline"
-                        onClick={() => setActiveCategory(category)}
-                    >
-                        Ver tudo
-                    </Button>
-                )}
-            </div>
-            
-            <ScrollArea className="w-full whitespace-nowrap rounded-xl">
-              <div className="flex w-max space-x-4 pb-4 px-1">
-                {videos.map((video) => (
-                  <VideoCard 
-                    key={video.id} 
-                    video={video} 
-                    onClick={() => handleOpenVideo(video, videos)} 
-                    userId={profile?.id}
-                  />
-                ))}
-              </div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-          </div>
-        ))}
+        {Object.entries(groupedVideos).map(([category, videos]) => {
+            const style = CATEGORY_STYLES[category] || CATEGORY_STYLES["Todos"];
+            return (
+                <div key={category} className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className={cn("h-8 w-1.5 rounded-r-full bg-gradient-to-b", style.gradient)}></div>
+                            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">
+                                {category}
+                            </h2>
+                        </div>
+                        {activeCategory === "Todos" && (
+                            <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="text-xs text-muted-foreground hover:text-primary transition-colors no-underline hover:no-underline"
+                                onClick={() => setActiveCategory(category)}
+                            >
+                                Ver tudo
+                            </Button>
+                        )}
+                    </div>
+                    
+                    <ScrollArea className="w-full whitespace-nowrap rounded-xl">
+                    <div className="flex w-max space-x-4 pb-4 px-1">
+                        {videos.map((video) => (
+                        <VideoCard 
+                            key={video.id} 
+                            video={video} 
+                            onClick={() => handleOpenVideo(video, videos)} 
+                            userId={profile?.id}
+                        />
+                        ))}
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+                </div>
+            );
+        })}
 
         {Object.keys(groupedVideos).length === 0 && (
            <div className="flex flex-col items-center justify-center py-20 text-center bg-muted/20 rounded-2xl border border-dashed border-muted">
