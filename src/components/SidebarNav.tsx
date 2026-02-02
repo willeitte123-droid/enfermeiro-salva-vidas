@@ -44,9 +44,9 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
     ],
     study: [
       { to: "/questions", icon: FileQuestion, label: "Banca de Questões" },
+      { to: "/simulado", icon: Timer, label: "Área de Simulado" },
       { to: "/concursos", icon: Briefcase, label: "Mural de Concursos" },
       { to: "/clinical-cases", icon: Stethoscope, label: "Casos Clínicos" },
-      { to: "/simulado", icon: Timer, label: "Área de Simulado" },
       { to: "/study-tracks", icon: Map, label: "Trilha de Estudos" },
       { to: "/concurseiro", icon: GraduationCap, label: "Área do Concurseiro" },
       { to: "/library", icon: BookOpen, label: "Biblioteca Digital" },
