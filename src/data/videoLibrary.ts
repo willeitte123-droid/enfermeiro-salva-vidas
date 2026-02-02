@@ -9,13 +9,6 @@ export interface VideoLesson {
 export const VIDEO_LIBRARY: VideoLesson[] = [
   // Legislação do SUS
   {
-    id: "cL8FD8mSG0I",
-    title: "Desmistificando a Legislação do SUS para Concursos",
-    author: "Enfermagem para Concursos",
-    category: "Legislação do SUS",
-    duration: "Aprox. 25 min"
-  },
-  {
     id: "jHMqEVgDjd8",
     title: "Princípios e Diretrizes do SUS",
     author: "Enfermagem para Concursos",
