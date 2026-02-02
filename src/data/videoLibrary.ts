@@ -104,7 +104,7 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   },
   {
     id: "bDfDvhCeYAU",
-    title: "Sondagem Vesical de Demora (Masculina) - Passo a Passo",
+    title: "Aspiração de vias aéreas superiores",
     author: "Enfermagem Florence",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 10 min"
