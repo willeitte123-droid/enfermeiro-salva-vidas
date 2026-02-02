@@ -90,7 +90,7 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   // Procedimentos de enfermagem
   {
     id: "JYcU8Uz65T8",
-    title: "Como Aferir Pressão Arterial (Passo a Passo)",
+    title: "COMO MEDIR A PRESSÃO ARTERIAL? APRENDA A AFERIR A PRESSÃO ARTERIAL DA FORMA CERTA!",
     author: "Procedimentos de Enfermagem",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 12 min"
