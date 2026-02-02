@@ -223,18 +223,25 @@ const VideoLibrary = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
       
-      {/* Header Estilo "Explorar" */}
+      {/* Header Estilo "Moderno/Profissional" */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Explorar</h1>
-          <p className="text-muted-foreground text-lg mt-1">Aulas e conteúdos práticos para sua conexão com o saber.</p>
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-bold text-primary w-fit">
+            <Sparkles className="h-3 w-3 fill-current" /> Acervo Premium
+          </div>
+          <h1 className="text-3xl md:text-5xl font-black tracking-tight text-foreground leading-tight">
+            Videoteca <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-violet-600">Digital</span>
+          </h1>
+          <p className="text-muted-foreground text-base md:text-lg max-w-2xl leading-relaxed">
+            Curadoria de conteúdo visual de alta performance: da legislação à prática assistencial.
+          </p>
         </div>
         
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
             placeholder="Buscar aula ou professor..." 
-            className="pl-10 rounded-full bg-muted/50 border-transparent focus:bg-background transition-all"
+            className="pl-10 h-11 rounded-xl bg-muted/50 border-transparent shadow-sm focus:bg-background focus:ring-2 focus:ring-primary/20 transition-all"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
