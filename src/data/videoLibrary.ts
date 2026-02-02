@@ -90,22 +90,22 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   // Procedimentos de enfermagem
   {
     id: "JYcU8Uz65T8",
-    title: "COMO MEDIR A PRESSÃO ARTERIAL? APRENDA A AFERIR A PRESSÃO ARTERIAL DA FORMA CERTA!",
-    author: "Enfermagem Prática",
+    title: "Como Aferir Pressão Arterial (Passo a Passo)",
+    author: "Enfermagem Florence",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 12 min"
   },
   {
     id: "u56wwAPzt3E",
-    title: "PUNÇÃO VENOSA PERIFÉRICA - PASSO A PASSO",
-    author: "Enfermagem Prática",
+    title: "Punção Venosa Periférica - Passo a Passo",
+    author: "Enfermagem Florence",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 8 min"
   },
   {
     id: "bDfDvhCeYAU",
-    title: "SONDAGEM VESICAL DE DEMORA - PASSO A PASSO (AULA PRÁTICA)",
-    author: "Enfermagem Prática",
+    title: "Sondagem Vesical de Demora (Masculina) - Passo a Passo",
+    author: "Enfermagem Florence",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 10 min"
   }
