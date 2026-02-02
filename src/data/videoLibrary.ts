@@ -122,5 +122,12 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
     author: "Procedimentos de Enfermagem",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 8 min"
+  },
+  {
+    id: "U4o5SG3-Kis",
+    title: "Curativo de ferida operatória",
+    author: "Procedimentos de Enfermagem",
+    category: "Procedimentos de enfermagem",
+    duration: "Aprox. 10 min"
   }
 ];
