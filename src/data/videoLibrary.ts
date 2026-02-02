@@ -125,7 +125,7 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   },
   {
     id: "U4o5SG3-Kis",
-    title: "Curativo de ferida operatória",
+    title: "Como RECONSTITUIR e DILUIR Medicamentos | Aula Prática (Atualizado 2025)",
     author: "Procedimentos de Enfermagem",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 10 min"
