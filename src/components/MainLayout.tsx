@@ -9,6 +9,8 @@ import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import SuspendedAccount from "@/pages/SuspendedAccount";
+import { TimeTracker } from "@/components/TimeTracker";
+import { IpTracker } from "@/components/IpTracker";
 
 const ContentLoader = () => (
   <div className="flex items-center justify-center h-full w-full">
@@ -36,12 +38,18 @@ const MainLayout = () => {
   } : null;
 
   return (
-    <div className="flex min-h-screen w-full bg-muted/40">
+    <div className="flex min-h-screen w-full bg-muted/40 overflow-hidden">
+      <TimeTracker />
+      <IpTracker />
       <Sidebar isAdmin={isAdmin} user={user} isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
-      <main className="flex-1 flex flex-col">
+      
+      {/* CORREÇÃO: min-w-0 impede que filhos (como tabelas/videos) estourem a largura do flex */}
+      <main className="flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out h-screen">
         <Header onSearchClick={() => setIsSearchOpen(true)} isAdmin={isAdmin} user={user} />
         <GlobalSearch open={isSearchOpen} setOpen={setIsSearchOpen} />
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
+        
+        {/* CORREÇÃO: overflow-x-hidden garante que nada saia lateralmente deste container */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 md:p-8 w-full scroll-smooth">
           {isLoadingProfile ? (
             <ContentLoader />
           ) : profile?.status === 'pending' ? (
