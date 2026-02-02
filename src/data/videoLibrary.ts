@@ -111,7 +111,7 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   },
   {
     id: "DYbVe-MNcuA",
-    title: "Curativo de ferida operatória",
+    title: "Alimentação por sonda enteral",
     author: "Procedimentos de Enfermagem",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 6 min"
