@@ -118,7 +118,7 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   },
   {
     id: "_RGZSo6lNjg",
-    title: "Curativo de ferida operatória",
+    title: "Administração de Medicação Intramuscular",
     author: "Procedimentos de Enfermagem",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 8 min"
