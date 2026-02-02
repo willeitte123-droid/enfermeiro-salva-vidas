@@ -10,25 +10,26 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"; 
 import { useActivityTracker } from "@/hooks/useActivityTracker";
-import { VIDEO_LIBRARY, VideoLesson } from "@/data/videoLibrary";
+// VIDEO_LIBRARY removido para usar dados do banco
 import FavoriteButton from "@/components/FavoriteButton";
 import { cn } from "@/lib/utils";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import YouTube, { YouTubePlayer, YouTubeEvent } from 'react-youtube';
+import { supabase } from "@/lib/supabase";
+import { useQuery } from "@tanstack/react-query";
 
 interface Profile {
   id: string;
 }
 
-const CATEGORIES = [
-  "Todos", 
-  "Legislação do SUS", 
-  "Saúde Pública", 
-  "Fundamentos e SAE", 
-  "Saúde da Mulher", 
-  "Biossegurança e CME",
-  "Procedimentos de enfermagem"
-];
+interface VideoLesson {
+  id: string; // YouTube ID
+  title: string;
+  author: string;
+  category: string;
+  duration?: string;
+  is_public?: boolean;
+}
 
 const CATEGORY_STYLES: Record<string, { icon: any, gradient: string, shadow: string }> = {
   "Todos": { icon: Layers, gradient: "from-slate-700 to-slate-900", shadow: "shadow-slate-500/20" },
@@ -255,6 +256,28 @@ const VideoLibrary = () => {
   const { addActivity } = useActivityTracker();
   const [isCompactMode, setIsCompactMode] = useState(false);
 
+  // Busca vídeos do banco de dados (Apenas Públicos)
+  const { data: dbVideos = [], isLoading } = useQuery({
+    queryKey: ['publicVideos'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('videos')
+        .select('*')
+        .eq('is_public', true) // Filtro de privacidade
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      return data.map(v => ({
+        id: v.youtube_id,
+        title: v.title,
+        author: v.author,
+        category: v.category,
+        duration: v.duration
+      })) as VideoLesson[];
+    }
+  });
+
   useEffect(() => {
     const checkMobile = () => {
       const isSmallScreen = window.innerWidth < 1024;
@@ -277,23 +300,29 @@ const VideoLibrary = () => {
   }, [addActivity]);
 
   const filteredVideos = useMemo(() => {
-    return VIDEO_LIBRARY.filter(video => {
+    return dbVideos.filter(video => {
       const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                             video.author.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = activeCategory === "Todos" || video.category === activeCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [searchTerm, activeCategory]);
+  }, [searchTerm, activeCategory, dbVideos]);
+
+  // Lista dinâmica de categorias baseada nos vídeos retornados
+  const dynamicCategories = useMemo(() => {
+    const cats = new Set(dbVideos.map(v => v.category));
+    return ["Todos", ...Array.from(cats).sort()];
+  }, [dbVideos]);
 
   const groupedVideos = useMemo(() => {
     if (activeCategory !== "Todos") return { [activeCategory]: filteredVideos };
     const groups: Record<string, VideoLesson[]> = {};
-    CATEGORIES.filter(c => c !== "Todos").forEach(cat => {
+    dynamicCategories.filter(c => c !== "Todos").forEach(cat => {
         const vids = filteredVideos.filter(v => v.category === cat);
         if (vids.length > 0) groups[cat] = vids;
     });
     return groups;
-  }, [filteredVideos, activeCategory]);
+  }, [filteredVideos, activeCategory, dynamicCategories]);
 
   const handleOpenVideo = (video: VideoLesson, playlist: VideoLesson[]) => {
     setSelectedVideo(video);
@@ -319,10 +348,9 @@ const VideoLibrary = () => {
   };
 
   return (
-    // Adicionado min-w-0 e flex-col para garantir comportamento correto no flexbox
     <div className="flex flex-col w-full min-w-0 space-y-6 pb-24 overflow-x-hidden">
       
-      {/* Header Responsivo - Adicionado min-w-0 nos containers filhos */}
+      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-4 w-full min-w-0">
         <div className="space-y-3 w-full min-w-0">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary w-fit uppercase tracking-wider">
@@ -349,11 +377,11 @@ const VideoLibrary = () => {
         </div>
       </div>
 
-      {/* Filtros - Empilhado no Mobile (multiline wrap) */}
+      {/* Filtros */}
       <div className="w-full min-w-0">
           <div className="w-full">
             <div className="flex flex-wrap gap-2 sm:gap-3">
-                {CATEGORIES.map((cat) => {
+                {dynamicCategories.map((cat) => {
                     const style = CATEGORY_STYLES[cat] || CATEGORY_STYLES["Todos"];
                     const Icon = style.icon;
                     const isActive = activeCategory === cat;
@@ -380,7 +408,7 @@ const VideoLibrary = () => {
           </div>
       </div>
 
-      {/* Listas de Vídeos - Containers com min-w-0 */}
+      {/* Listas de Vídeos */}
       <div className="space-y-8 w-full min-w-0">
         {Object.entries(groupedVideos).map(([category, videos]) => {
             const style = CATEGORY_STYLES[category] || CATEGORY_STYLES["Todos"];
@@ -410,6 +438,11 @@ const VideoLibrary = () => {
                 </div>
             );
         })}
+        {filteredVideos.length === 0 && !isLoading && (
+            <div className="text-center py-12 text-muted-foreground">
+                Nenhum vídeo encontrado para esta categoria ou busca.
+            </div>
+        )}
       </div>
 
       {/* Disclaimer Section */}
@@ -417,7 +450,7 @@ const VideoLibrary = () => {
         <div className="flex flex-col items-center gap-2 text-muted-foreground">
           <Info className="h-5 w-5" />
           <p className="text-xs sm:text-sm font-medium leading-relaxed max-w-2xl">
-            "EnfermagemPro utiliza a tecnologia de incorporação (embed) para reproduzir conteúdos públicos hospedados no YouTube. Não hospedamos, armazenamos ou comercializamos estes arquivos de mídia. Todos os direitos de propriedade intelectual, visualizações e monetização pertencem exclusivamente aos criadores e às suas respectivas gravadoras."
+            "EnfermagemPro utiliza a tecnologia de incorporação (embed) para reproduzir conteúdos públicos hospedados no YouTube. Não hospedamos, armazenamos ou comercializamos estes arquivos de mídia."
           </p>
         </div>
       </div>

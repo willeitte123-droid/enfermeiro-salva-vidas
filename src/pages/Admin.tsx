@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Users, Search, AlertTriangle, Edit, Save, Copy, Webhook, Info, LayoutDashboard, MapPin, Globe, Shield, Calendar, Mail, CheckCircle2, XCircle, Menu } from "lucide-react";
+import { Loader2, Users, Search, AlertTriangle, Edit, Save, Copy, Webhook, Info, LayoutDashboard, MapPin, Globe, Shield, Calendar, Mail, CheckCircle2, XCircle, Menu, Video } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AdminDashboard from "./admin/AdminDashboard";
+import VideoManager from "./admin/VideoManager"; // IMPORTADO O NOVO COMPONENTE
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
@@ -407,12 +408,15 @@ const Admin = () => (
     {/* Navegação */}
     <Tabs defaultValue="dashboard" className="w-full space-y-6">
       <div className="flex justify-center w-full">
-        <TabsList className="bg-muted/50 p-1 rounded-full h-11 w-full max-w-md grid grid-cols-3">
+        <TabsList className="bg-muted/50 p-1 rounded-full h-11 w-full max-w-xl grid grid-cols-4">
           <TabsTrigger value="dashboard" className="rounded-full text-xs font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm">
              Dashboard
           </TabsTrigger>
           <TabsTrigger value="users" className="rounded-full text-xs font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm">
              Usuários
+          </TabsTrigger>
+          <TabsTrigger value="videos" className="rounded-full text-xs font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm">
+             Vídeos
           </TabsTrigger>
           <TabsTrigger value="kiwify" className="rounded-full text-xs font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm">
              Integrações
@@ -423,6 +427,7 @@ const Admin = () => (
       <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
         <TabsContent value="dashboard" className="mt-0"><AdminDashboard /></TabsContent>
         <TabsContent value="users" className="mt-0"><UserManagement /></TabsContent>
+        <TabsContent value="videos" className="mt-0"><VideoManager /></TabsContent>
         <TabsContent value="kiwify" className="mt-0"><KiwifySettings /></TabsContent>
       </div>
     </Tabs>
