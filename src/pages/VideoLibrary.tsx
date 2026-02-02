@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"; 
 import { useActivityTracker } from "@/hooks/useActivityTracker";
-// VIDEO_LIBRARY removido para usar dados do banco
+import { VIDEO_LIBRARY } from "@/data/videoLibrary"; // IMPORTADO NOVAMENTE
 import FavoriteButton from "@/components/FavoriteButton";
 import { cn } from "@/lib/utils";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
@@ -260,23 +260,37 @@ const VideoLibrary = () => {
   const { data: dbVideos = [], isLoading } = useQuery({
     queryKey: ['publicVideos'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('videos')
-        .select('*')
-        .eq('is_public', true) // Filtro de privacidade
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      return data.map(v => ({
-        id: v.youtube_id,
-        title: v.title,
-        author: v.author,
-        category: v.category,
-        duration: v.duration
-      })) as VideoLesson[];
+      // Tenta buscar no banco primeiro
+      try {
+        const { data, error } = await supabase
+          .from('videos')
+          .select('*')
+          .eq('is_public', true)
+          .order('created_at', { ascending: false });
+        
+        if (error) {
+           console.error("Supabase error (expected if table missing):", error.message);
+           return []; // Retorna vazio se der erro (tabela não existe)
+        }
+        
+        return data.map(v => ({
+          id: v.youtube_id,
+          title: v.title,
+          author: v.author,
+          category: v.category,
+          duration: v.duration
+        })) as VideoLesson[];
+      } catch (e) {
+        return [];
+      }
     }
   });
+
+  // FALLBACK LÓGICO: Se o banco estiver vazio, usa o arquivo estático
+  const videosSource = dbVideos.length > 0 ? dbVideos : VIDEO_LIBRARY.map(v => ({
+      ...v,
+      is_public: true
+  }));
 
   useEffect(() => {
     const checkMobile = () => {
@@ -300,19 +314,19 @@ const VideoLibrary = () => {
   }, [addActivity]);
 
   const filteredVideos = useMemo(() => {
-    return dbVideos.filter(video => {
+    return videosSource.filter(video => {
       const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                             video.author.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = activeCategory === "Todos" || video.category === activeCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [searchTerm, activeCategory, dbVideos]);
+  }, [searchTerm, activeCategory, videosSource]);
 
-  // Lista dinâmica de categorias baseada nos vídeos retornados
+  // Lista dinâmica de categorias baseada nos vídeos
   const dynamicCategories = useMemo(() => {
-    const cats = new Set(dbVideos.map(v => v.category));
+    const cats = new Set(videosSource.map(v => v.category));
     return ["Todos", ...Array.from(cats).sort()];
-  }, [dbVideos]);
+  }, [videosSource]);
 
   const groupedVideos = useMemo(() => {
     if (activeCategory !== "Todos") return { [activeCategory]: filteredVideos };
