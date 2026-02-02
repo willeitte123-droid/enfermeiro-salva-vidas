@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose 
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription 
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { 
@@ -21,10 +21,9 @@ import {
 import { toast } from "sonner";
 import { VIDEO_LIBRARY } from "@/data/videoLibrary"; // Dados estáticos para migração
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface VideoData {
   id: string;
