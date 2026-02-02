@@ -101,5 +101,12 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
     author: "Enfermagem Prática",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 12 min"
+  },
+  {
+    id: "u56wwAPzt3E",
+    title: "Punção Venosa Periférica (Passo a Passo)",
+    author: "Enfermagem Prática",
+    category: "Procedimentos de enfermagem",
+    duration: "Aprox. 8 min"
   }
 ];
