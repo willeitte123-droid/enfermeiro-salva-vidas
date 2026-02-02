@@ -97,7 +97,7 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   },
   {
     id: "u56wwAPzt3E",
-    title: "Punção Venosa Periférica - Passo a Passo",
+    title: "Passagem de sonda nasogástrica",
     author: "Enfermagem Florence",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 8 min"
