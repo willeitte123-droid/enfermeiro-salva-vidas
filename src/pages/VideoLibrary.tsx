@@ -171,7 +171,7 @@ const PlaylistItem = ({ video, isActive, onClick }: { video: VideoLesson, isActi
   )
 }
 
-// --- MINIPLAYER FLUTUANTE (PICTURE-IN-PICTURE STYLE) ---
+// --- MINIPLAYER FLUTUANTE ROBUSTO ---
 const MiniVideoPlayer = ({ 
   selectedVideo, 
   currentPlaylist, 
@@ -199,100 +199,101 @@ const MiniVideoPlayer = ({
   const hasPrev = currentPlaylist.length > 0 && currentPlaylist[0].id !== selectedVideo.id;
 
   const handleStateChange = (event: YouTubeEvent) => {
-    // 0 = Ended
-    if (event.data === 0) {
+    if (event.data === 0) { // 0 = Ended
       onNext();
     }
   };
 
   return (
-    <div className="fixed bottom-[80px] sm:bottom-6 right-2 sm:right-6 z-[200] flex flex-col items-end animate-in slide-in-from-bottom-10 fade-in duration-500 w-[calc(100vw-1rem)] sm:w-[380px] max-w-md shadow-2xl">
+    // Z-INDEX ALTO E POSICIONAMENTO FIXO COM MARGENS SEGURAS
+    <div className="fixed bottom-2 right-2 left-2 sm:left-auto sm:right-6 sm:bottom-6 z-[9999] flex flex-col shadow-2xl rounded-2xl bg-card border border-border sm:w-[380px] overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
       
-      {/* PLAYER CARD */}
-      <div className="bg-card border border-border shadow-2xl rounded-2xl overflow-hidden w-full flex flex-col relative z-20 ring-1 ring-black/10 dark:ring-white/10">
-          <div className="relative aspect-video bg-black group">
-               <YouTube 
-                  key={selectedVideo.id} // Força re-render ao mudar video
-                  videoId={selectedVideo.id} 
-                  opts={{
-                      height: '100%',
-                      width: '100%',
-                      playerVars: {
-                          autoplay: 1,
-                          controls: 1,
-                          modestbranding: 1,
-                          rel: 0,
-                          playsinline: 1, // Vital para mobile não forçar fullscreen
-                          fs: 1 // Permite fullscreen se o user clicar
-                      },
-                  }} 
-                  onReady={onReady}
-                  onStateChange={handleStateChange}
-                  className="w-full h-full"
-                  iframeClassName="w-full h-full absolute inset-0"
-               />
-               <button 
-                  onClick={onClose}
-                  className="absolute top-2 right-2 bg-black/60 hover:bg-red-600 text-white rounded-full p-1.5 transition-colors z-10 opacity-100 shadow-md"
-               >
-                  <X size={14} />
-               </button>
-          </div>
-          
-          <div className="p-3 bg-card text-card-foreground">
-              <div className="flex justify-between items-center mb-2">
-                  <div className="flex-1 pr-2 overflow-hidden">
-                      <p className="text-sm font-bold truncate text-foreground">{selectedVideo.title}</p>
-                      <p className="text-[10px] text-muted-foreground truncate">{selectedVideo.author}</p>
-                  </div>
-                  
-                  <div className="flex gap-1 shrink-0">
-                      <Button 
-                          size="sm" variant="ghost" 
-                          disabled={!hasPrev} onClick={onPrev} 
-                          className="h-8 w-8 p-0 hover:bg-muted"
-                      >
-                          <SkipBack size={16} />
-                      </Button>
-                      <Button 
-                          size="sm" variant="ghost" 
-                          disabled={!hasNext} onClick={onNext} 
-                          className="h-8 w-8 p-0 hover:bg-muted"
-                      >
-                          <SkipForward size={16} />
-                      </Button>
-                  </div>
+      {/* CONTAINER DE VÍDEO COM ALTURA FORÇADA (PADDING HACK 16:9) */}
+      <div className="relative w-full pt-[56.25%] bg-black group">
+           <YouTube 
+              key={selectedVideo.id}
+              videoId={selectedVideo.id} 
+              opts={{
+                  width: '100%',
+                  height: '100%',
+                  playerVars: {
+                      autoplay: 1,
+                      controls: 1,
+                      modestbranding: 1,
+                      rel: 0,
+                      playsinline: 1, // CRÍTICO PARA IOS/ANDROID
+                      fs: 1
+                  },
+              }} 
+              onReady={onReady}
+              onStateChange={handleStateChange}
+              className="absolute top-0 left-0 w-full h-full"
+              iframeClassName="w-full h-full"
+           />
+           
+           <button 
+              onClick={onClose}
+              className="absolute top-2 right-2 bg-black/60 hover:bg-red-600 text-white rounded-full p-1.5 transition-colors z-50 shadow-md backdrop-blur-sm"
+              title="Fechar Player"
+           >
+              <X size={16} />
+           </button>
+      </div>
+      
+      {/* CONTROLES */}
+      <div className="p-3 bg-card text-card-foreground border-t border-border/10">
+          <div className="flex justify-between items-center mb-2">
+              <div className="flex-1 pr-2 overflow-hidden">
+                  <p className="text-sm font-bold truncate text-foreground">{selectedVideo.title}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{selectedVideo.author}</p>
               </div>
-
-              <div className="flex justify-between items-center pt-2 border-t border-border/40">
+              
+              <div className="flex gap-1 shrink-0">
                   <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => setIsPlaylistOpen(!isPlaylistOpen)}
-                      className={cn(
-                          "h-6 px-2 text-xs gap-2 rounded-full transition-all border",
-                          isPlaylistOpen ? "bg-primary text-primary-foreground hover:bg-primary/90 border-primary" : "text-muted-foreground hover:bg-muted border-transparent"
-                      )}
+                      size="sm" variant="ghost" 
+                      disabled={!hasPrev} onClick={onPrev} 
+                      className="h-8 w-8 p-0 hover:bg-muted"
                   >
-                      <ListMusic size={12} /> Playlist {isPlaylistOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                      <SkipBack size={16} />
                   </Button>
-
-                  <a href={`https://www.youtube.com/watch?v=${selectedVideo.id}`} target="_blank" rel="noreferrer">
-                      <div className="flex items-center gap-1 text-[10px] text-muted-foreground hover:text-red-500 transition-colors cursor-pointer font-medium">
-                          <Youtube size={12} /> Abrir no App
-                      </div>
-                  </a>
+                  <Button 
+                      size="sm" variant="ghost" 
+                      disabled={!hasNext} onClick={onNext} 
+                      className="h-8 w-8 p-0 hover:bg-muted"
+                  >
+                      <SkipForward size={16} />
+                  </Button>
               </div>
+          </div>
+
+          <div className="flex justify-between items-center pt-2 border-t border-border/40">
+              <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setIsPlaylistOpen(!isPlaylistOpen)}
+                  className={cn(
+                      "h-7 px-3 text-xs gap-2 rounded-full transition-all border",
+                      isPlaylistOpen ? "bg-primary text-primary-foreground hover:bg-primary/90 border-primary" : "text-muted-foreground hover:bg-muted border-transparent"
+                  )}
+              >
+                  <ListMusic size={14} /> Playlist {isPlaylistOpen ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
+              </Button>
+
+              <a href={`https://www.youtube.com/watch?v=${selectedVideo.id}`} target="_blank" rel="noreferrer">
+                  <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground hover:text-red-500 transition-colors cursor-pointer font-medium">
+                      <Youtube size={14} /> Abrir no App
+                  </div>
+              </a>
           </div>
       </div>
 
       {/* PLAYLIST DROPDOWN */}
       {isPlaylistOpen && (
-          <div className="w-[95%] bg-card/95 backdrop-blur-md border-x border-b border-border/50 rounded-b-xl shadow-xl mt-[-10px] pt-4 relative z-10 animate-in slide-in-from-top-2 overflow-hidden mx-auto">
-              <div className="px-3 pb-2 text-[10px] uppercase tracking-widest text-muted-foreground font-bold border-b border-border/30">
+          <div className="w-full bg-muted/30 border-t border-border/50 max-h-48 overflow-hidden flex flex-col">
+              <div className="px-3 py-2 text-[10px] uppercase tracking-widest text-muted-foreground font-bold bg-muted/50 border-b border-border/30">
                   A seguir ({currentPlaylist.length})
               </div>
-              <ScrollArea className="h-48 w-full">
+              <ScrollArea className="flex-1 w-full">
                   <div className="flex flex-col p-1">
                       {currentPlaylist.map((item, idx) => {
                           const isActive = item.id === selectedVideo.id;
@@ -304,27 +305,24 @@ const MiniVideoPlayer = ({
                                       "flex items-center gap-3 p-2 rounded-lg text-left transition-all group",
                                       isActive 
                                           ? "bg-primary/10 border border-primary/20" 
-                                          : "hover:bg-muted/50 border border-transparent"
+                                          : "hover:bg-background border border-transparent"
                                   )}
                               >
-                                  <div className="relative shrink-0">
+                                  <div className="relative shrink-0 w-8 h-8 rounded overflow-hidden bg-black">
                                       <img 
                                           src={`https://img.youtube.com/vi/${item.id}/default.jpg`} 
-                                          className={cn("w-10 h-10 rounded object-cover", isActive ? "opacity-100" : "opacity-70 grayscale group-hover:grayscale-0")}
+                                          className={cn("w-full h-full object-cover", isActive ? "opacity-60" : "opacity-100")}
                                           alt="thumb"
                                       />
                                       {isActive && (
-                                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded">
-                                              <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                                          <div className="absolute inset-0 flex items-center justify-center">
+                                              <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
                                           </div>
                                       )}
                                   </div>
                                   <div className="flex-1 overflow-hidden">
                                       <p className={cn("text-xs font-bold truncate", isActive ? "text-primary" : "text-foreground")}>
                                           {item.title}
-                                      </p>
-                                      <p className="text-[10px] text-muted-foreground truncate">
-                                          {item.author}
                                       </p>
                                   </div>
                                   {isActive && <Play size={10} className="text-primary fill-current" />}
