@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { 
   Play, Search, MonitorPlay, Youtube, X, 
   SkipBack, SkipForward, ListMusic, Clock, Sparkles,
-  Gavel, Globe, BookOpen, Heart, ShieldCheck, Layers, ChevronUp, ChevronDown, Info
+  Gavel, Globe, BookOpen, Heart, ShieldCheck, Layers, ChevronUp, ChevronDown, Info, ClipboardList
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,8 @@ const CATEGORIES = [
   "Saúde Pública", 
   "Fundamentos e SAE", 
   "Saúde da Mulher", 
-  "Biossegurança e CME"
+  "Biossegurança e CME",
+  "Procedimentos de enfermagem"
 ];
 
 const CATEGORY_STYLES: Record<string, { icon: any, gradient: string, shadow: string }> = {
@@ -35,7 +36,8 @@ const CATEGORY_STYLES: Record<string, { icon: any, gradient: string, shadow: str
   "Saúde Pública": { icon: Globe, gradient: "from-emerald-500 to-teal-700", shadow: "shadow-emerald-500/30" },
   "Fundamentos e SAE": { icon: BookOpen, gradient: "from-violet-600 to-purple-700", shadow: "shadow-violet-500/30" },
   "Saúde da Mulher": { icon: Heart, gradient: "from-pink-500 to-rose-700", shadow: "shadow-pink-500/30" },
-  "Biossegurança e CME": { icon: ShieldCheck, gradient: "from-amber-500 to-orange-700", shadow: "shadow-orange-500/30" }
+  "Biossegurança e CME": { icon: ShieldCheck, gradient: "from-amber-500 to-orange-700", shadow: "shadow-orange-500/30" },
+  "Procedimentos de enfermagem": { icon: ClipboardList, gradient: "from-cyan-600 to-blue-700", shadow: "shadow-cyan-500/30" }
 };
 
 const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: () => void; userId?: string }) => {
