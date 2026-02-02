@@ -233,7 +233,7 @@ const VideoLibrary = () => {
             Videoteca <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-violet-600">Digital</span>
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-2xl leading-relaxed">
-            Curadoria de conteúdo visual de alta performance: da legislação à prática assistencial.
+            Videoaulas de alta performance: da legislação à prática assistencial.
           </p>
         </div>
         
