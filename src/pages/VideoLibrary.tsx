@@ -66,7 +66,7 @@ const CATEGORY_STYLES: Record<string, { icon: any, gradient: string, shadow: str
 
 const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: () => void; userId?: string }) => {
   return (
-    <div className="group relative w-[280px] sm:w-[320px] flex-shrink-0 cursor-pointer" onClick={onClick}>
+    <div className="group relative w-[85vw] sm:w-[320px] flex-shrink-0 cursor-pointer snap-start" onClick={onClick}>
       {/* Thumbnail Container */}
       <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:ring-2 ring-primary/50">
         <img 
@@ -95,9 +95,9 @@ const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: ()
         {/* Gradiente Inferior para legibilidade */}
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent opacity-60 z-10" />
 
-        {/* Play Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-white shadow-lg scale-90 group-hover:scale-100 transition-transform">
+        {/* Play Overlay - Visível com hover no desktop, toque no mobile */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600/90 text-white shadow-lg scale-90 group-hover:scale-100 transition-transform backdrop-blur-sm">
             <Play className="h-5 w-5 fill-current ml-1" />
           </div>
         </div>
@@ -121,7 +121,10 @@ const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: ()
                 </div>
             )}
         </div>
-        <p className="mt-1 text-xs text-muted-foreground font-medium">{video.author}</p>
+        <p className="mt-1 text-xs text-muted-foreground font-medium flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary/50"></span>
+          {video.author}
+        </p>
       </div>
     </div>
   );
@@ -133,13 +136,13 @@ const PlaylistItem = ({ video, isActive, onClick }: { video: VideoLesson, isActi
     <div 
       onClick={onClick}
       className={cn(
-        "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all border group",
+        "flex items-center gap-3 p-2 sm:p-3 rounded-lg cursor-pointer transition-all border group",
         isActive 
           ? "bg-primary/10 border-primary/50" 
           : "bg-card hover:bg-accent border-transparent hover:border-border"
       )}
     >
-      <div className="relative h-12 w-20 flex-shrink-0 overflow-hidden rounded-md bg-muted">
+      <div className="relative h-10 w-16 sm:h-12 sm:w-20 flex-shrink-0 overflow-hidden rounded-md bg-muted">
         <img 
           src={`https://img.youtube.com/vi/${video.id}/default.jpg`} 
           alt={video.title}
@@ -221,18 +224,18 @@ const VideoLibrary = () => {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 pb-12">
+    <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500 pb-20">
       
       {/* Header Estilo "Moderno/Profissional" */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="space-y-2">
+        <div className="space-y-2 w-full">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-bold text-primary w-fit">
             <Sparkles className="h-3 w-3 fill-current" /> Acervo Premium
           </div>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-foreground leading-tight">
             Videoteca <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-violet-600">Digital</span>
           </h1>
-          <p className="text-muted-foreground text-base md:text-lg max-w-2xl leading-relaxed">
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed">
             Videoaulas de alta performance: da legislação à prática assistencial.
           </p>
         </div>
@@ -241,7 +244,7 @@ const VideoLibrary = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
             placeholder="Buscar aula ou professor..." 
-            className="pl-10 h-11 rounded-xl bg-muted/50 border-transparent shadow-sm focus:bg-background focus:ring-2 focus:ring-primary/20 transition-all"
+            className="pl-10 h-11 rounded-xl bg-muted/50 border-transparent shadow-sm focus:bg-background focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -249,9 +252,9 @@ const VideoLibrary = () => {
       </div>
 
       {/* Filtros em Pílulas Modernas */}
-      <div className="w-full overflow-hidden py-2">
+      <div className="w-full overflow-hidden py-1 -mx-4 px-4 sm:mx-0 sm:px-0">
         <ScrollArea className="w-full whitespace-nowrap">
-            <div className="flex w-max space-x-3 pb-2 px-1">
+            <div className="flex w-max space-x-2 sm:space-x-3 pb-2 px-1">
             {CATEGORIES.map((cat) => {
                 const style = CATEGORY_STYLES[cat] || CATEGORY_STYLES["Todos"];
                 const Icon = style.icon;
@@ -262,7 +265,7 @@ const VideoLibrary = () => {
                         key={cat}
                         onClick={() => setActiveCategory(cat)}
                         className={cn(
-                            "group relative flex items-center gap-2.5 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-300 overflow-hidden border border-transparent",
+                            "group relative flex items-center gap-2 rounded-xl px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-bold transition-all duration-300 overflow-hidden border border-transparent",
                             isActive
                             ? `text-white ${style.shadow} shadow-lg scale-105 ring-2 ring-white/20`
                             : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground hover:border-border/50"
@@ -279,7 +282,7 @@ const VideoLibrary = () => {
                         )}
 
                         <span className="relative z-10 flex items-center gap-2">
-                            <Icon className={cn("h-4 w-4 transition-transform duration-300 group-hover:scale-110", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
+                            <Icon className={cn("h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:scale-110", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
                             {cat}
                         </span>
                     </button>
@@ -291,15 +294,15 @@ const VideoLibrary = () => {
       </div>
 
       {/* Conteúdo: Listas Horizontais */}
-      <div className="space-y-10">
+      <div className="space-y-8 sm:space-y-10">
         {Object.entries(groupedVideos).map(([category, videos]) => {
             const style = CATEGORY_STYLES[category] || CATEGORY_STYLES["Todos"];
             return (
-                <div key={category} className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <div className={cn("h-8 w-1.5 rounded-r-full bg-gradient-to-b", style.gradient)}></div>
-                            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">
+                <div key={category} className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center justify-between px-1">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <div className={cn("h-6 w-1 sm:h-8 sm:w-1.5 rounded-r-full bg-gradient-to-b", style.gradient)}></div>
+                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground">
                                 {category}
                             </h2>
                         </div>
@@ -307,7 +310,7 @@ const VideoLibrary = () => {
                             <Button 
                                 variant="ghost" 
                                 size="sm" 
-                                className="text-xs text-muted-foreground hover:text-primary transition-colors no-underline hover:no-underline"
+                                className="text-xs text-muted-foreground hover:text-primary transition-colors no-underline hover:no-underline pr-0"
                                 onClick={() => setActiveCategory(category)}
                             >
                                 Ver tudo
@@ -315,25 +318,26 @@ const VideoLibrary = () => {
                         )}
                     </div>
                     
-                    <ScrollArea className="w-full whitespace-nowrap rounded-xl">
-                    <div className="flex w-max space-x-4 pb-4 px-1">
-                        {videos.map((video) => (
-                        <VideoCard 
-                            key={video.id} 
-                            video={video} 
-                            onClick={() => handleOpenVideo(video, videos)} 
-                            userId={profile?.id}
-                        />
-                        ))}
-                    </div>
-                    <ScrollBar orientation="horizontal" />
+                    {/* Lista com Snap Scrolling para Mobile */}
+                    <ScrollArea className="w-full whitespace-nowrap rounded-xl -mx-4 sm:mx-0 w-screen sm:w-full">
+                        <div className="flex w-max space-x-3 sm:space-x-4 pb-4 px-4 sm:px-1 snap-x snap-mandatory touch-pan-x">
+                            {videos.map((video) => (
+                            <VideoCard 
+                                key={video.id} 
+                                video={video} 
+                                onClick={() => handleOpenVideo(video, videos)} 
+                                userId={profile?.id}
+                            />
+                            ))}
+                        </div>
+                        <ScrollBar orientation="horizontal" />
                     </ScrollArea>
                 </div>
             );
         })}
 
         {Object.keys(groupedVideos).length === 0 && (
-           <div className="flex flex-col items-center justify-center py-20 text-center bg-muted/20 rounded-2xl border border-dashed border-muted">
+           <div className="flex flex-col items-center justify-center py-20 text-center bg-muted/20 rounded-2xl border border-dashed border-muted mx-4 sm:mx-0">
              <div className="bg-muted p-4 rounded-full mb-4">
                <MonitorPlay className="h-8 w-8 text-muted-foreground opacity-50" />
              </div>
@@ -349,29 +353,28 @@ const VideoLibrary = () => {
       </div>
 
       {/* Disclaimer Legal com Destaque */}
-      <div className="mt-12 border-t border-border/40 pt-8">
+      <div className="mt-8 sm:mt-12 border-t border-border/40 pt-6 sm:pt-8">
         <Alert className="bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
             <div className="flex items-start gap-3">
                 <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 shrink-0" />
                 <div>
-                    <AlertTitle className="text-amber-800 dark:text-amber-200 font-bold mb-1">Aviso de Direitos Autorais</AlertTitle>
+                    <AlertTitle className="text-amber-800 dark:text-amber-200 font-bold mb-1 text-sm">Aviso de Direitos Autorais</AlertTitle>
                     <AlertDescription className="text-xs sm:text-sm text-amber-700/90 dark:text-amber-300/90 leading-relaxed font-medium">
                         EnfermagemPro utiliza a tecnologia de incorporação (embed) para reproduzir conteúdos públicos hospedados no YouTube.
                         Não hospedamos, armazenamos ou comercializamos estes arquivos de mídia.
-                        Todos os direitos de propriedade intelectual, visualizações e monetização pertencem exclusivamente aos criadores e às suas respectivas gravadoras.
                     </AlertDescription>
                 </div>
             </div>
         </Alert>
       </div>
 
-      {/* NOVO PLAYER MODAL ESTILO NETFLIX/YOUTUBE */}
+      {/* NOVO PLAYER MODAL ESTILO NETFLIX/YOUTUBE - Responsivo */}
       <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
-        <DialogContent className="max-w-[95vw] md:max-w-4xl p-0 bg-black border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
+        <DialogContent className="w-[100vw] h-[100vh] sm:w-[90vw] sm:h-[90vh] md:max-w-5xl p-0 bg-black border-slate-800 overflow-hidden flex flex-col gap-0 rounded-none sm:rounded-lg">
           {selectedVideo && (
             <>
-              {/* VIDEO AREA */}
+              {/* VIDEO AREA - Sticky on top mobile */}
               <div className="relative w-full aspect-video bg-black shrink-0">
                 <iframe
                   className="absolute inset-0 w-full h-full"
@@ -382,7 +385,7 @@ const VideoLibrary = () => {
                 ></iframe>
                 <button 
                   onClick={() => setSelectedVideo(null)}
-                  className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition-all z-20"
+                  className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition-all z-20"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -391,53 +394,58 @@ const VideoLibrary = () => {
               {/* CONTROLS & INFO */}
               <div className="bg-card border-t border-border flex flex-col flex-1 min-h-0">
                 {/* Meta Info Bar */}
-                <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border/50 shrink-0">
-                  <div className="space-y-1 flex-1 min-w-0">
-                    <h2 className="text-lg font-bold text-foreground leading-tight line-clamp-1" title={selectedVideo.title}>
-                      {selectedVideo.title}
-                    </h2>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <span className="font-medium text-primary">{selectedVideo.author}</span>
-                      <span>•</span>
-                      <span>{selectedVideo.category}</span>
-                      {selectedVideo.duration && (
-                        <>
-                           <span>•</span>
-                           <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {selectedVideo.duration}</span>
-                        </>
-                      )}
+                <div className="p-3 sm:p-4 flex flex-col gap-3 border-b border-border/50 shrink-0">
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="space-y-1 flex-1 min-w-0">
+                      <h2 className="text-base sm:text-xl font-bold text-foreground leading-tight line-clamp-2" title={selectedVideo.title}>
+                        {selectedVideo.title}
+                      </h2>
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+                        <span className="font-medium text-primary bg-primary/10 px-2 py-0.5 rounded">{selectedVideo.author}</span>
+                        <span>{selectedVideo.category}</span>
+                        {selectedVideo.duration && (
+                          <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {selectedVideo.duration}</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Player Controls - Mobile Friendly */}
+                    <div className="flex items-center gap-2 shrink-0">
+                        {profile && (
+                            <FavoriteButton 
+                                userId={profile.id} 
+                                itemId={`video-${selectedVideo.id}`} 
+                                itemType="Vídeo Aula" 
+                                itemTitle={selectedVideo.title}
+                                className="h-9 w-9 border rounded-md"
+                            />
+                        )}
                     </div>
                   </div>
                   
-                  {/* Player Controls */}
-                  <div className="flex items-center gap-3 self-end sm:self-center">
-                    <Button variant="outline" size="icon" onClick={handlePrev} title="Anterior">
-                      <SkipBack className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="icon" onClick={handleNext} title="Próximo">
-                      <SkipForward className="h-4 w-4" />
-                    </Button>
-                    {profile && (
-                        <FavoriteButton 
-                            userId={profile.id} 
-                            itemId={`video-${selectedVideo.id}`} 
-                            itemType="Vídeo Aula" 
-                            itemTitle={selectedVideo.title}
-                            className="h-10 w-10 border rounded-md"
-                        />
-                    )}
+                  {/* Prev/Next Controls */}
+                  <div className="flex items-center justify-between sm:justify-end gap-2 w-full">
+                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground sm:hidden">Navegar</span>
+                    <div className="flex gap-2">
+                        <Button variant="outline" size="sm" onClick={handlePrev} title="Anterior" className="h-8">
+                        <SkipBack className="h-4 w-4 mr-1" /> Anterior
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={handleNext} title="Próximo" className="h-8">
+                        Próximo <SkipForward className="h-4 w-4 ml-1" />
+                        </Button>
+                    </div>
                   </div>
                 </div>
 
                 {/* Playlist Section */}
                 <div className="flex-1 min-h-0 flex flex-col bg-muted/10">
-                  <div className="px-4 py-2 border-b border-border/50 bg-muted/20 flex items-center gap-2">
+                  <div className="px-4 py-2 border-b border-border/50 bg-muted/20 flex items-center gap-2 sticky top-0">
                     <ListMusic className="h-4 w-4 text-primary" />
-                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Fila de Reprodução ({currentPlaylist.length})</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A seguir ({currentPlaylist.length})</span>
                   </div>
                   
                   <ScrollArea className="flex-1">
-                    <div className="p-4 space-y-2">
+                    <div className="p-3 sm:p-4 space-y-2">
                       {currentPlaylist.map((video) => (
                         <PlaylistItem 
                           key={video.id} 
