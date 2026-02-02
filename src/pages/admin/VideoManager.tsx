@@ -16,7 +16,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { 
   Loader2, Plus, Edit, Trash2, Eye, EyeOff, Youtube, 
-  Search, RefreshCw, Layers, Save, Video, Database, AlertTriangle, CheckCircle, Wrench, Sparkles, Link as LinkIcon
+  Search, RefreshCw, Layers, Save, Video, Database, AlertTriangle, CheckCircle, Wrench, Sparkles, Link as LinkIcon, Clipboard
 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -110,6 +110,21 @@ export default function VideoManager() {
       }
     } finally {
       setIsLoadingMetadata(false);
+    }
+  };
+
+  const handlePasteFromClipboard = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        setPastedLink(text);
+        // Opcional: já tenta importar se parecer um link válido
+        if (text.includes("youtube") || text.includes("youtu.be")) {
+           toast.info("Link colado! Clique em Importar.");
+        }
+      }
+    } catch (err) {
+      toast.error("Não foi possível acessar a área de transferência. Tente Ctrl+V.");
     }
   };
 
@@ -425,31 +440,40 @@ export default function VideoManager() {
                   value={pastedLink} 
                   onChange={e => {
                      setPastedLink(e.target.value);
-                     // Limpa o ID se o usuário apagar o link
                      if(!e.target.value) setCurrentVideo(prev => ({ ...prev, youtube_id: "" }));
                   }}
                   className="flex-1" 
                   placeholder="Cole aqui: https://www.youtube.com/watch?v=..."
-                  autoFocus
+                  // autoFocus removido para evitar bloqueio de paste em modais
                 />
+                <Button 
+                   type="button"
+                   variant="outline"
+                   size="icon"
+                   title="Colar"
+                   onClick={handlePasteFromClipboard}
+                   className="shrink-0"
+                >
+                   <Clipboard className="h-4 w-4" />
+                </Button>
                 <Button 
                    type="button" 
                    onClick={() => fetchVideoMetadata(pastedLink)}
                    disabled={isLoadingMetadata || !pastedLink}
-                   className="min-w-[120px]"
+                   className="min-w-[100px]"
                 >
                    {isLoadingMetadata ? <Loader2 className="h-4 w-4 animate-spin mr-2"/> : <Sparkles className="h-4 w-4 mr-2 text-yellow-300"/>}
-                   {isLoadingMetadata ? "Buscando..." : "Importar"}
+                   {isLoadingMetadata ? "..." : "Importar"}
                 </Button>
               </div>
               <p className="text-[10px] text-muted-foreground">
-                 Cole o link e clique em "Importar" para preencher Título e Autor automaticamente.
+                 Dica: Cole o link e clique em "Importar" para preencher automaticamente.
               </p>
             </div>
 
             {/* PREVIEW SE TIVER ID */}
             {currentVideo.youtube_id && (
-               <div className="bg-muted/30 p-3 rounded-lg border flex items-start gap-4">
+               <div className="bg-muted/30 p-3 rounded-lg border flex items-start gap-4 animate-in fade-in zoom-in duration-300">
                    <div className="w-32 h-20 bg-black rounded overflow-hidden shrink-0 shadow-sm border border-border/50">
                       <img src={`https://img.youtube.com/vi/${currentVideo.youtube_id}/mqdefault.jpg`} className="w-full h-full object-cover" />
                    </div>
