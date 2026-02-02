@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { 
   Play, Search, MonitorPlay, Youtube, X, 
   SkipBack, SkipForward, ListMusic, Clock, Sparkles,
-  Gavel, Globe, BookOpen, Heart, ShieldCheck, Layers, ChevronUp, ChevronDown
+  Gavel, Globe, BookOpen, Heart, ShieldCheck, Layers, ChevronUp, ChevronDown, Info
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -408,6 +408,16 @@ const VideoLibrary = () => {
                 </div>
             );
         })}
+      </div>
+
+      {/* Disclaimer Section */}
+      <div className="mx-auto w-full max-w-4xl mt-12 p-6 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+        <div className="flex flex-col items-center gap-2 text-muted-foreground">
+          <Info className="h-5 w-5" />
+          <p className="text-xs sm:text-sm font-medium leading-relaxed max-w-2xl">
+            "EnfermagemPro utiliza a tecnologia de incorporação (embed) para reproduzir conteúdos públicos hospedados no YouTube. Não hospedamos, armazenamos ou comercializamos estes arquivos de mídia. Todos os direitos de propriedade intelectual, visualizações e monetização pertencem exclusivamente aos criadores e às suas respectivas gravadoras."
+          </p>
+        </div>
       </div>
 
       {selectedVideo && (
