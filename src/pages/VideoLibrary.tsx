@@ -206,7 +206,6 @@ const MiniVideoPlayer = ({
   };
 
   return (
-    // FIXA O PLAYER NA PARTE INFERIOR - COMPORTAMENTO MOBILE E DESKTOP COMPACTO
     <div className="fixed bottom-[80px] sm:bottom-6 right-2 sm:right-6 z-[200] flex flex-col items-end animate-in slide-in-from-bottom-10 fade-in duration-500 w-[calc(100vw-1rem)] sm:w-[380px] max-w-md shadow-2xl">
       
       {/* PLAYER CARD */}
@@ -427,19 +426,25 @@ const VideoLibrary = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
   
-  // Custom hook ou lógica para detecção de tamanho de tela mais agressiva
+  // DETECÇÃO ROBUSTA DE MODO COMPACTO/MOBILE
   const [isCompactMode, setIsCompactMode] = useState(false);
 
   useEffect(() => {
-      // Força modo compacto para qualquer tela menor que 1024px (Tablets e Mobiles)
-      // Isso resolve o problema do Chrome Mobile reportar-se como Desktop às vezes
-      const checkSize = () => {
-          setIsCompactMode(window.innerWidth < 1024);
-      };
+    const checkMobile = () => {
+      // Verifica tamanho da janela (Padrão)
+      const isSmallScreen = window.matchMedia('(max-width: 1024px)').matches;
       
-      checkSize();
-      window.addEventListener('resize', checkSize);
-      return () => window.removeEventListener('resize', checkSize);
+      // Verifica User Agent (Segurança para Android/iOS que mentem sobre o tamanho)
+      const userAgent = typeof navigator === 'undefined' ? '' : navigator.userAgent;
+      const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+      
+      // Se qualquer um for verdadeiro, força o modo compacto
+      setIsCompactMode(isSmallScreen || isMobileUA);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
   const [activeCategory, setActiveCategory] = useState("Todos");
