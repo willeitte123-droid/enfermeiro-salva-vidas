@@ -145,7 +145,7 @@ const MiniVideoPlayer = ({ selectedVideo, currentPlaylist, onClose, onNext, onPr
   };
 
   return (
-    <div className="fixed bottom-2 left-1/2 -translate-x-1/2 z-[9999] flex flex-col shadow-2xl rounded-2xl bg-card border border-border w-[95vw] sm:w-[380px] sm:left-auto sm:right-6 sm:bottom-6 sm:translate-x-0 overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300 max-h-[80vh]">
+    <div className="fixed bottom-0 left-0 right-0 sm:bottom-6 sm:right-6 sm:left-auto z-[9999] flex flex-col animate-in slide-in-from-bottom-full fade-in duration-500 w-full sm:w-[380px] bg-background sm:rounded-2xl shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.2)] sm:shadow-2xl border-t sm:border border-border/50 overflow-hidden max-w-[100vw]">
       <div className="relative w-full bg-black group shrink-0">
            <div className="relative w-full pt-[56.25%]"> 
                <div className="absolute inset-0">
@@ -317,20 +317,21 @@ const VideoLibrary = () => {
   };
 
   return (
-    // Removido overflow-x-hidden e fixado max-w-full
-    <div className="w-full max-w-full space-y-6 pb-24 overflow-x-hidden">
+    // Adicionado min-w-0 e flex-col para garantir comportamento correto no flexbox
+    <div className="flex flex-col w-full min-w-0 space-y-6 pb-24 overflow-x-hidden">
       
-      {/* Header Responsivo */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-4">
-        <div className="space-y-3 w-full max-w-full">
+      {/* Header Responsivo - Adicionado min-w-0 nos containers filhos */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-4 w-full min-w-0">
+        <div className="space-y-3 w-full min-w-0">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary w-fit uppercase tracking-wider">
             <Sparkles className="h-3 w-3 fill-current" /> Conteúdo Premium
           </div>
-          {/* Adicionado break-words para quebrar palavras longas */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight break-words">
+          
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight break-words whitespace-normal">
             Videoteca <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-violet-600">Digital</span>
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-2xl leading-relaxed">
+          
+          <p className="text-muted-foreground text-sm sm:text-base max-w-2xl leading-relaxed break-words">
             Videoaulas de alta performance selecionadas para sua evolução.
           </p>
         </div>
@@ -346,41 +347,43 @@ const VideoLibrary = () => {
         </div>
       </div>
 
-      {/* Filtros - Removido margem negativa */}
-      <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
-          <div className="flex w-max space-x-2 sm:space-x-3">
-            {CATEGORIES.map((cat) => {
-                const style = CATEGORY_STYLES[cat] || CATEGORY_STYLES["Todos"];
-                const Icon = style.icon;
-                const isActive = activeCategory === cat;
-                return (
-                    <button
-                        key={cat}
-                        onClick={() => setActiveCategory(cat)}
-                        className={cn(
-                            "group relative flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-300 overflow-hidden border shrink-0",
-                            isActive
-                            ? `text-white ${style.shadow} shadow-lg ring-2 ring-white/20`
-                            : "bg-card text-muted-foreground border-border/50 hover:border-primary/30 hover:text-foreground"
-                        )}
-                    >
-                        {isActive && <div className={cn("absolute inset-0 bg-gradient-to-r opacity-100 transition-opacity", style.gradient)} />}
-                        <span className="relative z-10 flex items-center gap-2">
-                            <Icon className={cn("h-4 w-4 transition-transform duration-300", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
-                            {cat}
-                        </span>
-                    </button>
-                );
-            })}
+      {/* Filtros - Container com min-w-0 */}
+      <div className="w-full min-w-0">
+          <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
+            <div className="flex w-max space-x-2 sm:space-x-3">
+                {CATEGORIES.map((cat) => {
+                    const style = CATEGORY_STYLES[cat] || CATEGORY_STYLES["Todos"];
+                    const Icon = style.icon;
+                    const isActive = activeCategory === cat;
+                    return (
+                        <button
+                            key={cat}
+                            onClick={() => setActiveCategory(cat)}
+                            className={cn(
+                                "group relative flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-300 overflow-hidden border shrink-0",
+                                isActive
+                                ? `text-white ${style.shadow} shadow-lg ring-2 ring-white/20`
+                                : "bg-card text-muted-foreground border-border/50 hover:border-primary/30 hover:text-foreground"
+                            )}
+                        >
+                            {isActive && <div className={cn("absolute inset-0 bg-gradient-to-r opacity-100 transition-opacity", style.gradient)} />}
+                            <span className="relative z-10 flex items-center gap-2">
+                                <Icon className={cn("h-4 w-4 transition-transform duration-300", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
+                                {cat}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
           </div>
       </div>
 
-      {/* Listas de Vídeos */}
-      <div className="space-y-8">
+      {/* Listas de Vídeos - Containers com min-w-0 */}
+      <div className="space-y-8 w-full min-w-0">
         {Object.entries(groupedVideos).map(([category, videos]) => {
             const style = CATEGORY_STYLES[category] || CATEGORY_STYLES["Todos"];
             return (
-                <div key={category} className="space-y-3">
+                <div key={category} className="space-y-3 w-full min-w-0">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className={cn("h-6 w-1 rounded-r-full bg-gradient-to-b", style.gradient)}></div>
@@ -392,12 +395,14 @@ const VideoLibrary = () => {
                             </Button>
                         )}
                     </div>
-                    {/* Carrossel de Vídeos - Removido margem negativa, width 100% */}
-                    <div className="w-full overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
-                        <div className="flex w-max space-x-3 sm:space-x-4">
-                            {videos.map((video) => (
-                                <VideoCard key={video.id} video={video} onClick={() => handleOpenVideo(video, videos)} userId={profile?.id} />
-                            ))}
+                    {/* Carrossel de Vídeos */}
+                    <div className="w-full min-w-0">
+                        <div className="w-full overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
+                            <div className="flex w-max space-x-3 sm:space-x-4">
+                                {videos.map((video) => (
+                                    <VideoCard key={video.id} video={video} onClick={() => handleOpenVideo(video, videos)} userId={profile?.id} />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
