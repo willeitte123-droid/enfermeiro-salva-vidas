@@ -91,21 +91,21 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   {
     id: "JYcU8Uz65T8",
     title: "Como Aferir Pressão Arterial (Passo a Passo)",
-    author: "Enfermagem Florence",
+    author: "Procedimentos de Enfermagem",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 12 min"
   },
   {
     id: "u56wwAPzt3E",
     title: "Passagem de sonda nasogástrica",
-    author: "Enfermagem Florence",
+    author: "Procedimentos de Enfermagem",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 8 min"
   },
   {
     id: "bDfDvhCeYAU",
     title: "Aspiração de vias aéreas superiores",
-    author: "Enfermagem Florence",
+    author: "Procedimentos de Enfermagem",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 10 min"
   }
