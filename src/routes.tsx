@@ -55,6 +55,7 @@ import StudyTracks from './pages/StudyTracks';
 import DeepStudy from './pages/DeepStudy';
 import ClinicalCases from './pages/ClinicalCases';
 import Concursos from './pages/Concursos';
+import VideoLibrary from './pages/VideoLibrary';
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -125,6 +126,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="anatomy" element={<AnatomyPhysiology />} />
         <Route path="concurseiro" element={<ConcurseiroArea />} />
         <Route path="library" element={<DeepStudy />} />
+        <Route path="video-library" element={<VideoLibrary />} />
         <Route path="flashcards" element={<Flashcards />} />
         <Route path="ranking" element={<Ranking />} />
         <Route path="tools/dose-calculator" element={<DoseCalculator />} />
