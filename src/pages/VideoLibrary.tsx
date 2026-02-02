@@ -66,7 +66,7 @@ const CATEGORY_STYLES: Record<string, { icon: any, gradient: string, shadow: str
 
 const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: () => void; userId?: string }) => {
   return (
-    <div className="group relative w-[85vw] sm:w-[320px] flex-shrink-0 cursor-pointer snap-start" onClick={onClick}>
+    <div className="group relative w-[260px] xs:w-[280px] sm:w-[320px] flex-shrink-0 cursor-pointer snap-start" onClick={onClick}>
       {/* Thumbnail Container */}
       <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:ring-2 ring-primary/50">
         <img 
@@ -95,9 +95,9 @@ const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: ()
         {/* Gradiente Inferior para legibilidade */}
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent opacity-60 z-10" />
 
-        {/* Play Overlay - Visível com hover no desktop, toque no mobile */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600/90 text-white shadow-lg scale-90 group-hover:scale-100 transition-transform backdrop-blur-sm">
+        {/* Play Overlay */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-white shadow-lg scale-90 group-hover:scale-100 transition-transform">
             <Play className="h-5 w-5 fill-current ml-1" />
           </div>
         </div>
@@ -106,11 +106,11 @@ const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: ()
       {/* Info */}
       <div className="mt-3 px-1">
         <div className="flex justify-between items-start gap-2">
-            <h3 className="line-clamp-2 text-sm font-bold leading-tight text-foreground group-hover:text-primary transition-colors">
-            {video.title}
+            <h3 className="line-clamp-2 text-sm font-bold leading-tight text-foreground group-hover:text-primary transition-colors min-h-[2.5rem]" title={video.title}>
+              {video.title}
             </h3>
             {userId && (
-                <div onClick={(e) => e.stopPropagation()}>
+                <div onClick={(e) => e.stopPropagation()} className="shrink-0">
                     <FavoriteButton 
                         userId={userId} 
                         itemId={`video-${video.id}`} 
@@ -121,10 +121,7 @@ const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: ()
                 </div>
             )}
         </div>
-        <p className="mt-1 text-xs text-muted-foreground font-medium flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary/50"></span>
-          {video.author}
-        </p>
+        <p className="mt-1 text-xs text-muted-foreground font-medium truncate">{video.author}</p>
       </div>
     </div>
   );
@@ -136,13 +133,13 @@ const PlaylistItem = ({ video, isActive, onClick }: { video: VideoLesson, isActi
     <div 
       onClick={onClick}
       className={cn(
-        "flex items-center gap-3 p-2 sm:p-3 rounded-lg cursor-pointer transition-all border group",
+        "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all border group",
         isActive 
           ? "bg-primary/10 border-primary/50" 
           : "bg-card hover:bg-accent border-transparent hover:border-border"
       )}
     >
-      <div className="relative h-10 w-16 sm:h-12 sm:w-20 flex-shrink-0 overflow-hidden rounded-md bg-muted">
+      <div className="relative h-12 w-20 flex-shrink-0 overflow-hidden rounded-md bg-muted">
         <img 
           src={`https://img.youtube.com/vi/${video.id}/default.jpg`} 
           alt={video.title}
@@ -160,7 +157,7 @@ const PlaylistItem = ({ video, isActive, onClick }: { video: VideoLesson, isActi
         </h4>
         <p className="text-[10px] text-muted-foreground truncate">{video.author}</p>
       </div>
-      {isActive && <MonitorPlay className="h-4 w-4 text-primary" />}
+      {isActive && <MonitorPlay className="h-4 w-4 text-primary shrink-0" />}
     </div>
   )
 }
@@ -224,7 +221,7 @@ const VideoLibrary = () => {
   };
 
   return (
-    <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500 pb-20">
+    <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500 pb-20 overflow-x-hidden">
       
       {/* Header Estilo "Moderno/Profissional" */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -252,9 +249,9 @@ const VideoLibrary = () => {
       </div>
 
       {/* Filtros em Pílulas Modernas */}
-      <div className="w-full overflow-hidden py-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div className="w-full overflow-hidden py-2 -mx-4 px-4 sm:mx-0 sm:px-0">
         <ScrollArea className="w-full whitespace-nowrap">
-            <div className="flex w-max space-x-2 sm:space-x-3 pb-2 px-1">
+            <div className="flex w-max space-x-3 pb-2 px-1">
             {CATEGORIES.map((cat) => {
                 const style = CATEGORY_STYLES[cat] || CATEGORY_STYLES["Todos"];
                 const Icon = style.icon;
@@ -265,7 +262,7 @@ const VideoLibrary = () => {
                         key={cat}
                         onClick={() => setActiveCategory(cat)}
                         className={cn(
-                            "group relative flex items-center gap-2 rounded-xl px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-bold transition-all duration-300 overflow-hidden border border-transparent",
+                            "group relative flex items-center gap-2.5 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-300 overflow-hidden border border-transparent",
                             isActive
                             ? `text-white ${style.shadow} shadow-lg scale-105 ring-2 ring-white/20`
                             : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground hover:border-border/50"
@@ -282,7 +279,7 @@ const VideoLibrary = () => {
                         )}
 
                         <span className="relative z-10 flex items-center gap-2">
-                            <Icon className={cn("h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:scale-110", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
+                            <Icon className={cn("h-4 w-4 transition-transform duration-300 group-hover:scale-110", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
                             {cat}
                         </span>
                     </button>
@@ -300,9 +297,9 @@ const VideoLibrary = () => {
             return (
                 <div key={category} className="space-y-3 sm:space-y-4">
                     <div className="flex items-center justify-between px-1">
-                        <div className="flex items-center gap-2 sm:gap-3">
-                            <div className={cn("h-6 w-1 sm:h-8 sm:w-1.5 rounded-r-full bg-gradient-to-b", style.gradient)}></div>
-                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground">
+                        <div className="flex items-center gap-3">
+                            <div className={cn("h-6 sm:h-8 w-1 sm:w-1.5 rounded-r-full bg-gradient-to-b", style.gradient)}></div>
+                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground line-clamp-1">
                                 {category}
                             </h2>
                         </div>
@@ -310,7 +307,7 @@ const VideoLibrary = () => {
                             <Button 
                                 variant="ghost" 
                                 size="sm" 
-                                className="text-xs text-muted-foreground hover:text-primary transition-colors no-underline hover:no-underline pr-0"
+                                className="text-xs text-muted-foreground hover:text-primary transition-colors no-underline hover:no-underline pr-0 shrink-0"
                                 onClick={() => setActiveCategory(category)}
                             >
                                 Ver tudo
@@ -319,7 +316,7 @@ const VideoLibrary = () => {
                     </div>
                     
                     {/* Lista com Snap Scrolling para Mobile */}
-                    <ScrollArea className="w-full whitespace-nowrap rounded-xl -mx-4 sm:mx-0 w-screen sm:w-full">
+                    <ScrollArea className="w-full whitespace-nowrap rounded-xl -mx-4 sm:mx-0 w-[calc(100%+2rem)] sm:w-full">
                         <div className="flex w-max space-x-3 sm:space-x-4 pb-4 px-4 sm:px-1 snap-x snap-mandatory touch-pan-x">
                             {videos.map((video) => (
                             <VideoCard 
@@ -371,7 +368,7 @@ const VideoLibrary = () => {
 
       {/* NOVO PLAYER MODAL ESTILO NETFLIX/YOUTUBE - Responsivo */}
       <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
-        <DialogContent className="w-[100vw] h-[100vh] sm:w-[90vw] sm:h-[90vh] md:max-w-5xl p-0 bg-black border-slate-800 overflow-hidden flex flex-col gap-0 rounded-none sm:rounded-lg">
+        <DialogContent className="w-[100vw] h-[100dvh] sm:w-[90vw] sm:h-[90vh] md:max-w-5xl p-0 bg-black border-slate-800 overflow-hidden flex flex-col gap-0 rounded-none sm:rounded-lg">
           {selectedVideo && (
             <>
               {/* VIDEO AREA - Sticky on top mobile */}
@@ -395,16 +392,20 @@ const VideoLibrary = () => {
               <div className="bg-card border-t border-border flex flex-col flex-1 min-h-0">
                 {/* Meta Info Bar */}
                 <div className="p-3 sm:p-4 flex flex-col gap-3 border-b border-border/50 shrink-0">
-                  <div className="flex justify-between items-start gap-4">
+                  <div className="flex justify-between items-start gap-3">
                     <div className="space-y-1 flex-1 min-w-0">
-                      <h2 className="text-base sm:text-xl font-bold text-foreground leading-tight line-clamp-2" title={selectedVideo.title}>
+                      <h2 className="text-sm sm:text-lg font-bold text-foreground leading-tight line-clamp-2" title={selectedVideo.title}>
                         {selectedVideo.title}
                       </h2>
                       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-                        <span className="font-medium text-primary bg-primary/10 px-2 py-0.5 rounded">{selectedVideo.author}</span>
-                        <span>{selectedVideo.category}</span>
+                        <span className="font-medium text-primary bg-primary/10 px-2 py-0.5 rounded truncate max-w-[150px]">{selectedVideo.author}</span>
+                        <span className="hidden xs:inline">•</span>
+                        <span className="truncate max-w-[120px]">{selectedVideo.category}</span>
                         {selectedVideo.duration && (
-                          <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {selectedVideo.duration}</span>
+                          <>
+                             <span className="hidden xs:inline">•</span>
+                             <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {selectedVideo.duration}</span>
+                          </>
                         )}
                       </div>
                     </div>
@@ -417,21 +418,21 @@ const VideoLibrary = () => {
                                 itemId={`video-${selectedVideo.id}`} 
                                 itemType="Vídeo Aula" 
                                 itemTitle={selectedVideo.title}
-                                className="h-9 w-9 border rounded-md"
+                                className="h-8 w-8 sm:h-9 sm:w-9 border rounded-md"
                             />
                         )}
                     </div>
                   </div>
                   
                   {/* Prev/Next Controls */}
-                  <div className="flex items-center justify-between sm:justify-end gap-2 w-full">
-                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground sm:hidden">Navegar</span>
+                  <div className="flex items-center justify-between sm:justify-end gap-2 w-full pt-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground sm:hidden">Navegar</span>
                     <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={handlePrev} title="Anterior" className="h-8">
-                        <SkipBack className="h-4 w-4 mr-1" /> Anterior
+                        <Button variant="outline" size="sm" onClick={handlePrev} title="Anterior" className="h-8 px-3 text-xs">
+                        <SkipBack className="h-3.5 w-3.5 mr-1" /> Anterior
                         </Button>
-                        <Button variant="outline" size="sm" onClick={handleNext} title="Próximo" className="h-8">
-                        Próximo <SkipForward className="h-4 w-4 ml-1" />
+                        <Button variant="outline" size="sm" onClick={handleNext} title="Próximo" className="h-8 px-3 text-xs">
+                        Próximo <SkipForward className="h-3.5 w-3.5 ml-1" />
                         </Button>
                     </div>
                   </div>
@@ -439,13 +440,13 @@ const VideoLibrary = () => {
 
                 {/* Playlist Section */}
                 <div className="flex-1 min-h-0 flex flex-col bg-muted/10">
-                  <div className="px-4 py-2 border-b border-border/50 bg-muted/20 flex items-center gap-2 sticky top-0">
-                    <ListMusic className="h-4 w-4 text-primary" />
-                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A seguir ({currentPlaylist.length})</span>
+                  <div className="px-3 sm:px-4 py-2 border-b border-border/50 bg-muted/20 flex items-center gap-2 sticky top-0 backdrop-blur-sm z-10">
+                    <ListMusic className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-muted-foreground">A seguir ({currentPlaylist.length})</span>
                   </div>
                   
                   <ScrollArea className="flex-1">
-                    <div className="p-3 sm:p-4 space-y-2">
+                    <div className="p-2 sm:p-4 space-y-2">
                       {currentPlaylist.map((video) => (
                         <PlaylistItem 
                           key={video.id} 
