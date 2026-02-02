@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import { 
   Play, Search, MonitorPlay, Youtube, X, 
-  SkipBack, SkipForward, ListMusic, Pause
+  SkipBack, SkipForward, ListMusic, Pause, Clock
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
