@@ -1,13 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { 
-  Play, Search, MonitorPlay, Filter, Youtube, Clock, X
+  Play, Search, MonitorPlay, Youtube, X
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { VIDEO_LIBRARY, VideoLesson } from "@/data/videoLibrary";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -17,7 +16,15 @@ interface Profile {
   id: string;
 }
 
-const CATEGORIES = ["Todos", "Destaques", "Urgência e Emergência", "Farmacologia", "Anatomia", "Procedimentos"];
+// Categorias atualizadas conforme os novos vídeos
+const CATEGORIES = [
+  "Todos", 
+  "Legislação do SUS", 
+  "Saúde Pública", 
+  "Fundamentos e SAE", 
+  "Saúde da Mulher", 
+  "Biossegurança e CME"
+];
 
 const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: (v: VideoLesson) => void; userId?: string }) => {
   return (

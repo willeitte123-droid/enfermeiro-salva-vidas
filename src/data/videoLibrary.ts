@@ -2,116 +2,88 @@ export interface VideoLesson {
   id: string; // YouTube ID
   title: string;
   author: string;
-  category: "Destaques" | "Urgência e Emergência" | "Farmacologia" | "Anatomia" | "Procedimentos";
+  category: string;
   duration?: string;
 }
 
 export const VIDEO_LIBRARY: VideoLesson[] = [
-  // Destaques
+  // Legislação do SUS
   {
-    id: "v8qR7_tVwXw",
-    title: "Gasometria Arterial: Interpretando sem Medo",
-    author: "Enfermagem Ilustrada",
-    category: "Destaques",
-    duration: "15:20"
+    id: "jHMqEVgDjd8",
+    title: "Princípios e Diretrizes do SUS",
+    author: "Enfermagem para Concursos",
+    category: "Legislação do SUS",
+    duration: "Aprox. 20 min"
   },
   {
-    id: "gK6_wg8tFmE",
-    title: "Cálculo de Medicação: Regra de Três Simples",
-    author: "Prof. Diego",
-    category: "Destaques",
-    duration: "12:45"
+    id: "TdlgCMJ3jHg",
+    title: "Lei 8.080/90 - Visão Geral",
+    author: "Enfermagem para Concursos",
+    category: "Legislação do SUS",
+    duration: "Aprox. 15 min"
   },
   {
-    id: "Xz5z1x4y3z", // ID Fictício para exemplo visual, troque por reais se necessário
-    title: "Sinais Vitais: Aferição Correta",
-    author: "Prática de Enfermagem",
-    category: "Destaques",
-    duration: "18:10"
-  },
-  
-  // Urgência e Emergência
-  {
-    id: "3e123abc", 
-    title: "PCR: Atualização AHA 2020/2025",
-    author: "Instituto Brasileiro de APH",
-    category: "Urgência e Emergência",
-    duration: "25:00"
+    id: "76qaxgE2jK4",
+    title: "Lei 8.080/90 - Art. 5º e 6º (Objetivos e Atribuições)",
+    author: "Enfermagem para Concursos",
+    category: "Legislação do SUS",
+    duration: "Aprox. 12 min"
   },
   {
-    id: "3892183",
-    title: "Manejo do Choque Hipovolêmico",
-    author: "Emergência Rules",
-    category: "Urgência e Emergência",
-    duration: "14:30"
+    id: "EI4IOCGh4ZU",
+    title: "Lei 8.080/90 - Art. 7º ao 13 (Princípios e Organização)",
+    author: "Enfermagem para Concursos",
+    category: "Legislação do SUS",
+    duration: "Aprox. 18 min"
   },
   {
-    id: "1230912",
-    title: "Intubação em Sequência Rápida",
-    author: "Medicina de Emergência",
-    category: "Urgência e Emergência",
-    duration: "20:15"
+    id: "DC1EEaXzJWY",
+    title: "Lei 8.142/90 - Controle Social e Financiamento",
+    author: "Enfermagem para Concursos",
+    category: "Legislação do SUS",
+    duration: "Aprox. 10 min"
   },
 
-  // Farmacologia
+  // Saúde Pública
   {
-    id: "farm1",
-    title: "Drogas Vasoativas na UTI",
-    author: "Enf. Intensiva",
-    category: "Farmacologia",
-    duration: "30:00"
-  },
-  {
-    id: "farm2",
-    title: "Antibióticos: Classes e Cuidados",
-    author: "Farmacologia Fácil",
-    category: "Farmacologia",
-    duration: "22:10"
-  },
-  {
-    id: "farm3",
-    title: "Diluição de Noradrenalina",
-    author: "Prática Hospitalar",
-    category: "Farmacologia",
-    duration: "08:50"
+    id: "3d-l0vl4oGs",
+    title: "PNAB para Concursos (Atenção Básica)",
+    author: "Prof. Especialista",
+    category: "Saúde Pública",
+    duration: "Aprox. 25 min"
   },
 
-  // Anatomia
+  // Fundamentos e SAE
   {
-    id: "anat1",
-    title: "Anatomia Cardíaca: O Fluxo Sanguíneo",
-    author: "Anatomia Fácil",
-    category: "Anatomia",
-    duration: "16:40"
-  },
-  {
-    id: "anat2",
-    title: "Sistema Respiratório Completo",
-    author: "Bio Explica",
-    category: "Anatomia",
-    duration: "45:00"
+    id: "5LyJQ2Q1UIY",
+    title: "SAE e Processo de Enfermagem",
+    author: "Prof. Especialista",
+    category: "Fundamentos e SAE",
+    duration: "Aprox. 20 min"
   },
 
-  // Procedimentos
+  // Saúde da Mulher
   {
-    id: "proc1",
-    title: "Sondagem Vesical de Demora (SVD)",
-    author: "Procedimentos Enf",
-    category: "Procedimentos",
-    duration: "12:00"
+    id: "Hi_doaILEUk",
+    title: "Saúde da Mulher: Aspectos Essenciais",
+    author: "Prof. Especialista",
+    category: "Saúde da Mulher",
+    duration: "Aprox. 22 min"
+  },
+
+  // Biossegurança e CME
+  {
+    id: "xhPQbBu7YE0",
+    title: "Artigos Hospitalares e Processamento",
+    author: "Prof. Especialista",
+    category: "Biossegurança e CME",
+    duration: "Aprox. 15 min"
   },
   {
-    id: "proc2",
-    title: "Punção Venosa Periférica: Passo a Passo",
-    author: "Enfermagem na Veia",
-    category: "Procedimentos",
-    duration: "10:30"
-  },
-  {
-    id: "proc3",
-    title: "Curativo de Lesão por Pressão",
-    author: "Wound Care",
-    category: "Procedimentos",
-    duration: "15:45"
+    id: "obYQqvphdYY",
+    title: "Indicadores Químicos e Biológicos (CME)",
+    author: "Prof. Especialista",
+    category: "Biossegurança e CME",
+    duration: "Aprox. 14 min"
   }
 ];
