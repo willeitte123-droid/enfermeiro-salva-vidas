@@ -16,7 +16,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { 
   Loader2, Plus, Edit, Trash2, Eye, EyeOff, Youtube, 
-  Search, RefreshCw, Layers, Save, Video, Database, AlertTriangle, CheckCircle, Wrench
+  Search, RefreshCw, Layers, Save, Video, Database, AlertTriangle, CheckCircle, Wrench, Sparkles, Link as LinkIcon
 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -44,6 +44,10 @@ export default function VideoManager() {
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
   const [currentVideo, setCurrentVideo] = useState<Partial<VideoData>>({});
   
+  // Estado para link colado
+  const [pastedLink, setPastedLink] = useState("");
+  const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
+
   // States para gestão de categorias
   const [categoryAction, setCategoryAction] = useState<'rename' | 'delete'>('rename');
   const [targetCategory, setTargetCategory] = useState("");
@@ -71,20 +75,55 @@ export default function VideoManager() {
     return Array.from(cats).sort();
   }, [videos]);
 
+  // Função para buscar metadados do YouTube
+  const fetchVideoMetadata = async (url: string) => {
+    if (!url) return;
+    setIsLoadingMetadata(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('get-youtube-info', {
+        body: { url }
+      });
+
+      if (error) throw error;
+
+      if (data.valid) {
+        setCurrentVideo(prev => ({
+          ...prev,
+          youtube_id: data.videoId,
+          title: data.title,
+          author: data.author
+        }));
+        setPastedLink(`https://youtu.be/${data.videoId}`);
+        toast.success("Dados do vídeo importados!");
+      } else {
+        toast.error("Vídeo não encontrado ou inválido.");
+      }
+    } catch (err: any) {
+      console.error(err);
+      // Tenta extrair ao menos o ID localmente se a API falhar
+      const videoIdMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/))([^"&?\/\s]{11})/);
+      if (videoIdMatch) {
+         setCurrentVideo(prev => ({ ...prev, youtube_id: videoIdMatch[1] }));
+         toast.warning("Dados não carregados, mas ID extraído.");
+      } else {
+         toast.error("Link inválido.");
+      }
+    } finally {
+      setIsLoadingMetadata(false);
+    }
+  };
+
   // Função para Reparar/Configurar Banco de Dados
   const handleSetupDatabase = async () => {
     setIsSettingUp(true);
     const toastId = toast.loading("Configurando banco de dados e restaurando vídeos...");
     
     try {
-      // Chama a Edge Function que cria a tabela e insere os vídeos
       const { data, error } = await supabase.functions.invoke('setup-database');
-      
       if (error) throw error;
       
       if (data.success) {
         toast.success(data.message, { id: toastId });
-        // Força recarregamento imediato dos dados
         await queryClient.invalidateQueries({ queryKey: ["adminVideos"] });
         await refetch();
       } else {
@@ -99,6 +138,10 @@ export default function VideoManager() {
 
   const saveVideoMutation = useMutation({
     mutationFn: async (video: Partial<VideoData>) => {
+      if (!video.youtube_id || !video.title || !video.category) {
+         throw new Error("Preencha os campos obrigatórios (Link, Título, Categoria)");
+      }
+
       if (video.id) {
         const { error } = await supabase.from("videos").update({
           youtube_id: video.youtube_id,
@@ -184,6 +227,7 @@ export default function VideoManager() {
 
   const resetForm = () => {
     setCurrentVideo({ is_public: true, category: "Geral" });
+    setPastedLink("");
     setIsEditing(false);
   };
 
@@ -194,6 +238,7 @@ export default function VideoManager() {
 
   const openEditVideo = (video: VideoData) => {
     setCurrentVideo(video);
+    setPastedLink(`https://youtu.be/${video.youtube_id}`);
     setIsEditing(true);
     setIsDialogOpen(true);
   };
@@ -231,7 +276,7 @@ export default function VideoManager() {
           <Database className="h-4 w-4" />
           <AlertTitle>Tabela de Vídeos Vazia</AlertTitle>
           <AlertDescription className="mt-2 flex flex-col gap-3">
-            <p>O banco de dados existe mas não contém vídeos.</p>
+            <p>A tabela existe mas não tem vídeos. Você pode restaurar os vídeos originais agora.</p>
             <Button 
               onClick={handleSetupDatabase} 
               disabled={isSettingUp}
@@ -358,93 +403,132 @@ export default function VideoManager() {
         )}
       </div>
 
-      {/* DIALOG: NOVO/EDITAR VÍDEO */}
+      {/* DIALOG: NOVO/EDITAR VÍDEO (REFORMULADO) */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{isEditing ? "Editar Vídeo" : "Adicionar Novo Vídeo"}</DialogTitle>
+            <DialogTitle className="flex items-center gap-2">
+               {isEditing ? <Edit className="h-5 w-5 text-primary"/> : <Plus className="h-5 w-5 text-primary"/>}
+               {isEditing ? "Editar Vídeo" : "Adicionar Novo Vídeo"}
+            </DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">ID YouTube</Label>
-              <Input 
-                value={currentVideo.youtube_id || ""} 
-                onChange={e => setCurrentVideo({...currentVideo, youtube_id: e.target.value})}
-                className="col-span-3" 
-                placeholder="Ex: jHMqEVgDjd8"
-              />
+          
+          <div className="grid gap-6 py-4">
+            
+            {/* SEÇÃO PRINCIPAL: LINK */}
+            <div className="space-y-2">
+              <Label className="text-sm font-bold flex items-center gap-2">
+                 <LinkIcon className="h-4 w-4 text-red-500" /> Link do YouTube
+              </Label>
+              <div className="flex gap-2">
+                <Input 
+                  value={pastedLink} 
+                  onChange={e => {
+                     setPastedLink(e.target.value);
+                     // Limpa o ID se o usuário apagar o link
+                     if(!e.target.value) setCurrentVideo(prev => ({ ...prev, youtube_id: "" }));
+                  }}
+                  className="flex-1" 
+                  placeholder="Cole aqui: https://www.youtube.com/watch?v=..."
+                  autoFocus
+                />
+                <Button 
+                   type="button" 
+                   onClick={() => fetchVideoMetadata(pastedLink)}
+                   disabled={isLoadingMetadata || !pastedLink}
+                   className="min-w-[120px]"
+                >
+                   {isLoadingMetadata ? <Loader2 className="h-4 w-4 animate-spin mr-2"/> : <Sparkles className="h-4 w-4 mr-2 text-yellow-300"/>}
+                   {isLoadingMetadata ? "Buscando..." : "Importar"}
+                </Button>
+              </div>
+              <p className="text-[10px] text-muted-foreground">
+                 Cole o link e clique em "Importar" para preencher Título e Autor automaticamente.
+              </p>
             </div>
+
+            {/* PREVIEW SE TIVER ID */}
             {currentVideo.youtube_id && (
-               <div className="grid grid-cols-4 items-center gap-4">
-                 <div className="col-start-2 col-span-3">
-                    <div className="w-32 h-20 bg-muted rounded overflow-hidden border">
-                       <img src={`https://img.youtube.com/vi/${currentVideo.youtube_id}/mqdefault.jpg`} className="w-full h-full object-cover" />
-                    </div>
-                 </div>
+               <div className="bg-muted/30 p-3 rounded-lg border flex items-start gap-4">
+                   <div className="w-32 h-20 bg-black rounded overflow-hidden shrink-0 shadow-sm border border-border/50">
+                      <img src={`https://img.youtube.com/vi/${currentVideo.youtube_id}/mqdefault.jpg`} className="w-full h-full object-cover" />
+                   </div>
+                   <div className="flex-1 min-w-0 py-1">
+                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-1">Preview</p>
+                      <p className="text-sm font-medium truncate">{currentVideo.title || "Sem título..."}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{currentVideo.author || "Autor desconhecido"}</p>
+                   </div>
                </div>
             )}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Título</Label>
-              <Input 
-                value={currentVideo.title || ""} 
-                onChange={e => setCurrentVideo({...currentVideo, title: e.target.value})}
-                className="col-span-3" 
-              />
+
+            <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label>Título do Vídeo</Label>
+                    <Input 
+                        value={currentVideo.title || ""} 
+                        onChange={e => setCurrentVideo({...currentVideo, title: e.target.value})}
+                        placeholder="Título principal"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <Label>Autor / Canal</Label>
+                    <Input 
+                        value={currentVideo.author || ""} 
+                        onChange={e => setCurrentVideo({...currentVideo, author: e.target.value})}
+                        placeholder="Nome do canal"
+                    />
+                </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Categoria</Label>
-              <div className="col-span-3 flex gap-2">
-                 <Select 
-                    value={currentVideo.category} 
-                    onValueChange={val => setCurrentVideo({...currentVideo, category: val})}
-                 >
-                    <SelectTrigger className="w-full">
-                       <SelectValue placeholder="Selecione ou digite..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                       {existingCategories.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                    </SelectContent>
-                 </Select>
-                 <Input 
-                    placeholder="Nova categoria..." 
-                    className="w-1/2"
-                    onChange={e => setCurrentVideo({...currentVideo, category: e.target.value})}
-                    value={!existingCategories.includes(currentVideo.category || "") ? currentVideo.category : ""}
-                 />
-              </div>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Autor/Canal</Label>
-              <Input 
-                value={currentVideo.author || ""} 
-                onChange={e => setCurrentVideo({...currentVideo, author: e.target.value})}
-                className="col-span-3" 
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Duração</Label>
-              <Input 
-                value={currentVideo.duration || ""} 
-                onChange={e => setCurrentVideo({...currentVideo, duration: e.target.value})}
-                className="col-span-3" 
-                placeholder="Ex: Aprox. 20 min"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Visibilidade</Label>
-              <div className="col-span-3 flex items-center gap-2">
-                 <Switch 
-                    checked={currentVideo.is_public} 
-                    onCheckedChange={checked => setCurrentVideo({...currentVideo, is_public: checked})} 
-                 />
-                 <span className="text-sm text-muted-foreground">{currentVideo.is_public ? "Público (Todos veem)" : "Privado (Só Admins veem)"}</span>
-              </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label>Categoria</Label>
+                    <div className="flex gap-2">
+                        <Select 
+                            value={currentVideo.category} 
+                            onValueChange={val => setCurrentVideo({...currentVideo, category: val})}
+                        >
+                            <SelectTrigger className="flex-1">
+                            <SelectValue placeholder="Selecione..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                            {existingCategories.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    {/* Input manual para nova categoria se não selecionar */}
+                    <Input 
+                        placeholder="Ou digite nova categoria..." 
+                        className="text-xs mt-1"
+                        onChange={e => setCurrentVideo({...currentVideo, category: e.target.value})}
+                        value={!existingCategories.includes(currentVideo.category || "") ? currentVideo.category : ""}
+                    />
+                </div>
+                
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <Label>Duração Estimada</Label>
+                        <Input 
+                            value={currentVideo.duration || ""} 
+                            onChange={e => setCurrentVideo({...currentVideo, duration: e.target.value})}
+                            placeholder="Ex: Aprox. 20 min"
+                        />
+                    </div>
+                    <div className="flex items-center justify-between bg-muted/30 p-2 rounded-lg border">
+                        <Label className="cursor-pointer">Visibilidade Pública</Label>
+                        <Switch 
+                            checked={currentVideo.is_public} 
+                            onCheckedChange={checked => setCurrentVideo({...currentVideo, is_public: checked})} 
+                        />
+                    </div>
+                </div>
             </div>
           </div>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancelar</Button>
-            <Button onClick={() => saveVideoMutation.mutate(currentVideo)} disabled={saveVideoMutation.isPending}>
-              {saveVideoMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Salvar
+            <Button onClick={() => saveVideoMutation.mutate(currentVideo)} disabled={saveVideoMutation.isPending || !currentVideo.youtube_id}>
+              {saveVideoMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Salvar Vídeo
             </Button>
           </DialogFooter>
         </DialogContent>
