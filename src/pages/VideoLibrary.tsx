@@ -2,12 +2,13 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import { 
   Play, Search, MonitorPlay, Youtube, X, 
-  SkipBack, SkipForward, ListMusic, Pause, Clock
+  SkipBack, SkipForward, ListMusic, Pause, Clock, AlertCircle
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { VIDEO_LIBRARY, VideoLesson } from "@/data/videoLibrary";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -276,6 +277,19 @@ const VideoLibrary = () => {
              </Button>
            </div>
         )}
+      </div>
+
+      {/* Disclaimer Legal */}
+      <div className="mt-8 border-t pt-6">
+        <Alert className="bg-muted/30 border-muted-foreground/20 text-muted-foreground">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle className="text-foreground text-sm font-semibold">Aviso de Direitos Autorais</AlertTitle>
+            <AlertDescription className="text-xs mt-1 leading-relaxed">
+                EnfermagemPro utiliza a tecnologia de incorporação (embed) para reproduzir conteúdos públicos hospedados no YouTube.
+                Não hospedamos, armazenamos ou comercializamos estes arquivos de mídia.
+                Todos os direitos de propriedade intelectual, visualizações e monetização pertencem exclusivamente aos criadores e às suas respectivas gravadoras.
+            </AlertDescription>
+        </Alert>
       </div>
 
       {/* NOVO PLAYER MODAL ESTILO NETFLIX/YOUTUBE */}
