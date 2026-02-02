@@ -282,16 +282,21 @@ const VideoLibrary = () => {
         )}
       </div>
 
-      {/* Disclaimer Legal */}
-      <div className="mt-8 border-t pt-6">
-        <Alert className="bg-muted/30 border-muted-foreground/20 text-muted-foreground">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle className="text-foreground text-sm font-semibold">Aviso de Direitos Autorais</AlertTitle>
-            <AlertDescription className="text-xs mt-1 leading-relaxed">
-                EnfermagemPro utiliza a tecnologia de incorporação (embed) para reproduzir conteúdos públicos hospedados no YouTube.
-                Não hospedamos, armazenamos ou comercializamos estes arquivos de mídia.
-                Todos os direitos de propriedade intelectual, visualizações e monetização pertencem exclusivamente aos criadores e às suas respectivas gravadoras.
-            </AlertDescription>
+      {/* Disclaimer Legal com Destaque */}
+      <div className="mt-12 border-t border-border/40 pt-8">
+        <Alert className="bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800 shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
+            <div className="flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 shrink-0" />
+                <div>
+                    <AlertTitle className="text-amber-800 dark:text-amber-200 font-bold mb-1">Aviso de Direitos Autorais</AlertTitle>
+                    <AlertDescription className="text-xs sm:text-sm text-amber-700/90 dark:text-amber-300/90 leading-relaxed font-medium">
+                        EnfermagemPro utiliza a tecnologia de incorporação (embed) para reproduzir conteúdos públicos hospedados no YouTube.
+                        Não hospedamos, armazenamos ou comercializamos estes arquivos de mídia.
+                        Todos os direitos de propriedade intelectual, visualizações e monetização pertencem exclusivamente aos criadores e às suas respectivas gravadoras.
+                    </AlertDescription>
+                </div>
+            </div>
         </Alert>
       </div>
 
