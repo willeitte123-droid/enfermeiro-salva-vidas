@@ -145,7 +145,7 @@ const MiniVideoPlayer = ({ selectedVideo, currentPlaylist, onClose, onNext, onPr
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 sm:bottom-6 sm:right-6 sm:left-auto z-[9999] flex flex-col animate-in slide-in-from-bottom-full fade-in duration-500 w-full sm:w-[380px] bg-background sm:rounded-2xl shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.2)] sm:shadow-2xl border-t sm:border border-border/50 overflow-hidden">
+    <div className="fixed bottom-2 left-1/2 -translate-x-1/2 z-[9999] flex flex-col shadow-2xl rounded-2xl bg-card border border-border w-[95vw] sm:w-[380px] sm:left-auto sm:right-6 sm:bottom-6 sm:translate-x-0 overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300 max-h-[80vh]">
       <div className="relative w-full bg-black group shrink-0">
            <div className="relative w-full pt-[56.25%]"> 
                <div className="absolute inset-0">
@@ -255,7 +255,7 @@ const VideoLibrary = () => {
 
   useEffect(() => {
     const checkMobile = () => {
-      const isSmallScreen = window.matchMedia('(max-width: 1024px)').matches;
+      const isSmallScreen = window.innerWidth < 1024;
       const userAgent = typeof navigator === 'undefined' ? '' : navigator.userAgent;
       const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
       setIsCompactMode(isSmallScreen || isMobileUA);
@@ -276,7 +276,8 @@ const VideoLibrary = () => {
 
   const filteredVideos = useMemo(() => {
     return VIDEO_LIBRARY.filter(video => {
-      const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) || video.author.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                            video.author.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = activeCategory === "Todos" || video.category === activeCategory;
       return matchesSearch && matchesCategory;
     });
@@ -316,7 +317,8 @@ const VideoLibrary = () => {
   };
 
   return (
-    <div className="w-full pb-24 px-4 sm:px-6 md:px-8 space-y-6">
+    // Removido overflow-x-hidden e fixado max-w-full
+    <div className="w-full max-w-full space-y-6 pb-24 overflow-x-hidden">
       
       {/* Header Responsivo */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-4">
@@ -324,6 +326,7 @@ const VideoLibrary = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary w-fit uppercase tracking-wider">
             <Sparkles className="h-3 w-3 fill-current" /> Conteúdo Premium
           </div>
+          {/* Adicionado break-words para quebrar palavras longas */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight break-words">
             Videoteca <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-violet-600">Digital</span>
           </h1>
@@ -343,8 +346,8 @@ const VideoLibrary = () => {
         </div>
       </div>
 
-      {/* Filtros - Horizontal Scroll */}
-      <div className="w-full overflow-x-auto pb-2 scrollbar-hide -ml-4 px-4 sm:ml-0 sm:px-0">
+      {/* Filtros - Removido margem negativa */}
+      <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
           <div className="flex w-max space-x-2 sm:space-x-3">
             {CATEGORIES.map((cat) => {
                 const style = CATEGORY_STYLES[cat] || CATEGORY_STYLES["Todos"];
@@ -381,7 +384,7 @@ const VideoLibrary = () => {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className={cn("h-6 w-1 rounded-r-full bg-gradient-to-b", style.gradient)}></div>
-                            <h2 className="text-lg font-bold tracking-tight text-foreground line-clamp-1">{category}</h2>
+                            <h2 className="text-lg font-bold tracking-tight text-foreground line-clamp-1 break-words">{category}</h2>
                         </div>
                         {activeCategory === "Todos" && (
                             <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-primary transition-colors pr-0 shrink-0" onClick={() => setActiveCategory(category)}>
@@ -389,8 +392,8 @@ const VideoLibrary = () => {
                             </Button>
                         )}
                     </div>
-                    {/* Carrossel de Vídeos - Ajuste de Margem Negativa Mobile */}
-                    <div className="w-full overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory -ml-4 px-4 sm:ml-0 sm:px-0">
+                    {/* Carrossel de Vídeos - Removido margem negativa, width 100% */}
+                    <div className="w-full overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
                         <div className="flex w-max space-x-3 sm:space-x-4">
                             {videos.map((video) => (
                                 <VideoCard key={video.id} video={video} onClick={() => handleOpenVideo(video, videos)} userId={profile?.id} />
@@ -404,12 +407,30 @@ const VideoLibrary = () => {
 
       {selectedVideo && (
         isCompactMode ? (
-          <MiniVideoPlayer selectedVideo={selectedVideo} currentPlaylist={currentPlaylist} onClose={() => setSelectedVideo(null)} onNext={handleNext} onPrev={handlePrev} onVideoChange={handleVideoChange} />
+          <MiniVideoPlayer 
+             selectedVideo={selectedVideo}
+             currentPlaylist={currentPlaylist}
+             onClose={() => setSelectedVideo(null)}
+             onNext={handleNext}
+             onPrev={handlePrev}
+             onVideoChange={handleVideoChange}
+          />
         ) : (
           <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
-            <DialogContent className="w-full h-full max-w-none m-0 p-0 border-none bg-black flex flex-col gap-0 rounded-none sm:rounded-lg sm:h-[85vh] sm:w-[90vw] sm:max-w-5xl sm:border sm:border-slate-800 overflow-hidden outline-none z-[150]" onOpenAutoFocus={(e) => e.preventDefault()}>
+            <DialogContent 
+                className="w-full h-full max-w-none m-0 p-0 border-none bg-black flex flex-col gap-0 rounded-none sm:rounded-lg sm:h-[85vh] sm:w-[90vw] sm:max-w-5xl sm:border sm:border-slate-800 overflow-hidden outline-none z-[150]"
+                onOpenAutoFocus={(e) => e.preventDefault()} 
+            >
               <VisuallyHidden.Root><DialogTitle>{selectedVideo?.title || "Video Player"}</DialogTitle></VisuallyHidden.Root>
-              <DesktopPlayerContent selectedVideo={selectedVideo} currentPlaylist={currentPlaylist} onClose={() => setSelectedVideo(null)} onNext={handleNext} onPrev={handlePrev} onVideoChange={handleVideoChange} profile={profile} />
+              <DesktopPlayerContent 
+                  selectedVideo={selectedVideo} 
+                  currentPlaylist={currentPlaylist}
+                  onClose={() => setSelectedVideo(null)}
+                  onNext={handleNext}
+                  onPrev={handlePrev}
+                  onVideoChange={handleVideoChange}
+                  profile={profile}
+              />
             </DialogContent>
           </Dialog>
         )
