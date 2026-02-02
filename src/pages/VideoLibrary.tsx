@@ -41,7 +41,7 @@ const CATEGORY_STYLES: Record<string, { icon: any, gradient: string, shadow: str
 const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: () => void; userId?: string }) => {
   return (
     <div 
-      className="group relative w-[280px] sm:w-[320px] flex-shrink-0 cursor-pointer snap-start" 
+      className="group relative w-[260px] sm:w-[320px] flex-shrink-0 cursor-pointer snap-start" 
       onClick={onClick}
     >
       <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted shadow-md border border-border/50 transition-all duration-300 group-hover:shadow-xl group-hover:ring-2 ring-primary/50">
@@ -146,10 +146,7 @@ const MiniVideoPlayer = ({ selectedVideo, currentPlaylist, onClose, onNext, onPr
 
   return (
     <div className="fixed bottom-0 left-0 right-0 sm:bottom-6 sm:right-6 sm:left-auto z-[9999] flex flex-col animate-in slide-in-from-bottom-full fade-in duration-500 w-full sm:w-[380px] bg-background sm:rounded-2xl shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.2)] sm:shadow-2xl border-t sm:border border-border/50 overflow-hidden">
-      
-      {/* Container do Vídeo */}
       <div className="relative w-full bg-black group shrink-0">
-           {/* Aspect Ratio Wrapper */}
            <div className="relative w-full pt-[56.25%]"> 
                <div className="absolute inset-0">
                    <YouTube 
@@ -174,39 +171,23 @@ const MiniVideoPlayer = ({ selectedVideo, currentPlaylist, onClose, onNext, onPr
                    />
                </div>
            </div>
-           
-           <button 
-              onClick={onClose}
-              className="absolute top-2 right-2 bg-black/60 hover:bg-red-600 text-white rounded-full p-1.5 transition-colors z-50 shadow-md backdrop-blur-sm"
-           >
-              <X size={16} />
-           </button>
+           <button onClick={onClose} className="absolute top-2 right-2 bg-black/60 hover:bg-red-600 text-white rounded-full p-1.5 transition-colors z-50 shadow-md backdrop-blur-sm"><X size={16} /></button>
       </div>
-      
-      {/* Controles */}
       <div className="p-3 bg-card text-card-foreground">
           <div className="flex justify-between items-center mb-2">
               <div className="flex-1 pr-2 overflow-hidden">
                   <p className="text-sm font-bold truncate text-foreground">{selectedVideo.title}</p>
                   <p className="text-[10px] text-muted-foreground truncate">{selectedVideo.author}</p>
               </div>
-              
               <div className="flex gap-1 shrink-0">
                   <Button size="sm" variant="ghost" disabled={!hasPrev} onClick={onPrev} className="h-8 w-8 p-0 hover:bg-muted"><SkipBack size={16} /></Button>
                   <Button size="sm" variant="ghost" disabled={!hasNext} onClick={onNext} className="h-8 w-8 p-0 hover:bg-muted"><SkipForward size={16} /></Button>
               </div>
           </div>
-
           <div className="flex justify-between items-center pt-2 border-t border-border/40">
-              <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setIsPlaylistOpen(!isPlaylistOpen)}
-                  className={cn("h-7 px-3 text-xs gap-2 rounded-full transition-all border", isPlaylistOpen ? "bg-primary text-primary-foreground border-primary" : "text-muted-foreground hover:bg-muted border-transparent")}
-              >
+              <Button variant="ghost" size="sm" onClick={() => setIsPlaylistOpen(!isPlaylistOpen)} className={cn("h-7 px-3 text-xs gap-2 rounded-full transition-all border", isPlaylistOpen ? "bg-primary text-primary-foreground border-primary" : "text-muted-foreground hover:bg-muted border-transparent")}>
                   <ListMusic size={14} /> Playlist {isPlaylistOpen ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
               </Button>
-
               <a href={`https://www.youtube.com/watch?v=${selectedVideo.id}`} target="_blank" rel="noreferrer">
                   <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground hover:text-red-500 transition-colors cursor-pointer font-medium">
                       <Youtube size={14} /> Abrir no App
@@ -214,29 +195,17 @@ const MiniVideoPlayer = ({ selectedVideo, currentPlaylist, onClose, onNext, onPr
               </a>
           </div>
       </div>
-
-      {/* Playlist */}
       {isPlaylistOpen && (
           <div className="w-full bg-muted/30 border-t border-border/50 max-h-48 overflow-hidden flex flex-col">
-              <div className="px-3 py-2 text-[10px] uppercase tracking-widest text-muted-foreground font-bold bg-muted/50 border-b border-border/30">
-                  A seguir ({currentPlaylist.length})
-              </div>
+              <div className="px-3 py-2 text-[10px] uppercase tracking-widest text-muted-foreground font-bold bg-muted/50 border-b border-border/30">A seguir ({currentPlaylist.length})</div>
               <ScrollArea className="flex-1 w-full h-40">
                   <div className="flex flex-col p-1">
                       {currentPlaylist.map((item: VideoLesson, idx: number) => {
                           const isActive = item.id === selectedVideo.id;
                           return (
-                              <button
-                                  key={`${item.id}-${idx}`}
-                                  onClick={() => onVideoChange(item)}
-                                  className={cn("flex items-center gap-3 p-2 rounded-lg text-left transition-all group", isActive ? "bg-primary/10 border border-primary/20" : "hover:bg-background border border-transparent")}
-                              >
-                                  <div className="relative shrink-0 w-8 h-8 rounded overflow-hidden bg-black">
-                                      <img src={`https://img.youtube.com/vi/${item.id}/default.jpg`} className={cn("w-full h-full object-cover", isActive ? "opacity-60" : "opacity-100")} alt="thumb" />
-                                  </div>
-                                  <div className="flex-1 overflow-hidden">
-                                      <p className={cn("text-xs font-bold truncate", isActive ? "text-primary" : "text-foreground")}>{item.title}</p>
-                                  </div>
+                              <button key={`${item.id}-${idx}`} onClick={() => onVideoChange(item)} className={cn("flex items-center gap-3 p-2 rounded-lg text-left transition-all group", isActive ? "bg-primary/10 border border-primary/20" : "hover:bg-background border border-transparent")}>
+                                  <div className="relative shrink-0 w-8 h-8 rounded overflow-hidden bg-black"><img src={`https://img.youtube.com/vi/${item.id}/default.jpg`} className={cn("w-full h-full object-cover", isActive ? "opacity-60" : "opacity-100")} alt="thumb" /></div>
+                                  <div className="flex-1 overflow-hidden"><p className={cn("text-xs font-bold truncate", isActive ? "text-primary" : "text-foreground")}>{item.title}</p></div>
                                   {isActive && <Play size={10} className="text-primary fill-current" />}
                               </button>
                           );
@@ -251,69 +220,28 @@ const MiniVideoPlayer = ({ selectedVideo, currentPlaylist, onClose, onNext, onPr
 
 const DesktopPlayerContent = ({ selectedVideo, currentPlaylist, onClose, onNext, onPrev, onVideoChange, profile }: any) => {
   const playerRef = useRef<YouTubePlayer | null>(null);
-  
-  const onReady = (event: YouTubeEvent) => {
-    playerRef.current = event.target;
-    event.target.playVideo();
-  };
-
+  const onReady = (event: YouTubeEvent) => { playerRef.current = event.target; event.target.playVideo(); };
   return (
     <>
       <div className="relative w-full aspect-video bg-black shrink-0 shadow-2xl z-20">
-        <YouTube
-            videoId={selectedVideo.id}
-            opts={{
-                height: '100%',
-                width: '100%',
-                playerVars: {
-                    autoplay: 1,
-                    playsinline: 1, 
-                    modestbranding: 1,
-                    rel: 0,
-                    controls: 1,
-                },
-            }}
-            onReady={onReady}
-            onEnd={onNext}
-            className="absolute inset-0 w-full h-full"
-            iframeClassName="w-full h-full"
-        />
-        <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/60 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition-all z-30">
-          <X className="h-5 w-5" />
-        </button>
+        <YouTube videoId={selectedVideo.id} opts={{ height: '100%', width: '100%', playerVars: { autoplay: 1, playsinline: 1, modestbranding: 1, rel: 0, controls: 1 }}} onReady={onReady} onEnd={onNext} className="absolute inset-0 w-full h-full" iframeClassName="w-full h-full" />
+        <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/60 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition-all z-30"><X className="h-5 w-5" /></button>
       </div>
-
       <div className="bg-background sm:bg-card flex flex-col flex-1 min-h-0 overflow-hidden relative z-10">
         <div className="p-4 border-b border-border/50 bg-card shrink-0">
            <div className="flex justify-between gap-4">
               <div className="flex-1 space-y-1.5 min-w-0">
                  <h2 className="text-xl font-bold leading-tight line-clamp-2 pr-2">{selectedVideo.title}</h2>
                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-                    <span className="font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">{selectedVideo.author}</span>
-                    <span className="text-border">•</span>
-                    <span className="bg-muted px-2 py-0.5 rounded">{selectedVideo.category}</span>
+                    <span className="font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">{selectedVideo.author}</span><span className="text-border">•</span><span className="bg-muted px-2 py-0.5 rounded">{selectedVideo.category}</span>
                  </div>
               </div>
-              {profile && (
-                 <div className="shrink-0 pt-0.5">
-                    <FavoriteButton userId={profile.id} itemId={`video-${selectedVideo.id}`} itemType="Vídeo Aula" itemTitle={selectedVideo.title} className="h-10 w-10 border bg-muted/20 hover:bg-muted/40" />
-                 </div>
-              )}
+              {profile && (<div className="shrink-0 pt-0.5"><FavoriteButton userId={profile.id} itemId={`video-${selectedVideo.id}`} itemType="Vídeo Aula" itemTitle={selectedVideo.title} className="h-10 w-10 border bg-muted/20 hover:bg-muted/40" /></div>)}
            </div>
         </div>
-
         <div className="flex-1 flex flex-col bg-muted/5 min-h-0">
-          <div className="px-4 py-2 border-b border-border/50 bg-muted/30 flex items-center gap-2 sticky top-0 backdrop-blur-sm z-10 shrink-0">
-            <ListMusic className="h-3.5 w-3.5 text-primary" />
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A seguir ({currentPlaylist.length})</span>
-          </div>
-          <ScrollArea className="flex-1 w-full">
-            <div className="p-4 space-y-2 pb-safe-area">
-              {currentPlaylist.map((video: VideoLesson) => (
-                <PlaylistItem key={video.id} video={video} isActive={video.id === selectedVideo.id} onClick={() => onVideoChange(video)} />
-              ))}
-            </div>
-          </ScrollArea>
+          <div className="px-4 py-2 border-b border-border/50 bg-muted/30 flex items-center gap-2 sticky top-0 backdrop-blur-sm z-10 shrink-0"><ListMusic className="h-3.5 w-3.5 text-primary" /><span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A seguir ({currentPlaylist.length})</span></div>
+          <ScrollArea className="flex-1 w-full"><div className="p-4 space-y-2 pb-safe-area">{currentPlaylist.map((video: VideoLesson) => (<PlaylistItem key={video.id} video={video} isActive={video.id === selectedVideo.id} onClick={() => onVideoChange(video)} />))}</div></ScrollArea>
         </div>
       </div>
     </>
@@ -323,17 +251,15 @@ const DesktopPlayerContent = ({ selectedVideo, currentPlaylist, onClose, onNext,
 const VideoLibrary = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
-  
   const [isCompactMode, setIsCompactMode] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
-      const isSmallScreen = window.innerWidth < 1024;
+      const isSmallScreen = window.matchMedia('(max-width: 1024px)').matches;
       const userAgent = typeof navigator === 'undefined' ? '' : navigator.userAgent;
       const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
       setIsCompactMode(isSmallScreen || isMobileUA);
     };
-
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -350,8 +276,7 @@ const VideoLibrary = () => {
 
   const filteredVideos = useMemo(() => {
     return VIDEO_LIBRARY.filter(video => {
-      const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            video.author.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) || video.author.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = activeCategory === "Todos" || video.category === activeCategory;
       return matchesSearch && matchesCategory;
     });
@@ -391,40 +316,40 @@ const VideoLibrary = () => {
   };
 
   return (
-    <div className="space-y-6 pb-24 w-full">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="space-y-3 w-full">
+    <div className="w-full pb-24 px-4 sm:px-6 md:px-8 space-y-6">
+      
+      {/* Header Responsivo */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-4">
+        <div className="space-y-3 w-full max-w-full">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary w-fit uppercase tracking-wider">
             <Sparkles className="h-3 w-3 fill-current" /> Conteúdo Premium
           </div>
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight text-foreground leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight break-words">
             Videoteca <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-violet-600">Digital</span>
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed">
+          <p className="text-muted-foreground text-sm sm:text-base max-w-2xl leading-relaxed">
             Videoaulas de alta performance selecionadas para sua evolução.
           </p>
         </div>
         
-        <div className="relative w-full md:w-80">
+        <div className="relative w-full md:w-80 shrink-0">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
             placeholder="Buscar aula..." 
-            className="pl-10 h-12 rounded-xl bg-card border-border/50 shadow-sm focus:bg-background focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+            className="pl-10 h-12 rounded-xl bg-card border-border/50 shadow-sm focus:bg-background focus:ring-2 focus:ring-primary/20 transition-all text-sm w-full"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
 
-      {/* Filtros - Horizontal Scroll Otimizado */}
-      <div className="w-full overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      {/* Filtros - Horizontal Scroll */}
+      <div className="w-full overflow-x-auto pb-2 scrollbar-hide -ml-4 px-4 sm:ml-0 sm:px-0">
           <div className="flex w-max space-x-2 sm:space-x-3">
             {CATEGORIES.map((cat) => {
                 const style = CATEGORY_STYLES[cat] || CATEGORY_STYLES["Todos"];
                 const Icon = style.icon;
                 const isActive = activeCategory === cat;
-
                 return (
                     <button
                         key={cat}
@@ -464,8 +389,8 @@ const VideoLibrary = () => {
                             </Button>
                         )}
                     </div>
-                    {/* Carrossel de Vídeos */}
-                    <div className="w-full overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide snap-x snap-mandatory">
+                    {/* Carrossel de Vídeos - Ajuste de Margem Negativa Mobile */}
+                    <div className="w-full overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory -ml-4 px-4 sm:ml-0 sm:px-0">
                         <div className="flex w-max space-x-3 sm:space-x-4">
                             {videos.map((video) => (
                                 <VideoCard key={video.id} video={video} onClick={() => handleOpenVideo(video, videos)} userId={profile?.id} />
@@ -477,35 +402,14 @@ const VideoLibrary = () => {
         })}
       </div>
 
-      {/* PLAYER RENDER */}
       {selectedVideo && (
         isCompactMode ? (
-          <MiniVideoPlayer 
-             selectedVideo={selectedVideo}
-             currentPlaylist={currentPlaylist}
-             onClose={() => setSelectedVideo(null)}
-             onNext={handleNext}
-             onPrev={handlePrev}
-             onVideoChange={handleVideoChange}
-          />
+          <MiniVideoPlayer selectedVideo={selectedVideo} currentPlaylist={currentPlaylist} onClose={() => setSelectedVideo(null)} onNext={handleNext} onPrev={handlePrev} onVideoChange={handleVideoChange} />
         ) : (
           <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
-            <DialogContent 
-                className="w-full h-full max-w-none m-0 p-0 border-none bg-black flex flex-col gap-0 rounded-none sm:rounded-lg sm:h-[85vh] sm:w-[90vw] sm:max-w-5xl sm:border sm:border-slate-800 overflow-hidden outline-none z-[150]"
-                onOpenAutoFocus={(e) => e.preventDefault()} 
-            >
-              <VisuallyHidden.Root>
-                <DialogTitle>{selectedVideo?.title || "Video Player"}</DialogTitle>
-              </VisuallyHidden.Root>
-              <DesktopPlayerContent 
-                  selectedVideo={selectedVideo} 
-                  currentPlaylist={currentPlaylist}
-                  onClose={() => setSelectedVideo(null)}
-                  onNext={handleNext}
-                  onPrev={handlePrev}
-                  onVideoChange={handleVideoChange}
-                  profile={profile}
-              />
+            <DialogContent className="w-full h-full max-w-none m-0 p-0 border-none bg-black flex flex-col gap-0 rounded-none sm:rounded-lg sm:h-[85vh] sm:w-[90vw] sm:max-w-5xl sm:border sm:border-slate-800 overflow-hidden outline-none z-[150]" onOpenAutoFocus={(e) => e.preventDefault()}>
+              <VisuallyHidden.Root><DialogTitle>{selectedVideo?.title || "Video Player"}</DialogTitle></VisuallyHidden.Root>
+              <DesktopPlayerContent selectedVideo={selectedVideo} currentPlaylist={currentPlaylist} onClose={() => setSelectedVideo(null)} onNext={handleNext} onPrev={handlePrev} onVideoChange={handleVideoChange} profile={profile} />
             </DialogContent>
           </Dialog>
         )
