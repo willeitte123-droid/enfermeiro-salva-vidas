@@ -1,7 +1,8 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import { 
-  Play, Search, MonitorPlay, Youtube, X
+  Play, Search, MonitorPlay, Youtube, X, 
+  SkipBack, SkipForward, ListMusic, Pause
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,12 +12,13 @@ import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { VIDEO_LIBRARY, VideoLesson } from "@/data/videoLibrary";
 import FavoriteButton from "@/components/FavoriteButton";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 interface Profile {
   id: string;
 }
 
-// Categorias atualizadas conforme os novos vídeos
+// Categorias atualizadas
 const CATEGORIES = [
   "Todos", 
   "Legislação do SUS", 
@@ -26,9 +28,9 @@ const CATEGORIES = [
   "Biossegurança e CME"
 ];
 
-const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: (v: VideoLesson) => void; userId?: string }) => {
+const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: () => void; userId?: string }) => {
   return (
-    <div className="group relative w-[280px] sm:w-[320px] flex-shrink-0 cursor-pointer" onClick={() => onClick(video)}>
+    <div className="group relative w-[280px] sm:w-[320px] flex-shrink-0 cursor-pointer" onClick={onClick}>
       {/* Thumbnail Container */}
       <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:ring-2 ring-primary/50">
         <img 
@@ -86,13 +88,51 @@ const VideoCard = ({ video, onClick, userId }: { video: VideoLesson; onClick: (v
   );
 };
 
+// Item da Playlist (Lista Lateral/Inferior)
+const PlaylistItem = ({ video, isActive, onClick }: { video: VideoLesson, isActive: boolean, onClick: () => void }) => {
+  return (
+    <div 
+      onClick={onClick}
+      className={cn(
+        "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all border",
+        isActive 
+          ? "bg-primary/10 border-primary/50" 
+          : "bg-card hover:bg-accent border-transparent hover:border-border"
+      )}
+    >
+      <div className="relative h-12 w-20 flex-shrink-0 overflow-hidden rounded-md bg-muted">
+        <img 
+          src={`https://img.youtube.com/vi/${video.id}/default.jpg`} 
+          alt={video.title}
+          className="h-full w-full object-cover"
+        />
+        {isActive && (
+          <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
+            <div className="h-2 w-2 bg-primary rounded-full animate-pulse" />
+          </div>
+        )}
+      </div>
+      <div className="flex-1 min-w-0">
+        <h4 className={cn("text-xs font-semibold truncate", isActive ? "text-primary" : "text-foreground")}>
+          {video.title}
+        </h4>
+        <p className="text-[10px] text-muted-foreground truncate">{video.author}</p>
+      </div>
+      {isActive && <MonitorPlay className="h-4 w-4 text-primary" />}
+    </div>
+  )
+}
+
 const VideoLibrary = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
   
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [searchTerm, setSearchTerm] = useState("");
+  
+  // Estado do Player
   const [selectedVideo, setSelectedVideo] = useState<VideoLesson | null>(null);
+  const [currentPlaylist, setCurrentPlaylist] = useState<VideoLesson[]>([]);
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Biblioteca de Vídeos', path: '/video-library', icon: 'MonitorPlay' });
@@ -120,6 +160,26 @@ const VideoLibrary = () => {
     });
     return groups;
   }, [filteredVideos, activeCategory]);
+
+  // Handlers do Player
+  const handleOpenVideo = (video: VideoLesson, playlist: VideoLesson[]) => {
+    setSelectedVideo(video);
+    setCurrentPlaylist(playlist);
+  };
+
+  const handleNext = () => {
+    if (!selectedVideo || currentPlaylist.length === 0) return;
+    const currentIndex = currentPlaylist.findIndex(v => v.id === selectedVideo.id);
+    const nextIndex = (currentIndex + 1) % currentPlaylist.length;
+    setSelectedVideo(currentPlaylist[nextIndex]);
+  };
+
+  const handlePrev = () => {
+    if (!selectedVideo || currentPlaylist.length === 0) return;
+    const currentIndex = currentPlaylist.findIndex(v => v.id === selectedVideo.id);
+    const prevIndex = (currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
+    setSelectedVideo(currentPlaylist[prevIndex]);
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
@@ -192,7 +252,7 @@ const VideoLibrary = () => {
                   <VideoCard 
                     key={video.id} 
                     video={video} 
-                    onClick={setSelectedVideo} 
+                    onClick={() => handleOpenVideo(video, videos)} 
                     userId={profile?.id}
                   />
                 ))}
@@ -218,37 +278,92 @@ const VideoLibrary = () => {
         )}
       </div>
 
-      {/* Player Modal */}
+      {/* NOVO PLAYER MODAL ESTILO NETFLIX/YOUTUBE */}
       <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
-        <DialogContent className="sm:max-w-4xl p-0 bg-black border-slate-800 overflow-hidden">
-            <div className="relative w-full aspect-video bg-black">
-                {selectedVideo && (
-                    <iframe
-                        className="absolute inset-0 w-full h-full"
-                        src={`https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&rel=0`}
-                        title={selectedVideo.title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                    ></iframe>
-                )}
-            </div>
-            {selectedVideo && (
-                <div className="p-4 sm:p-6 bg-card border-t border-border">
-                    <div className="flex justify-between items-start gap-4">
-                        <div>
-                            <h2 className="text-lg sm:text-xl font-bold text-foreground">{selectedVideo.title}</h2>
-                            <p className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
-                                <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-bold">{selectedVideo.category}</span>
-                                <span>•</span>
-                                <span>{selectedVideo.author}</span>
-                            </p>
-                        </div>
-                        <Button variant="ghost" size="icon" onClick={() => setSelectedVideo(null)} className="shrink-0 rounded-full hover:bg-muted">
-                            <X className="h-5 w-5" />
-                        </Button>
+        <DialogContent className="max-w-[95vw] md:max-w-4xl p-0 bg-black border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
+          {selectedVideo && (
+            <>
+              {/* VIDEO AREA */}
+              <div className="relative w-full aspect-video bg-black shrink-0">
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src={`https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&rel=0`}
+                  title={selectedVideo.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
+                <button 
+                  onClick={() => setSelectedVideo(null)}
+                  className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition-all z-20"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* CONTROLS & INFO */}
+              <div className="bg-card border-t border-border flex flex-col flex-1 min-h-0">
+                {/* Meta Info Bar */}
+                <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border/50 shrink-0">
+                  <div className="space-y-1 flex-1 min-w-0">
+                    <h2 className="text-lg font-bold text-foreground leading-tight line-clamp-1" title={selectedVideo.title}>
+                      {selectedVideo.title}
+                    </h2>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="font-medium text-primary">{selectedVideo.author}</span>
+                      <span>•</span>
+                      <span>{selectedVideo.category}</span>
+                      {selectedVideo.duration && (
+                        <>
+                           <span>•</span>
+                           <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {selectedVideo.duration}</span>
+                        </>
+                      )}
                     </div>
+                  </div>
+                  
+                  {/* Player Controls */}
+                  <div className="flex items-center gap-3 self-end sm:self-center">
+                    <Button variant="outline" size="icon" onClick={handlePrev} title="Anterior">
+                      <SkipBack className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="icon" onClick={handleNext} title="Próximo">
+                      <SkipForward className="h-4 w-4" />
+                    </Button>
+                    {profile && (
+                        <FavoriteButton 
+                            userId={profile.id} 
+                            itemId={`video-${selectedVideo.id}`} 
+                            itemType="Vídeo Aula" 
+                            itemTitle={selectedVideo.title}
+                            className="h-10 w-10 border rounded-md"
+                        />
+                    )}
+                  </div>
                 </div>
-            )}
+
+                {/* Playlist Section */}
+                <div className="flex-1 min-h-0 flex flex-col bg-muted/10">
+                  <div className="px-4 py-2 border-b border-border/50 bg-muted/20 flex items-center gap-2">
+                    <ListMusic className="h-4 w-4 text-primary" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Fila de Reprodução ({currentPlaylist.length})</span>
+                  </div>
+                  
+                  <ScrollArea className="flex-1">
+                    <div className="p-4 space-y-2">
+                      {currentPlaylist.map((video) => (
+                        <PlaylistItem 
+                          key={video.id} 
+                          video={video} 
+                          isActive={video.id === selectedVideo.id}
+                          onClick={() => setSelectedVideo(video)}
+                        />
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+              </div>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </div>
