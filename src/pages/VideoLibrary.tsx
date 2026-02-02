@@ -347,10 +347,10 @@ const VideoLibrary = () => {
         </div>
       </div>
 
-      {/* Filtros - Container com min-w-0 */}
+      {/* Filtros - Empilhado no Mobile (multiline wrap) */}
       <div className="w-full min-w-0">
-          <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
-            <div className="flex w-max space-x-2 sm:space-x-3">
+          <div className="w-full">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
                 {CATEGORIES.map((cat) => {
                     const style = CATEGORY_STYLES[cat] || CATEGORY_STYLES["Todos"];
                     const Icon = style.icon;
@@ -360,7 +360,7 @@ const VideoLibrary = () => {
                             key={cat}
                             onClick={() => setActiveCategory(cat)}
                             className={cn(
-                                "group relative flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-300 overflow-hidden border shrink-0",
+                                "group relative flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-300 overflow-hidden border shrink-0 flex-1 sm:flex-none justify-center sm:justify-start min-w-[140px]",
                                 isActive
                                 ? `text-white ${style.shadow} shadow-lg ring-2 ring-white/20`
                                 : "bg-card text-muted-foreground border-border/50 hover:border-primary/30 hover:text-foreground"
@@ -369,7 +369,7 @@ const VideoLibrary = () => {
                             {isActive && <div className={cn("absolute inset-0 bg-gradient-to-r opacity-100 transition-opacity", style.gradient)} />}
                             <span className="relative z-10 flex items-center gap-2">
                                 <Icon className={cn("h-4 w-4 transition-transform duration-300", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary")} />
-                                {cat}
+                                <span className="truncate">{cat}</span>
                             </span>
                         </button>
                     );
