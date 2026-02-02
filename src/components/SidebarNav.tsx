@@ -35,6 +35,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
     ],
     tools: [
       { to: "/tools/performance", icon: PieChart, label: "Meu Desempenho" },
+      { to: "/concursos", icon: Briefcase, label: "Mural de Concursos" },
       { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
       { to: "/calculator", icon: Calculator, label: "Gotejamento" },
       { to: "/scales", icon: ListChecks, label: "Escalas Clínicas" },
@@ -45,7 +46,6 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }
     study: [
       { to: "/questions", icon: FileQuestion, label: "Banca de Questões" },
       { to: "/simulado", icon: Timer, label: "Área de Simulado" },
-      { to: "/concursos", icon: Briefcase, label: "Mural de Concursos" },
       { to: "/clinical-cases", icon: Stethoscope, label: "Casos Clínicos" },
       { to: "/study-tracks", icon: Map, label: "Trilha de Estudos" },
       { to: "/concurseiro", icon: GraduationCap, label: "Área do Concurseiro" },
