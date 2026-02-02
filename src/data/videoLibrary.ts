@@ -97,14 +97,14 @@ export const VIDEO_LIBRARY: VideoLesson[] = [
   },
   {
     id: "u56wwAPzt3E",
-    title: "Punção Venosa Periférica (Passo a Passo)",
+    title: "PUNÇÃO VENOSA PERIFÉRICA - PASSO A PASSO",
     author: "Enfermagem Prática",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 8 min"
   },
   {
     id: "bDfDvhCeYAU",
-    title: "Sondagem Vesical de Demora (Técnica Completa)",
+    title: "SONDAGEM VESICAL DE DEMORA - PASSO A PASSO (AULA PRÁTICA)",
     author: "Enfermagem Prática",
     category: "Procedimentos de enfermagem",
     duration: "Aprox. 10 min"
