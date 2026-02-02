@@ -16,7 +16,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { 
   Loader2, Plus, Edit, Trash2, Eye, EyeOff, Youtube, 
-  Search, RefreshCw, Layers, Save, Video, Database, AlertTriangle, CheckCircle
+  Search, RefreshCw, Layers, Save, Video, Database, AlertTriangle, CheckCircle, Wrench
 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -48,6 +48,9 @@ export default function VideoManager() {
   const [categoryAction, setCategoryAction] = useState<'rename' | 'delete'>('rename');
   const [targetCategory, setTargetCategory] = useState("");
   const [newCategoryName, setNewCategoryName] = useState("");
+  
+  // State para loading do setup
+  const [isSettingUp, setIsSettingUp] = useState(false);
 
   // 1. Buscar Vídeos
   const { data: videos = [], isLoading, isError, error, refetch } = useQuery({
@@ -67,6 +70,32 @@ export default function VideoManager() {
     const cats = new Set(videos.map(v => v.category));
     return Array.from(cats).sort();
   }, [videos]);
+
+  // Função para Reparar/Configurar Banco de Dados
+  const handleSetupDatabase = async () => {
+    setIsSettingUp(true);
+    const toastId = toast.loading("Configurando banco de dados e restaurando vídeos...");
+    
+    try {
+      // Chama a Edge Function que cria a tabela e insere os vídeos
+      const { data, error } = await supabase.functions.invoke('setup-database');
+      
+      if (error) throw error;
+      
+      if (data.success) {
+        toast.success(data.message, { id: toastId });
+        // Força recarregamento imediato dos dados
+        await queryClient.invalidateQueries({ queryKey: ["adminVideos"] });
+        await refetch();
+      } else {
+        throw new Error(data.error || "Erro desconhecido ao configurar.");
+      }
+    } catch (err: any) {
+      toast.error("Falha na configuração: " + err.message, { id: toastId });
+    } finally {
+      setIsSettingUp(false);
+    }
+  };
 
   const saveVideoMutation = useMutation({
     mutationFn: async (video: Partial<VideoData>) => {
@@ -153,24 +182,6 @@ export default function VideoManager() {
     onError: (err) => toast.error("Erro: " + err.message)
   });
 
-  // Configurar Banco de Dados e Restaurar Vídeos
-  const setupDatabase = async () => {
-    const toastId = toast.loading("Configurando e restaurando vídeos...");
-    try {
-      const { data, error } = await supabase.functions.invoke('setup-database');
-      if (error) throw error;
-      
-      if (data.success) {
-        toast.success(data.message, { id: toastId });
-        refetch(); // Recarrega a lista para mostrar os vídeos restaurados
-      } else {
-        throw new Error(data.error || "Erro desconhecido");
-      }
-    } catch (err: any) {
-      toast.error("Falha ao configurar: " + err.message, { id: toastId });
-    }
-  };
-
   const resetForm = () => {
     setCurrentVideo({ is_public: true, category: "Geral" });
     setIsEditing(false);
@@ -197,17 +208,18 @@ export default function VideoManager() {
       
       {/* ERROR HANDLER / SETUP BUTTON */}
       {isError && (
-        <Alert variant="destructive" className="border-red-200 bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-200">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Banco de Dados Não Detectado</AlertTitle>
-          <AlertDescription className="mt-2 flex flex-col gap-3">
-            <p>A tabela de vídeos ainda não existe no seu banco de dados Supabase.</p>
+        <Alert variant="destructive" className="border-red-200 bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-200 animate-in fade-in slide-in-from-top-4">
+          <AlertTriangle className="h-5 w-5" />
+          <AlertTitle className="text-lg font-bold">Atenção: Banco de Dados Não Detectado</AlertTitle>
+          <AlertDescription className="mt-2 flex flex-col gap-4">
+            <p className="text-sm">A tabela de vídeos não foi encontrada no sistema. Isso é normal na primeira configuração.</p>
             <Button 
-              onClick={setupDatabase} 
-              variant="outline" 
-              className="w-fit bg-white text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+              onClick={handleSetupDatabase} 
+              disabled={isSettingUp}
+              className="w-fit bg-red-600 hover:bg-red-700 text-white border-0 shadow-lg"
             >
-              <Database className="mr-2 h-4 w-4" /> Criar Tabela e Restaurar Vídeos
+              {isSettingUp ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wrench className="mr-2 h-4 w-4" />}
+              {isSettingUp ? "Configurando..." : "Reparar Banco de Dados e Restaurar Vídeos"}
             </Button>
           </AlertDescription>
         </Alert>
@@ -217,15 +229,17 @@ export default function VideoManager() {
       {!isError && videos.length === 0 && !isLoading && (
         <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950/20 text-blue-800 dark:text-blue-200">
           <Database className="h-4 w-4" />
-          <AlertTitle>Tabela Vazia</AlertTitle>
+          <AlertTitle>Tabela de Vídeos Vazia</AlertTitle>
           <AlertDescription className="mt-2 flex flex-col gap-3">
-            <p>A tabela existe mas não tem vídeos. Você pode restaurar os vídeos originais agora.</p>
+            <p>O banco de dados existe mas não contém vídeos.</p>
             <Button 
-              onClick={setupDatabase} 
+              onClick={handleSetupDatabase} 
+              disabled={isSettingUp}
               variant="outline" 
               className="w-fit bg-white text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700"
             >
-              <RefreshCw className="mr-2 h-4 w-4" /> Restaurar Vídeos Padrão
+              {isSettingUp ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+              Restaurar Vídeos Padrão
             </Button>
           </AlertDescription>
         </Alert>
@@ -265,7 +279,11 @@ export default function VideoManager() {
         {isLoading ? (
           <div className="p-8 text-center"><Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" /></div>
         ) : isError ? (
-          <div className="p-12 text-center text-muted-foreground">Aguardando configuração...</div>
+          <div className="p-12 text-center text-muted-foreground bg-muted/20">
+            <Database className="h-12 w-12 mx-auto mb-4 text-muted-foreground/30" />
+            <p>Conexão com banco de dados não estabelecida.</p>
+            <p className="text-sm mt-2">Utilize o botão de reparo acima.</p>
+          </div>
         ) : filteredVideos.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground">Nenhum vídeo encontrado.</div>
         ) : (

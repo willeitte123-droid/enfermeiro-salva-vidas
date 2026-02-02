@@ -34,7 +34,7 @@ serve(async (req) => {
     const client = new Client(Deno.env.get('SUPABASE_DB_URL'));
     await client.connect();
 
-    // 1. Criar Tabela
+    // 1. Criar Tabela se não existir
     await client.queryArray(`
       CREATE TABLE IF NOT EXISTS public.videos (
           id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -49,7 +49,7 @@ serve(async (req) => {
 
       ALTER TABLE public.videos ENABLE ROW LEVEL SECURITY;
       
-      -- Políticas de Segurança (RLS)
+      -- Políticas de Segurança (RLS) - Bloco DO para evitar erros se já existirem
       DO $$
       BEGIN
           IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'videos' AND policyname = 'Public videos are viewable by everyone') THEN
@@ -75,7 +75,7 @@ serve(async (req) => {
       $$;
     `);
 
-    // 2. Verificar se a tabela está vazia
+    // 2. Verificar quantos vídeos existem
     const result = await client.queryArray('SELECT COUNT(*) FROM public.videos');
     const count = Number(result.rows[0][0]);
 
@@ -96,7 +96,7 @@ serve(async (req) => {
 
     return new Response(JSON.stringify({ 
       success: true, 
-      message: count === 0 ? `Tabela criada e ${insertedCount} vídeos restaurados!` : "Tabela configurada (vídeos já existiam)." 
+      message: count === 0 ? `Banco de dados criado e ${insertedCount} vídeos restaurados com sucesso!` : `Banco de dados configurado. Já existem ${count} vídeos.` 
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
