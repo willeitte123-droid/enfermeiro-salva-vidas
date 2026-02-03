@@ -1,5 +1,5 @@
-const CACHE_NAME = 'enfermagem-pro-cache-v13'; // Versão incrementada
-const urlsToCache = [
+const CACHE_NAME = 'enfermagem-pro-v14';
+const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
@@ -11,12 +11,12 @@ const urlsToCache = [
 
 // Instalação: Cache dos arquivos essenciais (App Shell)
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // Ativa imediatamente
+  self.skipWaiting(); // Força o SW a ativar imediatamente
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('[Service Worker] Caching app shell');
-        return cache.addAll(urlsToCache);
+        return cache.addAll(ASSETS_TO_CACHE);
       })
       .catch((err) => console.error('[Service Worker] Falha no cache inicial:', err))
   );
@@ -24,7 +24,6 @@ self.addEventListener('install', (event) => {
 
 // Ativação: Limpeza de caches antigos
 self.addEventListener('activate', (event) => {
-  event.waitUntil(clients.claim()); // Assume controle das abas
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -35,39 +34,38 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim()) // Assume o controle das páginas imediatamente
   );
 });
 
 // Interceptação de requisições (Fetch)
 self.addEventListener('fetch', (event) => {
-  // Ignora requisições não-GET ou cross-origin (exceto fontes/imagens comuns se necessário)
+  // Ignora requisições não-GET ou de outras origens (exceto assets comuns se necessário)
   if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
     return;
   }
 
   const requestUrl = new URL(event.request.url);
 
-  // 1. Navegação (HTML): Network First, fallback to Cache, fallback to Offline Page
+  // 1. Navegação (HTML): Network First (Tenta rede, se falhar, vai pro Cache)
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
-        .then((networkResponse) => {
-          return networkResponse;
-        })
         .catch(() => {
-          // Se offline, tenta retornar o index.html (SPA) ou a página offline
+          // Se offline, tenta retornar o index.html (SPA)
           return caches.match('/index.html')
             .then((cachedResponse) => {
-              return cachedResponse || caches.match('/offline.html');
+              if (cachedResponse) return cachedResponse;
+              // Se nem o index.html estiver no cache, retorna página de erro
+              return caches.match('/offline.html');
             });
         })
     );
     return;
   }
 
-  // 2. Arquivos Estáticos (Imagens, CSS, JS, Fontes): Cache First, fallback to Network
-  // Melhora a performance carregando do disco primeiro
+  // 2. Arquivos Estáticos (Imagens, CSS, JS, Fontes): Cache First (Tenta cache, se falhar, rede)
+  // Isso melhora muito a performance e a pontuação no Lighthouse
   const isStatic = requestUrl.pathname.match(/\.(png|jpg|jpeg|svg|css|js|json|ico|woff2|woff|ttf)$/i);
 
   if (isStatic) {
@@ -76,24 +74,20 @@ self.addEventListener('fetch', (event) => {
         if (cachedResponse) {
           return cachedResponse;
         }
-        return fetch(event.request).then((networkResponse) => {
-          // Opcional: Cachear dinamicamente novos arquivos estáticos
-          // if (networkResponse && networkResponse.status === 200) {
-          //   const responseClone = networkResponse.clone();
-          //   caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
-          // }
-          return networkResponse;
-        });
+        return fetch(event.request);
       })
     );
     return;
   }
 
-  // 3. Padrão para outras requisições (API, etc): Network First
+  // 3. Outras requisições (API, etc): Network Only (ou Network First padrão)
   event.respondWith(
     fetch(event.request).catch(() => {
-      // Se falhar (offline), tenta ver se tem no cache (improvável para API, mas seguro)
-      return caches.match(event.request);
+      // Opcional: retornar algo genérico se API falhar
+      return new Response(JSON.stringify({ error: 'Network error' }), { 
+          status: 503, 
+          headers: { 'Content-Type': 'application/json' } 
+      });
     })
   );
 });

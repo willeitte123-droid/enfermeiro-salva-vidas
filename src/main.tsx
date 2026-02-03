@@ -21,12 +21,22 @@ createRoot(document.getElementById("root")!).render(
   </QueryClientProvider>
 );
 
+// Registro do Service Worker para PWA
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then(registration => {
-      console.log('Service Worker registrado com sucesso: ', registration);
-    }).catch(registrationError => {
-      console.log('Falha no registro do Service Worker: ', registrationError);
-    });
-  });
+  // Registra imediatamente se a página já estiver carregada, ou aguarda o load
+  const registerSW = () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('SW registrado: ', registration.scope);
+      })
+      .catch(err => {
+        console.log('Falha no registro do SW: ', err);
+      });
+  };
+
+  if (document.readyState === 'complete') {
+    registerSW();
+  } else {
+    window.addEventListener('load', registerSW);
+  }
 }
