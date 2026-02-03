@@ -12,7 +12,6 @@ serve(async (req) => {
   }
 
   try {
-    // Usando a Service Role Key para ter acesso total ao banco (bypass RLS)
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
@@ -24,22 +23,45 @@ serve(async (req) => {
       }
     );
 
-    const TARGET_USER_ID = '4975ed96-8d71-433f-9d1d-8c81f4a3ce7c';
     const TARGET_EMAIL = 'nandorv3@gmail.com';
 
-    console.log(`Tentando criar/atualizar perfil para: ${TARGET_USER_ID}`);
+    console.log(`Buscando usuário: ${TARGET_EMAIL}`);
 
-    // Tenta fazer o UPSERT (Inserir ou Atualizar) diretamente na tabela profiles
+    // 1. Busca o ID real do usuário pelo email usando RPC ou Auth Admin
+    let targetUserId = null;
+
+    // Tentativa A: Via RPC (se existir)
+    const { data: rpcId, error: rpcError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: TARGET_EMAIL });
+    if (!rpcError && rpcId) {
+        targetUserId = rpcId;
+        console.log("ID encontrado via RPC:", targetUserId);
+    } else {
+        // Tentativa B: Via Auth Admin (List Users) - Fallback
+        console.log("RPC falhou ou não retornou ID. Tentando listUsers...");
+        const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+        if (!listError && users) {
+             const foundUser = users.find(u => u.email === TARGET_EMAIL);
+             if (foundUser) targetUserId = foundUser.id;
+        }
+    }
+
+    if (!targetUserId) {
+        throw new Error(`Usuário ${TARGET_EMAIL} não encontrado no sistema de autenticação.`);
+    }
+
+    console.log(`Aplicando permissões de Admin para ID: ${targetUserId}`);
+
+    // 2. Atualiza o perfil com o ID correto
     const { data, error } = await supabaseAdmin
       .from('profiles')
       .upsert({
-        id: TARGET_USER_ID,
+        id: targetUserId,
         first_name: 'Nando',
         last_name: 'Admin',
         role: 'admin',
         status: 'active',
         plan: 'premium',
-        email: TARGET_EMAIL,
+        // email: TARGET_EMAIL, // Removido para evitar erro de coluna inexistente
         updated_at: new Date().toISOString()
       })
       .select()
@@ -47,14 +69,12 @@ serve(async (req) => {
 
     if (error) {
       console.error("Erro no Supabase Admin:", error);
-      throw new Error(`Falha ao criar perfil: ${error.message}`);
+      throw new Error(`Falha ao atualizar perfil: ${error.message}`);
     }
-
-    console.log("Perfil criado com sucesso:", data);
 
     return new Response(JSON.stringify({ 
       success: true, 
-      message: "Perfil de Admin criado com sucesso! A página irá recarregar.",
+      message: `Perfil atualizado com sucesso para o ID ${targetUserId}!`,
       data 
     }), { 
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
