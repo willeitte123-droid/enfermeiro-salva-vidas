@@ -39,11 +39,10 @@ interface AppUser {
   location: string | null;
 }
 
-// Schema relaxado para permitir qualquer string, evitando erros de validação
 const editUserSchema = z.object({
   role: z.string(),
   status: z.string(),
-  plan: z.string(), // Permite qualquer valor de plano que já esteja no banco
+  plan: z.string(),
 });
 
 const fetchAllUsers = async (): Promise<AppUser[]> => {
@@ -84,7 +83,6 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
         plan: values.plan
       };
       
-      // Se ativar um usuário com plano, renova a data se estiver vazia ou vencida
       if (values.status === 'active' && values.plan !== 'free') {
          if (!user.access_expires_at || new Date(user.access_expires_at) < new Date()) {
             updates.access_expires_at = addYears(new Date(), 1).toISOString();
@@ -92,8 +90,19 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
          }
       }
 
-      const { error } = await supabase.from('profiles').update(updates).eq('id', user.id);
+      // Adicionado .select() para garantir que o retorno confirme a alteração
+      // Se RLS bloquear silenciosamente, data será vazio/null
+      const { data, error } = await supabase
+        .from('profiles')
+        .update(updates)
+        .eq('id', user.id)
+        .select();
+
       if (error) throw error;
+      
+      if (!data || data.length === 0) {
+        throw new Error("A alteração não foi salva. Verifique suas permissões de administrador.");
+      }
     },
     onSuccess: () => {
       toast.success("Usuário atualizado com sucesso!");
@@ -182,33 +191,6 @@ const UserManagement = () => {
     toast.success("Lista de usuários atualizada");
   };
 
-  const handleEmergencyFix = async () => {
-    const targetEmail = 'nandorv3@gmail.com';
-    const targetUser = users.find(u => u.email === targetEmail);
-
-    if (!targetUser) {
-        toast.error(`Usuário ${targetEmail} não encontrado na lista. Tente atualizar a lista primeiro.`);
-        return;
-    }
-
-    const toastId = toast.loading("Aplicando correção no perfil...");
-    try {
-        const { error } = await supabase.from('profiles').update({
-            status: 'active',
-            plan: 'Plano Pro anual',
-            access_expires_at: addYears(new Date(), 1).toISOString(),
-            plan_start_date: new Date().toISOString()
-        }).eq('id', targetUser.id);
-
-        if (error) throw error;
-
-        toast.success(`Usuário ${targetEmail} ativado como PRO ANUAL com sucesso!`, { id: toastId });
-        refetch();
-    } catch (err: any) {
-        toast.error("Falha ao corrigir usuário: " + err.message, { id: toastId });
-    }
-  };
-
   if (isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
   if (error) return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro de Acesso</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
 
@@ -221,9 +203,6 @@ const UserManagement = () => {
             <p className="text-sm text-muted-foreground">Gerencie acessos, planos e status.</p>
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
-             <Button variant="destructive" size="sm" onClick={handleEmergencyFix} title="Correção Urgente" className="shadow-sm w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white border-amber-600">
-                <Zap className="h-4 w-4 mr-2" /> Corrigir Nando (Pro Anual)
-             </Button>
              <Button variant="outline" size="sm" onClick={handleRefresh} title="Atualizar Lista" className="shadow-sm bg-background w-full sm:w-auto">
                 <Loader2 className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} /> Atualizar
              </Button>
