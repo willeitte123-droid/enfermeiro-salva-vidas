@@ -90,18 +90,27 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
          }
       }
 
-      // Adicionado .select() para garantir que o retorno confirme a alteração
-      // Se RLS bloquear silenciosamente, data será vazio/null
+      console.log("Tentando atualizar usuário:", user.id, updates);
+
       const { data, error } = await supabase
         .from('profiles')
         .update(updates)
         .eq('id', user.id)
         .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Erro Supabase:", error);
+        throw error;
+      }
       
+      console.log("Retorno do update:", data);
+
       if (!data || data.length === 0) {
-        throw new Error("A alteração não foi salva. Verifique suas permissões de administrador.");
+        // Fallback: Se o update não retornou dados (RLS de select bloqueando), 
+        // tentamos assumir que funcionou se não houve erro explícito, 
+        // MAS o ideal é que RLS permita o select.
+        // Vamos lançar erro para forçar verificação, mas logar detalhe.
+        throw new Error("O banco de dados não retornou confirmação. O registro pode estar bloqueado por RLS.");
       }
     },
     onSuccess: () => {
@@ -110,7 +119,8 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       onOpenChange(false);
     },
     onError: (error) => {
-      toast.error("Erro ao atualizar usuário", { description: error.message });
+      console.error("Erro na mutação:", error);
+      toast.error("Erro ao atualizar", { description: error.message });
     },
   });
 
