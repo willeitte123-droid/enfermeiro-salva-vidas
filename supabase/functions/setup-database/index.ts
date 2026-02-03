@@ -12,103 +12,59 @@ serve(async (req) => {
   }
 
   try {
-    // Conecta diretamente ao banco usando a string de conexão
     const client = new Client(Deno.env.get('SUPABASE_DB_URL'));
     await client.connect();
 
-    // SCRIPT SQL DE EMERGÊNCIA
-    // 1. Recria a função is_admin
-    // 2. Recria admin_update_profile com SECURITY DEFINER (Bypassa RLS)
-    // 3. Corrige políticas de acesso da tabela profiles
+    // ID do usuário fornecido
+    const TARGET_USER_ID = '4975ed96-8d71-433f-9d1d-8c81f4a3ce7c';
+
     await client.queryArray(`
-      -- Função auxiliar
+      -- 1. Garante que as funções de admin existam
       CREATE OR REPLACE FUNCTION public.is_admin()
-      RETURNS BOOLEAN
-      LANGUAGE plpgsql
-      SECURITY DEFINER
-      SET search_path = public
-      AS $$
+      RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
       BEGIN
         RETURN EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin');
       END;
       $$;
 
-      -- Função RPC de atualização (Correção do erro "new row violates row-level security")
-      CREATE OR REPLACE FUNCTION public.admin_update_profile(
-        target_user_id UUID,
-        new_role TEXT,
-        new_status TEXT,
-        new_plan TEXT
-      )
-      RETURNS JSON
-      LANGUAGE plpgsql
-      SECURITY DEFINER
-      SET search_path = public
-      AS $$
-      DECLARE
-        result JSON;
-      BEGIN
-        -- Verifica se quem chama é admin
-        IF NOT public.is_admin() THEN
-          RAISE EXCEPTION 'Acesso negado: Apenas administradores.';
-        END IF;
-
-        -- Executa update
-        UPDATE public.profiles
-        SET 
-          role = new_role,
-          status = new_status,
-          plan = new_plan,
-          updated_at = NOW()
-        WHERE id = target_user_id;
-
-        SELECT row_to_json(p.*) INTO result FROM public.profiles p WHERE id = target_user_id;
-        RETURN result;
-      END;
-      $$;
-
-      -- Permissões de execução
-      GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated;
-      GRANT EXECUTE ON FUNCTION public.is_admin() TO service_role;
-      GRANT EXECUTE ON FUNCTION public.admin_update_profile(UUID, TEXT, TEXT, TEXT) TO authenticated;
-      GRANT EXECUTE ON FUNCTION public.admin_update_profile(UUID, TEXT, TEXT, TEXT) TO service_role;
-
-      -- Correção de RLS (Policies) na tabela Profiles
+      -- 2. Correção de RLS para permitir leitura/escrita correta
       ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
-
-      -- Remove políticas antigas que podem estar conflitando
+      
       DROP POLICY IF EXISTS "profiles_read_all_policy" ON public.profiles;
+      CREATE POLICY "profiles_read_all_policy" ON public.profiles FOR SELECT TO authenticated USING (true);
+
       DROP POLICY IF EXISTS "profiles_update_policy" ON public.profiles;
-      DROP POLICY IF EXISTS "Admins can update any profile" ON public.profiles;
-      DROP POLICY IF EXISTS "Admins can view all profiles" ON public.profiles;
+      CREATE POLICY "profiles_update_policy" ON public.profiles FOR UPDATE TO authenticated USING (id = auth.uid() OR public.is_admin());
 
-      -- Política de Leitura: Admins veem tudo, usuários veem a si mesmos (ou tudo se for perfil público, ajustável)
-      CREATE POLICY "profiles_read_all_policy" ON public.profiles
-      FOR SELECT TO authenticated
-      USING (true);
+      DROP POLICY IF EXISTS "profiles_insert_policy" ON public.profiles;
+      CREATE POLICY "profiles_insert_policy" ON public.profiles FOR INSERT TO authenticated WITH CHECK (id = auth.uid());
 
-      -- Política de Update: O usuário pode editar a si mesmo, ou o Admin pode editar qualquer um
-      CREATE POLICY "profiles_update_policy" ON public.profiles
-      FOR UPDATE TO authenticated
-      USING (id = auth.uid() OR public.is_admin())
-      WITH CHECK (id = auth.uid() OR public.is_admin());
+      -- 3. INSERÇÃO FORÇADA DO PERFIL DO NANDO (O PULO DO GATO)
+      INSERT INTO public.profiles (id, first_name, last_name, role, status, plan, email)
+      VALUES (
+        '${TARGET_USER_ID}',
+        'Nando',
+        'Admin',
+        'admin',
+        'active',
+        'premium',
+        'nandorv3@gmail.com'
+      )
+      ON CONFLICT (id) DO UPDATE
+      SET 
+        role = 'admin',
+        status = 'active',
+        plan = 'premium';
     `);
 
     await client.end();
 
     return new Response(JSON.stringify({ 
       success: true, 
-      message: "Permissões de banco de dados corrigidas com sucesso!" 
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 200,
-    });
+      message: "Perfil de Admin criado/reparado com sucesso!" 
+    }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
 
   } catch (error) {
-    console.error("Erro na Edge Function:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 500,
-    });
+    return new Response(JSON.stringify({ error: error.message }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
 });
