@@ -1,38 +1,36 @@
-const CACHE_NAME = 'enfermagem-pro-cache-v12'; // Versão incrementada para forçar atualização
+const CACHE_NAME = 'enfermagem-pro-cache-v13'; // Versão incrementada
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
   '/logo.svg',
-  '/offline.html'
+  '/offline.html',
+  '/images/icon-192.png',
+  '/images/icon-512.png'
 ];
 
+// Instalação: Cache dos arquivos essenciais (App Shell)
 self.addEventListener('install', (event) => {
-  // Força o SW a ativar imediatamente, ignorando a espera
-  self.skipWaiting();
-  
+  self.skipWaiting(); // Ativa imediatamente
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
+        console.log('[Service Worker] Caching app shell');
         return cache.addAll(urlsToCache);
       })
-      .catch((err) => {
-        console.error('Falha ao registrar cache:', err);
-      })
+      .catch((err) => console.error('[Service Worker] Falha no cache inicial:', err))
   );
 });
 
+// Ativação: Limpeza de caches antigos
 self.addEventListener('activate', (event) => {
-  // Assume o controle de todas as abas abertas imediatamente
-  event.waitUntil(clients.claim());
-
-  // Limpa caches antigos (como a versão que mostra a tela Blick)
+  event.waitUntil(clients.claim()); // Assume controle das abas
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
-            console.log('Deletando cache antigo:', cacheName);
+            console.log('[Service Worker] Removendo cache antigo:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -41,16 +39,16 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Interceptação de requisições (Fetch)
 self.addEventListener('fetch', (event) => {
-  // Ignora requisições que não sejam do mesmo domínio ou métodos diferentes de GET
+  // Ignora requisições não-GET ou cross-origin (exceto fontes/imagens comuns se necessário)
   if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
     return;
   }
 
   const requestUrl = new URL(event.request.url);
 
-  // ESTRATÉGIA PARA NAVEGAÇÃO (HTML): Network First, then Cache (App Shell)
-  // Isso resolve o problema de links do Google ou rotas diretas
+  // 1. Navegação (HTML): Network First, fallback to Cache, fallback to Offline Page
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
@@ -58,7 +56,7 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => {
-          // Se estiver offline ou rede falhar, retorna o index.html (SPA)
+          // Se offline, tenta retornar o index.html (SPA) ou a página offline
           return caches.match('/index.html')
             .then((cachedResponse) => {
               return cachedResponse || caches.match('/offline.html');
@@ -68,19 +66,34 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // ESTRATÉGIA PARA ARQUIVOS ESTÁTICOS: Cache First, then Network
-  const isStatic = requestUrl.pathname.match(/\.(png|jpg|jpeg|svg|css|js|json|ico|woff2)$/);
+  // 2. Arquivos Estáticos (Imagens, CSS, JS, Fontes): Cache First, fallback to Network
+  // Melhora a performance carregando do disco primeiro
+  const isStatic = requestUrl.pathname.match(/\.(png|jpg|jpeg|svg|css|js|json|ico|woff2|woff|ttf)$/i);
 
   if (isStatic) {
     event.respondWith(
-      caches.match(event.request).then((response) => {
-        return response || fetch(event.request);
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(event.request).then((networkResponse) => {
+          // Opcional: Cachear dinamicamente novos arquivos estáticos
+          // if (networkResponse && networkResponse.status === 200) {
+          //   const responseClone = networkResponse.clone();
+          //   caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+          // }
+          return networkResponse;
+        });
       })
     );
-  } else {
-    // Padrão: Network First
-    event.respondWith(
-      fetch(event.request).catch(() => caches.match(event.request))
-    );
+    return;
   }
+
+  // 3. Padrão para outras requisições (API, etc): Network First
+  event.respondWith(
+    fetch(event.request).catch(() => {
+      // Se falhar (offline), tenta ver se tem no cache (improvável para API, mas seguro)
+      return caches.match(event.request);
+    })
+  );
 });

@@ -11,6 +11,7 @@
   "background_color": "#ffffff",
   "theme_color": "#1c75e7",
   "orientation": "portrait-primary",
+  "categories": ["medical", "education", "productivity"],
   "icons": [
     {
       "src": "/images/icon-192.png",
@@ -23,6 +24,42 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot1.png",
+      "sizes": "719x1434",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tela Inicial Mobile"
+    },
+    {
+      "src": "/images/screenshot2.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Dashboard Desktop"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Calculadora",
+      "url": "/calculator",
+      "description": "Calculadora de Gotejamento",
+      "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Simulado",
+      "url": "/simulado",
+      "description": "Área de Simulado",
+      "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Medicamentos",
+      "url": "/medications",
+      "description": "Guia de Medicamentos",
+      "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }
