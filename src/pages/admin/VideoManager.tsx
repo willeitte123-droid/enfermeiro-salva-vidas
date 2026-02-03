@@ -420,7 +420,7 @@ export default function VideoManager() {
 
       {/* DIALOG: NOVO/EDITAR VÍDEO (REFORMULADO) */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl w-[95vw] rounded-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
                {isEditing ? <Edit className="h-5 w-5 text-primary"/> : <Plus className="h-5 w-5 text-primary"/>}
@@ -435,32 +435,33 @@ export default function VideoManager() {
               <Label className="text-sm font-bold flex items-center gap-2">
                  <LinkIcon className="h-4 w-4 text-red-500" /> Link do YouTube
               </Label>
-              <div className="flex gap-2">
-                <Input 
-                  value={pastedLink} 
-                  onChange={e => {
-                     setPastedLink(e.target.value);
-                     if(!e.target.value) setCurrentVideo(prev => ({ ...prev, youtube_id: "" }));
-                  }}
-                  className="flex-1" 
-                  placeholder="Cole aqui: https://www.youtube.com/watch?v=..."
-                  // autoFocus removido para evitar bloqueio de paste em modais
-                />
-                <Button 
-                   type="button"
-                   variant="outline"
-                   size="icon"
-                   title="Colar"
-                   onClick={handlePasteFromClipboard}
-                   className="shrink-0"
-                >
-                   <Clipboard className="h-4 w-4" />
-                </Button>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <div className="flex flex-1 gap-2">
+                    <Input 
+                      value={pastedLink} 
+                      onChange={e => {
+                        setPastedLink(e.target.value);
+                        if(!e.target.value) setCurrentVideo(prev => ({ ...prev, youtube_id: "" }));
+                      }}
+                      className="flex-1 min-w-0" 
+                      placeholder="Cole aqui: https://www.youtube.com/watch?v=..."
+                    />
+                    <Button 
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      title="Colar"
+                      onClick={handlePasteFromClipboard}
+                      className="shrink-0"
+                    >
+                      <Clipboard className="h-4 w-4" />
+                    </Button>
+                </div>
                 <Button 
                    type="button" 
                    onClick={() => fetchVideoMetadata(pastedLink)}
                    disabled={isLoadingMetadata || !pastedLink}
-                   className="min-w-[100px]"
+                   className="sm:w-auto w-full min-w-[100px] shrink-0"
                 >
                    {isLoadingMetadata ? <Loader2 className="h-4 w-4 animate-spin mr-2"/> : <Sparkles className="h-4 w-4 mr-2 text-yellow-300"/>}
                    {isLoadingMetadata ? "..." : "Importar"}
@@ -473,8 +474,8 @@ export default function VideoManager() {
 
             {/* PREVIEW SE TIVER ID */}
             {currentVideo.youtube_id && (
-               <div className="bg-muted/30 p-3 rounded-lg border flex items-start gap-4 animate-in fade-in zoom-in duration-300">
-                   <div className="w-32 h-20 bg-black rounded overflow-hidden shrink-0 shadow-sm border border-border/50">
+               <div className="bg-muted/30 p-3 rounded-lg border flex flex-col sm:flex-row items-start gap-4 animate-in fade-in zoom-in duration-300">
+                   <div className="w-full sm:w-32 h-32 sm:h-20 bg-black rounded overflow-hidden shrink-0 shadow-sm border border-border/50">
                       <img src={`https://img.youtube.com/vi/${currentVideo.youtube_id}/mqdefault.jpg`} className="w-full h-full object-cover" />
                    </div>
                    <div className="flex-1 min-w-0 py-1">
@@ -549,7 +550,7 @@ export default function VideoManager() {
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancelar</Button>
             <Button onClick={() => saveVideoMutation.mutate(currentVideo)} disabled={saveVideoMutation.isPending || !currentVideo.youtube_id}>
               {saveVideoMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Salvar Vídeo
@@ -560,7 +561,7 @@ export default function VideoManager() {
 
       {/* DIALOG: GERENCIAR CATEGORIAS */}
       <Dialog open={isCategoryDialogOpen} onOpenChange={setIsCategoryDialogOpen}>
-        <DialogContent>
+        <DialogContent className="w-[95vw] max-w-lg rounded-lg">
           <DialogHeader>
             <DialogTitle>Gerenciar Categorias</DialogTitle>
             <DialogDescription>
@@ -605,7 +606,7 @@ export default function VideoManager() {
              </div>
           </Tabs>
 
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setIsCategoryDialogOpen(false)}>Cancelar</Button>
             <Button 
                variant={categoryAction === 'delete' ? "destructive" : "default"}
