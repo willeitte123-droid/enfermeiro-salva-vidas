@@ -420,7 +420,7 @@ export default function VideoManager() {
 
       {/* DIALOG: NOVO/EDITAR VÍDEO (REFORMULADO) */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl w-[95vw] rounded-lg">
+        <DialogContent className="max-w-2xl w-[95vw] rounded-lg overflow-y-auto max-h-[90vh]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
                {isEditing ? <Edit className="h-5 w-5 text-primary"/> : <Plus className="h-5 w-5 text-primary"/>}
@@ -435,8 +435,8 @@ export default function VideoManager() {
               <Label className="text-sm font-bold flex items-center gap-2">
                  <LinkIcon className="h-4 w-4 text-red-500" /> Link do YouTube
               </Label>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <div className="flex flex-1 gap-2">
+              <div className="flex flex-col sm:flex-row gap-2 w-full">
+                <div className="flex flex-1 gap-2 min-w-0">
                     <Input 
                       value={pastedLink} 
                       onChange={e => {
@@ -474,14 +474,14 @@ export default function VideoManager() {
 
             {/* PREVIEW SE TIVER ID */}
             {currentVideo.youtube_id && (
-               <div className="bg-muted/30 p-3 rounded-lg border flex flex-col sm:flex-row items-start gap-4 animate-in fade-in zoom-in duration-300">
+               <div className="bg-muted/30 p-3 rounded-lg border flex flex-col sm:flex-row items-start gap-4 animate-in fade-in zoom-in duration-300 w-full overflow-hidden">
                    <div className="w-full sm:w-32 h-32 sm:h-20 bg-black rounded overflow-hidden shrink-0 shadow-sm border border-border/50">
                       <img src={`https://img.youtube.com/vi/${currentVideo.youtube_id}/mqdefault.jpg`} className="w-full h-full object-cover" />
                    </div>
-                   <div className="flex-1 min-w-0 py-1">
+                   <div className="flex-1 min-w-0 py-1 w-full">
                       <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-1">Preview</p>
-                      <p className="text-sm font-medium truncate">{currentVideo.title || "Sem título..."}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{currentVideo.author || "Autor desconhecido"}</p>
+                      <p className="text-sm font-medium truncate w-full">{currentVideo.title || "Sem título..."}</p>
+                      <p className="text-xs text-muted-foreground mt-1 truncate">{currentVideo.author || "Autor desconhecido"}</p>
                    </div>
                </div>
             )}
@@ -513,7 +513,7 @@ export default function VideoManager() {
                             value={currentVideo.category} 
                             onValueChange={val => setCurrentVideo({...currentVideo, category: val})}
                         >
-                            <SelectTrigger className="flex-1">
+                            <SelectTrigger className="flex-1 min-w-0">
                             <SelectValue placeholder="Selecione..." />
                             </SelectTrigger>
                             <SelectContent>
