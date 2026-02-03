@@ -3,9 +3,9 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, AlertTriangle, Edit, Webhook, LayoutDashboard, MapPin, Globe, Shield, Calendar, Mail, Video } from "lucide-react";
+import { Loader2, Search, AlertTriangle, Edit, Webhook, LayoutDashboard, MapPin, Globe, Shield, Calendar, Mail, Video, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { format } from 'date-fns';
+import { format, addYears } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -78,15 +78,7 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
     mutationFn: async (values: z.infer<typeof editUserSchema>) => {
       if (!user) throw new Error("Usuário não selecionado.");
       
-      // Se mudar para um plano pago e o status for ativo, renovamos a data se estiver vencida
-      let updates: any = { ...values };
-      
-      if (values.status === 'active' && values.plan !== 'free') {
-         // Opcional: Lógica para estender data se necessário, mas por enquanto vamos manter simples
-         // para garantir que o update funcione.
-      }
-
-      const { error } = await supabase.from('profiles').update(updates).eq('id', user.id);
+      const { error } = await supabase.from('profiles').update(values).eq('id', user.id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -160,6 +152,7 @@ const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingUser, setEditingUser] = useState<AppUser | null>(null);
   const { data: users = [], isLoading, error, refetch } = useQuery<AppUser[]>({ queryKey: ["allUsers"], queryFn: fetchAllUsers });
+  const queryClient = useQueryClient();
 
   const filteredUsers = useMemo(() => {
     if (!searchTerm) return users;
@@ -175,6 +168,33 @@ const UserManagement = () => {
     toast.success("Lista de usuários atualizada");
   };
 
+  const handleEmergencyFix = async () => {
+    const targetEmail = 'nandorv3@gmail.com';
+    const targetUser = users.find(u => u.email === targetEmail);
+
+    if (!targetUser) {
+        toast.error(`Usuário ${targetEmail} não encontrado na lista. Tente atualizar a lista primeiro.`);
+        return;
+    }
+
+    const toastId = toast.loading("Aplicando correção no perfil...");
+    try {
+        const { error } = await supabase.from('profiles').update({
+            status: 'active',
+            plan: 'Plano Pro anual',
+            access_expires_at: addYears(new Date(), 1).toISOString(),
+            plan_start_date: new Date().toISOString()
+        }).eq('id', targetUser.id);
+
+        if (error) throw error;
+
+        toast.success(`Usuário ${targetEmail} ativado como PRO ANUAL com sucesso!`, { id: toastId });
+        refetch();
+    } catch (err: any) {
+        toast.error("Falha ao corrigir usuário: " + err.message, { id: toastId });
+    }
+  };
+
   if (isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
   if (error) return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro de Acesso</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
 
@@ -186,9 +206,14 @@ const UserManagement = () => {
             <h2 className="text-xl font-bold tracking-tight text-foreground">Base de Usuários</h2>
             <p className="text-sm text-muted-foreground">Gerencie acessos, planos e status.</p>
           </div>
-          <Button variant="outline" size="sm" onClick={handleRefresh} title="Atualizar Lista" className="shadow-sm bg-background w-full sm:w-auto">
-            <Loader2 className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} /> Atualizar
-          </Button>
+          <div className="flex gap-2 w-full sm:w-auto">
+             <Button variant="destructive" size="sm" onClick={handleEmergencyFix} title="Correção Urgente" className="shadow-sm w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white border-amber-600">
+                <Zap className="h-4 w-4 mr-2" /> Corrigir Nando (Pro Anual)
+             </Button>
+             <Button variant="outline" size="sm" onClick={handleRefresh} title="Atualizar Lista" className="shadow-sm bg-background w-full sm:w-auto">
+                <Loader2 className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} /> Atualizar
+             </Button>
+          </div>
         </div>
         
         <div className="relative w-full">
