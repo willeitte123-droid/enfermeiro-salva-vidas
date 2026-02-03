@@ -77,41 +77,21 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
     mutationFn: async (values: z.infer<typeof editUserSchema>) => {
       if (!user) throw new Error("Usuário não selecionado.");
       
-      const updates: any = { 
-        role: values.role,
-        status: values.status,
-        plan: values.plan
-      };
-      
-      if (values.status === 'active' && values.plan !== 'free') {
-         if (!user.access_expires_at || new Date(user.access_expires_at) < new Date()) {
-            updates.access_expires_at = addYears(new Date(), 1).toISOString();
-            updates.plan_start_date = new Date().toISOString();
-         }
-      }
-
-      console.log("Tentando atualizar usuário:", user.id, updates);
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .update(updates)
-        .eq('id', user.id)
-        .select();
+      // Chamada RPC para a função segura no banco de dados
+      // Isso contorna problemas de RLS na tabela direta
+      const { data, error } = await supabase.rpc('admin_update_profile', {
+        target_user_id: user.id,
+        new_role: values.role,
+        new_status: values.status,
+        new_plan: values.plan
+      });
 
       if (error) {
-        console.error("Erro Supabase:", error);
-        throw error;
+        console.error("Erro RPC:", error);
+        throw new Error(error.message);
       }
       
-      console.log("Retorno do update:", data);
-
-      if (!data || data.length === 0) {
-        // Fallback: Se o update não retornou dados (RLS de select bloqueando), 
-        // tentamos assumir que funcionou se não houve erro explícito, 
-        // MAS o ideal é que RLS permita o select.
-        // Vamos lançar erro para forçar verificação, mas logar detalhe.
-        throw new Error("O banco de dados não retornou confirmação. O registro pode estar bloqueado por RLS.");
-      }
+      return data;
     },
     onSuccess: () => {
       toast.success("Usuário atualizado com sucesso!");
@@ -119,8 +99,7 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       onOpenChange(false);
     },
     onError: (error) => {
-      console.error("Erro na mutação:", error);
-      toast.error("Erro ao atualizar", { description: error.message });
+      toast.error("Erro ao atualizar usuário", { description: error.message });
     },
   });
 
