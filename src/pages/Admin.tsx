@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, AlertTriangle, Edit, Webhook, LayoutDashboard, MapPin, Globe, Shield, Calendar, Mail, Video, Zap } from "lucide-react";
+import { Loader2, Search, AlertTriangle, Edit, Webhook, LayoutDashboard, MapPin, Globe, Shield, Calendar, Mail, Video, Zap, Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format, addYears } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -187,9 +187,7 @@ const UserManagement = () => {
     const targetUser = users.find(u => u.email === targetEmail);
 
     if (!targetUser) {
-        toast.error(`Usuário ${targetEmail} não encontrado na lista atual.`);
-        // Tenta buscar novamente para garantir
-        refetch();
+        toast.error(`Usuário ${targetEmail} não encontrado na lista. Tente atualizar a lista primeiro.`);
         return;
     }
 
@@ -204,10 +202,10 @@ const UserManagement = () => {
 
         if (error) throw error;
 
-        toast.success(`Usuário ${targetEmail} ativado como PRO ANUAL!`, { id: toastId });
+        toast.success(`Usuário ${targetEmail} ativado como PRO ANUAL com sucesso!`, { id: toastId });
         refetch();
     } catch (err: any) {
-        toast.error("Falha ao corrigir: " + err.message, { id: toastId });
+        toast.error("Falha ao corrigir usuário: " + err.message, { id: toastId });
     }
   };
 
@@ -223,8 +221,8 @@ const UserManagement = () => {
             <p className="text-sm text-muted-foreground">Gerencie acessos, planos e status.</p>
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
-             <Button variant="destructive" size="sm" onClick={handleEmergencyFix} title="Forçar Ativação" className="shadow-sm w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white border-amber-600">
-                <Zap className="h-4 w-4 mr-2" /> Ativar Nando (Pro Anual)
+             <Button variant="destructive" size="sm" onClick={handleEmergencyFix} title="Correção Urgente" className="shadow-sm w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white border-amber-600">
+                <Zap className="h-4 w-4 mr-2" /> Corrigir Nando (Pro Anual)
              </Button>
              <Button variant="outline" size="sm" onClick={handleRefresh} title="Atualizar Lista" className="shadow-sm bg-background w-full sm:w-auto">
                 <Loader2 className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} /> Atualizar
