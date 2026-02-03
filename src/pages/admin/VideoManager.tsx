@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -348,72 +348,75 @@ export default function VideoManager() {
           <div className="p-8 text-center text-muted-foreground">Nenhum vídeo encontrado.</div>
         ) : (
           <ScrollArea className="h-[500px]">
-            <Table>
-              <TableHeader className="bg-muted/50 sticky top-0 z-10">
-                <TableRow>
-                  <TableHead className="w-[80px]">Capa</TableHead>
-                  <TableHead>Título</TableHead>
-                  <TableHead className="hidden md:table-cell">Categoria</TableHead>
-                  <TableHead className="hidden sm:table-cell">Autor</TableHead>
-                  <TableHead>Visibilidade</TableHead>
-                  <TableHead className="text-right">Ações</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredVideos.map((video) => (
-                  <TableRow key={video.id} className="group">
-                    <TableCell>
-                      <div className="w-16 h-9 bg-black rounded overflow-hidden relative">
-                        <img 
-                          src={`https://img.youtube.com/vi/${video.youtube_id}/default.jpg`} 
-                          className="w-full h-full object-cover opacity-80"
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="font-medium line-clamp-2 text-sm">{video.title}</div>
-                      <div className="md:hidden text-xs text-muted-foreground mt-1">{video.category}</div>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      <Badge variant="secondary">{video.category}</Badge>
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell text-sm text-muted-foreground">
-                      {video.author}
-                    </TableCell>
-                    <TableCell>
-                      <button 
-                        onClick={() => toggleVisibilityMutation.mutate({ id: video.id, is_public: !video.is_public })}
-                        className={cn(
-                          "flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-bold transition-all",
-                          video.is_public 
-                            ? "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-300" 
-                            : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400"
-                        )}
-                      >
-                        {video.is_public ? <><Eye className="h-3 w-3" /> Público</> : <><EyeOff className="h-3 w-3" /> Privado</>}
-                      </button>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => openEditVideo(video)}>
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                          onClick={() => {
-                            if(confirm("Tem certeza que deseja excluir este vídeo?")) deleteVideoMutation.mutate(video.id);
-                          }}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <div className="min-w-[800px]"> {/* Container forçando largura mínima */}
+              <Table>
+                <TableHeader className="bg-muted/50 sticky top-0 z-10">
+                  <TableRow>
+                    <TableHead className="w-[80px]">Capa</TableHead>
+                    <TableHead>Título</TableHead>
+                    <TableHead className="hidden md:table-cell">Categoria</TableHead>
+                    <TableHead className="hidden sm:table-cell">Autor</TableHead>
+                    <TableHead>Visibilidade</TableHead>
+                    <TableHead className="text-right">Ações</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredVideos.map((video) => (
+                    <TableRow key={video.id} className="group">
+                      <TableCell>
+                        <div className="w-16 h-9 bg-black rounded overflow-hidden relative">
+                          <img 
+                            src={`https://img.youtube.com/vi/${video.youtube_id}/default.jpg`} 
+                            className="w-full h-full object-cover opacity-80"
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium line-clamp-2 text-sm">{video.title}</div>
+                        <div className="md:hidden text-xs text-muted-foreground mt-1">{video.category}</div>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        <Badge variant="secondary">{video.category}</Badge>
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell text-sm text-muted-foreground">
+                        {video.author}
+                      </TableCell>
+                      <TableCell>
+                        <button 
+                          onClick={() => toggleVisibilityMutation.mutate({ id: video.id, is_public: !video.is_public })}
+                          className={cn(
+                            "flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-bold transition-all",
+                            video.is_public 
+                              ? "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-300" 
+                              : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400"
+                          )}
+                        >
+                          {video.is_public ? <><Eye className="h-3 w-3" /> Público</> : <><EyeOff className="h-3 w-3" /> Privado</>}
+                        </button>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-1">
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => openEditVideo(video)}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                            onClick={() => {
+                              if(confirm("Tem certeza que deseja excluir este vídeo?")) deleteVideoMutation.mutate(video.id);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            <ScrollBar orientation="horizontal" />
           </ScrollArea>
         )}
       </div>
