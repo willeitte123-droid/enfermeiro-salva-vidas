@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, AlertTriangle, Edit, Webhook, LayoutDashboard, MapPin, Globe, Shield, Calendar, Mail, Video, Zap, Info } from "lucide-react";
+import { Loader2, Search, AlertTriangle, Edit, Webhook, LayoutDashboard, MapPin, Globe, Shield, Calendar, Mail, Video, Zap, Info, Wrench } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format, addYears } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -77,8 +77,6 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
     mutationFn: async (values: z.infer<typeof editUserSchema>) => {
       if (!user) throw new Error("Usuário não selecionado.");
       
-      // Chamada RPC para a função segura no banco de dados
-      // Isso contorna problemas de RLS na tabela direta
       const { data, error } = await supabase.rpc('admin_update_profile', {
         target_user_id: user.id,
         new_role: values.role,
@@ -163,6 +161,7 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingUser, setEditingUser] = useState<AppUser | null>(null);
+  const [isFixingPermissions, setIsFixingPermissions] = useState(false);
   const { data: users = [], isLoading, error, refetch } = useQuery<AppUser[]>({ queryKey: ["allUsers"], queryFn: fetchAllUsers });
   const queryClient = useQueryClient();
 
@@ -180,6 +179,21 @@ const UserManagement = () => {
     toast.success("Lista de usuários atualizada");
   };
 
+  const handleFixPermissions = async () => {
+    setIsFixingPermissions(true);
+    const toastId = toast.loading("Executando script de correção...");
+    try {
+        const { data, error } = await supabase.functions.invoke('setup-database');
+        if (error) throw error;
+        toast.success("Permissões corrigidas com sucesso!", { id: toastId });
+        refetch();
+    } catch (err: any) {
+        toast.error("Falha ao corrigir permissões: " + err.message, { id: toastId });
+    } finally {
+        setIsFixingPermissions(false);
+    }
+  };
+
   if (isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
   if (error) return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro de Acesso</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
 
@@ -191,7 +205,18 @@ const UserManagement = () => {
             <h2 className="text-xl font-bold tracking-tight text-foreground">Base de Usuários</h2>
             <p className="text-sm text-muted-foreground">Gerencie acessos, planos e status.</p>
           </div>
-          <div className="flex gap-2 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+             <Button 
+                variant="destructive" 
+                size="sm" 
+                onClick={handleFixPermissions} 
+                disabled={isFixingPermissions}
+                title="Executar script de reparo no banco" 
+                className="shadow-sm w-full sm:w-auto"
+             >
+                {isFixingPermissions ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Wrench className="h-4 w-4 mr-2" />} 
+                Corrigir Permissões
+             </Button>
              <Button variant="outline" size="sm" onClick={handleRefresh} title="Atualizar Lista" className="shadow-sm bg-background w-full sm:w-auto">
                 <Loader2 className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} /> Atualizar
              </Button>
