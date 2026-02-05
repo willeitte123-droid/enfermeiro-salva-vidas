@@ -9,12 +9,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 
-interface StatItem {
-  category?: string;
-  banca?: string;
-  count: number;
-}
-
 interface QuestionStats {
   total: number;
   by_category: { category: string; count: number }[];
@@ -39,11 +33,42 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 const QuestionsDashboard = () => {
   const { data: stats, isLoading, error } = useQuery({
-    queryKey: ['adminQuestionStats'],
+    queryKey: ['adminQuestionStatsLocal'],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc('get_question_stats');
+      // Busca apenas as colunas necessárias para contagem, o que é leve
+      const { data, error } = await supabase
+        .from('questions')
+        .select('category, banca');
+      
       if (error) throw error;
-      return data as QuestionStats;
+
+      const questions = data || [];
+      const total = questions.length;
+
+      // Processamento local (Agrupamento por Categoria)
+      const categoryMap = questions.reduce((acc, q) => {
+        const cat = q.category || 'Sem Categoria';
+        acc[cat] = (acc[cat] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      const by_category = Object.entries(categoryMap)
+        .map(([category, count]) => ({ category, count }))
+        .sort((a, b) => b.count - a.count);
+
+      // Processamento local (Agrupamento por Banca)
+      const bancaMap = questions.reduce((acc, q) => {
+        const banca = q.banca || 'Não Informada';
+        acc[banca] = (acc[banca] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      const by_banca = Object.entries(bancaMap)
+        .map(([banca, count]) => ({ banca, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 20); // Top 20 bancas
+
+      return { total, by_category, by_banca } as QuestionStats;
     }
   });
 
