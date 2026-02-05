@@ -81,4 +81,4 @@ VALUES
 ('Ética e Legislação Profissional', 'IDECAN', 'A Anotação de Enfermagem incumbe a:',
 '[{"id": "A", "text": "Apenas ao Enfermeiro"}, {"id": "B", "text": "Apenas aos Técnicos e Auxiliares"}, {"id": "C", "text": "Todo a equipe de enfermagem (Enfermeiros, Técnicos e Auxiliares)"}, {"id": "D", "text": "Aos estagiários sob supervisão"}]',
 'C', 'Todos os membros da equipe devem registrar suas ações. A Evolução é privativa do Enfermeiro, mas a Anotação é dever de todos.')
-;
+ON CONFLICT (question) DO NOTHING;
