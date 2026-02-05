@@ -1,9 +1,9 @@
 import { useMemo, useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, AlertTriangle, Edit, Webhook, LayoutDashboard, MapPin, Globe, Shield, Calendar, Mail, Video, Zap, Info, Wrench } from "lucide-react";
+import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, FileQuestion } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -21,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AdminDashboard from "./admin/AdminDashboard";
 import VideoManager from "./admin/VideoManager";
+import QuestionsDashboard from "./admin/QuestionsDashboard";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
@@ -453,10 +454,13 @@ const Admin = () => (
 
     {/* Navegação */}
     <Tabs defaultValue="dashboard" className="w-full space-y-6">
-      <div className="flex justify-center w-full">
-        <TabsList className="bg-muted/50 p-1 rounded-full h-11 w-full max-w-xl grid grid-cols-4">
+      <div className="w-full overflow-x-auto pb-1">
+        <TabsList className="bg-muted/50 p-1 rounded-full h-11 w-full min-w-[600px] grid grid-cols-5">
           <TabsTrigger value="dashboard" className="rounded-full text-xs font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm">
              Dashboard
+          </TabsTrigger>
+          <TabsTrigger value="questions" className="rounded-full text-xs font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm">
+             Questões
           </TabsTrigger>
           <TabsTrigger value="users" className="rounded-full text-xs font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm">
              Usuários
@@ -472,6 +476,7 @@ const Admin = () => (
       
       <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
         <TabsContent value="dashboard" className="mt-0"><AdminDashboard /></TabsContent>
+        <TabsContent value="questions" className="mt-0"><QuestionsDashboard /></TabsContent>
         <TabsContent value="users" className="mt-0"><UserManagement /></TabsContent>
         <TabsContent value="videos" className="mt-0"><VideoManager /></TabsContent>
         <TabsContent value="kiwify" className="mt-0"><KiwifySettings /></TabsContent>
