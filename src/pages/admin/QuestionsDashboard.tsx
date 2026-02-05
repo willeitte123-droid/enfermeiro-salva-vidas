@@ -150,7 +150,7 @@ const QuestionsDashboard = () => {
           </CardHeader>
           <CardContent className="px-4 pb-4">
             <div className="text-3xl font-bold text-foreground">{stats.by_category.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">Categorias distintas</p>
+            <p className="text-[10px] text-muted-foreground mt-1">Categorias distintas</p>
           </CardContent>
         </Card>
 
@@ -162,7 +162,7 @@ const QuestionsDashboard = () => {
           </CardHeader>
           <CardContent className="px-4 pb-4">
             <div className="text-3xl font-bold text-foreground">{stats.by_banca.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">Instituições</p>
+            <p className="text-[10px] text-muted-foreground mt-1">Instituições</p>
           </CardContent>
         </Card>
       </div>
