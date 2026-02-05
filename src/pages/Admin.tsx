@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, FileQuestion } from "lucide-react";
+import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, FileQuestion, Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
