@@ -36,18 +36,36 @@ const QuestionsDashboard = () => {
   const { data: stats, isLoading, error } = useQuery({
     queryKey: ['adminQuestionStatsLocal'],
     queryFn: async () => {
-      // Busca apenas as colunas necessárias para contagem, o que é leve
-      const { data, error } = await supabase
-        .from('questions')
-        .select('category, banca');
-      
-      if (error) throw error;
+      let allQuestions: any[] = [];
+      let from = 0;
+      const step = 1000;
+      let hasMore = true;
 
-      const questions = data || [];
-      const total = questions.length;
+      // Loop para buscar todas as questões em lotes de 1000
+      while (hasMore) {
+        const { data, error } = await supabase
+          .from('questions')
+          .select('category, banca')
+          .range(from, from + step - 1);
+        
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          allQuestions = [...allQuestions, ...data];
+          if (data.length < step) {
+            hasMore = false; // Se veio menos que o limite, acabou
+          } else {
+            from += step; // Próxima página
+          }
+        } else {
+          hasMore = false;
+        }
+      }
+
+      const total = allQuestions.length;
 
       // Processamento local (Agrupamento por Categoria)
-      const categoryMap = questions.reduce((acc, q) => {
+      const categoryMap = allQuestions.reduce((acc, q) => {
         const cat = q.category || 'Sem Categoria';
         acc[cat] = (acc[cat] || 0) + 1;
         return acc;
@@ -58,7 +76,7 @@ const QuestionsDashboard = () => {
         .sort((a, b) => b.count - a.count);
 
       // Processamento local (Agrupamento por Banca)
-      const bancaMap = questions.reduce((acc, q) => {
+      const bancaMap = allQuestions.reduce((acc, q) => {
         const banca = q.banca || 'Não Informada';
         acc[banca] = (acc[banca] || 0) + 1;
         return acc;
