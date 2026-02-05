@@ -8,6 +8,7 @@ import { Loader2, Database, AlertTriangle, FileQuestion, PieChart, Layers } from
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { useMemo } from "react";
 
 interface QuestionStats {
   total: number;
@@ -71,6 +72,13 @@ const QuestionsDashboard = () => {
       return { total, by_category, by_banca } as QuestionStats;
     }
   });
+
+  // Calcula a altura necessária para o gráfico com base no número de categorias
+  const chartHeight = useMemo(() => {
+    if (!stats) return 400;
+    // 35px por barra + margem base de 100px
+    return Math.max(400, stats.by_category.length * 35 + 100);
+  }, [stats]);
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
@@ -140,13 +148,15 @@ const QuestionsDashboard = () => {
           <AlertTitle className="text-amber-800 dark:text-amber-400 font-bold">Atenção: Categorias com poucas questões</AlertTitle>
           <AlertDescription className="text-amber-700 dark:text-amber-300 mt-1 text-sm">
             As seguintes matérias têm menos de 20 questões e precisam de reforço urgente:
-            <div className="flex flex-wrap gap-2 mt-2">
-              {lowContentCategories.map(c => (
-                <Badge key={c.category} variant="outline" className="bg-white dark:bg-black/20 text-amber-700 border-amber-300">
-                  {c.category}: {c.count}
-                </Badge>
-              ))}
-            </div>
+            <ScrollArea className="h-32 w-full mt-2 pr-4 rounded bg-background/40 border border-amber-200/50">
+              <div className="flex flex-wrap gap-2 p-2">
+                {lowContentCategories.map(c => (
+                  <Badge key={c.category} variant="outline" className="bg-white dark:bg-black/20 text-amber-700 border-amber-300 whitespace-nowrap">
+                    {c.category}: {c.count}
+                  </Badge>
+                ))}
+              </div>
+            </ScrollArea>
           </AlertDescription>
         </Alert>
       )}
@@ -158,30 +168,34 @@ const QuestionsDashboard = () => {
             <CardTitle className="flex items-center gap-2"><PieChart className="h-5 w-5 text-primary"/> Distribuição por Matéria</CardTitle>
             <CardDescription>Quantidade de questões disponíveis por disciplina.</CardDescription>
           </CardHeader>
-          <CardContent className="h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={stats.by_category}
-                layout="vertical"
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} strokeOpacity={0.1} />
-                <XAxis type="number" hide />
-                <YAxis 
-                  dataKey="category" 
-                  type="category" 
-                  width={180} 
-                  tick={{ fontSize: 11 }} 
-                  interval={0}
-                />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
-                <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={20}>
-                  {stats.by_category.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.count < 20 ? '#ef4444' : '#3b82f6'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+          <CardContent className="p-0">
+            <div className="w-full overflow-x-auto">
+                <div style={{ height: `${chartHeight}px`, minWidth: "600px" }} className="w-full p-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                        data={stats.by_category}
+                        layout="vertical"
+                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} strokeOpacity={0.1} />
+                        <XAxis type="number" hide />
+                        <YAxis 
+                        dataKey="category" 
+                        type="category" 
+                        width={220}
+                        tick={{ fontSize: 11, width: 220 }} 
+                        interval={0}
+                        />
+                        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+                        <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={20}>
+                        {stats.by_category.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.count < 20 ? '#ef4444' : '#3b82f6'} />
+                        ))}
+                        </Bar>
+                    </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -195,8 +209,8 @@ const QuestionsDashboard = () => {
               <div className="p-4">
                 {stats.by_category.map((item, i) => (
                   <div key={i} className="flex items-center justify-between py-2 border-b last:border-0 text-sm">
-                    <span className="font-medium text-muted-foreground">{item.category}</span>
-                    <Badge variant={item.count < 20 ? "destructive" : "secondary"} className="font-mono">
+                    <span className="font-medium text-muted-foreground truncate max-w-[250px]" title={item.category}>{item.category}</span>
+                    <Badge variant={item.count < 20 ? "destructive" : "secondary"} className="font-mono ml-2 shrink-0">
                       {item.count}
                     </Badge>
                   </div>
