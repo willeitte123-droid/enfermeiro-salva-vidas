@@ -49,6 +49,7 @@ serve(async (req: Request) => {
   const log = async (email: string, evento: string, details: string) => {
     try {
       await supabaseAdmin.from('webhook_logs').insert({ email, evento, details });
+      console.log(`[LOG] ${evento}: ${details}`);
     } catch (e) {
       console.error("CRITICAL: Failed to write to webhook_logs table.", e.message);
     }
@@ -84,10 +85,8 @@ serve(async (req: Request) => {
     const isCanceledEvent = canceledEvents.includes(eventForLog.toLowerCase()) || (orderStatus && canceledEvents.includes(orderStatus.toLowerCase()));
 
     if (isCanceledEvent) {
-      // Busca ID exato via RPC
       const { data: userId, error: rpcError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
-      if (rpcError) throw rpcError;
-
+      
       if (userId) {
         await supabaseAdmin.from('profiles').update({
           plan: 'free',
@@ -104,61 +103,51 @@ serve(async (req: Request) => {
 
     } else if (isApprovedEvent) {
       let userId;
-      // Busca ID exato via RPC
-      const { data: existingUserId, error: rpcError } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
-      if (rpcError) throw rpcError;
+      // 1. Tenta buscar usuário existente
+      const { data: existingUserId } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
 
       if (existingUserId) {
         userId = existingUserId;
-        await log(emailForLog, eventForLog, `INFO: Usuário encontrado via RPC (ID: ${userId}). Atualizando.`);
+        await log(emailForLog, eventForLog, `INFO: Usuário já existe (ID: ${userId}). Apenas atualizando plano.`);
       } else {
-        await log(emailForLog, eventForLog, 'INFO: Usuário novo. Criando conta e enviando reset de senha.');
+        await log(emailForLog, eventForLog, 'INFO: Usuário novo. Criando conta...');
         
-        // 1. Cria o usuário já confirmado (para não pedir confirmação de email, já que pagou)
-        // Isso evita o envio do email de "Confirm your mail" padrão
+        // 2. Cria o usuário VERIFICADO (email_confirm: true)
         const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
             email: email,
-            email_confirm: true,
-            user_metadata: {
-                full_name: body?.Customer?.full_name || ''
-            }
+            email_confirm: true, // Importante: Já marca como verificado
+            user_metadata: { full_name: body?.Customer?.full_name || '' }
         });
         
         if (createError) {
-           if (createError.message.includes('already been registered')) {
-              // Race condition: usuário criou a conta segundos antes
-              const { data: retryId } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
-              if (retryId) userId = retryId;
-              else throw new Error(`Erro de concorrência: ${createError.message}`);
-           } else {
-              throw new Error(`Falha na criação do usuário: ${createError.message}`);
-           }
-        } else {
-             userId = newUser.user.id;
-             
-             // 2. Dispara o email de Reset de Senha (o template personalizado)
-             // O redirectTo garante que ele vá para a página correta após clicar no email
-             // A URL base deve estar configurada no painel do Supabase em Auth > URL Configuration > Site URL
-             // Por padrão, apontamos para a rota de update-password
-             const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
-                redirectTo: 'https://enfermagem-pro.lovable.app/update-password'
-             });
+           await log(emailForLog, eventForLog, `ERRO CRÍTICO ao criar usuário: ${createError.message}`);
+           throw createError;
+        }
 
-             if (resetError) {
-                 await log(emailForLog, eventForLog, `ERRO: Conta criada, mas falha ao enviar email de reset: ${resetError.message}`);
-             } else {
-                 await log(emailForLog, eventForLog, 'SUCESSO: Conta criada e email de definição de senha enviado.');
-             }
+        userId = newUser.user.id;
+        
+        // 3. Pequeno delay para garantir propagação no banco de dados do Supabase
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // 4. Envia o email de Reset de Senha (Template Personalizado)
+        const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
+            redirectTo: 'https://enfermagem-pro.lovable.app/update-password'
+        });
+
+        if (resetError) {
+             await log(emailForLog, eventForLog, `ERRO ao enviar email de senha: ${resetError.message}`);
+        } else {
+             await log(emailForLog, eventForLog, 'SUCESSO: Email de definição de senha enviado.');
         }
       }
 
+      // 5. Atualiza Perfil (Profile)
       const fullName = body?.Customer?.full_name || '';
       const nameParts = fullName.split(' ');
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
       const planName = body?.Subscription?.plan?.name || body?.Product?.product_name || 'Plano PRO';
       const expiresAt = body?.Subscription?.customer_access?.access_until || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
-      const startDate = new Date().toISOString(); // Data de início do plano (hoje)
 
       const { error: upsertProfileError } = await supabaseAdmin.from('profiles').upsert({
           id: userId,
@@ -167,15 +156,15 @@ serve(async (req: Request) => {
           status: 'active',
           plan: planName,
           access_expires_at: expiresAt,
-          plan_start_date: startDate 
+          plan_start_date: new Date().toISOString()
       }, { onConflict: 'id' });
 
       if (upsertProfileError) {
-        await log(emailForLog, eventForLog, `AVISO: Falha no upsert do perfil: ${upsertProfileError.message}`);
-        throw upsertProfileError;
+        await log(emailForLog, eventForLog, `ERRO: Falha no upsert do perfil: ${upsertProfileError.message}`);
+      } else {
+        await log(emailForLog, eventForLog, `SUCESSO: ID ${userId} atualizado para "${planName}".`);
       }
 
-      await log(emailForLog, eventForLog, `SUCESSO: ID ${userId} atualizado para "${planName}".`);
       return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 });
 
     } else {
@@ -185,7 +174,8 @@ serve(async (req: Request) => {
 
   } catch (error) {
     console.error("ERRO:", error);
-    await log(emailForLog, eventForLog, `ERRO: ${error.message}`);
+    // Tenta logar o erro no banco se possível
+    try { await supabaseAdmin.from('webhook_logs').insert({ email: emailForLog, evento: eventForLog, details: `CRITICAL ERROR: ${error.message}` }); } catch {}
     return new Response(JSON.stringify({ error: error.message }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
 });
