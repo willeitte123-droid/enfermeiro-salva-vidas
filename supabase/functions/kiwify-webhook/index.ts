@@ -130,9 +130,8 @@ serve(async (req: Request) => {
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         // 4. Envia o email de Reset de Senha (Template Personalizado)
-        const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
-            redirectTo: 'https://enfermagem-pro.lovable.app/update-password'
-        });
+        // REMOVIDO o redirectTo hardcoded. O Supabase usará a Site URL padrão.
+        const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(email);
 
         if (resetError) {
              await log(emailForLog, eventForLog, `ERRO ao enviar email de senha: ${resetError.message}`);
