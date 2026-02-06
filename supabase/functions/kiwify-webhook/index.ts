@@ -112,23 +112,43 @@ serve(async (req: Request) => {
         userId = existingUserId;
         await log(emailForLog, eventForLog, `INFO: Usuário encontrado via RPC (ID: ${userId}). Atualizando.`);
       } else {
-        await log(emailForLog, eventForLog, 'INFO: Usuário não encontrado via RPC. Enviando convite.');
-        const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+        await log(emailForLog, eventForLog, 'INFO: Usuário novo. Criando conta e enviando reset de senha.');
         
-        if (inviteError) {
-           if (inviteError.message.includes('already been registered')) {
-              // Race condition
+        // 1. Cria o usuário já confirmado (para não pedir confirmação de email, já que pagou)
+        // Isso evita o envio do email de "Confirm your mail" padrão
+        const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+            email: email,
+            email_confirm: true,
+            user_metadata: {
+                full_name: body?.Customer?.full_name || ''
+            }
+        });
+        
+        if (createError) {
+           if (createError.message.includes('already been registered')) {
+              // Race condition: usuário criou a conta segundos antes
               const { data: retryId } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
               if (retryId) userId = retryId;
-              else throw new Error(`Erro de concorrência: ${inviteError.message}`);
+              else throw new Error(`Erro de concorrência: ${createError.message}`);
            } else {
-              throw new Error(`Falha no convite: ${inviteError.message}`);
+              throw new Error(`Falha na criação do usuário: ${createError.message}`);
            }
         } else {
-             // Busca ID novamente para garantir
-             const { data: newId } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: email });
-             if (!newId) throw new Error("Usuário convidado mas ID não encontrado via RPC.");
-             userId = newId;
+             userId = newUser.user.id;
+             
+             // 2. Dispara o email de Reset de Senha (o template personalizado)
+             // O redirectTo garante que ele vá para a página correta após clicar no email
+             // A URL base deve estar configurada no painel do Supabase em Auth > URL Configuration > Site URL
+             // Por padrão, apontamos para a rota de update-password
+             const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
+                redirectTo: 'https://enfermagem-pro.lovable.app/update-password'
+             });
+
+             if (resetError) {
+                 await log(emailForLog, eventForLog, `ERRO: Conta criada, mas falha ao enviar email de reset: ${resetError.message}`);
+             } else {
+                 await log(emailForLog, eventForLog, 'SUCESSO: Conta criada e email de definição de senha enviado.');
+             }
         }
       }
 
@@ -147,7 +167,7 @@ serve(async (req: Request) => {
           status: 'active',
           plan: planName,
           access_expires_at: expiresAt,
-          plan_start_date: startDate // Salvando a data de início
+          plan_start_date: startDate 
       }, { onConflict: 'id' });
 
       if (upsertProfileError) {
