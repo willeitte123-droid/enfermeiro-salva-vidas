@@ -1,572 +1,372 @@
--- PACOTE DE REFORÇO: CATEGORIAS DEFICITÁRIAS
--- Foco: UTI, Clínica Médica, SAE, Oncologia, Hemoterapia, Paliativos, Nutrição, Vigilância, Curativos
+-- PACOTE DE REFORÇO 2: CATEGORIAS CRÍTICAS
+-- Foco: Saúde Mental, Ética, Mulher/Criança, Centro Cirúrgico, Nefro, Cardio
 
 INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
 VALUES
-  -- 1. TERAPIA INTENSIVA (UTI) - Reforço Urgente
+
+  -- 1. SAÚDE MENTAL E PSIQUIATRIA (Reforço)
   (
-    'Terapia Intensiva (UTI)',
-    'Na monitorização hemodinâmica invasiva, a Pressão Venosa Central (PVC) é um parâmetro utilizado para avaliar principalmente:',
+    'Saúde Mental e Psiquiatria',
+    'De acordo com a Lei nº 10.216/2001 (Lei da Reforma Psiquiátrica), a internação psiquiátrica involuntária deve ser comunicada ao Ministério Público no prazo máximo de:',
     '[
-      {"id": "A", "text": "A pós-carga do ventrículo esquerdo."},
-      {"id": "B", "text": "A pré-carga do ventrículo direito."},
-      {"id": "C", "text": "A contratilidade miocárdica global."},
-      {"id": "D", "text": "A resistência vascular sistêmica."}
+      {"id": "A", "text": "24 horas."},
+      {"id": "B", "text": "48 horas."},
+      {"id": "C", "text": "72 horas."},
+      {"id": "D", "text": "7 dias."}
     ]'::jsonb,
-    'B',
-    'A PVC reflete a pressão de enchimento do átrio direito e, consequentemente, a pré-carga do ventrículo direito e a volemia.',
+    'C',
+    'A lei determina que toda internação involuntária e sua respectiva alta devem ser comunicadas ao MP estadual em até 72 horas.',
     'VUNESP'
   ),
   (
-    'Terapia Intensiva (UTI)',
-    'Para a prevenção de Pneumonia Associada à Ventilação Mecânica (PAV), o pacote de medidas (bundle) inclui, entre outros:',
+    'Saúde Mental e Psiquiatria',
+    'O Carbonato de Lítio é um estabilizador de humor amplamente utilizado. Um sinal precoce de intoxicação por lítio que o enfermeiro deve observar é:',
     '[
-      {"id": "A", "text": "Troca do circuito do ventilador a cada 24 horas."},
-      {"id": "B", "text": "Manter a cabeceira do leito elevada entre 30 e 45 graus."},
-      {"id": "C", "text": "Realizar higiene oral apenas com água destilada."},
-      {"id": "D", "text": "Manter o paciente em sedação profunda contínua."}
+      {"id": "A", "text": "Hipertensão arterial severa."},
+      {"id": "B", "text": "Tremor grosseiro de extremidades e ataxia."},
+      {"id": "C", "text": "Polifagia e ganho de peso rápido."},
+      {"id": "D", "text": "Insônia persistente."}
     ]'::jsonb,
     'B',
-    'A elevação da cabeceira (30-45º) é uma das medidas mais eficazes para prevenir a broncoaspiração silenciosa e a PAV.',
+    'Tremores grosseiros, ataxia (dificuldade de coordenação), náuseas e vômitos são sinais de alerta para litemia acima do nível terapêutico.',
     'IBFC'
   ),
   (
-    'Terapia Intensiva (UTI)',
-    'Durante a aspiração endotraqueal em sistema aberto, o tempo máximo recomendado para aplicação de sucção a cada passagem da sonda é de:',
+    'Saúde Mental e Psiquiatria',
+    'Qual dispositivo da Rede de Atenção Psicossocial (RAPS) oferece atendimento 24 horas, inclusive em feriados e finais de semana, com leitos de acolhimento noturno?',
     '[
-      {"id": "A", "text": "30 a 45 segundos."},
-      {"id": "B", "text": "5 a 10 segundos."},
-      {"id": "C", "text": "10 a 15 segundos."},
-      {"id": "D", "text": "1 a 2 minutos."}
+      {"id": "A", "text": "CAPS I."},
+      {"id": "B", "text": "CAPS II."},
+      {"id": "C", "text": "CAPS III."},
+      {"id": "D", "text": "Ambulatório de Saúde Mental."}
     ]'::jsonb,
     'C',
-    'A aspiração prolongada (>15s) causa hipoxemia grave, atelectasia e estimulação vagal (bradicardia).',
-    'EBSERH'
-  ),
-  (
-    'Terapia Intensiva (UTI)',
-    'A Escala de RASS (Richmond Agitation-Sedation Scale) é utilizada em UTI para avaliar:',
-    '[
-      {"id": "A", "text": "O risco de lesão por pressão."},
-      {"id": "B", "text": "O nível de sedação e agitação do paciente."},
-      {"id": "C", "text": "A gravidade do trauma cranioencefálico."},
-      {"id": "D", "text": "O risco de queda."}
-    ]'::jsonb,
-    'B',
-    'A escala de RASS varia de +4 (combativo) a -5 (não despertável), sendo padrão ouro para monitorar sedação.',
+    'O CAPS III é específico para municípios maiores e funciona ininterruptamente, servindo como retaguarda à crise para evitar internações hospitalares.',
     'FCC'
   ),
   (
-    'Terapia Intensiva (UTI)',
-    'Qual das drogas abaixo é um vasopressor potente, de primeira escolha no tratamento do choque séptico para elevar a PAM?',
+    'Saúde Mental e Psiquiatria',
+    'Na abordagem ao paciente em crise de agitação psicomotora, a primeira conduta da equipe de enfermagem deve ser:',
     '[
-      {"id": "A", "text": "Dobutamina."},
-      {"id": "B", "text": "Nitroprussiato de Sódio."},
-      {"id": "C", "text": "Noradrenalina."},
-      {"id": "D", "text": "Amiodarona."}
+      {"id": "A", "text": "Realizar contenção mecânica imediata."},
+      {"id": "B", "text": "Administrar haloperidol intramuscular à força."},
+      {"id": "C", "text": "Tentar a contenção verbal e manejo do ambiente."},
+      {"id": "D", "text": "Chamar a segurança e se afastar."}
     ]'::jsonb,
     'C',
-    'A Noradrenalina é um agonista alfa-adrenérgico potente, causando vasoconstrição periférica e aumento da pressão arterial.',
+    'A abordagem deve ser escalonada. A contenção verbal (escuta, negociação) é sempre a primeira opção. Medicação e contenção física são últimos recursos.',
     'FGV'
   ),
 
-  -- 2. SAÚDE DO ADULTO (CLÍNICA MÉDICA) - Reforço Urgente
+  -- 2. ÉTICA E LEGISLAÇÃO (Reforço)
   (
-    'Saúde do Adulto (Clínica Médica)',
-    'Na assistência ao paciente com Diabetes Mellitus, a Insulina NPH caracteriza-se por ter ação:',
+    'Ética e Legislação',
+    'Um enfermeiro deixa de verificar os sinais vitais de um paciente instável, e o paciente vai a óbito por choque não detectado. Ética e legalmente, essa atitude configura:',
     '[
-      {"id": "A", "text": "Ultrarrápida."},
-      {"id": "B", "text": "Rápida."},
-      {"id": "C", "text": "Intermediária."},
-      {"id": "D", "text": "Prolongada (sem pico)."}
+      {"id": "A", "text": "Imperícia."},
+      {"id": "B", "text": "Imprudência."},
+      {"id": "C", "text": "Negligência."},
+      {"id": "D", "text": "Dolo."}
     ]'::jsonb,
     'C',
-    'A NPH é uma insulina de ação intermediária, com início em 1-2h, pico em 4-12h e duração de 14-24h.',
-    'CESGRANRIO'
+    'Negligência é a omissão, o deixar de fazer o que deveria ser feito (desleixo/desatenção).',
+    'COREN-SP'
   ),
   (
-    'Saúde do Adulto (Clínica Médica)',
-    'Um paciente hipertenso apresenta PA de 180/110 mmHg, sem sintomas ou lesão aguda de órgão-alvo. Esse quadro é classificado como:',
+    'Ética e Legislação',
+    'Segundo o Código de Ética dos Profissionais de Enfermagem, a penalidade de Cassação do direito ao exercício profissional é competência exclusiva do:',
     '[
-      {"id": "A", "text": "Emergência Hipertensiva."},
-      {"id": "B", "text": "Urgência Hipertensiva."},
-      {"id": "C", "text": "Hipertensão do Avental Branco."},
-      {"id": "D", "text": "Pseudocrise Hipertensiva."}
+      {"id": "A", "text": "Conselho Regional de Enfermagem (COREN)."},
+      {"id": "B", "text": "Conselho Federal de Enfermagem (COFEN)."},
+      {"id": "C", "text": "Sindicato dos Enfermeiros."},
+      {"id": "D", "text": "Ministério da Saúde."}
     ]'::jsonb,
     'B',
-    'Na Urgência Hipertensiva há elevação crítica da PA mas SEM lesão aguda e progressiva de órgãos-alvo, permitindo redução gradual.',
-    'VUNESP'
-  ),
-  (
-    'Saúde do Adulto (Clínica Médica)',
-    'A tríade clássica de sintomas do Diabetes Mellitus descompensado (4 Ps) inclui poliúria, polidipsia, perda de peso e:',
-    '[
-      {"id": "A", "text": "Polifagia."},
-      {"id": "B", "text": "Poliartralgia."},
-      {"id": "C", "text": "Polineuropatia."},
-      {"id": "D", "text": "Polisserosite."}
-    ]'::jsonb,
-    'A',
-    'Os 4 Ps são: Poliúria (muita urina), Polidipsia (muita sede), Polifagia (muita fome) e Perda de peso.',
-    'IBFC'
-  ),
-  (
-    'Saúde do Adulto (Clínica Médica)',
-    'No cuidado ao paciente com Doença Pulmonar Obstrutiva Crônica (DPOC), a oxigenoterapia deve ser administrada com cautela para evitar:',
-    '[
-      {"id": "A", "text": "Hipercapnia (retenção de CO2) e narcose."},
-      {"id": "B", "text": "Alcalose respiratória grave."},
-      {"id": "C", "text": "Hipocapnia súbita."},
-      {"id": "D", "text": "Pneumotórax espontâneo."}
-    ]'::jsonb,
-    'A',
-    'Pacientes retentores crônicos de CO2 dependem da hipóxia para estimular o centro respiratório. O2 em excesso pode inibir esse drive.',
-    'AOCP'
-  ),
-  (
-    'Saúde do Adulto (Clínica Médica)',
-    'A posição de Fowler é caracterizada por manter a cabeceira do leito elevada a:',
-    '[
-      {"id": "A", "text": "15 a 30 graus."},
-      {"id": "B", "text": "45 a 60 graus."},
-      {"id": "C", "text": "90 graus (sentado)."},
-      {"id": "D", "text": "0 graus (plano)."}
-    ]'::jsonb,
-    'B',
-    'A posição de Fowler (cabeceira elevada entre 45º e 60º) favorece a expansão pulmonar e melhora o conforto respiratório.',
-    'FUNDATEC'
-  ),
-
-  -- 3. SISTEMATIZAÇÃO (SAE) - Reforço Urgente
-  (
-    'Sistematização (SAE)',
-    'De acordo com a Resolução COFEN 358/2009, o Processo de Enfermagem organiza-se em 5 etapas inter-relacionadas. A etapa que envolve a determinação dos resultados esperados e das ações é o:',
-    '[
-      {"id": "A", "text": "Diagnóstico de Enfermagem."},
-      {"id": "B", "text": "Planejamento de Enfermagem."},
-      {"id": "C", "text": "Implementação."},
-      {"id": "D", "text": "Histórico de Enfermagem."}
-    ]'::jsonb,
-    'B',
-    'O Planejamento é a etapa onde se definem as metas (NOC) e as intervenções (NIC) para resolver os problemas identificados.',
-    'COPESE'
-  ),
-  (
-    'Sistematização (SAE)',
-    'Na taxonomia NANDA-I, um Diagnóstico de Risco diferencia-se de um Diagnóstico com Foco no Problema por não apresentar:',
-    '[
-      {"id": "A", "text": "Título."},
-      {"id": "B", "text": "Fatores Relacionados."},
-      {"id": "C", "text": "Características Definidoras (Sinais e Sintomas)."},
-      {"id": "D", "text": "Fatores de Risco."}
-    ]'::jsonb,
-    'C',
-    'Como o problema ainda não aconteceu (é apenas um risco), não existem sinais e sintomas (características definidoras) presentes.',
-    'IBFC'
-  ),
-  (
-    'Sistematização (SAE)',
-    'A etapa do Processo de Enfermagem que consiste na realização das ações ou intervenções determinadas no planejamento é a:',
-    '[
-      {"id": "A", "text": "Avaliação."},
-      {"id": "B", "text": "Implementação."},
-      {"id": "C", "text": "Coleta de Dados."},
-      {"id": "D", "text": "Evolução."}
-    ]'::jsonb,
-    'B',
-    'A Implementação é a fase da execução prática das prescrições de enfermagem.',
-    'VUNESP'
-  ),
-  (
-    'Sistematização (SAE)',
-    'O registro formal da execução do Processo de Enfermagem é obrigatório e deve incluir, minimamente, um resumo dos dados coletados, os diagnósticos, as ações realizadas e:',
-    '[
-      {"id": "A", "text": "A cópia da prescrição médica."},
-      {"id": "B", "text": "Os resultados de enfermagem alcançados."},
-      {"id": "C", "text": "A escala de pessoal do setor."},
-      {"id": "D", "text": "O faturamento dos materiais gastos."}
-    ]'::jsonb,
-    'B',
-    'A Resolução 358/2009 exige o registro dos resultados alcançados (Avaliação/Evolução) para fechar o ciclo do cuidado.',
-    'CONSULPAM'
-  ),
-  (
-    'Sistematização (SAE)',
-    'A SAE (Sistematização da Assistência de Enfermagem) é uma atividade privativa do:',
-    '[
-      {"id": "A", "text": "Técnico de Enfermagem."},
-      {"id": "B", "text": "Enfermeiro."},
-      {"id": "C", "text": "Médico."},
-      {"id": "D", "text": "Gerente Administrativo."}
-    ]'::jsonb,
-    'B',
-    'A liderança, organização e execução da SAE, especialmente o Diagnóstico e Prescrição, são privativos do Enfermeiro (Lei 7.498/86).',
-    'FGV'
-  ),
-
-  -- 4. ONCOLOGIA
-  (
-    'Oncologia',
-    'O extravasamento de quimioterápicos vesicantes pode causar necrose tecidual severa. Qual a conduta imediata ao suspeitar de extravasamento?',
-    '[
-      {"id": "A", "text": "Aumentar a velocidade para terminar logo a infusão."},
-      {"id": "B", "text": "Parar a infusão, aspirar o resíduo pelo cateter e só então retirar o acesso."},
-      {"id": "C", "text": "Lavar o acesso com soro fisiológico sob pressão."},
-      {"id": "D", "text": "Retirar o cateter imediatamente e aplicar calor local."}
-    ]'::jsonb,
-    'B',
-    'Deve-se interromper a infusão imediatamente e tentar aspirar a droga residual para minimizar a quantidade de vesicante nos tecidos.',
-    'INCA'
-  ),
-  (
-    'Oncologia',
-    'A toxicidade medular causada pela quimioterapia que resulta na diminuição de todos os elementos figurados do sangue (leucócitos, hemácias e plaquetas) é chamada de:',
-    '[
-      {"id": "A", "text": "Pancitopenia."},
-      {"id": "B", "text": "Leucocitose."},
-      {"id": "C", "text": "Trombocitose."},
-      {"id": "D", "text": "Eritroblastose."}
-    ]'::jsonb,
-    'A',
-    'Pancitopenia é a redução simultânea das três linhagens sanguíneas (série vermelha, branca e plaquetária).',
-    'EBSERH'
-  ),
-  (
-    'Oncologia',
-    'Um cuidado de enfermagem essencial para pacientes com trombocitopenia (plaquetas baixas) induzida por quimioterapia é:',
-    '[
-      {"id": "A", "text": "Estimular o uso de escovas de dente duras."},
-      {"id": "B", "text": "Evitar injeções intramusculares e procedimentos invasivos."},
-      {"id": "C", "text": "Administrar ácido acetilsalicílico (AAS) para dor."},
-      {"id": "D", "text": "Realizar tricotomia com lâmina de barbear."}
-    ]'::jsonb,
-    'B',
-    'Devido ao alto risco de sangramento e hematomas, deve-se evitar traumas, injeções IM e uso de lâminas ou AAS.',
-    'FCC'
-  ),
-
-  -- 5. HEMOTERAPIA
-  (
-    'Hemoterapia',
-    'Durante a transfusão de concentrado de hemácias, o paciente refere dor lombar súbita, calafrios e urina escura. A conduta imediata do enfermeiro deve ser:',
-    '[
-      {"id": "A", "text": "Diminuir a velocidade da infusão e observar."},
-      {"id": "B", "text": "Administrar antitérmico e continuar a transfusão."},
-      {"id": "C", "text": "Interromper a transfusão imediatamente e manter o acesso venoso com SF 0,9%."},
-      {"id": "D", "text": "Acelerar a transfusão para terminar antes que piore."}
-    ]'::jsonb,
-    'C',
-    'Esses são sinais clássicos de reação hemolítica aguda. A transfusão deve ser parada imediatamente para evitar insuficiência renal e choque.',
+    'As penalidades leves (advertência, multa, censura, suspensão) são aplicadas pelo COREN. A Cassação (pena máxima) só pode ser executada pelo COFEN.',
     'CESPE'
   ),
   (
-    'Hemoterapia',
-    'Qual o tempo máximo recomendado para a infusão de uma bolsa de concentrado de hemácias para evitar o risco de proliferação bacteriana?',
+    'Ética e Legislação',
+    'O sigilo profissional pode ser quebrado pelo enfermeiro nas seguintes situações, EXCETO:',
     '[
-      {"id": "A", "text": "1 hora."},
-      {"id": "B", "text": "2 horas."},
-      {"id": "C", "text": "4 horas."},
-      {"id": "D", "text": "6 horas."}
+      {"id": "A", "text": "Quando houver consentimento escrito do paciente."},
+      {"id": "B", "text": "Em casos de notificação compulsória de doenças."},
+      {"id": "C", "text": "Para compartilhar curiosidades com colegas fora do ambiente de trabalho."},
+      {"id": "D", "text": "Por ordem judicial."}
     ]'::jsonb,
     'C',
-    'O tempo máximo de infusão de hemocomponentes é de 4 horas. Se ultrapassar, o risco de contaminação bacteriana aumenta significativamente.',
+    'O sigilo é um dever. Compartilhar informações sem justa causa, dever legal ou autorização é infração ética grave.',
+    'AOCP'
+  ),
+
+  -- 3. SAÚDE DA MULHER E DA CRIANÇA (Reforço)
+  (
+    'Saúde da Mulher e da Criança',
+    'Na assistência pré-natal, a administração de Ácido Fólico é recomendada para prevenir:',
+    '[
+      {"id": "A", "text": "Diabetes Gestacional."},
+      {"id": "B", "text": "Anemia Ferropriva Materna."},
+      {"id": "C", "text": "Defeitos do Tubo Neural (DTN) no feto."},
+      {"id": "D", "text": "Pré-eclâmpsia."}
+    ]'::jsonb,
+    'C',
+    'O ácido fólico deve ser iniciado idealmente 3 meses antes da concepção para prevenir malformações como espinha bífida e anencefalia.',
     'VUNESP'
   ),
   (
-    'Hemoterapia',
-    'A prova de compatibilidade pré-transfusional realizada à beira do leito, que consiste na conferência dos dados do paciente e da bolsa por dois profissionais, é chamada de:',
+    'Saúde da Mulher e da Criança',
+    'Qual vacina deve ser administrada na gestante a partir da 20ª semana, a cada gestação, para proteger o recém-nascido contra coqueluche?',
     '[
-      {"id": "A", "text": "Dupla Checagem."},
-      {"id": "B", "text": "Teste de Coombs."},
-      {"id": "C", "text": "Prova Cruzada."},
-      {"id": "D", "text": "Tipagem Sanguínea."}
+      {"id": "A", "text": "DT (Dupla tipo adulto)."},
+      {"id": "B", "text": "dTpa (Tríplice bacteriana acelular)."},
+      {"id": "C", "text": "Hepatite B."},
+      {"id": "D", "text": "Influenza."}
     ]'::jsonb,
-    'A',
-    'A dupla checagem é uma barreira de segurança administrativa final e crucial para evitar erros de identificação na transfusão.',
+    'B',
+    'A dTpa é crucial para transferir anticorpos contra a Bordetella pertussis (coqueluche) para o feto, protegendo-o nos primeiros meses de vida.',
+    'MS/PNI'
+  ),
+  (
+    'Saúde da Mulher e da Criança',
+    'Em pediatria, a via preferencial para administração de vacinas intramusculares em crianças menores de 2 anos é:',
+    '[
+      {"id": "A", "text": "Músculo Deltoide."},
+      {"id": "B", "text": "Região Dorso-glútea."},
+      {"id": "C", "text": "Músculo Vasto Lateral da Coxa."},
+      {"id": "D", "text": "Músculo Glúteo Máximo."}
+    ]'::jsonb,
+    'C',
+    'O vasto lateral é o músculo mais desenvolvido e seguro nessa faixa etária, longe de nervos importantes e vasos calibrosos.',
     'IBFC'
   ),
-
-  -- 6. CUIDADOS PALIATIVOS
   (
-    'Cuidados Paliativos',
-    'A respiração agônica, ruidosa, caracterizada pelo acúmulo de secreções na orofaringe em pacientes moribundos, é conhecida como:',
+    'Saúde da Mulher e da Criança',
+    'A Manobra de Leopold é utilizada na consulta de enfermagem obstétrica para:',
     '[
-      {"id": "A", "text": "Respiração de Kussmaul."},
-      {"id": "B", "text": "Ronco da morte (Sororoca)."},
-      {"id": "C", "text": "Respiração de Cheyne-Stokes."},
-      {"id": "D", "text": "Estridor laríngeo."}
+      {"id": "A", "text": "Avaliar a dilatação do colo uterino."},
+      {"id": "B", "text": "Identificar a situação, posição e apresentação fetal."},
+      {"id": "C", "text": "Medir a altura uterina."},
+      {"id": "D", "text": "Realizar a ausculta dos batimentos cardiofetais."}
     ]'::jsonb,
     'B',
-    'O ''ronco da morte'' ocorre pela inabilidade de deglutir secreções. O tratamento não é a aspiração (que causa desconforto), mas sim reposicionamento e anticolinérgicos.',
-    'FGV'
-  ),
-  (
-    'Cuidados Paliativos',
-    'Na dor oncológica em cuidados paliativos, o uso de opioides fortes (como Morfina) deve seguir qual princípio?',
-    '[
-      {"id": "A", "text": "Administrar apenas quando o paciente solicitar (SOS)."},
-      {"id": "B", "text": "Administrar em horários fixos (relógio) para manter nível sérico constante."},
-      {"id": "C", "text": "Evitar ao máximo para não causar dependência."},
-      {"id": "D", "text": "Iniciar sempre com a dose máxima tolerada."}
-    ]'::jsonb,
-    'B',
-    'Para dor crônica/oncológica, a analgesia deve ser preventiva (horário fixo), com doses de resgate disponíveis para dor incidental.',
-    'INCA'
-  ),
-  (
-    'Cuidados Paliativos',
-    'A via de administração de medicamentos preferencial em cuidados paliativos, quando a via oral não é mais possível e busca-se conforto e mínima invasividade, é a:',
-    '[
-      {"id": "A", "text": "Intramuscular."},
-      {"id": "B", "text": "Endovenosa profunda."},
-      {"id": "C", "text": "Subcutânea (Hipodermóclise)."},
-      {"id": "D", "text": "Intraóssea."}
-    ]'::jsonb,
-    'C',
-    'A hipodermóclise permite hidratação e analgesia de forma segura, com baixo risco de infecção e desconforto mínimo para o paciente terminal.',
-    'EBSERH'
-  ),
-
-  -- 7. NUTRIÇÃO CLÍNICA
-  (
-    'Nutrição Clínica',
-    'Para confirmar o posicionamento de uma sonda nasoenteral (SNE) antes de iniciar a dieta, o padrão-ouro (método mais seguro) é:',
-    '[
-      {"id": "A", "text": "Ausculta de ruídos hidroaéreos no epigástrio."},
-      {"id": "B", "text": "Teste de pH do aspirado gástrico."},
-      {"id": "C", "text": "Exame radiológico (Raio-X)."},
-      {"id": "D", "text": "Mergulhar a ponta da sonda em um copo com água."}
-    ]'::jsonb,
-    'C',
-    'A ausculta pode enganar. Apenas o Raio-X visualiza se a sonda está na posição correta (estômago/duodeno) e não na via aérea.',
+    'São 4 tempos de palpação abdominal que permitem determinar como o feto está posicionado no útero.',
     'CESGRANRIO'
   ),
-  (
-    'Nutrição Clínica',
-    'A Nutrição Parenteral Total (NPT), devido à sua alta osmolaridade, deve ser administrada preferencialmente por:',
-    '[
-      {"id": "A", "text": "Sonda Nasogástrica."},
-      {"id": "B", "text": "Veia Periférica de fino calibre."},
-      {"id": "C", "text": "Cateter Venoso Central."},
-      {"id": "D", "text": "Gastrostomia."}
-    ]'::jsonb,
-    'C',
-    'Soluções hiperosmolares (>900 mOsm/L) causam flebite severa em veias periféricas, exigindo veia de grosso calibre e alto fluxo (Central).',
-    'AOCP'
-  ),
-  (
-    'Nutrição Clínica',
-    'O volume residual gástrico (VRG) elevado em paciente com dieta enteral pode indicar:',
-    '[
-      {"id": "A", "text": "Boa tolerância à dieta."},
-      {"id": "B", "text": "Esvaziamento gástrico retardado e risco de broncoaspiração."},
-      {"id": "C", "text": "Necessidade de aumentar a velocidade de infusão."},
-      {"id": "D", "text": "Posicionamento da sonda no jejuno."}
-    ]'::jsonb,
-    'B',
-    'VRG alto sugere que o estômago não está esvaziando, aumentando a pressão gástrica e o risco de refluxo/vômito e aspiração.',
-    'VUNESP'
-  ),
 
-  -- 8. VIGILÂNCIA EM SAÚDE
-  (
-    'Vigilância em Saúde',
-    'A notificação compulsória de doenças deve ser realizada apenas quando:',
-    '[
-      {"id": "A", "text": "O diagnóstico é confirmado laboratorialmente."},
-      {"id": "B", "text": "O paciente vai a óbito."},
-      {"id": "C", "text": "Há simples suspeita clínica da doença."},
-      {"id": "D", "text": "O médico autoriza a notificação."}
-    ]'::jsonb,
-    'C',
-    'A notificação deve ser feita diante da SUSPEITA clínica, para permitir o desencadeamento rápido das medidas de controle epidemiológico.',
-    'FGV'
-  ),
-  (
-    'Vigilância em Saúde',
-    'Qual das doenças abaixo requer notificação compulsória IMEDIATA (em até 24 horas) ao Ministério da Saúde?',
-    '[
-      {"id": "A", "text": "Hipertensão Arterial."},
-      {"id": "B", "text": "Diabetes Mellitus."},
-      {"id": "C", "text": "Sarampo."},
-      {"id": "D", "text": "Tuberculose."}
-    ]'::jsonb,
-    'C',
-    'O Sarampo é uma doença de alta transmissibilidade e potencial epidêmico, exigindo ação imediata (bloqueio vacinal). Tuberculose é notificação semanal.',
-    'IBFC'
-  ),
-  (
-    'Vigilância em Saúde',
-    'A investigação de um surto de intoxicação alimentar em uma escola é atribuição principal da:',
-    '[
-      {"id": "A", "text": "Vigilância Epidemiológica e Sanitária."},
-      {"id": "B", "text": "Vigilância Ambiental."},
-      {"id": "C", "text": "Saúde do Trabalhador."},
-      {"id": "D", "text": "Assistência Social."}
-    ]'::jsonb,
-    'A',
-    'Envolve a investigação dos casos (Epidemiológica) e a fiscalização dos alimentos/local (Sanitária).',
-    'COPESE'
-  ),
-
-  -- 9. CURATIVOS E TRATAMENTO DE FERIDAS - Reforço Urgente
-  (
-    'Curativos e Tratamento de Feridas',
-    'O tecido de granulação, presente no processo de cicatrização, caracteriza-se clinicamente por:',
-    '[
-      {"id": "A", "text": "Cor amarelada, úmida e aderente (esfacelo)."},
-      {"id": "B", "text": "Cor preta, seca e endurecida (necrose)."},
-      {"id": "C", "text": "Cor vermelho vivo, úmido e com aspecto de framboesa."},
-      {"id": "D", "text": "Cor rosa pálido, seco e plano (epitelização)."}
-    ]'::jsonb,
-    'C',
-    'A granulação indica angiogênese e formação de nova matriz. É um tecido saudável que deve ser protegido e mantido úmido.',
-    'VUNESP'
-  ),
-  (
-    'Curativos e Tratamento de Feridas',
-    'A cobertura de Alginato de Cálcio é indicada principalmente para feridas com:',
-    '[
-      {"id": "A", "text": "Baixo exsudato e tecido de epitelização."},
-      {"id": "B", "text": "Necrose seca e aderida."},
-      {"id": "C", "text": "Alto exsudato e sangramento (hemostasia)."},
-      {"id": "D", "text": "Pele íntegra para prevenção."}
-    ]'::jsonb,
-    'C',
-    'O alginato tem alta capacidade de absorção, transforma-se em gel e auxilia na hemostasia pela troca iônica de cálcio.',
-    'AOCP'
-  ),
-  (
-    'Curativos e Tratamento de Feridas',
-    'Na lesão por pressão, o Estágio 1 é caracterizado por:',
-    '[
-      {"id": "A", "text": "Perda total da espessura da pele com exposição óssea."},
-      {"id": "B", "text": "Flictena (bolha) com conteúdo seroso."},
-      {"id": "C", "text": "Pele íntegra com eritema que não embranquece à digitopressão."},
-      {"id": "D", "text": "Perda parcial da derme com leito vermelho."}
-    ]'::jsonb,
-    'C',
-    'É o sinal mais precoce de dano tecidual. A vermelhidão persistente indica isquemia, mas a pele ainda não rompeu.',
-    'EBSERH'
-  ),
-  (
-    'Curativos e Tratamento de Feridas',
-    'Qual a função da cobertura de Carvão Ativado com Prata em uma ferida infectada?',
-    '[
-      {"id": "A", "text": "Promover desbridamento enzimático."},
-      {"id": "B", "text": "Controlar o odor e reduzir a carga bacteriana."},
-      {"id": "C", "text": "Hidratar o leito seco da ferida."},
-      {"id": "D", "text": "Proteger a pele perilesional de maceração."}
-    ]'::jsonb,
-    'B',
-    'O carvão adsorve as bactérias e moléculas de odor, enquanto a prata tem ação bactericida.',
-    'FCC'
-  ),
-  (
-    'Curativos e Tratamento de Feridas',
-    'O desbridamento autolítico é promovido através de:',
-    '[
-      {"id": "A", "text": "Uso de bisturi ou tesoura."},
-      {"id": "B", "text": "Aplicação de enzimas como colagenase ou papaína."},
-      {"id": "C", "text": "Manutenção do meio úmido (ex: hidrogel/hidrocoloide) que permite ação das enzimas do próprio corpo."},
-      {"id": "D", "text": "Uso de gaze seca (wet-to-dry)."}
-    ]'::jsonb,
-    'C',
-    'O desbridamento autolítico é o mais seletivo e indolor, usando a umidade para que os macrófagos e enzimas endógenas liquefaçam a necrose.',
-    'FGV'
-  ),
-
-  -- 10. CENTRO CIRÚRGICO e CME - Reforço Urgente
+  -- 4. CENTRO CIRÚRGICO E CME (Reforço)
   (
     'Centro Cirúrgico e CME',
-    'O indicador biológico utilizado para monitorar a eficácia da esterilização em autoclave a vapor contém esporos de:',
+    'Na montagem da sala cirúrgica, a placa do bisturi elétrico (eletrocautério) deve ser posicionada preferencialmente em:',
     '[
-      {"id": "A", "text": "Bacillus atrophaeus."},
-      {"id": "B", "text": "Geobacillus stearothermophilus."},
-      {"id": "C", "text": "Staphylococcus aureus."},
-      {"id": "D", "text": "Pseudomonas aeruginosa."}
+      {"id": "A", "text": "Regiões com muitos pelos."},
+      {"id": "B", "text": "Proeminências ósseas."},
+      {"id": "C", "text": "Áreas de grande massa muscular, limpas e secas."},
+      {"id": "D", "text": "Sobre tatuagens ou cicatrizes."}
     ]'::jsonb,
-    'B',
-    'O Geobacillus stearothermophilus é o microrganismo padrão para teste de autoclave pois é altamente resistente ao calor úmido.',
-    'IBFC'
+    'C',
+    'A placa deve ficar em área muscular bem vascularizada (ex: coxa, panturrilha) para garantir o retorno da corrente e evitar queimaduras.',
+    'SOBECC'
   ),
   (
     'Centro Cirúrgico e CME',
-    'Segundo a classificação de Spaulding, um material que entra em contato com tecido estéril ou sistema vascular é classificado como:',
+    'A Hipertermia Maligna é uma complicação anestésica grave. O sinal clínico mais precoce geralmente é:',
     '[
-      {"id": "A", "text": "Não Crítico."},
-      {"id": "B", "text": "Semicrítico."},
-      {"id": "C", "text": "Crítico."},
-      {"id": "D", "text": "Contaminado."}
+      {"id": "A", "text": "Aumento súbito da temperatura (>40ºC)."},
+      {"id": "B", "text": "Aumento do CO2 expirado (ETCO2) e taquicardia."},
+      {"id": "C", "text": "Hipotensão severa."},
+      {"id": "D", "text": "Rigidez muscular generalizada."}
     ]'::jsonb,
-    'C',
-    'Artigos críticos (ex: pinças cirúrgicas) exigem esterilização obrigatória, pois o risco de infecção é alto.',
-    'CESPE'
-  ),
-  (
-    'Centro Cirúrgico e CME',
-    'A fase da cirurgia segura (Checklist OMS) realizada ANTES da indução anestésica é chamada de:',
-    '[
-      {"id": "A", "text": "Sign In (Entrada)."},
-      {"id": "B", "text": "Time Out (Pausa Cirúrgica)."},
-      {"id": "C", "text": "Sign Out (Saída)."},
-      {"id": "D", "text": "Recovery."}
-    ]'::jsonb,
-    'A',
-    'O Sign In verifica identidade, sítio, consentimento e equipamentos de anestesia/oximetria antes de o paciente dormir.',
+    'B',
+    'Embora o nome seja hipertermia, a febre é um sinal tardio. O aumento do metabolismo muscular eleva o CO2 rapidamente.',
     'EBSERH'
   ),
   (
     'Centro Cirúrgico e CME',
-    'A posição cirúrgica em que o paciente permanece em decúbito dorsal com a cabeça mais baixa que o corpo (inclinado) é chamada de:',
+    'Na Central de Material e Esterilização (CME), a área destinada à recepção, conferência e limpeza dos materiais contaminados é chamada de:',
     '[
-      {"id": "A", "text": "Fowler."},
-      {"id": "B", "text": "Litotomia."},
-      {"id": "C", "text": "Trendelenburg."},
-      {"id": "D", "text": "Proclive."}
+      {"id": "A", "text": "Área Limpa."},
+      {"id": "B", "text": "Área Estéril."},
+      {"id": "C", "text": "Expurgo (Área Suja)."},
+      {"id": "D", "text": "Arsenal."}
     ]'::jsonb,
     'C',
-    'Trendelenburg é usada em cirurgias pélvicas/abdominais para afastar as vísceras da área cirúrgica.',
-    'VUNESP'
-  ),
-
-  -- 11. BIOSSEGURANÇA - Reforço Urgente
-  (
-    'Biossegurança e Controle de Infecção',
-    'Para um paciente com diagnóstico de Tuberculose Pulmonar bacilífera, a precaução indicada é:',
-    '[
-      {"id": "A", "text": "Padrão apenas."},
-      {"id": "B", "text": "Contato."},
-      {"id": "C", "text": "Gotículas."},
-      {"id": "D", "text": "Aerossóis."}
-    ]'::jsonb,
-    'D',
-    'A TB é transmitida por núcleos de gotículas (aerossóis) que ficam suspensos no ar. Exige máscara N95/PFF2 para o profissional e quarto privativo.',
-    'AOCP'
-  ),
-  (
-    'Biossegurança e Controle de Infecção',
-    'A lavagem das mãos deve ser substituída pela fricção com álcool gel (preparação alcoólica) quando:',
-    '[
-      {"id": "A", "text": "As mãos estiverem visivelmente sujas de sangue."},
-      {"id": "B", "text": "Após o uso do banheiro."},
-      {"id": "C", "text": "Em contato com paciente com Clostridium difficile."},
-      {"id": "D", "text": "As mãos não estiverem visivelmente sujas."}
-    ]'::jsonb,
-    'D',
-    'O álcool gel é eficaz e preferencial se não houver sujidade visível. Se houver matéria orgânica ou esporos (Clostridium), deve-se usar água e sabão.',
+    'O Expurgo é a área crítica onde se inicia o processamento, separada fisicamente das áreas limpas para evitar contaminação cruzada.',
     'ANVISA'
   ),
   (
-    'Biossegurança e Controle de Infecção',
-    'A NR-32 proíbe expressamente em todos os postos de trabalho:',
+    'Centro Cirúrgico e CME',
+    'Qual o tempo mínimo recomendado para a fricção das mãos com preparação alcoólica (álcool gel) ou escovação cirúrgica com antisséptico degermante antes da cirurgia?',
     '[
-      {"id": "A", "text": "O uso de computadores."},
-      {"id": "B", "text": "O uso de adornos (anéis, relógios, pulseiras)."},
-      {"id": "C", "text": "A conversa entre funcionários."},
-      {"id": "D", "text": "O uso de canetas pessoais."}
+      {"id": "A", "text": "30 segundos."},
+      {"id": "B", "text": "1 a 2 minutos (álcool) ou 3 a 5 minutos (degermante)."},
+      {"id": "C", "text": "10 minutos."},
+      {"id": "D", "text": "Apenas lavagem simples é suficiente."}
     ]'::jsonb,
     'B',
-    'Adornos dificultam a higienização das mãos e acumulam microrganismos, sendo vetados pela norma de segurança.',
-    'MTE'
+    'A antissepsia cirúrgica das mãos visa eliminar a microbiota transitória e reduzir a residente. O tempo varia conforme o produto, mas 3-5 min é o padrão para degermantes.',
+    'OMS'
+  ),
+
+  -- 5. NEFROLOGIA (Reforço)
+  (
+    'Nefrologia',
+    'Na avaliação de uma Fístula Arteriovenosa (FAV) para hemodiálise, o enfermeiro deve verificar a presença de:',
+    '[
+      {"id": "A", "text": "Cianose e dor."},
+      {"id": "B", "text": "Frêmito (palpação) e Sopro (ausculta)."},
+      {"id": "C", "text": "Edema e rubor."},
+      {"id": "D", "text": "Ausência de fluxo sanguíneo."}
+    ]'::jsonb,
+    'B',
+    'O frêmito (vibração tátil) e o sopro indicam que o fluxo sanguíneo está turbilhonar e a fístula está pérvia (funcionando).',
+    'SBN'
+  ),
+  (
+    'Nefrologia',
+    'A complicação mais comum durante a sessão de hemodiálise, causada pela retirada rápida de líquidos (ultrafiltração), é:',
+    '[
+      {"id": "A", "text": "Hipertensão arterial."},
+      {"id": "B", "text": "Síndrome do Desequilíbrio."},
+      {"id": "C", "text": "Hipotensão arterial."},
+      {"id": "D", "text": "Febre."}
+    ]'::jsonb,
+    'C',
+    'A hipotensão intradialítica ocorre quando a taxa de remoção de líquido excede a taxa de reenchimento plasmático do paciente.',
+    'IBFC'
+  ),
+  (
+    'Nefrologia',
+    'Na Diálise Peritoneal, a complicação infecciosa mais frequente, caracterizada por líquido drenado turvo e dor abdominal, é:',
+    '[
+      {"id": "A", "text": "Infecção do túnel do cateter."},
+      {"id": "B", "text": "Peritonite."},
+      {"id": "C", "text": "Hérnia abdominal."},
+      {"id": "D", "text": "Hemoperitônio."}
+    ]'::jsonb,
+    'B',
+    'A peritonite é a infecção da membrana peritoneal, geralmente causada por contaminação durante as trocas de bolsa.',
+    'FGV'
+  ),
+
+  -- 6. CARDIOLOGIA (Reforço)
+  (
+    'Cardiologia',
+    'No eletrocardiograma (ECG), a Onda P representa:',
+    '[
+      {"id": "A", "text": "A repolarização ventricular."},
+      {"id": "B", "text": "A despolarização (contração) dos átrios."},
+      {"id": "C", "text": "A despolarização dos ventrículos."},
+      {"id": "D", "text": "O atraso no nó atrioventricular."}
+    ]'::jsonb,
+    'B',
+    'A Onda P é a primeira onda do ciclo cardíaco normal e indica a atividade elétrica dos átrios.',
+    'VUNESP'
+  ),
+  (
+    'Cardiologia',
+    'Qual marcador de necrose miocárdica é considerado o mais sensível e específico para o diagnóstico de Infarto Agudo do Miocárdio (IAM)?',
+    '[
+      {"id": "A", "text": "CK-MB."},
+      {"id": "B", "text": "Mioglobina."},
+      {"id": "C", "text": "Troponina."},
+      {"id": "D", "text": "LDH."}
+    ]'::jsonb,
+    'C',
+    'As Troponinas (I ou T) são proteínas exclusivas do músculo cardíaco, elevando-se precocemente e permanecendo altas por dias.',
+    'SBC'
+  ),
+  (
+    'Cardiologia',
+    'O cuidado de enfermagem prioritário antes de administrar Digoxina (digitálico) é:',
+    '[
+      {"id": "A", "text": "Verificar a pressão arterial."},
+      {"id": "B", "text": "Verificar a frequência cardíaca apical por 1 minuto."},
+      {"id": "C", "text": "Pesar o paciente."},
+      {"id": "D", "text": "Medir a diurese."}
+    ]'::jsonb,
+    'B',
+    'Digitálicos diminuem a frequência cardíaca. Se FC < 60 bpm, a dose deve ser suspensa e o médico comunicado (risco de intoxicação/bloqueio).',
+    'FUNDATEC'
+  ),
+
+  -- 7. FARMACOLOGIA E CÁLCULOS (Reforço)
+  (
+    'Farmacologia e Alta Vigilância',
+    'Para administrar 500ml de Soro Fisiológico em 4 horas, utilizando um equipo de macrogotas (20 gts/ml), o gotejamento deve ser de aproximadamente:',
+    '[
+      {"id": "A", "text": "21 gotas/min."},
+      {"id": "B", "text": "42 gotas/min."},
+      {"id": "C", "text": "83 gotas/min."},
+      {"id": "D", "text": "125 gotas/min."}
+    ]'::jsonb,
+    'B',
+    'Fórmula: V / (T x 3) = 500 / (4 x 3) = 500 / 12 = 41,6 (arredonda para 42).',
+    'Cálculo'
+  ),
+  (
+    'Farmacologia e Alta Vigilância',
+    'A administração de Omeprazol endovenoso exige cuidados específicos. A recomendação padrão para sua diluição e tempo de administração é:',
+    '[
+      {"id": "A", "text": "Diluir em 100ml e infundir em 30 minutos."},
+      {"id": "B", "text": "Administrar puro (bolus rápido) em 10 segundos."},
+      {"id": "C", "text": "Reconstituir apenas com o diluente próprio e administrar em bolus lento (2-5 min) ou diluído em 100ml."},
+      {"id": "D", "text": "Diluir em Ringer Lactato."}
+    ]'::jsonb,
+    'C',
+    'O Omeprazol é instável. Deve ser usado o diluente do fabricante. Para infusão, usar SF 0,9% ou SG 5% e infundir em 20-30 min.',
+    'EBSERH'
+  ),
+  (
+    'Farmacologia e Alta Vigilância',
+    'Em relação à segurança do paciente, os medicamentos de Alta Vigilância (MAV) ou Potencialmente Perigosos exigem:',
+    '[
+      {"id": "A", "text": "Armazenamento junto com os demais medicamentos."},
+      {"id": "B", "text": "Dupla checagem independente antes da administração."},
+      {"id": "C", "text": "Prescrição verbal em situações de rotina."},
+      {"id": "D", "text": "Uso livre sem bomba de infusão."}
+    ]'::jsonb,
+    'B',
+    'Devido ao alto risco de danos graves em caso de erro, MAVs (ex: insulina, heparina, potássio) exigem dupla checagem.',
+    'ISMP'
+  ),
+
+  -- 8. SAÚDE COLETIVA (Reforço)
+  (
+    'Saúde Coletiva e SUS',
+    'O princípio do SUS que garante que o sistema deve estar preparado para atender a todas as necessidades do paciente, desde a prevenção até a reabilitação, em todos os níveis de complexidade, é a:',
+    '[
+      {"id": "A", "text": "Universalidade."},
+      {"id": "B", "text": "Integralidade."},
+      {"id": "C", "text": "Equidade."},
+      {"id": "D", "text": "Descentralização."}
+    ]'::jsonb,
+    'B',
+    'Integralidade é ver o indivíduo como um todo e garantir a oferta completa de serviços necessários para sua saúde.',
+    'CESPE'
+  ),
+  (
+    'Saúde Coletiva e SUS',
+    'A visita domiciliar é uma ferramenta central da Estratégia Saúde da Família. Seu principal objetivo é:',
+    '[
+      {"id": "A", "text": "Fiscalizar a higiene da casa do paciente."},
+      {"id": "B", "text": "Levar medicamentos que o paciente esqueceu de pegar."},
+      {"id": "C", "text": "Conhecer o contexto de vida, identificar riscos e estabelecer vínculo com a família."},
+      {"id": "D", "text": "Apenas realizar curativos em acamados."}
+    ]'::jsonb,
+    'C',
+    'A visita permite entender os determinantes sociais de saúde in loco e planejar o cuidado de forma contextualizada.',
+    'MS'
+  ),
+  (
+    'Saúde Coletiva e SUS',
+    'Sobre a Política Nacional de Humanização (HumanizaSUS), o conceito de "Acolhimento" refere-se a:',
+    '[
+      {"id": "A", "text": "Uma triagem administrativa na recepção."},
+      {"id": "B", "text": "Uma postura ética de escuta qualificada e responsabilização pela demanda do usuário."},
+      {"id": "C", "text": "Oferecer café e água aos pacientes."},
+      {"id": "D", "text": "Atender apenas quem tem hora marcada."}
+    ]'::jsonb,
+    'B',
+    'Acolhimento não é um espaço físico, é uma postura de escuta e compromisso em dar resposta às necessidades de quem procura o serviço.',
+    'MS'
   );
