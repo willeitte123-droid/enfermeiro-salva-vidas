@@ -1,84 +1,407 @@
-INSERT INTO public.questions (category, banca, question, options, "correctAnswer", explanation)
+-- PACOTE DE REFORÇO 3: NEURO, GERENCIAMENTO, SEMIOLOGIA E URGÊNCIA
+-- Foco: Preencher lacunas em matérias técnicas e administrativas
+
+INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
 VALUES
--- 10 Questões de Urgência e Emergência
-('Urgência e Emergência', 'Vunesp', 'De acordo com as diretrizes da American Heart Association (AHA) 2020 para RCP em adultos, a frequência e a profundidade corretas das compressões torácicas são, respectivamente:',
-'[{"id": "A", "text": "80 a 100 compressões/min e 4 cm de profundidade"}, {"id": "B", "text": "100 a 120 compressões/min e 5 a 6 cm de profundidade"}, {"id": "C", "text": "120 a 140 compressões/min e no mínimo 6 cm de profundidade"}, {"id": "D", "text": "60 a 80 compressões/min e 1/3 do diâmetro do tórax"}]',
-'B', 'A RCP de alta qualidade exige frequência entre 100-120/min e profundidade de pelo menos 5cm (não excedendo 6cm) em adultos, com retorno total do tórax.'),
 
-('Urgência e Emergência', 'IBFC', 'Na avaliação primária do trauma (PHTLS), o "X" do mnemônico XABCDE representa a prioridade máxima no atendimento, que é:',
-'[{"id": "A", "text": "Desobstrução de Vias Aéreas"}, {"id": "B", "text": "Controle de Hemorragias Exsanguinantes (Externas Graves)"}, {"id": "C", "text": "Avaliação Neurológica"}, {"id": "D", "text": "Exposição do paciente"}]',
-'B', 'O "X" foi introduzido para enfatizar que hemorragias massivas (exsanguinantes) matam mais rápido que a obstrução de via aérea e devem ser contidas imediatamente (ex: torniquete).'),
+  -- 1. NEUROLOGIA (Matéria com poucas questões)
+  (
+    'Neurologia',
+    'Na aplicação da Escala de Coma de Glasgow (atualizada), a resposta motora "Decorticação" (flexão anormal) recebe a pontuação:',
+    '[
+      {"id": "A", "text": "2 pontos."},
+      {"id": "B", "text": "3 pontos."},
+      {"id": "C", "text": "4 pontos."},
+      {"id": "D", "text": "5 pontos."}
+    ]'::jsonb,
+    'B',
+    'Na resposta motora: Obedece (6), Localiza (5), Flexão Normal/Retirada (4), Flexão Anormal/Decorticação (3), Extensão/Descerebração (2), Nenhuma (1).',
+    'VUNESP'
+  ),
+  (
+    'Neurologia',
+    'Um paciente apresenta paralisia facial súbita, perda de força no braço esquerdo e fala disártrica. A escala pré-hospitalar utilizada para triagem rápida de AVC é:',
+    '[
+      {"id": "A", "text": "Escala de Braden."},
+      {"id": "B", "text": "Escala de Cincinnati."},
+      {"id": "C", "text": "Escala de Morse."},
+      {"id": "D", "text": "Escala de Ramsay."}
+    ]'::jsonb,
+    'B',
+    'A Escala de Cincinnati avalia 3 sinais: Desvio de rima labial (Sorria), Queda do braço (Abrace) e Fala anormal (Cante).',
+    'IBFC'
+  ),
+  (
+    'Neurologia',
+    'Durante uma crise convulsiva tônico-clônica generalizada, a prioridade da assistência de enfermagem é:',
+    '[
+      {"id": "A", "text": "Conter os movimentos dos membros com força."},
+      {"id": "B", "text": "Inserir uma cânula de Guedel ou objeto na boca para proteger a língua."},
+      {"id": "C", "text": "Proteger a cabeça, lateralizar o paciente (se possível) e garantir via aérea."},
+      {"id": "D", "text": "Administrar medicação via oral imediatamente."}
+    ]'::jsonb,
+    'C',
+    'Nunca se deve introduzir objetos na boca ou conter à força. O foco é evitar traumas (cabeça) e broncoaspiração (lateralizar).',
+    'FCC'
+  ),
+  (
+    'Neurologia',
+    'A Tríade de Cushing, indicativa de hipertensão intracraniana grave e risco de herniação cerebral, é composta por:',
+    '[
+      {"id": "A", "text": "Hipotensão, Taquicardia e Taquipneia."},
+      {"id": "B", "text": "Hipertensão arterial, Bradicardia e Alteração do ritmo respiratório."},
+      {"id": "C", "text": "Hipertermia, Taquicardia e Hipertensão."},
+      {"id": "D", "text": "Cefaleia, Vômitos e Rigidez de nuca."}
+    ]'::jsonb,
+    'B',
+    'A tríade (HAS + Bradicardia + Respiração irregular) é uma resposta fisiológica tardia e grave à isquemia do tronco encefálico por compressão.',
+    'EBSERH'
+  ),
+  (
+    'Neurologia',
+    'Qual o exame padrão-ouro (gold standard) a ser realizado imediatamente na suspeita de AVC para diferenciar o tipo isquêmico do hemorrágico?',
+    '[
+      {"id": "A", "text": "Ressonância Magnética."},
+      {"id": "B", "text": "Eletroencefalograma."},
+      {"id": "C", "text": "Tomografia Computadorizada (TC) de crânio sem contraste."},
+      {"id": "D", "text": "Doppler de Carótidas."}
+    ]'::jsonb,
+    'C',
+    'A TC sem contraste é rápida e eficaz para descartar sangramento (hemorrágico), permitindo a decisão de trombólise no isquêmico.',
+    'CESPE'
+  ),
 
-('Urgência e Emergência', 'Cebraspe', 'Um paciente vítima de queimadura apresenta lesões em todo o membro superior direito e na face anterior do tronco. Segundo a Regra dos Nove de Wallace, qual a porcentagem aproximada da superfície corporal queimada?',
-'[{"id": "A", "text": "18%"}, {"id": "B", "text": "27%"}, {"id": "C", "text": "36%"}, {"id": "D", "text": "45%"}]',
-'B', 'Membro Superior Direito todo = 9%. Face Anterior do Tronco (Tórax + Abdome) = 18%. Total: 9 + 18 = 27%.'),
+  -- 2. GERENCIAMENTO E ADMINISTRAÇÃO (Matéria com poucas questões)
+  (
+    'Administração em Enfermagem',
+    'No dimensionamento de pessoal de enfermagem (Resolução COFEN 543/2017), um paciente classificado como de "Cuidados Semi-intensivos" requer quantas horas de enfermagem nas 24 horas?',
+    '[
+      {"id": "A", "text": "4 horas."},
+      {"id": "B", "text": "6 horas."},
+      {"id": "C", "text": "10 horas."},
+      {"id": "D", "text": "18 horas."}
+    ]'::jsonb,
+    'C',
+    'Cuidados Semi-intensivos requerem 10 horas de enfermagem. Alta dependência também são 10 horas. Intensivos são 18 horas.',
+    'COFEN'
+  ),
+  (
+    'Administração em Enfermagem',
+    'O estilo de liderança em que o enfermeiro toma todas as decisões sozinho, sem consultar a equipe, focado apenas nas tarefas e na hierarquia, é chamado de:',
+    '[
+      {"id": "A", "text": "Liderança Democrática."},
+      {"id": "B", "text": "Liderança Laissez-faire (Liberal)."},
+      {"id": "C", "text": "Liderança Autocrática."},
+      {"id": "D", "text": "Liderança Situacional."}
+    ]'::jsonb,
+    'C',
+    'Na liderança autocrática, o foco é no líder e na tarefa, com comunicação vertical descendente e pouca abertura.',
+    'FGV'
+  ),
+  (
+    'Administração em Enfermagem',
+    'Na gestão de materiais, a Classificação XYZ avalia os itens de acordo com sua:',
+    '[
+      {"id": "A", "text": "Quantidade em estoque."},
+      {"id": "B", "text": "Criticidade ou importância operacional."},
+      {"id": "C", "text": "Valor financeiro (custo)."},
+      {"id": "D", "text": "Data de validade."}
+    ]'::jsonb,
+    'B',
+    'A curva ABC avalia valor ($). A classificação XYZ avalia a criticidade (X=Baixa, Y=Média, Z=Vital/Crítica para o funcionamento).',
+    'VUNESP'
+  ),
+  (
+    'Administração em Enfermagem',
+    'A Educação Permanente em Saúde (EPS) diferencia-se da Educação Continuada por:',
+    '[
+      {"id": "A", "text": "Focar apenas em cursos de atualização técnica."},
+      {"id": "B", "text": "Ser realizada fora do ambiente de trabalho."},
+      {"id": "C", "text": "Utilizar a problematização do processo de trabalho para transformar as práticas."},
+      {"id": "D", "text": "Ser direcionada apenas aos médicos."}
+    ]'::jsonb,
+    'C',
+    'A EPS parte dos problemas reais do cotidiano (aprender no trabalho e para o trabalho) para transformar a realidade, enquanto a continuada é mais acadêmica/tradicional.',
+    'MS'
+  ),
+  (
+    'Administração em Enfermagem',
+    'O documento administrativo que relata a ocorrência de fatos não rotineiros no serviço (ex: queda de paciente, erro de medicação), com a finalidade de análise e melhoria, é:',
+    '[
+      {"id": "A", "text": "Anotação de Enfermagem."},
+      {"id": "B", "text": "Relatório de Ocorrência (ou Notificação de Evento Adverso)."},
+      {"id": "C", "text": "Evolução de Enfermagem."},
+      {"id": "D", "text": "Passagem de Plantão."}
+    ]'::jsonb,
+    'B',
+    'O relatório de ocorrência é uma ferramenta gerencial de qualidade e segurança, não punitiva, para mapear riscos e eventos.',
+    'EBSERH'
+  ),
 
-('Urgência e Emergência', 'FGV', 'Qual dos ritmos cardíacos abaixo é considerado "chocável" (passível de desfibrilação) durante uma Parada Cardiorrespiratória (PCR)?',
-'[{"id": "A", "text": "Assistolia"}, {"id": "B", "text": "Atividade Elétrica Sem Pulso (AESP)"}, {"id": "C", "text": "Fibrilação Ventricular (FV)"}, {"id": "D", "text": "Bradicardia Sinusal"}]',
-'C', 'Os ritmos chocáveis são Fibrilação Ventricular (FV) e Taquicardia Ventricular Sem Pulso (TVSP). Assistolia e AESP não se chocam (trata-se com RCP e Adrenalina).'),
+  -- 3. SEMIOLOGIA (Matéria com poucas questões)
+  (
+    'Semiologia',
+    'Na ausculta pulmonar, o som musical, agudo e contínuo, semelhante a um assobio, gerado pela passagem de ar em vias aéreas estreitadas (broncoespasmo), é denominado:',
+    '[
+      {"id": "A", "text": "Ronco."},
+      {"id": "B", "text": "Estertor Crepitante."},
+      {"id": "C", "text": "Sibilo."},
+      {"id": "D", "text": "Atrito Pleural."}
+    ]'::jsonb,
+    'C',
+    'Sibilos são típicos da asma e DPOC, indicando obstrução ao fluxo aéreo em brônquios e bronquíolos.',
+    'AOCP'
+  ),
+  (
+    'Semiologia',
+    'A sequência correta das técnicas propedêuticas durante o exame físico do abdome, para não alterar os ruídos hidroaéreos, é:',
+    '[
+      {"id": "A", "text": "Inspeção, Palpação, Percussão, Ausculta."},
+      {"id": "B", "text": "Inspeção, Ausculta, Percussão, Palpação."},
+      {"id": "C", "text": "Palpação, Percussão, Inspeção, Ausculta."},
+      {"id": "D", "text": "Ausculta, Inspeção, Palpação, Percussão."}
+    ]'::jsonb,
+    'B',
+    'No abdome, a ausculta deve preceder a percussão e a palpação, pois o toque pode estimular o peristaltismo e falsear a ausculta.',
+    'CESGRANRIO'
+  ),
+  (
+    'Semiologia',
+    'O Sinal de Blumberg (dor à descompressão brusca no ponto de McBurney, na fossa ilíaca direita) é indicativo de:',
+    '[
+      {"id": "A", "text": "Colecistite Aguda."},
+      {"id": "B", "text": "Apendicite Aguda."},
+      {"id": "C", "text": "Infecção Urinária."},
+      {"id": "D", "text": "Diverticulite."}
+    ]'::jsonb,
+    'B',
+    'Blumberg positivo indica irritação peritoneal localizada, sinal clássico de apendicite.',
+    'FUNDATEC'
+  ),
+  (
+    'Semiologia',
+    'Na avaliação das pupilas, quando elas apresentam diâmetros desiguais, denomina-se:',
+    '[
+      {"id": "A", "text": "Isocoria."},
+      {"id": "B", "text": "Midríase."},
+      {"id": "C", "text": "Miose."},
+      {"id": "D", "text": "Anisocoria."}
+    ]'::jsonb,
+    'D',
+    'Anisocoria (a = não, iso = igual) é a desigualdade no diâmetro pupilar, sinal de alerta neurológico.',
+    'IBFC'
+  ),
+  (
+    'Semiologia',
+    'A coloração amarelada da pele e mucosas, decorrente do acúmulo de bilirrubina, é chamada de:',
+    '[
+      {"id": "A", "text": "Cianose."},
+      {"id": "B", "text": "Icterícia."},
+      {"id": "C", "text": "Eritema."},
+      {"id": "D", "text": "Palidez."}
+    ]'::jsonb,
+    'B',
+    'A icterícia sugere disfunção hepática, biliar ou hemólise. Melhor observada na esclera (parte branca do olho).',
+    'COPESE'
+  ),
 
-('Urgência e Emergência', 'FCC', 'A Escala de Coma de Glasgow avalia o nível de consciência. Na atualização mais recente, a resposta pupilar (reação à luz) foi incorporada. Qual a pontuação máxima possível na escala clássica (sem a avaliação pupilar)?',
-'[{"id": "A", "text": "10"}, {"id": "B", "text": "13"}, {"id": "C", "text": "14"}, {"id": "D", "text": "15"}]',
-'D', 'A pontuação varia de 3 (coma profundo) a 15 (normal). Avalia Abertura Ocular (4), Resposta Verbal (5) e Resposta Motora (6).'),
+  -- 4. URGÊNCIA E EMERGÊNCIA (Reforço Adicional)
+  (
+    'Urgência e Emergência',
+    'Segundo o protocolo da AHA (American Heart Association) para PCR em adultos, os ritmos cardíacos considerados "chocáveis" (que exigem desfibrilação) são:',
+    '[
+      {"id": "A", "text": "Assistolia e Atividade Elétrica Sem Pulso (AESP)."},
+      {"id": "B", "text": "Fibrilação Ventricular (FV) e Taquicardia Ventricular Sem Pulso (TVSP)."},
+      {"id": "C", "text": "Fibrilação Atrial e Flutter Atrial."},
+      {"id": "D", "text": "Bradicardia Sinusal e Bloqueio Atrioventricular."}
+    ]'::jsonb,
+    'B',
+    'FV e TVSP são ritmos caóticos ou rápidos onde a desfibrilação elétrica é o único tratamento efetivo para "resetar" o coração.',
+    'AHA'
+  ),
+  (
+    'Urgência e Emergência',
+    'Em um paciente com suspeita de trauma raquimedular (TRM), a técnica recomendada para abertura das vias aéreas é:',
+    '[
+      {"id": "A", "text": "Inclinação da cabeça e elevação do queixo (Head tilt-Chin lift)."},
+      {"id": "B", "text": "Tração da mandíbula (Jaw-thrust)."},
+      {"id": "C", "text": "Rotação lateral da cabeça."},
+      {"id": "D", "text": "Hiperextensão do pescoço."}
+    ]'::jsonb,
+    'B',
+    'O Jaw-thrust projeta a mandíbula para frente sem mover a coluna cervical, protegendo a medula.',
+    'PHTLS'
+  ),
+  (
+    'Urgência e Emergência',
+    'A droga de primeira escolha no tratamento do Choque Anafilático, que deve ser administrada imediatamente por via intramuscular, é:',
+    '[
+      {"id": "A", "text": "Hidrocortisona."},
+      {"id": "B", "text": "Prometazina (Fenergan)."},
+      {"id": "C", "text": "Adrenalina (Epinefrina)."},
+      {"id": "D", "text": "Dipirona."}
+    ]'::jsonb,
+    'C',
+    'A Adrenalina reverte a vasodilatação e o broncoespasmo. Corticoides e anti-histamínicos são secundários e demoram a agir.',
+    'VUNESP'
+  ),
+  (
+    'Urgência e Emergência',
+    'Na avaliação primária do trauma (XABCDE), a letra "X" (que antecede o A) refere-se a:',
+    '[
+      {"id": "A", "text": "Exposição do paciente."},
+      {"id": "B", "text": "Controle de hemorragia exsanguinante (externa grave)."},
+      {"id": "C", "text": "Raio-X de tórax."},
+      {"id": "D", "text": "Exame neurológico."}
+    ]'::jsonb,
+    'B',
+    'O PHTLS atualizou para XABCDE, priorizando o controle de sangramentos massivos (torniquete/compressão) antes mesmo da via aérea.',
+    'PHTLS'
+  ),
+  (
+    'Urgência e Emergência',
+    'O sinal clínico de "Turgência Jugular", associado a hipotensão e abafamento de bulhas cardíacas (Tríade de Beck), é sugestivo de:',
+    '[
+      {"id": "A", "text": "Pneumotórax Hipertensivo."},
+      {"id": "B", "text": "Tamponamento Cardíaco."},
+      {"id": "C", "text": "Hemotórax Maciço."},
+      {"id": "D", "text": "Choque Séptico."}
+    ]'::jsonb,
+    'B',
+    'A Tríade de Beck é clássica do Tamponamento Cardíaco, um tipo de choque obstrutivo.',
+    'CESPE'
+  ),
 
-('Urgência e Emergência', 'AOCP', 'Em uma situação de engasgo total (obstrução grave de via aérea) em um adulto consciente, a manobra de desobstrução indicada é:',
-'[{"id": "A", "text": "Manobra de Sellick"}, {"id": "B", "text": "Manobra de Heimlich"}, {"id": "C", "text": "Manobra de Chin-Lift"}, {"id": "D", "text": "Manobra de Leopold"}]',
-'B', 'A Manobra de Heimlich consiste em compressões abdominais subdiafragmáticas para expulsar o corpo estranho. Se a vítima ficar inconsciente, inicia-se a RCP.'),
+  -- 5. BIOSSEGURANÇA E CONTROLE DE INFECÇÃO (Reforço)
+  (
+    'Biossegurança e Controle de Infecção',
+    'De acordo com a NR-32, em relação aos materiais perfurocortantes, é CORRETO afirmar:',
+    '[
+      {"id": "A", "text": "O reencape de agulhas é permitido se feito com uma mão só."},
+      {"id": "B", "text": "Devem ser descartados em sacos plásticos brancos."},
+      {"id": "C", "text": "É vedado o reencape e a desconexão manual de agulhas."},
+      {"id": "D", "text": "O descarte pode ser feito no lixo comum se a agulha estiver protegida."}
+    ]'::jsonb,
+    'C',
+    'O reencape é a principal causa de acidentes. A NR-32 proíbe expressamente o reencape e a desconexão manual.',
+    'MTE/NR-32'
+  ),
+  (
+    'Biossegurança e Controle de Infecção',
+    'Os resíduos de serviços de saúde classificados no Grupo E (Perfurocortantes) devem ser descartados em:',
+    '[
+      {"id": "A", "text": "Saco plástico branco leitoso."},
+      {"id": "B", "text": "Saco plástico laranja."},
+      {"id": "C", "text": "Recipiente rígido, resistente à ponta e estanque (Descarpack)."},
+      {"id": "D", "text": "Saco preto comum."}
+    ]'::jsonb,
+    'C',
+    'Agulhas, lâminas e ampolas exigem recipientes rígidos para evitar acidentes com os trabalhadores da limpeza/coleta.',
+    'ANVISA/RDC 222'
+  ),
+  (
+    'Biossegurança e Controle de Infecção',
+    'Para um paciente com diagnóstico de Meningite Meningocócica, a precaução recomendada nas primeiras 24 horas de tratamento é:',
+    '[
+      {"id": "A", "text": "Padrão."},
+      {"id": "B", "text": "Contato."},
+      {"id": "C", "text": "Gotículas."},
+      {"id": "D", "text": "Aerossóis."}
+    ]'::jsonb,
+    'C',
+    'A Neisseria meningitidis é transmitida por gotículas grandes (fala, tosse) que alcançam até 1 metro. Exige máscara cirúrgica.',
+    'AOCP'
+  ),
+  (
+    'Biossegurança e Controle de Infecção',
+    'A higienização das mãos é a medida mais importante para prevenção de infecções. Qual dos itens abaixo é um dos "5 Momentos para Higiene das Mãos" da OMS?',
+    '[
+      {"id": "A", "text": "Antes de entrar no hospital."},
+      {"id": "B", "text": "Antes de realizar procedimento asséptico."},
+      {"id": "C", "text": "Apenas após contato com fluidos corporais."},
+      {"id": "D", "text": "Ao chegar e sair do plantão apenas."}
+    ]'::jsonb,
+    'B',
+    'Os 5 momentos são: 1. Antes de tocar o paciente; 2. Antes de procedimento limpo/asséptico; 3. Após risco de exposição a fluidos; 4. Após tocar o paciente; 5. Após tocar superfícies próximas.',
+    'OMS'
+  ),
+  (
+    'Biossegurança e Controle de Infecção',
+    'Segundo a NR-32, o uso de Equipamentos de Proteção Individual (EPI) é obrigatório. Para a manipulação de quimioterápicos antineoplásicos, o avental deve ser:',
+    '[
+      {"id": "A", "text": "De algodão e mangas curtas."},
+      {"id": "B", "text": "Impermeável, com mangas longas, punho justo e fechamento nas costas."},
+      {"id": "C", "text": "De material permeável e aberto na frente."},
+      {"id": "D", "text": "Qualquer avental cirúrgico estéril."}
+    ]'::jsonb,
+    'B',
+    'Para quimioterápicos (risco químico), o avental deve proteger a pele do profissional de respingos e aerossóis, sendo impermeável e fechado na frente.',
+    'NR-32'
+  ),
 
-('Urgência e Emergência', 'Consulplan', 'Quais são os sinais clássicos do Choque Hipovolêmico em fase descompensada?',
-'[{"id": "A", "text": "Bradicardia e Hipertensão"}, {"id": "B", "text": "Taquicardia, Hipotensão e Pele fria/pegajosa"}, {"id": "C", "text": "Pele quente, seca e Bradicardia"}, {"id": "D", "text": "Poliúria e Hipertensão"}]',
-'B', 'A perda de volume leva a taquicardia (compensatória), vasoconstrição (pele fria) e, quando a compensação falha, hipotensão severa.'),
-
-('Urgência e Emergência', 'IDECAN', 'No atendimento ao AVC (Acidente Vascular Cerebral), a escala pré-hospitalar de Cincinnati avalia quais três parâmetros?',
-'[{"id": "A", "text": "Força nas pernas, Visão e Dor de cabeça"}, {"id": "B", "text": "Assimetria Facial, Debilidade nos Braços e Fala Anormal"}, {"id": "C", "text": "Respiração, Pulso e Pressão Arterial"}, {"id": "D", "text": "Nível de consciência, Pupilas e Glicemia"}]',
-'B', 'O mnemônico SAMU (Sorria, Abrace, Música/Fale, Urgente) corresponde a Face, Braços e Fala. Alteração em 1 dos 3 sugere 72% de chance de AVC.'),
-
-('Urgência e Emergência', 'Vunesp', 'Em caso de picada por cobra Jararaca (Gênero Bothrops), a principal complicação local é a necrose e hemorragia, e a sistêmica é a insuficiência renal. O soro específico a ser administrado é o:',
-'[{"id": "A", "text": "Anticrotálico"}, {"id": "B", "text": "Antibotrópico"}, {"id": "C", "text": "Antielapídico"}, {"id": "D", "text": "Antiescorpiônico"}]',
-'B', 'Bothrops = Jararaca (Soro Antibotrópico). Crotalus = Cascavel (Soro Anticrotálico - Neurotóxico). Micrurus = Coral (Soro Antielapídico).'),
-
-('Urgência e Emergência', 'EBSERH', 'A droga de escolha utilizada na Parada Cardiorrespiratória (PCR) em ritmos não chocáveis (Assistolia/AESP), administrada a cada 3 a 5 minutos, é:',
-'[{"id": "A", "text": "Atropina"}, {"id": "B", "text": "Amiodarona"}, {"id": "C", "text": "Adrenalina (Epinefrina)"}, {"id": "D", "text": "Lidocaína"}]',
-'C', 'A Adrenalina 1mg deve ser feita o mais precocemente possível em ritmos não chocáveis. A Atropina não é mais usada na PCR de rotina. Amiodarona é para ritmos chocáveis refratários.'),
-
--- 10 Questões de Farmacologia e Cálculos
-('Farmacologia', 'Vunesp', 'Foi prescrito 500 ml de Soro Fisiológico 0,9% para ser infundido em 8 horas. Qual deve ser a velocidade de gotejamento em gotas por minuto?',
-'[{"id": "A", "text": "14 gotas/min"}, {"id": "B", "text": "21 gotas/min"}, {"id": "C", "text": "42 gotas/min"}, {"id": "D", "text": "63 gotas/min"}]',
-'B', 'Fórmula: Gotas = Volume / (Tempo x 3). Gotas = 500 / (8 x 3) = 500 / 24 = 20,83. Arredondando: 21 gotas/min.'),
-
-('Farmacologia', 'IBFC', 'Para administrar 2.500.000 UI de Penicilina Cristalina, dispondo de frasco-ampola de 5.000.000 UI diluído em 8 ml de solvente (volume final de 10 ml), quantos ml da solução devem ser aspirados?',
-'[{"id": "A", "text": "2 ml"}, {"id": "B", "text": "4 ml"}, {"id": "C", "text": "5 ml"}, {"id": "D", "text": "6 ml"}]',
-'C', 'Regra de três: 5.000.000 UI está para 10 ml, assim como 2.500.000 UI está para X. X = (2.500.000 x 10) / 5.000.000 = 5 ml.'),
-
-('Farmacologia', 'FCC', 'A Insulina Regular caracteriza-se por:',
-'[{"id": "A", "text": "Ação lenta e aspecto leitoso"}, {"id": "B", "text": "Ação intermediária e aspecto límpido"}, {"id": "C", "text": "Ação rápida e aspecto límpido (transparente)"}, {"id": "D", "text": "Ação ultralenta e aspecto leitoso"}]',
-'C', 'A Regular é a única insulina de ação rápida que é transparente e pode ser feita IV. A NPH tem ação intermediária e é leitosa.'),
-
-('Farmacologia', 'EBSERH', 'A técnica em Z (Z-track) é recomendada para administração de medicamentos por via Intramuscular com o objetivo de:',
-'[{"id": "A", "text": "Acelerar a absorção da droga"}, {"id": "B", "text": "Evitar o refluxo da medicação para o tecido subcutâneo e manchar a pele"}, {"id": "C", "text": "Diminuir a dor da picada apenas"}, {"id": "D", "text": "Permitir volumes maiores que 5 ml"}]',
-'B', 'A técnica em Z veda o trajeto da agulha, impedindo o retorno da medicação (comum em ferro/Noripurum) que poderia irritar ou manchar o subcutâneo.'),
-
-('Farmacologia', 'FGV', 'O antídoto específico para reversão dos efeitos dos anticoagulantes cumarínicos (Varfarina) em caso de sangramento ou superdosagem é:',
-'[{"id": "A", "text": "Sulfato de Protamina"}, {"id": "B", "text": "Vitamina K (Fitomenadiona)"}, {"id": "C", "text": "Flumazenil"}, {"id": "D", "text": "Naloxona"}]',
-'B', 'A Vitamina K reverte a Varfarina. A Protamina reverte a Heparina. Flumazenil reverte Benzodiazepínicos.'),
-
-('Farmacologia', 'Cebraspe', 'A Noradrenalina é um vasopressor potente. Um cuidado de enfermagem essencial na sua administração é:',
-'[{"id": "A", "text": "Administrar preferencialmente em bolus"}, {"id": "B", "text": "Administrar exclusivamente em acesso venoso central, se possível, para evitar necrose por extravasamento"}, {"id": "C", "text": "Diluir sempre em Soro Fisiológico, pois precipita em Glicosado"}, {"id": "D", "text": "Proteger da luz, pois é fotossensível, usando equipo âmbar"}]',
-'B', 'A noradrenalina é vesicante. O extravasamento periférico causa necrose grave. (Nota: Ela DEVE ser diluída em Glicosado 5% para evitar oxidação precoce, mas o acesso central é a prioridade de segurança).'),
-
-('Farmacologia', 'AOCP', 'Qual o ângulo correto para administração de medicação por via Intradérmica (ID), como na vacina BCG ou PPD?',
-'[{"id": "A", "text": "90 graus"}, {"id": "B", "text": "45 graus"}, {"id": "C", "text": "10 a 15 graus"}, {"id": "D", "text": "30 graus"}]',
-'C', 'A via ID é quase paralela à pele (10-15º) para formar a pápula na derme. 90º é IM, 45º é SC.'),
-
-('Farmacologia', 'IDIB', 'Para administrar 20 mg de Furosemida (Lasix), sabendo que a ampola possui 2 ml com 10 mg/ml (total 20 mg na ampola), deve-se aspirar:',
-'[{"id": "A", "text": "0,5 ml"}, {"id": "B", "text": "1 ml"}, {"id": "C", "text": "1,5 ml"}, {"id": "D", "text": "2 ml (a ampola toda)"}]',
-'D', 'A concentração é 10mg/ml. Se a ampola tem 2ml, ela tem 20mg no total. Para fazer 20mg, aspira-se os 2ml.'),
-
-('Farmacologia', 'Consulplan', 'A prescrição é de 60 mg de Gentamicina IM. A farmácia dispõe de ampolas de 80 mg/2 ml. Quanto aspirar?',
-'[{"id": "A", "text": "1,0 ml"}, {"id": "B", "text": "1,2 ml"}, {"id": "C", "text": "1,5 ml"}, {"id": "D", "text": "1,8 ml"}]',
-'C', 'Regra de três: 80 mg está para 2 ml, 60 mg está para X. X = (60 * 2) / 80 = 120 / 80 = 1,5 ml.'),
-
-('Farmacologia', 'Vunesp', 'Sinais de intoxicação digitálica (ex: Digoxina) incluem:',
-'[{"id": "A", "text": "Hipertensão e Taquicardia"}, {"id": "B", "text": "Náuseas, vômitos, visão turva (halos) e bradicardia"}, {"id": "C", "text": "Tosse seca e edema de glote"}, {"id": "D", "text": "Poliúria e sede intensa"}]',
-'B', 'A toxicidade digitálica causa distúrbios gastrointestinais (náuseas), visuais (halos amarelo-esverdeados) e arritmias (bradicardia/BAV).')
-ON CONFLICT (question) DO NOTHING;
+  -- 6. NEFROLOGIA E OUTROS (Mix Final)
+  (
+    'Nefrologia',
+    'A principal causa de Insuficiência Renal Aguda (IRA) pré-renal em pacientes hospitalizados é:',
+    '[
+      {"id": "A", "text": "Uso de contraste iodado."},
+      {"id": "B", "text": "Hipovolemia/Desidratação e diminuição da perfusão renal."},
+      {"id": "C", "text": "Obstrução do trato urinário (cálculo)."},
+      {"id": "D", "text": "Glomerulonefrite."}
+    ]'::jsonb,
+    'B',
+    'A IRA pré-renal ocorre quando falta sangue chegando ao rim (choque, desidratação, IC), sendo a causa mais comum e reversível.',
+    'EBSERH'
+  ),
+  (
+    'Nefrologia',
+    'O desequilíbrio eletrolítico característico da Doença Renal Crônica avançada, que oferece risco iminente de parada cardíaca, é a:',
+    '[
+      {"id": "A", "text": "Hiponatremia."},
+      {"id": "B", "text": "Hipercalemia (Potássio alto)."},
+      {"id": "C", "text": "Hipocalcemia."},
+      {"id": "D", "text": "Hipermagnesemia."}
+    ]'::jsonb,
+    'B',
+    'O rim não excreta o potássio adequadamente. K+ > 6.0-6.5 causa arritmias graves e assistolia.',
+    'SBN'
+  ),
+  (
+    'Cardiologia',
+    'Na parada cardiorrespiratória (PCR), a droga antiarrítmica de escolha para Fibrilação Ventricular (FV) ou TV sem pulso refratária ao choque é:',
+    '[
+      {"id": "A", "text": "Atropina."},
+      {"id": "B", "text": "Amiodarona."},
+      {"id": "C", "text": "Adenosina."},
+      {"id": "D", "text": "Dopamina."}
+    ]'::jsonb,
+    'B',
+    'A Amiodarona (300mg bolus inicial) é usada após a Adrenalina e choques falharem em estabilizar o ritmo.',
+    'AHA'
+  ),
+  (
+    'Cardiologia',
+    'Um paciente em uso de Warfarina (Marevan) deve monitorar periodicamente qual exame laboratorial para ajuste de dose?',
+    '[
+      {"id": "A", "text": "TTPa (Tempo de Tromboplastina Parcial ativado)."},
+      {"id": "B", "text": "TAP/INR (Tempo de Protrombina)."},
+      {"id": "C", "text": "Plaquetas."},
+      {"id": "D", "text": "Fibrinogênio."}
+    ]'::jsonb,
+    'B',
+    'A Warfarina inibe fatores dependentes de Vitamina K (via extrínseca), monitorada pelo INR (alvo geralmente 2-3). O TTPa monitora Heparina.',
+    'SBC'
+  ),
+  (
+    'Procedimentos de enfermagem',
+    'A posição de Trendelenburg (cabeça mais baixa que os pés) é frequentemente utilizada em cirurgias pélvicas, mas pode causar complicações respiratórias devido a:',
+    '[
+      {"id": "A", "text": "Compressão do diafragma pelas vísceras abdominais."},
+      {"id": "B", "text": "Aumento da expansibilidade torácica."},
+      {"id": "C", "text": "Redução do retorno venoso."},
+      {"id": "D", "text": "Facilitação da ventilação mecânica."}
+    ]'::jsonb,
+    'A',
+    'As vísceras empurram o diafragma para cima, dificultando a expansão pulmonar e aumentando o risco de atelectasia.',
+    'SOBECC'
+  );
