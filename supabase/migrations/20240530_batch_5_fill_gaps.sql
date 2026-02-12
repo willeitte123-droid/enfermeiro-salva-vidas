@@ -1,153 +1,415 @@
-INSERT INTO public.questions (category, banca, question, options, "correctAnswer", explanation)
+-- PACOTE DE REFORÇO 5: PREENCHENDO LACUNAS
+-- Foco: SAE, UTI, Imunização, Saúde do Trabalhador e Idoso
+-- Proteção: ON CONFLICT DO NOTHING para evitar erros de duplicidade
+
+INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
 VALUES
 
--- ÉTICA (Foco: Sigilo, Imperícia, Negligência)
-('Ética', 'Vunesp', 'Um enfermeiro administra uma medicação por via endovenosa, quando a prescrição médica indicava via intramuscular, causando flebite no paciente. Esse ato caracteriza:',
-'[{"id": "A", "text": "Negligência"}, {"id": "B", "text": "Imprudência"}, {"id": "C", "text": "Imperícia"}, {"id": "D", "text": "Dolo"}]',
-'B', 'Imprudência é agir sem a cautela necessária, de forma precipitada (fazer sem conferir a via correta). Imperícia seria falta de conhecimento técnico. Negligência seria omissão (deixar de fazer).'),
+  -- 1. SISTEMATIZAÇÃO DA ASSISTÊNCIA (SAE)
+  (
+    'Sistematização da Assistência (SAE)',
+    'De acordo com a Resolução COFEN 358/2009, a etapa do Processo de Enfermagem que envolve a determinação dos resultados que se espera alcançar e das ações ou intervenções de enfermagem é chamada de:',
+    '[
+      {"id": "A", "text": "Diagnóstico de Enfermagem."},
+      {"id": "B", "text": "Planejamento de Enfermagem."},
+      {"id": "C", "text": "Implementação."},
+      {"id": "D", "text": "Avaliação de Enfermagem."}
+    ]'::jsonb,
+    'B',
+    'O Planejamento é a etapa onde se definem as metas (NOC) e se prescrevem as intervenções (NIC) para atingi-las.',
+    'COFEN'
+  ),
+  (
+    'Sistematização da Assistência (SAE)',
+    'Na Taxonomia da NANDA-I, um Diagnóstico de Enfermagem de "Risco" diferencia-se de um Diagnóstico com "Foco no Problema" por não apresentar:',
+    '[
+      {"id": "A", "text": "Título."},
+      {"id": "B", "text": "Fatores de Risco."},
+      {"id": "C", "text": "Definição."},
+      {"id": "D", "text": "Características Definidoras (Sinais e Sintomas)."}
+    ]'::jsonb,
+    'D',
+    'Diagnósticos de risco descrevem vulnerabilidades a problemas que ainda não aconteceram, portanto, não possuem sinais e sintomas (características definidoras) presentes.',
+    'IBFC'
+  ),
+  (
+    'Sistematização da Assistência (SAE)',
+    'A classificação das Intervenções de Enfermagem, que padroniza a linguagem para descrever os tratamentos que os enfermeiros realizam, é conhecida pela sigla:',
+    '[
+      {"id": "A", "text": "NANDA."},
+      {"id": "B", "text": "NOC."},
+      {"id": "C", "text": "NIC."},
+      {"id": "D", "text": "CIPE."}
+    ]'::jsonb,
+    'C',
+    'NIC (Nursing Interventions Classification) é a taxonomia das intervenções. NANDA é para diagnósticos e NOC para resultados.',
+    'VUNESP'
+  ),
+  (
+    'Sistematização da Assistência (SAE)',
+    'O Exame Físico é uma parte fundamental de qual etapa do Processo de Enfermagem?',
+    '[
+      {"id": "A", "text": "Coleta de Dados (Histórico)."},
+      {"id": "B", "text": "Diagnóstico."},
+      {"id": "C", "text": "Implementação."},
+      {"id": "D", "text": "Avaliação."}
+    ]'::jsonb,
+    'A',
+    'A Coleta de Dados ou Histórico de Enfermagem compreende a Anamnese (entrevista) e o Exame Físico.',
+    'FGV'
+  ),
 
-('Ética', 'IBFC', 'Sobre o Sigilo Profissional, previsto no Código de Ética de Enfermagem, é correto afirmar que o profissional:',
-'[{"id": "A", "text": "Nunca pode revelar segredos, mesmo com autorização do paciente"}, {"id": "B", "text": "Pode revelar fato sigiloso em casos de dever legal, ordem judicial ou consentimento escrito"}, {"id": "C", "text": "Pode revelar informações para familiares, independentemente da vontade do paciente capaz"}, {"id": "D", "text": "Deve manter sigilo apenas se o paciente solicitar expressamente"}]',
-'B', 'O sigilo pode ser quebrado em situações específicas: dever legal (ex: notificação compulsória), ordem judicial, risco de vida, defesa própria ou consentimento do paciente.'),
+  -- 2. TERAPIA INTENSIVA (UTI)
+  (
+    'Terapia Intensiva (UTI)',
+    'Para prevenção da Pneumonia Associada à Ventilação Mecânica (PAV), o "bundle" de cuidados recomenda manter a cabeceira do leito elevada entre:',
+    '[
+      {"id": "A", "text": "0 e 15 graus."},
+      {"id": "B", "text": "15 e 30 graus."},
+      {"id": "C", "text": "30 e 45 graus."},
+      {"id": "D", "text": "Acima de 60 graus."}
+    ]'::jsonb,
+    'C',
+    'A elevação de 30-45º reduz o risco de broncoaspiração de conteúdo gástrico e secreções orofaríngeas, principal causa da PAV.',
+    'ANVISA'
+  ),
+  (
+    'Terapia Intensiva (UTI)',
+    'A Escala de RASS (Richmond Agitation-Sedation Scale) é utilizada em UTI para avaliar o nível de sedação e agitação. Um paciente "Alerta e Calmo" recebe a pontuação:',
+    '[
+      {"id": "A", "text": "+4."},
+      {"id": "B", "text": "0."},
+      {"id": "C", "text": "-2."},
+      {"id": "D", "text": "-5."}
+    ]'::jsonb,
+    'B',
+    'O zero (0) é o estado neutro (alerta e calmo). Positivos indicam agitação (+4 combativo) e negativos indicam sedação (-5 não despertável).',
+    'AMIB'
+  ),
+  (
+    'Terapia Intensiva (UTI)',
+    'Durante a monitorização da Pressão Arterial Invasiva (PAI), o transdutor de pressão deve ser nivelado na altura do:',
+    '[
+      {"id": "A", "text": "Apêndice Xifoide."},
+      {"id": "B", "text": "Eixo Flebostático (4º espaço intercostal, linha axilar média)."},
+      {"id": "C", "text": "Linha clavicular média."},
+      {"id": "D", "text": "Lóbulo da orelha."}
+    ]'::jsonb,
+    'B',
+    'O nivelamento incorreto altera o valor da PA. O eixo flebostático corresponde ao nível do átrio direito.',
+    'EBSERH'
+  ),
+  (
+    'Terapia Intensiva (UTI)',
+    'A droga vasoativa de primeira escolha para o tratamento da hipotensão no Choque Séptico, visando manter a PAM ≥ 65 mmHg, é:',
+    '[
+      {"id": "A", "text": "Dobutamina."},
+      {"id": "B", "text": "Noradrenalina."},
+      {"id": "C", "text": "Adrenalina."},
+      {"id": "D", "text": "Dopamina."}
+    ]'::jsonb,
+    'B',
+    'A Noradrenalina é um potente vasoconstritor alfa-adrenérgico, sendo a escolha padrão-ouro para elevar a resistência vascular sistêmica na sepse.',
+    'ILAS'
+  ),
 
-('Ética', 'Consulplan', 'Deixar de verificar os sinais vitais de um paciente instável, resultando em agravamento não detectado do quadro, configura:',
-'[{"id": "A", "text": "Negligência"}, {"id": "B", "text": "Imprudência"}, {"id": "C", "text": "Imperícia"}, {"id": "D", "text": "Infração administrativa apenas"}]',
-'A', 'Negligência é a omissão, o "deixar de fazer" o que deveria ser feito (desleixo, descuido).'),
+  -- 3. IMUNIZAÇÃO (PNI)
+  (
+    'Imunização',
+    'A vacina BCG, indicada ao nascer para prevenir formas graves de tuberculose, é administrada por via:',
+    '[
+      {"id": "A", "text": "Intramuscular."},
+      {"id": "B", "text": "Subcutânea."},
+      {"id": "C", "text": "Intradérmica."},
+      {"id": "D", "text": "Oral."}
+    ]'::jsonb,
+    'C',
+    'A BCG é feita na inserção inferior do músculo deltoide direito, via intradérmica, formando a pápula característica.',
+    'MS/PNI'
+  ),
+  (
+    'Imunização',
+    'Para a conservação adequada dos imunobiológicos na geladeira da sala de vacinas (nível local), a temperatura deve ser mantida entre:',
+    '[
+      {"id": "A", "text": "-2ºC e +2ºC."},
+      {"id": "B", "text": "+2ºC e +8ºC."},
+      {"id": "C", "text": "+8ºC e +12ºC."},
+      {"id": "D", "text": "Temperatura ambiente (até 25ºC)."}
+    ]'::jsonb,
+    'B',
+    'A faixa de segurança é de +2ºC a +8ºC, sendo +5ºC o ponto ideal para evitar tanto o congelamento quanto o aquecimento.',
+    'MS/PNI'
+  ),
+  (
+    'Imunização',
+    'A Vacina Oral de Rotavírus Humano (VORH) possui um limite estrito de idade para a primeira dose. Ela não deve ser administrada se a criança tiver ultrapassado:',
+    '[
+      {"id": "A", "text": "2 meses e 15 dias."},
+      {"id": "B", "text": "3 meses e 15 dias."},
+      {"id": "C", "text": "4 meses."},
+      {"id": "D", "text": "5 meses."}
+    ]'::jsonb,
+    'B',
+    'A primeira dose da VORH tem prazo máximo de 3 meses e 15 dias para evitar o risco aumentado de invaginação intestinal.',
+    'MS/PNI'
+  ),
+  (
+    'Imunização',
+    'Qual vacina do calendário do adulto deve ser reforçada a cada 10 anos?',
+    '[
+      {"id": "A", "text": "Hepatite B."},
+      {"id": "B", "text": "Tríplice Viral."},
+      {"id": "C", "text": "Febre Amarela."},
+      {"id": "D", "text": "Dupla Adulto (dT - Difteria e Tétano)."}
+    ]'::jsonb,
+    'D',
+    'A vacina dT exige reforços decenais por toda a vida. Em caso de ferimentos graves, o reforço pode ser antecipado se a última dose foi há mais de 5 anos.',
+    'MS/PNI'
+  ),
 
--- SAE E SISTEMATIZAÇÃO
-('Sistematização (SAE)', 'FGV', 'A etapa do Processo de Enfermagem que envolve a determinação dos resultados que se espera alcançar (NOC) e das ações ou intervenções (NIC) é chamada de:',
-'[{"id": "A", "text": "Diagnóstico de Enfermagem"}, {"id": "B", "text": "Planejamento de Enfermagem"}, {"id": "C", "text": "Implementação"}, {"id": "D", "text": "Evolução"}]',
-'B', 'O Planejamento é a fase onde se estabelecem as metas (resultados) e se prescrevem as condutas (intervenções) para atingi-las.'),
+  -- 4. SAÚDE DO TRABALHADOR (NR-32)
+  (
+    'Saúde do Trabalhador',
+    'Conforme a NR-32, os trabalhadores de saúde expostos a radiações ionizantes (Raio-X, Tomografia) devem obrigatoriamente:',
+    '[
+      {"id": "A", "text": "Usar dosímetro individual na altura do tórax."},
+      {"id": "B", "text": "Realizar hemograma semanal."},
+      {"id": "C", "text": "Ter jornada de trabalho de 12 horas."},
+      {"id": "D", "text": "Receber adicional de periculosidade de 50%."}
+    ]'::jsonb,
+    'A',
+    'O dosímetro monitora a dose de radiação acumulada recebida pelo profissional, garantindo que não ultrapasse os limites de segurança.',
+    'NR-32'
+  ),
+  (
+    'Saúde do Trabalhador',
+    'Em caso de acidente de trabalho com material biológico (ex: picada de agulha), a Comunicação de Acidente de Trabalho (CAT) deve ser emitida:',
+    '[
+      {"id": "A", "text": "Apenas se o trabalhador ficar doente."},
+      {"id": "B", "text": "Apenas se houver afastamento superior a 15 dias."},
+      {"id": "C", "text": "Até o primeiro dia útil seguinte ao da ocorrência."},
+      {"id": "D", "text": "No prazo de 30 dias."}
+    ]'::jsonb,
+    'C',
+    'A emissão da CAT é obrigatória para todo acidente de trabalho, com ou sem afastamento, até o dia útil seguinte (ou imediato em caso de morte).',
+    'Previdência Social'
+  ),
+  (
+    'Saúde do Trabalhador',
+    'A lavagem das mãos é a medida mais simples e eficaz para prevenir infecções. O uso de álcool gel 70% substitui a lavagem com água e sabão quando:',
+    '[
+      {"id": "A", "text": "As mãos estiverem visivelmente sujas de sangue."},
+      {"id": "B", "text": "O profissional acabou de sair do banheiro."},
+      {"id": "C", "text": "As mãos não estiverem visivelmente sujas."},
+      {"id": "D", "text": "O paciente tiver diagnóstico de Clostridium difficile."}
+    ]'::jsonb,
+    'C',
+    'O álcool gel é eficaz quando não há sujidade visível. Se houver matéria orgânica ou esporos (Clostridium), a lavagem com água e sabão é obrigatória.',
+    'ANVISA'
+  ),
 
-('Sistematização (SAE)', 'FCC', 'Segundo a NANDA-I, um "Diagnóstico de Promoção da Saúde" é aquele que:',
-'[{"id": "A", "text": "Descreve respostas humanas a condições de saúde que existem em um indivíduo"}, {"id": "B", "text": "Descreve a vulnerabilidade para desenvolver uma resposta indesejável"}, {"id": "C", "text": "Julga a motivação e o desejo de aumentar o bem-estar e alcançar o potencial humano de saúde"}, {"id": "D", "text": "Descreve um conjunto de diagnósticos que ocorrem juntos"}]',
-'C', 'Diagnósticos de Promoção da Saúde (ex: Disposição para amamentação melhorada) focam na vontade de melhorar, não exigindo que haja uma doença atual.'),
+  -- 5. SAÚDE DO IDOSO
+  (
+    'Saúde do Idoso',
+    'Segundo o Estatuto do Idoso (Lei nº 10.741/2003), é considerada idosa a pessoa com idade igual ou superior a:',
+    '[
+      {"id": "A", "text": "55 anos."},
+      {"id": "B", "text": "60 anos."},
+      {"id": "C", "text": "65 anos."},
+      {"id": "D", "text": "70 anos."}
+    ]'::jsonb,
+    'B',
+    'No Brasil, para fins legais e de políticas públicas, o marco etário é 60 anos (diferente de países desenvolvidos onde pode ser 65).',
+    'Estatuto do Idoso'
+  ),
+  (
+    'Saúde do Idoso',
+    'Uma das principais alterações fisiológicas do envelhecimento (senescência) no sistema cardiovascular é:',
+    '[
+      {"id": "A", "text": "Aumento da elasticidade vascular."},
+      {"id": "B", "text": "Aumento da frequência cardíaca máxima."},
+      {"id": "C", "text": "Rigidez arterial e aumento da resistência vascular periférica."},
+      {"id": "D", "text": "Diminuição da pressão arterial sistólica."}
+    ]'::jsonb,
+    'C',
+    'A perda de elastina e o acúmulo de colágeno tornam as artérias mais rígidas, predispondo à hipertensão sistólica isolada no idoso.',
+    'SBGG'
+  ),
+  (
+    'Saúde do Idoso',
+    'A Escala de Katz é um instrumento amplamente utilizado na geriatria para avaliar:',
+    '[
+      {"id": "A", "text": "O risco de quedas."},
+      {"id": "B", "text": "A capacidade cognitiva."},
+      {"id": "C", "text": "A independência nas Atividades Básicas de Vida Diária (ABVD)."},
+      {"id": "D", "text": "O estado nutricional."}
+    ]'::jsonb,
+    'C',
+    'A Escala de Katz avalia 6 funções: banho, vestir-se, higiene pessoal, transferência, continência e alimentação.',
+    'Ministério da Saúde'
+  ),
 
-('Sistematização (SAE)', 'AOCP', 'A implementação da Sistematização da Assistência de Enfermagem (SAE) deve ocorrer:',
-'[{"id": "A", "text": "Apenas em hospitais públicos"}, {"id": "B", "text": "Apenas em unidades de terapia intensiva"}, {"id": "C", "text": "Em toda instituição de saúde, pública ou privada"}, {"id": "D", "text": "Apenas quando houver enfermeiros especialistas"}]',
-'C', 'A Resolução COFEN 358/2009 torna a SAE obrigatória em todos os ambientes, públicos ou privados, onde ocorre o cuidado profissional de enfermagem.'),
+  -- 6. ONCOLOGIA E CUIDADOS PALIATIVOS (Categoria nova/pouca questão)
+  (
+    'Oncologia',
+    'Durante a infusão de quimioterápico vesicante, o paciente queixa-se de ardência e dor no local do acesso venoso. A primeira conduta do enfermeiro deve ser:',
+    '[
+      {"id": "A", "text": "Aumentar o gotejamento para terminar logo."},
+      {"id": "B", "text": "Administrar analgésico e observar."},
+      {"id": "C", "text": "Interromper a infusão imediatamente."},
+      {"id": "D", "text": "Aplicar compressa quente sobre o cateter."}
+    ]'::jsonb,
+    'C',
+    'A suspeita de extravasamento de droga vesicante é uma emergência oncológica. Deve-se parar a infusão, tentar aspirar o resíduo e só então retirar o acesso.',
+    'INCA'
+  ),
+  (
+    'Cuidados Paliativos',
+    'Em cuidados paliativos, a respiração ruidosa típica da fase final de vida (estertor da morte), causada pelo acúmulo de secreções na orofaringe, pode ser manejada com:',
+    '[
+      {"id": "A", "text": "Aspiração traqueal profunda e vigorosa."},
+      {"id": "B", "text": "Furosemida venosa."},
+      {"id": "C", "text": "Anticolinérgicos (ex: Escopolamina/Buscopan) para secar secreções."},
+      {"id": "D", "text": "Antibióticos de amplo espectro."}
+    ]'::jsonb,
+    'C',
+    'A aspiração nessa fase é desconfortável e pouco efetiva. Anticolinérgicos ajudam a reduzir a produção de novas secreções, trazendo conforto.',
+    'ANCP'
+  ),
 
-('Sistematização (SAE)', 'Cebraspe', 'Na estrutura do diagnóstico de enfermagem da NANDA, o componente "Características Definidoras" refere-se a:',
-'[{"id": "A", "text": "Fatores causais ou etiológicos"}, {"id": "B", "text": "Sinais e sintomas observáveis"}, {"id": "C", "text": "Fatores de risco ambientais"}, {"id": "D", "text": "O título do diagnóstico"}]',
-'B', 'Características Definidoras são as evidências clínicas (sinais e sintomas) que confirmam a presença do diagnóstico real.'),
+  -- 7. SAÚDE DA CRIANÇA (Mais um reforço)
+  (
+    'Saúde da Mulher e da Criança',
+    'O Teste do Coraçãozinho (Oximetria de Pulso) deve ser realizado na triagem neonatal entre 24h e 48h de vida. O resultado é considerado NORMAL quando a saturação é:',
+    '[
+      {"id": "A", "text": "Maior ou igual a 95% em ambas as medidas e diferença menor que 3% entre elas."},
+      {"id": "B", "text": "Maior que 90% em qualquer membro."},
+      {"id": "C", "text": "Menor que 95%, mas sem cianose."},
+      {"id": "D", "text": "Qualquer valor, desde que o bebê não chore."}
+    ]'::jsonb,
+    'A',
+    'O teste compara a SpO2 no membro superior direito (pré-ductal) e um dos membros inferiores (pós-ductal) para detectar cardiopatias críticas.',
+    'SBP'
+  ),
+  (
+    'Saúde da Mulher e da Criança',
+    'A principal causa de parada cardiorrespiratória (PCR) em crianças é de origem:',
+    '[
+      {"id": "A", "text": "Cardíaca (arritmias)."},
+      {"id": "B", "text": "Respiratória (hipóxia)."},
+      {"id": "C", "text": "Neurológica."},
+      {"id": "D", "text": "Metabólica."}
+    ]'::jsonb,
+    'B',
+    'Diferente dos adultos, a PCR pediátrica raramente é súbita/cardíaca. Geralmente é resultado final de insuficiência respiratória ou choque progressivo.',
+    'PALS'
+  ),
 
--- VIGILÂNCIA (Sanitária/Epidemiológica/Saúde)
-('Vigilância Sanitária', 'Vunesp', 'Compete à Vigilância Sanitária (VISA) ações capazes de eliminar, diminuir ou prevenir riscos à saúde e intervir nos problemas sanitários decorrentes:',
-'[{"id": "A", "text": "Apenas da produção de medicamentos"}, {"id": "B", "text": "Do meio ambiente, da produção e circulação de bens e da prestação de serviços de interesse da saúde"}, {"id": "C", "text": "Exclusivamente de portos, aeroportos e fronteiras"}, {"id": "D", "text": "Da vacinação da população"}]',
-'B', 'A VISA tem um escopo amplo que inclui alimentos, medicamentos, cosméticos, serviços de saúde, saneamento e ambiente, visando a proteção da saúde coletiva.'),
+  -- 8. SAÚDE DA MULHER (Mais um reforço)
+  (
+    'Saúde da Mulher e da Criança',
+    'A colpocitologia oncótica (Papanicolau) é o exame de rastreamento para câncer de colo do útero. Segundo o Ministério da Saúde, a população-alvo e a periodicidade recomendada são:',
+    '[
+      {"id": "A", "text": "Todas as mulheres que já iniciaram atividade sexual, anualmente."},
+      {"id": "B", "text": "Mulheres de 25 a 64 anos. Após dois exames anuais consecutivos normais, a cada 3 anos."},
+      {"id": "C", "text": "Mulheres a partir de 18 anos, semestralmente."},
+      {"id": "D", "text": "Apenas mulheres com sintomas, a qualquer idade."}
+    ]'::jsonb,
+    'B',
+    'O rastreio organizado foca na faixa etária de maior risco e na periodicidade trienal após resultados negativos iniciais.',
+    'INCA/MS'
+  ),
+  (
+    'Saúde da Mulher e da Criança',
+    'A Data Provável do Parto (DPP) calculada pela Regra de Naegele para uma DUM (Data da Última Menstruação) de 10/05/2023 é:',
+    '[
+      {"id": "A", "text": "17/01/2024."},
+      {"id": "B", "text": "17/02/2024."},
+      {"id": "C", "text": "10/02/2024."},
+      {"id": "D", "text": "07/02/2024."}
+    ]'::jsonb,
+    'B',
+    'Regra de Naegele: Dia + 7, Mês - 3 (ou +9), Ano ajustado. 10+7=17. Maio(5) - 3 = Fevereiro(2). Ano seguinte = 2024. Resposta: 17/02/2024.',
+    'Obstetrícia'
+  ),
 
-('Vigilância Epidemiológica', 'IBFC', 'A ocorrência de casos de uma doença em número acima do esperado para uma determinada área e período de tempo caracteriza um(a):',
-'[{"id": "A", "text": "Endemia"}, {"id": "B", "text": "Epidemia (ou Surto)"}, {"id": "C", "text": "Pandemia"}, {"id": "D", "text": "Prevalência"}]',
-'B', 'Epidemia é o aumento acima do limiar esperado (diagrama de controle). Surto é uma epidemia restrita (localizada). Endemia é a presença constante dentro do esperado.'),
-
-('Vigilância Epidemiológica', 'FGV', 'Para o cálculo do Coeficiente de Mortalidade Infantil, utiliza-se no denominador:',
-'[{"id": "A", "text": "População total"}, {"id": "B", "text": "Número de mulheres em idade fértil"}, {"id": "C", "text": "Número de óbitos totais"}, {"id": "D", "text": "Número de nascidos vivos no mesmo período"}]',
-'D', 'Mortalidade Infantil = (Óbitos < 1 ano / Nascidos Vivos) x 1.000. É um indicador sensível de qualidade de vida e saúde.'),
-
-('Vigilância em Saúde', 'AOCP', 'A investigação epidemiológica de campo tem como objetivo principal:',
-'[{"id": "A", "text": "Punir os responsáveis pela transmissão"}, {"id": "B", "text": "Apenas contar o número de casos para estatística"}, {"id": "C", "text": "Identificar a fonte de infecção e modo de transmissão para interromper a cadeia e prevenir novos casos"}, {"id": "D", "text": "Solicitar verba federal"}]',
-'C', 'O foco da investigação é a ação de controle: descobrir a causa para bloquear a transmissão (ex: fechar um restaurante, isolar pacientes, vacinar bloqueio).'),
-
-('Vigilância Sanitária', 'FCC', 'O registro de produtos (como novos medicamentos) na ANVISA tem validade e deve ser renovado periodicamente. O objetivo desse registro é:',
-'[{"id": "A", "text": "Aumentar a arrecadação de impostos"}, {"id": "B", "text": "Garantir a reserva de mercado para indústrias nacionais"}, {"id": "C", "text": "Avaliar e garantir a segurança, eficácia e qualidade do produto antes do consumo"}, {"id": "D", "text": "Controlar o preço dos produtos no mercado"}]',
-'C', 'O registro sanitário é a comprovação de que o produto foi avaliado tecnicamente e atende aos requisitos de segurança e eficácia.'),
-
--- FUNDAMENTOS
-('Fundamentos', 'Vunesp', 'A posição indicada para a realização de lavagem intestinal (enteroclisma) e exames retais, onde o paciente deita-se sobre o lado esquerdo com a perna direita flexionada, é chamada de:',
-'[{"id": "A", "text": "Posição de Fowler"}, {"id": "B", "text": "Posição de Trendelenburg"}, {"id": "C", "text": "Posição de Sims"}, {"id": "D", "text": "Posição de Litotomia"}]',
-'C', 'A posição de Sims (decúbito lateral esquerdo com flexão da perna superior) facilita a introdução da sonda retal seguindo a anatomia do sigmoide.'),
-
-('Fundamentos', 'EBSERH', 'Na verificação do pulso apical, o estetoscópio deve ser posicionado no:',
-'[{"id": "A", "text": "2º espaço intercostal, linha paraesternal direita"}, {"id": "B", "text": "5º espaço intercostal, linha hemiclavicular esquerda"}, {"id": "C", "text": "3º espaço intercostal, linha axilar anterior"}, {"id": "D", "text": "Apêndice xifoide"}]',
-'B', 'O ictus cordis (ponta do coração) é melhor auscultado no 5º EIC, na linha que desce do meio da clavícula esquerda (hemiclavicular).'),
-
-('Fundamentos', 'IBFC', 'A anotação de enfermagem deve ser realizada:',
-'[{"id": "A", "text": "Ao final do plantão, resumindo tudo de uma vez"}, {"id": "B", "text": "Imediatamente após a prestação do cuidado, de forma cronológica"}, {"id": "C", "text": "Apenas se houver intercorrências graves"}, {"id": "D", "text": "A lápis, para permitir correções futuras"}]',
-'B', 'A anotação deve ser pontual, cronológica e imediata para evitar esquecimentos e garantir a segurança legal. Nunca a lápis.'),
-
--- NUTRIÇÃO CLÍNICA
-('Nutrição Clínica', 'Consulplan', 'A dieta enteral industrializada, que já vem pronta para uso em sistema fechado, apresenta menor risco de contaminação e pode permanecer instalada em temperatura ambiente por até:',
-'[{"id": "A", "text": "4 a 6 horas"}, {"id": "B", "text": "12 horas"}, {"id": "C", "text": "24 horas"}, {"id": "D", "text": "48 horas"}]',
-'C', 'Sistemas fechados industrializados podem ficar em bomba de infusão por até 24-48h (dependendo do fabricante, geralmente 24h na prática clínica) devido ao menor risco de manipulação.'),
-
-('Nutrição Clínica', 'Vunesp', 'Para medir o comprimento adequado de uma sonda nasogástrica (SNG), a medição deve ser feita:',
-'[{"id": "A", "text": "Da ponta do nariz ao lóbulo da orelha e deste até a cicatriz umbilical"}, {"id": "B", "text": "Da ponta do nariz ao lóbulo da orelha e deste até o apêndice xifoide"}, {"id": "C", "text": "Do lóbulo da orelha até o apêndice xifoide"}, {"id": "D", "text": "Da ponta do nariz até o umbigo direto"}]',
-'B', 'A técnica correta para SNG (estômago) é Nariz -> Orelha -> Xifoide. Para Nasoenteral (intestino), acrescenta-se 10-20cm.'),
-
-('Nutrição Clínica', 'FGV', 'Qual é a complicação metabólica grave que pode ocorrer ao se realimentar rapidamente um paciente severamente desnutrido?',
-'[{"id": "A", "text": "Síndrome de Dumping"}, {"id": "B", "text": "Síndrome de Realimentação (Refeeding Syndrome)"}, {"id": "C", "text": "Hipernatremia"}, {"id": "D", "text": "Íleo paralítico"}]',
-'B', 'A Síndrome de Realimentação causa distúrbios eletrolíticos fatais (hipofosfatemia, hipocalemia) devido ao pico de insulina após longo jejum.'),
-
--- CUIDADOS PALIATIVOS
-('Cuidados Paliativos', 'IDECAN', 'A Escala de Performance Palliative (PPS) é utilizada para:',
-'[{"id": "A", "text": "Avaliar a intensidade da dor"}, {"id": "B", "text": "Avaliar a capacidade funcional e prognóstico de sobrevida"}, {"id": "C", "text": "Medir o nível de consciência"}, {"id": "D", "text": "Avaliar o risco de queda"}]',
-'B', 'A PPS vai de 0% a 100% e avalia a capacidade do paciente de se cuidar, alimentar e mobilizar, sendo um forte preditor de sobrevida.'),
-
-('Cuidados Paliativos', 'FCC', 'O protocolo de comunicação de más notícias mais utilizado em saúde, composto por 6 etapas (preparação, percepção, convite, conhecimento, emoções, estratégia), é o:',
-'[{"id": "A", "text": "Protocolo MANCHESTER"}, {"id": "B", "text": "Protocolo SPIKES"}, {"id": "C", "text": "Protocolo START"}, {"id": "D", "text": "Protocolo MEWS"}]',
-'B', 'O protocolo SPIKES guia o profissional a dar notícias difíceis de forma empática e estruturada.'),
-
-('Cuidados Paliativos', 'AOCP', 'Na fase final de vida, a via de administração de medicamentos preferencial, quando a via oral não é mais possível e o acesso venoso é difícil/invasivo, é a:',
-'[{"id": "A", "text": "Intramuscular"}, {"id": "B", "text": "Intraóssea"}, {"id": "C", "text": "Subcutânea (Hipodermóclise)"}, {"id": "D", "text": "Retal"}]',
-'C', 'A hipodermóclise é segura, confortável e eficaz para controle de sintomas (dor, dispneia) e hidratação de conforto.'),
-
--- HEMOTERAPIA
-('Hemoterapia', 'Vunesp', 'Antes de iniciar qualquer transfusão de hemocomponentes, é obrigatória a realização da dupla checagem à beira-leito. O que deve ser conferido?',
-'[{"id": "A", "text": "Apenas o nome do paciente"}, {"id": "B", "text": "Identificação do paciente, tipo sanguíneo, validade da bolsa e compatibilidade na etiqueta"}, {"id": "C", "text": "Apenas a validade da bolsa"}, {"id": "D", "text": "O nome do médico prescritor"}]',
-'B', 'A segurança transfusional depende da conferência rigorosa dos dados da bolsa com os dados do paciente (pulseira) para evitar incompatibilidade ABO.'),
-
-('Hemoterapia', 'IBFC', 'As plaquetas (concentrado de plaquetas) devem ser armazenadas em temperatura ambiente (20-24°C) e sob:',
-'[{"id": "A", "text": "Refrigeração constante"}, {"id": "B", "text": "Agitação constante"}, {"id": "C", "text": "Congelamento"}, {"id": "D", "text": "Abrigo da luz apenas"}]',
-'B', 'Diferente das hemácias (geladeira) e plasma (freezer), as plaquetas ficam em agitadores em temperatura ambiente para manter sua função e evitar agregação.'),
-
-('Hemoterapia', 'Cebraspe', 'A Reação Febril Não Hemolítica é a reação transfusional mais comum. Ela é caracterizada por:',
-'[{"id": "A", "text": "Febre sem hemólise, geralmente causada por anticorpos contra leucócitos do doador"}, {"id": "B", "text": "Choque anafilático e edema de glote"}, {"id": "C", "text": "Destruição maciça de hemácias com dor lombar"}, {"id": "D", "text": "Edema pulmonar agudo (TRALI)"}]',
-'A', 'É uma reação benigna, tratada com antitérmicos e interrupção temporária. Ocorre pela presença de leucócitos residuais na bolsa (daí a importância da deleucocitização).'),
-
--- FERIDAS E CURATIVOS
-('Tratamento de Feridas', 'Vunesp', 'A bota de Unna é uma terapia compressiva inelástica indicada principalmente para o tratamento de:',
-'[{"id": "A", "text": "Úlceras Arteriais isquêmicas"}, {"id": "B", "text": "Úlceras Venosas"}, {"id": "C", "text": "Pé Diabético infectado"}, {"id": "D", "text": "Lesões por Pressão estágio 4"}]',
-'B', 'A Bota de Unna melhora o retorno venoso e trata a hipertensão venosa, causa da úlcera. É contraindicada em úlceras arteriais (pois a compressão piora a isquemia).'),
-
-('Curativos e Tratamento de Feridas', 'FGV', 'Qual solução é contraindicada para a limpeza de feridas com tecido de granulação, devido à sua citotoxicidade para as células novas?',
-'[{"id": "A", "text": "Soro Fisiológico 0,9%"}, {"id": "B", "text": "Polihexanida (PHMB)"}, {"id": "C", "text": "Povidona-Iodo (PVPI) tópico ou degermante"}, {"id": "D", "text": "Água Destilada"}]',
-'C', 'O PVPI é citotóxico para fibroblastos e retarda a cicatrização em feridas limpas/granuladas. Deve ser usado apenas em pele íntegra ou feridas muito infectadas (com critério).'),
-
-('Curativos e Tratamento de Feridas', 'FCC', 'A cobertura de Hidrogel é indicada principalmente para:',
-'[{"id": "A", "text": "Feridas altamente exsudativas"}, {"id": "B", "text": "Feridas secas ou com necrose, para promover desbridamento autolítico"}, {"id": "C", "text": "Feridas infectadas com odor fétido"}, {"id": "D", "text": "Controle de hemorragia"}]',
-'B', 'O hidrogel doa umidade ao leito, amolecendo a necrose e o esfacelo, facilitando sua remoção natural.'),
-
--- CME e CONTROLE DE INFECÇÃO
-('Controle de Infecção (CME)', 'AOCP', 'Segundo a classificação de Spaulding, artigos que entram em contato com mucosas íntegras ou pele não intacta (ex: inaladores, endoscópios) são classificados como:',
-'[{"id": "A", "text": "Críticos"}, {"id": "B", "text": "Semicríticos"}, {"id": "C", "text": "Não Críticos"}, {"id": "D", "text": "Descartáveis"}]',
-'B', 'Artigos semicríticos requerem, no mínimo, Desinfecção de Alto Nível. Críticos (penetram tecidos estéreis) requerem Esterilização.'),
-
-('Controle de Infecção (CME)', 'IDECAN', 'O monitoramento do processo de esterilização em autoclave deve incluir indicadores físicos, químicos e biológicos. Qual é o indicador biológico padrão utilizado?',
-'[{"id": "A", "text": "Bacillus atrophaeus"}, {"id": "B", "text": "Geobacillus stearothermophilus"}, {"id": "C", "text": "Staphylococcus aureus"}, {"id": "D", "text": "Escherichia coli"}]',
-'B', 'Este microorganismo é altamente resistente ao calor úmido. Se ele morrer, garante-se que a esterilização foi eficaz.'),
-
-('Controle de Infecção (CME)', 'Vunesp', 'A limpeza dos materiais na CME é a etapa mais crítica porque:',
-'[{"id": "A", "text": "Deixa o material brilhante"}, {"id": "B", "text": "A presença de matéria orgânica impede a ação do agente esterilizante"}, {"id": "C", "text": "É a etapa mais rápida"}, {"id": "D", "text": "Não é necessária se usar glutaraldeído"}]',
-'B', 'A sujeira (bioburden) protege os microrganismos. "Não há esterilização sem limpeza prévia".'),
-
--- FARMACOLOGIA E SEGURANÇA
-('Farmacologia e Segurança do Paciente', 'EBSERH', 'A "dupla checagem" é uma estratégia de segurança recomendada principalmente para a administração de:',
-'[{"id": "A", "text": "Todos os medicamentos orais"}, {"id": "B", "text": "Medicamentos de Alta Vigilância (Potencialmente Perigosos)"}, {"id": "C", "text": "Vitaminas e suplementos"}, {"id": "D", "text": "Curativos simples"}]',
-'B', 'Medicamentos como insulina, heparina, quimioterápicos e eletrólitos concentrados têm alto risco de causar danos graves em caso de erro, exigindo conferência por dois profissionais.'),
-
-('Farmacologia e Segurança do Paciente', 'IBFC', 'Um paciente é alérgico a Dipirona. Essa informação deve ser registrada:',
-'[{"id": "A", "text": "Apenas na evolução médica"}, {"id": "B", "text": "Apenas na prescrição"}, {"id": "C", "text": "No prontuário e em pulseira de identificação/alerta específica"}, {"id": "D", "text": "Apenas verbalmente na passagem de plantão"}]',
-'C', 'A identificação de alergias deve ser visual e redundante (prontuário + pulseira colorida) para evitar administração acidental.'),
-
-('Farmacologia e Segurança do Paciente', 'FGV', 'O conceito de "Farmacovigilância" refere-se a:',
-'[{"id": "A", "text": "Vigilância de preços de remédios"}, {"id": "B", "text": "Identificação, avaliação e prevenção de efeitos adversos ou problemas relacionados a medicamentos"}, {"id": "C", "text": "Controle de estoque da farmácia hospitalar"}, {"id": "D", "text": "Fiscalização de drogarias pela polícia"}]',
-'B', 'É a ciência relativa à detecção e prevenção de eventos adversos a medicamentos pós-comercialização.'),
-
-('Legislação e Gerenciamento', 'Vunesp', 'O Enfermeiro Responsável Técnico (RT) de uma instituição tem como função principal:',
-'[{"id": "A", "text": "Fazer a escala de folgas apenas"}, {"id": "B", "text": "Responder perante o Conselho Regional (COREN) por todas as atividades de enfermagem da instituição"}, {"id": "C", "text": "Realizar todos os curativos complexos"}, {"id": "D", "text": "Substituir médicos ausentes"}]',
-'B', 'O RT é o elo entre o serviço e o Conselho, garantindo que a assistência de enfermagem siga os preceitos éticos e legais.'),
-
-('Legislação e Gerenciamento', 'FCC', 'No dimensionamento de pessoal de enfermagem, o "Índice de Segurança Técnico" (IST) serve para:',
-'[{"id": "A", "text": "Cobrir ausências previstas (férias, folgas) e não previstas (faltas, licenças)"}, {"id": "B", "text": "Aumentar o salário da equipe"}, {"id": "C", "text": "Medir a produtividade"}, {"id": "D", "text": "Avaliar a qualidade do serviço"}]',
-'A', 'O IST (mínimo 15%) é um acréscimo ao quadro de pessoal para garantir que a assistência não seja prejudicada por ausências legais ou eventuais.')
+  -- 9. GERAIS E TÉCNICAS BÁSICAS
+  (
+    'Fundamentos de Enfermagem',
+    'Ao realizar uma punção venosa periférica, o garrote deve permanecer no membro do paciente pelo menor tempo possível, idealmente não ultrapassando:',
+    '[
+      {"id": "A", "text": "30 segundos."},
+      {"id": "B", "text": "1 a 2 minutos."},
+      {"id": "C", "text": "5 minutos."},
+      {"id": "D", "text": "10 minutos."}
+    ]'::jsonb,
+    'B',
+    'Garroteamento prolongado causa hemoconcentração (altera exames), dor e risco de lesão tecidual. Recomenda-se soltar assim que houver refluxo de sangue.',
+    'Potter & Perry'
+  ),
+  (
+    'Fundamentos de Enfermagem',
+    'A posição de Fowler (cabeceira elevada entre 45º e 60º) é indicada principalmente para:',
+    '[
+      {"id": "A", "text": "Melhorar o retorno venoso em casos de choque."},
+      {"id": "B", "text": "Facilitar a expansão pulmonar e melhorar a respiração."},
+      {"id": "C", "text": "Prevenir úlceras de pressão sacrais."},
+      {"id": "D", "text": "Facilitar a drenagem postural de lobos inferiores."}
+    ]'::jsonb,
+    'B',
+    'A gravidade abaixa o diafragma, permitindo maior expansão torácica. É a posição de escolha para dispneia e alimentação.',
+    'Fundamentos'
+  ),
+  (
+    'Fundamentos de Enfermagem',
+    'Na anotação de enfermagem, ao cometer um erro de escrita, a conduta correta é:',
+    '[
+      {"id": "A", "text": "Usar corretivo líquido para apagar o erro."},
+      {"id": "B", "text": "Rabiscar ou tachar a palavra errada para que não possa ser lida."},
+      {"id": "C", "text": "Colocar a palavra errada entre parênteses e escrever \'digo\' em seguida, seguido da correção."},
+      {"id": "D", "text": "Arrancar a folha e reescrever tudo."}
+    ]'::jsonb,
+    'C',
+    'O prontuário é documento legal. Não pode haver rasuras, corretivos ou folhas arrancadas. O erro deve ser corrigido mantendo a legibilidade do original.',
+    'COFEN'
+  ),
+  (
+    'Farmacologia',
+    'A via de administração de medicamentos que evita a passagem pelo fígado (efeito de primeira passagem), garantindo absorção rápida através da mucosa, é a:',
+    '[
+      {"id": "A", "text": "Via Oral."},
+      {"id": "B", "text": "Via Sublingual."},
+      {"id": "C", "text": "Via Intradérmica."},
+      {"id": "D", "text": "Via Subcutânea."}
+    ]'::jsonb,
+    'B',
+    'A região sublingual é ricamente vascularizada e drena para a veia cava superior, indo direto ao coração sem passar pelo sistema porta-hepático inicial.',
+    'Farmacologia'
+  ),
+  (
+    'Saúde Mental e Psiquiatria',
+    'O principal neurotransmissor inibitório do Sistema Nervoso Central, cuja ação é potencializada pelos Benzodiazepínicos (ex: Diazepam), é o:',
+    '[
+      {"id": "A", "text": "Glutamato."},
+      {"id": "B", "text": "Dopamina."},
+      {"id": "C", "text": "GABA (Ácido gama-aminobutírico)."},
+      {"id": "D", "text": "Serotonina."}
+    ]'::jsonb,
+    'C',
+    'O GABA reduz a excitabilidade neuronal. Os benzodiazepínicos se ligam aos receptores GABA, aumentando sua eficácia, causando sedação e relaxamento.',
+    'Farmacologia'
+  ),
+  (
+    'Urgência e Emergência',
+    'Em uma vítima de trauma torácico, a presença de respiração paradoxal (movimento de uma parte do tórax oposto ao restante durante a respiração) sugere:',
+    '[
+      {"id": "A", "text": "Pneumotórax hipertensivo."},
+      {"id": "B", "text": "Tórax instável (fratura de múltiplos arcos costais em 2 ou mais pontos)."},
+      {"id": "C", "text": "Hemotórax maciço."},
+      {"id": "D", "text": "Tamponamento cardíaco."}
+    ]'::jsonb,
+    'B',
+    'O segmento fraturado fica solto e é sugado na inspiração (pressão negativa) e empurrado na expiração, movimento contrário ao normal.',
+    'PHTLS'
+  )
 ON CONFLICT (question) DO NOTHING;
