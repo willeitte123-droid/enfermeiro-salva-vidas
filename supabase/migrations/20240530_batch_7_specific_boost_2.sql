@@ -1,157 +1,409 @@
-INSERT INTO public.questions (category, banca, question, options, "correctAnswer", explanation)
+-- PACOTE DE REFORÇO 7: PREENCHIMENTO DE LACUNAS
+-- Foco: Biossegurança, Administração, Saúde Mental, CME e Ética
+-- Proteção: ON CONFLICT DO NOTHING
+
+INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
 VALUES
 
--- 1. Controle de Infecção (5 questões)
-('Controle de Infecção', 'Vunesp', 'Dentre os cinco momentos para higienização das mãos preconizados pela OMS, qual destes NÃO faz parte da lista oficial?',
-'[{"id": "A", "text": "Antes de tocar o paciente"}, {"id": "B", "text": "Antes de realizar procedimento limpo/asséptico"}, {"id": "C", "text": "Após tocar o paciente"}, {"id": "D", "text": "Ao entrar na unidade de saúde (recepção)"}]',
-'D', 'Os 5 momentos são: 1. Antes de tocar o paciente; 2. Antes de procedimento limpo; 3. Após risco de exposição a fluidos; 4. Após tocar o paciente; 5. Após tocar superfícies próximas ao paciente. A entrada na unidade é recomendada, mas não é um dos "5 momentos" de beira-leito.'),
+  -- 1. BIOSSEGURANÇA E CONTROLE DE INFECÇÃO
+  (
+    'Biossegurança e Controle de Infecção',
+    'Para um paciente diagnosticado com Meningite Meningocócica, além das precauções padrão, a equipe de enfermagem deve instituir precauções para:',
+    '[
+      {"id": "A", "text": "Aerossóis."},
+      {"id": "B", "text": "Contato."},
+      {"id": "C", "text": "Gotículas."},
+      {"id": "D", "text": "Reversa (Protetora)."}
+    ]'::jsonb,
+    'C',
+    'A Neisseria meningitidis é transmitida por gotículas (> 5 micra) que atingem até 1 metro. Exige máscara cirúrgica para o profissional e quarto privativo.',
+    'ANVISA'
+  ),
+  (
+    'Biossegurança e Controle de Infecção',
+    'Segundo a RDC 222/2018, os resíduos químicos (ex: reveladores de RX, produtos hormonais, quimioterápicos) pertencem ao Grupo:',
+    '[
+      {"id": "A", "text": "Grupo A."},
+      {"id": "B", "text": "Grupo B."},
+      {"id": "C", "text": "Grupo C."},
+      {"id": "D", "text": "Grupo E."}
+    ]'::jsonb,
+    'B',
+    'Grupo A = Infectante; Grupo B = Químico; Grupo C = Radioativo; Grupo D = Comum; Grupo E = Perfurocortante.',
+    'ANVISA'
+  ),
+  (
+    'Biossegurança e Controle de Infecção',
+    'A higienização das mãos é a medida mais importante para o controle de infecções. Dos "5 Momentos" preconizados pela OMS, qual ocorre APÓS o risco de exposição a fluidos corporais?',
+    '[
+      {"id": "A", "text": "Momento 1."},
+      {"id": "B", "text": "Momento 2."},
+      {"id": "C", "text": "Momento 3."},
+      {"id": "D", "text": "Momento 5."}
+    ]'::jsonb,
+    'C',
+    'Os 5 momentos são: 1. Antes de tocar o paciente; 2. Antes de procedimento limpo/asséptico; 3. Após risco de exposição a fluidos; 4. Após tocar o paciente; 5. Após tocar superfícies próximas.',
+    'OMS'
+  ),
 
-('Controle de Infecção', 'IBFC', 'Para um paciente com diagnóstico confirmado de Tuberculose Pulmonar Bacilífera, a precaução recomendada é:',
-'[{"id": "A", "text": "Padrão apenas"}, {"id": "B", "text": "Contato"}, {"id": "C", "text": "Gotículas"}, {"id": "D", "text": "Aerossóis"}]',
-'D', 'A TB é transmitida por aerossóis (partículas < 5 micra que ficam suspensas no ar). Requer máscara N95 para o profissional e quarto privativo com pressão negativa.'),
+  -- 2. ADMINISTRAÇÃO EM ENFERMAGEM
+  (
+    'Administração em Enfermagem',
+    'No dimensionamento de pessoal de enfermagem (Res. COFEN 543/2017), um paciente classificado como de "Alta Dependência" requer quantas horas de enfermagem nas 24 horas?',
+    '[
+      {"id": "A", "text": "4 horas."},
+      {"id": "B", "text": "6 horas."},
+      {"id": "C", "text": "10 horas."},
+      {"id": "D", "text": "18 horas."}
+    ]'::jsonb,
+    'C',
+    'Mínimo (4h), Intermediário (6h), Alta Dependência (10h), Semi-intensivo (10h), Intensivo (18h).',
+    'COFEN'
+  ),
+  (
+    'Administração em Enfermagem',
+    'Qual teoria administrativa tem como foco principal a estrutura organizacional, a hierarquia e os princípios gerais de administração (prever, organizar, comandar, coordenar e controlar)?',
+    '[
+      {"id": "A", "text": "Teoria Científica (Taylor)."},
+      {"id": "B", "text": "Teoria Clássica (Fayol)."},
+      {"id": "C", "text": "Teoria das Relações Humanas (Mayo)."},
+      {"id": "D", "text": "Teoria Burocrática (Weber)."}
+    ]'::jsonb,
+    'B',
+    'Fayol focou na estrutura e nas funções do administrador (o "chefe"). Taylor focou nas tarefas e no chão de fábrica (o operário).',
+    'Administração'
+  ),
+  (
+    'Administração em Enfermagem',
+    'O estilo de liderança em que o enfermeiro toma todas as decisões, centraliza o poder e não permite a participação da equipe é denominado:',
+    '[
+      {"id": "A", "text": "Liderança Democrática."},
+      {"id": "B", "text": "Liderança Laissez-faire."},
+      {"id": "C", "text": "Liderança Autocrática."},
+      {"id": "D", "text": "Liderança Situacional."}
+    ]'::jsonb,
+    'C',
+    'A liderança autocrática é focada no líder e na tarefa, com comunicação descendente e pouca abertura para a equipe.',
+    'Administração'
+  ),
 
-('Controle de Infecção', 'FCC', 'O "Bundle" (pacote de medidas) de prevenção de Pneumonia Associada à Ventilação (PAV) inclui, obrigatoriamente:',
-'[{"id": "A", "text": "Manter a cabeceira elevada entre 30º e 45º"}, {"id": "B", "text": "Trocar o circuito do ventilador a cada 24 horas"}, {"id": "C", "text": "Realizar cultura de secreção traqueal diária"}, {"id": "D", "text": "Administrar antibiótico profilático"}]',
-'A', 'Elevação da cabeceira, higiene oral com clorexidina, despertar diário e controle da pressão do cuff são medidas essenciais do bundle de PAV.'),
+  -- 3. SAÚDE MENTAL
+  (
+    'Saúde Mental',
+    'A Lei nº 10.216/2001, marco da Reforma Psiquiátrica brasileira, estabelece que a internação involuntária (sem consentimento do usuário e a pedido de terceiro) deve ser comunicada ao Ministério Público no prazo de:',
+    '[
+      {"id": "A", "text": "24 horas."},
+      {"id": "B", "text": "48 horas."},
+      {"id": "C", "text": "72 horas."},
+      {"id": "D", "text": "7 dias."}
+    ]'::jsonb,
+    'C',
+    'O prazo de 72 horas é para garantir a fiscalização e evitar internações arbitrárias ou cárcere privado.',
+    'Lei 10.216'
+  ),
+  (
+    'Saúde Mental',
+    'Os sintomas extrapiramidais, como distonia aguda, acatisia e parkinsonismo, são efeitos adversos comuns de qual classe de medicamentos?',
+    '[
+      {"id": "A", "text": "Benzodiazepínicos (ex: Diazepam)."},
+      {"id": "B", "text": "Antidepressivos Tricíclicos (ex: Amitriptilina)."},
+      {"id": "C", "text": "Antipsicóticos Típicos (ex: Haloperidol)."},
+      {"id": "D", "text": "Estabilizadores de Humor (ex: Lítio)."}
+    ]'::jsonb,
+    'C',
+    'Os antipsicóticos de primeira geração (típicos) bloqueiam receptores de dopamina na via nigroestriatal, causando efeitos motores (impregnação).',
+    'Farmacologia'
+  ),
+  (
+    'Saúde Mental',
+    'O Centro de Atenção Psicossocial (CAPS) destinado especificamente ao atendimento de pessoas com transtornos decorrentes do uso de crack, álcool e outras drogas é o:',
+    '[
+      {"id": "A", "text": "CAPS I."},
+      {"id": "B", "text": "CAPS i."},
+      {"id": "C", "text": "CAPS AD."},
+      {"id": "D", "text": "CAPS III."}
+    ]'::jsonb,
+    'C',
+    'CAPS AD (Álcool e Drogas). O CAPS i é para infância e adolescência.',
+    'Ministério da Saúde'
+  ),
 
-('Controle de Infecção', 'AOCP', 'Qual o principal objetivo da Comissão de Controle de Infecção Hospitalar (CCIH)?',
-'[{"id": "A", "text": "Punir funcionários que não lavam as mãos"}, {"id": "B", "text": "Executar as ações de limpeza terminal"}, {"id": "C", "text": "Planejar, implementar e avaliar o Programa de Controle de Infecção Hospitalar (PCIH)"}, {"id": "D", "text": "Comprar antibióticos"}]',
-'C', 'A CCIH é um órgão de assessoria e planejamento, responsável por vigiar as taxas de infecção e propor medidas preventivas e educativas.'),
+  -- 4. CENTRO CIRÚRGICO E CME
+  (
+    'Centro Cirúrgico e CME',
+    'Segundo a Classificação de Spaulding, os artigos que entram em contato com pele não íntegra ou mucosas íntegras (ex: endoscópios, lâminas de laringoscópio) são classificados como:',
+    '[
+      {"id": "A", "text": "Críticos."},
+      {"id": "B", "text": "Semicríticos."},
+      {"id": "C", "text": "Não Críticos."},
+      {"id": "D", "text": "Contaminados."}
+    ]'::jsonb,
+    'B',
+    'Semicríticos exigem, no mínimo, Desinfecção de Alto Nível. Críticos (penetram tecidos estéreis) exigem Esterilização. Não críticos (pele íntegra) exigem Limpeza.',
+    'RDC 15'
+  ),
+  (
+    'Centro Cirúrgico e CME',
+    'Na Sistematização da Assistência de Enfermagem Perioperatória (SAEP), a etapa que ocorre desde a admissão do paciente no centro cirúrgico até a sua transferência para a sala de recuperação é o período:',
+    '[
+      {"id": "A", "text": "Pré-operatório imediato."},
+      {"id": "B", "text": "Intraoperatório (ou Transoperatório)."},
+      {"id": "C", "text": "Pós-operatório imediato."},
+      {"id": "D", "text": "Pós-operatório mediato."}
+    ]'::jsonb,
+    'B',
+    'O intraoperatório compreende todo o tempo em que o paciente está na sala de cirurgia e sob cuidados da equipe cirúrgica/anestésica.',
+    'SOBECC'
+  ),
+  (
+    'Centro Cirúrgico e CME',
+    'Qual é a principal complicação associada à hipotermia não intencional no intraoperatório?',
+    '[
+      {"id": "A", "text": "Aumento da cicatrização."},
+      {"id": "B", "text": "Alteração da coagulação (aumento do sangramento) e infecção de sítio cirúrgico."},
+      {"id": "C", "text": "Hipertensão arterial severa."},
+      {"id": "D", "text": "Redução do tempo de recuperação anestésica."}
+    ]'::jsonb,
+    'B',
+    'A hipotermia prejudica a função plaquetária e a cascata de coagulação, além de causar vasoconstrição que diminui a oxigenação tecidual, favorecendo infecções.',
+    'SOBECC'
+  ),
 
-('Controle de Infecção', 'Cebraspe', 'Em relação à precaução de contato, é correto afirmar que:',
-'[{"id": "A", "text": "O uso de máscara N95 é obrigatório"}, {"id": "B", "text": "É indicada para Meningite Meningocócica"}, {"id": "C", "text": "Exige o uso de avental e luvas para qualquer contato com o paciente ou ambiente"}, {"id": "D", "text": "O quarto privativo é dispensável em casos de bactérias multirresistentes"}]',
-'C', 'Precaução de contato visa prevenir transmissão por toque direto ou indireto (fômites). Luvas e avental são os EPIs principais.'),
+  -- 5. ÉTICA E LEGISLAÇÃO
+  (
+    'Ética e Legislação',
+    'Segundo o Código de Ética dos Profissionais de Enfermagem, é DEVER do profissional:',
+    '[
+      {"id": "A", "text": "Executar atividades que não sejam de sua competência técnica."},
+      {"id": "B", "text": "Negar assistência de enfermagem em caso de urgência e emergência."},
+      {"id": "C", "text": "Registrar no prontuário as informações inerentes ao processo de cuidar de forma clara, objetiva e completa."},
+      {"id": "D", "text": "Administrar medicamentos sem conhecer a ação da droga."}
+    ]'::jsonb,
+    'C',
+    'O registro (anotação) é um dever fundamental para garantir a continuidade da assistência e a segurança legal do profissional.',
+    'Res. COFEN 564/2017'
+  ),
+  (
+    'Ética e Legislação',
+    'A ocorrência de um evento adverso onde o dano ao paciente foi causado por falta de conhecimento técnico do profissional (ex: não saber realizar o cálculo de medicação) caracteriza:',
+    '[
+      {"id": "A", "text": "Negligência."},
+      {"id": "B", "text": "Imprudência."},
+      {"id": "C", "text": "Imperícia."},
+      {"id": "D", "text": "Dolo."}
+    ]'::jsonb,
+    'C',
+    'Imperícia é a falta de habilidade ou conhecimento técnico para realizar a função. Imprudência é ação precipitada. Negligência é omissão/desleixo.',
+    'Bioética'
+  ),
 
+  -- 6. FARMACOLOGIA (Reforço)
+  (
+    'Farmacologia',
+    'A região ventroglútea (Músculo de Hochstetter) é considerada a mais segura para injeções intramusculares em adultos e crianças maiores porque:',
+    '[
+      {"id": "A", "text": "É livre de grandes vasos e nervos importantes."},
+      {"id": "B", "text": "Possui a menor espessura muscular."},
+      {"id": "C", "text": "É a região mais dolorosa."},
+      {"id": "D", "text": "Permite volumes de até 10ml."}
+    ]'::jsonb,
+    'A',
+    'Localizada no quadril, a região ventroglútea tem grande massa muscular e está distante do nervo ciático e da artéria glútea superior.',
+    'Fundamentos'
+  ),
+  (
+    'Farmacologia',
+    'O sulfato de atropina é um medicamento anticolinérgico frequentemente utilizado em emergências para tratar:',
+    '[
+      {"id": "A", "text": "Taquicardia Ventricular."},
+      {"id": "B", "text": "Hipertensão Arterial."},
+      {"id": "C", "text": "Bradicardia Sinusal Sintomática."},
+      {"id": "D", "text": "Edema Agudo de Pulmão."}
+    ]'::jsonb,
+    'C',
+    'A atropina bloqueia o nervo vago (parassimpático), aumentando a frequência cardíaca.',
+    'ACLS'
+  ),
 
--- 2. Cardiologia e Emergência (5 questões)
-('Cardiologia e Emergência', 'Vunesp', 'Na cadeia de sobrevivência da PCR intra-hospitalar, o primeiro elo é:',
-'[{"id": "A", "text": "RCP imediata de alta qualidade"}, {"id": "B", "text": "Vigilância e prevenção"}, {"id": "C", "text": "Desfibrilação rápida"}, {"id": "D", "text": "Suporte Avançado de Vida"}]',
-'B', 'No ambiente hospitalar, o foco é reconhecer a deterioração clínica antes que a parada aconteça (Vigilância e Prevenção).'),
+  -- 7. SAÚDE DA MULHER (Obstetrícia)
+  (
+    'Saúde da Mulher e da Criança',
+    'A Manobra de Leopold é realizada durante o exame físico da gestante para:',
+    '[
+      {"id": "A", "text": "Avaliar a dilatação do colo uterino."},
+      {"id": "B", "text": "Determinar a estática fetal (situação, posição, apresentação e insinuação)."},
+      {"id": "C", "text": "Medir a altura uterina."},
+      {"id": "D", "text": "Auscultar os batimentos cardiofetais."}
+    ]'::jsonb,
+    'B',
+    'São 4 tempos de palpação abdominal que permitem identificar como o bebê está posicionado no útero.',
+    'Obstetrícia'
+  ),
+  (
+    'Saúde da Mulher e da Criança',
+    'Na medida da Altura Uterina (AU), a técnica correta envolve posicionar a fita métrica:',
+    '[
+      {"id": "A", "text": "Da cicatriz umbilical até o fundo do útero."},
+      {"id": "B", "text": "Da sínfise púbica (borda superior) até o fundo do útero."},
+      {"id": "C", "text": "Do apêndice xifoide até a sínfise púbica."},
+      {"id": "D", "text": "Da crista ilíaca até o fundo do útero."}
+    ]'::jsonb,
+    'B',
+    'A borda superior da sínfise púbica é o ponto de referência fixo inferior. O fundo uterino é o ponto variável superior.',
+    'Ministério da Saúde'
+  ),
 
-('Cardiologia e Emergência', 'FGV', 'Durante as compressões torácicas em um adulto, a profundidade recomendada é de:',
-'[{"id": "A", "text": "No mínimo 2 cm"}, {"id": "B", "text": "Entre 5 cm e 6 cm"}, {"id": "C", "text": "No máximo 4 cm"}, {"id": "D", "text": "Exatamente 8 cm"}]',
-'B', 'A diretriz da AHA (2020) recomenda compressões com profundidade de pelo menos 5cm, mas não superior a 6cm, para garantir fluxo e evitar traumas.'),
+  -- 8. URGÊNCIA E EMERGÊNCIA
+  (
+    'Urgência e Emergência',
+    'O sinal de Battle (equimose na região retroauricular/mastoide) e o sinal do Guaxinim (equimose periorbital bilateral) são indicativos de:',
+    '[
+      {"id": "A", "text": "Fratura de mandíbula."},
+      {"id": "B", "text": "Trauma ocular direto."},
+      {"id": "C", "text": "Fratura de base de crânio."},
+      {"id": "D", "text": "Hemorragia subaracnoidea."}
+    ]'::jsonb,
+    'C',
+    'Esses sinais tardios indicam fratura da base do crânio. Contraindicam a passagem de sonda nasogástrica (risco de invasão intracraniana).',
+    'PHTLS'
+  ),
+  (
+    'Urgência e Emergência',
+    'Na avaliação da extensão de queimaduras em um adulto, utilizando a Regra dos Nove, um paciente que queimou todo o membro superior direito (frente e verso) tem uma área queimada de:',
+    '[
+      {"id": "A", "text": "4,5%."},
+      {"id": "B", "text": "9%."},
+      {"id": "C", "text": "18%."},
+      {"id": "D", "text": "1%."}
+    ]'::jsonb,
+    'B',
+    'Cada membro superior completo (braço + antebraço + mão) corresponde a 9% da superfície corporal total (4,5% frente + 4,5% verso).',
+    'Queimaduras'
+  ),
 
-('Cardiologia e Emergência', 'IBFC', 'Qual é a droga vasopressora de primeira escolha no Choque Séptico que não respondeu à ressuscitação volêmica inicial?',
-'[{"id": "A", "text": "Dobutamina"}, {"id": "B", "text": "Adrenalina"}, {"id": "C", "text": "Noradrenalina"}, {"id": "D", "text": "Dopamina"}]',
-'C', 'A Noradrenalina é o vasopressor de escolha para elevar a PAM (alvo ≥ 65 mmHg) no choque séptico.'),
+  -- 9. CLÍNICA MÉDICA (Sinais Vitais)
+  (
+    'Fundamentos de Enfermagem',
+    'A Pressão de Pulso (ou Pressão Diferencial) é calculada pela:',
+    '[
+      {"id": "A", "text": "Soma da sistólica com a diastólica."},
+      {"id": "B", "text": "Diferença entre a pressão sistólica e a diastólica."},
+      {"id": "C", "text": "Média das pressões aferidas em 24h."},
+      {"id": "D", "text": "Pressão diastólica mais um terço da sistólica."}
+    ]'::jsonb,
+    'B',
+    'Ex: Se PA é 120/80, a pressão de pulso é 40 (120 - 80). Se estiver muito baixa (pinçada), pode indicar baixo débito cardíaco ou tamponamento.',
+    'Fisiologia'
+  ),
+  (
+    'Fundamentos de Enfermagem',
+    'A respiração de Cheyne-Stokes é caracterizada por:',
+    '[
+      {"id": "A", "text": "Inspiração profunda seguida de pausa (apneia) e expiração rápida."},
+      {"id": "B", "text": "Movimentos respiratórios rápidos e profundos, sem pausas (Kussmaul)."},
+      {"id": "C", "text": "Ciclos de respiração que aumentam e diminuem de profundidade, alternados com períodos de apneia."},
+      {"id": "D", "text": "Respiração totalmente irregular em ritmo e profundidade (Biot)."}
+    ]'::jsonb,
+    'C',
+    'Comum em insuficiência cardíaca grave e lesões neurológicas supratentoriais. Kussmaul é típica da cetoacidose.',
+    'Semiologia'
+  ),
 
-('Cardiologia e Emergência', 'AOCP', 'O sinal de Levine é caracterizado por:',
-'[{"id": "A", "text": "Dor na panturrilha à dorsiflexão do pé"}, {"id": "B", "text": "Punho cerrado sobre o precórdio ao descrever dor torácica"}, {"id": "C", "text": "Desvio de rima labial"}, {"id": "D", "text": "Equimose periumbilical"}]',
-'B', 'É um gesto clássico do paciente com angina ou infarto, indicando dor opressiva difusa no peito.'),
+  -- 10. SAÚDE PÚBLICA (Reforço)
+  (
+    'Saúde Pública',
+    'A estratégia DOTS (Directly Observed Treatment, Short-course) é preconizada pela OMS para o controle de qual doença?',
+    '[
+      {"id": "A", "text": "Hanseníase."},
+      {"id": "B", "text": "HIV/AIDS."},
+      {"id": "C", "text": "Tuberculose."},
+      {"id": "D", "text": "Malária."}
+    ]'::jsonb,
+    'C',
+    'O Tratamento Diretamente Observado (TDO) visa garantir a adesão do paciente à medicação antituberculose, reduzindo a resistência e a transmissão.',
+    'Ministério da Saúde'
+  ),
+  (
+    'Saúde Pública',
+    'A lavagem das mãos cirúrgica (ou preparo pré-operatório das mãos) deve ser realizada com duração mínima de:',
+    '[
+      {"id": "A", "text": "30 segundos a 1 minuto."},
+      {"id": "B", "text": "3 a 5 minutos."},
+      {"id": "C", "text": "10 minutos."},
+      {"id": "D", "text": "15 minutos."}
+    ]'::jsonb,
+    'B',
+    'A escovação excessiva (>5 min) lesa a pele e libera bactérias profundas. O tempo ideal para a primeira lavagem do dia é de 3 a 5 minutos.',
+    'ANVISA'
+  ),
 
-('Cardiologia e Emergência', 'FCC', 'Em uma PCR com ritmo chocável (FV/TV sem pulso), a droga antiarrítmica de primeira linha, a ser administrada após o 3º choque se a PCR persistir, é:',
-'[{"id": "A", "text": "Adenosina"}, {"id": "B", "text": "Atropina"}, {"id": "C", "text": "Amiodarona"}, {"id": "D", "text": "Bicarbonato de Sódio"}]',
-'C', 'A Amiodarona (300mg em bolus) é indicada para FV/TV refratária ao choque. A Lidocaína é a alternativa se não houver Amiodarona.'),
+  -- 11. MATERNO-INFANTIL (Aleitamento)
+  (
+    'Saúde da Mulher e da Criança',
+    'O colostro, leite produzido nos primeiros dias pós-parto, caracteriza-se nutricionalmente por ter, em comparação ao leite maduro:',
+    '[
+      {"id": "A", "text": "Maior teor de gordura e lactose."},
+      {"id": "B", "text": "Menor teor de proteínas e imunoglobulinas."},
+      {"id": "C", "text": "Maior teor de proteínas e imunoglobulinas (IgA)."},
+      {"id": "D", "text": "Mesma composição, mudando apenas a cor."}
+    ]'::jsonb,
+    'C',
+    'O colostro é a "primeira vacina", rico em fatores de defesa e proteínas, porém com menos gordura e açúcar (lactose) que o leite maduro.',
+    'Ministério da Saúde'
+  ),
+  (
+    'Saúde da Mulher e da Criança',
+    'Em um recém-nascido, a presença de Cefalo-hematoma diferencia-se da Bossa Serossanguínea (Caput Succedaneum) pois o Cefalo-hematoma:',
+    '[
+      {"id": "A", "text": "Ultrapassa as linhas de sutura craniana."},
+      {"id": "B", "text": "É um edema mole e depressível."},
+      {"id": "C", "text": "Não ultrapassa as linhas de sutura óssea."},
+      {"id": "D", "text": "Desaparece nas primeiras 24 horas."}
+    ]'::jsonb,
+    'C',
+    'O Cefalo-hematoma é uma hemorragia subperiosteal, limitada ao osso específico (não cruza suturas). A Bossa é edema subcutâneo e cruza suturas.',
+    'Neonatologia'
+  ),
 
-
--- 3. Cardiologia e ECG (5 questões)
-('Cardiologia e ECG', 'Vunesp', 'No eletrocardiograma normal, a onda P representa:',
-'[{"id": "A", "text": "Repolarização ventricular"}, {"id": "B", "text": "Despolarização atrial"}, {"id": "C", "text": "Despolarização ventricular"}, {"id": "D", "text": "Condução pelo feixe de His"}]',
-'B', 'A onda P é a primeira onda do ciclo, gerada pelo nó sinusal, e reflete a contração (despolarização) dos átrios.'),
-
-('Cardiologia e ECG', 'EBSERH', 'A derivação precordial V1 deve ser posicionada no:',
-'[{"id": "A", "text": "4º espaço intercostal, linha paraesternal direita"}, {"id": "B", "text": "4º espaço intercostal, linha paraesternal esquerda"}, {"id": "C", "text": "5º espaço intercostal, linha hemiclavicular"}, {"id": "D", "text": "5º espaço intercostal, linha axilar anterior"}]',
-'A', 'V1 fica à direita do esterno, no 4º EIC. V2 fica à esquerda, no mesmo nível.'),
-
-('Cardiologia e ECG', 'IBFC', 'Um traçado de ECG que apresenta ritmo irregular, ausência de onda P e linha de base trêmula (ondas f) é característico de:',
-'[{"id": "A", "text": "Bloqueio Atrioventricular Total"}, {"id": "B", "text": "Taquicardia Sinusal"}, {"id": "C", "text": "Fibrilação Atrial"}, {"id": "D", "text": "Flutter Atrial"}]',
-'C', 'A Fibrilação Atrial é a arritmia sustentada mais comum, caracterizada pela desorganização da atividade atrial (sem onda P) e resposta ventricular irregular.'),
-
-('Cardiologia e ECG', 'FGV', 'O supradesnivelamento do segmento ST em duas ou mais derivações contíguas é o sinal eletrocardiográfico clássico de:',
-'[{"id": "A", "text": "Isquemia subendocárdica"}, {"id": "B", "text": "Infarto Agudo do Miocárdio (Lesão Transmural)"}, {"id": "C", "text": "Hipocalemia"}, {"id": "D", "text": "Pericardite antiga"}]',
-'B', 'O "Supra de ST" indica oclusão total da artéria coronária e necrose em andamento, exigindo reperfusão imediata.'),
-
-('Cardiologia e ECG', 'AOCP', 'Qual alteração no ECG é sugestiva de Hipercalemia (Potássio alto) grave?',
-'[{"id": "A", "text": "Onda U proeminente"}, {"id": "B", "text": "Onda T apiculada e simétrica (em tenda)"}, {"id": "C", "text": "Segmento ST deprimido"}, {"id": "D", "text": "Onda P invertida"}]',
-'B', 'A Onda T apiculada é um dos primeiros sinais de hipercalemia, podendo evoluir para alargamento do QRS e assistolia.'),
-
-
--- 4. Neurologia (5 questões)
-('Neurologia', 'Vunesp', 'Na Escala de Coma de Glasgow, a resposta motora "Decorticação" (flexão anormal) pontua:',
-'[{"id": "A", "text": "2 pontos"}, {"id": "B", "text": "3 pontos"}, {"id": "C", "text": "4 pontos"}, {"id": "D", "text": "5 pontos"}]',
-'B', 'Decorticação (flexão) vale 3. Descerebração (extensão) vale 2. Retirada inespecífica vale 4.'),
-
-('Neurologia', 'FCC', 'A rigidez de nuca, juntamente com os sinais de Kernig e Brudzinski positivos, são indicativos clássicos de:',
-'[{"id": "A", "text": "Acidente Vascular Cerebral"}, {"id": "B", "text": "Meningite"}, {"id": "C", "text": "Trauma Raquimedular"}, {"id": "D", "text": "Hipertensão Intracraniana isolada"}]',
-'B', 'São sinais de irritação meníngea, indicando inflamação das meninges.'),
-
-('Neurologia', 'Cebraspe', 'Em um paciente com AVC Isquêmico, o objetivo principal de manter a pressão arterial levemente elevada (permissiva) na fase aguda é:',
-'[{"id": "A", "text": "Aumentar o sangramento"}, {"id": "B", "text": "Manter a Perfusão Cerebral na área de penumbra isquêmica"}, {"id": "C", "text": "Prevenir insuficiência renal"}, {"id": "D", "text": "Facilitar a punção venosa"}]',
-'B', 'A área de penumbra ao redor do infarto depende de uma pressão de perfusão adequada para sobreviver. Baixar a PA bruscamente pode aumentar a área de necrose.'),
-
-('Neurologia', 'IBFC', 'A avaliação pupilar que revela uma pupila dilatada (midríase) e outra contraída (miose) é chamada de:',
-'[{"id": "A", "text": "Isocoria"}, {"id": "B", "text": "Anisocoria"}, {"id": "C", "text": "Discoria"}, {"id": "D", "text": "Midríase bilateral"}]',
-'B', 'Anisocoria em paciente neurológico agudo é sinal de alerta grave para herniação cerebral (compressão do nervo oculomotor).'),
-
-('Neurologia', 'IDECAN', 'Qual é a janela terapêutica padrão estendida para administração de trombolítico (rtPA) no AVC isquêmico?',
-'[{"id": "A", "text": "Até 3 horas"}, {"id": "B", "text": "Até 4,5 horas"}, {"id": "C", "text": "Até 6 horas"}, {"id": "D", "text": "Até 24 horas"}]',
-'B', 'O tempo máximo para iniciar a trombólise endovenosa é de 4,5 horas do início dos sintomas, desde que preenchidos os critérios de inclusão.'),
-
-
--- 5. Controle de Infecção (CME) (5 questões)
-('Controle de Infecção (CME)', 'Vunesp', 'Na CME, o teste de Bowie & Dick deve ser realizado diariamente para:',
-'[{"id": "A", "text": "Testar a eficácia da esterilização biológica"}, {"id": "B", "text": "Avaliar a eficácia da remoção de ar e penetração do vapor em autoclaves pré-vácuo"}, {"id": "C", "text": "Verificar a temperatura máxima atingida"}, {"id": "D", "text": "Limpar a câmara interna"}]',
-'B', 'O Bowie & Dick é um teste químico específico para testar o sistema de vácuo da autoclave, garantindo que o ar foi removido para o vapor entrar.'),
-
-('Controle de Infecção (CME)', 'AOCP', 'Artigos utilizados em procedimentos cirúrgicos, que penetram tecidos estéreis ou sistema vascular, são classificados segundo Spaulding como:',
-'[{"id": "A", "text": "Não Críticos"}, {"id": "B", "text": "Semicríticos"}, {"id": "C", "text": "Críticos"}, {"id": "D", "text": "Contaminados"}]',
-'C', 'Artigos críticos exigem esterilização obrigatória (eliminação de todas as formas de vida microbiana, incluindo esporos).'),
-
-('Controle de Infecção (CME)', 'FGV', 'O fluxo de trabalho dentro de uma Central de Material e Esterilização (CME) deve ser:',
-'[{"id": "A", "text": "Circular e bidirecional"}, {"id": "B", "text": "Unidirecional e contínuo (da área suja para a limpa/estéril)"}, {"id": "C", "text": "Aleatório, dependendo da demanda"}, {"id": "D", "text": "Do setor estéril para o setor sujo"}]',
-'B', 'O fluxo unidirecional evita a contaminação cruzada. O material sujo nunca deve cruzar com o limpo/estéril.'),
-
-('Controle de Infecção (CME)', 'IBFC', 'O detergente enzimático é utilizado na etapa de limpeza de materiais para:',
-'[{"id": "A", "text": "Esterilizar o material"}, {"id": "B", "text": "Promover a quebra da matéria orgânica (proteínas, gorduras) facilitando sua remoção"}, {"id": "C", "text": "Lubrificar as articulações dos instrumentos"}, {"id": "D", "text": "Dar brilho ao aço inoxidável"}]',
-'B', 'As enzimas (protease, amilase, lipase) digerem a sujeira orgânica, tornando a limpeza mais eficaz.'),
-
-('Controle de Infecção (CME)', 'Consulplan', 'O indicador biológico de leitura rápida utiliza qual microrganismo para validar ciclos de autoclave a vapor?',
-'[{"id": "A", "text": "Bacillus atrophaeus"}, {"id": "B", "text": "Geobacillus stearothermophilus"}, {"id": "C", "text": "Clostridium tetani"}, {"id": "D", "text": "Pseudomonas aeruginosa"}]',
-'B', 'O Geobacillus stearothermophilus é o microrganismo padrão por ser altamente resistente ao calor úmido. Se ele morre, o ciclo foi eficaz.'),
-
-
--- 6. Farmacologia e Segurança do Paciente (5 questões)
-('Farmacologia e Segurança do Paciente', 'Vunesp', 'A Meta 1 de Segurança do Paciente preconiza a identificação correta. Para isso, devem ser utilizados pelo menos:',
-'[{"id": "A", "text": "O número do leito e o nome do médico"}, {"id": "B", "text": "O nome do paciente e o número do quarto"}, {"id": "C", "text": "Dois identificadores (ex: Nome Completo e Data de Nascimento)"}, {"id": "D", "text": "Apenas o número do prontuário"}]',
-'C', 'O número do leito/quarto nunca deve ser usado como identificador, pois pacientes mudam de lugar. Nome e Data de Nascimento são o padrão.'),
-
-('Farmacologia e Segurança do Paciente', 'FCC', 'A via de administração de medicamentos que evita o "efeito de primeira passagem" hepático e tem absorção rápida é a via:',
-'[{"id": "A", "text": "Oral"}, {"id": "B", "text": "Sublingual"}, {"id": "C", "text": "Intradérmica"}, {"id": "D", "text": "Retal (parcialmente)"}]',
-'B', 'A via sublingual absorve direto para a veia cava superior, caindo na circulação sistêmica sem passar pelo fígado primeiro.'),
-
-('Farmacologia e Segurança do Paciente', 'EBSERH', 'Para administrar 500ml de soro em 8 horas, quantas gotas por minuto devem ser infundidas aproximadamente?',
-'[{"id": "A", "text": "14 gotas/min"}, {"id": "B", "text": "21 gotas/min"}, {"id": "C", "text": "42 gotas/min"}, {"id": "D", "text": "60 gotas/min"}]',
-'B', 'Fórmula: Volume / (Tempo x 3). 500 / (8 x 3) = 500 / 24 = 20,83 (aprox 21 gotas/min).'),
-
-('Farmacologia e Segurança do Paciente', 'IBFC', 'Um "Evento Adverso" em saúde é definido como:',
-'[{"id": "A", "text": "Qualquer erro cometido pela enfermagem"}, {"id": "B", "text": "Um incidente que resultou em dano ao paciente"}, {"id": "C", "text": "Um incidente que não atingiu o paciente (Near Miss)"}, {"id": "D", "text": "Apenas reações alérgicas a medicamentos"}]',
-'B', 'Evento adverso é quando o erro ou falha atinge o paciente e causa algum tipo de dano (leve, moderado ou grave).'),
-
-('Farmacologia e Segurança do Paciente', 'FGV', 'A prescrição de "Se Necessário" (S/N) ou "A Critério Médico" (ACM) deve ser evitada ou usada com cautela, pois:',
-'[{"id": "A", "text": "Dá muito trabalho para a enfermagem"}, {"id": "B", "text": "Pode levar a erros de interpretação sobre a dose máxima e intervalo mínimo"}, {"id": "C", "text": "É proibida pelo COFEN"}, {"id": "D", "text": "O paciente pode se recusar a tomar"}]',
-'B', 'Essas prescrições devem sempre conter a indicação clara (ex: "se dor"), a dose exata e o intervalo mínimo entre as doses para segurança.'),
-
-
--- 7. Farmacologia e Alta Vigilância (5 questões)
-('Farmacologia e Alta Vigilância', 'Vunesp', 'O Cloreto de Potássio (KCl) 19,1% é um medicamento de alta vigilância porque:',
-'[{"id": "A", "text": "Causa sonolência"}, {"id": "B", "text": "Sua administração rápida em bolus pode causar parada cardíaca em diástole"}, {"id": "C", "text": "É um antibiótico potente"}, {"id": "D", "text": "Aumenta muito a pressão arterial"}]',
-'B', 'O K+ em bolus causa despolarização sustentada e assistolia. Deve ser sempre diluído e infundido lentamente.'),
-
-('Farmacologia e Alta Vigilância', 'AOCP', 'A Insulina é considerada um medicamento de alta vigilância. O principal risco associado ao seu uso incorreto é:',
-'[{"id": "A", "text": "Hiperglicemia leve"}, {"id": "B", "text": "Hipoglicemia grave, que pode levar a coma e morte"}, {"id": "C", "text": "Reação alérgica local"}, {"id": "D", "text": "Aumento do apetite"}]',
-'B', 'A hipoglicemia é uma emergência médica. Erros de dose (ex: U-100 vs seringa errada) ou troca de tipo de insulina são causas comuns.'),
-
-('Farmacologia e Alta Vigilância', 'FCC', 'O Sulfato de Magnésio é utilizado na pré-eclâmpsia. Seu antídoto específico, que deve estar disponível em caso de toxicidade (depressão respiratória), é:',
-'[{"id": "A", "text": "Naloxona"}, {"id": "B", "text": "Flumazenil"}, {"id": "C", "text": "Gluconato de Cálcio"}, {"id": "D", "text": "Protamin"}]',
-'C', 'O Gluconato de Cálcio reverte os efeitos do magnésio na junção neuromuscular e no coração.'),
-
-('Farmacologia e Alta Vigilância', 'IBFC', 'A administração intratecal (espinhal) de Vincristina (quimioterápico) é um erro fatal conhecido. A Vincristina deve ser administrada EXCLUSIVAMENTE por via:',
-'[{"id": "A", "text": "Intramuscular"}, {"id": "B", "text": "Intravenosa"}, {"id": "C", "text": "Subcutânea"}, {"id": "D", "text": "Oral"}]',
-'B', 'A injeção intratecal de vincristina causa neurotoxicidade ascendente fatal. É um dos erros mais graves e evitáveis da oncologia.'),
-
-('Farmacologia e Alta Vigilância', 'Cebraspe', 'Ao administrar anticoagulantes como a Heparina, o enfermeiro deve monitorar sinais de sangramento e qual exame laboratorial específico para ajuste de dose da Heparina Não Fracionada?',
-'[{"id": "A", "text": "INR (RNI)"}, {"id": "B", "text": "TTPa (Tempo de Tromboplastina Parcial ativado)"}, {"id": "C", "text": "Plaquetas"}, {"id": "D", "text": "Hemograma completo"}]',
-'B', 'A Heparina Não Fracionada é monitorada pelo TTPa (alvo geralmente 1.5-2.5x o controle). O INR é para Varfarina. Plaquetas são para enoxaparina/risco de TIH.')
+  -- 12. DIVERSOS
+  (
+    'Fundamentos de Enfermagem',
+    'O termo "Pirexia" é sinônimo de:',
+    '[
+      {"id": "A", "text": "Dor intensa."},
+      {"id": "B", "text": "Febre."},
+      {"id": "C", "text": "Azia."},
+      {"id": "D", "text": "Coceira."}
+    ]'::jsonb,
+    'B',
+    'Pirexia refere-se à elevação da temperatura corporal. Antipiréticos são medicamentos para baixar a febre.',
+    'Terminologia'
+  ),
+  (
+    'Fundamentos de Enfermagem',
+    'Ao realizar uma sondagem nasogástrica, a posição ideal do paciente para facilitar a passagem da sonda e prevenir broncoaspiração é:',
+    '[
+      {"id": "A", "text": "Decúbito dorsal horizontal (Zero)."},
+      {"id": "B", "text": "Posição de Fowler (High Fowler)."},
+      {"id": "C", "text": "Decúbito lateral esquerdo."},
+      {"id": "D", "text": "Trendelenburg."}
+    ]'::jsonb,
+    'B',
+    'A posição sentada (Fowler alto) com a cabeça levemente fletida protege a via aérea e facilita a deglutição da sonda.',
+    'Fundamentos'
+  ),
+  (
+    'Fundamentos de Enfermagem',
+    'A eliminação de sangue vivo pelo ânus, geralmente associada a sangramento do trato gastrointestinal baixo ou hemorroidas, é denominada:',
+    '[
+      {"id": "A", "text": "Melena."},
+      {"id": "B", "text": "Hemoptise."},
+      {"id": "C", "text": "Enterorragia (ou Hematoquezia)."},
+      {"id": "D", "text": "Hematêmese."}
+    ]'::jsonb,
+    'C',
+    'Melena é sangue digerido (preto/piche). Hemoptise é tosse com sangue. Hematêmese é vômito com sangue. Enterorragia é sangue vivo nas fezes.',
+    'Terminologia'
+  )
 
 ON CONFLICT (question) DO NOTHING;
