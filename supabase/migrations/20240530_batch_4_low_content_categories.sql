@@ -1,118 +1,342 @@
-INSERT INTO public.questions (category, banca, question, options, "correctAnswer", explanation)
+-- PACOTE DE REFORÇO 4: QUESTÕES INÉDITAS E DIVERSIFICADAS
+-- Proteção contra duplicatas ativada (ON CONFLICT DO NOTHING)
+
+INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
 VALUES
--- Nutrição Clínica (Reforço)
-('Nutrição Clínica', 'Vunesp', 'Qual é o método padrão-ouro (mais seguro) para confirmar o posicionamento da sonda nasoenteral (SNE) antes de iniciar a administração da dieta?',
-'[{"id": "A", "text": "Ausculta de ruídos na região epigástrica"}, {"id": "B", "text": "Teste de pH do aspirado gástrico"}, {"id": "C", "text": "Raio-X de abdome"}, {"id": "D", "text": "Mergulhar a ponta da sonda em copo com água"}]',
-'C', 'Embora o teste de pH ajude, o Raio-X é o único método que visualiza o trajeto e a posição pós-pilórica com segurança absoluta.'),
+  -- 1. NEUROLOGIA (Novos temas: Sinais Meníngeos, Pares Cranianos, NIHSS)
+  (
+    'Neurologia',
+    'Durante o exame físico de um paciente com suspeita de meningite, o enfermeiro flete a coxa do paciente sobre o quadril e, ao tentar estender a perna, o paciente refere dor e resistência. Este sinal é conhecido como:',
+    '[
+      {"id": "A", "text": "Sinal de Babinski."},
+      {"id": "B", "text": "Sinal de Kernig."},
+      {"id": "C", "text": "Sinal de Brudzinski."},
+      {"id": "D", "text": "Sinal de Hoffman."}
+    ]'::jsonb,
+    'B',
+    'O Sinal de Kernig é positivo quando há dor ou impossibilidade de estender a perna com o quadril fletido. Brudzinski é a flexão involuntária dos joelhos ao fletir o pescoço.',
+    'VUNESP'
+  ),
+  (
+    'Neurologia',
+    'A Escala de NIHSS (National Institutes of Health Stroke Scale) é amplamente utilizada na avaliação do AVC agudo para quantificar:',
+    '[
+      {"id": "A", "text": "O risco de queda do paciente."},
+      {"id": "B", "text": "O grau de comprometimento/déficit neurológico."},
+      {"id": "C", "text": "A probabilidade de hemorragia."},
+      {"id": "D", "text": "A intensidade da dor de cabeça."}
+    ]'::jsonb,
+    'B',
+    'A NIHSS avalia a gravidade do AVC através de itens como nível de consciência, paralisia facial, força motora, linguagem e negligência.',
+    'EBSERH'
+  ),
+  (
+    'Neurologia',
+    'O V par craniano, responsável pela sensibilidade da face e motricidade da mastigação, é denominado:',
+    '[
+      {"id": "A", "text": "Nervo Facial."},
+      {"id": "B", "text": "Nervo Vago."},
+      {"id": "C", "text": "Nervo Trigêmeo."},
+      {"id": "D", "text": "Nervo Glossofaríngeo."}
+    ]'::jsonb,
+    'C',
+    'O Trigêmeo (V par) é o principal nervo sensitivo da face. O Facial (VII par) é responsável pela mímica facial.',
+    'IBFC'
+  ),
+  (
+    'Neurologia',
+    'Em um paciente com Trauma Raquimedular (TRM) acima de C4, a principal complicação respiratória esperada devido à paralisia do diafragma é:',
+    '[
+      {"id": "A", "text": "Pneumotórax espontâneo."},
+      {"id": "B", "text": "Insuficiência respiratória por perda do drive frênico."},
+      {"id": "C", "text": "Edema agudo de pulmão."},
+      {"id": "D", "text": "Broncoespasmo severo."}
+    ]'::jsonb,
+    'B',
+    'O nervo frênico, que inerva o diafragma, origina-se entre C3 e C5. Lesões altas comprometem a ventilação espontânea.',
+    'CESPE'
+  ),
 
-('Nutrição Clínica', 'EBSERH', 'A Nutrição Parenteral Total (NPT) é uma solução complexa e hiperosmolar. Por segurança, qual é a via de administração recomendada para NPT de longa duração?',
-'[{"id": "A", "text": "Sonda Nasogástrica"}, {"id": "B", "text": "Veia Periférica de grosso calibre"}, {"id": "C", "text": "Veia Central (ex: Subclávia ou Jugular)"}, {"id": "D", "text": "Gastrostomia"}]',
-'C', 'Devido à alta osmolaridade, a NPT pode causar flebite grave e trombose em veias periféricas. O acesso venoso central é mandatório para NPT plena.'),
+  -- 2. ADMINISTRAÇÃO (Novos temas: Teorias, Indicadores, Auditoria)
+  (
+    'Administração em Enfermagem',
+    'A Teoria das Necessidades Humanas Básicas, que fundamenta grande parte da Sistematização da Assistência de Enfermagem (SAE) no Brasil, foi desenvolvida pela enfermeira:',
+    '[
+      {"id": "A", "text": "Florence Nightingale."},
+      {"id": "B", "text": "Wanda de Aguiar Horta."},
+      {"id": "C", "text": "Dorothea Orem."},
+      {"id": "D", "text": "Ana Néri."}
+    ]'::jsonb,
+    'B',
+    'Wanda Horta introduziu o processo de enfermagem no Brasil baseado na teoria da motivação humana de Maslow (Necessidades Psicobiológicas, Psicossociais e Psicoespirituais).',
+    'COFEN'
+  ),
+  (
+    'Administração em Enfermagem',
+    'Na gestão da qualidade, o indicador que mede a relação entre o número de óbitos e o número de pacientes que receberam alta (saídas) em um determinado período é a:',
+    '[
+      {"id": "A", "text": "Taxa de Ocupação."},
+      {"id": "B", "text": "Média de Permanência."},
+      {"id": "C", "text": "Taxa de Mortalidade Hospitalar."},
+      {"id": "D", "text": "Índice de Rotatividade."}
+    ]'::jsonb,
+    'C',
+    'A Taxa de Mortalidade Hospitalar avalia a qualidade da assistência e a gravidade dos casos atendidos.',
+    'FGV'
+  ),
+  (
+    'Administração em Enfermagem',
+    'Quando uma operadora de plano de saúde recusa o pagamento de um procedimento realizado devido à falta de checagem do enfermeiro no prontuário, ocorre uma:',
+    '[
+      {"id": "A", "text": "Glosa Administrativa."},
+      {"id": "B", "text": "Glosa Técnica."},
+      {"id": "C", "text": "Glosa Linear."},
+      {"id": "D", "text": "Auditoria de Qualidade."}
+    ]'::jsonb,
+    'A',
+    'A falta de anotação/checagem é um erro administrativo/burocrático que impede a comprovação da execução do serviço, gerando glosa.',
+    'AOCP'
+  ),
+  (
+    'Administração em Enfermagem',
+    'O absenteísmo na equipe de enfermagem refere-se:',
+    '[
+      {"id": "A", "text": "À rotatividade de profissionais (admissões e demissões)."},
+      {"id": "B", "text": "Às ausências não programadas dos funcionários ao trabalho."},
+      {"id": "C", "text": "Ao número de horas extras realizadas."},
+      {"id": "D", "text": "À falta de materiais no setor."}
+    ]'::jsonb,
+    'B',
+    'Absenteísmo é a soma dos períodos de ausência do funcionário no trabalho (faltas, atrasos, licenças médicas não programadas). Turnover é a rotatividade.',
+    'FUNDATEC'
+  ),
 
-('Nutrição Clínica', 'AOCP', 'Ao administrar dieta enteral em bolus (seringada), qual cuidado de enfermagem é essencial para prevenir a broncoaspiração?',
-'[{"id": "A", "text": "Manter a cabeceira elevada (30-45º) durante e após a administração"}, {"id": "B", "text": "Administrar a dieta o mais rápido possível"}, {"id": "C", "text": "Colocar o paciente em decúbito lateral esquerdo"}, {"id": "D", "text": "Aquecer a dieta a 40 graus"}]',
-'A', 'A elevação da cabeceira (Posição de Fowler) evita o refluxo gastroesofágico e a consequente aspiração para os pulmões.'),
+  -- 3. SEMIOLOGIA (Novos temas: Sinais Abdominais, Tórax, Pele)
+  (
+    'Semiologia',
+    'A manobra de Giordano (percussão com a borda ulnar da mão na região lombar) positiva, despertando dor intensa, sugere:',
+    '[
+      {"id": "A", "text": "Apendicite Aguda."},
+      {"id": "B", "text": "Pielonefrite (Inflamação Renal)."},
+      {"id": "C", "text": "Pneumonia Basal."},
+      {"id": "D", "text": "Pancreatite."}
+    ]'::jsonb,
+    'B',
+    'Giordano positivo é o sinal clássico de inflamação aguda do parênquima renal ou da cápsula renal (Pielonefrite).',
+    'IBFC'
+  ),
+  (
+    'Semiologia',
+    'O Sinal de Murphy (interrupção brusca da inspiração profunda durante a palpação do ponto cístico devido à dor) é indicativo de:',
+    '[
+      {"id": "A", "text": "Colecistite Aguda (Inflamação da Vesícula)."},
+      {"id": "B", "text": "Gastrite."},
+      {"id": "C", "text": "Obstrução Intestinal."},
+      {"id": "D", "text": "Hérnia Inguinal."}
+    ]'::jsonb,
+    'A',
+    'Ao inspirar, o diafragma desce e empurra o fígado/vesícula contra a mão do examinador. Se a vesícula estiver inflamada, o paciente trava a respiração (Murphy Positivo).',
+    'VUNESP'
+  ),
+  (
+    'Semiologia',
+    'Durante o exame físico do tórax, o "Tórax em Tonel" (aumento do diâmetro ântero-posterior) é um achado característico de pacientes com:',
+    '[
+      {"id": "A", "text": "Tuberculose."},
+      {"id": "B", "text": "Doença Pulmonar Obstrutiva Crônica (DPOC/Enfisema)."},
+      {"id": "C", "text": "Pneumonia Lobar."},
+      {"id": "D", "text": "Câncer de Pulmão."}
+    ]'::jsonb,
+    'B',
+    'O aprisionamento de ar crônico no enfisema leva à hiperinsuflação pulmonar e deformidade da caixa torácica (tórax em barril/tonel).',
+    'CESGRANRIO'
+  ),
+  (
+    'Semiologia',
+    'O Sinal de Godet (ou sinal do cacifo) é utilizado para avaliar:',
+    '[
+      {"id": "A", "text": "A presença e intensidade de edema."},
+      {"id": "B", "text": "A perfusão capilar periférica."},
+      {"id": "C", "text": "A elasticidade da pele (turgor)."},
+      {"id": "D", "text": "A presença de trombose venosa profunda."}
+    ]'::jsonb,
+    'A',
+    'Consiste em pressionar a pele contra uma proeminência óssea. Se formar uma depressão (cacifo) que demora a voltar, indica edema.',
+    'COPESE'
+  ),
 
--- Cuidados Paliativos (Reforço)
-('Cuidados Paliativos', 'IBFC', 'A Hipodermóclise é uma via alternativa importante em cuidados paliativos para hidratação e analgesia. Ela consiste na administração de fluidos na via:',
-'[{"id": "A", "text": "Intradérmica"}, {"id": "B", "text": "Intramuscular"}, {"id": "C", "text": "Subcutânea"}, {"id": "D", "text": "Intraóssea"}]',
-'C', 'Hipodermóclise é a infusão de fluidos no tecido subcutâneo (hipoderme), sendo uma via segura, pouco dolorosa e eficaz para pacientes sem acesso venoso.'),
+  -- 4. URGÊNCIA E EMERGÊNCIA (Novos temas: Afogamento, Intoxicação, Queimadura Elétrica)
+  (
+    'Urgência e Emergência',
+    'Em vítimas de afogamento (submersão), a prioridade inicial no atendimento (seja na água ou em solo) é:',
+    '[
+      {"id": "A", "text": "Realizar compressões torácicas para retirar água do pulmão."},
+      {"id": "B", "text": "Restabelecer a ventilação/oxigenação (resgates ventilatórios)."},
+      {"id": "C", "text": "Aquecer a vítima."},
+      {"id": "D", "text": "Administrar adrenalina."}
+    ]'::jsonb,
+    'B',
+    'Diferente da parada cardíaca súbita, a parada no afogamento é hipóxica. A ventilação precoce é crucial para reverter a hipoxemia.',
+    'SOBRASA'
+  ),
+  (
+    'Urgência e Emergência',
+    'No atendimento a uma vítima de queimadura elétrica de alta voltagem, além das lesões de entrada e saída, o enfermeiro deve estar atento principalmente ao risco de:',
+    '[
+      {"id": "A", "text": "Hipotermia."},
+      {"id": "B", "text": "Arritmias Cardíacas e Rabdomiólise (Urina escura)."},
+      {"id": "C", "text": "Inalação de fumaça."},
+      {"id": "D", "text": "Fraturas de face."}
+    ]'::jsonb,
+    'B',
+    'A corrente elétrica causa dano muscular extenso (liberando mioglobina -> lesão renal/urina escura) e interfere na condução elétrica do coração.',
+    'AHA'
+  ),
+  (
+    'Urgência e Emergência',
+    'A Manobra de Heimlich em gestantes no último trimestre ou em pacientes obesos deve ser adaptada, realizando as compressões na região:',
+    '[
+      {"id": "A", "text": "Abdominal inferior."},
+      {"id": "B", "text": "Torácica (metade do esterno), em vez de abdominal."},
+      {"id": "C", "text": "Dorsal (tapas nas costas)."},
+      {"id": "D", "text": "Cervical."}
+    ]'::jsonb,
+    'B',
+    'Para evitar dano ao feto ou devido à dificuldade anatômica no obeso, as compressões são feitas no esterno (tórax), como na RCP, mas com o paciente em pé/sentado.',
+    'AHA'
+  ),
+  (
+    'Urgência e Emergência',
+    'Em casos de intoxicação exógena por ingestão recente de substâncias tóxicas (até 1-2 horas), o método de descontaminação gástrica mais utilizado, se não houver contraindicação, é:',
+    '[
+      {"id": "A", "text": "Lavagem gástrica com leite."},
+      {"id": "B", "text": "Indução de vômito com xarope de ipeca."},
+      {"id": "C", "text": "Administração de Carvão Ativado."},
+      {"id": "D", "text": "Diálise de urgência."}
+    ]'::jsonb,
+    'C',
+    'O Carvão Ativado adsorve a maioria das toxinas no estômago, impedindo sua absorção. Lavagem gástrica e indução de vômito estão em desuso rotineiro.',
+    'ANVISA'
+  ),
 
-('Cuidados Paliativos', 'FGV', 'Segundo a OMS, Cuidados Paliativos são uma abordagem que promove a qualidade de vida de pacientes e familiares diante de doenças que ameaçam a vida. O foco principal é:',
-'[{"id": "A", "text": "Acelerar o processo de morte (Eutanásia)"}, {"id": "B", "text": "Adiar a morte a qualquer custo (Distanásia)"}, {"id": "C", "text": "Alívio do sofrimento, controle da dor e sintomas"}, {"id": "D", "text": "Apenas a cura da doença de base"}]',
-'C', 'O foco é a ortotanásia (morte no tempo certo, com dignidade) e o controle impecável de sintomas físicos, psíquicos e espirituais.'),
+  -- 5. BIOSSEGURANÇA (Novos temas: Higienização Cirúrgica, Vacinas, Isolamentos Específicos)
+  (
+    'Biossegurança e Controle de Infecção',
+    'Para a higienização simples das mãos (água e sabonete líquido), o tempo recomendado pela ANVISA/OMS para garantir a eficácia do procedimento é de:',
+    '[
+      {"id": "A", "text": "10 a 20 segundos."},
+      {"id": "B", "text": "40 a 60 segundos."},
+      {"id": "C", "text": "2 a 3 minutos."},
+      {"id": "D", "text": "5 minutos."}
+    ]'::jsonb,
+    'B',
+    'A técnica completa, cobrindo todas as superfícies das mãos, requer de 40 a 60 segundos com água e sabão.',
+    'ANVISA'
+  ),
+  (
+    'Biossegurança e Controle de Infecção',
+    'Profissionais de saúde que sofreram acidente com material biológico (perfurocortante) de fonte desconhecida ou HIV positiva devem iniciar a Quimioprofilaxia Pós-Exposição (PEP) idealmente nas primeiras:',
+    '[
+      {"id": "A", "text": "2 horas (máximo 72h)."},
+      {"id": "B", "text": "12 horas (máximo 7 dias)."},
+      {"id": "C", "text": "24 horas (máximo 10 dias)."},
+      {"id": "D", "text": "Imediatamente, sem limite máximo."}
+    ]'::jsonb,
+    'A',
+    'A eficácia da PEP é maior quanto mais cedo for iniciada, preferencialmente nas primeiras 2h. Após 72h, a eficácia é mínima e não é mais recomendada.',
+    'MS'
+  ),
+  (
+    'Biossegurança e Controle de Infecção',
+    'Paciente com diagnóstico de Varicela (Catapora) ou Herpes Zoster disseminado requer quais tipos de precaução simultaneamente?',
+    '[
+      {"id": "A", "text": "Padrão e Gotículas."},
+      {"id": "B", "text": "Contato e Aerossóis."},
+      {"id": "C", "text": "Apenas Padrão."},
+      {"id": "D", "text": "Apenas Contato."}
+    ]'::jsonb,
+    'B',
+    'A Varicela transmite-se tanto pelo contato direto com as lesões quanto pela inalação de partículas virais suspensas no ar (aerossóis).',
+    'CDC'
+  ),
+  (
+    'Biossegurança e Controle de Infecção',
+    'Qual das vacinas abaixo NÃO faz parte do calendário obrigatório de vacinação ocupacional para profissionais de saúde, segundo a NR-32 e Ministério da Saúde?',
+    '[
+      {"id": "A", "text": "Hepatite B."},
+      {"id": "B", "text": "Dupla Adulto (dT - Tétano e Difteria)."},
+      {"id": "C", "text": "Tríplice Viral (Sarampo, Caxumba, Rubéola)."},
+      {"id": "D", "text": "Hepatite A."}
+    ]'::jsonb,
+    'D',
+    'A vacina de Hepatite A não é rotina para todos os profissionais, apenas em situações específicas de surto ou risco aumentado. Hep B, dT e Tríplice Viral são rotina.',
+    'NR-32'
+  ),
 
-('Cuidados Paliativos', 'FCC', 'A respiração ruidosa típica da fase final de vida, causada pelo acúmulo de secreções na orofaringe que o paciente não consegue expelir, é chamada de:',
-'[{"id": "A", "text": "Respiração de Kussmaul"}, {"id": "B", "text": "Ronco da morte (Estertor da morte)"}, {"id": "C", "text": "Respiração de Cheyne-Stokes"}, {"id": "D", "text": "Estridor laríngeo"}]',
-'B', 'O estertor da morte ocorre por fraqueza muscular e acúmulo de secreção. O tratamento visa conforto (reposicionamento, anticolinérgicos como escopolamina) e não aspiração profunda.'),
-
--- Hemoterapia (Reforço)
-('Hemoterapia', 'Cebraspe', 'Durante uma transfusão sanguínea, o paciente refere dor lombar súbita, calafrios e apresenta febre e hematúria. A conduta imediata do enfermeiro deve ser:',
-'[{"id": "A", "text": "Acelerar a infusão para terminar logo"}, {"id": "B", "text": "Administrar antitérmico e continuar observando"}, {"id": "C", "text": "Interromper a transfusão imediatamente e manter o acesso com soro fisiológico"}, {"id": "D", "text": "Colocar o paciente sentado e ofertar oxigênio apenas"}]',
-'C', 'Estes são sinais de Reação Hemolítica Aguda (incompatibilidade ABO). A transfusão deve ser parada imediatamente para evitar insuficiência renal e choque.'),
-
-('Hemoterapia', 'Vunesp', 'O tempo máximo recomendado para a infusão de uma bolsa de Concentrado de Hemácias, a fim de evitar proliferação bacteriana e perda de função, é de:',
-'[{"id": "A", "text": "1 hora"}, {"id": "B", "text": "2 horas"}, {"id": "C", "text": "4 horas"}, {"id": "D", "text": "6 horas"}]',
-'C', 'Por segurança biológica, hemocomponentes não devem permanecer em temperatura ambiente sendo infundidos por mais de 4 horas.'),
-
-('Hemoterapia', 'AOCP', 'Qual o único fluido intravenoso compatível para ser administrado concomitantemente (no mesmo acesso ou equipo em Y) com componentes sanguíneos?',
-'[{"id": "A", "text": "Soro Glicosado 5%"}, {"id": "B", "text": "Ringer Lactato"}, {"id": "C", "text": "Soro Fisiológico 0,9%"}, {"id": "D", "text": "Água Destilada"}]',
-'C', 'O Soro Glicosado causa hemólise e o Ringer Lactato contém cálcio que pode quelar o citrato (anticoagulante da bolsa) e causar coágulos. Apenas SF 0,9% é seguro.'),
-
--- Curativos e Tratamento de Feridas (Reforço)
-('Curativos e Tratamento de Feridas', 'IDECAN', 'Uma lesão por pressão que apresenta perda total da espessura da pele, com exposição de osso, tendão ou músculo, é classificada como:',
-'[{"id": "A", "text": "Estágio 1"}, {"id": "B", "text": "Estágio 2"}, {"id": "C", "text": "Estágio 3"}, {"id": "D", "text": "Estágio 4"}]',
-'D', 'O Estágio 4 envolve dano profundo com exposição de estruturas de suporte (osso/músculo).'),
-
-('Curativos e Tratamento de Feridas', 'Consulplan', 'Qual a indicação principal para o uso de cobertura de Alginato de Cálcio em feridas?',
-'[{"id": "A", "text": "Feridas secas e com necrose"}, {"id": "B", "text": "Feridas superficiais e epitelizando"}, {"id": "C", "text": "Feridas altamente exsudativas e/ou com sangramento"}, {"id": "D", "text": "Prevenção de feridas em pele íntegra"}]',
-'C', 'O alginato é altamente absorvente e possui propriedades hemostáticas, sendo ideal para feridas muito úmidas ou sangrantes.'),
-
-('Curativos e Tratamento de Feridas', 'Vunesp', 'O desbridamento que utiliza enzimas exógenas (como colagenase ou papaína) para degradar o tecido necrótico é classificado como:',
-'[{"id": "A", "text": "Autolítico"}, {"id": "B", "text": "Mecânico"}, {"id": "C", "text": "Enzimático (Químico)"}, {"id": "D", "text": "Instrumental (Cirúrgico)"}]',
-'C', 'O desbridamento enzimático usa produtos químicos tópicos. O autolítico usa a própria umidade do corpo (ex: hidrogel).'),
-
-('Curativos e Tratamento de Feridas', 'IBFC', 'O que significa a presença de tecido de granulação no leito da ferida?',
-'[{"id": "A", "text": "Infecção grave"}, {"id": "B", "text": "Tecido desvitalizado que precisa ser removido"}, {"id": "C", "text": "Tecido viável, vermelho vivo, indicativo de cicatrização"}, {"id": "D", "text": "Necrose de coagulação"}]',
-'C', 'O tecido de granulação é rico em novos vasos sanguíneos e colágeno, essencial para o preenchimento e cicatrização da ferida.'),
-
--- Sistematização (SAE) (Reforço)
-('Sistematização (SAE)', 'Vunesp', 'A etapa do Processo de Enfermagem que consiste na interpretação dos dados coletados para determinar os problemas de saúde, reais ou potenciais, que o enfermeiro tem competência para tratar é:',
-'[{"id": "A", "text": "Histórico de Enfermagem"}, {"id": "B", "text": "Diagnóstico de Enfermagem"}, {"id": "C", "text": "Planejamento"}, {"id": "D", "text": "Implementação"}]',
-'B', 'O Diagnóstico de Enfermagem é o julgamento clínico sobre as respostas do indivíduo, base para a seleção das intervenções.'),
-
-('Sistematização (SAE)', 'FCC', 'Na Taxonomia NANDA-I, um diagnóstico de "Risco" difere de um diagnóstico "com foco no problema" porque o de risco NÃO possui:',
-'[{"id": "A", "text": "Título"}, {"id": "B", "text": "Definição"}, {"id": "C", "text": "Fatores de Risco"}, {"id": "D", "text": "Características Definidoras (Sinais e Sintomas)"}]',
-'D', 'Diagnósticos de risco descrevem vulnerabilidades a problemas que ainda NÃO ocorreram, portanto, não possuem sinais e sintomas (características definidoras), apenas fatores de risco.'),
-
-('Sistematização (SAE)', 'Cebraspe', 'Segundo a Resolução COFEN 358/2009, a prescrição da assistência de enfermagem é atividade privativa do:',
-'[{"id": "A", "text": "Técnico de Enfermagem"}, {"id": "B", "text": "Enfermeiro"}, {"id": "C", "text": "Médico"}, {"id": "D", "text": "Chefe do setor (qualquer formação)"}]',
-'B', 'Tanto o Diagnóstico quanto a Prescrição de Enfermagem são privativos do Enfermeiro.'),
-
-('Sistematização (SAE)', 'AOCP', 'Qual classificação é utilizada para padronizar os RESULTADOS esperados na assistência de enfermagem?',
-'[{"id": "A", "text": "NANDA"}, {"id": "B", "text": "NIC"}, {"id": "C", "text": "NOC"}, {"id": "D", "text": "CIPE"}]',
-'C', 'NOC (Nursing Outcomes Classification) padroniza os resultados. NIC padroniza as intervenções. NANDA padroniza os diagnósticos.'),
-
--- Oncologia (Reforço)
-('Oncologia', 'INCA', 'O principal risco agudo da quimioterapia, caracterizado pela infiltração de drogas vesicantes no tecido subcutâneo, podendo causar necrose severa, é chamado de:',
-'[{"id": "A", "text": "Flebite"}, {"id": "B", "text": "Extravasamento"}, {"id": "C", "text": "Reação alérgica"}, {"id": "D", "text": "Trombose"}]',
-'B', 'O extravasamento de vesicantes é uma emergência oncológica. Deve-se parar a infusão, aspirar o resíduo e aplicar medidas locais (frio ou calor dependendo da droga).'),
-
-('Oncologia', 'Vunesp', 'A Neutropenia Febril em paciente oncológico é uma emergência médica. Ela é definida por febre associada a uma contagem de neutrófilos inferior a:',
-'[{"id": "A", "text": "5000 /mm³"}, {"id": "B", "text": "2500 /mm³"}, {"id": "C", "text": "1500 /mm³"}, {"id": "D", "text": "500 /mm³ (ou expectativa de queda para <500)"}]',
-'D', 'Neutrófilos < 500/mm³ deixam o paciente extremamente vulnerável a infecções bacterianas graves que progridem rapidamente para sepse.'),
-
-('Oncologia', 'IDECAN', 'Para o rastreamento do câncer de mama no SUS, a mamografia é recomendada com qual periodicidade e faixa etária?',
-'[{"id": "A", "text": "Anual, a partir dos 40 anos"}, {"id": "B", "text": "Bienal (a cada 2 anos), de 50 a 69 anos"}, {"id": "C", "text": "Anual, a partir dos 35 anos"}, {"id": "D", "text": "A cada 3 anos, de 25 a 64 anos"}]',
-'B', 'Diretriz do INCA/MS: Mulheres de 50 a 69 anos, a cada dois anos. Fora dessa faixa ou periodicidade, considera-se rastreamento oportunístico ou para alto risco.'),
-
--- Neurologia (Reforço)
-('Neurologia', 'EBSERH', 'Na avaliação de sinais meníngeos (suspeita de meningite), a flexão involuntária dos joelhos e quadril quando se flete o pescoço do paciente é conhecida como:',
-'[{"id": "A", "text": "Sinal de Kerning"}, {"id": "B", "text": "Sinal de Brudzinski"}, {"id": "C", "text": "Sinal de Babinski"}, {"id": "D", "text": "Sinal de Hoffman"}]',
-'B', 'Brudzinski é a flexão reflexa dos joelhos ao fletir o pescoço. Kernig é a resistência/dor ao estender o joelho com a coxa fletida.'),
-
-('Neurologia', 'FCC', 'A trombólise com rtPA (Alteplase) no AVC Isquêmico agudo pode ser realizada, se não houver contraindicações, em até quantas horas do início dos sintomas?',
-'[{"id": "A", "text": "3 horas"}, {"id": "B", "text": "4,5 horas"}, {"id": "C", "text": "6 horas"}, {"id": "D", "text": "12 horas"}]',
-'B', 'A janela terapêutica padrão estendida é de até 4,5 horas. Após esse tempo, o risco de sangramento supera o benefício na maioria dos casos.'),
-
-('Neurologia', 'Vunesp', 'Em um paciente com Trauma Cranioencefálico (TCE), a presença de hipertensão arterial, bradicardia e respiração irregular constitui a:',
-'[{"id": "A", "text": "Tríade de Beck"}, {"id": "B", "text": "Tríade de Virchow"}, {"id": "C", "text": "Tríade de Cushing"}, {"id": "D", "text": "Tríade de Charcot"}]',
-'C', 'A Tríade de Cushing indica hipertensão intracraniana grave e risco iminente de herniação cerebral.'),
-
--- Saúde Mental e Biossegurança (Reforço)
-('Saúde Mental e Psiquiatria', 'FGV', 'O serviço de saúde mental substitutivo ao hospital psiquiátrico, que funciona como porta de entrada e ordenador da rede, oferecendo atendimento a pacientes com transtornos mentais graves e persistentes, é o:',
-'[{"id": "A", "text": "UBS"}, {"id": "B", "text": "CAPS (Centro de Atenção Psicossocial)"}, {"id": "C", "text": "Hospital Dia"}, {"id": "D", "text": "Residência Terapêutica"}]',
-'B', 'O CAPS é o dispositivo estratégico da Reforma Psiquiátrica para acolhimento, tratamento e reinserção social.'),
-
-('Saúde Mental e Psiquiatria', 'Cebraspe', 'Em casos de agitação psicomotora onde a contenção mecânica se faz necessária como último recurso, é cuidado de enfermagem essencial:',
-'[{"id": "A", "text": "Manter o paciente contido por 24h sem interrupção"}, {"id": "B", "text": "Monitorar sinais vitais e circulação das extremidades frequentemente"}, {"id": "C", "text": "Deixar o paciente sozinho no quarto para se acalmar"}, {"id": "D", "text": "Não registrar o procedimento para evitar problemas legais"}]',
-'B', 'A contenção é um procedimento de risco. Requer monitoramento contínuo da circulação, respiração e nível de consciência, além de registro rigoroso.'),
-
-('Biossegurança', 'AOCP', 'De acordo com a NR-32, a vacinação contra Tétano, Difteria e qual outra doença é obrigatória para todos os trabalhadores de saúde e deve ser fornecida gratuitamente pelo empregador?',
-'[{"id": "A", "text": "Hepatite A"}, {"id": "B", "text": "Hepatite B"}, {"id": "C", "text": "Meningite"}, {"id": "D", "text": "Varicela"}]',
-'B', 'A vacina contra Hepatite B é mandatória devido ao alto risco de transmissão ocupacional por pérfuro-cortantes.'),
-
-('Biossegurança', 'IBFC', 'O descarte de agulhas, lâminas de bisturi e ampolas de vidro deve ser feito em recipiente de parede rígida identificado com o símbolo de:',
-'[{"id": "A", "text": "Risco Químico"}, {"id": "B", "text": "Risco Radioativo"}, {"id": "C", "text": "Reciclável"}, {"id": "D", "text": "Risco Biológico / Infectante"}]',
-'D', 'Pérfuro-cortantes (Grupo E) devem ser descartados em caixas rígidas (tipo Descarpack) identificadas com o símbolo de risco biológico.')
+  -- 6. MATÉRIAS GERAIS (Preenchendo lacunas diversas)
+  (
+    'Saúde da Mulher e da Criança',
+    'O Teste do Pezinho (Triagem Neonatal Biológica) deve ser coletado preferencialmente:',
+    '[
+      {"id": "A", "text": "Nas primeiras 24 horas de vida."},
+      {"id": "B", "text": "Entre o 3º e o 5º dia de vida."},
+      {"id": "C", "text": "Após o 10º dia de vida."},
+      {"id": "D", "text": "No momento da alta da maternidade, independente da idade."}
+    ]'::jsonb,
+    'B',
+    'O período ideal (3º ao 5º dia) garante que o bebê já tenha ingerido proteínas (para fenilcetonúria) e evita falsos negativos ou positivos de outras doenças.',
+    'MS'
+  ),
+  (
+    'Centro Cirúrgico e CME',
+    'A posição cirúrgica de Litotomia (Ginecológica) exige cuidados de enfermagem específicos para prevenir lesões em:',
+    '[
+      {"id": "A", "text": "Plexo braquial."},
+      {"id": "B", "text": "Nervo fibular e panturrilhas (TVP)."},
+      {"id": "C", "text": "Olhos e face."},
+      {"id": "D", "text": "Coluna cervical."}
+    ]'::jsonb,
+    'B',
+    'O posicionamento das pernas nas perneiras pode comprimir o nervo fibular comum e prejudicar o retorno venoso se não for bem acolchoado.',
+    'SOBECC'
+  ),
+  (
+    'Clínica Médica e Cirúrgica',
+    'Um paciente com dreno de tórax em selo d''água apresenta borbulhamento intenso e contínuo no frasco coletor, mesmo sem tosse. Isso sugere:',
+    '[
+      {"id": "A", "text": "Funcionamento normal do sistema."},
+      {"id": "B", "text": "Obstrução do dreno."},
+      {"id": "C", "text": "Fístula aérea broncopleural (vazamento de ar do pulmão) ou vazamento no sistema."},
+      {"id": "D", "text": "Reexpansão pulmonar completa."}
+    ]'::jsonb,
+    'C',
+    'O borbulhamento deve ser intermitente (na tosse/respiração). Se contínuo e intenso, há escape de ar significativo (fístula) ou conexão solta.',
+    'AOCP'
+  ),
+  (
+    'Ética e Legislação',
+    'Um profissional de enfermagem divulga imagens de pacientes em redes sociais. Segundo o Código de Ética, essa ação viola:',
+    '[
+      {"id": "A", "text": "O direito ao exercício profissional."},
+      {"id": "B", "text": "O dever de aprimoramento técnico."},
+      {"id": "C", "text": "A proibição de expor a figura do paciente e o direito à privacidade."},
+      {"id": "D", "text": "A autonomia do profissional."}
+    ]'::jsonb,
+    'C',
+    'É expressamente proibido expor a figura do paciente em meios de comunicação, mesmo com autorização, se não houver fins educativos estritos e anonimato garantido.',
+    'COFEN'
+  ),
+  (
+    'Farmacologia e Alta Vigilância',
+    'A administração rápida de Vancomicina por via endovenosa pode desencadear uma reação de hipersensibilidade não alérgica conhecida como:',
+    '[
+      {"id": "A", "text": "Síndrome de Stevens-Johnson."},
+      {"id": "B", "text": "Síndrome do Homem Vermelho."},
+      {"id": "C", "text": "Choque Anafilático."},
+      {"id": "D", "text": "Síndrome de Cushing."}
+    ]'::jsonb,
+    'B',
+    'A Síndrome do Homem Vermelho é causada pela liberação de histamina devido à infusão rápida. A prevenção é infundir em pelo menos 1 hora.',
+    'EBSERH'
+  )
 ON CONFLICT (question) DO NOTHING;
