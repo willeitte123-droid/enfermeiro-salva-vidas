@@ -1,6 +1,6 @@
--- PACOTE DE REFORÇO 5: PREENCHENDO LACUNAS
--- Foco: SAE, UTI, Imunização, Saúde do Trabalhador e Idoso
--- Proteção: ON CONFLICT DO NOTHING para evitar erros de duplicidade
+-- PACOTE DE REFORÇO 5 (CORRIGIDO)
+-- Foco: SAE, UTI, Imunização, Saúde do Trabalhador, Idoso e Fundamentos
+-- Correção: Remoção de aspas internas que causavam erro de sintaxe
 
 INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
 VALUES
@@ -101,7 +101,7 @@ VALUES
   ),
   (
     'Terapia Intensiva (UTI)',
-    'A droga vasoativa de primeira escolha para o tratamento da hipotensão no Choque Séptico, visando manter a PAM ≥ 65 mmHg, é:',
+    'A droga vasoativa de primeira escolha para o tratamento da hipotensão no Choque Séptico, visando manter a PAM >= 65 mmHg, é:',
     '[
       {"id": "A", "text": "Dobutamina."},
       {"id": "B", "text": "Noradrenalina."},
@@ -249,7 +249,7 @@ VALUES
     'Ministério da Saúde'
   ),
 
-  -- 6. ONCOLOGIA E CUIDADOS PALIATIVOS (Categoria nova/pouca questão)
+  -- 6. ONCOLOGIA E CUIDADOS PALIATIVOS
   (
     'Oncologia',
     'Durante a infusão de quimioterápico vesicante, o paciente queixa-se de ardência e dor no local do acesso venoso. A primeira conduta do enfermeiro deve ser:',
@@ -277,7 +277,7 @@ VALUES
     'ANCP'
   ),
 
-  -- 7. SAÚDE DA CRIANÇA (Mais um reforço)
+  -- 7. SAÚDE DA CRIANÇA E MULHER (Reforço)
   (
     'Saúde da Mulher e da Criança',
     'O Teste do Coraçãozinho (Oximetria de Pulso) deve ser realizado na triagem neonatal entre 24h e 48h de vida. O resultado é considerado NORMAL quando a saturação é:',
@@ -304,8 +304,6 @@ VALUES
     'Diferente dos adultos, a PCR pediátrica raramente é súbita/cardíaca. Geralmente é resultado final de insuficiência respiratória ou choque progressivo.',
     'PALS'
   ),
-
-  -- 8. SAÚDE DA MULHER (Mais um reforço)
   (
     'Saúde da Mulher e da Criança',
     'A colpocitologia oncótica (Papanicolau) é o exame de rastreamento para câncer de colo do útero. Segundo o Ministério da Saúde, a população-alvo e a periodicidade recomendada são:',
@@ -333,7 +331,7 @@ VALUES
     'Obstetrícia'
   ),
 
-  -- 9. GERAIS E TÉCNICAS BÁSICAS
+  -- 8. GERAIS E TÉCNICAS BÁSICAS
   (
     'Fundamentos de Enfermagem',
     'Ao realizar uma punção venosa periférica, o garrote deve permanecer no membro do paciente pelo menor tempo possível, idealmente não ultrapassando:',
@@ -366,7 +364,7 @@ VALUES
     '[
       {"id": "A", "text": "Usar corretivo líquido para apagar o erro."},
       {"id": "B", "text": "Rabiscar ou tachar a palavra errada para que não possa ser lida."},
-      {"id": "C", "text": "Colocar a palavra errada entre parênteses e escrever \'digo\' em seguida, seguido da correção."},
+      {"id": "C", "text": "Colocar a palavra errada entre parênteses e escrever digo em seguida, seguido da correção."},
       {"id": "D", "text": "Arrancar a folha e reescrever tudo."}
     ]'::jsonb,
     'C',
