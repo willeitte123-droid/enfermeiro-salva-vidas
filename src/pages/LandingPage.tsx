@@ -71,8 +71,36 @@ const Navbar = () => {
   );
 };
 
+const InfiniteMarquee = () => {
+  const words = [
+    "CONCURSOS", "RESIDÊNCIA", "CÁLCULOS", "FARMACOLOGIA", "TERAPIA INTENSIVA",
+    "SAÚDE PÚBLICA", "URGÊNCIA", "SAE", "EVOLUÇÃO", "TÉCNICAS", "ANATOMIA", 
+    "MEDICAMENTOS", "SIMULADOS", "FLASHCARDS", "LEGISLAÇÃO SUS"
+  ];
+
+  return (
+    <div className="w-full border-y border-white/5 bg-[#050811] overflow-hidden py-6 relative z-20">
+      {/* Gradient Masks */}
+      <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
+      
+      <div className="flex animate-marquee whitespace-nowrap items-center">
+        {[...words, ...words, ...words].map((word, i) => (
+          <div key={i} className="flex items-center mx-8">
+            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-600 to-slate-800 uppercase tracking-tight opacity-50 hover:opacity-100 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default">
+              {word}
+            </span>
+            <div className="ml-16 w-2 h-2 rounded-full bg-blue-900/50" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Hero = () => {
   return (
+    <>
     <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
       {/* Background Gradients matching high-end style */}
       <div className="absolute top-0 right-0 w-[70%] h-[120%] bg-gradient-to-l from-blue-900/30 via-purple-900/10 to-transparent pointer-events-none blur-3xl" />
@@ -181,20 +209,10 @@ const Hero = () => {
             </div>
         </div>
       </div>
-      
-      {/* Logos Strip */}
-      <div className="w-full border-y border-white/5 bg-black/30 backdrop-blur-sm py-8 mt-20 relative z-10">
-         <div className="container mx-auto px-4">
-            <p className="text-center text-xs font-semibold text-slate-500 uppercase tracking-widest mb-6">Plataforma utilizada por profissionais do</p>
-            <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-40 grayscale hover:grayscale-0 hover:opacity-70 transition-all duration-500">
-                {/* Logos estilizados com texto para manter performance e estilo limpo */}
-                {["EBSERH", "Ministério da Saúde", "Albert Einstein", "Sírio Libanês", "Rede D'Or"].map(logo => (
-                    <span key={logo} className="text-lg md:text-xl font-bold font-serif tracking-wide text-white">{logo}</span>
-                ))}
-            </div>
-         </div>
-      </div>
     </section>
+    
+    <InfiniteMarquee />
+    </>
   );
 };
 
@@ -251,7 +269,7 @@ const FeaturesBento = () => {
                    </div>
                    <div className="text-2xl font-mono font-bold text-white">45 gts/min</div>
                    <div className="text-xs text-slate-400">Volume: 500ml | Tempo: 6h</div>
-                </div>
+                  </div>
              </div>
           </div>
 
@@ -335,7 +353,6 @@ export default function LandingPage() {
                   <CardContent className="flex-1 flex flex-col">
                      <div className="mb-6">
                         <span className="text-4xl font-bold text-white">R$ 0</span>
-                        <span className="text-sm">/mês</span>
                      </div>
                      <ul className="space-y-3 mb-8 flex-1">
                         <li className="flex gap-2 text-sm text-slate-300"><CheckCircle2 className="w-4 h-4 text-blue-500" /> Acesso a 5 questões/dia</li>
@@ -371,6 +388,7 @@ export default function LandingPage() {
                         <li className="flex gap-3 text-sm font-medium text-white"><div className="bg-blue-500/20 p-1 rounded-full"><CheckCircle2 className="w-4 h-4 text-blue-400" /></div> Questões ILIMITADAS</li>
                         <li className="flex gap-3 text-sm font-medium text-white"><div className="bg-blue-500/20 p-1 rounded-full"><CheckCircle2 className="w-4 h-4 text-blue-400" /></div> Simulados Personalizados</li>
                         <li className="flex gap-3 text-sm font-medium text-white"><div className="bg-blue-500/20 p-1 rounded-full"><CheckCircle2 className="w-4 h-4 text-blue-400" /></div> Todas as Ferramentas</li>
+                        <li className="flex gap-3 text-sm font-medium text-white"><div className="bg-blue-500/20 p-1 rounded-full"><CheckCircle2 className="w-4 h-4 text-blue-400" /></div> Casos Clínicos Completos</li>
                      </ul>
                      <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold h-12 shadow-lg shadow-blue-900/50">
                         ASSINAR AGORA
@@ -419,7 +437,7 @@ export default function LandingPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="py-12 bg-[#020617] border-t border-white/5 text-slate-500 text-sm">
+      <footer className="bg-[#020617] py-12 border-t border-white/5">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -428,13 +446,15 @@ export default function LandingPage() {
              <span className="font-bold text-lg text-white">EnfermagemPro</span>
           </div>
           
-          <div className="flex gap-8">
+          <div className="flex gap-8 text-sm text-slate-400">
             <Link to="/terms" className="hover:text-white transition-colors">Termos de Uso</Link>
             <Link to="/privacy" className="hover:text-white transition-colors">Privacidade</Link>
-            <a href="#" className="hover:text-white transition-colors">Suporte</a>
+            <a href="#" className="hover:text-white transition-colors">Contato</a>
           </div>
 
-          <p>&copy; {new Date().getFullYear()} Todos os direitos reservados.</p>
+          <p className="text-sm text-slate-600">
+            &copy; 2025 Enfermagem Pro. Todos os direitos reservados.
+          </p>
         </div>
       </footer>
     </div>
