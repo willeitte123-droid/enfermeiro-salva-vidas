@@ -56,6 +56,7 @@ import DeepStudy from './pages/DeepStudy';
 import ClinicalCases from './pages/ClinicalCases';
 import Concursos from './pages/Concursos';
 import VideoLibrary from './pages/VideoLibrary';
+import LandingPage from './pages/LandingPage'; // Nova Importação
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -75,11 +76,19 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
     );
   }
 
+  // Rota Pública (Landing Page) - Acessível para todos
+  // Adicionada aqui para não interferir na lógica de Auth
+  // Se o usuário estiver logado, ele ainda pode acessar /oferta se quiser,
+  // mas o botão "Já sou aluno" o levará para o dashboard.
+
   // Se NÃO estiver logado
   if (!session) {
     return (
       <Routes>
-        {/* A Raiz (/) agora é EXPLICITAMENTE o Login */}
+        {/* Landing Page como rota específica */}
+        <Route path="/oferta" element={<LandingPage />} />
+        
+        {/* A Raiz (/) continua sendo o Login para manter o fluxo atual do app */}
         <Route path="/" element={<Login />} />
         
         <Route path="/login" element={<Login />} />
@@ -95,6 +104,9 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
   // Se ESTIVER logado
   return (
     <Routes>
+      {/* Landing Page acessível mesmo logado */}
+      <Route path="/oferta" element={<LandingPage />} />
+
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="calculator" element={<Calculator />} />
