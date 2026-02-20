@@ -56,7 +56,8 @@ export default {
           },
           hover: {
             DEFAULT: "hsl(var(--sidebar-hover-background))",
-          }
+          },
+          border: "hsl(var(--sidebar-border))",
         },
       },
       borderRadius: {

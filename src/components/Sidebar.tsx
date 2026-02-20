@@ -64,19 +64,19 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
       onMouseEnter={() => !isMobile && setIsHovered(true)}
       onMouseLeave={() => !isMobile && setIsHovered(false)}
       className={cn(
-        "flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out",
-        isMobile ? "h-full w-full" : "hidden md:flex border-r border-border/10 relative z-50",
+        "flex flex-col bg-sidebar text-sidebar-foreground border-sidebar-border transition-all duration-300 ease-in-out",
+        isMobile ? "h-full w-full" : "hidden md:flex border-r relative z-50",
         !isMobile && (isExpanded ? "w-64" : "w-20")
       )}
     >
-      <div className="flex h-16 items-center border-b border-border/10 px-6 justify-between relative overflow-hidden shrink-0">
+      <div className="flex h-16 items-center border-b border-sidebar-border px-6 justify-between relative overflow-hidden shrink-0">
         <div className={cn("flex items-center gap-3 transition-all duration-300", isCollapsed && "justify-center w-full")}>
           {themeSettings.logo_url ? (
             <img src={themeSettings.logo_url} alt="Logo" className={cn("h-8 transition-all object-contain", isCollapsed ? "w-8" : "w-auto")} />
           ) : (
             <Stethoscope className="h-7 w-7 text-primary flex-shrink-0" />
           )}
-          <h1 className={cn("text-xl font-bold text-white whitespace-nowrap overflow-hidden transition-all duration-300", isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100 ml-2")}>Enfermagem Pro</h1>
+          <h1 className={cn("text-xl font-bold text-sidebar-foreground whitespace-nowrap overflow-hidden transition-all duration-300", isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100 ml-2")}>Enfermagem Pro</h1>
         </div>
       </div>
 
@@ -84,13 +84,15 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
         <SidebarNav isAdmin={isAdmin} userPlan={user?.plan} isCollapsed={isCollapsed} isMobile={isMobile} />
       </div>
 
-      <div className="mt-auto border-t border-border/10 p-4 space-y-2 shrink-0">
+      <div className="mt-auto border-t border-sidebar-border p-4 space-y-2 shrink-0">
         <DropdownMenu onOpenChange={setIsLockedOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className={cn("w-full justify-start gap-3 px-3 text-sidebar-foreground hover:bg-sidebar-hover hover:text-white transition-all", isCollapsed && "justify-center px-0")}>
               <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 flex-shrink-0" />
               <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 flex-shrink-0" />
-              <span className={cn("text-sm font-medium whitespace-nowrap overflow-hidden transition-all duration-300", isCollapsed ? "w-0 opacity-0 hidden" : "w-auto opacity-100")}>Alterar Tema</span>
+              <span className="text-sm font-medium whitespace-nowrap overflow-hidden transition-all duration-300">
+                {!isCollapsed && "Alterar Tema"}
+              </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

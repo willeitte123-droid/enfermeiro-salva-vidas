@@ -64,8 +64,8 @@ const defaultSettings = {
   font_family: "Inter, sans-serif",
   "--primary": "210 90% 48%", "--secondary": "260 70% 55%", "--accent": "40 80% 96%", "--background": "40 50% 98%", "--foreground": "215 25% 15%", "--card": "0 0% 100%", "--destructive": "0 72% 51%", "--border": "40 30% 92%",
   "--dark-primary": "210 90% 58%", "--dark-secondary": "260 65% 60%", "--dark-accent": "215 25% 16%", "--dark-background": "215 30% 8%", "--dark-foreground": "210 20% 98%", "--dark-card": "215 25% 12%", "--dark-destructive": "0 72% 51%", "--dark-border": "215 20% 18%",
-  "--sidebar-background": "215 25% 12%", "--sidebar-foreground": "210 20% 85%", "--sidebar-active-background": "210 90% 48%", "--sidebar-active-foreground": "0 0% 100%", "--sidebar-hover-background": "215 20% 18%",
-  "--dark-sidebar-background": "215 25% 12%", "--dark-sidebar-foreground": "210 20% 85%", "--dark-sidebar-active-background": "210 90% 58%", "--dark-sidebar-active-foreground": "0 0% 100%", "--dark-sidebar-hover-background": "215 20% 18%",
+  "--sidebar-background": "215 25% 12%", "--sidebar-foreground": "210 20% 85%", "--sidebar-active-background": "210 90% 48%", "--sidebar-active-foreground": "0 0% 100%", "--sidebar-hover-background": "215 20% 18%", "--sidebar-border": "215 20% 18%",
+  "--dark-sidebar-background": "215 25% 12%", "--dark-sidebar-foreground": "210 20% 85%", "--dark-sidebar-active-background": "210 90% 58%", "--dark-sidebar-active-foreground": "0 0% 100%", "--dark-sidebar-hover-background": "215 20% 18%", "--dark-sidebar-border": "215 20% 18%",
 };
 
 const colorFields = [
@@ -73,7 +73,12 @@ const colorFields = [
 ];
 
 const sidebarColorFields = [
-  { id: "sidebar-background", label: "Fundo da Sidebar" }, { id: "sidebar-foreground", label: "Texto da Sidebar" }, { id: "sidebar-active-background", label: "Fundo do Item Ativo" }, { id: "sidebar-active-foreground", label: "Texto do Item Ativo" }, { id: "sidebar-hover-background", label: "Fundo do Hover" },
+  { id: "sidebar-background", label: "Fundo da Sidebar" }, 
+  { id: "sidebar-foreground", label: "Texto da Sidebar" }, 
+  { id: "sidebar-border", label: "Borda da Sidebar" },
+  { id: "sidebar-active-background", label: "Fundo do Item Ativo" }, 
+  { id: "sidebar-active-foreground", label: "Texto do Item Ativo" }, 
+  { id: "sidebar-hover-background", label: "Fundo do Hover" },
 ];
 
 const fetchThemeSettings = async () => {
@@ -91,7 +96,7 @@ const ColorPickerInput = ({ control, name, label }: { control: any, name: string
         <Label htmlFor={name}>{label}</Label>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">{field.value}</span>
-          <Input id={name} type="color" {...field} className="w-10 h-10 p-1" />
+          <Input id={name} type="color" {...field} className="w-10 h-10 p-1 cursor-pointer" />
         </div>
       </div>
     )}
@@ -206,7 +211,7 @@ const ThemeCustomizer = () => {
   if (isLoading) return <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin" /></div>;
 
   return (
-    <form onSubmit={handleSubmit(handleSaveTheme)} className="space-y-6">
+    <form onSubmit={handleSubmit(handleSaveTheme)} className="space-y-6 pb-12">
       <div className="flex justify-between items-center">
         <div className="text-center sm:text-left">
           <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Personalização da Aparência</h1>

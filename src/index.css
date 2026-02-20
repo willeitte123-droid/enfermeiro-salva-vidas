@@ -43,6 +43,7 @@ All colors MUST be HSL.
     --sidebar-active-background: 210 90% 48%;
     --sidebar-active-foreground: 0 0% 100%;
     --sidebar-hover-background: 215 20% 18%;
+    --sidebar-border: 215 20% 18%; /* Default sidebar border */
   }
 
   .dark {
@@ -79,6 +80,7 @@ All colors MUST be HSL.
     --sidebar-active-background: 210 90% 58%;
     --sidebar-active-foreground: 0 0% 100%;
     --sidebar-hover-background: 215 20% 18%;
+    --sidebar-border: 215 20% 18%; /* Default dark sidebar border */
   }
 }
 
