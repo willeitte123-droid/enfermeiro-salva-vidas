@@ -1,173 +1,384 @@
-import { NavLink } from "react-router-dom";
-import {
-  Calculator, Siren, Syringe, Bandage, FileQuestion, Shield,
-  LayoutDashboard, ChevronsUpDown, ListChecks, FileSearch, HandHeart,
-  FlaskConical, FileText, NotebookText, Timer, Library, Star,
-  Calculator as CalculatorIcon, BookHeart, ClipboardList, Palette, BookText, BookA, Activity, GraduationCap, Lock, Brain, Trophy, PieChart, Map, User, BookOpen, Stethoscope, Briefcase, MonitorPlay
-} from "lucide-react";
+import { Link, useLocation, NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { SheetClose } from "./ui/sheet";
+import {
+  LayoutDashboard,
+  BrainCircuit,
+  FileQuestion,
+  GraduationCap,
+  LineChart,
+  Stethoscope,
+  Calculator,
+  Pill,
+  BookA,
+  Timer,
+  Users,
+  ShieldCheck,
+  MonitorPlay,
+  Activity,
+  Siren,
+  Bandage,
+  Trophy,
+  ChevronDown,
+  ChevronRight,
+  PlayCircle,
+  Map,
+  BookOpen,
+  Library,
+  ClipboardList,
+  Syringe,
+  FileSearch,
+  HandHeart,
+  BookHeart,
+  BookText,
+  FlaskConical,
+  Calculator as CalculatorIcon,
+  ListChecks,
+  FileText,
+  NotebookText,
+  Briefcase,
+  Star,
+  User,
+  Shield,
+  Palette,
+  Lock
+} from "lucide-react";
+import { useState, useEffect } from "react";
+import { Button } from "./ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { SheetClose } from "./ui/sheet";
 
 interface SidebarNavProps {
   isAdmin: boolean;
   userPlan?: string;
-  isCollapsed?: boolean;
+  isCollapsed: boolean;
   isMobile?: boolean;
 }
 
-const SidebarNav = ({ isAdmin, userPlan, isCollapsed = false, isMobile = false }: SidebarNavProps) => {
-  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    cn(
-      "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors text-sidebar-foreground hover:bg-sidebar-hover",
-      isActive && "bg-sidebar-active text-sidebar-active-foreground hover:bg-sidebar-active/90"
-    );
+type NavItem = {
+  title: string;
+  icon: any;
+  href: string;
+  variant: "default" | "ghost";
+  highlight?: boolean;
+};
 
-  const sectionHeaderClass = "flex w-full items-center justify-between rounded-md px-3 py-2 text-xs font-bold uppercase tracking-wider text-primary mt-4";
-  
-  const navItems = {
-    main: [
-      { to: "/", end: true, icon: LayoutDashboard, label: "Dashboard" },
-      { to: "/profile", icon: User, label: "Meu Perfil" },
-      { to: "/favorites", icon: Star, label: "Meus Favoritos" },
-      { to: "/ranking", icon: Trophy, label: "Ranking Geral" },
-    ],
-    tools: [
-      { to: "/tools/performance", icon: PieChart, label: "Meu Desempenho" },
-      { to: "/concursos", icon: Briefcase, label: "Mural de Concursos" },
-      { to: "/tools/bloco-de-notas", icon: NotebookText, label: "Bloco de Anotações" },
-      { to: "/calculator", icon: Calculator, label: "Gotejamento" },
-      { to: "/scales", icon: ListChecks, label: "Escalas Clínicas" },
-      { to: "/tools/dose-calculator", icon: FlaskConical, label: "Calculadora de Doses" },
-      { to: "/tools/integrated-calculators", icon: CalculatorIcon, label: "DUM e IMC" },
-      { to: "/tools/lab-values", icon: FileText, label: "Valores Laboratoriais" },
-    ],
-    study: [
-      { to: "/questions", icon: FileQuestion, label: "Banca de Questões" },
-      { to: "/simulado", icon: Timer, label: "Área de Simulado" },
-      { to: "/clinical-cases", icon: Stethoscope, label: "Casos Clínicos" },
-      { to: "/study-tracks", icon: Map, label: "Trilha de Estudos" },
-      { to: "/video-library", icon: MonitorPlay, label: "Biblioteca de Vídeos" },
-      { to: "/concurseiro", icon: GraduationCap, label: "Área do Concurseiro" },
-      { to: "/library", icon: BookOpen, label: "Biblioteca Digital" },
-      { to: "/flashcards", icon: Brain, label: "Flashcards" },
-      { to: "/review-area", icon: Library, label: "Área de Revisão" },
-      { to: "/anatomy", icon: Activity, label: "Anatomia e Fisiologia" },
-      { to: "/procedures", icon: ClipboardList, label: "Procedimentos" },
-      { to: "/medications", icon: Syringe, label: "Medicamentos" },
-      { to: "/emergency", icon: Siren, label: "Emergências" },
-      { to: "/wound-care", icon: Bandage, label: "Curativos e Tratamento de Feridas" },
-      { to: "/semiology", icon: FileSearch, label: "Semiologia" },
-      { to: "/semiotechnique", icon: HandHeart, label: "Semiotécnica" },
-      { to: "/ecg", icon: BookHeart, label: "Guia de ECG" },
-      { to: "/nursing-notes", icon: BookText, label: "Anotações e Evolução" },
-      { to: "/technical-terms", icon: BookA, label: "Termos Técnicos" },
-    ],
-    admin: [
-      { to: "/admin", icon: Shield, label: "Painel Admin" },
-      { to: "/admin/theme", icon: Palette, label: "Aparência" },
-    ]
+type NavGroup = {
+  title: string;
+  icon: any;
+  items: NavItem[];
+  collapsed?: boolean;
+};
+
+const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProps) => {
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  // Estado para controlar quais grupos estão abertos
+  const [openGroups, setOpenGroups] = useState<string[]>([]);
+
+  const toggleGroup = (groupTitle: string) => {
+    setOpenGroups((prev) =>
+      prev.includes(groupTitle)
+        ? prev.filter((t) => t !== groupTitle)
+        : [...prev, groupTitle]
+    );
   };
+
+  const dashboardItem: NavItem = {
+    title: "Dashboard",
+    icon: LayoutDashboard,
+    href: "/",
+    variant: "default",
+  };
+
+  const adminItem: NavItem = {
+    title: "Administração",
+    icon: ShieldCheck,
+    href: "/admin",
+    variant: "ghost",
+    highlight: true
+  };
+
+  // Mapeamento completo de todos os links existentes nas novas categorias
+  const navGroups: NavGroup[] = [
+    {
+      title: "Estudos",
+      icon: GraduationCap,
+      items: [
+        { title: "Banca de Questões", icon: FileQuestion, href: "/questions", variant: "ghost" },
+        { title: "Área de Simulado", icon: Timer, href: "/simulado", variant: "ghost" },
+        { title: "Casos Clínicos", icon: Stethoscope, href: "/clinical-cases", variant: "ghost" },
+        { title: "Trilha de Estudos", icon: Map, href: "/study-tracks", variant: "ghost" },
+        { title: "Vídeo Aulas", icon: MonitorPlay, href: "/video-library", variant: "ghost" },
+        { title: "Área do Concurseiro", icon: GraduationCap, href: "/concurseiro", variant: "ghost" },
+        { title: "Biblioteca Digital", icon: BookOpen, href: "/library", variant: "ghost" },
+        { title: "Flashcards", icon: BrainCircuit, href: "/flashcards", variant: "ghost" },
+        { title: "Área de Revisão", icon: Library, href: "/review-area", variant: "ghost" },
+        { title: "Anatomia", icon: Activity, href: "/anatomy", variant: "ghost" },
+        { title: "Meu Desempenho", icon: LineChart, href: "/tools/performance", variant: "ghost" },
+      ]
+    },
+    {
+      title: "Prática Clínica",
+      icon: Stethoscope,
+      items: [
+        { title: "Medicamentos", icon: Syringe, href: "/medications", variant: "ghost" }, // Trocado Pill por Syringe para manter consistência
+        { title: "Emergências", icon: Siren, href: "/emergency", variant: "ghost" },
+        { title: "Curativos", icon: Bandage, href: "/wound-care", variant: "ghost" },
+        { title: "Procedimentos", icon: ClipboardList, href: "/procedures", variant: "ghost" },
+        { title: "Semiologia", icon: FileSearch, href: "/semiology", variant: "ghost" },
+        { title: "Semiotécnica", icon: HandHeart, href: "/semiotechnique", variant: "ghost" },
+        { title: "Guia de ECG", icon: BookHeart, href: "/ecg", variant: "ghost" },
+        { title: "Anotações e Evolução", icon: BookText, href: "/nursing-notes", variant: "ghost" },
+        { title: "Termos Técnicos", icon: BookA, href: "/technical-terms", variant: "ghost" },
+      ]
+    },
+    {
+      title: "Ferramentas",
+      icon: Calculator,
+      items: [
+        { title: "Gotejamento", icon: Calculator, href: "/calculator", variant: "ghost" },
+        { title: "Calc. de Doses", icon: FlaskConical, href: "/tools/dose-calculator", variant: "ghost" },
+        { title: "DUM e IMC", icon: CalculatorIcon, href: "/tools/integrated-calculators", variant: "ghost" },
+        { title: "Escalas Clínicas", icon: ListChecks, href: "/scales", variant: "ghost" },
+        { title: "Valores Lab.", icon: FileText, href: "/tools/lab-values", variant: "ghost" },
+        { title: "Bloco de Notas", icon: NotebookText, href: "/tools/bloco-de-notas", variant: "ghost" },
+      ]
+    },
+    {
+      title: "Comunidade",
+      icon: Users,
+      items: [
+        { title: "Concursos", icon: Briefcase, href: "/concursos", variant: "ghost" },
+        { title: "Ranking", icon: Trophy, href: "/ranking", variant: "ghost" },
+        { title: "Favoritos", icon: Star, href: "/favorites", variant: "ghost" },
+        { title: "Meu Perfil", icon: User, href: "/profile", variant: "ghost" },
+      ]
+    }
+  ];
+
+  // Abre o grupo automaticamente se estivermos em uma rota filha
+  useEffect(() => {
+    navGroups.forEach(group => {
+      if (group.items.some(item => pathname === item.href)) {
+        setOpenGroups(prev => prev.includes(group.title) ? prev : [...prev, group.title]);
+      }
+    });
+  }, [pathname]);
 
   const isLinkLocked = (path: string) => {
-    // 1. Admin tem acesso total
     if (isAdmin) return false;
-
     const plan = userPlan ? userPlan.toLowerCase() : 'free';
-
-    // 2. Se o plano NÃO for 'free' (ou seja, é pago: Essencial, Pro, Premium, etc.), tem acesso TOTAL.
-    if (plan !== 'free') {
-      return false;
-    }
-
-    // 3. Regras para Plano FREE (Restrito)
-    // Rotas permitidas: Dashboard e Perfil
+    if (plan !== 'free') return false;
     const allowedPathsForFree = ['/', '/profile'];
-    
-    // Se o path estiver na lista de permitidos, não bloqueia
-    if (allowedPathsForFree.includes(path)) {
-      return false;
-    }
-
-    // Bloqueia todo o resto para usuários Free
-    return true; 
+    return !allowedPathsForFree.includes(path);
   };
 
-  const renderNavLink = (item: { to: string; end?: boolean; icon: React.ElementType; label: string }) => {
-    const Icon = item.icon;
-    const locked = isLinkLocked(item.to);
-
-    const content = (
-      <div className={cn("flex items-center justify-between w-full", locked && "opacity-60")}>
-        <div className="flex items-center gap-3 overflow-hidden">
-          <Icon className="h-4 w-4 flex-shrink-0" />
-          <span className={cn(isCollapsed && "hidden", "truncate")}>{item.label}</span>
-        </div>
-        {locked && !isCollapsed && <Lock className="h-3 w-3 ml-2 flex-shrink-0" />}
-      </div>
+  // Renderiza um item simples (Link direto)
+  const renderNavItem = (item: NavItem, isChild = false) => {
+    const isActive = pathname === item.href;
+    const locked = isLinkLocked(item.href);
+    
+    // Conteúdo do Link
+    const LinkContent = (
+      <>
+        <item.icon className={cn("mr-2 h-4 w-4", isChild && "h-3.5 w-3.5 opacity-70", isCollapsed && "mr-0")} />
+        <span className={cn("truncate", isCollapsed && "hidden")}>{item.title}</span>
+        {locked && !isCollapsed && <Lock className="h-3 w-3 ml-auto opacity-50" />}
+      </>
     );
 
+    // Se estiver bloqueado (apenas visual, sem link funcional)
     if (locked) {
       return (
-        <TooltipProvider key={item.to} delayDuration={0}>
+        <TooltipProvider key={item.href} delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className={cn(navLinkClass({ isActive: false }), "cursor-not-allowed relative group")}>
-                {content}
-                {/* Ícone de cadeado centralizado quando colapsado */}
-                {isCollapsed && locked && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-sidebar/50 rounded-md">
-                    <Lock className="h-3 w-3 text-white" />
-                  </div>
+              <div
+                className={cn(
+                  "flex items-center rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/50 cursor-not-allowed hover:bg-sidebar-hover/50",
+                  isCollapsed && "justify-center px-0 h-10 w-10"
                 )}
+              >
+                <item.icon className={cn("h-4 w-4", isCollapsed ? "" : "mr-2")} />
+                <span className={cn(isCollapsed && "hidden")}>{item.title}</span>
+                {!isCollapsed && <Lock className="h-3 w-3 ml-auto" />}
               </div>
             </TooltipTrigger>
-            <TooltipContent side="right" className="bg-primary text-primary-foreground border-primary">
-              <p className="font-semibold">Funcionalidade exclusiva para assinantes</p>
+            <TooltipContent side="right">Exclusivo para assinantes</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
+
+    // Link Funcional
+    const linkElement = (
+      <NavLink
+        to={item.href}
+        className={cn(
+          "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-sidebar-hover hover:text-white",
+          isActive ? "bg-sidebar-active text-sidebar-active-foreground shadow-sm" : "text-sidebar-foreground",
+          isChild && "ml-4 text-xs pl-4 border-l border-sidebar-border/50 hover:border-sidebar-foreground/30",
+          item.highlight && "text-amber-500 hover:text-amber-400 font-bold bg-amber-500/10",
+          isCollapsed && "justify-center px-0 h-10 w-10 ml-0 border-0"
+        )}
+      >
+        {LinkContent}
+      </NavLink>
+    );
+
+    // Wrapper para Tooltip (se colapsado) e SheetClose (se mobile)
+    if (isCollapsed && !isMobile) {
+      return (
+        <TooltipProvider key={item.href} delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {linkElement}
+            </TooltipTrigger>
+            <TooltipContent side="right" className="bg-popover text-popover-foreground">
+              {item.title}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       );
     }
 
-    const link = (
-      <NavLink to={item.to} end={item.end} className={navLinkClass}>
-        {content}
-      </NavLink>
-    );
+    if (isMobile) {
+      return <SheetClose key={item.href} asChild>{linkElement}</SheetClose>;
+    }
 
-    return isMobile ? <SheetClose asChild key={item.to}>{link}</SheetClose> : <div key={item.to}>{link}</div>;
+    return linkElement;
+  };
+
+  // Renderiza um grupo (Collapsible ou Dropdown)
+  const renderNavGroup = (group: NavGroup) => {
+    const isActiveGroup = group.items.some(item => pathname === item.href);
+    const isOpen = openGroups.includes(group.title);
+
+    // Modo Colapsado (Ícone que abre Dropdown)
+    if (isCollapsed && !isMobile) {
+      return (
+        <DropdownMenu key={group.title}>
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "flex h-10 w-10 p-0 items-center justify-center rounded-md transition-colors hover:bg-sidebar-hover hover:text-white data-[state=open]:bg-sidebar-hover data-[state=open]:text-white",
+                      isActiveGroup ? "bg-sidebar-active/20 text-sidebar-active-foreground" : "text-sidebar-foreground"
+                    )}
+                  >
+                    <group.icon className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="bg-popover text-popover-foreground">
+                {group.title}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          
+          <DropdownMenuContent side="right" align="start" className="w-56 bg-card border-border shadow-xl ml-2">
+            <DropdownMenuLabel className="text-muted-foreground text-xs uppercase tracking-wider">{group.title}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {group.items.map(item => {
+               const locked = isLinkLocked(item.href);
+               if (locked) {
+                 return (
+                    <DropdownMenuItem key={item.href} disabled className="opacity-50 cursor-not-allowed">
+                      <item.icon className="h-4 w-4 mr-2" /> {item.title} <Lock className="h-3 w-3 ml-auto" />
+                    </DropdownMenuItem>
+                 );
+               }
+               return (
+                  <DropdownMenuItem key={item.href} asChild>
+                    <Link to={item.href} className={cn("cursor-pointer flex items-center gap-2", pathname === item.href && "text-primary font-bold bg-primary/10")}>
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </DropdownMenuItem>
+               );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+
+    // Modo Expandido (Accordion)
+    return (
+      <Collapsible
+        key={group.title}
+        open={isOpen}
+        onOpenChange={() => toggleGroup(group.title)}
+        className="space-y-1"
+      >
+        <CollapsibleTrigger asChild>
+          <Button
+            variant="ghost"
+            className={cn(
+              "w-full justify-between px-3 py-2 h-auto hover:bg-sidebar-hover hover:text-white group",
+              isActiveGroup ? "text-sidebar-active-foreground font-semibold" : "text-sidebar-foreground"
+            )}
+          >
+            <div className="flex items-center">
+              <group.icon className="mr-2 h-4 w-4 opacity-80 group-hover:opacity-100" />
+              <span className="text-sm">{group.title}</span>
+            </div>
+            {isOpen ? <ChevronDown className="h-3 w-3 opacity-50" /> : <ChevronRight className="h-3 w-3 opacity-50" />}
+          </Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="space-y-1 pt-1 animate-accordion-down overflow-hidden">
+          {group.items.map(item => renderNavItem(item, true))}
+        </CollapsibleContent>
+      </Collapsible>
+    );
   };
 
   return (
-    <nav className="flex flex-col gap-1">
-      {navItems.main.map(renderNavLink)}
+    <nav className={cn("flex flex-col gap-2", isCollapsed ? "items-center px-2" : "px-2")}>
+      
+      {/* Item Principal */}
+      <div className="mb-2">
+        {renderNavItem(dashboardItem)}
+      </div>
 
-      <Collapsible defaultOpen>
-        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
-          <span className={cn(isCollapsed && "hidden")}>Consulta e Estudo</span>
-          {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
-        </CollapsibleTrigger>
-        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && !isMobile && "pl-4")}>
-          {navItems.study.map(renderNavLink)}
-        </CollapsibleContent>
-      </Collapsible>
+      {/* Divisor Visual */}
+      {!isCollapsed && <div className="mx-3 my-2 border-t border-sidebar-border/50" />}
 
-      <Collapsible defaultOpen>
-        <CollapsibleTrigger className={cn(sectionHeaderClass, "hover:bg-sidebar-hover", isCollapsed && "justify-center")} disabled={isCollapsed}>
-          <span className={cn(isCollapsed && "hidden")}>Ferramentas</span>
-          {!isCollapsed && <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground/50" />}
-        </CollapsibleTrigger>
-        <CollapsibleContent className={cn("space-y-1 pt-1", !isCollapsed && !isMobile && "pl-4")}>
-          {navItems.tools.map(renderNavLink)}
-        </CollapsibleContent>
-      </Collapsible>
+      {/* Grupos de Navegação */}
+      <div className={cn("space-y-1", isCollapsed && "space-y-3 flex flex-col items-center")}>
+        {navGroups.map(renderNavGroup)}
+      </div>
 
+      {/* Admin (Condicional) */}
       {isAdmin && (
         <>
-          <div className="my-4 border-t border-border/10"></div>
-          {navItems.admin.map(renderNavLink)}
+          {!isCollapsed && <div className="mx-3 my-2 border-t border-sidebar-border/50" />}
+          <div className="mt-auto pt-2">
+            {renderNavItem(adminItem)}
+            {/* Opção extra de tema se não estiver colapsado, ou tratado no Sidebar principal */}
+            {!isCollapsed && (
+                <NavLink to="/admin/theme" className="group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-sidebar-hover hover:text-white text-sidebar-foreground ml-4 text-xs pl-4 border-l border-sidebar-border/50">
+                    <Palette className="mr-2 h-3.5 w-3.5 opacity-70" />
+                    <span>Aparência</span>
+                </NavLink>
+            )}
+          </div>
         </>
       )}
     </nav>
