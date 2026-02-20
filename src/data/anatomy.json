@@ -4,173 +4,181 @@
     "name": "Sistema Cardiovascular",
     "icon": "HeartPulse",
     "theme": "rose",
-    "description": "A bomba vital. Transporte de oxigênio, nutrientes, hormônios e remoção de excretas.",
+    "description": "A bomba vital. Transporte de oxigênio, nutrientes, hormônios e remoção de excretas, garantindo a perfusão tecidual.",
     "anatomy": [
-      { "part": "Coração (A Bomba)", "detail": "Músculo oco, 4 câmaras. Átrio D/E (recebem), Ventrículo D/E (ejetam). O VE tem a parede mais espessa (alta pressão)." },
-      { "part": "Valvas (As Portas)", "detail": "Atrioventriculares (Tricúspide/Mitral) impedem retorno aos átrios. Semilunares (Pulmonar/Aórtica) impedem retorno aos ventrículos." },
-      { "part": "Vasos Coronários", "detail": "As artérias que nutrem o próprio coração. Ocorrem o enchimento na Diástole. Obstrução = Infarto." },
-      { "part": "Sistema de Condução", "detail": "Nó Sinusal (Marcapasso) -> Nó AV (Delay) -> Feixe de His -> Fibras de Purkinje." }
+      { "part": "Coração (A Bomba)", "detail": "Órgão muscular oco localizado no mediastino médio. Possui 4 câmaras: Átrio Direito (recebe sangue venoso sistêmico), Ventrículo Direito (ejeta para pulmões), Átrio Esquerdo (recebe sangue oxigenado pulmonar) e Ventrículo Esquerdo (ejeta para sistema, parede mais espessa)." },
+      { "part": "Valvas Cardíacas", "detail": "Valvas Atrioventriculares (Tricúspide à direita, Mitral à esquerda) impedem o refluxo para os átrios na sístole. Valvas Semilunares (Pulmonar e Aórtica) impedem o refluxo para os ventrículos na diástole." },
+      { "part": "Circulação Coronariana", "detail": "Artérias Coronárias Direita e Esquerda (ramo circunflexo e descendente anterior). Irrigam o miocárdio. O enchimento coronariano ocorre predominantemente na Diástole." },
+      { "part": "Sistema de Condução Elétrica", "detail": "Nó Sinusal (marcapasso natural, 60-100 bpm) -> Vias Internodais -> Nó Atrioventricular (atraso fisiológico) -> Feixe de His -> Ramos D/E -> Fibras de Purkinje (contração ventricular)." },
+      { "part": "Vasos Sanguíneos", "detail": "Artérias (parede muscular, alta pressão, levam sangue do coração), Veias (valvulas, baixa pressão, retorno ao coração) e Capilares (troca gasosa/nutrientes)." }
     ],
     "physiology": [
-      { "title": "Débito Cardíaco (DC)", "content": "DC = Volume Sistólico x Frequência Cardíaca. É o volume de sangue ejetado por minuto (4-6L/min). Se a FC sobe demais, o tempo de enchimento cai, baixando o DC." },
-      { "title": "Pré-carga vs. Pós-carga", "content": "<strong>Pré-carga:</strong> Volume que estira o ventrículo antes de contrair (Retorno Venoso).<br><strong>Pós-carga:</strong> Resistência que o coração vence para ejetar (RVS/Pressão Arterial)." },
-      { "title": "Ciclo Cardíaco", "content": "<strong>Sístole:</strong> Contração/Ejeção (Valvas AV fecham = 'TUM' B1).<br><strong>Diástole:</strong> Relaxamento/Enchimento (Valvas Semilunares fecham = 'TÁ' B2)." }
+      { "title": "Débito Cardíaco (DC)", "content": "DC = Volume Sistólico (VS) x Frequência Cardíaca (FC). É o volume ejetado por minuto (normal: 4-6 L/min). Fatores que afetam o VS: Pré-carga, Pós-carga e Contratilidade." },
+      { "title": "Pré-carga e Pós-carga", "content": "<strong>Pré-carga:</strong> Estiramento da fibra muscular no final da diástole (relacionado ao retorno venoso/volemia). Lei de Frank-Starling.<br><strong>Pós-carga:</strong> Resistência que o ventrículo deve vencer para ejetar o sangue (Resistência Vascular Sistêmica)." },
+      { "title": "Ciclo Cardíaco e Bulhas", "content": "<strong>Sístole:</strong> Contração ventricular. Fechamento das valvas AV gera a 1ª bulha (B1 - 'TUM').<br><strong>Diástole:</strong> Relaxamento ventricular. Fechamento das valvas semilunares gera a 2ª bulha (B2 - 'TÁ')." },
+      { "title": "Regulação da Pressão Arterial", "content": "Mecanismos de curto prazo (Barorreceptores, SNS) e longo prazo (Sistema Renina-Angiotensina-Aldosterona, ADH, Peptídeo Natriurético Atrial)." }
     ],
     "pathology": [
-      { "condition": "Insuficiência Cardíaca", "mechanism": "Bomba falha. IC Esquerda = Congestão Pulmonar (Dispneia). IC Direita = Congestão Sistêmica (Edema/Jugular)." },
-      { "condition": "Infarto (IAM)", "mechanism": "Isquemia (falta de O2) leva à necrose do miocárdio. Tempo é músculo." },
-      { "condition": "Choque Cardiogênico", "mechanism": "Falência da bomba -> Baixa perfusão tecidual severa." }
+      { "condition": "Insuficiência Cardíaca (IC)", "mechanism": "Incapacidade do coração de bombear sangue adequadamente. IC Esquerda: Congestão pulmonar, dispneia, ortopneia. IC Direita: Edema periférico, ascite, turgência jugular." },
+      { "condition": "Infarto Agudo do Miocárdio (IAM)", "mechanism": "Necrose isquêmica do miocárdio por obstrução coronariana (trombo/placa). Supra de ST indica oclusão total. Tempo é músculo." },
+      { "condition": "Hipertensão Arterial (HAS)", "mechanism": "Aumento sustentado da pós-carga. Causa hipertrofia ventricular esquerda, lesão endotelial, risco de AVC e doença renal." },
+      { "condition": "Choque Cardiogênico", "mechanism": "Falência grave da bomba resultando em hipoperfusão tecidual severa, hipotensão e congestão pulmonar aguda." }
     ],
     "clinical_pearls": [
-      "A ausculta de B3 (terceira bulha) em adultos geralmente indica Insuficiência Cardíaca (sobrecarga de volume).",
-      "A dor do infarto em mulheres, idosos e diabéticos pode ser atípica (náusea, dor nas costas, dispneia sem dor).",
-      "Drogas Vasoativas: Noradrenalina aumenta Pós-carga (vasoconstrição). Dobutamina aumenta Contratilidade."
+      "A presença de B3 (terceira bulha) em adultos é um sinal clássico de falência ventricular e sobrecarga de volume (Galope Ventricular).",
+      "No IAM de parede inferior (DII, DIII, aVF), evite nitratos e morfina se houver hipotensão, pois o VD pode estar infartado (dependente de pré-carga).",
+      "O BNP (Peptídeo Natriurético Cerebral) é um marcador sensível para diferenciar dispneia cardíaca (IC) de dispneia pulmonar."
     ],
-    "red_flags": ["Dor torácica tipo aperto", "Dispneia súbita", "Síncope (desmaio)", "Turgência Jugular a 45º"]
+    "red_flags": ["Dor torácica tipo aperto > 20min", "Dispneia súbita ou em repouso", "Síncope (desmaio) sem pródromo", "Turgência Jugular Patológica a 45º", "Déficit de pulso (Central > Periférico)"]
   },
   {
     "id": "respiratory",
     "name": "Sistema Respiratório",
     "icon": "Wind",
     "theme": "sky",
-    "description": "Trocas gasosas (Hematose) e regulação do pH sanguíneo.",
+    "description": "Responsável pelas trocas gasosas (Hematose), regulação do pH sanguíneo e proteção contra patógenos inalados.",
     "anatomy": [
-      { "part": "Vias Aéreas Superiores", "detail": "Nariz, Faringe, Laringe. Aquecem, umidificam e filtram o ar. A epiglote protege a via aérea na deglutição." },
-      { "part": "Árvore Brônquica", "detail": "Traqueia -> Brônquios -> Bronquíolos. Possuem músculo liso (alvo dos broncodilatadores)." },
-      { "part": "Alvéolos", "detail": "Unidade funcional. Sacos de ar onde ocorre a hematose. Revestidos por surfactante (evita colapso)." },
-      { "part": "Pleura", "detail": "Membrana dupla (Parietal/Visceral) com líquido entre elas. Mantém pressão negativa para expansão." }
+      { "part": "Vias Aéreas Superiores", "detail": "Cavidade Nasal (filtra, aquece, umidifica), Faringe (passagem comum ar/alimento) e Laringe (cordas vocais, epiglote protege via aérea)." },
+      { "part": "Vias Aéreas Inferiores", "detail": "Traqueia (anéis cartilaginosos), Brônquios Principais (D/E), Bronquíolos (musculatura lisa, sem cartilagem) e Alvéolos." },
+      { "part": "Unidade Alveolar", "detail": "Local da hematose. ~300 milhões de alvéolos. Células Tipo I (estrutura) e Tipo II (produção de Surfactante, que reduz tensão superficial)." },
+      { "part": "Caixa Torácica e Músculos", "detail": "Costelas, Esterno, Pleura (Parietal/Visceral com líquido pleural). Músculos: Diafragma (principal), Intercostais. Acessórios: Esternocleidomastoideo, Escalenos." }
     ],
     "physiology": [
-      { "title": "Ventilação Mecânica", "content": "O ar entra por pressão negativa. O diafragma contrai e desce (Inspiração). O relaxamento é passivo (Expiração)." },
-      { "title": "Hematose (Difusão)", "content": "Troca de gases por diferença de pressão. O2 sai do alvéolo p/ sangue. CO2 sai do sangue p/ alvéolo." },
-      { "title": "Controle do pH", "content": "O pulmão regula o CO2 (ácido volátil). Hipoventilação retém CO2 = Acidose Respiratória. Hiperventilação 'lava' CO2 = Alcalose Respiratória." }
+      { "title": "Mecânica Ventilatória", "content": "A entrada de ar é passiva devido à pressão negativa intratorácica gerada pela contração (descida) do diafragma. A expiração normal é passiva (retração elástica)." },
+      { "title": "Hematose (Difusão)", "content": "Troca de gases na membrana alvéolo-capilar por diferença de pressão parcial. O2 difunde para o capilar, CO2 difunde para o alvéolo." },
+      { "title": "Transporte de Gases", "content": "O2: 98% ligado à Hemoglobina (Oxihemoglobina), 2% dissolvido. CO2: 70% como Bicarbonato (HCO3-), 23% ligado à Hb, 7% dissolvido." },
+      { "title": "Controle Respiratório", "content": "Centro respiratório no Bulbo. Quimiorreceptores centrais (sensíveis ao CO2/pH do líquor) e periféricos (sensíveis ao O2 e pH no sangue)." }
     ],
     "pathology": [
-      { "condition": "DPOC", "mechanism": "Obstrução crônica. Enfisema (destruição alveolar) + Bronquite (inflamação/muco). Retentor de CO2." },
-      { "condition": "Pneumotórax", "mechanism": "Ar no espaço pleural quebra a pressão negativa -> Pulmão colapsa." },
-      { "condition": "Edema Agudo de Pulmão", "mechanism": "Líquido nos alvéolos impede a hematose. Sensação de afogamento." }
+      { "condition": "DPOC (Enfisema/Bronquite)", "mechanism": "Obstrução fixa ao fluxo aéreo. Enfisema: destruição septos alveolares (perda de elasticidade). Bronquite: inflamação/hipersecreção. Retenção de CO2." },
+      { "condition": "Pneumonia", "mechanism": "Processo inflamatório/infeccioso alveolar. Preenchimento alveolar por exsudato/pus, prejudicando a troca gasosa (efeito shunt)." },
+      { "condition": "Asma", "mechanism": "Inflamação crônica e hiper-reatividade brônquica. Broncoespasmo, edema de mucosa e muco espesso. Reversível." },
+      { "condition": "Pneumotórax", "mechanism": "Entrada de ar no espaço pleural, desfazendo a pressão negativa e colapsando o pulmão. Hipertensivo = Desvio de mediastino (choque)." }
     ],
     "clinical_pearls": [
-      "Nunca dê O2 em alto fluxo para DPOC retentor crônico sem monitorar, pois pode inibir o drive respiratório hipóxico.",
-      "Murmúrio Vesicular abolido + Hipertimpanismo à percussão = Pneumotórax.",
-      "Estridor é obstrução alta (laringe/traqueia). Sibilo é obstrução baixa (broncoespasmo)."
+      "Pacientes com DPOC retentores crônicos de CO2 dependem do drive hipóxico (baixo O2) para respirar. O2 em excesso pode causar narcose por CO2 e parada respiratória.",
+      "A oximetria de pulso pode ser falseada por esmalte escuro, extremidades frias, luz ambiente forte ou intoxicação por monóxido de carbono (CO).",
+      "O uso da musculatura acessória (tiragem) indica trabalho respiratório aumentado e fadiga iminente."
     ],
-    "red_flags": ["Uso de musculatura acessória", "Cianose central", "Rebaixamento do nível de consciência (Hipercapnia)", "Saturação < 90%"]
+    "red_flags": ["Respiração paradoxal (tórax/abdome)", "Cianose central", "Rebaixamento do nível de consciência (Hipercapnia)", "Saturação < 90% refratária a O2", "Estridor (obstrução alta)"]
   },
   {
     "id": "nervous",
     "name": "Sistema Nervoso",
     "icon": "Brain",
     "theme": "violet",
-    "description": "Comando, controle, interpretação e homeostase corporal.",
+    "description": "Rede complexa de comando, controle, interpretação sensorial e homeostase corporal.",
     "anatomy": [
-      { "part": "SNC (Central)", "detail": "Encéfalo (Cérebro, Cerebelo, Tronco) e Medula Espinhal. Protegidos por ossos e meninges." },
-      { "part": "SNP (Periférico)", "detail": "Nervos Cranianos (12 pares) e Espinhais (31 pares). Levam e trazem informações." },
-      { "part": "Neurônio", "detail": "Célula excitável. Dendrito (recebe) -> Corpo -> Axônio (transmite). Bainha de mielina acelera o impulso." },
-      { "part": "Tronco Encefálico", "detail": "Mesencéfalo, Ponte e Bulbo. Controla funções vitais (respiração, batimento cardíaco, vigília)." }
+      { "part": "Sistema Nervoso Central (SNC)", "detail": "Encéfalo (Cérebro, Cerebelo, Tronco Encefálico) e Medula Espinhal. Protegidos por estruturas ósseas (crânio/vértebras) e meninges (Dura-máter, Aracnoide, Pia-máter)." },
+      { "part": "Cérebro (Telencéfalo)", "detail": "Dois hemisférios, corpo caloso. Lobos: Frontal (motor/julgamento), Parietal (sensitivo), Temporal (audição/memória), Occipital (visão)." },
+      { "part": "Tronco Encefálico", "detail": "Mesencéfalo, Ponte e Bulbo. Centros vitais (respiração, controle vasomotor, ciclo vigília-sono). Origem da maioria dos nervos cranianos." },
+      { "part": "Sistema Nervoso Periférico (SNP)", "detail": "Nervos Cranianos (12 pares), Nervos Espinhais (31 pares) e Gânglios. Divisão Somática (voluntária) e Autônoma (involuntária)." }
     ],
     "physiology": [
-      { "title": "Sinapse", "content": "Comunicação entre neurônios via neurotransmissores (Dopamina, Serotonina, Acetilcolina, GABA)." },
-      { "title": "Simpático vs. Parassimpático", "content": "<strong>Simpático (Luta/Fuga):</strong> Adrenalina. Pupila dilata, FC sobe, digestão para.<br><strong>Parassimpático (Repouso):</strong> Acetilcolina. Pupila contrai, FC desce, digestão ativa." },
-      { "title": "Pressão Intracraniana (PIC)", "content": "Volume fixo (Cérebro + Sangue + Líquor). Se um aumenta (ex: edema), a pressão sobe e comprime o cérebro (Doutrina Monro-Kellie)." }
+      { "title": "Potencial de Ação e Sinapse", "content": "Impulso elétrico percorre o axônio (despolarização Na+/K+). Na fenda sináptica, a transmissão é química via neurotransmissores (ex: Acetilcolina, Dopamina, GABA)." },
+      { "title": "Sistema Nervoso Autônomo (SNA)", "content": "<strong>Simpático (Toracolombar):</strong> 'Luta ou Fuga'. Adrenalina/Noradrenalina. Taquicardia, broncodilatação, midríase, inibe digestão.<br><strong>Parassimpático (Craniossacral):</strong> 'Repouso e Digestão'. Acetilcolina. Bradicardia, miose, estimula peristalse." },
+      { "title": "Líquor (LCR)", "content": "Produzido nos plexos coroides, circula no espaço subaracnoideo. Proteção mecânica (amortecedor) e homeostase química." }
     ],
     "pathology": [
-      { "condition": "AVC (Acidente Vascular Cerebral)", "mechanism": "Isquêmico (falta sangue) ou Hemorrágico (sangramento). Morte neuronal rápida." },
-      { "condition": "Hipertensão Intracraniana", "mechanism": "Tríade de Cushing: Hipertensão + Bradicardia + Respiração Irregular (Sinal de herniação iminente)." },
-      { "condition": "Convulsão", "mechanism": "Descarga elétrica desordenada e síncrona dos neurônios." }
+      { "condition": "Acidente Vascular Cerebral (AVC)", "mechanism": "Isquêmico (85%): obstrução arterial -> hipóxia neuronal. Hemorrágico (15%): ruptura vaso -> efeito de massa/toxicidade." },
+      { "condition": "Hipertensão Intracraniana (HIC)", "mechanism": "Aumento da PIC (>20 mmHg). Tríade de Cushing: Hipertensão arterial + Bradicardia + Respiração irregular. Risco de herniação." },
+      { "condition": "Meningite", "mechanism": "Inflamação das meninges (viral/bacteriana). Sinais meníngeos: Rigidez de nuca, Kerning e Brudzinski positivos." },
+      { "condition": "Epilepsia", "mechanism": "Descarga elétrica neuronal hipersincrônica e excessiva. Crises focais ou generalizadas." }
     ],
     "clinical_pearls": [
-      "Pupilas anisocóricas (tamanhos diferentes) em paciente com trauma ou AVC sugerem herniação cerebral grave.",
-      "Escala de Glasgow: O melhor indicador de evolução neurológica. Queda de 2 pontos é sinal de alerta.",
-      "Decorticado (flexão anormal) vs Descerebrado (extensão anormal): Descerebrado indica lesão mais baixa e grave (tronco)."
+      "Na avaliação pupilar: Midríase unilateral fixa (anisocoria) em paciente com trauma ou AVC sugere herniação do uncus temporal comprimindo o nervo oculomotor (III par). Emergência!",
+      "Escala de Glasgow: Avalia Abertura Ocular (4), Resposta Verbal (5) e Resposta Motora (6). Pupilas (reatividade) subtraem da nota na versão atualizada (ECG-P).",
+      "Decorticação (flexão anormal de membros superiores) indica lesão acima do tronco. Descerebração (extensão anormal) indica lesão de tronco e pior prognóstico."
     ],
-    "red_flags": ["Cefaleia súbita explosiva ('pior da vida')", "Déficit motor unilateral novo", "Anisocoria", "Rigidez de nuca (meningite/HSA)"]
+    "red_flags": ["Cefaleia em 'trovoada' súbita", "Déficit motor/sensitivo focal agudo", "Rebaixamento súbito do nível de consciência", "Anisocoria", "Rigidez de nuca com febre"]
   },
   {
     "id": "renal",
     "name": "Sistema Renal",
     "icon": "Droplet",
     "theme": "amber",
-    "description": "Filtração, regulação hidroeletrolítica, equilíbrio ácido-básico e hormonal.",
+    "description": "Filtração do sangue, regulação hidroeletrolítica, equilíbrio ácido-básico e funções endócrinas.",
     "anatomy": [
-      { "part": "Rins", "detail": "Retroperitoneais. Córtex (externo) e Medula (interna). Recebem 20% do débito cardíaco." },
-      { "part": "Néfron", "detail": "Unidade funcional (Glomérulo + Túbulos). Onde o sangue vira urina." },
-      { "part": "Ureteres", "detail": "Transportam urina do rim à bexiga por peristaltismo. Ponto comum de obstrução por cálculos." },
-      { "part": "Bexiga e Uretra", "detail": "Reservatório muscular (M. Detrusor). Uretra feminina é curta (risco ITU); masculina é longa." }
+      { "part": "Rins", "detail": "Órgãos retroperitoneais. Córtex (externo, glomérulos) e Medula (interna, pirâmides). Recebem 20-25% do débito cardíaco pelas artérias renais." },
+      { "part": "Néfron", "detail": "Unidade funcional (~1 milhão/rim). Corpúsculo renal (Glomérulo + Cápsula Bowman) e Túbulos (Contorcido Proximal, Alça de Henle, Distal, Coletor)." },
+      { "part": "Vias Urinárias", "detail": "Ureteres (peristaltismo leva urina à bexiga), Bexiga (músculo detrusor, reservatório), Uretra (esfíncteres interno/externo). Uretra feminina curta (4cm), masculina longa (20cm)." }
     ],
     "physiology": [
-      { "title": "Filtração Glomerular", "content": "A pressão do sangue força o plasma através do glomérulo. Proteínas e células sanguíneas NÃO passam em condições normais." },
-      { "title": "Função Endócrina", "content": "Produz <strong>Eritropoietina</strong> (estimula medula a criar hemácias) e Renina (regula PA). Ativa a Vitamina D." },
-      { "title": "Sistema RAA", "content": "Renina-Angiotensina-Aldosterona. Se PA cai, o rim libera Renina -> Vasoconstrição + Retenção de Sódio/Água = PA sobe." }
+      { "title": "Formação da Urina", "content": "1. <strong>Filtração Glomerular:</strong> Passagem de plasma (sem proteínas/células) por pressão. TFG normal ~120ml/min.<br>2. <strong>Reabsorção Tubular:</strong> Recuperação de água, glicose, eletrólitos (99% do filtrado volta).<br>3. <strong>Secreção Tubular:</strong> Eliminação ativa de íons (K+, H+) e drogas." },
+      { "title": "Funções Endócrinas", "content": "<strong>Eritropoietina (EPO):</strong> Estimula medula óssea a produzir hemácias (resposta à hipóxia renal).<br><strong>Renina:</strong> Regulação da PA.<br><strong>Vitamina D (Calcitriol):</strong> Ativação final para absorção de cálcio." },
+      { "title": "Equilíbrio Ácido-Básico", "content": "Regulação lenta e potente do pH sanguíneo através da reabsorção de Bicarbonato (HCO3-) e excreção de íons H+." }
     ],
     "pathology": [
-      { "condition": "Insuficiência Renal Aguda", "mechanism": "Perda súbita da função. Pré-renal (desidratação), Renal (tóxica/infecciosa), Pós-renal (obstrução)." },
-      { "condition": "Litíase Renal", "mechanism": "Cálculos (pedras) formados por precipitação de sais (Cálcio, Ácido Úrico)." },
-      { "condition": "Infecção Urinária (ITU)", "mechanism": "Bactérias (E. coli) ascendem pela uretra. Cistite (bexiga) vs Pielonefrite (rim - grave)." }
+      { "condition": "Insuficiência Renal Aguda (LRA)", "mechanism": "Perda súbita da função. Pré-renal (hipoperfusão/choque), Renal (NTA, nefrites), Pós-renal (obstrução/cálculo/HPB)." },
+      { "condition": "Doença Renal Crônica (DRC)", "mechanism": "Perda progressiva e irreversível de néfrons (DM, HAS). Uremia, anemia, distúrbios ósseos. TFG < 60 ml/min por > 3 meses." },
+      { "condition": "Infecção do Trato Urinário (ITU)", "mechanism": "Cistite (baixa) vs Pielonefrite (alta - febre, dor lombar). E. coli é o agente mais comum." },
+      { "condition": "Nefrolitíase", "mechanism": "Precipitação de sais (Cálcio, Ácido Úrico) formando cálculos. Cólica nefrética por obstrução e espasmo ureteral." }
     ],
     "clinical_pearls": [
-      "Oligúria (<400ml/24h ou <0,5ml/kg/h) é o sinal mais sensível de má perfusão ou falha renal.",
-      "Anemia na Doença Renal Crônica ocorre por falta de Eritropoietina, não por falta de ferro (embora possa coexistir).",
-      "Paciente chocado não urina. Restaurar volume geralmente restaura diurese (se não houver necrose tubular)."
+      "Oligúria (<400ml/24h ou <0,5ml/kg/h) é um sinal precoce de choque ou lesão renal. A anúria (<100ml/24h) sugere obstrução total ou necrose cortical.",
+      "Na DRC, a anemia ocorre principalmente por déficit de Eritropoietina. A osteodistrofia renal ocorre por distúrbio do Cálcio/Fósforo/PTH.",
+      "Hipercalemia (K+ alto) é a complicação letal mais imediata da falência renal. Atenção a ondas T apiculadas no ECG."
     ],
-    "red_flags": ["Oligúria/Anúria súbita", "Dor lombar com febre (Pielonefrite)", "Hematúria macroscópica", "Sinais de Hipercalemia"]
+    "red_flags": ["Oligúria/Anúria súbita", "Sinal de Giordano positivo (dor à punho-percussão lombar)", "Hematúria macroscópica", "Globo vesical palpável (Retenção)"]
   },
   {
     "id": "digestive",
     "name": "Sistema Digestório",
     "icon": "Utensils",
     "theme": "orange",
-    "description": "Quebra física e química dos alimentos, absorção de nutrientes e excreção.",
+    "description": "Processamento de alimentos, absorção de nutrientes/água e eliminação de resíduos. Papel imunológico e metabólico.",
     "anatomy": [
-      { "part": "Estômago", "detail": "pH ácido (1.5-3.5). Transforma bolo alimentar em quimo. Fator intrínseco (abs. B12)." },
-      { "part": "Intestino Delgado", "detail": "Duodeno, Jejuno, Íleo. Principal local de digestão e absorção de nutrientes." },
-      { "part": "Fígado", "detail": "Fábrica química. Produz bile, fatores de coagulação, albumina. Metaboliza drogas e toxinas." },
-      { "part": "Pâncreas", "detail": "Exócrino (Enzimas digestivas: Amilase/Lipase) e Endócrino (Insulina/Glucagon)." }
+      { "part": "Tubo Digestivo Alto", "detail": "Boca, Faringe, Esôfago (transporte), Estômago (fundo, corpo, antro - pH ácido, fator intrínseco)." },
+      { "part": "Intestino Delgado", "detail": "Duodeno (recebe bile/suco pancreático), Jejuno (principal local de absorção), Íleo (absorção B12/sais biliares)." },
+      { "part": "Intestino Grosso", "detail": "Ceco, Cólon (Ascendente, Transverso, Descendente, Sigmoide), Reto, Ânus. Absorção de água e formação fecal." },
+      { "part": "Glândulas Anexas", "detail": "Fígado (metabolismo, bile), Vesícula Biliar (armazena bile), Pâncreas (suco pancreático rico em enzimas e bicarbonato)." }
     ],
     "physiology": [
-      { "title": "Peristaltismo", "content": "Movimentos ondulatórios musculares que empurram o conteúdo. Ruídos Hidroaéreos (RHA) são o som disso." },
-      { "title": "Circulação Portal", "content": "Todo sangue do intestino vai para o fígado pela Veia Porta antes de ir para o coração. Filtro de toxinas e nutrientes." },
-      { "title": "Digestão", "content": "Boca (Carboidratos) -> Estômago (Proteínas) -> Duodeno (Gorduras com Bile + Enzimas Pancreáticas)." }
+      { "title": "Secreção Gástrica", "content": "Células Parietais: HCl (pH ácido, ativa pepsina, mata bactérias) e Fator Intrínseco (essencial p/ absorção Vit B12). Células Principais: Pepsinogênio." },
+      { "title": "Fígado e Circulação Portal", "content": "Veia Porta drena sangue do TGI, Baço e Pâncreas para o Fígado. Metabolismo de carboidratos, lipídios, proteínas, drogas (efeito de 1ª passagem), síntese de albumina e fatores de coagulação." },
+      { "title": "Pâncreas Exócrino", "content": "Libera Amilase (amido), Lipase (gorduras), Proteases (proteínas) e Bicarbonato (neutraliza o quimo ácido no duodeno)." }
     ],
     "pathology": [
-      { "condition": "Cirrose Hepática", "mechanism": "Fibrose do fígado. Hipertensão Portal -> Varizes esofágicas, Ascite e Coagulopatia." },
-      { "condition": "Pancreatite Aguda", "mechanism": "Autodigestão do pâncreas pelas próprias enzimas. Dor em barra intensa." },
-      { "condition": "Obstrução Intestinal", "mechanism": "Parada do trânsito (mecânica ou funcional). Distensão, vômitos, parada de eliminação de gases." }
+      { "condition": "Hemorragia Digestiva", "mechanism": "Alta (HDA): Melena, hematêmese (Úlcera, Varizes). Baixa (HDB): Enterorragia, hematoquezia (Divertículo, Tu, Angiodisplasia)." },
+      { "condition": "Cirrose Hepática", "mechanism": "Fibrose e nódulos de regeneração. Insuficiência hepatocelular (icterícia, coagulopatia, encefalopatia) e Hipertensão Portal (ascite, varizes)." },
+      { "condition": "Pancreatite Aguda", "mechanism": "Ativação intra-pancreática das enzimas digestivas (autodigestão). Dor em barra, vômitos, aumento Amilase/Lipase." },
+      { "condition": "Abdome Agudo", "mechanism": "Inflamatório (Apendicite), Obstrutivo (Aderências), Perfurativo (Úlcera), Vascular (Isquemia), Hemorrágico." }
     ],
     "clinical_pearls": [
-      "Melena (fezes pretas/piche) indica sangramento digestivo ALTO (estômago/duodeno). Enterorragia (sangue vivo) é BAIXO.",
-      "Sinal de Blumberg: Dor à descompressão súbita no ponto de McBurney = Apendicite.",
-      "Paciente hepatopata tem alto risco de sangramento (falta fatores de coagulação) e toxicidade medicamentosa."
+      "Sinal de Blumberg (dor à descompressão súbita na fossa ilíaca direita) é clássico de irritação peritoneal (Apendicite).",
+      "Sinal de Murphy (interrupção da inspiração profunda à palpação do hipocôndrio direito) sugere Colecistite Aguda.",
+      "Melena (fezes pretas, alcatrão, fétidas) indica sangue digerido de origem alta. Requer pelo menos 50-100ml de sangue."
     ],
-    "red_flags": ["Abdome em tábua (Peritonite)", "Hematêmese/Melena", "Icterícia progressiva", "Parada de eliminação de gases/fezes"]
+    "red_flags": ["Abdome em tábua (rigidez involuntária)", "Hematêmese ou Melena", "Parada de eliminação de gases e fezes (Obstrução)", "Icterícia com colúria/acolia", "Instabilidade hemodinâmica"]
   },
   {
     "id": "integumentary",
     "name": "Sistema Tegumentar",
     "icon": "Shield",
     "theme": "emerald",
-    "description": "Barreira de proteção, termorregulação, sensibilidade e síntese de Vitamina D.",
+    "description": "O maior órgão do corpo. Proteção, termorregulação, sensibilidade, excreção e síntese de Vitamina D.",
     "anatomy": [
-      { "part": "Epiderme", "detail": "Camada externa, avascular. Renovação constante. Queratina (proteção) e Melanina (cor)." },
-      { "part": "Derme", "detail": "Tecido conjuntivo. Contém vasos, nervos, folículos pilosos, glândulas (sudoríparas/sebáceas) e colágeno." },
-      { "part": "Hipoderme", "detail": "Tecido subcutâneo (gordura). Isolante térmico, reserva de energia e proteção mecânica." },
-      { "part": "Anexos", "detail": "Unhas, cabelos e glândulas." }
+      { "part": "Epiderme", "detail": "Camada externa, avascular, epitélio estratificado pavimentoso queratinizado. 5 estratos (basal a córneo). Queratinócitos, Melanócitos (cor), Células de Langerhans (imune)." },
+      { "part": "Derme", "detail": "Tecido conjuntivo denso, vascularizado e inervado. Contém colágeno, elastina, folículos pilosos, glândulas (sudoríparas/sebáceas) e receptores sensitivos." },
+      { "part": "Hipoderme (Subcutâneo)", "detail": "Tecido adiposo e conjuntivo frouxo. Isolamento térmico, reserva energética, proteção mecânica e modelagem corporal." },
+      { "part": "Anexos Cutâneos", "detail": "Unhas, Pelos, Glândulas Sudoríparas (Écrinas/Apócrinas) e Sebáceas." }
     ],
     "physiology": [
-      { "title": "Cicatrização", "content": "1. Inflamatória (Limpeza/Hemostasia) -> 2. Proliferativa (Granulação/Epitelização) -> 3. Maturação (Remodelagem)." },
-      { "title": "Termorregulação", "content": "Calor: Vasodilatação + Suor. Frio: Vasoconstrição (pele pálida) + Arrepio (pouco eficaz em humanos)." },
-      { "title": "Barreira", "content": "O pH ácido da pele e a microbiota residente impedem a colonização por patógenos." }
+      { "title": "Cicatrização de Feridas", "content": "1. <strong>Inflamatória:</strong> Hemostasia, limpeza (macrófagos/neutrófilos).<br>2. <strong>Proliferativa:</strong> Angiogênese, tecido de granulação, contração, epitelização.<br>3. <strong>Maturação:</strong> Remodelagem do colágeno (pode durar anos)." },
+      { "title": "Termorregulação", "content": "Calor: Vasodilatação dérmica e sudorese (evaporação). Frio: Vasoconstrição (pele pálida/fria) e pilereção (isolamento)." },
+      { "title": "Função de Barreira", "content": "O manto hidrolipídico (pH ácido 4.5-5.5) e a camada córnea protegem contra desidratação, químicos e microrganismos." }
     ],
     "pathology": [
-      { "condition": "Lesão por Pressão", "mechanism": "Isquemia tecidual por compressão prolongada sobre proeminência óssea." },
-      { "condition": "Queimadura", "mechanism": "Destruição da barreira. Risco de hipovolemia (perda de líquidos) e infecção." },
-      { "condition": "Celulite/Erisipela", "mechanism": "Infecção bacteriana da pele. Erisipela (superficial/borda definida), Celulite (profunda/borda difusa)." }
+      { "condition": "Lesão por Pressão (LPP)", "mechanism": "Isquemia tecidual por compressão prolongada sobre proeminência óssea. Estágios 1 a 4, Não Estadiável e Tissular Profunda." },
+      { "condition": "Queimaduras", "mechanism": "Dano tecidual térmico, químico ou elétrico. Perda da barreira -> risco de infecção, perda de fluidos/eletrólitos e hipotermia." },
+      { "condition": "Infecções Bacterianas", "mechanism": "Impetigo (epiderme), Erisipela (derme superficial/linfáticos - borda nítida), Celulite (derme profunda/subcutâneo - borda difusa)." },
+      { "condition": "Câncer de Pele", "mechanism": "Melanoma (melanócitos - agressivo) e Não-Melanoma (Basocelular/Espinocelular - mais comuns)." }
     ],
     "clinical_pearls": [
-      "Turgor da pele (elasticidade) é avaliado no tórax ou fronte para ver desidratação em idosos (mão não serve).",
-      "Perfusão Capilar (TEC): Aperte a unha/polpa digital. A cor deve voltar em < 3 segundos. Se demorar = má perfusão/choque.",
-      "Cianose: Central (lábios/língua) = Hipoxemia grave. Periférica (dedos) = Frio ou vasoconstrição."
+      "Teste do Turgor Cutâneo: Avaliar na região infraclavicular ou frontal em idosos (a mão perde elasticidade naturalmente), indicativo de desidratação.",
+      "Tempo de Enchimento Capilar (TEC): Pressionar a unha/polpa digital por 5s. A cor deve voltar em < 3 segundos. Atraso indica má perfusão periférica.",
+      "Regra do ABCDE para Melanoma: Assimetria, Bordas irregulares, Cor variada, Diâmetro >6mm, Evolução (mudança)."
     ],
-    "red_flags": ["Eritema que não branqueia (LPP estágio 1)", "Extensão de queimadura > 20%", "Sinais de necrose (preto/escaras)", "Manchas purpúricas (Meningococcemia/Plaquetopenia)"]
+    "red_flags": ["Eritema não branqueável (LPP 1)", "Extensão de queimadura > 20% SCQ", "Sinais de Necrose Fasciante (crepitação, dor desproporcional)", "Petéquias/Púrpura (Meningococcemia/Plaquetopenia)"]
   }
 ]
