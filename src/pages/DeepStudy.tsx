@@ -176,17 +176,25 @@ const DeepStudy = () => {
     }
   };
 
-  // Helper para limpar o prefixo de Artigo (Art. 1º, etc)
-  const cleanArticlePrefix = (text: string): string => {
-    // Regex para identificar "Art.", "Artigo", números, ordinais, tags HTML (como strong) e pontuação inicial
-    // Ex: "<strong>Art. 1º</strong> Texto..." -> "Texto..."
-    // Ex: "Art. 20 - Texto..." -> "Texto..."
-    const articleRegex = /^(?:(?:\s*<[^>]+>\s*)*)Art[\.\s]\s*\d+(?:º|°)?(?:\s*<\/[^>]+>)*(?:\s*[-–])?\s*/i;
+  // Helper para construir Regex flexível
+  const createFlexibleRegex = (plainText: string) => {
+    // Separa as palavras, ignorando espaços em branco extras
+    const words = plainText.split(/\s+/).filter(w => w.trim().length > 0);
+    if (words.length === 0) return null;
+
+    // Escapa caracteres especiais de Regex
+    const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     
-    if (articleRegex.test(text)) {
-      return text.replace(articleRegex, '');
-    }
-    return text;
+    // O "glue" (cola) agora é super permissivo: aceita qualquer combinação de:
+    // - Espaços (\s)
+    // - Quebras de linha (\r\n)
+    // - Tags HTML (<...>)
+    // - Entidades HTML (&...;)
+    // Isso permite conectar "Art. 1" (que está num <h3>) com "O sistema..." (que está num <p>)
+    const glue = '(?:\\s+|\\r?\\n|<[^>]*>|&[^;]+;)+';
+    
+    const pattern = escapedWords.join(glue);
+    return new RegExp(pattern, 'gi');
   };
 
   // Handler de Seleção de Texto
@@ -201,61 +209,43 @@ const DeepStudy = () => {
     const plainText = selection.toString().trim();
     
     if (plainText.length > 0) {
-      const words = plainText.split(/\s+/).filter(w => w.trim().length > 0);
-      
-      if (words.length === 0) return;
-
-      const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-      const glue = '(?:\\s*<[^>]+>\\s*|\\s+|&[^;]+;)+';
-      
-      const pattern = escapedWords.join(glue);
-      
       try {
-        const regex = new RegExp(pattern, 'gi'); 
-        const match = selectedDoc.content.match(regex);
+        const regex = createFlexibleRegex(plainText);
         
-        let textToSave = match ? match[0] : plainText;
+        if (regex) {
+          const match = selectedDoc.content.match(regex);
+          
+          // Se encontrar no HTML original (com tags), usa o texto estruturado.
+          // Se não, usa o texto puro como fallback.
+          let textToSave = match ? match[0] : plainText;
 
-        // --- FILTRO INTELIGENTE DE ARTIGO ---
-        // Se o texto selecionado começar com "Art. X", removemos essa parte do grifo
-        // Isso evita que o artigo seja grifado e foca no conteúdo
-        textToSave = cleanArticlePrefix(textToSave);
-
-        // Se após a limpeza o texto estiver vazio (usuário selecionou apenas "Art. 1º"), ignoramos
-        if (!textToSave || textToSave.trim().length === 0) {
-            setSelectionRect(null);
-            setSelectedText("");
+          // Verificação de duplicidade
+          const isDuplicate = highlights.some(h => h.selected_text === textToSave);
+          if (isDuplicate) {
             window.getSelection()?.removeAllRanges();
             return;
-        }
+          }
 
-        const isDuplicate = highlights.some(h => h.selected_text === textToSave);
-        if (isDuplicate) {
-          window.getSelection()?.removeAllRanges();
-          return;
-        }
-
-        if (isHighlighterMode) {
-          addHighlightMutation.mutate(textToSave);
-        } else {
-          const range = selection.getRangeAt(0);
-          const rect = range.getBoundingClientRect();
-          setSelectionRect(rect);
-          setSelectedText(textToSave);
+          if (isHighlighterMode) {
+            addHighlightMutation.mutate(textToSave);
+          } else {
+            const range = selection.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
+            setSelectionRect(rect);
+            setSelectedText(textToSave);
+          }
         }
       } catch (e) {
         console.error("Erro ao processar seleção", e);
-        // Fallback simples com limpeza
-        if (isHighlighterMode) {
-            const cleanPlain = plainText.replace(/^Art[\.\s]\s*\d+(?:º|°)?\s*[-–]?\s*/i, '');
-            if (cleanPlain.trim().length > 0) addHighlightMutation.mutate(cleanPlain);
-        }
+        // Fallback robusto
+        if (isHighlighterMode) addHighlightMutation.mutate(plainText);
       }
     }
   };
 
   const handleContentClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
+    // Verifica se clicou em um grifo (MARK)
     if (target.tagName === 'MARK' && window.getSelection()?.toString().trim() === '') {
       const markHtml = target.innerHTML;
       const idsToDelete = highlights
@@ -278,6 +268,7 @@ const DeepStudy = () => {
     if (!selectedDoc) return "";
     let content = selectedDoc.content;
     
+    // Lista de intervalos para grifar: [{start, end}]
     const ranges: {start: number, end: number}[] = [];
 
     if (!highlights || highlights.length === 0) return content;
@@ -286,21 +277,23 @@ const DeepStudy = () => {
       if (!h.selected_text) return;
       const term = h.selected_text;
       
+      // Tenta encontrar a string exata primeiro
       let pos = content.indexOf(term);
       
       if (pos === -1) {
+         // Se não encontrar exato, tenta via Regex flexível (mesma lógica da seleção)
          try {
-            const words = term.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(w => w.trim().length > 0);
-            const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-            const glue = '(?:\\s*<[^>]+>\\s*|\\s+|&[^;]+;)+';
-            const pattern = escapedWords.join(glue);
-            const regex = new RegExp(pattern, 'gi'); 
-            let match;
-            while ((match = regex.exec(content)) !== null) {
-               ranges.push({ start: match.index, end: match.index + match[0].length });
+            const regex = createFlexibleRegex(term);
+            if (regex) {
+                let match;
+                // Busca todas as ocorrências
+                while ((match = regex.exec(content)) !== null) {
+                   ranges.push({ start: match.index, end: match.index + match[0].length });
+                }
             }
          } catch (e) {}
       } else {
+        // Encontrou exato, busca todas as ocorrências
         while (pos !== -1) {
           ranges.push({ start: pos, end: pos + term.length });
           pos = content.indexOf(term, pos + 1);
@@ -310,12 +303,14 @@ const DeepStudy = () => {
 
     if (ranges.length === 0) return content;
 
+    // Mescla intervalos sobrepostos
     ranges.sort((a, b) => a.start - b.start);
     const mergedRanges: {start: number, end: number}[] = [];
     if (ranges.length > 0) {
         let currentRange = ranges[0];
         for (let i = 1; i < ranges.length; i++) {
         const nextRange = ranges[i];
+        // Se houver sobreposição ou adjacência, estende o fim
         if (nextRange.start <= currentRange.end) {
             currentRange.end = Math.max(currentRange.end, nextRange.end);
         } else {
@@ -326,12 +321,16 @@ const DeepStudy = () => {
         mergedRanges.push(currentRange);
     }
 
+    // Aplica os grifos no HTML (de trás para frente para não quebrar índices)
     let result = content;
     for (let i = mergedRanges.length - 1; i >= 0; i--) {
       const { start, end } = mergedRanges[i];
-      const markStart = `<mark class="bg-yellow-200 dark:bg-yellow-500/30 text-inherit rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 dark:hover:bg-yellow-500/50 transition-colors box-decoration-clone decoration-clone" title="Clique para remover">`;
-      const markEnd = `</mark>`;
-      result = result.substring(0, start) + markStart + result.substring(start, end) + markEnd + result.substring(end);
+      // Verifica se o intervalo é válido
+      if (start >= 0 && end <= result.length) {
+          const markStart = `<mark class="bg-yellow-200 dark:bg-yellow-500/30 text-inherit rounded-sm px-0.5 cursor-pointer hover:bg-yellow-300 dark:hover:bg-yellow-500/50 transition-colors box-decoration-clone decoration-clone" title="Clique para remover">`;
+          const markEnd = `</mark>`;
+          result = result.substring(0, start) + markStart + result.substring(start, end) + markEnd + result.substring(end);
+      }
     }
 
     return result;
