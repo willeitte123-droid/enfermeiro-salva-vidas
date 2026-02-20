@@ -5,7 +5,7 @@ import { Link, useOutletContext } from "react-router-dom";
 import { 
   Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, 
   ClipboardList, Loader2, History, Sparkles, Activity, 
-  ChevronRight, Brain, Zap, Clock, GraduationCap
+  ChevronRight, Brain, Zap, Clock, GraduationCap, BrainCircuit
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
@@ -44,10 +44,10 @@ const quickAccessLinks = [
     border: "group-hover:border-emerald-200 dark:group-hover:border-emerald-800"
   },
   {
-    title: "Área do Concurseiro",
-    icon: GraduationCap,
-    path: "/concurseiro",
-    description: "Resumos, leis e dicas para aprovação.",
+    title: "Flashcards",
+    icon: BrainCircuit,
+    path: "/flashcards",
+    description: "Memorização ativa e repetição espaçada.",
     color: "text-indigo-500",
     bg: "bg-indigo-50 dark:bg-indigo-950/30",
     border: "group-hover:border-indigo-200 dark:group-hover:border-indigo-800"
