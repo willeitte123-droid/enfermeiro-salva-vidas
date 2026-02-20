@@ -197,6 +197,29 @@ const DeepStudy = () => {
     return new RegExp(pattern, 'gi');
   };
 
+  // --- FILTRO DE BLOQUEIO DE ARTIGOS ---
+  // Esta função remove proativamente o cabeçalho do artigo (Art. X, § X) do texto HTML capturado
+  const cleanArticlePrefix = (htmlText: string): string => {
+    if (!htmlText) return htmlText;
+
+    // Regex poderoso para identificar cabeçalhos de lei no início do texto selecionado
+    // Cobre: Art., Artigo, §, Inciso, Parágrafo único
+    // Cobre: Tags HTML envolvendo esses termos (<strong>, <p>, etc)
+    // Cobre: Números, ordinais (º/°) e separadores (-, –)
+    
+    // Ex: "<strong>Art. 1º</strong> O sistema..." -> "O sistema..."
+    // Ex: "<p>§ 1º O dever..." -> "O dever..."
+    
+    const blockPattern = /^(\s*<[^>]+>\s*)*(Art\.?|Artigo|§|Parágrafo\s+único|Inciso)\s*\d*(?:º|°)?\s*([-–])?(\s*<\/[^>]+>\s*)*\s*/i;
+
+    if (blockPattern.test(htmlText)) {
+      // Remove o padrão encontrado no início
+      return htmlText.replace(blockPattern, '');
+    }
+    
+    return htmlText;
+  };
+
   // Handler de Seleção de Texto
   const handleMouseUp = () => {
     const selection = window.getSelection();
@@ -215,9 +238,19 @@ const DeepStudy = () => {
         if (regex) {
           const match = selectedDoc.content.match(regex);
           
-          // Se encontrar no HTML original (com tags), usa o texto estruturado.
-          // Se não, usa o texto puro como fallback.
+          // Pega o HTML original correspondente à seleção
           let textToSave = match ? match[0] : plainText;
+
+          // APLICA O BLOQUEIO: Remove Artigos/Parágrafos do início
+          textToSave = cleanArticlePrefix(textToSave);
+
+          // Se após a limpeza não sobrar nada (ex: usuário selecionou SÓ "Art. 1º"), cancela
+          if (!textToSave || textToSave.trim().length === 0) {
+             setSelectionRect(null);
+             setSelectedText("");
+             window.getSelection()?.removeAllRanges();
+             return;
+          }
 
           // Verificação de duplicidade
           const isDuplicate = highlights.some(h => h.selected_text === textToSave);
@@ -237,8 +270,11 @@ const DeepStudy = () => {
         }
       } catch (e) {
         console.error("Erro ao processar seleção", e);
-        // Fallback robusto
-        if (isHighlighterMode) addHighlightMutation.mutate(plainText);
+        // Fallback robusto - tenta limpar mesmo no texto plano
+        if (isHighlighterMode) {
+            const cleanPlain = plainText.replace(/^(Art\.?|Artigo|§)\s*\d+(?:º|°)?\s*[-–]?\s*/i, '');
+            if (cleanPlain.trim().length > 0) addHighlightMutation.mutate(cleanPlain);
+        }
       }
     }
   };
