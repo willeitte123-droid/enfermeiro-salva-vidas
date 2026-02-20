@@ -217,52 +217,57 @@ const Dashboard = () => {
       {/* 3. Seção Mista: Desafio + Histórico */}
       <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
         
-        {/* Coluna Esquerda: Desafio da Questão */}
+        {/* Coluna Esquerda: Desafio da Questão - UPDATE DE COR E ESTILO */}
         <div className="lg:col-span-2">
-          <Card className="h-full border-l-4 border-l-primary bg-gradient-to-br from-card to-secondary/5 shadow-md flex flex-col">
-            <CardHeader>
+          <Card className="h-full border-none shadow-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex flex-col relative overflow-hidden group hover:shadow-2xl transition-all duration-300">
+            {/* Background Decoration */}
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12">
+               <Brain className="w-32 h-32 text-white" />
+            </div>
+            
+            <CardHeader className="relative z-10 pb-2">
               <div className="flex justify-between items-start">
                 <div>
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <Brain className="h-6 w-6 text-primary" /> Desafio Rápido
+                  <CardTitle className="flex items-center gap-2 text-xl text-white">
+                    <Brain className="h-6 w-6 text-blue-200" /> Desafio Rápido
                   </CardTitle>
-                  <CardDescription>Teste seu conhecimento agora.</CardDescription>
+                  <CardDescription className="text-blue-100/80">Teste seu conhecimento agora.</CardDescription>
                 </div>
-                <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20">
+                <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30 border-none backdrop-blur-sm">
                   Nova a cada 30s
                 </Badge>
               </div>
             </CardHeader>
             
-            <CardContent className="flex-1 flex flex-col justify-center min-h-[120px]">
+            <CardContent className="flex-1 flex flex-col justify-center min-h-[120px] relative z-10">
               {isLoadingQuestion ? (
-                <div className="flex flex-col items-center justify-center gap-2 text-muted-foreground py-8">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary/50" />
+                <div className="flex flex-col items-center justify-center gap-2 text-blue-100 py-8">
+                  <Loader2 className="h-8 w-8 animate-spin" />
                   <span className="text-xs">Carregando desafio...</span>
                 </div>
               ) : randomQuestion ? (
                 <div className="space-y-4 animate-in fade-in duration-500">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className="text-[10px] uppercase tracking-wider text-muted-foreground border-primary/20">
+                    <Badge variant="outline" className="text-[10px] uppercase tracking-wider text-blue-100 border-white/20 bg-black/10">
                       {randomQuestion.category}
                     </Badge>
                     {randomQuestion.banca && (
-                        <Badge variant="outline" className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                        <Badge variant="outline" className="text-[10px] uppercase tracking-wider text-blue-100 border-white/20 bg-black/10">
                             {randomQuestion.banca}
                         </Badge>
                     )}
                   </div>
-                  <p className="font-semibold text-base sm:text-lg text-foreground leading-relaxed line-clamp-4">
+                  <p className="font-semibold text-base sm:text-lg text-white leading-relaxed line-clamp-4 drop-shadow-sm">
                     {randomQuestion.question}
                   </p>
                 </div>
               ) : (
-                <p className="text-center text-muted-foreground py-8">Questão indisponível no momento.</p>
+                <p className="text-center text-blue-200 py-8">Questão indisponível no momento.</p>
               )}
             </CardContent>
             
-            <CardFooter className="pt-2 border-t bg-muted/20">
-              <Button asChild className="w-full sm:w-auto ml-auto group" disabled={isLoadingQuestion || !randomQuestion}>
+            <CardFooter className="pt-4 border-t border-white/10 bg-black/10 relative z-10">
+              <Button asChild className="w-full sm:w-auto ml-auto group bg-white text-blue-700 hover:bg-blue-50 font-bold border-none shadow-lg" disabled={isLoadingQuestion || !randomQuestion}>
                 <Link to={randomQuestion ? `/questions?id=${randomQuestion.id}` : "/questions"}>
                   Responder Agora <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
