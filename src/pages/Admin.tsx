@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, FileQuestion, Info } from "lucide-react";
@@ -24,6 +24,7 @@ import VideoManager from "./admin/VideoManager";
 import QuestionsDashboard from "./admin/QuestionsDashboard";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { CardDescription, CardTitle } from "@/components/ui/card";
 
 interface AppUser {
   id: string;
