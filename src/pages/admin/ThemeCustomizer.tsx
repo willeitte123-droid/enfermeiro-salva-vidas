@@ -66,10 +66,19 @@ const defaultSettings = {
   "--dark-primary": "210 90% 58%", "--dark-secondary": "260 65% 60%", "--dark-accent": "215 25% 16%", "--dark-background": "215 30% 8%", "--dark-foreground": "210 20% 98%", "--dark-card": "215 25% 12%", "--dark-destructive": "0 72% 51%", "--dark-border": "215 20% 18%",
   "--sidebar-background": "215 25% 12%", "--sidebar-foreground": "210 20% 85%", "--sidebar-active-background": "210 90% 48%", "--sidebar-active-foreground": "0 0% 100%", "--sidebar-hover-background": "215 20% 18%", "--sidebar-border": "215 20% 18%",
   "--dark-sidebar-background": "215 25% 12%", "--dark-sidebar-foreground": "210 20% 85%", "--dark-sidebar-active-background": "210 90% 58%", "--dark-sidebar-active-foreground": "0 0% 100%", "--dark-sidebar-hover-background": "215 20% 18%", "--dark-sidebar-border": "215 20% 18%",
+  "--hero-background": "222 47% 11%", "--dark-hero-background": "222 47% 11%",
 };
 
 const colorFields = [
-  { id: "primary", label: "Primária" }, { id: "secondary", label: "Secundária" }, { id: "accent", label: "Acento" }, { id: "background", label: "Fundo" }, { id: "foreground", label: "Texto" }, { id: "card", label: "Card" }, { id: "destructive", label: "Destrutiva" }, { id: "border", label: "Borda" },
+  { id: "primary", label: "Primária" }, 
+  { id: "secondary", label: "Secundária" }, 
+  { id: "accent", label: "Acento" }, 
+  { id: "background", label: "Fundo" }, 
+  { id: "foreground", label: "Texto" }, 
+  { id: "card", label: "Card" }, 
+  { id: "destructive", label: "Destrutiva" }, 
+  { id: "border", label: "Borda" },
+  { id: "hero-background", label: "Fundo do Painel (Hero)" },
 ];
 
 const sidebarColorFields = [

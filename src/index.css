@@ -44,6 +44,9 @@ All colors MUST be HSL.
     --sidebar-active-foreground: 0 0% 100%;
     --sidebar-hover-background: 215 20% 18%;
     --sidebar-border: 215 20% 18%; /* Default sidebar border */
+
+    /* Hero Dashboard Color */
+    --hero-background: 222 47% 11%; /* slate-900 */
   }
 
   .dark {
@@ -81,6 +84,9 @@ All colors MUST be HSL.
     --sidebar-active-foreground: 0 0% 100%;
     --sidebar-hover-background: 215 20% 18%;
     --sidebar-border: 215 20% 18%; /* Default dark sidebar border */
+
+    /* Hero Dashboard Color - Dark Mode */
+    --hero-background: 222 47% 11%;
   }
 }
 

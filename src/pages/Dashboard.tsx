@@ -119,7 +119,10 @@ const Dashboard = () => {
     <div className="space-y-8 animate-in fade-in duration-700 pb-10">
       
       {/* 1. Hero Section Imersiva */}
-      <div className="relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl">
+      <div 
+        className="relative overflow-hidden rounded-3xl text-white shadow-2xl"
+        style={{ backgroundColor: 'hsl(var(--hero-background))' }}
+      >
         {/* Background Gradients & Patterns */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-blue-600/30 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
