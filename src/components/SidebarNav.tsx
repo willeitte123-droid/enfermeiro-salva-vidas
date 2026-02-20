@@ -120,9 +120,9 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
       items: [
         { title: "Banca de Questões", icon: FileQuestion, href: "/questions", variant: "ghost" },
         { title: "Área de Simulado", icon: Timer, href: "/simulado", variant: "ghost" },
+        { title: "Vídeo Aulas", icon: MonitorPlay, href: "/video-library", variant: "ghost" },
         { title: "Casos Clínicos", icon: Stethoscope, href: "/clinical-cases", variant: "ghost" },
         { title: "Trilha de Estudos", icon: Map, href: "/study-tracks", variant: "ghost" },
-        { title: "Vídeo Aulas", icon: MonitorPlay, href: "/video-library", variant: "ghost" },
         { title: "Área do Concurseiro", icon: GraduationCap, href: "/concurseiro", variant: "ghost" },
         { title: "Biblioteca Digital", icon: BookOpen, href: "/library", variant: "ghost" },
         { title: "Flashcards", icon: BrainCircuit, href: "/flashcards", variant: "ghost" },
@@ -135,7 +135,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
       title: "Prática Clínica",
       icon: Stethoscope,
       items: [
-        { title: "Medicamentos", icon: Syringe, href: "/medications", variant: "ghost" }, // Trocado Pill por Syringe para manter consistência
+        { title: "Medicamentos", icon: Syringe, href: "/medications", variant: "ghost" },
         { title: "Emergências", icon: Siren, href: "/emergency", variant: "ghost" },
         { title: "Curativos", icon: Bandage, href: "/wound-care", variant: "ghost" },
         { title: "Procedimentos", icon: ClipboardList, href: "/procedures", variant: "ghost" },
