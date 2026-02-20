@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 const FLASHCARDS_DATA = [
-  // --- EXISTENTES (Mantidos para garantir integridade) ---
+  // --- EXISTENTES (Mantidos) ---
   { deck_category: 'Centro Cirúrgico', front_content: 'Quais são os 4 tempos cirúrgicos fundamentais, em ordem?', back_content: '1. Diérese (abertura/corte); 2. Hemostasia (controle de sangramento); 3. Exérese (cirurgia propriamente dita); 4. Síntese (fechamento/sutura).' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Quais são os 3 momentos de verificação do Checklist de Cirurgia Segura da OMS?', back_content: '1. Sign In (Antes da indução anestésica); 2. Time Out (Antes da incisão da pele - Pausa Cirúrgica); 3. Sign Out (Antes do paciente sair da sala).' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Qual a classificação de uma cirurgia de Apendicectomia Supurada quanto ao potencial de contaminação?', back_content: 'Cirurgia Infectada (presença de pus/processo infeccioso prévio).' },
@@ -44,7 +44,6 @@ const FLASHCARDS_DATA = [
   { deck_category: 'Cálculo de Medicação', front_content: 'Prescrição: 150mg de Amicacina. Frasco: 500mg/2ml. Quanto aspirar?', back_content: 'Regra de três: 500mg está para 2ml, assim como 150mg está para X. (150 * 2) / 500 = 300 / 500 = 0,6 ml.' },
   { deck_category: 'Cálculo de Medicação', front_content: 'Qual a fórmula para transformar soro (Glicose)?', back_content: 'C1 . V1 + C2 . V2 = C3 . V3 (Onde C é concentração e V é volume).' },
 
-  // --- NOVOS: IMUNIZAÇÃO (PNI) ---
   { deck_category: 'Imunização (PNI)', front_content: 'Quais vacinas devem ser administradas ao nascer?', back_content: 'BCG (Intradérmica) e Hepatite B (Intramuscular).' },
   { deck_category: 'Imunização (PNI)', front_content: 'Qual a diferença entre a vacina VIP e a VOP contra poliomielite?', back_content: 'VIP é inativada (vírus morto, injetável). VOP é atenuada (vírus vivo, oral). Atualmente, a VIP substituiu a VOP na maioria das doses.' },
   { deck_category: 'Imunização (PNI)', front_content: 'Qual a idade recomendada para a vacina de Febre Amarela no calendário básico?', back_content: 'Aos 9 meses de idade (dose única, com reforço aos 4 anos).' },
@@ -54,7 +53,6 @@ const FLASHCARDS_DATA = [
   { deck_category: 'Imunização (PNI)', front_content: 'Quais vacinas são administradas aos 2 meses de idade?', back_content: 'Penta (DTP+Hib+HepB), VIP (Pólio), VORH (Rotavírus) e Pneumocócica 10V.' },
   { deck_category: 'Imunização (PNI)', front_content: 'Qual é a via de administração da vacina Tríplice Viral?', back_content: 'Subcutânea.' },
   
-  // --- NOVOS: FUNDAMENTOS DE ENFERMAGEM ---
   { deck_category: 'Fundamentos', front_content: 'Quais são os 5 sinais vitais padrão?', back_content: 'Temperatura, Pulso (FC), Respiração (FR), Pressão Arterial (PA) e Dor (5º sinal).' },
   { deck_category: 'Fundamentos', front_content: 'Qual o ângulo correto para administração Intradérmica (ID)?', back_content: '10 a 15 graus (bisel para cima).' },
   { deck_category: 'Fundamentos', front_content: 'Qual o local de escolha para injeção Intramuscular (IM) em menores de 2 anos?', back_content: 'Músculo Vasto Lateral da Coxa.' },
@@ -65,14 +63,31 @@ const FLASHCARDS_DATA = [
   { deck_category: 'Fundamentos', front_content: 'O que é Bradipneia?', back_content: 'Frequência respiratória abaixo do normal (< 12 irpm em adultos).' },
   { deck_category: 'Fundamentos', front_content: 'O que é a Posição de Trendelenburg?', back_content: 'Decúbito dorsal com o corpo inclinado, de forma que a cabeça fique mais baixa que os pés.' },
 
-  // --- NOVOS: CENTRO CIRÚRGICO E CME (REFORÇO) ---
+  // --- REFORÇO CME/CENTRO CIRÚRGICO (Existentes) ---
   { deck_category: 'Centro Cirúrgico', front_content: 'Segundo a classificação de Spaulding, o que são Artigos Críticos?', back_content: 'Artigos que penetram tecidos estéreis ou sistema vascular. Exigem ESTERILIZAÇÃO. Ex: Bisturi, pinças cirúrgicas.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Segundo a classificação de Spaulding, o que são Artigos Semicríticos?', back_content: 'Artigos que entram em contato com pele não íntegra ou mucosas íntegras. Exigem DESINFECÇÃO DE ALTO NÍVEL. Ex: Endoscópios, lâminas de laringoscópio.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Qual é o bioindicador utilizado para testar a autoclave (vapor saturado)?', back_content: 'Esporos de Geobacillus stearothermophilus.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'O que é o Teste de Bowie-Dick?', back_content: 'Teste químico diário para verificar a eficácia da remoção de ar e penetração do vapor em autoclaves pré-vácuo.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'O que é o "Time Out" na Cirurgia Segura?', back_content: 'É a pausa cirúrgica realizada imediatamente antes da incisão da pele. Confirma-se: paciente, sítio, procedimento e posicionamento.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'O que significa o tempo cirúrgico "Hemostasia"?', back_content: 'É o procedimento para deter o sangramento (pinçamento, ligadura, eletrocauterização).' },
-  { deck_category: 'Centro Cirúrgico', front_content: 'Qual a diferença entre Assepsia e Antissepsia?', back_content: 'Assepsia: Medidas para impedir a entrada de germes em local estéril (ambiente). Antissepsia: Eliminação de germes em tecidos vivos (pele/mucosa).' }
+  { deck_category: 'Centro Cirúrgico', front_content: 'Qual a diferença entre Assepsia e Antissepsia?', back_content: 'Assepsia: Medidas para impedir a entrada de germes em local estéril (ambiente). Antissepsia: Eliminação de germes em tecidos vivos (pele/mucosa).' },
+
+  // --- NOVAS 15 CARTAS: CME (RDC 15/2012) ---
+  { deck_category: 'Centro Cirúrgico', front_content: 'O que é o fluxo unidirecional na CME e qual sua importância?', back_content: 'É o fluxo de trabalho que vai da área suja (expurgo) para a limpa (preparo) e estéril (guarda), sem cruzamento, para evitar contaminação cruzada.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'O que define uma CME Classe II segundo a RDC 15/2012?', back_content: 'É aquela que processa materiais complexos (conformation não tubular/tubular) e não complexos, atendendo a serviços de saúde que realizam cirurgias.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'Qual a definição técnica de "Limpeza" na CME?', back_content: 'É a remoção de sujidade visível (orgânica e inorgânica) e redução da carga microbiana, sendo o passo obrigatório antes da desinfecção ou esterilização.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'Qual a função do Detergente Enzimático?', back_content: 'Contém enzimas (proteases, lipases, amilases) que quebram a matéria orgânica (sangue, gordura) facilitando sua remoção dos instrumentais.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'O que são Indicadores Químicos Classe 5 (Integradores)?', back_content: 'São indicadores internos que monitoram todos os parâmetros críticos da esterilização (tempo, temperatura e presença de vapor), mimetizando a morte microbiana.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'O que são Indicadores Químicos Classe 6 (Emuladores)?', back_content: 'São indicadores de ciclo específico que reagem apenas quando 95% dos parâmetros do ciclo (tempo/temperatura) são atingidos. Ex: ciclo de Príons.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'Com que frequência o Teste de Bowie-Dick deve ser realizado?', back_content: 'Diariamente, no primeiro ciclo do dia, com a autoclave vazia (apenas o pacote teste), em autoclaves com bomba de vácuo.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'Qual a frequência mínima obrigatória para uso de Indicador Biológico segundo a RDC 15?', back_content: 'No mínimo semanalmente e em toda carga que contenha materiais implantáveis (que só podem ser liberados após o resultado negativo).' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'Qual a diferença de pressão de ar entre a área de Expurgo e a área de Preparo?', back_content: 'A área de Expurgo (suja) deve ter pressão negativa (o ar não sai para outras áreas). A área de Preparo (limpa) deve ter pressão positiva.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'O que significa o conceito de "validade baseada em eventos" para estéreis?', back_content: 'Significa que a esterilidade é mantida enquanto a embalagem estiver íntegra, limpa e seca, e não apenas por um prazo de validade fixo (tempo).' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'Quais os EPIs obrigatórios para a área de Expurgo (Limpeza) na CME?', back_content: 'Luvas de borracha grossa/nitrílica (cano longo), avental impermeável, máscara, óculos de proteção (ou viseira), touca e calçado fechado impermeável.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'O que é Desinfecção de Alto Nível e qual produto é comumente usado?', back_content: 'Processo que elimina bactérias vegetativas, micobactérias, fungos, vírus e alguns esporos. Ex: Glutaraldeído, Ácido Peracético ou OPA (Ortoftalaldeído).' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'Quais são os parâmetros físicos monitorados na autoclave a vapor?', back_content: 'Temperatura (ex: 134°C ou 121°C), Tempo de exposição e Pressão da câmara.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'O que é a Esterilização "Flash" (Uso Imediato) e quando é permitida?', back_content: 'É um ciclo rápido sem embalagem ou com container específico. Só é permitida em urgências, para uso imediato, não podendo o material ser armazenado.' },
+  { deck_category: 'Centro Cirúrgico', front_content: 'O que é Rastreabilidade no processamento de produtos para saúde?', back_content: 'É a capacidade de recuperar o histórico do processo (quem lavou, quem esterilizou, qual autoclave, qual ciclo, testes realizados) através de registros/etiquetas.' }
 ];
 
 serve(async (req) => {
