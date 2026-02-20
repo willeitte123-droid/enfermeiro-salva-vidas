@@ -176,6 +176,19 @@ const DeepStudy = () => {
     }
   };
 
+  // Helper para limpar o prefixo de Artigo (Art. 1º, etc)
+  const cleanArticlePrefix = (text: string): string => {
+    // Regex para identificar "Art.", "Artigo", números, ordinais, tags HTML (como strong) e pontuação inicial
+    // Ex: "<strong>Art. 1º</strong> Texto..." -> "Texto..."
+    // Ex: "Art. 20 - Texto..." -> "Texto..."
+    const articleRegex = /^(?:(?:\s*<[^>]+>\s*)*)Art[\.\s]\s*\d+(?:º|°)?(?:\s*<\/[^>]+>)*(?:\s*[-–])?\s*/i;
+    
+    if (articleRegex.test(text)) {
+      return text.replace(articleRegex, '');
+    }
+    return text;
+  };
+
   // Handler de Seleção de Texto
   const handleMouseUp = () => {
     const selection = window.getSelection();
@@ -188,17 +201,11 @@ const DeepStudy = () => {
     const plainText = selection.toString().trim();
     
     if (plainText.length > 0) {
-      // Divide o texto selecionado em palavras para criar um padrão de busca flexível
-      // Isso permite encontrar o texto no HTML original mesmo se houver tags (<b>, <i>, etc) no meio
       const words = plainText.split(/\s+/).filter(w => w.trim().length > 0);
       
       if (words.length === 0) return;
 
-      // Escapa caracteres especiais para Regex
       const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-      
-      // O "glue" (cola) é o padrão que aceita espaços OU tags HTML entre as palavras
-      // Permite: espaços, quebras de linha, tags HTML (<...>) e entidades (&...;)
       const glue = '(?:\\s*<[^>]+>\\s*|\\s+|&[^;]+;)+';
       
       const pattern = escapedWords.join(glue);
@@ -207,8 +214,20 @@ const DeepStudy = () => {
         const regex = new RegExp(pattern, 'gi'); 
         const match = selectedDoc.content.match(regex);
         
-        // Se encontrar no HTML original, usa o texto com tags. Se não, usa o texto puro (fallback)
-        const textToSave = match ? match[0] : plainText;
+        let textToSave = match ? match[0] : plainText;
+
+        // --- FILTRO INTELIGENTE DE ARTIGO ---
+        // Se o texto selecionado começar com "Art. X", removemos essa parte do grifo
+        // Isso evita que o artigo seja grifado e foca no conteúdo
+        textToSave = cleanArticlePrefix(textToSave);
+
+        // Se após a limpeza o texto estiver vazio (usuário selecionou apenas "Art. 1º"), ignoramos
+        if (!textToSave || textToSave.trim().length === 0) {
+            setSelectionRect(null);
+            setSelectedText("");
+            window.getSelection()?.removeAllRanges();
+            return;
+        }
 
         const isDuplicate = highlights.some(h => h.selected_text === textToSave);
         if (isDuplicate) {
@@ -225,9 +244,12 @@ const DeepStudy = () => {
           setSelectedText(textToSave);
         }
       } catch (e) {
-        console.error("Erro ao criar regex para seleção", e);
-        // Fallback simples
-        if (isHighlighterMode) addHighlightMutation.mutate(plainText);
+        console.error("Erro ao processar seleção", e);
+        // Fallback simples com limpeza
+        if (isHighlighterMode) {
+            const cleanPlain = plainText.replace(/^Art[\.\s]\s*\d+(?:º|°)?\s*[-–]?\s*/i, '');
+            if (cleanPlain.trim().length > 0) addHighlightMutation.mutate(cleanPlain);
+        }
       }
     }
   };
@@ -256,7 +278,6 @@ const DeepStudy = () => {
     if (!selectedDoc) return "";
     let content = selectedDoc.content;
     
-    // Lista de intervalos para grifar: [{start, end}]
     const ranges: {start: number, end: number}[] = [];
 
     if (!highlights || highlights.length === 0) return content;
@@ -265,11 +286,9 @@ const DeepStudy = () => {
       if (!h.selected_text) return;
       const term = h.selected_text;
       
-      // Tenta encontrar a string exata primeiro
       let pos = content.indexOf(term);
       
       if (pos === -1) {
-         // Se não encontrar exato (talvez por diferenças de espaço), tenta via Regex flexível
          try {
             const words = term.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(w => w.trim().length > 0);
             const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
@@ -282,7 +301,6 @@ const DeepStudy = () => {
             }
          } catch (e) {}
       } else {
-        // Encontrou exato, busca todas as ocorrências
         while (pos !== -1) {
           ranges.push({ start: pos, end: pos + term.length });
           pos = content.indexOf(term, pos + 1);
@@ -292,7 +310,6 @@ const DeepStudy = () => {
 
     if (ranges.length === 0) return content;
 
-    // Mescla intervalos sobrepostos
     ranges.sort((a, b) => a.start - b.start);
     const mergedRanges: {start: number, end: number}[] = [];
     if (ranges.length > 0) {
@@ -309,7 +326,6 @@ const DeepStudy = () => {
         mergedRanges.push(currentRange);
     }
 
-    // Aplica os grifos no HTML (de trás para frente para não quebrar índices)
     let result = content;
     for (let i = mergedRanges.length - 1; i >= 0; i--) {
       const { start, end } = mergedRanges[i];
