@@ -368,7 +368,7 @@ const VideoLibrary = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-4 w-full min-w-0">
         <div className="space-y-3 w-full min-w-0">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary w-fit uppercase tracking-wider">
-            <Sparkles className="h-3 w-3 fill-current" /> Conteúdo Premium
+            <Sparkles className="h-3 w-3 fill-current" /> Conteúdo selecionado
           </div>
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight break-words whitespace-normal">
