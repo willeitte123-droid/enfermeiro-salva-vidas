@@ -1,10 +1,10 @@
-import { useMemo, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useMemo } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  LineChart, Line, PieChart, Pie, Cell, Tooltip as RechartsTooltip, AreaChart, Area
+  PieChart, Pie, Cell, Tooltip as RechartsTooltip, AreaChart, Area
 } from "recharts";
-import { Users, Activity, Calendar, MapPin, Brain, DollarSign, TrendingUp, AlertOctagon, ArrowUpRight, Crown, CreditCard, ShieldCheck, Download } from "lucide-react";
+import { Users, Activity, Calendar, MapPin, Brain, DollarSign, TrendingUp, AlertOctagon, CreditCard, ShieldCheck } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
@@ -12,8 +12,6 @@ import { subDays, format, parseISO, getHours } from "date-fns";
 import { Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 
 // --- CORES ---
 const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#64748b'];
@@ -78,30 +76,12 @@ const fetchDashboardData = async () => {
 };
 
 const AdminDashboard = () => {
-  const [isInstallingPack, setIsInstallingPack] = useState(false);
-
   const { data, isLoading, error } = useQuery({
     queryKey: ['adminDashboardStatsReal'],
     queryFn: fetchDashboardData,
     refetchInterval: 60000,
     retry: 1
   });
-
-  const handleInstallFlashcards = async () => {
-    setIsInstallingPack(true);
-    const toastId = toast.loading("Instalando pacote de Flashcards...");
-    try {
-      const { data, error } = await supabase.functions.invoke('seed-flashcards');
-      if (error) throw error;
-      if (data.error) throw new Error(data.error);
-
-      toast.success(data.message, { id: toastId });
-    } catch (err: any) {
-      toast.error("Erro ao instalar: " + err.message, { id: toastId });
-    } finally {
-      setIsInstallingPack(false);
-    }
-  };
 
   const stats = useMemo(() => {
     if (!data) return null;
@@ -187,16 +167,6 @@ const AdminDashboard = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Dashboard Administrativo</h2>
         <div className="flex gap-2">
-            <Button 
-                onClick={handleInstallFlashcards} 
-                disabled={isInstallingPack}
-                variant="outline" 
-                size="sm"
-                className="bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100"
-            >
-                {isInstallingPack ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />}
-                Instalar Flashcards
-            </Button>
             <div className="flex items-center gap-2 bg-card border rounded-md p-1 shadow-sm text-xs sm:text-sm">
                 <div className="flex items-center gap-2 px-3 py-1.5 border-r text-muted-foreground">
                     <Calendar className="h-3.5 w-3.5" />

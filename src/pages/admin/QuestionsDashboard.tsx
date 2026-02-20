@@ -4,11 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell 
 } from "recharts";
-import { Loader2, Database, AlertTriangle, FileQuestion, PieChart, Layers } from "lucide-react";
+import { Loader2, Database, AlertTriangle, FileQuestion, PieChart, Layers, Download } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface QuestionStats {
   total: number;
@@ -33,6 +35,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const QuestionsDashboard = () => {
+  const [isInstallingPack, setIsInstallingPack] = useState(false);
+
   const { data: stats, isLoading, error } = useQuery({
     queryKey: ['adminQuestionStatsLocal'],
     queryFn: async () => {
@@ -91,6 +95,22 @@ const QuestionsDashboard = () => {
     }
   });
 
+  const handleInstallFlashcards = async () => {
+    setIsInstallingPack(true);
+    const toastId = toast.loading("Instalando pacote de Flashcards...");
+    try {
+      const { data, error } = await supabase.functions.invoke('seed-flashcards');
+      if (error) throw error;
+      if (data.error) throw new Error(data.error);
+
+      toast.success(data.message, { id: toastId });
+    } catch (err: any) {
+      toast.error("Erro ao instalar: " + err.message, { id: toastId });
+    } finally {
+      setIsInstallingPack(false);
+    }
+  };
+
   // Calcula a altura necessária para o gráfico com base no número de categorias
   const chartHeight = useMemo(() => {
     if (!stats) return 400;
@@ -120,6 +140,20 @@ const QuestionsDashboard = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       
+      {/* Header Actions */}
+      <div className="flex justify-end">
+          <Button 
+              onClick={handleInstallFlashcards} 
+              disabled={isInstallingPack}
+              variant="outline" 
+              size="sm"
+              className="bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100"
+          >
+              {isInstallingPack ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />}
+              Instalar Flashcards
+          </Button>
+      </div>
+
       {/* Header Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white border-none shadow-lg">
