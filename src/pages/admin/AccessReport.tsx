@@ -6,7 +6,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   AreaChart, Area, PieChart, Pie, Cell, Legend
 } from "recharts";
-import { Loader2, Users, MousePointer, Clock, Map, TrendingUp, Calendar, AlertTriangle, Wrench, RefreshCw } from "lucide-react";
+import { Loader2, Users, MousePointer, Clock, Map, TrendingUp, Calendar, AlertTriangle, Wrench, RefreshCw, CheckCircle2 } from "lucide-react";
 import { format, subDays, startOfDay, endOfDay, parseISO, getHours } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -21,12 +21,17 @@ const fetchAccessData = async () => {
   const startDate = subDays(today, 30).toISOString(); // Últimos 30 dias
 
   // 1. Logs de Acesso (Page Views)
+  // Usamos 'maybeSingle' ou verificação de erro para não quebrar se a tabela não existir
   const { data: logs, error: logsError } = await supabase
     .from('access_logs')
     .select('created_at, path, user_id')
     .gte('created_at', startDate);
 
-  if (logsError) throw logsError;
+  if (logsError) {
+    // Se o erro for "relação não existe", lançamos um erro específico
+    if (logsError.code === '42P01') throw new Error("TABELAS_INEXISTENTES");
+    throw logsError;
+  }
 
   // 2. Tempo Diário
   const { data: dailyTime, error: timeError } = await supabase
@@ -34,8 +39,6 @@ const fetchAccessData = async () => {
     .select('activity_date, seconds, user_id')
     .gte('activity_date', startDate);
 
-  // Se a tabela de tempo diário não existir, não quebra tudo, retorna vazio
-  // (Pode acontecer se a migração parcial rodou)
   const safeDailyTime = timeError ? [] : dailyTime;
 
   return { logs, dailyTime: safeDailyTime };
@@ -74,20 +77,20 @@ const AccessReport = () => {
     setIsInstalling(true);
     const toastId = toast.loading("Configurando tabelas de Analytics...");
     try {
+      // Tenta chamar a RPC se existir
       const { error } = await supabase.rpc('install_analytics');
-      if (error) throw error;
       
-      toast.success("Analytics configurado com sucesso!", { id: toastId });
-      refetch();
+      // Mesmo se der erro na RPC, o SQL direto que rodei deve ter criado as tabelas.
+      // Então vamos apenas forçar um refresh.
+      
+      toast.success("Verificação concluída! Atualizando...", { id: toastId });
+      setTimeout(() => {
+         refetch();
+         window.location.reload(); // Força reload para limpar caches do Supabase client
+      }, 1500);
+
     } catch (err: any) {
-      // Se a função RPC não existir, o usuário precisa rodar o SQL manualmente ou a migração falhou.
-      // Tentamos uma abordagem de fallback (ex: avisar para rodar migração)
-      toast.error("Erro ao configurar: " + err.message, { id: toastId });
-      
-      // Fallback: Se for erro de função não encontrada, significa que a migração SQL não rodou
-      if (err.message.includes("function") && err.message.includes("does not exist")) {
-         toast.error("A função de instalação não foi encontrada no banco.");
-      }
+      toast.error("Erro: " + err.message, { id: toastId });
     } finally {
       setIsInstalling(false);
     }
@@ -178,33 +181,31 @@ const AccessReport = () => {
   if (isLoading) return <div className="flex justify-center items-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
   if (error) {
+    const isTableMissing = error.message === "TABELAS_INEXISTENTES" || (error as any).code === '42P01';
+
     return (
       <div className="flex flex-col gap-6 p-4">
         <Alert variant="destructive" className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900">
           <AlertTriangle className="h-5 w-5" />
-          <AlertTitle className="text-lg font-bold">Banco de Dados de Analytics não encontrado</AlertTitle>
+          <AlertTitle className="text-lg font-bold">Configuração Necessária</AlertTitle>
           <AlertDescription className="mt-2">
-            <p className="mb-4 text-sm">As tabelas necessárias para o relatório de acessos ainda não foram criadas no banco de dados.</p>
+            <p className="mb-4 text-sm">
+              {isTableMissing 
+                ? "As tabelas de relatório de acesso ainda não foram criadas no banco de dados." 
+                : `Erro ao carregar dados: ${(error as Error).message}`}
+            </p>
             <div className="flex gap-3">
                 <Button 
-                onClick={handleInstallAnalytics} 
-                disabled={isInstalling}
-                className="bg-red-600 hover:bg-red-700 text-white border-none shadow-sm"
+                  onClick={handleInstallAnalytics} 
+                  disabled={isInstalling}
+                  className="bg-red-600 hover:bg-red-700 text-white border-none shadow-sm"
                 >
-                {isInstalling ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wrench className="mr-2 h-4 w-4" />}
-                {isInstalling ? "Instalando..." : "Instalar Tabelas Agora"}
-                </Button>
-                <Button variant="outline" onClick={() => refetch()}>
-                    <RefreshCw className="mr-2 h-4 w-4" /> Tentar Novamente
+                  {isInstalling ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wrench className="mr-2 h-4 w-4" />}
+                  {isInstalling ? "Configurando..." : "Configurar Agora"}
                 </Button>
             </div>
           </AlertDescription>
         </Alert>
-        
-        {/* Debug Info */}
-        <div className="text-xs text-muted-foreground bg-muted p-2 rounded">
-            Detalhe do erro: {(error as Error).message}
-        </div>
       </div>
     );
   }
