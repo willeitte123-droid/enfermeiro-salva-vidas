@@ -3,9 +3,9 @@ import { supabase } from "@/lib/supabase";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, BarChart3, Info } from "lucide-react";
+import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, BarChart3, Info, Crown, Users, UserCheck, Clock } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { format } from 'date-fns';
+import { format, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -172,6 +172,14 @@ const UserManagement = () => {
     );
   }, [users, searchTerm]);
 
+  // Estatísticas Rápidas
+  const stats = useMemo(() => {
+    const total = users.length;
+    const active = users.filter(u => u.status === 'active').length;
+    const premium = users.filter(u => u.plan?.toLowerCase().includes('premium')).length;
+    return { total, active, premium };
+  }, [users]);
+
   const handleRefresh = () => {
     refetch();
     toast.success("Lista de usuários atualizada");
@@ -188,7 +196,7 @@ const UserManagement = () => {
       if (data.error) throw new Error(data.error);
 
       toast.success(data.message || "Permissões corrigidas!", { id: toastId });
-      refetch(); // Recarrega a lista para testar
+      refetch();
     } catch (err: any) {
       toast.error("Falha ao corrigir: " + err.message, { id: toastId });
     } finally {
@@ -196,118 +204,173 @@ const UserManagement = () => {
     }
   };
 
+  // Helper para Estilo do Plano
+  const getPlanBadgeStyle = (planName: string | null) => {
+    const plan = (planName || "").toLowerCase();
+    if (plan.includes('premium')) return "bg-gradient-to-r from-amber-200 to-yellow-400 text-amber-900 border-amber-300 shadow-sm font-bold";
+    if (plan.includes('essencial')) return "bg-gradient-to-r from-emerald-200 to-green-400 text-emerald-900 border-emerald-300 shadow-sm font-bold";
+    if (plan.includes('pro')) return "bg-gradient-to-r from-blue-200 to-indigo-400 text-blue-900 border-blue-300 shadow-sm font-bold";
+    return "bg-slate-100 text-slate-700 border-slate-200";
+  };
+
+  // Helper para Exibição de Data com Alerta
+  const ExpirationDate = ({ date }: { date: string | null }) => {
+    if (!date) return <span className="text-muted-foreground italic">-</span>;
+    
+    const parsedDate = new Date(date);
+    const daysLeft = differenceInDays(parsedDate, new Date());
+    const isExpiringSoon = daysLeft >= 0 && daysLeft <= 5;
+    const isExpired = daysLeft < 0;
+
+    return (
+      <div className={cn(
+        "flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-md w-fit",
+        isExpiringSoon ? "bg-red-50 text-red-600 border border-red-200 animate-pulse font-bold" : 
+        isExpired ? "text-muted-foreground line-through opacity-70" : 
+        "text-orange-600/90 dark:text-orange-400"
+      )} title="Vencimento do Acesso">
+        <Clock className={cn("h-3 w-3", isExpiringSoon ? "text-red-600" : "text-orange-500")} />
+        {format(parsedDate, "dd/MM/yy")}
+        {isExpiringSoon && <span className="text-[10px] ml-1">(! {daysLeft}d)</span>}
+      </div>
+    );
+  };
+
   if (isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
   if (error) return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro de Acesso</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
 
   return (
-    <Card className="border-none shadow-none bg-transparent">
-      <div className="flex flex-col gap-4 mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight text-foreground">Base de Usuários</h2>
-            <p className="text-sm text-muted-foreground">Gerencie acessos, planos e status.</p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-             <Button 
-               variant="default" 
-               size="sm" 
-               onClick={handleFixPermissions} 
-               disabled={isFixing}
-               className="shadow-sm bg-indigo-600 hover:bg-indigo-700 text-white w-full sm:w-auto"
-             >
-                {isFixing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Wrench className="h-4 w-4 mr-2" />} 
-                Corrigir Permissões
-             </Button>
-             <Button variant="outline" size="sm" onClick={handleRefresh} title="Atualizar Lista" className="shadow-sm bg-background w-full sm:w-auto">
-                <Loader2 className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} /> Atualizar
-             </Button>
-          </div>
-        </div>
-        
-        <div className="relative w-full">
+    <div className="space-y-6">
+      
+      {/* 1. Resumo Rápido (Imersivo) */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <Card className="bg-gradient-to-br from-slate-800 to-slate-900 text-white border-none shadow-md p-4 flex items-center justify-between">
+           <div>
+              <p className="text-slate-400 text-xs uppercase font-bold tracking-wider">Total Usuários</p>
+              <h3 className="text-3xl font-black">{stats.total}</h3>
+           </div>
+           <div className="p-3 bg-white/10 rounded-xl"><Users className="h-6 w-6 text-slate-200" /></div>
+        </Card>
+        <Card className="bg-gradient-to-br from-emerald-600 to-teal-700 text-white border-none shadow-md p-4 flex items-center justify-between">
+           <div>
+              <p className="text-emerald-100 text-xs uppercase font-bold tracking-wider">Ativos</p>
+              <h3 className="text-3xl font-black">{stats.active}</h3>
+           </div>
+           <div className="p-3 bg-white/10 rounded-xl"><UserCheck className="h-6 w-6 text-emerald-100" /></div>
+        </Card>
+        <Card className="bg-gradient-to-br from-amber-500 to-orange-600 text-white border-none shadow-md p-4 flex items-center justify-between">
+           <div>
+              <p className="text-amber-100 text-xs uppercase font-bold tracking-wider">Assinantes Premium</p>
+              <h3 className="text-3xl font-black">{stats.premium}</h3>
+           </div>
+           <div className="p-3 bg-white/10 rounded-xl"><Crown className="h-6 w-6 text-amber-100" /></div>
+        </Card>
+      </div>
+
+      {/* 2. Barra de Ferramentas */}
+      <div className="flex flex-col sm:flex-row justify-between gap-4 bg-card p-4 rounded-xl border shadow-sm items-center">
+        <div className="relative w-full sm:w-96">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
-            placeholder="Buscar por nome ou email..." 
-            className="pl-9 bg-background border-border/60 shadow-sm w-full h-11"
+            placeholder="Buscar por nome, email ou ID..." 
+            className="pl-9 bg-muted/30 border-border/60 shadow-sm focus:bg-background transition-all"
             value={searchTerm} 
             onChange={(e) => setSearchTerm(e.target.value)} 
           />
         </div>
+        <div className="flex gap-2 w-full sm:w-auto">
+             <Button 
+               variant="outline" 
+               size="sm" 
+               onClick={handleFixPermissions} 
+               disabled={isFixing}
+               className="flex-1 sm:flex-none border-dashed"
+             >
+                {isFixing ? <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" /> : <Wrench className="h-3.5 w-3.5 mr-2 text-muted-foreground" />} 
+                Reparar
+             </Button>
+             <Button size="sm" onClick={handleRefresh} className="flex-1 sm:flex-none bg-primary text-primary-foreground shadow-sm hover:shadow-md transition-all">
+                <Loader2 className={`h-3.5 w-3.5 mr-2 ${isLoading ? 'animate-spin' : ''}`} /> Atualizar
+             </Button>
+        </div>
       </div>
 
-      <div className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">
+      {/* 3. Tabela de Usuários */}
+      <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
         <ScrollArea className="w-full whitespace-nowrap">
-          <div className="min-w-[800px]">
+          <div className="min-w-[900px]">
             <Table>
-              <TableHeader className="bg-muted/40">
+              <TableHeader className="bg-muted/30">
                 <TableRow>
-                  <TableHead className="w-[250px]">Usuário</TableHead>
-                  <TableHead>Plano & Status</TableHead>
-                  <TableHead>Acesso</TableHead>
+                  <TableHead className="w-[300px] pl-6 py-4">Usuário</TableHead>
+                  <TableHead className="w-[200px]">Plano & Status</TableHead>
+                  <TableHead className="w-[180px]">Vigência</TableHead>
                   <TableHead>Localização</TableHead>
-                  <TableHead className="text-right">Gerenciar</TableHead>
+                  <TableHead className="text-right pr-6">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredUsers.length > 0 ? filteredUsers.map((user) => (
-                  <TableRow key={user.id} className="hover:bg-muted/30">
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-9 w-9 border shrink-0">
+                  <TableRow key={user.id} className="hover:bg-muted/40 transition-colors group">
+                    <TableCell className="pl-6 py-3">
+                      <div className="flex items-center gap-4">
+                        <Avatar className="h-10 w-10 border-2 border-background shadow-sm group-hover:border-primary/20 transition-colors">
                           <AvatarImage src={user.avatar_url || undefined} />
-                          <AvatarFallback>{user.first_name?.[0]}</AvatarFallback>
+                          <AvatarFallback className="bg-primary/10 text-primary font-bold">{user.first_name?.[0]}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col">
-                          <span className="font-medium text-sm text-foreground truncate max-w-[150px]">{user.first_name} {user.last_name}</span>
+                          <span className="font-semibold text-sm text-foreground truncate max-w-[200px]">{user.first_name} {user.last_name}</span>
                           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <Mail className="h-3 w-3 shrink-0" />
-                            <span className="truncate max-w-[140px]">{user.email}</span>
+                            <Mail className="h-3 w-3 shrink-0 opacity-70" />
+                            <span className="truncate max-w-[180px] font-normal">{user.email}</span>
                           </div>
                         </div>
                       </div>
                     </TableCell>
+                    
                     <TableCell>
-                      <div className="flex flex-col items-start gap-1.5">
-                        <Badge variant="outline" className="font-normal bg-background/50 capitalize truncate max-w-[120px]">
-                            {user.plan}
+                      <div className="flex flex-col items-start gap-2">
+                        <Badge variant="outline" className={cn("rounded-md px-2 py-0.5 border font-medium truncate max-w-[140px]", getPlanBadgeStyle(user.plan))}>
+                            {user.plan || "Free"}
                         </Badge>
-                        <div className="flex items-center gap-1.5">
-                          <span className={cn("w-2 h-2 rounded-full", user.status === 'active' ? "bg-green-500" : user.status === 'suspended' ? "bg-red-500" : "bg-yellow-500")} />
-                          <span className="text-xs text-muted-foreground capitalize">{user.status}</span>
+                        <div className="flex items-center gap-1.5 px-1">
+                          <span className={cn("w-2 h-2 rounded-full ring-2 ring-transparent", 
+                              user.status === 'active' ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : 
+                              user.status === 'suspended' ? "bg-red-500" : "bg-yellow-500"
+                          )} />
+                          <span className="text-xs font-medium text-muted-foreground capitalize">{user.status}</span>
                         </div>
                       </div>
                     </TableCell>
+                    
                     <TableCell>
-                      <div className="flex flex-col gap-1 text-xs text-muted-foreground">
-                        <div className="flex items-center gap-1.5" title="Data de Início">
-                            <Calendar className="h-3 w-3 shrink-0" />
+                      <div className="flex flex-col gap-1.5 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-2" title="Início">
+                            <Calendar className="h-3.5 w-3.5 shrink-0 text-slate-400" />
                             {user.plan_start_date ? format(new Date(user.plan_start_date), "dd/MM/yy", { locale: ptBR }) : "-"}
                         </div>
-                        {user.access_expires_at && (
-                            <div className="flex items-center gap-1.5 text-orange-600/80 dark:text-orange-400" title="Vencimento">
-                              <Info className="h-3 w-3 shrink-0" />
-                              {format(new Date(user.access_expires_at), "dd/MM/yy", { locale: ptBR })}
-                            </div>
-                        )}
+                        <ExpirationDate date={user.access_expires_at} />
                       </div>
                     </TableCell>
+                    
                     <TableCell>
-                      <div className="flex flex-col text-xs text-muted-foreground">
+                      <div className="flex flex-col text-xs text-muted-foreground gap-1">
                         {user.location ? (
-                          <div className="flex items-center gap-1.5 mb-1"><MapPin className="h-3 w-3 shrink-0" /><span className="truncate max-w-[120px]">{user.location}</span></div>
-                        ) : <span className="text-muted-foreground italic pl-4">-</span>}
+                          <div className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 shrink-0 text-slate-400" /><span className="truncate max-w-[140px] font-medium text-foreground/80">{user.location}</span></div>
+                        ) : <span className="text-muted-foreground italic pl-5">-</span>}
                         {user.last_ip ? (
-                          <div className="flex items-center gap-1.5"><Globe className="h-3 w-3 shrink-0" />{user.last_ip}</div>
+                          <div className="flex items-center gap-1.5"><Globe className="h-3.5 w-3.5 shrink-0 text-slate-400" /> <span className="font-mono opacity-80">{user.last_ip}</span></div>
                         ) : null}
                       </div>
                     </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="sm" onClick={() => setEditingUser(user)} className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary">
+                    
+                    <TableCell className="text-right pr-6">
+                      <Button variant="ghost" size="sm" onClick={() => setEditingUser(user)} className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary rounded-full">
                         <Edit className="h-4 w-4" />
                       </Button>
                     </TableCell>
                   </TableRow>
-                )) : <TableRow><TableCell colSpan={5} className="h-32 text-center text-muted-foreground">Nenhum usuário encontrado.</TableCell></TableRow>}
+                )) : <TableRow><TableCell colSpan={5} className="h-40 text-center text-muted-foreground">Nenhum usuário encontrado.</TableCell></TableRow>}
               </TableBody>
             </Table>
           </div>
@@ -315,7 +378,7 @@ const UserManagement = () => {
         </ScrollArea>
       </div>
       <EditUserDialog user={editingUser} open={!!editingUser} onOpenChange={() => setEditingUser(null)} />
-    </Card>
+    </div>
   );
 };
 
