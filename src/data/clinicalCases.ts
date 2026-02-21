@@ -30,7 +30,7 @@ export interface ClinicalCase {
 }
 
 export const CLINICAL_CASES: ClinicalCase[] = [
-  // --- NOVOS CASOS: FUNDAMENTOS E PROCEDIMENTOS ---
+  // --- NOVOS CASOS: FUNDAMENTOS E PROCEDIMENTOS (CORRIGIDOS) ---
   {
     id: "sne-seguranca",
     title: "Segurança na Sonda Nasoenteral",
@@ -41,33 +41,33 @@ export const CLINICAL_CASES: ClinicalCase[] = [
     nodes: {
       "start": {
         id: "start",
-        text: "Sr. Roberto, 75 anos, AVC sequela, em uso de Sonda Nasoenteral (Dobbhoff) para dieta. Você entra no quarto para instalar o frasco de dieta das 12h.\n\nVocê nota que a fixação da sonda está solta e a marcação de referência na narina está 5cm mais externa do que o registrado ontem.\n\nO paciente está tosse leve e dispneico.",
+        text: "Sr. Roberto, 75 anos, AVC sequela, em uso de Sonda Nasoenteral (Dobbhoff) para dieta. Você entra no quarto para instalar o frasco de dieta das 12h.\n\nVocê nota que a fixação da sonda está solta e a marcação de referência na narina está 5cm mais externa do que o registrado ontem (a sonda 'saiu' um pouco).\n\nO paciente apresenta tosse leve e está dispneico.",
         vitals: { hr: 98, bp: "130/80", spo2: 92, resp: 24, temp: 36.5, status: "warning" },
         options: [
-          { label: "Realizar teste de ausculta (injetar ar) e, se ouvir, iniciar dieta", nextNodeId: "ausculta_error", type: "assessment" },
-          { label: "Reintroduzir a sonda 5cm até a marcação original e iniciar", nextNodeId: "blind_push_error", type: "intervention" },
+          { label: "Realizar teste de ausculta (injetar ar) e, se ouvir borbulho, iniciar dieta", nextNodeId: "ausculta_error", type: "assessment" },
+          { label: "Reintroduzir a sonda os 5cm que faltam 'às cegas' e iniciar", nextNodeId: "blind_push_error", type: "intervention" },
           { label: "Suspender dieta, manter jejum e solicitar Raio-X de controle", nextNodeId: "xray_success", type: "intervention" }
         ]
       },
       "ausculta_error": {
         id: "ausculta_error",
-        text: "Você realizou a ausculta e ouviu o ruído (borbulho). Iniciou a dieta.\n\nMinutos depois, o paciente começou a tossir violentamente e ficou cianótico. A sonda estava no esôfago distal/início da traqueia e o ruído foi transmitido.\n\nO paciente sofreu broncoaspiração maciça.",
+        text: "Você realizou a ausculta epigástrica, ouviu o ruído de ar e iniciou a dieta.\n\nMinutos depois, o paciente começou a tossir violentamente, ficou cianótico e a saturação caiu para 75%.\n\nO som da ausculta foi transmitido, mas a ponta da sonda estava na entrada da traqueia ou esôfago alto. O paciente sofreu broncoaspiração maciça de dieta.",
         vitals: { hr: 140, bp: "150/90", spo2: 75, resp: 40, temp: 36.5, status: "critical" },
-        feedback: "O teste de ausculta NÃO é seguro para confirmar posicionamento de sondas enterais finas (Dobbhoff), pois o som pode ser transmitido dos pulmões ou esôfago. O Padrão-Ouro é o Raio-X.",
+        feedback: "ERRO CRÍTICO: O teste de ausculta NÃO é seguro para confirmar posicionamento de sondas enterais finas (Dobbhoff), pois o som pode ser transmitido dos pulmões ou esôfago. O Padrão-Ouro é o Raio-X ou teste de pH (se validado na instituição).",
         options: []
       },
       "blind_push_error": {
         id: "blind_push_error",
-        text: "Ao reintroduzir a sonda sem guia e sem visão, a ponta se enrolou na orofaringe ou entrou na via aérea.\n\nVocê iniciou a dieta e o paciente broncoaspirou imediatamente.",
+        text: "Ao reintroduzir a sonda sem o fio guia e sem visão, a ponta flexível se enrolou na orofaringe ou migrou para a via aérea.\n\nVocê iniciou a dieta achando que estava no estômago. O paciente broncoaspirou imediatamente, evoluindo para pneumonia aspirativa grave.",
         vitals: { hr: 130, bp: "140/90", spo2: 80, resp: 35, temp: 36.5, status: "critical" },
-        feedback: "Nunca reintroduza uma sonda deslocada às cegas. É necessário reposicionar com técnica adequada e confirmar localização.",
+        feedback: "ERRO: Nunca reintroduza uma sonda deslocada às cegas. Se a sonda saiu significativamente, o protocolo é: suspender dieta, avaliar necessidade de repassagem total ou confirmação radiológica da posição atual.",
         options: []
       },
       "xray_success": {
         id: "xray_success",
-        text: "Conduta perfeita. Você suspendeu a dieta e solicitou o RX.\n\nO exame mostrou a ponta da sonda no esôfago médio (risco altíssimo de aspiração). A sonda foi repassada e posicionada corretamente no duodeno antes da dieta ser liberada.",
+        text: "Conduta perfeita. Você suspendeu a dieta e solicitou o RX.\n\nO exame mostrou a ponta da sonda no esôfago médio (risco altíssimo de aspiração se a dieta fosse ligada). A sonda foi repassada com técnica correta e um novo RX confirmou a posição no duodeno.\n\nDieta liberada com segurança.",
         vitals: { hr: 85, bp: "120/80", spo2: 96, resp: 18, temp: 36.5, status: "recovered" },
-        feedback: "Segurança do paciente em primeiro lugar. Na dúvida sobre a posição da sonda, nunca infunda nada.",
+        feedback: "A segurança do paciente vem primeiro. Na dúvida sobre a posição da sonda (fixação solta, marcação alterada), nunca infunda nada até ter certeza radiológica.",
         options: []
       }
     }
@@ -82,50 +82,58 @@ export const CLINICAL_CASES: ClinicalCase[] = [
     nodes: {
       "start": {
         id: "start",
-        text: "Sr. Antônio, 82 anos, chega ao PS com 'bexigoma' (retenção urinária aguda), dor intensa hipogástrica e agitação. Histórico de Hiperplasia Prostática Benigna (HPB).\n\nMédico prescreve Sondagem Vesical de Demora (SVD). Você prepara o material estéril.",
+        text: "Sr. Antônio, 82 anos, chega ao PS com 'bexigoma' (retenção urinária aguda), dor intensa hipogástrica e agitação. Histórico de Hiperplasia Prostática Benigna (HPB) não tratada.\n\nMédico prescreve Sondagem Vesical de Demora (SVD). Você prepara o material estéril.",
         vitals: { hr: 110, bp: "160/100", spo2: 96, resp: 22, temp: 36.5, status: "warning" },
         options: [
-          { label: "Lubrificar apenas a ponta da sonda e tentar passar rápido", nextNodeId: "trauma_urethra", type: "intervention" },
+          { label: "Lubrificar a ponta da sonda e tentar passar rapidamente para aliviar a dor", nextNodeId: "trauma_urethra", type: "intervention" },
           { label: "Injetar 10-15ml de Xilocaína gel na uretra e aguardar 3-5min", nextNodeId: "technique_correct", type: "intervention" },
-          { label: "Usar uma sonda mais fina (12Fr) para passar melhor", nextNodeId: "thin_probe_fail", type: "intervention" }
+          { label: "Usar uma sonda mais fina (12Fr) achando que passará mais fácil", nextNodeId: "thin_probe_fail", type: "intervention" }
         ]
       },
       "trauma_urethra": {
         id: "trauma_urethra",
-        text: "A uretra não foi lubrificada/anestesiada adequadamente. O paciente contraiu o esfíncter por dor.\n\nVocê forçou a passagem e causou uma falsa via (perfuração uretral). Sangramento intenso pelo meato (uretrorragia) e a sonda não drenou urina.",
+        text: "A uretra não foi lubrificada/anestesiada adequadamente em toda sua extensão. O paciente contraiu o esfíncter por dor.\n\nVocê forçou a passagem contra a resistência da próstata e causou uma falsa via (perfuração uretral). Sangramento intenso pelo meato (uretrorragia) e a sonda não drenou urina.",
         vitals: { hr: 125, bp: "170/100", spo2: 96, resp: 24, temp: 36.5, status: "warning" },
-        feedback: "Em homens, a injeção intrauretral de gel anestésico e o tempo de latência são obrigatórios para distender a uretra e evitar trauma.",
+        feedback: "Em homens, a injeção intrauretral de gel anestésico (seringa de 20ml sem agulha) e o tempo de latência são obrigatórios para distender a uretra, anestesiar e lubrificar.",
         options: [
-          { label: "Suspender procedimento e chamar Urologia", nextNodeId: "urology_call", type: "assessment" }
+          { label: "Suspender procedimento, não tentar novamente e chamar Urologia", nextNodeId: "urology_call", type: "assessment" },
+          { label: "Tentar passar a sonda novamente com mais força", nextNodeId: "critical_trauma", type: "critical" }
         ]
       },
       "thin_probe_fail": {
         id: "thin_probe_fail",
-        text: "Sondas muito finas (<14Fr) em pacientes com próstata grande tendem a dobrar ou enrolar ao encontrar resistência, não conseguindo vencer o lobo prostático.\n\nVocê não conseguiu progredir e causou trauma leve.",
+        text: "Sondas muito finas (<14Fr) são muito flexíveis. Ao encontrar a resistência da próstata aumentada, a sonda dobrou dentro da uretra e não progrediu, causando dor e trauma leve.\n\nO paciente continua com bexigoma.",
         vitals: { hr: 115, bp: "160/100", spo2: 96, resp: 22, temp: 36.5, status: "warning" },
-        feedback: "Em casos de HPB, sondas de calibre médio/maior (16-18Fr) ou ponta de Coudé (ponta curva) têm mais firmeza para vencer a obstrução.",
+        feedback: "Paradoxalmente, em casos de HPB, sondas de calibre médio/maior (16-18Fr) ou ponta de Coudé (ponta curva e rígida) têm mais firmeza para vencer a obstrução prostática sem dobrar.",
         options: [
-           { label: "Tentar novamente com técnica correta (gel + calibre 16/18)", nextNodeId: "technique_correct", type: "intervention" }
+           { label: "Trocar material e tentar com técnica correta (gel + calibre 16/18)", nextNodeId: "technique_correct", type: "intervention" }
         ]
       },
       "technique_correct": {
         id: "technique_correct",
-        text: "Você anestesiou e distendeu a uretra com o gel. A sonda 16Fr passou suavemente.\n\nSaída de 1200ml de urina clara. O paciente sentiu alívio imediato da dor e a PA normalizou.",
+        text: "Você injetou 15ml de gel anestésico na uretra e aguardou 5 minutos com o pênis pinçado. A uretra distendeu e anestesiou.\n\nA sonda 16Fr passou suavemente pela próstata. Houve saída de 1200ml de urina clara. O paciente sentiu alívio imediato.",
         vitals: { hr: 80, bp: "130/80", spo2: 97, resp: 16, temp: 36.5, status: "recovered" },
-        feedback: "A técnica correta e a paciência na anestesia local são o segredo da sondagem masculina atraumática.",
+        feedback: "Excelente! A técnica correta e a paciência na anestesia local são o segredo da sondagem masculina atraumática.",
         options: []
       },
       "urology_call": {
         id: "urology_call",
-        text: "Urologista precisou passar a sonda por via endoscópica (cistoscopia) devido ao trauma causado. O paciente ficará internado.",
-        vitals: { hr: 100, bp: "140/90", spo2: 96, resp: 20, temp: 36.5, status: "stable" },
+        text: "O Urologista avaliou e confirmou lesão de uretra (falsa via). O paciente precisou ir ao Centro Cirúrgico para cistoscopia de emergência e sondagem guiada por fio guia.\n\nEmbora o paciente esteja vivo, o procedimento de enfermagem causou um dano (iatrogenia) que exigiu intervenção cirúrgica.",
+        vitals: { hr: 100, bp: "140/90", spo2: 96, resp: 20, temp: 36.5, status: "critical" },
+        feedback: "Uretrorragia é sinal de trauma grave. Diante de resistência, nunca force. A prevenção (técnica adequada) é o único caminho.",
+        options: []
+      },
+      "critical_trauma": {
+        id: "critical_trauma",
+        text: "Você insistiu no erro. A lesão uretral se transformou em ruptura completa. O paciente desenvolveu hematoma perineal extenso e infecção grave (Síndrome de Fournier) dias depois.",
+        vitals: { hr: 140, bp: "180/110", spo2: 95, resp: 30, temp: 37.0, status: "critical" },
         options: []
       }
     }
   },
   {
     id: "lpp-cobertura",
-    title: "Curativo em Lesão por Pressão",
+    title: "Curativo em Lesão Infectada",
     difficulty: "Intermediário",
     category: "Fundamentos",
     description: "Escolha da cobertura adequada para uma lesão sacral infectada.",
@@ -133,35 +141,35 @@ export const CLINICAL_CASES: ClinicalCase[] = [
     nodes: {
       "start": {
         id: "start",
-        text: "Dona Joana, acamada. Apresenta Lesão por Pressão (LPP) sacral Estágio 3.\n\nCaracterísticas da ferida: Cavitária (profunda), exsudato purulento abundante, odor fétido e bordas com eritema.\n\nQual o plano de tratamento tópico?",
+        text: "Dona Joana, acamada. Apresenta Lesão por Pressão (LPP) sacral Estágio 3.\n\nCaracterísticas da ferida: Cavitária (profunda), exsudato purulento abundante, odor fétido e bordas com eritema (sinais de infecção).\n\nQual o plano de tratamento tópico?",
         vitals: { hr: 90, bp: "120/80", spo2: 96, resp: 18, temp: 37.8, status: "stable" },
         options: [
-          { label: "Limpeza SF 0,9% + Hidrocoloide (Placa)", nextNodeId: "hydrocolloid_fail", type: "intervention" },
+          { label: "Limpeza SF 0,9% + Placa de Hidrocoloide", nextNodeId: "hydrocolloid_fail", type: "intervention" },
           { label: "Limpeza SF 0,9% + Carvão Ativado com Prata", nextNodeId: "charcoal_success", type: "intervention" },
           { label: "Limpeza SF 0,9% + Hidrogel", nextNodeId: "hydrogel_fail", type: "intervention" }
         ]
       },
       "hydrocolloid_fail": {
         id: "hydrocolloid_fail",
-        text: "O Hidrocoloide é oclusivo. Em ferida infectada e com muito exsudato, ele favoreceu a proliferação bacteriana (efeito estufa) e macerou as bordas.\n\nA paciente evoluiu com abscesso e sepse.",
+        text: "O Hidrocoloide é oclusivo. Em ferida infectada e com muito exsudato, ele reteve as bactérias e secreção (efeito estufa) e macerou as bordas.\n\nA paciente evoluiu com aumento da área de necrose, febre alta e sepse de foco cutâneo.",
         vitals: { hr: 120, bp: "90/60", spo2: 94, resp: 24, temp: 39.0, status: "critical" },
-        feedback: "Hidrocoloide é CONTRAINDICADO em feridas infectadas ou com exsudato abundante.",
+        feedback: "Regra básica: Hidrocoloide é CONTRAINDICADO em feridas infectadas ou com exsudato abundante.",
         options: []
       },
       "hydrogel_fail": {
         id: "hydrogel_fail",
-        text: "O Hidrogel doa umidade. A ferida já estava muito úmida (exsudato abundante). O resultado foi maceração extensa da pele perilesional e não controle da infecção.",
+        text: "O Hidrogel tem função de doar umidade. A ferida já estava muito úmida (exsudato abundante).\n\nO resultado foi maceração extensa da pele perilesional, aumentando o tamanho da ferida. Além disso, o hidrogel simples não combate a infecção/odor.",
         vitals: { hr: 95, bp: "120/80", spo2: 96, resp: 18, temp: 38.0, status: "warning" },
-        feedback: "Hidrogel é indicado para feridas secas ou com necrose que precisa ser amolecida. Não para feridas muito exsudativas.",
+        feedback: "Hidrogel é indicado para feridas secas ou com necrose que precisa ser amolecida. Não para feridas muito exsudativas e infectadas.",
         options: [
-           { label: "Trocar para cobertura absorvente com prata", nextNodeId: "charcoal_success", type: "intervention" }
+           { label: "Trocar para cobertura absorvente com prata (Carvão/Alginato)", nextNodeId: "charcoal_success", type: "intervention" }
         ]
       },
       "charcoal_success": {
         id: "charcoal_success",
-        text: "Excelente escolha. O Carvão Ativado controla o odor e absorve o exsudato. A Prata combate a infecção local (bactericida).\n\nApós 48h, o odor desapareceu, o exsudato diminuiu e o tecido de granulação começou a aparecer.",
+        text: "Excelente escolha. O Carvão Ativado controla o odor e absorve o exsudato. A Prata combate a infecção local (bactericida).\n\nApós 48h de uso, o odor desapareceu, o exsudato diminuiu e o tecido de granulação começou a aparecer.\n\nSinais vitais normalizaram.",
         vitals: { hr: 80, bp: "120/80", spo2: 98, resp: 16, temp: 36.8, status: "recovered" },
-        feedback: "Para feridas infectadas, exsudativas e com odor, o Carvão com Prata é uma das melhores opções de primeira linha.",
+        feedback: "Para feridas infectadas, exsudativas e com odor, o Carvão com Prata é uma das melhores opções de primeira linha. Alginato com Prata também seria uma boa opção.",
         options: []
       }
     }
