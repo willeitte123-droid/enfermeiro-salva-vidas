@@ -21,14 +21,12 @@ const fetchAccessData = async () => {
   const startDate = subDays(today, 30).toISOString(); // Últimos 30 dias
 
   // 1. Logs de Acesso (Page Views)
-  // Usamos 'maybeSingle' ou verificação de erro para não quebrar se a tabela não existir
   const { data: logs, error: logsError } = await supabase
     .from('access_logs')
     .select('created_at, path, user_id')
     .gte('created_at', startDate);
 
   if (logsError) {
-    // Se o erro for "relação não existe", lançamos um erro específico
     if (logsError.code === '42P01') throw new Error("TABELAS_INEXISTENTES");
     throw logsError;
   }
@@ -47,7 +45,7 @@ const fetchAccessData = async () => {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-background/95 backdrop-blur-md border p-3 rounded-xl shadow-xl text-xs z-50">
+      <div className="bg-background/95 backdrop-blur-md border p-3 rounded-xl shadow-xl text-xs z-50 ring-1 ring-border/50">
         <p className="font-bold text-foreground mb-1">{label}</p>
         {payload.map((entry: any, index: number) => (
           <div key={index} className="flex items-center gap-2">
@@ -75,22 +73,23 @@ const AccessReport = () => {
 
   const handleInstallAnalytics = async () => {
     setIsInstalling(true);
-    const toastId = toast.loading("Configurando tabelas de Analytics...");
+    const toastId = toast.loading("Instalando tabelas via Edge Function...");
     try {
-      // Tenta chamar a RPC se existir
-      const { error } = await supabase.rpc('install_analytics');
+      // Chama a Edge Function que tem acesso direto ao banco
+      const { data, error } = await supabase.functions.invoke('install-schema');
       
-      // Mesmo se der erro na RPC, o SQL direto que rodei deve ter criado as tabelas.
-      // Então vamos apenas forçar um refresh.
+      if (error) throw new Error(error.message);
+      if (data && data.error) throw new Error(data.error);
       
-      toast.success("Verificação concluída! Atualizando...", { id: toastId });
+      toast.success("Tabelas instaladas com sucesso!", { id: toastId });
+      
+      // Força recarregamento da página para limpar caches do cliente Supabase
       setTimeout(() => {
-         refetch();
-         window.location.reload(); // Força reload para limpar caches do Supabase client
+         window.location.reload();
       }, 1500);
 
     } catch (err: any) {
-      toast.error("Erro: " + err.message, { id: toastId });
+      toast.error("Erro na instalação: " + err.message, { id: toastId });
     } finally {
       setIsInstalling(false);
     }
@@ -101,17 +100,14 @@ const AccessReport = () => {
     const { logs, dailyTime } = data;
     const todayStr = format(new Date(), 'yyyy-MM-dd');
 
-    // --- HOJE ---
     const logsToday = logs?.filter(l => l.created_at.startsWith(todayStr)) || [];
     const activeUsersToday = new Set(logsToday.map(l => l.user_id)).size;
     const totalViewsToday = logsToday.length;
     
-    // Tempo médio hoje
     const timeToday = dailyTime?.filter(t => t.activity_date === todayStr) || [];
     const totalSecondsToday = timeToday.reduce((acc, curr) => acc + curr.seconds, 0);
     const avgTimeToday = activeUsersToday > 0 ? Math.round(totalSecondsToday / activeUsersToday / 60) : 0; 
 
-    // --- GRÁFICO DIÁRIO (Últimos 7 dias) ---
     const dailyTrend = [];
     for (let i = 6; i >= 0; i--) {
       const date = subDays(new Date(), i);
@@ -131,7 +127,6 @@ const AccessReport = () => {
       });
     }
 
-    // --- HORÁRIOS DE PICO ---
     const hourlyMap = new Array(24).fill(0);
     logs?.forEach(l => {
       const hour = getHours(parseISO(l.created_at));
@@ -142,7 +137,6 @@ const AccessReport = () => {
       Acessos: count
     }));
 
-    // --- MÓDULOS MAIS ACESSADOS ---
     const pathMap: Record<string, number> = {};
     logs?.forEach(l => {
       let path = l.path;
@@ -181,19 +175,13 @@ const AccessReport = () => {
   if (isLoading) return <div className="flex justify-center items-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
   if (error) {
-    const isTableMissing = error.message === "TABELAS_INEXISTENTES" || (error as any).code === '42P01';
-
     return (
       <div className="flex flex-col gap-6 p-4">
         <Alert variant="destructive" className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900">
           <AlertTriangle className="h-5 w-5" />
-          <AlertTitle className="text-lg font-bold">Configuração Necessária</AlertTitle>
+          <AlertTitle className="text-lg font-bold">Banco de Dados de Analytics não encontrado</AlertTitle>
           <AlertDescription className="mt-2">
-            <p className="mb-4 text-sm">
-              {isTableMissing 
-                ? "As tabelas de relatório de acesso ainda não foram criadas no banco de dados." 
-                : `Erro ao carregar dados: ${(error as Error).message}`}
-            </p>
+            <p className="mb-4 text-sm">As tabelas necessárias para o relatório de acessos ainda não foram criadas no banco de dados.</p>
             <div className="flex gap-3">
                 <Button 
                   onClick={handleInstallAnalytics} 
@@ -201,7 +189,10 @@ const AccessReport = () => {
                   className="bg-red-600 hover:bg-red-700 text-white border-none shadow-sm"
                 >
                   {isInstalling ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wrench className="mr-2 h-4 w-4" />}
-                  {isInstalling ? "Configurando..." : "Configurar Agora"}
+                  {isInstalling ? "Instalando..." : "Instalar Tabelas Agora"}
+                </Button>
+                <Button variant="outline" onClick={() => refetch()}>
+                    <RefreshCw className="mr-2 h-4 w-4" /> Tentar Novamente
                 </Button>
             </div>
           </AlertDescription>
