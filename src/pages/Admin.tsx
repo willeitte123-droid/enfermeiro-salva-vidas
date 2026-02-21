@@ -275,7 +275,7 @@ const UserManagement = () => {
         <Card className="bg-gradient-to-br from-blue-600 to-cyan-700 text-white border-none shadow-lg p-5 flex items-center justify-between relative overflow-hidden group">
            <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
            <div className="relative z-10">
-              <p className="text-blue-100 text-[10px] sm:text-xs uppercase font-bold tracking-wider mb-1">Essencial Ativos</p>
+              <p className="text-blue-100 text-[10px] sm:text-xs uppercase font-bold tracking-wider mb-1">Assinantes Essencial</p>
               <h3 className="text-3xl font-black tracking-tight">{stats.essencial}</h3>
            </div>
            <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/10"><Zap className="h-6 w-6 text-blue-100" /></div>
@@ -358,7 +358,7 @@ const UserManagement = () => {
                           <span className="font-bold text-sm text-foreground truncate max-w-[180px]">{user.first_name} {user.last_name}</span>
                           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                             <Mail className="h-3 w-3 shrink-0 opacity-70" />
-                            <span className="truncate max-w-[180px] font-medium opacity-80">{user.email}</span>
+                            <span className="truncate max-w-[140px] font-medium opacity-80">{user.email}</span>
                           </div>
                         </div>
                       </div>
