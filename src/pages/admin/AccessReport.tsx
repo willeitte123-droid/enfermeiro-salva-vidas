@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -6,13 +6,14 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   AreaChart, Area, PieChart, Pie, Cell, Legend
 } from "recharts";
-import { Loader2, Users, MousePointer, Clock, Map, TrendingUp, Calendar, AlertTriangle, Wrench, RefreshCw, CheckCircle2 } from "lucide-react";
+import { Loader2, Users, MousePointer, Clock, Map, TrendingUp, Calendar, AlertTriangle, Wrench, RefreshCw, CheckCircle2, Radio } from "lucide-react";
 import { format, subDays, startOfDay, endOfDay, parseISO, getHours } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 
 const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4'];
 
@@ -45,7 +46,7 @@ const fetchAccessData = async () => {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-background/95 backdrop-blur-md border p-3 rounded-xl shadow-xl text-xs z-50 ring-1 ring-border/50">
+      <div className="bg-background/95 backdrop-blur-md border p-3 rounded-xl shadow-xl text-xs z-50">
         <p className="font-bold text-foreground mb-1">{label}</p>
         {payload.map((entry: any, index: number) => (
           <div key={index} className="flex items-center gap-2">
@@ -63,19 +64,59 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const AccessReport = () => {
   const queryClient = useQueryClient();
   const [isInstalling, setIsInstalling] = useState(false);
+  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['accessReport'],
     queryFn: fetchAccessData,
-    refetchInterval: 30000,
-    retry: 1
+    staleTime: Infinity, // Mantemos os dados "frescos" indefinidamente, pois o Realtime fará o update
   });
+
+  // --- CONFIGURAÇÃO REALTIME ---
+  useEffect(() => {
+    const channel = supabase
+      .channel('analytics-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'access_logs',
+        },
+        () => {
+          // Atualiza quando houver nova visualização de página
+          queryClient.invalidateQueries({ queryKey: ['accessReport'] });
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // INSERT ou UPDATE
+          schema: 'public',
+          table: 'daily_activity_time',
+        },
+        () => {
+          // Atualiza quando o tempo de uso mudar
+          queryClient.invalidateQueries({ queryKey: ['accessReport'] });
+        }
+      )
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          setIsRealtimeConnected(true);
+        } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
+          setIsRealtimeConnected(false);
+        }
+      });
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const handleInstallAnalytics = async () => {
     setIsInstalling(true);
-    const toastId = toast.loading("Instalando tabelas via Edge Function...");
+    const toastId = toast.loading("Configurando tabelas de Analytics...");
     try {
-      // Chama a Edge Function que tem acesso direto ao banco
       const { data, error } = await supabase.functions.invoke('install-schema');
       
       if (error) throw new Error(error.message);
@@ -83,9 +124,9 @@ const AccessReport = () => {
       
       toast.success("Tabelas instaladas com sucesso!", { id: toastId });
       
-      // Força recarregamento da página para limpar caches do cliente Supabase
       setTimeout(() => {
-         window.location.reload();
+         refetch();
+         window.location.reload(); 
       }, 1500);
 
     } catch (err: any) {
@@ -100,14 +141,17 @@ const AccessReport = () => {
     const { logs, dailyTime } = data;
     const todayStr = format(new Date(), 'yyyy-MM-dd');
 
+    // --- HOJE ---
     const logsToday = logs?.filter(l => l.created_at.startsWith(todayStr)) || [];
     const activeUsersToday = new Set(logsToday.map(l => l.user_id)).size;
     const totalViewsToday = logsToday.length;
     
+    // Tempo médio hoje
     const timeToday = dailyTime?.filter(t => t.activity_date === todayStr) || [];
     const totalSecondsToday = timeToday.reduce((acc, curr) => acc + curr.seconds, 0);
     const avgTimeToday = activeUsersToday > 0 ? Math.round(totalSecondsToday / activeUsersToday / 60) : 0; 
 
+    // --- GRÁFICO DIÁRIO (Últimos 7 dias) ---
     const dailyTrend = [];
     for (let i = 6; i >= 0; i--) {
       const date = subDays(new Date(), i);
@@ -127,6 +171,7 @@ const AccessReport = () => {
       });
     }
 
+    // --- HORÁRIOS DE PICO ---
     const hourlyMap = new Array(24).fill(0);
     logs?.forEach(l => {
       const hour = getHours(parseISO(l.created_at));
@@ -137,6 +182,7 @@ const AccessReport = () => {
       Acessos: count
     }));
 
+    // --- MÓDULOS MAIS ACESSADOS ---
     const pathMap: Record<string, number> = {};
     logs?.forEach(l => {
       let path = l.path;
@@ -175,13 +221,19 @@ const AccessReport = () => {
   if (isLoading) return <div className="flex justify-center items-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
   if (error) {
+    const isTableMissing = error.message === "TABELAS_INEXISTENTES" || (error as any).code === '42P01';
+
     return (
       <div className="flex flex-col gap-6 p-4">
         <Alert variant="destructive" className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900">
           <AlertTriangle className="h-5 w-5" />
-          <AlertTitle className="text-lg font-bold">Banco de Dados de Analytics não encontrado</AlertTitle>
+          <AlertTitle className="text-lg font-bold">Configuração Necessária</AlertTitle>
           <AlertDescription className="mt-2">
-            <p className="mb-4 text-sm">As tabelas necessárias para o relatório de acessos ainda não foram criadas no banco de dados.</p>
+            <p className="mb-4 text-sm">
+              {isTableMissing 
+                ? "As tabelas de relatório de acesso ainda não foram criadas no banco de dados." 
+                : `Erro ao carregar dados: ${(error as Error).message}`}
+            </p>
             <div className="flex gap-3">
                 <Button 
                   onClick={handleInstallAnalytics} 
@@ -189,10 +241,7 @@ const AccessReport = () => {
                   className="bg-red-600 hover:bg-red-700 text-white border-none shadow-sm"
                 >
                   {isInstalling ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wrench className="mr-2 h-4 w-4" />}
-                  {isInstalling ? "Instalando..." : "Instalar Tabelas Agora"}
-                </Button>
-                <Button variant="outline" onClick={() => refetch()}>
-                    <RefreshCw className="mr-2 h-4 w-4" /> Tentar Novamente
+                  {isInstalling ? "Configurando..." : "Configurar Agora"}
                 </Button>
             </div>
           </AlertDescription>
@@ -206,7 +255,23 @@ const AccessReport = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       
-      {/* 1. KPIs de Hoje */}
+      {/* 1. KPIs de Hoje e Status Realtime */}
+      <div className="flex justify-end items-center -mb-2">
+         {isRealtimeConnected ? (
+            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 flex items-center gap-1.5 px-2">
+               <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+               </span>
+               Ao Vivo
+            </Badge>
+         ) : (
+            <Badge variant="outline" className="bg-muted text-muted-foreground flex items-center gap-1.5 px-2">
+               <Radio className="w-3 h-3" /> Offline
+            </Badge>
+         )}
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white border-none shadow-lg">
           <CardContent className="p-6 flex items-center justify-between">
