@@ -459,9 +459,14 @@ const DeepStudy = () => {
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             {profile && (
               <Button 
-                variant={isHighlighterMode ? "secondary" : "ghost"} 
+                variant="outline"
                 size="sm" 
-                className={cn("gap-2 rounded-full transition-all border h-8 px-2 sm:px-4 sm:h-9", isHighlighterMode ? "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800" : "border-transparent")}
+                className={cn(
+                  "gap-2 rounded-full transition-all border h-8 px-3 sm:px-4 sm:h-9 shadow-sm",
+                  isHighlighterMode 
+                    ? "bg-yellow-300 text-yellow-900 border-yellow-400 hover:bg-yellow-400 dark:bg-yellow-500 dark:text-black dark:border-yellow-600 dark:hover:bg-yellow-600 font-bold" 
+                    : "bg-background text-muted-foreground border-border hover:text-foreground hover:border-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
+                )}
                 onClick={() => {
                   setIsHighlighterMode(!isHighlighterMode);
                   if (!isHighlighterMode) {
@@ -469,7 +474,7 @@ const DeepStudy = () => {
                   }
                 }}
               >
-                <PenTool className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <Highlighter className={cn("h-4 w-4", isHighlighterMode ? "fill-current" : "text-yellow-500")} />
                 <span className="hidden sm:inline font-medium">{isHighlighterMode ? "Grifando..." : "Grifar"}</span>
               </Button>
             )}
