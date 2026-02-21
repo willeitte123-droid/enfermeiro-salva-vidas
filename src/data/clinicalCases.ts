@@ -23,13 +23,151 @@ export interface ClinicalCase {
   id: string;
   title: string;
   difficulty: "Iniciante" | "Intermediário" | "Avançado";
-  category: "Urgência" | "UTI" | "Clínica" | "Pediatria" | "Obstetrícia";
+  category: "Urgência" | "UTI" | "Clínica" | "Pediatria" | "Obstetrícia" | "Fundamentos";
   description: string;
   initialNodeId: string;
   nodes: Record<string, CaseNode>;
 }
 
 export const CLINICAL_CASES: ClinicalCase[] = [
+  // --- NOVOS CASOS: FUNDAMENTOS E PROCEDIMENTOS ---
+  {
+    id: "sne-seguranca",
+    title: "Segurança na Sonda Nasoenteral",
+    difficulty: "Iniciante",
+    category: "Fundamentos",
+    description: "Paciente em uso de SNE apresenta sinal de deslocamento da sonda. Qual a conduta segura antes de iniciar a dieta?",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Sr. Roberto, 75 anos, AVC sequela, em uso de Sonda Nasoenteral (Dobbhoff) para dieta. Você entra no quarto para instalar o frasco de dieta das 12h.\n\nVocê nota que a fixação da sonda está solta e a marcação de referência na narina está 5cm mais externa do que o registrado ontem.\n\nO paciente está tosse leve e dispneico.",
+        vitals: { hr: 98, bp: "130/80", spo2: 92, resp: 24, temp: 36.5, status: "warning" },
+        options: [
+          { label: "Realizar teste de ausculta (injetar ar) e, se ouvir, iniciar dieta", nextNodeId: "ausculta_error", type: "assessment" },
+          { label: "Reintroduzir a sonda 5cm até a marcação original e iniciar", nextNodeId: "blind_push_error", type: "intervention" },
+          { label: "Suspender dieta, manter jejum e solicitar Raio-X de controle", nextNodeId: "xray_success", type: "intervention" }
+        ]
+      },
+      "ausculta_error": {
+        id: "ausculta_error",
+        text: "Você realizou a ausculta e ouviu o ruído (borbulho). Iniciou a dieta.\n\nMinutos depois, o paciente começou a tossir violentamente e ficou cianótico. A sonda estava no esôfago distal/início da traqueia e o ruído foi transmitido.\n\nO paciente sofreu broncoaspiração maciça.",
+        vitals: { hr: 140, bp: "150/90", spo2: 75, resp: 40, temp: 36.5, status: "critical" },
+        feedback: "O teste de ausculta NÃO é seguro para confirmar posicionamento de sondas enterais finas (Dobbhoff), pois o som pode ser transmitido dos pulmões ou esôfago. O Padrão-Ouro é o Raio-X.",
+        options: []
+      },
+      "blind_push_error": {
+        id: "blind_push_error",
+        text: "Ao reintroduzir a sonda sem guia e sem visão, a ponta se enrolou na orofaringe ou entrou na via aérea.\n\nVocê iniciou a dieta e o paciente broncoaspirou imediatamente.",
+        vitals: { hr: 130, bp: "140/90", spo2: 80, resp: 35, temp: 36.5, status: "critical" },
+        feedback: "Nunca reintroduza uma sonda deslocada às cegas. É necessário reposicionar com técnica adequada e confirmar localização.",
+        options: []
+      },
+      "xray_success": {
+        id: "xray_success",
+        text: "Conduta perfeita. Você suspendeu a dieta e solicitou o RX.\n\nO exame mostrou a ponta da sonda no esôfago médio (risco altíssimo de aspiração). A sonda foi repassada e posicionada corretamente no duodeno antes da dieta ser liberada.",
+        vitals: { hr: 85, bp: "120/80", spo2: 96, resp: 18, temp: 36.5, status: "recovered" },
+        feedback: "Segurança do paciente em primeiro lugar. Na dúvida sobre a posição da sonda, nunca infunda nada.",
+        options: []
+      }
+    }
+  },
+  {
+    id: "svd-hbp",
+    title: "Sondagem Vesical Difícil",
+    difficulty: "Intermediário",
+    category: "Fundamentos",
+    description: "Paciente idoso com retenção urinária e histórico de próstata aumentada. Desafio técnico na sondagem.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Sr. Antônio, 82 anos, chega ao PS com 'bexigoma' (retenção urinária aguda), dor intensa hipogástrica e agitação. Histórico de Hiperplasia Prostática Benigna (HPB).\n\nMédico prescreve Sondagem Vesical de Demora (SVD). Você prepara o material estéril.",
+        vitals: { hr: 110, bp: "160/100", spo2: 96, resp: 22, temp: 36.5, status: "warning" },
+        options: [
+          { label: "Lubrificar apenas a ponta da sonda e tentar passar rápido", nextNodeId: "trauma_urethra", type: "intervention" },
+          { label: "Injetar 10-15ml de Xilocaína gel na uretra e aguardar 3-5min", nextNodeId: "technique_correct", type: "intervention" },
+          { label: "Usar uma sonda mais fina (12Fr) para passar melhor", nextNodeId: "thin_probe_fail", type: "intervention" }
+        ]
+      },
+      "trauma_urethra": {
+        id: "trauma_urethra",
+        text: "A uretra não foi lubrificada/anestesiada adequadamente. O paciente contraiu o esfíncter por dor.\n\nVocê forçou a passagem e causou uma falsa via (perfuração uretral). Sangramento intenso pelo meato (uretrorragia) e a sonda não drenou urina.",
+        vitals: { hr: 125, bp: "170/100", spo2: 96, resp: 24, temp: 36.5, status: "warning" },
+        feedback: "Em homens, a injeção intrauretral de gel anestésico e o tempo de latência são obrigatórios para distender a uretra e evitar trauma.",
+        options: [
+          { label: "Suspender procedimento e chamar Urologia", nextNodeId: "urology_call", type: "assessment" }
+        ]
+      },
+      "thin_probe_fail": {
+        id: "thin_probe_fail",
+        text: "Sondas muito finas (<14Fr) em pacientes com próstata grande tendem a dobrar ou enrolar ao encontrar resistência, não conseguindo vencer o lobo prostático.\n\nVocê não conseguiu progredir e causou trauma leve.",
+        vitals: { hr: 115, bp: "160/100", spo2: 96, resp: 22, temp: 36.5, status: "warning" },
+        feedback: "Em casos de HPB, sondas de calibre médio/maior (16-18Fr) ou ponta de Coudé (ponta curva) têm mais firmeza para vencer a obstrução.",
+        options: [
+           { label: "Tentar novamente com técnica correta (gel + calibre 16/18)", nextNodeId: "technique_correct", type: "intervention" }
+        ]
+      },
+      "technique_correct": {
+        id: "technique_correct",
+        text: "Você anestesiou e distendeu a uretra com o gel. A sonda 16Fr passou suavemente.\n\nSaída de 1200ml de urina clara. O paciente sentiu alívio imediato da dor e a PA normalizou.",
+        vitals: { hr: 80, bp: "130/80", spo2: 97, resp: 16, temp: 36.5, status: "recovered" },
+        feedback: "A técnica correta e a paciência na anestesia local são o segredo da sondagem masculina atraumática.",
+        options: []
+      },
+      "urology_call": {
+        id: "urology_call",
+        text: "Urologista precisou passar a sonda por via endoscópica (cistoscopia) devido ao trauma causado. O paciente ficará internado.",
+        vitals: { hr: 100, bp: "140/90", spo2: 96, resp: 20, temp: 36.5, status: "stable" },
+        options: []
+      }
+    }
+  },
+  {
+    id: "lpp-cobertura",
+    title: "Curativo em Lesão por Pressão",
+    difficulty: "Intermediário",
+    category: "Fundamentos",
+    description: "Escolha da cobertura adequada para uma lesão sacral infectada.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Dona Joana, acamada. Apresenta Lesão por Pressão (LPP) sacral Estágio 3.\n\nCaracterísticas da ferida: Cavitária (profunda), exsudato purulento abundante, odor fétido e bordas com eritema.\n\nQual o plano de tratamento tópico?",
+        vitals: { hr: 90, bp: "120/80", spo2: 96, resp: 18, temp: 37.8, status: "stable" },
+        options: [
+          { label: "Limpeza SF 0,9% + Hidrocoloide (Placa)", nextNodeId: "hydrocolloid_fail", type: "intervention" },
+          { label: "Limpeza SF 0,9% + Carvão Ativado com Prata", nextNodeId: "charcoal_success", type: "intervention" },
+          { label: "Limpeza SF 0,9% + Hidrogel", nextNodeId: "hydrogel_fail", type: "intervention" }
+        ]
+      },
+      "hydrocolloid_fail": {
+        id: "hydrocolloid_fail",
+        text: "O Hidrocoloide é oclusivo. Em ferida infectada e com muito exsudato, ele favoreceu a proliferação bacteriana (efeito estufa) e macerou as bordas.\n\nA paciente evoluiu com abscesso e sepse.",
+        vitals: { hr: 120, bp: "90/60", spo2: 94, resp: 24, temp: 39.0, status: "critical" },
+        feedback: "Hidrocoloide é CONTRAINDICADO em feridas infectadas ou com exsudato abundante.",
+        options: []
+      },
+      "hydrogel_fail": {
+        id: "hydrogel_fail",
+        text: "O Hidrogel doa umidade. A ferida já estava muito úmida (exsudato abundante). O resultado foi maceração extensa da pele perilesional e não controle da infecção.",
+        vitals: { hr: 95, bp: "120/80", spo2: 96, resp: 18, temp: 38.0, status: "warning" },
+        feedback: "Hidrogel é indicado para feridas secas ou com necrose que precisa ser amolecida. Não para feridas muito exsudativas.",
+        options: [
+           { label: "Trocar para cobertura absorvente com prata", nextNodeId: "charcoal_success", type: "intervention" }
+        ]
+      },
+      "charcoal_success": {
+        id: "charcoal_success",
+        text: "Excelente escolha. O Carvão Ativado controla o odor e absorve o exsudato. A Prata combate a infecção local (bactericida).\n\nApós 48h, o odor desapareceu, o exsudato diminuiu e o tecido de granulação começou a aparecer.",
+        vitals: { hr: 80, bp: "120/80", spo2: 98, resp: 16, temp: 36.8, status: "recovered" },
+        feedback: "Para feridas infectadas, exsudativas e com odor, o Carvão com Prata é uma das melhores opções de primeira linha.",
+        options: []
+      }
+    }
+  },
+
+  // --- CASOS EXISTENTES (Mantidos abaixo) ---
   {
     id: "tce-cushing",
     title: "Herniação Cerebral Iminente",
@@ -70,8 +208,6 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       }
     }
   },
-
-  // --- CASOS EXISTENTES ---
   {
     id: "trauma-pelve-sonda",
     title: "Sondagem em Trauma Pélvico",
@@ -87,7 +223,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         options: [
           { label: "Não realizar o procedimento e comunicar o médico (Suspeita de Lesão Uretral)", nextNodeId: "correct_action", type: "assessment" },
           { label: "Tentar passar a sonda com bastante xilocaína e cuidado", nextNodeId: "urethral_tear", type: "intervention" },
-          { label: "Usar uma sonda de calibre menor (fina) para não machucar", nextNodeId: "urethral_tear", type: "intervention" }
+          { label: "Usar uma sonda de calibre menor (fina) para passar melhor", nextNodeId: "urethral_tear", type: "intervention" }
         ]
       },
       "urethral_tear": {
