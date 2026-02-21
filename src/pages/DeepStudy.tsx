@@ -601,11 +601,11 @@ const DeepStudy = () => {
             <Library className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Biblioteca Digital
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight mb-3 sm:mb-4 leading-tight">
-            Aprofunde seus <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-teal-300">Conhecimentos</span>
+            Base Legal & <br className="hidden sm:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-teal-300">Conhecimento Técnico</span>
           </h1>
           <p className="text-sm sm:text-lg text-slate-300 max-w-xl leading-relaxed">
-            Acesso completo a leis, códigos de ética, protocolos e manuais técnicos essenciais para sua formação e prática profissional.
+            Consulte a íntegra de leis, portarias, códigos de ética e manuais essenciais. Grife, anote e domine a base da sua profissão.
           </p>
         </div>
       </div>
