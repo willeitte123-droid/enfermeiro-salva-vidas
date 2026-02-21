@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, BarChart3, Info, Crown, Users, UserCheck, Clock, Zap, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
@@ -231,7 +231,7 @@ const UserManagement = () => {
       case 'suspended': 
         return <Badge variant="outline" className="bg-red-100 text-red-700 border-red-200 gap-1"><XCircle className="w-3 h-3"/> Suspenso</Badge>;
       case 'pending': 
-        return <Badge variant="outline" className="bg-yellow-100 text-yellow-700 border-yellow-200 gap-1"><AlertCircle className="w-3 h-3"/> Pendente</Badge>;
+        return <Badge variant="outline" className="bg-yellow-100 text-yellow-700 border-yellow-200 gap-1"><AlertTriangle className="w-3 h-3"/> Pendente</Badge>;
       default:
         return <Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200 capitalize">{status}</Badge>;
     }
@@ -306,7 +306,7 @@ const UserManagement = () => {
       {/* 2. Barra de Ferramentas */}
       <div className="flex flex-col sm:flex-row justify-between gap-4 bg-card p-4 rounded-xl border shadow-sm items-center">
         <div className="relative w-full sm:w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
           <Input 
             placeholder="Buscar por nome, email ou ID..." 
             className="pl-9 bg-muted/30 border-border/60 shadow-sm focus:bg-background transition-all"
