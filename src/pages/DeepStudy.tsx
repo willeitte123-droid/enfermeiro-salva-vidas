@@ -4,7 +4,9 @@ import {
   BookOpen, ArrowLeft, Search, Bookmark, 
   Type, Move, Grid, List, Clock, Scale, 
   Gavel, FileText, ChevronUp, ChevronDown, CheckCircle2,
-  Highlighter, Trash2, X, PenTool, Eraser, Library
+  Highlighter, Trash2, X, PenTool, Eraser, Library,
+  Globe, Brain, ShieldCheck, Siren, Heart, Stethoscope, 
+  Baby, Biohazard, Briefcase, User, Scissors, Syringe, Calculator
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -52,6 +54,27 @@ interface UserHighlight {
   color: string;
   created_at: string;
 }
+
+// Estilos por categoria
+const CATEGORY_STYLES: Record<string, { icon: any, color: string, activeClass: string }> = {
+  "Todas": { icon: Library, color: "text-slate-500", activeClass: "data-[state=active]:bg-slate-600 data-[state=active]:text-white" },
+  "Legislação do SUS": { icon: Gavel, color: "text-blue-500", activeClass: "data-[state=active]:bg-blue-600 data-[state=active]:text-white" },
+  "Saúde Pública": { icon: Globe, color: "text-emerald-500", activeClass: "data-[state=active]:bg-emerald-600 data-[state=active]:text-white" },
+  "Ética e Legislação": { icon: Scale, color: "text-gray-500", activeClass: "data-[state=active]:bg-gray-600 data-[state=active]:text-white" },
+  "Saúde Mental": { icon: Brain, color: "text-purple-500", activeClass: "data-[state=active]:bg-purple-600 data-[state=active]:text-white" },
+  "Legislação e Segurança": { icon: ShieldCheck, color: "text-indigo-500", activeClass: "data-[state=active]:bg-indigo-600 data-[state=active]:text-white" },
+  "Urgência e Emergência": { icon: Siren, color: "text-red-500", activeClass: "data-[state=active]:bg-red-600 data-[state=active]:text-white" },
+  "Saúde da Mulher": { icon: Heart, color: "text-pink-500", activeClass: "data-[state=active]:bg-pink-600 data-[state=active]:text-white" },
+  "Fundamentos de Enfermagem": { icon: Stethoscope, color: "text-teal-500", activeClass: "data-[state=active]:bg-teal-600 data-[state=active]:text-white" },
+  "Saúde da Criança": { icon: Baby, color: "text-cyan-500", activeClass: "data-[state=active]:bg-cyan-600 data-[state=active]:text-white" },
+  "Biossegurança e Controle de Infecção": { icon: Biohazard, color: "text-orange-500", activeClass: "data-[state=active]:bg-orange-600 data-[state=active]:text-white" },
+  "Saúde do Trabalhador": { icon: Briefcase, color: "text-amber-500", activeClass: "data-[state=active]:bg-amber-600 data-[state=active]:text-white" },
+  "Saúde do Idoso": { icon: User, color: "text-lime-500", activeClass: "data-[state=active]:bg-lime-600 data-[state=active]:text-white" },
+  "Centro Cirúrgico": { icon: Scissors, color: "text-zinc-500", activeClass: "data-[state=active]:bg-zinc-600 data-[state=active]:text-white" },
+  "Imunização (PNI)": { icon: Syringe, color: "text-green-500", activeClass: "data-[state=active]:bg-green-600 data-[state=active]:text-white" },
+  "Cálculo de Medicação": { icon: Calculator, color: "text-yellow-500", activeClass: "data-[state=active]:bg-yellow-600 data-[state=active]:text-white" }
+};
+const DEFAULT_STYLE = { icon: BookOpen, color: "text-slate-500", activeClass: "data-[state=active]:bg-slate-600 data-[state=active]:text-white" };
 
 const DeepStudy = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
@@ -272,7 +295,7 @@ const DeepStudy = () => {
         console.error("Erro ao processar seleção", e);
         // Fallback robusto - tenta limpar mesmo no texto plano
         if (isHighlighterMode) {
-            const cleanPlain = plainText.replace(/^(Art\.?|Artigo|§)\s*\d+(?:º|°)?\s*[-–]?\s*/i, '');
+            const cleanPlain = plainText.replace(/^(Art\.?|Artigo|§)\s*\d+(?:º|°)?\s*([-–]?)\s*/i, '');
             if (cleanPlain.trim().length > 0) addHighlightMutation.mutate(cleanPlain);
         }
       }
@@ -584,10 +607,10 @@ const DeepStudy = () => {
 
       {/* Sticky Search & Filter Bar Mobile-Friendly */}
       <div className="sticky top-0 z-20 py-2 sm:py-4 -mx-4 px-4 sm:mx-0 sm:px-0 bg-background/80 backdrop-blur-lg border-b sm:border-none sm:bg-transparent transition-all">
-        <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-between">
+        <div className="flex flex-col gap-3 md:gap-4">
           
           {/* Barra de Busca - Full width no mobile */}
-          <div className="relative w-full md:w-80 group order-1 md:order-2">
+          <div className="relative w-full group">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <Input
               placeholder="Buscar documentos..."
@@ -597,25 +620,32 @@ const DeepStudy = () => {
             />
           </div>
 
-          {/* Abas com Scroll Horizontal - Usando ScrollArea para experiência mobile premium */}
-          <div className="w-full md:w-auto order-2 md:order-1 -mx-4 md:mx-0">
+          {/* Abas Empilhadas (Wrappable) - Layout flexível para melhor visualização */}
+          <div className="w-full">
             <Tabs defaultValue="Todas" value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-              <div className="w-full max-w-[calc(100vw-2rem)] mx-auto px-4 md:px-0">
-                <ScrollArea className="w-full whitespace-nowrap rounded-xl bg-transparent">
-                  <TabsList className="flex w-max space-x-2 bg-transparent p-1 h-auto">
-                    {categories.map(cat => (
-                      <TabsTrigger 
-                        key={cat} 
-                        value={cat} 
-                        className="rounded-full border border-border/50 bg-background/50 px-4 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all focus:outline-none focus:ring-0 active:scale-95 touch-manipulation"
-                      >
-                        {cat}
-                      </TabsTrigger>
-                    ))}
-                  </TabsList>
-                  <ScrollBar orientation="horizontal" className="hidden" />
-                </ScrollArea>
-              </div>
+              <TabsList className="flex flex-wrap justify-center sm:justify-start gap-2 bg-transparent p-0 h-auto">
+                {categories.map(cat => {
+                  const style = CATEGORY_STYLES[cat] || DEFAULT_STYLE;
+                  const Icon = style.icon;
+                  const isSelected = activeCategory === cat;
+                  
+                  return (
+                    <TabsTrigger 
+                      key={cat} 
+                      value={cat} 
+                      className={cn(
+                        "rounded-full border border-border/50 px-4 py-2 text-xs font-bold transition-all shadow-sm focus:outline-none focus:ring-0 active:scale-95 touch-manipulation flex items-center gap-2",
+                        isSelected 
+                          ? style.activeClass 
+                          : "bg-background/80 hover:bg-muted text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      <Icon className={cn("h-3.5 w-3.5", isSelected ? "text-inherit" : style.color)} />
+                      {cat}
+                    </TabsTrigger>
+                  );
+                })}
+              </TabsList>
             </Tabs>
           </div>
         </div>
@@ -623,51 +653,57 @@ const DeepStudy = () => {
 
       {/* Grid de Documentos Responsivo */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        {filteredDocs.map((doc, idx) => (
-          <div 
-            key={doc.id}
-            onClick={() => setSelectedDoc(doc)}
-            className="group relative bg-card hover:bg-card/50 border rounded-xl sm:rounded-2xl p-1 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer overflow-hidden ring-1 ring-border/50 hover:ring-primary/50"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
-            <div className="relative h-full flex flex-col p-4 sm:p-5 rounded-lg sm:rounded-xl bg-card/50 backdrop-blur-sm">
-              <div className="flex justify-between items-start mb-3 sm:mb-4">
-                <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors border-0 text-[10px] sm:text-xs">
-                  {doc.category}
-                </Badge>
-                {profile && (
-                  <div onClick={(e) => e.stopPropagation()} className="relative z-20">
-                    <FavoriteButton 
-                      userId={profile.id}
-                      itemId={`/library/${doc.id}`}
-                      itemType="Documento"
-                      itemTitle={doc.title}
-                      className="h-7 w-7 sm:h-8 sm:w-8 hover:bg-background"
-                    />
-                  </div>
-                )}
-              </div>
+        {filteredDocs.map((doc, idx) => {
+          const style = CATEGORY_STYLES[doc.category] || DEFAULT_STYLE;
+          const CategoryIcon = style.icon;
+          
+          return (
+            <div 
+              key={doc.id}
+              onClick={() => setSelectedDoc(doc)}
+              className="group relative bg-card hover:bg-card/50 border rounded-xl sm:rounded-2xl p-1 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer overflow-hidden ring-1 ring-border/50 hover:ring-primary/50"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
-              <h3 className="text-base sm:text-xl font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
-                {doc.title}
-              </h3>
-              
-              <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 mb-4 sm:mb-6 flex-1 leading-relaxed">
-                {doc.description}
-              </p>
-              
-              <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-border/50 mt-auto">
-                <span className="flex items-center gap-1.5 text-[10px] sm:text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                  <Clock className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {doc.readTime}
-                </span>
-                <span className="text-[10px] sm:text-xs font-bold text-primary flex items-center gap-1 opacity-100 sm:opacity-0 sm:-translate-x-2 sm:group-hover:opacity-100 sm:group-hover:translate-x-0 transition-all duration-300">
-                  Ler Agora <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5 rotate-180" />
-                </span>
+              <div className="relative h-full flex flex-col p-4 sm:p-5 rounded-lg sm:rounded-xl bg-card/50 backdrop-blur-sm">
+                <div className="flex justify-between items-start mb-3 sm:mb-4">
+                  <Badge variant="secondary" className="bg-muted text-muted-foreground hover:bg-muted border-0 text-[10px] sm:text-xs flex items-center gap-1.5 font-medium">
+                    <CategoryIcon className={cn("h-3 w-3", style.color)} />
+                    {doc.category}
+                  </Badge>
+                  {profile && (
+                    <div onClick={(e) => e.stopPropagation()} className="relative z-20">
+                      <FavoriteButton 
+                        userId={profile.id}
+                        itemId={`/library/${doc.id}`}
+                        itemType="Documento"
+                        itemTitle={doc.title}
+                        className="h-7 w-7 sm:h-8 sm:w-8 hover:bg-background"
+                      />
+                    </div>
+                  )}
+                </div>
+                
+                <h3 className="text-base sm:text-xl font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
+                  {doc.title}
+                </h3>
+                
+                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 mb-4 sm:mb-6 flex-1 leading-relaxed">
+                  {doc.description}
+                </p>
+                
+                <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-border/50 mt-auto">
+                  <span className="flex items-center gap-1.5 text-[10px] sm:text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                    <Clock className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {doc.readTime}
+                  </span>
+                  <span className="text-[10px] sm:text-xs font-bold text-primary flex items-center gap-1 opacity-100 sm:opacity-0 sm:-translate-x-2 sm:group-hover:opacity-100 sm:group-hover:translate-x-0 transition-all duration-300">
+                    Ler Agora <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5 rotate-180" />
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {filteredDocs.length === 0 && (
