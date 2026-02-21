@@ -7,12 +7,15 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { 
   HeartPulse, Activity, Wind, Thermometer, Brain, 
   ArrowRight, AlertTriangle, CheckCircle2, XCircle, 
-  RotateCcw, Trophy, Stethoscope, PlayCircle, Droplet, Skull
+  RotateCcw, Trophy, Stethoscope, PlayCircle, Droplet, Skull, Check
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CLINICAL_CASES, ClinicalCase, CaseNode } from "@/data/clinicalCases";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import FavoriteButton from "@/components/FavoriteButton";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 interface Profile {
   id: string;
@@ -118,31 +121,87 @@ const VitalsMonitor = ({ vitals }: { vitals: CaseNode['vitals'] }) => {
 const ClinicalCases = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
+  const queryClient = useQueryClient();
   
   const [activeCase, setActiveCase] = useState<ClinicalCase | null>(null);
   const [currentNodeId, setCurrentNodeId] = useState<string | null>(null);
-  const [history, setHistory] = useState<string[]>([]); // Track path for summary if needed
+  const [hasSavedCompletion, setHasSavedCompletion] = useState(false);
 
   useEffect(() => {
     addActivity({ type: 'Simulação', title: 'Casos Clínicos', path: '/clinical-cases', icon: 'Stethoscope' });
   }, [addActivity]);
 
+  // Busca casos concluídos pelo usuário
+  const { data: completedCases = [] } = useQuery({
+    queryKey: ['completedCases', profile?.id],
+    queryFn: async () => {
+      if (!profile?.id) return [];
+      const { data, error } = await supabase
+        .from('user_case_progress')
+        .select('case_id')
+        .eq('user_id', profile.id);
+      
+      if (error) {
+        // Se a tabela não existir ainda (erro de migração não aplicada), ignora silenciosamente para não quebrar a UI
+        console.warn("Erro ao buscar progresso:", error);
+        return [];
+      }
+      return data.map(c => c.case_id) as string[];
+    },
+    enabled: !!profile?.id
+  });
+
+  // Mutação para salvar conclusão
+  const completeCaseMutation = useMutation({
+    mutationFn: async (caseId: string) => {
+      if (!profile?.id) return;
+      const { error } = await supabase
+        .from('user_case_progress')
+        .upsert({ 
+          user_id: profile.id, 
+          case_id: caseId,
+          completed_at: new Date().toISOString()
+        }, { onConflict: 'user_id, case_id' });
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['completedCases'] });
+      if (!hasSavedCompletion) {
+        toast.success("Caso Clínico Concluído!", {
+          description: "Progresso salvo com sucesso.",
+          icon: <Trophy className="h-5 w-5 text-yellow-500" />
+        });
+        setHasSavedCompletion(true);
+      }
+    }
+  });
+
   const handleStartCase = (clinicalCase: ClinicalCase) => {
     setActiveCase(clinicalCase);
     setCurrentNodeId(clinicalCase.initialNodeId);
-    setHistory([]);
+    setHasSavedCompletion(false);
   };
 
   const handleOptionClick = (nextNodeId: string) => {
     setCurrentNodeId(nextNodeId);
-    setHistory(prev => [...prev, nextNodeId]);
   };
 
   const handleReset = () => {
     setActiveCase(null);
     setCurrentNodeId(null);
-    setHistory([]);
+    setHasSavedCompletion(false);
   };
+
+  // Efeito para salvar automaticamente se vencer
+  useEffect(() => {
+    if (activeCase && currentNodeId && profile) {
+      const currentNode = activeCase.nodes[currentNodeId];
+      if (currentNode.vitals?.status === "recovered" && !hasSavedCompletion) {
+        completeCaseMutation.mutate(activeCase.id);
+      }
+    }
+  }, [activeCase, currentNodeId, profile, hasSavedCompletion, completeCaseMutation]);
 
   // --- MODO LOBBY (Seleção de Caso) ---
   if (!activeCase) {
@@ -167,32 +226,44 @@ const ClinicalCases = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {CLINICAL_CASES.map((clinicalCase) => (
-            <Card key={clinicalCase.id} className="group hover:border-primary/50 transition-all hover:shadow-lg flex flex-col h-full">
-              <CardHeader>
-                <div className="flex justify-between items-start mb-2">
-                  <Badge variant="outline" className={cn(
-                    "text-xs font-bold",
-                    clinicalCase.difficulty === "Iniciante" ? "bg-green-100 text-green-700 dark:bg-green-900/30" :
-                    clinicalCase.difficulty === "Intermediário" ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30" :
-                    "bg-red-100 text-red-700 dark:bg-red-900/30"
-                  )}>
-                    {clinicalCase.difficulty}
-                  </Badge>
-                  <Badge variant="secondary">{clinicalCase.category}</Badge>
-                </div>
-                <CardTitle className="text-lg sm:text-xl group-hover:text-primary transition-colors">{clinicalCase.title}</CardTitle>
-                <CardDescription className="line-clamp-3 mt-2 text-xs sm:text-sm">
-                  {clinicalCase.description}
-                </CardDescription>
-              </CardHeader>
-              <CardFooter className="mt-auto pt-0">
-                <Button onClick={() => handleStartCase(clinicalCase)} className="w-full gap-2 text-sm sm:text-base">
-                  <PlayCircle className="h-4 w-4" /> Iniciar Caso
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+          {CLINICAL_CASES.map((clinicalCase) => {
+            const isCompleted = completedCases.includes(clinicalCase.id);
+            
+            return (
+              <Card key={clinicalCase.id} className={cn("group hover:border-primary/50 transition-all hover:shadow-lg flex flex-col h-full", isCompleted && "border-green-500/40 bg-green-50/10")}>
+                <CardHeader>
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex gap-2">
+                      <Badge variant="outline" className={cn(
+                        "text-xs font-bold",
+                        clinicalCase.difficulty === "Iniciante" ? "bg-green-100 text-green-700 dark:bg-green-900/30" :
+                        clinicalCase.difficulty === "Intermediário" ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30" :
+                        "bg-red-100 text-red-700 dark:bg-red-900/30"
+                      )}>
+                        {clinicalCase.difficulty}
+                      </Badge>
+                      <Badge variant="secondary">{clinicalCase.category}</Badge>
+                    </div>
+                    {isCompleted && (
+                      <Badge className="bg-green-500 text-white hover:bg-green-600 gap-1 pl-1.5 pr-2">
+                        <Check size={12} strokeWidth={4} /> Feito
+                      </Badge>
+                    )}
+                  </div>
+                  <CardTitle className="text-lg sm:text-xl group-hover:text-primary transition-colors">{clinicalCase.title}</CardTitle>
+                  <CardDescription className="line-clamp-3 mt-2 text-xs sm:text-sm">
+                    {clinicalCase.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardFooter className="mt-auto pt-0">
+                  <Button onClick={() => handleStartCase(clinicalCase)} className={cn("w-full gap-2 text-sm sm:text-base", isCompleted ? "bg-green-600 hover:bg-green-700" : "")}>
+                    {isCompleted ? <RotateCcw className="h-4 w-4" /> : <PlayCircle className="h-4 w-4" />}
+                    {isCompleted ? "Refazer Caso" : "Iniciar Caso"}
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })}
           
           {/* Placeholder for more cases */}
           <Card className="border-dashed border-2 flex items-center justify-center min-h-[250px] bg-muted/20">
@@ -210,11 +281,10 @@ const ClinicalCases = () => {
   // --- MODO JOGO (Caso Ativo) ---
   const currentNode = activeCase.nodes[currentNodeId || activeCase.initialNodeId];
   const isDead = currentNode.vitals?.status === "dead";
-  const isFailure = isDead || currentNode.vitals?.status === "critical"; // Consideramos critical como falha no contexto de feedback
+  const isFailure = isDead || currentNode.vitals?.status === "critical"; 
   const isSuccess = currentNode.vitals?.status === "recovered";
   const isGameOver = isFailure || isSuccess;
   
-  // Cores de status baseadas no estado do paciente
   const statusColor = {
     stable: "border-green-500/50 bg-green-500/5",
     warning: "border-yellow-500/50 bg-yellow-500/5",
@@ -229,7 +299,7 @@ const ClinicalCases = () => {
       {/* Top Bar Navigation */}
       <div className="flex items-center justify-between">
         <Button variant="ghost" onClick={handleReset} className="pl-0 hover:bg-transparent hover:text-muted-foreground h-auto py-1">
-          <ArrowRight className="h-4 w-4 mr-1 sm:mr-2 rotate-180" /> <span className="text-xs sm:text-sm">Voltar</span>
+          <ArrowRight className="h-4 w-4 mr-1 sm:mr-2 rotate-180" /> <span className="text-xs sm:text-sm">Voltar ao Menu</span>
         </Button>
         <div className="flex items-center gap-2">
           <span className="text-xs sm:text-sm font-medium text-muted-foreground hidden sm:inline">Caso:</span>
@@ -246,7 +316,7 @@ const ClinicalCases = () => {
           <div className="flex items-center gap-2 mb-2">
             {currentNode.vitals?.status === "critical" && <Badge variant="destructive" className="animate-pulse">CRÍTICO</Badge>}
             {currentNode.vitals?.status === "dead" && <Badge variant="destructive" className="bg-black text-white hover:bg-black">ÓBITO</Badge>}
-            {currentNode.vitals?.status === "recovered" && <Badge className="bg-emerald-500 hover:bg-emerald-600">ESTÁVEL</Badge>}
+            {currentNode.vitals?.status === "recovered" && <Badge className="bg-emerald-500 hover:bg-emerald-600 flex gap-1"><CheckCircle2 size={12}/> ESTÁVEL - CONCLUÍDO</Badge>}
           </div>
           <CardTitle className="text-lg sm:text-2xl leading-tight">Situação Atual</CardTitle>
         </CardHeader>
@@ -255,7 +325,7 @@ const ClinicalCases = () => {
             {currentNode.text}
           </div>
 
-          {/* Feedback Section (if game over) - OTIMIZADO PARA MOBILE */}
+          {/* Feedback Section (if game over) */}
           {isGameOver && (
             <div className={cn(
               "rounded-xl p-0.5 sm:p-1 shadow-inner",
@@ -264,7 +334,7 @@ const ClinicalCases = () => {
               "bg-red-50 dark:bg-red-950/20"
             )}>
               <Alert className={cn(
-                "border-l-4 border-0 shadow-none p-3 sm:p-6", // Reduced padding
+                "border-l-4 border-0 shadow-none p-3 sm:p-6",
                 isSuccess
                   ? "border-l-emerald-500 bg-transparent text-emerald-800 dark:text-emerald-300"
                   : isDead 
@@ -273,7 +343,7 @@ const ClinicalCases = () => {
               )}>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start text-center sm:text-left">
                   <div className="mt-1 shrink-0">
-                    {isSuccess ? <Trophy className="h-10 w-10 sm:h-12 sm:w-12" /> : 
+                    {isSuccess ? <Trophy className="h-10 w-10 sm:h-12 sm:w-12 text-yellow-500" /> : 
                      isDead ? <Skull className="h-12 w-12 sm:h-20 sm:w-20 animate-pulse text-red-600" /> : 
                      <AlertTriangle className="h-10 w-10 sm:h-12 sm:w-12" />}
                   </div>
@@ -281,7 +351,7 @@ const ClinicalCases = () => {
                     <AlertTitle className={cn(
                       "font-black tracking-tight mb-2 sm:mb-3 leading-tight break-words", 
                       isDead 
-                        ? "text-xl sm:text-4xl uppercase text-red-600" // Reduced mobile font
+                        ? "text-xl sm:text-4xl uppercase text-red-600" 
                         : "text-lg sm:text-2xl"
                     )}>
                       {isSuccess ? "Sucesso Clínico!" : 
@@ -317,7 +387,12 @@ const ClinicalCases = () => {
                           )}
                         </div>
                       ) : (
-                        <span className="leading-relaxed font-medium">{currentNode.feedback}</span>
+                        <div className="flex flex-col gap-2">
+                           <span className="leading-relaxed font-medium">{currentNode.feedback}</span>
+                           <div className="flex items-center gap-2 mt-2 text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                              <CheckCircle2 className="h-5 w-5" /> Caso marcado como concluído.
+                           </div>
+                        </div>
                       )}
                     </AlertDescription>
                   </div>
@@ -353,7 +428,7 @@ const ClinicalCases = () => {
           ) : (
             <Button size="lg" onClick={handleReset} className={cn("w-full gap-2 font-bold text-base sm:text-lg h-12 sm:h-14 shadow-lg", isFailure ? "bg-red-600 hover:bg-red-700 text-white" : "bg-primary")}>
               <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5" />
-              {isSuccess ? "Finalizar e Voltar" : "Tentar Novamente"}
+              {isSuccess ? "Finalizar e Voltar ao Menu" : "Tentar Novamente"}
             </Button>
           )}
         </CardFooter>
