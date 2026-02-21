@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  AreaChart, Area, PieChart, Pie, Cell, Legend
+  AreaChart, Area, PieChart, Pie, Cell, Tooltip as RechartsTooltip
 } from "recharts";
 import { Loader2, Users, MousePointer, Clock, Map, TrendingUp, Calendar, AlertTriangle, Wrench, RefreshCw, CheckCircle2, Radio } from "lucide-react";
 import { format, subDays, startOfDay, endOfDay, parseISO, getHours } from "date-fns";
@@ -212,8 +212,13 @@ const AccessReport = () => {
     const pathMap: Record<string, number> = {};
     logs?.forEach(l => {
       let path = l.path;
-      if (path === '/') path = 'Dashboard';
-      else if (path.startsWith('/questions')) path = 'Questões';
+      
+      // Não contabiliza acessos ao Dashboard ('/')
+      if (path === '/') {
+        return;
+      }
+
+      if (path.startsWith('/questions')) path = 'Questões';
       else if (path.startsWith('/simulado')) path = 'Simulado';
       else if (path.startsWith('/medications')) path = 'Medicamentos';
       else if (path.startsWith('/emergency')) path = 'Emergências';
