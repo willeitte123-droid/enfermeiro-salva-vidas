@@ -6,7 +6,7 @@ import {
   Gavel, FileText, ChevronUp, ChevronDown, CheckCircle2,
   Highlighter, Trash2, X, PenTool, Eraser, Library,
   Globe, Brain, ShieldCheck, Siren, Heart, Stethoscope, 
-  Baby, Biohazard, Briefcase, User, Scissors, Syringe, Calculator
+  Baby, Biohazard, Briefcase, User, Scissors, Syringe, Calculator, Activity
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -72,7 +72,8 @@ const CATEGORY_STYLES: Record<string, { icon: any, color: string, activeClass: s
   "Saúde do Idoso": { icon: User, color: "text-lime-500", activeClass: "data-[state=active]:bg-lime-600 data-[state=active]:text-white" },
   "Centro Cirúrgico": { icon: Scissors, color: "text-zinc-500", activeClass: "data-[state=active]:bg-zinc-600 data-[state=active]:text-white" },
   "Imunização (PNI)": { icon: Syringe, color: "text-green-500", activeClass: "data-[state=active]:bg-green-600 data-[state=active]:text-white" },
-  "Cálculo de Medicação": { icon: Calculator, color: "text-yellow-500", activeClass: "data-[state=active]:bg-yellow-600 data-[state=active]:text-white" }
+  "Cálculo de Medicação": { icon: Calculator, color: "text-yellow-500", activeClass: "data-[state=active]:bg-yellow-600 data-[state=active]:text-white" },
+  "Saúde do Adulto": { icon: Activity, color: "text-blue-600", activeClass: "data-[state=active]:bg-blue-700 data-[state=active]:text-white" }
 };
 const DEFAULT_STYLE = { icon: BookOpen, color: "text-slate-500", activeClass: "data-[state=active]:bg-slate-600 data-[state=active]:text-white" };
 
