@@ -152,7 +152,7 @@
       "level": "Essencial",
       "icon": "Gavel",
       "color": "text-slate-600",
-      "dbCategory": "Ética e Legislação",
+      "dbCategory": "Ética e Legislação Profissional",
       "questionCount": 20,
       "resources": [],
       "topics": [
@@ -182,7 +182,7 @@
       "level": "Intermediário",
       "icon": "Biohazard",
       "color": "text-orange-500",
-      "dbCategory": "Saúde Pública",
+      "dbCategory": "Saúde Pública e Imunização",
       "questionCount": 20,
       "resources": [
         { "type": "pdf", "title": "Tabela de Doenças de Notificação Compulsória" },
@@ -335,7 +335,7 @@
       "level": "Avançado",
       "icon": "Scissors",
       "color": "text-fuchsia-600",
-      "dbCategory": "Centro Cirúrgico",
+      "dbCategory": "Centro Cirúrgico e CME",
       "questionCount": 20,
       "resources": [],
       "topics": [

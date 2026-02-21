@@ -115,7 +115,7 @@ const Questions = () => {
     queryFn: async () => {
       const { data, error } = await supabase.from('questions').select('category');
       if (error) throw error;
-      const uniqueCategories = [...new Set(data.map(q => q.category))];
+      const uniqueCategories = [...new Set(data.map(q => q.category).filter(Boolean))];
       return ["Todas", ...uniqueCategories.sort()];
     }
   });
