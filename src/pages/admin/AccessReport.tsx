@@ -1,15 +1,18 @@
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   AreaChart, Area, PieChart, Pie, Cell, Legend
 } from "recharts";
-import { Loader2, Users, MousePointer, Clock, Map, TrendingUp, Calendar } from "lucide-react";
+import { Loader2, Users, MousePointer, Clock, Map, TrendingUp, Calendar, AlertTriangle, Wrench, RefreshCw } from "lucide-react";
 import { format, subDays, startOfDay, endOfDay, parseISO, getHours } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4'];
 
@@ -31,9 +34,11 @@ const fetchAccessData = async () => {
     .select('activity_date, seconds, user_id')
     .gte('activity_date', startDate);
 
-  if (timeError) throw timeError;
+  // Se a tabela de tempo diário não existir, não quebra tudo, retorna vazio
+  // (Pode acontecer se a migração parcial rodou)
+  const safeDailyTime = timeError ? [] : dailyTime;
 
-  return { logs, dailyTime };
+  return { logs, dailyTime: safeDailyTime };
 };
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -55,11 +60,38 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const AccessReport = () => {
-  const { data, isLoading, error } = useQuery({
+  const queryClient = useQueryClient();
+  const [isInstalling, setIsInstalling] = useState(false);
+
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['accessReport'],
     queryFn: fetchAccessData,
-    refetchInterval: 30000 // Atualiza a cada 30s
+    refetchInterval: 30000,
+    retry: 1
   });
+
+  const handleInstallAnalytics = async () => {
+    setIsInstalling(true);
+    const toastId = toast.loading("Configurando tabelas de Analytics...");
+    try {
+      const { error } = await supabase.rpc('install_analytics');
+      if (error) throw error;
+      
+      toast.success("Analytics configurado com sucesso!", { id: toastId });
+      refetch();
+    } catch (err: any) {
+      // Se a função RPC não existir, o usuário precisa rodar o SQL manualmente ou a migração falhou.
+      // Tentamos uma abordagem de fallback (ex: avisar para rodar migração)
+      toast.error("Erro ao configurar: " + err.message, { id: toastId });
+      
+      // Fallback: Se for erro de função não encontrada, significa que a migração SQL não rodou
+      if (err.message.includes("function") && err.message.includes("does not exist")) {
+         toast.error("A função de instalação não foi encontrada no banco.");
+      }
+    } finally {
+      setIsInstalling(false);
+    }
+  };
 
   const stats = useMemo(() => {
     if (!data) return null;
@@ -67,14 +99,14 @@ const AccessReport = () => {
     const todayStr = format(new Date(), 'yyyy-MM-dd');
 
     // --- HOJE ---
-    const logsToday = logs.filter(l => l.created_at.startsWith(todayStr));
+    const logsToday = logs?.filter(l => l.created_at.startsWith(todayStr)) || [];
     const activeUsersToday = new Set(logsToday.map(l => l.user_id)).size;
     const totalViewsToday = logsToday.length;
     
-    // Tempo médio hoje (só de quem acessou)
-    const timeToday = dailyTime.filter(t => t.activity_date === todayStr);
+    // Tempo médio hoje
+    const timeToday = dailyTime?.filter(t => t.activity_date === todayStr) || [];
     const totalSecondsToday = timeToday.reduce((acc, curr) => acc + curr.seconds, 0);
-    const avgTimeToday = activeUsersToday > 0 ? Math.round(totalSecondsToday / activeUsersToday / 60) : 0; // em minutos
+    const avgTimeToday = activeUsersToday > 0 ? Math.round(totalSecondsToday / activeUsersToday / 60) : 0; 
 
     // --- GRÁFICO DIÁRIO (Últimos 7 dias) ---
     const dailyTrend = [];
@@ -83,9 +115,9 @@ const AccessReport = () => {
       const dateKey = format(date, 'yyyy-MM-dd');
       const displayDate = format(date, 'dd/MM');
       
-      const dayLogs = logs.filter(l => l.created_at.startsWith(dateKey));
+      const dayLogs = logs?.filter(l => l.created_at.startsWith(dateKey)) || [];
       const dayUsers = new Set(dayLogs.map(l => l.user_id)).size;
-      const dayTime = dailyTime.filter(t => t.activity_date === dateKey).reduce((acc, c) => acc + c.seconds, 0);
+      const dayTime = dailyTime?.filter(t => t.activity_date === dateKey).reduce((acc, c) => acc + c.seconds, 0) || 0;
       const avgMin = dayUsers > 0 ? Math.round(dayTime / dayUsers / 60) : 0;
 
       dailyTrend.push({
@@ -96,9 +128,9 @@ const AccessReport = () => {
       });
     }
 
-    // --- HORÁRIOS DE PICO (Todos os dados de 30 dias) ---
+    // --- HORÁRIOS DE PICO ---
     const hourlyMap = new Array(24).fill(0);
-    logs.forEach(l => {
+    logs?.forEach(l => {
       const hour = getHours(parseISO(l.created_at));
       hourlyMap[hour]++;
     });
@@ -109,8 +141,7 @@ const AccessReport = () => {
 
     // --- MÓDULOS MAIS ACESSADOS ---
     const pathMap: Record<string, number> = {};
-    logs.forEach(l => {
-      // Simplifica rotas (ex: /user/123 -> /user)
+    logs?.forEach(l => {
       let path = l.path;
       if (path === '/') path = 'Dashboard';
       else if (path.startsWith('/questions')) path = 'Questões';
@@ -132,7 +163,7 @@ const AccessReport = () => {
     const modulesData = Object.entries(pathMap)
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value)
-      .slice(0, 8); // Top 8
+      .slice(0, 8); 
 
     return {
       activeUsersToday,
@@ -145,7 +176,40 @@ const AccessReport = () => {
   }, [data]);
 
   if (isLoading) return <div className="flex justify-center items-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
-  if (error || !stats) return <div className="p-4 text-center text-red-500">Erro ao carregar dados.</div>;
+
+  if (error) {
+    return (
+      <div className="flex flex-col gap-6 p-4">
+        <Alert variant="destructive" className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900">
+          <AlertTriangle className="h-5 w-5" />
+          <AlertTitle className="text-lg font-bold">Banco de Dados de Analytics não encontrado</AlertTitle>
+          <AlertDescription className="mt-2">
+            <p className="mb-4 text-sm">As tabelas necessárias para o relatório de acessos ainda não foram criadas no banco de dados.</p>
+            <div className="flex gap-3">
+                <Button 
+                onClick={handleInstallAnalytics} 
+                disabled={isInstalling}
+                className="bg-red-600 hover:bg-red-700 text-white border-none shadow-sm"
+                >
+                {isInstalling ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wrench className="mr-2 h-4 w-4" />}
+                {isInstalling ? "Instalando..." : "Instalar Tabelas Agora"}
+                </Button>
+                <Button variant="outline" onClick={() => refetch()}>
+                    <RefreshCw className="mr-2 h-4 w-4" /> Tentar Novamente
+                </Button>
+            </div>
+          </AlertDescription>
+        </Alert>
+        
+        {/* Debug Info */}
+        <div className="text-xs text-muted-foreground bg-muted p-2 rounded">
+            Detalhe do erro: {(error as Error).message}
+        </div>
+      </div>
+    );
+  }
+
+  if (!stats) return null;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
