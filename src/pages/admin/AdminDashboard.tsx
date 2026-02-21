@@ -24,6 +24,7 @@ const PLAN_PRICES: Record<string, number> = {
   'free': 0.00
 };
 
+// Componente de Tooltip Customizado para Gráficos
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
@@ -163,7 +164,7 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       
-      {/* Header */}
+      {/* Header com Data */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Dashboard Administrativo</h2>
         <div className="flex gap-2">
@@ -181,10 +182,10 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* KPI Cards */}
+      {/* SECTION 1: KEY METRICS - Modernized */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         
-        {/* REVENUE CARD */}
+        {/* REVENUE CARD - Featured */}
         <Card className="relative overflow-hidden border-none shadow-xl bg-gradient-to-br from-emerald-600 to-teal-800 text-white group">
           <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"><DollarSign className="w-24 h-24 sm:w-32 sm:h-32" /></div>
           <CardContent className="p-5 sm:p-6 relative z-10">
@@ -196,6 +197,7 @@ const AdminDashboard = () => {
               <h3 className="text-3xl sm:text-4xl font-black tracking-tight">{formatCurrency(stats.totalRevenue)}</h3>
               <p className="text-emerald-100 text-xs sm:text-sm font-medium">Receita de assinaturas ativas</p>
             </div>
+            {/* Mini breakdown */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 border-t border-white/10 pt-4">
               <div className="sm:border-r border-white/10 pr-2">
                 <p className="text-[10px] uppercase font-bold text-emerald-200/70 mb-0.5">Premium</p>
@@ -234,6 +236,7 @@ const AdminDashboard = () => {
                <span className="text-3xl sm:text-4xl font-black text-foreground">{stats.activeUsers}</span>
                <span className="text-xs sm:text-sm text-muted-foreground">ativos</span>
              </div>
+             {/* Progress Bar Visual */}
              <div className="h-2 w-full bg-muted rounded-full overflow-hidden mb-2">
                <div className="h-full bg-blue-500 rounded-full" style={{ width: `${(stats.activeUsers / stats.totalUsers) * 100}%` }} />
              </div>
