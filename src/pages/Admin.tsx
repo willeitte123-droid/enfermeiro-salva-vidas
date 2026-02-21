@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, BarChart3, Info, Crown, Users, UserCheck, Clock, Zap } from "lucide-react";
+import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, BarChart3, Info, Crown, Users, UserCheck, Clock, Zap, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -25,6 +25,7 @@ import QuestionsDashboard from "./admin/QuestionsDashboard";
 import AccessReport from "./admin/AccessReport";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface AppUser {
   id: string;
@@ -174,16 +175,11 @@ const UserManagement = () => {
 
   // Estatísticas Rápidas
   const stats = useMemo(() => {
-    // Total Ativos (Status = Active)
+    const total = users.length;
     const active = users.filter(u => u.status === 'active').length;
-    
-    // Premium (Plano contains 'premium' e Status = Active)
-    const premium = users.filter(u => u.plan?.toLowerCase().includes('premium') && u.status === 'active').length;
-    
-    // Essencial (Plano contains 'essencial' e Status = Active)
+    const premium = users.filter(u => u.plan?.toLowerCase().includes('premium')).length;
     const essencial = users.filter(u => u.plan?.toLowerCase().includes('essencial') && u.status === 'active').length;
-    
-    return { active, premium, essencial };
+    return { total, active, premium, essencial };
   }, [users]);
 
   const handleRefresh = () => {
@@ -235,7 +231,7 @@ const UserManagement = () => {
       case 'suspended': 
         return <Badge variant="outline" className="bg-red-100 text-red-700 border-red-200 gap-1"><XCircle className="w-3 h-3"/> Suspenso</Badge>;
       case 'pending': 
-        return <Badge variant="outline" className="bg-yellow-100 text-yellow-700 border-yellow-200 gap-1"><AlertTriangle className="w-3 h-3"/> Pendente</Badge>;
+        return <Badge variant="outline" className="bg-yellow-100 text-yellow-700 border-yellow-200 gap-1"><AlertCircle className="w-3 h-3"/> Pendente</Badge>;
       default:
         return <Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200 capitalize">{status}</Badge>;
     }
@@ -275,6 +271,16 @@ const UserManagement = () => {
       {/* 1. KPIs Imersivos (Atualizado) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         
+        {/* Card: Assinantes Essencial */}
+        <Card className="bg-gradient-to-br from-blue-600 to-cyan-700 text-white border-none shadow-lg p-5 flex items-center justify-between relative overflow-hidden group">
+           <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+           <div className="relative z-10">
+              <p className="text-blue-100 text-[10px] sm:text-xs uppercase font-bold tracking-wider mb-1">Essencial Ativos</p>
+              <h3 className="text-3xl font-black tracking-tight">{stats.essencial}</h3>
+           </div>
+           <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/10"><Zap className="h-6 w-6 text-blue-100" /></div>
+        </Card>
+
         {/* Card: Total Ativos */}
         <Card className="bg-gradient-to-br from-emerald-600 to-teal-700 text-white border-none shadow-lg p-5 flex items-center justify-between relative overflow-hidden group">
            <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -293,16 +299,6 @@ const UserManagement = () => {
               <h3 className="text-3xl font-black tracking-tight">{stats.premium}</h3>
            </div>
            <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/10"><Crown className="h-6 w-6 text-amber-100" /></div>
-        </Card>
-
-        {/* Card: Essencial (Azul/Ciano para diferenciar do Ativos) */}
-        <Card className="bg-gradient-to-br from-blue-600 to-cyan-600 text-white border-none shadow-lg p-5 flex items-center justify-between relative overflow-hidden group">
-           <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-           <div className="relative z-10">
-              <p className="text-blue-100 text-[10px] sm:text-xs uppercase font-bold tracking-wider mb-1">Assinantes Essencial</p>
-              <h3 className="text-3xl font-black tracking-tight">{stats.essencial}</h3>
-           </div>
-           <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/10"><Zap className="h-6 w-6 text-blue-100" /></div>
         </Card>
 
       </div>
@@ -336,76 +332,82 @@ const UserManagement = () => {
       </div>
 
       {/* 3. Tabela de Usuários */}
-      <div className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">
+      <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
         <ScrollArea className="w-full whitespace-nowrap">
           <div className="min-w-[900px]">
             <Table>
               <TableHeader className="bg-muted/40">
-                <TableRow>
-                  <TableHead className="w-[250px]">Usuário</TableHead>
-                  <TableHead>Plano & Status</TableHead>
-                  <TableHead>Acesso</TableHead>
-                  <TableHead>Localização</TableHead>
-                  <TableHead className="text-right">Gerenciar</TableHead>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="w-[300px] pl-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Usuário</TableHead>
+                  <TableHead className="w-[200px] text-xs font-bold uppercase tracking-wider text-muted-foreground">Plano & Status</TableHead>
+                  <TableHead className="w-[180px] text-xs font-bold uppercase tracking-wider text-muted-foreground">Vigência</TableHead>
+                  <TableHead className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Localização</TableHead>
+                  <TableHead className="text-right pr-6 text-xs font-bold uppercase tracking-wider text-muted-foreground">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredUsers.length > 0 ? filteredUsers.map((user) => (
-                  <TableRow key={user.id} className="hover:bg-muted/30">
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-9 w-9 border shrink-0">
+                  <TableRow key={user.id} className="hover:bg-muted/30 transition-colors group border-b border-border/40">
+                    <TableCell className="pl-6 py-3">
+                      <div className="flex items-center gap-4">
+                        <Avatar className="h-11 w-11 border-2 border-background shadow-sm group-hover:border-primary/20 transition-all group-hover:scale-105">
                           <AvatarImage src={user.avatar_url || undefined} />
-                          <AvatarFallback>{user.first_name?.[0]}</AvatarFallback>
+                          <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/5 text-primary font-bold text-sm">{user.first_name?.[0]}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col">
-                          <span className="font-medium text-sm text-foreground truncate max-w-[150px]">{user.first_name} {user.last_name}</span>
+                          <span className="font-bold text-sm text-foreground truncate max-w-[180px]">{user.first_name} {user.last_name}</span>
                           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <Mail className="h-3 w-3 shrink-0" />
-                            <span className="truncate max-w-[140px]">{user.email}</span>
+                            <Mail className="h-3 w-3 shrink-0 opacity-70" />
+                            <span className="truncate max-w-[180px] font-medium opacity-80">{user.email}</span>
                           </div>
                         </div>
                       </div>
                     </TableCell>
+                    
                     <TableCell>
-                      <div className="flex flex-col items-start gap-1.5">
-                        <Badge variant="outline" className={cn("rounded-md px-2 py-0.5 border font-medium truncate max-w-[120px]", getPlanBadgeStyle(user.plan))}>
+                      <div className="flex flex-col items-start gap-2">
+                        <Badge variant="outline" className={cn("rounded-md px-2.5 py-0.5 border font-medium w-fit transition-all", getPlanBadgeStyle(user.plan))}>
                             {user.plan || "Free"}
                         </Badge>
                         <div className="flex items-center gap-1.5 px-1">
-                          <span className={cn("w-2 h-2 rounded-full", user.status === 'active' ? "bg-green-500" : user.status === 'suspended' ? "bg-red-500" : "bg-yellow-500")} />
+                          <span className={cn("w-2 h-2 rounded-full ring-2 ring-transparent", 
+                              user.status === 'active' ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : 
+                              user.status === 'suspended' ? "bg-red-500" : "bg-yellow-500"
+                          )} />
                           <span className="text-xs font-medium text-muted-foreground capitalize">{user.status}</span>
                         </div>
                       </div>
                     </TableCell>
+                    
                     <TableCell>
-                      <div className="flex flex-col gap-1 text-xs text-muted-foreground">
-                        <div className="flex items-center gap-1.5" title="Data de Início">
-                            <Calendar className="h-3 w-3 shrink-0" />
-                            {user.plan_start_date ? format(new Date(user.plan_start_date), "dd/MM/yy", { locale: ptBR }) : "-"}
+                      <div className="flex flex-col gap-1.5">
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground" title="Data de Início">
+                            <Calendar className="h-3.5 w-3.5 shrink-0 opacity-70" />
+                            <span>Início: {user.plan_start_date ? format(new Date(user.plan_start_date), "dd/MM/yy", { locale: ptBR }) : "-"}</span>
                         </div>
-                        {user.access_expires_at && (
-                            <ExpirationDate date={user.access_expires_at} />
-                        )}
+                        {/* Componente de Data de Vencimento com Alerta */}
+                        <ExpirationDate date={user.access_expires_at} />
                       </div>
                     </TableCell>
+                    
                     <TableCell>
                       <div className="flex flex-col text-xs text-muted-foreground gap-1">
                         {user.location ? (
-                          <div className="flex items-center gap-1.5 mb-1"><MapPin className="h-3 w-3 shrink-0" /><span className="truncate max-w-[120px]">{user.location}</span></div>
-                        ) : <span className="text-muted-foreground italic pl-4">-</span>}
+                          <div className="flex items-center gap-1.5 mb-1 text-foreground/80"><MapPin className="h-3.5 w-3.5 shrink-0 text-primary/70" /><span className="truncate max-w-[120px] font-medium">{user.location}</span></div>
+                        ) : <span className="text-muted-foreground italic pl-5 text-[10px]">Não rastreado</span>}
                         {user.last_ip ? (
-                          <div className="flex items-center gap-1.5"><Globe className="h-3 w-3 shrink-0" />{user.last_ip}</div>
+                          <div className="flex items-center gap-1.5 opacity-60"><Globe className="h-3 w-3 shrink-0" /> <span className="font-mono text-[10px]">{user.last_ip}</span></div>
                         ) : null}
                       </div>
                     </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="sm" onClick={() => setEditingUser(user)} className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary">
+                    
+                    <TableCell className="text-right pr-6">
+                      <Button variant="ghost" size="sm" onClick={() => setEditingUser(user)} className="h-9 w-9 p-0 hover:bg-primary/10 hover:text-primary rounded-full transition-all group-hover:shadow-sm border border-transparent hover:border-primary/20">
                         <Edit className="h-4 w-4" />
                       </Button>
                     </TableCell>
                   </TableRow>
-                )) : <TableRow><TableCell colSpan={5} className="h-32 text-center text-muted-foreground">Nenhum usuário encontrado.</TableCell></TableRow>}
+                )) : <TableRow><TableCell colSpan={5} className="h-48 text-center text-muted-foreground flex flex-col items-center justify-center gap-2"><Search className="h-8 w-8 opacity-20"/> Nenhum usuário encontrado.</TableCell></TableRow>}
               </TableBody>
             </Table>
           </div>
