@@ -21,11 +21,30 @@ const fetchAccessData = async () => {
   const today = new Date();
   const startDate = subDays(today, 30).toISOString(); // Últimos 30 dias
 
+  // 0. Buscar IDs dos Administradores para excluir das métricas
+  const { data: adminProfiles, error: adminError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('role', 'admin');
+
+  if (adminError) console.error("Erro ao identificar admins:", adminError);
+
+  const adminIds = adminProfiles?.map(p => p.id) || [];
+  // Formata para o filtro do Supabase: (id1,id2,id3)
+  const adminIdsString = adminIds.length > 0 ? `(${adminIds.join(',')})` : null;
+
   // 1. Logs de Acesso (Page Views)
-  const { data: logs, error: logsError } = await supabase
+  let logsQuery = supabase
     .from('access_logs')
     .select('created_at, path, user_id')
     .gte('created_at', startDate);
+
+  // Filtra admins se houver algum
+  if (adminIdsString) {
+    logsQuery = logsQuery.not('user_id', 'in', adminIdsString);
+  }
+
+  const { data: logs, error: logsError } = await logsQuery;
 
   if (logsError) {
     if (logsError.code === '42P01') throw new Error("TABELAS_INEXISTENTES");
@@ -33,10 +52,17 @@ const fetchAccessData = async () => {
   }
 
   // 2. Tempo Diário
-  const { data: dailyTime, error: timeError } = await supabase
+  let timeQuery = supabase
     .from('daily_activity_time')
     .select('activity_date, seconds, user_id')
     .gte('activity_date', startDate);
+
+  // Filtra admins se houver algum
+  if (adminIdsString) {
+    timeQuery = timeQuery.not('user_id', 'in', adminIdsString);
+  }
+
+  const { data: dailyTime, error: timeError } = await timeQuery;
 
   const safeDailyTime = timeError ? [] : dailyTime;
 
@@ -46,7 +72,7 @@ const fetchAccessData = async () => {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-background/95 backdrop-blur-md border p-3 rounded-xl shadow-xl text-xs z-50">
+      <div className="bg-background/95 backdrop-blur-md border p-3 rounded-xl shadow-xl text-xs z-50 ring-1 ring-border/50">
         <p className="font-bold text-foreground mb-1">{label}</p>
         {payload.map((entry: any, index: number) => (
           <div key={index} className="flex items-center gap-2">
@@ -263,7 +289,7 @@ const AccessReport = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                </span>
-               Ao Vivo
+               Ao Vivo (Excl. Admins)
             </Badge>
          ) : (
             <Badge variant="outline" className="bg-muted text-muted-foreground flex items-center gap-1.5 px-2">
