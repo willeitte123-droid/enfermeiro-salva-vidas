@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
   Loader2, Plus, Trash2, Check, Search, 
-  ArrowLeft, FileText, MoreVertical, PenLine, Calendar, Clock, NotebookText
+  ArrowLeft, FileText, MoreVertical, PenLine, Calendar, Clock, NotebookText, Save
 } from "lucide-react";
 import { toast } from "sonner";
 import { useOutletContext } from "react-router-dom";
@@ -208,8 +208,8 @@ const BlocoDeNotas = () => {
             className="rounded-full shadow-sm bg-primary hover:bg-primary/90 text-xs px-3"
             disabled={createNoteMutation.isPending}
           >
-            {createNoteMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Plus className="w-3 h-3 mr-1" />}
-            Nova Nota
+            {createNoteMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Save className="w-3 h-3 mr-1" />}
+            Salvar Anotação
           </Button>
         </div>
         <div className="relative">
