@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
   Loader2, Plus, Trash2, Check, Search, 
-  ArrowLeft, FileText, MoreVertical, PenLine 
+  ArrowLeft, FileText, MoreVertical, PenLine, Calendar, Clock
 } from "lucide-react";
 import { toast } from "sonner";
 import { useOutletContext } from "react-router-dom";
@@ -20,12 +20,14 @@ import {
 import { 
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
 interface Profile {
   id: string;
@@ -191,29 +193,30 @@ const BlocoDeNotas = () => {
   // Renderização da Lista de Notas (Sidebar ou Tela Cheia Mobile)
   const renderNoteList = () => (
     <div className={cn(
-      "flex flex-col h-full bg-background border-r transition-all duration-300",
+      "flex flex-col h-full bg-muted/10 border-r transition-all duration-300",
       isMobile ? "w-full" : "w-80 lg:w-96"
     )}>
       {/* Header da Lista */}
       <div className="p-4 border-b flex flex-col gap-4 bg-background/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 text-transparent bg-clip-text">
-            Minhas Notas
+          <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-purple-600 text-transparent bg-clip-text flex items-center gap-2">
+            <NotebookText className="w-5 h-5 text-primary" /> Notas
           </h1>
           <Button 
             onClick={() => createNoteMutation.mutate()} 
-            size="icon" 
-            className="rounded-full shadow-md bg-primary hover:bg-primary/90"
+            size="sm" 
+            className="rounded-full shadow-sm bg-primary hover:bg-primary/90 text-xs px-3"
             disabled={createNoteMutation.isPending}
           >
-            {createNoteMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
+            {createNoteMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Plus className="w-3 h-3 mr-1" />}
+            Nova Nota
           </Button>
         </div>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
           <Input 
-            placeholder="Pesquisar..." 
-            className="pl-9 bg-muted/50 border-transparent focus:bg-background transition-all"
+            placeholder="Pesquisar anotações..." 
+            className="pl-9 h-9 text-sm bg-background border-border/50 focus:border-primary/30 transition-all rounded-lg"
             value={noteSearchTerm}
             onChange={(e) => setNoteSearchTerm(e.target.value)}
           />
@@ -229,9 +232,9 @@ const BlocoDeNotas = () => {
           </div>
         ) : filteredNotes.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-40 text-muted-foreground text-center px-4">
-            <FileText className="w-10 h-10 mb-2 opacity-20" />
-            <p className="text-sm">Nenhuma nota encontrada.</p>
-            {noteSearchTerm && <p className="text-xs mt-1">Tente outro termo.</p>}
+            <FileText className="w-10 h-10 mb-2 opacity-10" />
+            <p className="text-sm font-medium">Sua lista está vazia</p>
+            {noteSearchTerm && <p className="text-xs mt-1 opacity-70">Tente outro termo de busca.</p>}
           </div>
         ) : (
           <div className="space-y-2 pb-20 md:pb-0">
@@ -240,24 +243,25 @@ const BlocoDeNotas = () => {
                 key={note.id}
                 onClick={() => setSelectedNoteId(note.id)}
                 className={cn(
-                  "w-full text-left p-4 rounded-xl transition-all duration-200 border group hover:shadow-md",
+                  "w-full text-left p-3 rounded-lg transition-all duration-200 border group relative overflow-hidden",
                   selectedNoteId === note.id
-                    ? "bg-primary/5 border-primary/30 ring-1 ring-primary/20"
-                    : "bg-card border-border/40 hover:border-primary/20 hover:bg-accent/50"
+                    ? "bg-background border-primary/40 shadow-sm ring-1 ring-primary/10"
+                    : "bg-transparent border-transparent hover:bg-background/50 hover:border-border/50"
                 )}
               >
-                <div className="flex justify-between items-start mb-1">
-                  <h3 className={cn("font-bold truncate pr-2 text-base", !note.title && "text-muted-foreground italic")}>
-                    {note.title || "Nova Nota"}
+                {selectedNoteId === note.id && <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />}
+                
+                <div className="pl-2">
+                  <h3 className={cn("font-semibold truncate pr-2 text-sm", !note.title && "text-muted-foreground italic")}>
+                    {note.title || "Sem título"}
                   </h3>
-                  {selectedNoteId === note.id && <div className="w-2 h-2 rounded-full bg-primary shrink-0 mt-1.5" />}
+                  <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed mt-0.5 opacity-80 h-8">
+                    {note.content || "Toque para escrever..."}
+                  </p>
+                  <span className="text-[10px] text-muted-foreground/50 mt-2 block font-medium">
+                    {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true, locale: ptBR })}
+                  </span>
                 </div>
-                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed h-8">
-                  {note.content || "Sem conteúdo adicional..."}
-                </p>
-                <span className="text-[10px] text-muted-foreground/60 mt-3 block font-medium uppercase tracking-wide">
-                  {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true, locale: ptBR })}
-                </span>
               </button>
             ))}
           </div>
@@ -270,31 +274,36 @@ const BlocoDeNotas = () => {
   const renderEditor = () => {
     if (!selectedNoteId) {
       return (
-        <div className="hidden md:flex flex-1 flex-col items-center justify-center text-muted-foreground bg-muted/10 h-full">
-          <div className="w-24 h-24 bg-muted/30 rounded-full flex items-center justify-center mb-4">
-            <PenLine className="w-10 h-10 opacity-30" />
+        <div className="hidden md:flex flex-1 flex-col items-center justify-center text-muted-foreground bg-background h-full">
+          <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mb-4">
+            <PenLine className="w-8 h-8 opacity-20" />
           </div>
-          <h2 className="text-xl font-semibold mb-2">Selecione ou crie uma nota</h2>
-          <p className="text-sm max-w-xs text-center">Capture ideias, listas e lembretes instantaneamente.</p>
+          <h2 className="text-lg font-semibold text-foreground/80">Nenhuma nota selecionada</h2>
+          <p className="text-sm text-muted-foreground mt-1">Selecione uma nota ou crie uma nova para começar.</p>
         </div>
       );
     }
 
     return (
-      <div className="flex flex-col h-full bg-background animate-in fade-in slide-in-from-right-4 duration-300 w-full">
+      <div className="flex flex-col h-full bg-background w-full relative">
+        {/* Top Decorative Gradient */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-50" />
+
         {/* Editor Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b bg-background/80 backdrop-blur-sm z-20">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between px-4 sm:px-8 py-3 border-b bg-background/80 backdrop-blur-sm z-20 sticky top-0">
+          <div className="flex items-center gap-3">
             {isMobile && (
-              <Button variant="ghost" size="icon" onClick={handleBackToList} className="-ml-2">
-                <ArrowLeft className="w-5 h-5" />
+              <Button variant="ghost" size="icon" onClick={handleBackToList} className="-ml-2 h-8 w-8">
+                <ArrowLeft className="w-4 h-4" />
               </Button>
             )}
-            <span className="text-xs text-muted-foreground flex items-center gap-1.5">
-              {isSaving ? <><Loader2 className="w-3 h-3 animate-spin" /> Salvando</> : 
-               isSaved ? <><Check className="w-3 h-3 text-green-500" /> Salvo</> : 
-               "Pronto"}
-            </span>
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground flex items-center gap-1.5">
+                {isSaving ? <><Loader2 className="w-3 h-3 animate-spin text-primary" /> Salvando...</> : 
+                 isSaved ? <><Check className="w-3 h-3 text-green-500" /> Salvo</> : 
+                 selectedNote ? format(new Date(selectedNote.updated_at), "dd 'de' MMM, HH:mm", { locale: ptBR }) : ""}
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-1">
@@ -302,21 +311,21 @@ const BlocoDeNotas = () => {
               variant="ghost" 
               size="sm" 
               onClick={() => setIsEditing(!isEditing)}
-              className={cn("text-xs font-medium px-3", isEditing ? "bg-accent" : "")}
+              className={cn("text-xs font-medium h-8 px-3 rounded-full transition-all", isEditing ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")}
             >
               {isEditing ? "Visualizar" : "Editar"}
             </Button>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon"><MoreVertical className="w-4 h-4" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full"><MoreVertical className="w-4 h-4" /></Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="w-40">
                 <DropdownMenuItem 
-                  className="text-destructive focus:text-destructive cursor-pointer"
+                  className="text-destructive focus:text-destructive cursor-pointer gap-2"
                   onClick={() => setIsDeleteDialogOpen(true)}
                 >
-                  <Trash2 className="w-4 h-4 mr-2" /> Excluir Nota
+                  <Trash2 className="w-4 h-4" /> Excluir Nota
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -324,25 +333,41 @@ const BlocoDeNotas = () => {
         </div>
 
         {/* Editor Body */}
-        <ScrollArea className="flex-1 w-full">
-          <div className="max-w-3xl mx-auto px-6 py-8 min-h-[calc(100vh-10rem)]">
+        <ScrollArea className="flex-1 w-full bg-background">
+          <div className="max-w-3xl mx-auto px-6 sm:px-10 py-8 min-h-[calc(100vh-10rem)]">
+            
+            {/* Título Moderno */}
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Título da Nota"
-              className="text-3xl sm:text-4xl font-black border-none shadow-none focus-visible:ring-0 px-0 bg-transparent placeholder:text-muted-foreground/40 mb-4 h-auto"
+              className="text-4xl sm:text-5xl font-extrabold border-none shadow-none focus-visible:ring-0 px-0 bg-transparent placeholder:text-muted-foreground/20 h-auto tracking-tight leading-tight text-foreground"
             />
+
+            {/* Metadados / Badges */}
+            <div className="flex items-center gap-3 mt-4 mb-6">
+              <Badge variant="outline" className="text-[10px] font-normal text-muted-foreground border-border/60 bg-muted/10 gap-1.5 py-0.5">
+                <Calendar className="w-3 h-3" /> 
+                {selectedNote ? format(new Date(selectedNote.updated_at), "dd MMM yyyy", { locale: ptBR }) : "Hoje"}
+              </Badge>
+              <Badge variant="outline" className="text-[10px] font-normal text-muted-foreground border-border/60 bg-muted/10 gap-1.5 py-0.5">
+                <Clock className="w-3 h-3" />
+                {content.split(/\s+/).filter(Boolean).length} palavras
+              </Badge>
+            </div>
+
+            <Separator className="mb-8 bg-border/40" />
             
             {isEditing ? (
               <Textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="Comece a escrever..."
-                className="w-full resize-none border-none shadow-none focus-visible:ring-0 px-0 text-base sm:text-lg leading-relaxed bg-transparent min-h-[60vh] font-sans text-foreground/90"
-                autoFocus={!isMobile} // Evita teclado pulando no mobile ao abrir
+                placeholder="Comece a escrever suas ideias..."
+                className="w-full resize-none border-none shadow-none focus-visible:ring-0 px-0 text-base sm:text-lg leading-relaxed bg-transparent min-h-[50vh] font-serif text-foreground/90 placeholder:text-muted-foreground/30"
+                autoFocus={!isMobile} 
               />
             ) : (
-              <div className="prose prose-slate dark:prose-invert max-w-none prose-lg prose-headings:font-bold prose-p:leading-relaxed">
+              <div className="prose prose-slate dark:prose-invert max-w-none prose-lg prose-headings:font-bold prose-p:leading-loose prose-a:text-primary">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {content || "*Nenhum conteúdo.*"}
                 </ReactMarkdown>
@@ -357,7 +382,7 @@ const BlocoDeNotas = () => {
             <AlertDialogHeader>
               <AlertDialogTitle>Excluir esta nota?</AlertDialogTitle>
               <AlertDialogDescription>
-                Esta ação não pode ser desfeita. A nota será permanentemente removida.
+                Esta ação não pode ser desfeita. A nota será movida para a lixeira permanentemente.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -376,12 +401,16 @@ const BlocoDeNotas = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] overflow-hidden rounded-lg md:border bg-background md:shadow-sm flex">
+    <div className="h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] overflow-hidden rounded-xl border bg-background shadow-sm flex flex-col md:flex-row">
       {/* Mobile: Mostra lista SE nenhuma nota selecionada. Desktop: Sempre mostra lista */}
       {(!isMobile || !selectedNoteId) && renderNoteList()}
       
       {/* Mobile: Mostra editor SE nota selecionada. Desktop: Sempre mostra editor (ao lado) */}
-      {(!isMobile || selectedNoteId) && renderEditor()}
+      {(!isMobile || selectedNoteId) && (
+        <div className="flex-1 h-full overflow-hidden border-l border-border/40">
+           {renderEditor()}
+        </div>
+      )}
     </div>
   );
 };
