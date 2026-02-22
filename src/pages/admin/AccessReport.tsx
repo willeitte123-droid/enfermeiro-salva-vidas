@@ -172,10 +172,15 @@ const AccessReport = () => {
     const activeUsersToday = new Set(logsToday.map(l => l.user_id)).size;
     const totalViewsToday = logsToday.length;
     
-    // Tempo médio hoje
+    // Tempo médio hoje (Calculado com base nos usuários que têm registro de tempo)
     const timeToday = dailyTime?.filter(t => t.activity_date === todayStr) || [];
+    // Usuários únicos que geraram tempo hoje (mais preciso que usar activeUsersToday de pageviews)
+    const activeTimeUsersCount = new Set(timeToday.map(t => t.user_id)).size;
     const totalSecondsToday = timeToday.reduce((acc, curr) => acc + curr.seconds, 0);
-    const avgTimeToday = activeUsersToday > 0 ? Math.round(totalSecondsToday / activeUsersToday / 60) : 0; 
+    
+    // Usa o contador de usuários de tempo se houver, senão usa o de pageviews como fallback
+    const divisor = activeTimeUsersCount > 0 ? activeTimeUsersCount : activeUsersToday;
+    const avgTimeToday = divisor > 0 ? Math.round(totalSecondsToday / divisor / 60) : 0; 
 
     // --- GRÁFICO DIÁRIO (Últimos 7 dias) ---
     const dailyTrend = [];
@@ -186,8 +191,13 @@ const AccessReport = () => {
       
       const dayLogs = logs?.filter(l => l.created_at.startsWith(dateKey)) || [];
       const dayUsers = new Set(dayLogs.map(l => l.user_id)).size;
-      const dayTime = dailyTime?.filter(t => t.activity_date === dateKey).reduce((acc, c) => acc + c.seconds, 0) || 0;
-      const avgMin = dayUsers > 0 ? Math.round(dayTime / dayUsers / 60) : 0;
+      
+      const dayTimeRecords = dailyTime?.filter(t => t.activity_date === dateKey) || [];
+      const dayTimeUsers = new Set(dayTimeRecords.map(t => t.user_id)).size;
+      const dayTimeSeconds = dayTimeRecords.reduce((acc, c) => acc + c.seconds, 0) || 0;
+      
+      const dayDivisor = dayTimeUsers > 0 ? dayTimeUsers : dayUsers;
+      const avgMin = dayDivisor > 0 ? Math.round(dayTimeSeconds / dayDivisor / 60) : 0;
 
       dailyTrend.push({
         date: displayDate,
