@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Timer, Play, Pause, RotateCcw, Clock } from "lucide-react";
+import { Timer, Play, Pause, RotateCcw, Clock, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 export function StudyTimer() {
   const [seconds, setSeconds] = useState(0);
@@ -33,51 +34,112 @@ export function StudyTimer() {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const secs = totalSeconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return {
+      formatted: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`,
+      h: hours.toString().padStart(2, '0'),
+      m: minutes.toString().padStart(2, '0'),
+      s: secs.toString().padStart(2, '0')
+    };
   };
+
+  const timeObj = formatTime(seconds);
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className={cn("relative gap-2 px-2 md:px-3", isActive && "text-primary bg-primary/10")}>
-          <Timer className={cn("h-5 w-5", isActive && "animate-pulse")} />
-          <span className="hidden md:inline font-mono font-medium min-w-[4.5rem] text-left">
-             {isActive || seconds > 0 ? formatTime(seconds) : "Cronômetro"}
-          </span>
-          {isActive && (
-             <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse md:hidden" />
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className={cn(
+            "relative gap-2 px-3 h-9 transition-all duration-300 border",
+            isActive 
+              ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 dark:bg-indigo-950/30 dark:border-indigo-800 dark:text-indigo-300" 
+              : "hover:bg-muted text-muted-foreground hover:text-foreground border-transparent bg-transparent"
           )}
+        >
+          {isActive ? (
+            <span className="relative flex h-2.5 w-2.5 mr-1">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
+            </span>
+          ) : (
+            <Timer className="h-4 w-4" />
+          )}
+          
+          <span className="hidden md:inline font-mono font-semibold tabular-nums min-w-[4.5rem] text-left">
+             {isActive || seconds > 0 ? timeObj.formatted : "Cronômetro"}
+          </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-72 p-4 mr-4" align="end">
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex items-center gap-2 text-muted-foreground">
-             <Clock className="h-4 w-4" />
-             <h4 className="font-semibold text-sm uppercase tracking-wide">Tempo de Estudo</h4>
+      
+      <PopoverContent className="w-80 p-0 mr-4 shadow-xl border-border/50 rounded-xl overflow-hidden" align="end">
+        {/* Header com Gradiente */}
+        <div className="bg-gradient-to-r from-indigo-500 to-violet-600 p-4 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-3 opacity-10">
+             <Timer className="w-20 h-20 -rotate-12" />
           </div>
           
-          <div className="text-5xl font-mono font-black tabular-nums text-foreground tracking-tight">
-            {formatTime(seconds)}
+          <div className="relative z-10 flex justify-between items-center">
+             <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
+                   <Zap className="h-4 w-4 text-yellow-300 fill-current" />
+                </div>
+                <span className="font-bold text-sm tracking-wide">Modo Foco</span>
+             </div>
+             {isActive && <Badge className="bg-white/20 hover:bg-white/20 text-white border-0 text-[10px] animate-pulse">Rodando</Badge>}
           </div>
+        </div>
+
+        {/* Display do Tempo */}
+        <div className="flex flex-col items-center justify-center p-6 bg-background">
+           <div className="flex items-baseline gap-1 text-foreground font-mono font-black tracking-tighter">
+              <div className="flex flex-col items-center">
+                 <span className="text-5xl tabular-nums">{timeObj.h}</span>
+                 <span className="text-[10px] text-muted-foreground font-sans font-medium uppercase tracking-wider">Hrs</span>
+              </div>
+              <span className="text-3xl text-muted-foreground/30 pb-4">:</span>
+              <div className="flex flex-col items-center">
+                 <span className="text-5xl tabular-nums">{timeObj.m}</span>
+                 <span className="text-[10px] text-muted-foreground font-sans font-medium uppercase tracking-wider">Min</span>
+              </div>
+              <span className="text-3xl text-muted-foreground/30 pb-4">:</span>
+              <div className="flex flex-col items-center">
+                 <span className="text-5xl tabular-nums text-indigo-600 dark:text-indigo-400">{timeObj.s}</span>
+                 <span className="text-[10px] text-muted-foreground font-sans font-medium uppercase tracking-wider">Seg</span>
+              </div>
+           </div>
+        </div>
+
+        <Separator />
+
+        {/* Controles */}
+        <div className="p-4 bg-muted/30 flex gap-3">
+          <Button 
+              className={cn(
+                "flex-1 font-bold shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]", 
+                isActive 
+                  ? "bg-amber-100 text-amber-700 hover:bg-amber-200 border border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800" 
+                  : "bg-indigo-600 hover:bg-indigo-700 text-white"
+              )}
+              onClick={toggleTimer}
+          >
+            {isActive ? (
+              <><Pause className="h-4 w-4 mr-2 fill-current" /> Pausar</>
+            ) : (
+              <><Play className="h-4 w-4 mr-2 fill-current" /> {seconds > 0 ? "Continuar" : "Iniciar"}</>
+            )}
+          </Button>
           
-          <div className="flex gap-2 w-full mt-2">
-            <Button 
-                variant={isActive ? "secondary" : "default"} 
-                className={cn("flex-1 font-bold", isActive ? "bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400" : "bg-green-600 hover:bg-green-700 text-white")}
-                onClick={toggleTimer}
-            >
-              {isActive ? <><Pause className="h-4 w-4 mr-2 fill-current" /> Pausar</> : <><Play className="h-4 w-4 mr-2 fill-current" /> {seconds > 0 ? "Retomar" : "Iniciar"}</>}
-            </Button>
-            <Button variant="outline" size="icon" onClick={resetTimer} disabled={seconds === 0 && !isActive} title="Zerar">
-              <RotateCcw className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          {seconds > 0 && !isActive && (
-             <Badge variant="outline" className="bg-muted text-muted-foreground text-[10px]">
-                Pausado
-             </Badge>
-          )}
+          <Button 
+            variant="outline" 
+            size="icon" 
+            onClick={resetTimer} 
+            disabled={seconds === 0 && !isActive} 
+            title="Reiniciar"
+            className="shrink-0 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30"
+          >
+            <RotateCcw className="h-4 w-4" />
+          </Button>
         </div>
       </PopoverContent>
     </Popover>
