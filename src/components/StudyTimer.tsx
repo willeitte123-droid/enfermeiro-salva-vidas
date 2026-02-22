@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Timer, Play, Pause, RotateCcw, Clock, Zap } from "lucide-react";
+import { Timer, Play, Pause, RotateCcw, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -82,9 +82,9 @@ export function StudyTimer() {
           <div className="relative z-10 flex justify-between items-center">
              <div className="flex items-center gap-2">
                 <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
-                   <Zap className="h-4 w-4 text-yellow-300 fill-current" />
+                   <Clock className="h-4 w-4 text-yellow-300" />
                 </div>
-                <span className="font-bold text-sm tracking-wide">Modo Foco</span>
+                <span className="font-bold text-sm tracking-wide">Tempo de estudo</span>
              </div>
              {isActive && <Badge className="bg-white/20 hover:bg-white/20 text-white border-0 text-[10px] animate-pulse">Rodando</Badge>}
           </div>
