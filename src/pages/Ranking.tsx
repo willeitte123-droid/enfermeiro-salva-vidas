@@ -73,7 +73,7 @@ const fetchUserBadges = async (userId: string) => {
 const RankingSkeleton = () => (
   <div className="space-y-8 animate-pulse">
     {/* Podium Skeleton */}
-    <div className="flex justify-center items-end gap-2 sm:gap-4 pb-6 h-48 sm:h-64 px-4">
+    <div className="flex justify-center items-end gap-2 sm:gap-4 pb-6 h-48 sm:h-64 px-4 pt-16">
       {/* 2nd Place */}
       <div className="flex flex-col items-center gap-2 w-1/3 max-w-[120px]">
         <Skeleton className="w-12 h-12 sm:w-16 sm:h-16 rounded-full" />
@@ -279,7 +279,7 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
 
         <div className="text-right shrink-0">
           <span className="block font-black text-sm sm:text-lg text-primary">{user.score}</span>
-          <span className="text-[8px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
+          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
         </div>
         
         <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground/30 group-hover:text-primary/50 group-hover:translate-x-1 transition-all hidden sm:block" />
@@ -367,16 +367,16 @@ const Ranking = () => {
     <div className="space-y-6 sm:space-y-8 pb-10 animate-in fade-in duration-700">
       
       {/* Modern Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 p-6 sm:p-12 text-white shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 p-8 sm:p-12 text-white shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left space-y-2">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
-                <Globe className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-300" />
+                <Globe className="h-6 w-6 text-yellow-300" />
               </div>
-              <h1 className="text-2xl sm:text-5xl font-black tracking-tight">Ranking Geral</h1>
+              <h1 className="text-3xl sm:text-5xl font-black tracking-tight">Ranking Geral</h1>
             </div>
-            <p className="text-purple-100 text-xs sm:text-lg max-w-md mx-auto md:mx-0 font-medium leading-relaxed">
+            <p className="text-purple-100 text-sm sm:text-lg max-w-md mx-auto md:mx-0 font-medium">
               Supere seus limites e conquiste seu lugar entre os melhores profissionais.
             </p>
           </div>
@@ -386,20 +386,20 @@ const Ranking = () => {
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 flex items-center gap-6 shadow-xl animate-in slide-in-from-right-8 duration-700">
               <div className="text-center">
                 <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Sua Posição</p>
-                <p className="text-2xl sm:text-3xl font-black text-white drop-shadow-sm">#{myRankIndex + 1}</p>
+                <p className="text-3xl font-black text-white drop-shadow-sm">#{myRankIndex + 1}</p>
               </div>
-              <div className="w-px h-8 sm:h-10 bg-white/20" />
+              <div className="w-px h-10 bg-white/20" />
               <div className="text-center">
                 <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Seus Pontos</p>
-                <p className="text-2xl sm:text-3xl font-black text-yellow-300 drop-shadow-sm">{myRank.score}</p>
+                <p className="text-3xl font-black text-yellow-300 drop-shadow-sm">{myRank.score}</p>
               </div>
             </div>
           )}
         </div>
         
         {/* Background Particles */}
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-64 sm:w-96 h-64 sm:h-96 bg-purple-500/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-64 sm:w-80 h-64 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
       </div>
 
@@ -407,7 +407,7 @@ const Ranking = () => {
 
       <Tabs defaultValue="ranking" className="w-full">
         <div className="flex justify-center mb-8">
-          <TabsList className="grid w-full max-w-[280px] sm:max-w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full h-10 sm:h-12 shadow-inner">
+          <TabsList className="grid w-full max-w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full h-12 shadow-inner">
             <TabsTrigger value="ranking" className="rounded-full text-xs font-bold data-[state=active]:bg-white dark:data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-md transition-all">
                🏆 Classificação
             </TabsTrigger>
@@ -417,14 +417,14 @@ const Ranking = () => {
           </TabsList>
         </div>
 
-        <TabsContent value="ranking" className="space-y-8 sm:space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <TabsContent value="ranking" className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {isLoadingRanking ? (
             <RankingSkeleton />
           ) : (
             <>
               {/* Podium Section */}
               {top3.length > 0 && (
-                <div className="relative pt-6 sm:pt-8">
+                <div className="relative pt-16 sm:pt-20 pb-4">
                    {/* Light glow behind podium */}
                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-32 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
                    
@@ -440,7 +440,7 @@ const Ranking = () => {
               )}
 
               {/* List Section */}
-              <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3 pb-8">
+              <div className="max-w-3xl mx-auto space-y-3 pb-8">
                 {restOfRanking.length > 0 ? (
                   <>
                     <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest px-4 mb-2">Outros Competidores</div>
