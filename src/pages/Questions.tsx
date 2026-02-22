@@ -4,11 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useOutletContext, Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, Loader2, Lightbulb, RefreshCw, MessageSquare, Smile, Trash2, ChevronLeft, ChevronRight, Shuffle } from "lucide-react";
+import { 
+  CheckCircle2, XCircle, Loader2, Lightbulb, MessageSquare, 
+  Smile, Trash2, ChevronLeft, ChevronRight, Shuffle, Filter, 
+  BookOpen, Trophy, Flag, Share2, AlertCircle
+} from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +30,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Question } from "@/context/QuestionsContext";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { shuffleQuestionOptions } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
 
 interface Profile {
   id: string;
@@ -64,7 +70,6 @@ const Questions = () => {
   const [selectedCategory, setSelectedCategory] = useState(categoryParam || "Todas");
   const [answerStatusFilter, setAnswerStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(0);
-  // Estado para forçar recarregamento aleatório
   const [randomSeed, setRandomSeed] = useState(0);
   
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
@@ -107,7 +112,6 @@ const Questions = () => {
     });
   };
 
-  // Determina se estamos no modo aleatório (sem filtros e sem ID específico)
   const isRandomMode = !questionId && selectedCategory === "Todas" && answerStatusFilter === "all";
 
   const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
@@ -123,7 +127,6 @@ const Questions = () => {
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ['questions', selectedCategory, answerStatusFilter, currentPage, questionId, randomSeed],
     queryFn: async () => {
-      // Caso 1: Questão específica por ID (via Link do Dashboard)
       if (questionId) {
         const { data, error } = await supabase.from('questions').select('*').eq('id', questionId).single();
         if (error) throw error;
@@ -131,16 +134,13 @@ const Questions = () => {
         return { questions: shuffledQuestion ? [shuffledQuestion] : [], count: data ? 1 : 0 };
       }
 
-      // Caso 2: Modo Aleatório (Sem filtros) - Usa RPC
       if (selectedCategory === "Todas" && answerStatusFilter === "all") {
         const { data, error } = await supabase.rpc('get_random_questions', { limit_count: 1 });
         if (error) throw error;
         const shuffledQuestions = (data as Question[]).map(shuffleQuestionOptions);
-        // No modo aleatório, count é irrelevante para paginação, retornamos 0 ou um placeholder
         return { questions: shuffledQuestions, count: -1 }; 
       }
 
-      // Caso 3: Modo Filtrado (Categoria ou Status) - Usa Paginação Padrão
       const from = currentPage * QUESTIONS_PER_PAGE;
       const to = from + QUESTIONS_PER_PAGE - 1;
 
@@ -185,7 +185,7 @@ const Questions = () => {
       const shuffledQuestions = (data as Question[]).map(shuffleQuestionOptions);
       return { questions: shuffledQuestions, count };
     },
-    keepPreviousData: !questionId && !isRandomMode, // Não manter dados anteriores no modo aleatório para forçar refresh visual
+    keepPreviousData: !questionId && !isRandomMode,
   });
 
   const currentQuestion = data?.questions?.[0];
@@ -203,7 +203,7 @@ const Questions = () => {
 
   useEffect(() => {
     setCurrentPage(0);
-    setRandomSeed(0); // Reseta a seed ao mudar filtros
+    setRandomSeed(0);
   }, [selectedCategory, answerStatusFilter]);
 
   const fetchComments = async (questionId: number) => {
@@ -242,7 +242,6 @@ const Questions = () => {
 
   const handleNextQuestion = () => {
     if (isRandomMode) {
-      // No modo aleatório, incrementamos a seed para forçar uma nova busca RPC
       setRandomSeed(prev => prev + 1);
     } else if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
@@ -291,7 +290,7 @@ const Questions = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto pb-10">
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader><AlertDialogTitle>Você tem certeza?</AlertDialogTitle><AlertDialogDescription>Esta ação não pode ser desfeita. O comentário será permanentemente apagado.</AlertDialogDescription></AlertDialogHeader>
@@ -299,127 +298,302 @@ const Questions = () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Banca de Questões</h1>
-        <p className="text-muted-foreground">Afie seu raciocínio clínico. Desafie-se com questões de concurso e residência.</p>
-      </div>
-      {!isSingleQuestionMode && (
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="space-y-2 flex-1">
-            <Label htmlFor="category-filter">Filtrar por Categoria</Label>
-            <Select value={selectedCategory} onValueChange={handleCategoryChange}>
-              <SelectTrigger id="category-filter"><SelectValue placeholder="Selecione uma categoria" /></SelectTrigger>
-              <SelectContent>{isLoadingCategories ? <div className="p-2"><Loader2 className="h-4 w-4 animate-spin"/></div> : categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}</SelectContent>
-            </Select>
-          </div>
-          {profile && (
-            <div className="space-y-2 flex-1">
-              <Label htmlFor="status-filter">Filtrar por Status</Label>
-              <Select value={answerStatusFilter} onValueChange={setAnswerStatusFilter}>
-                <SelectTrigger id="status-filter"><SelectValue placeholder="Selecione um status" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas as Questões</SelectItem>
-                  <SelectItem value="unanswered">Não Resolvidas</SelectItem>
-                  <SelectItem value="correct">Acertos</SelectItem>
-                  <SelectItem value="incorrect">Erros</SelectItem>
-                </SelectContent>
-              </Select>
+      {/* Hero Header */}
+      <div className="mb-8 relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 text-white shadow-xl">
+         <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
+            <BookOpen className="w-64 h-64 -mr-16 -mt-16 rotate-12" />
+         </div>
+         
+         <div className="relative p-6 md:p-10 z-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div>
+                <Badge className="bg-white/20 hover:bg-white/30 text-white border-none mb-3 backdrop-blur-sm">Modo de Estudo</Badge>
+                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-2">Banca de Questões</h1>
+                <p className="text-indigo-100 max-w-xl text-lg opacity-90">
+                  Treine com milhares de questões comentadas. Afie seu raciocínio clínico e domine o conteúdo.
+                </p>
+              </div>
+              
+              {!isSingleQuestionMode && (
+                 <div className="flex flex-col gap-2 min-w-[200px] bg-white/10 p-3 rounded-xl backdrop-blur-sm border border-white/10">
+                    <span className="text-xs uppercase font-bold tracking-wider text-indigo-200">Filtros Ativos</span>
+                    <div className="flex items-center gap-2">
+                       <Filter className="w-4 h-4 text-indigo-300" />
+                       <span className="font-semibold text-sm truncate">{selectedCategory}</span>
+                    </div>
+                 </div>
+              )}
             </div>
-          )}
+         </div>
+      </div>
+
+      {/* Control Bar */}
+      {!isSingleQuestionMode && (
+        <div className="bg-background border rounded-xl p-4 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-center justify-between sticky top-4 z-20 backdrop-blur-xl bg-background/80 supports-[backdrop-filter]:bg-background/60">
+          <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+             <div className="flex items-center gap-2 w-full md:w-auto">
+               <Filter className="w-4 h-4 text-muted-foreground hidden md:block" />
+               <Select value={selectedCategory} onValueChange={handleCategoryChange}>
+                  <SelectTrigger className="w-full md:w-[240px] bg-card"><SelectValue placeholder="Categoria" /></SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {isLoadingCategories ? <div className="p-2"><Loader2 className="h-4 w-4 animate-spin"/></div> : categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+             </div>
+
+             {profile && (
+               <Select value={answerStatusFilter} onValueChange={setAnswerStatusFilter}>
+                  <SelectTrigger className="w-full md:w-[180px] bg-card"><SelectValue placeholder="Status" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as Questões</SelectItem>
+                    <SelectItem value="unanswered">Não Respondidas</SelectItem>
+                    <SelectItem value="correct">Meus Acertos</SelectItem>
+                    <SelectItem value="incorrect">Meus Erros</SelectItem>
+                  </SelectContent>
+               </Select>
+             )}
+          </div>
+
+          <div className="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
+             {isRandomMode ? (
+                <Badge variant="secondary" className="gap-1 px-3 py-1"><Shuffle className="w-3 h-3"/> Aleatório</Badge>
+             ) : (
+                <>
+                  <span className="hidden md:inline">Progresso:</span>
+                  <span className="font-mono font-bold text-foreground">{currentPage + 1}</span>
+                  <span className="opacity-50">/</span>
+                  <span className="font-mono font-bold">{totalQuestions > 0 ? totalQuestions : "-"}</span>
+                </>
+             )}
+          </div>
         </div>
       )}
 
-      {isLoading ? <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="ml-4 text-muted-foreground">Buscando questão...</span></div> :
-       error ? <Alert variant="destructive"><XCircle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{(error as Error).message}</AlertDescription></Alert> :
-       !currentQuestion ? <Card><CardContent className="py-12 text-center text-muted-foreground">{getNoQuestionsMessage()}</CardContent></Card> :
-      (
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between items-center mb-2">
-              <Badge variant="secondary">{currentQuestion.category}</Badge>
-              {!isSingleQuestionMode && (
-                isRandomMode ? (
-                  <Badge variant="outline" className="flex items-center gap-1 bg-primary/5 text-primary border-primary/20"><Shuffle className="h-3 w-3"/> Modo Aleatório</Badge>
-                ) : (
-                  <CardDescription>Questão <strong>{currentPage + 1}</strong> de <strong>{totalQuestions}</strong></CardDescription>
-                )
-              )}
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div>
-              <h3 className="text-base font-semibold text-foreground mb-4">{currentQuestion.question}</h3>
+      {/* Main Content */}
+      <div className="min-h-[400px]">
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center h-64 gap-4">
+             <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping"></div>
+                <div className="relative bg-background p-4 rounded-full border shadow-sm">
+                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+             </div>
+             <span className="text-muted-foreground font-medium animate-pulse">Carregando questão...</span>
+          </div>
+        ) : error ? (
+           <Alert variant="destructive" className="border-destructive/20 bg-destructive/5">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Erro ao carregar</AlertTitle>
+              <AlertDescription>{(error as Error).message}</AlertDescription>
+           </Alert>
+        ) : !currentQuestion ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center space-y-4 bg-muted/10 rounded-2xl border border-dashed">
+             <div className="p-4 bg-muted rounded-full">
+                <Trophy className="w-10 h-10 text-yellow-500 opacity-80" />
+             </div>
+             <div className="space-y-1">
+                <h3 className="text-xl font-bold">{getNoQuestionsMessage()}</h3>
+                <p className="text-muted-foreground max-w-md mx-auto">Tente mudar os filtros ou selecionar outra categoria para continuar estudando.</p>
+             </div>
+             <Button variant="outline" onClick={() => {setAnswerStatusFilter('all'); setSelectedCategory('Todas');}}>Limpar Filtros</Button>
+          </div>
+        ) : (
+          <Card className="overflow-hidden border-t-4 border-t-primary shadow-lg transition-all duration-300">
+            <CardHeader className="bg-muted/5 pb-6">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                 <div className="flex flex-wrap gap-2">
+                    <Badge variant="outline" className="bg-background font-semibold text-primary border-primary/20 px-3 py-1">
+                       {currentQuestion.category}
+                    </Badge>
+                    <Badge variant="secondary" className="opacity-70">Enfermagem</Badge>
+                    {isRandomMode && <Badge variant="secondary" className="gap-1"><Shuffle className="w-3 h-3"/> Aleatório</Badge>}
+                 </div>
+                 <div className="flex gap-2">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" title="Reportar Erro">
+                       <Flag className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" title="Compartilhar">
+                       <Share2 className="w-4 h-4" />
+                    </Button>
+                 </div>
+              </div>
+              <h3 className="text-lg md:text-xl font-medium leading-relaxed text-foreground/90 font-serif tracking-wide">
+                 {currentQuestion.question}
+              </h3>
+            </CardHeader>
+            
+            <CardContent className="pt-6 space-y-8">
               <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer} disabled={showExplanation} className="space-y-3">
-                {currentQuestion.options.map((option) => (
-                  <Label key={option.id} htmlFor={`${option.id}-${currentQuestion.id}`} className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer ${showExplanation ? (option.id === currentQuestion.correctAnswer ? "border-green-500 bg-green-50 dark:bg-green-950 font-semibold" : (option.id === selectedAnswer ? "border-red-500 bg-red-50 dark:bg-red-950" : "border-border")) : "border-border hover:border-primary hover:bg-accent"}`}>
-                    <RadioGroupItem value={option.id} id={`${option.id}-${currentQuestion.id}`} />
-                    <span className="flex-1 text-foreground"><span className="font-bold">{option.id})</span> {option.text}</span>
-                    {showExplanation && option.id === currentQuestion.correctAnswer && <CheckCircle2 className="h-5 w-5 text-green-600" />}
-                    {showExplanation && option.id === selectedAnswer && option.id !== currentQuestion.correctAnswer && <XCircle className="h-5 w-5 text-red-600" />}
-                  </Label>
-                ))}
-              </RadioGroup>
-            </div>
+                {currentQuestion.options.map((option) => {
+                   const isSelected = option.id === selectedAnswer;
+                   const isCorrect = option.id === currentQuestion.correctAnswer;
+                   const showSuccess = showExplanation && isCorrect;
+                   const showError = showExplanation && isSelected && !isCorrect;
+                   const isNeutral = !showExplanation;
 
-            {showExplanation && (
-              <>
-                <Alert className={`border-2 ${answeredCorrectly ? "border-green-500" : "border-red-500"}`}>
-                  <Lightbulb className="h-4 w-4" />
-                  <AlertTitle className="font-semibold">{answeredCorrectly ? "Resposta Correta!" : "Resposta Incorreta"}</AlertTitle>
-                  <AlertDescription><strong>Gabarito: {currentQuestion.correctAnswer}.</strong> {currentQuestion.explanation}</AlertDescription>
-                </Alert>
-
-                <Collapsible open={isCommentsOpen} onOpenChange={setIsCommentsOpen}>
-                  <CollapsibleTrigger asChild><Button variant="outline" className="w-full"><MessageSquare className="mr-2 h-4 w-4" />Ver Comentários da Comunidade <Badge variant="secondary" className="ml-2">{comments.length}</Badge></Button></CollapsibleTrigger>
-                  <CollapsibleContent className="space-y-4 pt-4">
-                    {isCommentsLoading ? <div className="flex justify-center"><Loader2 className="h-6 w-6 animate-spin" /></div> :
-                      comments.length === 0 ? <p className="text-sm text-center text-muted-foreground">Nenhum comentário ainda. Seja o primeiro!</p> :
-                        <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
-                          {comments.map(comment => (
-                            <div key={comment.id} className="flex items-start gap-3">
-                              <Link to={`/user/${comment.profiles?.id}`} className="flex-shrink-0"><Avatar className="h-8 w-8"><AvatarImage src={comment.profiles?.avatar_url} className="object-cover" /><AvatarFallback>{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback></Avatar></Link>
-                              <div className="flex-1 bg-muted p-3 rounded-lg">
-                                <div className="flex justify-between items-center"><Link to={`/user/${comment.profiles?.id}`} className="hover:underline"><p className="text-sm font-semibold">{`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}</p></Link>
-                                  <div className="flex items-center gap-2"><p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</p>
-                                    {profile?.role === 'admin' && (<Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => { setCommentToDelete(comment.id); setIsDeleteDialogOpen(true); }}><Trash2 className="h-3 w-3 text-destructive" /></Button>)}
-                                  </div>
-                                </div>
-                                <p className="text-sm mt-1">{comment.content}</p>
-                              </div>
-                            </div>
-                          ))}
+                   return (
+                      <Label 
+                        key={option.id} 
+                        htmlFor={`${option.id}-${currentQuestion.id}`} 
+                        className={cn(
+                           "flex items-start space-x-4 p-4 rounded-xl border transition-all duration-200 cursor-pointer relative overflow-hidden group",
+                           isNeutral && "hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm",
+                           isSelected && isNeutral && "border-primary bg-primary/5 ring-1 ring-primary/20",
+                           showSuccess && "border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-500/50",
+                           showError && "border-red-500 bg-red-50 dark:bg-red-950/30 opacity-90",
+                           showExplanation && !isCorrect && !isSelected && "opacity-50 grayscale"
+                        )}
+                      >
+                        {showSuccess && <div className="absolute right-0 top-0 p-1 bg-green-500 text-white rounded-bl-lg"><CheckCircle2 className="w-4 h-4" /></div>}
+                        {showError && <div className="absolute right-0 top-0 p-1 bg-red-500 text-white rounded-bl-lg"><XCircle className="w-4 h-4" /></div>}
+                        
+                        <RadioGroupItem value={option.id} id={`${option.id}-${currentQuestion.id}`} className="mt-1" />
+                        <div className="flex-1 space-y-1">
+                           <span className={cn(
+                              "font-bold mr-2 inline-block w-6", 
+                              showSuccess ? "text-green-600 dark:text-green-400" : 
+                              showError ? "text-red-600 dark:text-red-400" : "text-muted-foreground"
+                           )}>{option.id})</span>
+                           <span className={cn(
+                              "text-base leading-relaxed",
+                              showSuccess && "font-medium text-green-900 dark:text-green-100",
+                              showError && "text-red-900 dark:text-red-100"
+                           )}>{option.text}</span>
                         </div>
-                    }
-                    <Form {...form}><form onSubmit={form.handleSubmit(onCommentSubmit)} className="flex items-start gap-2"><FormField control={form.control} name="content" render={({ field }) => (<FormItem className="flex-1"><FormControl><Textarea placeholder="Adicione seu comentário..." {...field} /></FormControl><FormMessage /></FormItem>)} /><Popover><PopoverTrigger asChild><Button type="button" variant="outline" size="icon" className="flex-shrink-0"><Smile className="h-4 w-4" /></Button></PopoverTrigger><PopoverContent className="p-0 w-full"><EmojiPicker onEmojiClick={(emojiObject) => {form.setValue('content', form.getValues('content') + emojiObject.emoji);}} height={350} width="100%" /></PopoverContent></Popover><Button type="submit" disabled={isSubmittingComment} className="flex-shrink-0">{isSubmittingComment ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enviar"}</Button></form></Form>
-                  </CollapsibleContent>
-                </Collapsible>
-              </>
-            )}
+                      </Label>
+                   );
+                })}
+              </RadioGroup>
 
-            <div className="flex justify-between items-center">
-              {isSingleQuestionMode ? (
-                <Button variant="outline" asChild>
-                  <Link to="/questions"><ChevronLeft className="h-4 w-4 mr-2" />Voltar para a Banca</Link>
-                </Button>
-              ) : (
-                <Button variant="outline" onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 0 || isFetching || isRandomMode}>
-                  <ChevronLeft className="h-4 w-4 mr-2" />Anterior
-                </Button>
+              {showExplanation && (
+                 <div className="animate-in fade-in slide-in-from-top-4 duration-500">
+                    <Alert className={cn(
+                       "border-l-4 shadow-sm mb-6", 
+                       answeredCorrectly ? "border-l-green-500 bg-green-50/50 dark:bg-green-950/10 border-green-200" : "border-l-red-500 bg-red-50/50 dark:bg-red-950/10 border-red-200"
+                    )}>
+                       <div className="flex items-start gap-3">
+                          <div className={cn("p-2 rounded-full mt-0.5", answeredCorrectly ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600")}>
+                             {answeredCorrectly ? <Trophy className="w-5 h-5" /> : <Lightbulb className="w-5 h-5" />}
+                          </div>
+                          <div className="flex-1">
+                             <AlertTitle className="text-lg font-bold flex items-center gap-2">
+                                {answeredCorrectly ? <span className="text-green-700 dark:text-green-400">Excelente! Resposta Correta.</span> : <span className="text-red-700 dark:text-red-400">Resposta Incorreta.</span>}
+                             </AlertTitle>
+                             <div className="mt-2 text-foreground/80 leading-relaxed space-y-2">
+                                <p><strong>Gabarito: Letra {currentQuestion.correctAnswer}</strong></p>
+                                <Separator className="my-2 bg-foreground/10" />
+                                <p className="text-sm md:text-base">{currentQuestion.explanation}</p>
+                             </div>
+                          </div>
+                       </div>
+                    </Alert>
+
+                    <Collapsible open={isCommentsOpen} onOpenChange={setIsCommentsOpen} className="border rounded-xl overflow-hidden bg-background shadow-sm">
+                      <CollapsibleTrigger asChild>
+                         <div className="w-full flex items-center justify-between p-4 bg-muted/20 hover:bg-muted/40 cursor-pointer transition-colors group">
+                           <div className="flex items-center gap-2 font-medium text-sm">
+                              <MessageSquare className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
+                              Comentários da Comunidade 
+                              <Badge variant="secondary" className="ml-2 text-xs h-5 px-1.5 min-w-[1.25rem]">{comments.length}</Badge>
+                           </div>
+                           <ChevronLeft className={cn("w-4 h-4 transition-transform duration-200", isCommentsOpen ? "-rotate-90" : "rotate-0")} />
+                         </div>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <div className="p-4 bg-muted/5 space-y-6">
+                           {/* Add Comment Form */}
+                           <Form {...form}><form onSubmit={form.handleSubmit(onCommentSubmit)} className="flex gap-3 items-start p-3 bg-background rounded-lg border shadow-sm focus-within:ring-1 focus-within:ring-primary"><Avatar className="w-8 h-8 mt-1"><AvatarImage src={profile?.avatar_url} /><AvatarFallback>EU</AvatarFallback></Avatar><div className="flex-1 space-y-2"><FormField control={form.control} name="content" render={({ field }) => (<FormItem className="space-y-0"><FormControl><Textarea placeholder="Adicione uma dica ou comentário..." className="min-h-[60px] resize-none border-none shadow-none focus-visible:ring-0 p-0 text-sm" {...field} /></FormControl><FormMessage /></FormItem>)} /><div className="flex justify-between items-center pt-2 border-t border-dashed"><Popover><PopoverTrigger asChild><Button type="button" variant="ghost" size="sm" className="h-8 w-8 rounded-full text-muted-foreground hover:text-primary"><Smile className="h-4 w-4" /></Button></PopoverTrigger><PopoverContent className="p-0 w-full"><EmojiPicker onEmojiClick={(emojiObject) => {form.setValue('content', form.getValues('content') + emojiObject.emoji);}} height={300} width="100%" /></PopoverContent></Popover><Button type="submit" size="sm" disabled={isSubmittingComment} className="h-7 text-xs px-4">{isSubmittingComment ? <Loader2 className="h-3 w-3 animate-spin" /> : "Publicar"}</Button></div></div></form></Form>
+
+                           <Separator />
+
+                           {isCommentsLoading ? <div className="flex justify-center py-4"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div> :
+                             comments.length === 0 ? <div className="text-center py-6 text-muted-foreground text-sm italic">Seja o primeiro a comentar nesta questão!</div> :
+                               <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                 {comments.map(comment => (
+                                   <div key={comment.id} className="flex gap-3 group">
+                                     <Link to={`/user/${comment.profiles?.id}`} className="flex-shrink-0 mt-1">
+                                       <Avatar className="h-8 w-8 border shadow-sm ring-2 ring-transparent group-hover:ring-primary/20 transition-all">
+                                          <AvatarImage src={comment.profiles?.avatar_url} className="object-cover" />
+                                          <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback>
+                                       </Avatar>
+                                     </Link>
+                                     <div className="flex-1 space-y-1">
+                                       <div className="flex items-center justify-between">
+                                          <div className="flex items-center gap-2">
+                                             <Link to={`/user/${comment.profiles?.id}`} className="font-semibold text-sm hover:underline hover:text-primary">
+                                                {`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}
+                                             </Link>
+                                             <span className="text-[10px] text-muted-foreground">• {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</span>
+                                          </div>
+                                          {profile?.role === 'admin' && (
+                                             <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => { setCommentToDelete(comment.id); setIsDeleteDialogOpen(true); }}>
+                                                <Trash2 className="h-3 w-3 text-destructive" />
+                                             </Button>
+                                          )}
+                                       </div>
+                                       <p className="text-sm text-foreground/90 leading-relaxed bg-muted/30 p-2.5 rounded-lg rounded-tl-none inline-block">
+                                          {comment.content}
+                                       </p>
+                                     </div>
+                                   </div>
+                                 ))}
+                               </div>
+                           }
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                 </div>
               )}
-              
-              {!showExplanation ? (
-                <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer || isFetching}>Responder</Button>
-              ) : !isSingleQuestionMode ? (
-                <Button onClick={handleNextQuestion} disabled={(currentPage >= totalPages - 1 && !isRandomMode) || isFetching}>
-                  {isRandomMode ? "Sortear Próxima" : "Próxima Questão"} <ChevronRight className="h-4 w-4 ml-2" />
-                </Button>
-              ) : (
-                <div></div> // Placeholder to keep alignment
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            </CardContent>
+
+            <CardFooter className="bg-muted/10 p-4 border-t flex flex-col sm:flex-row gap-4 justify-between items-center sticky bottom-0 z-10 backdrop-blur-md">
+               <div className="flex gap-2 w-full sm:w-auto">
+                 {!isSingleQuestionMode && (
+                   <Button 
+                      variant="ghost" 
+                      onClick={() => setCurrentPage(p => p - 1)} 
+                      disabled={currentPage === 0 || isFetching || isRandomMode}
+                      className="text-muted-foreground hover:text-foreground"
+                   >
+                     <ChevronLeft className="h-4 w-4 mr-1" /> Anterior
+                   </Button>
+                 )}
+                 {isSingleQuestionMode && (
+                     <Button variant="ghost" asChild>
+                        <Link to="/questions"><ChevronLeft className="h-4 w-4 mr-2" />Voltar para o Banco</Link>
+                     </Button>
+                 )}
+               </div>
+               
+               <div className="w-full sm:w-auto flex justify-end">
+                 {!showExplanation ? (
+                   <Button 
+                     onClick={handleAnswerSubmit} 
+                     disabled={!selectedAnswer || isFetching} 
+                     size="lg" 
+                     className="w-full sm:w-auto shadow-md font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 border-0"
+                   >
+                     {isFetching ? <Loader2 className="h-4 w-4 animate-spin mr-2"/> : <CheckCircle2 className="h-4 w-4 mr-2" />}
+                     Responder
+                   </Button>
+                 ) : !isSingleQuestionMode ? (
+                   <Button 
+                     onClick={handleNextQuestion} 
+                     disabled={(currentPage >= totalPages - 1 && !isRandomMode) || isFetching}
+                     size="lg"
+                     className="w-full sm:w-auto font-bold animate-pulse-subtle"
+                   >
+                     {isRandomMode ? "Sortear Próxima" : "Próxima Questão"} <ChevronRight className="h-4 w-4 ml-2" />
+                   </Button>
+                 ) : (
+                    <div className="w-20"></div> 
+                 )}
+               </div>
+            </CardFooter>
+          </Card>
+        )}
+      </div>
     </div>
   );
 };
