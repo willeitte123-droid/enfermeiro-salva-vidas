@@ -152,37 +152,37 @@ const ProfileIncentiveCard = ({ profile }: { profile: Profile }) => {
 const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 }) => {
   const styles = {
     1: {
-      height: "h-48 sm:h-56", // Mais alto
-      avatarSize: "w-20 h-20 sm:w-24 sm:h-24",
-      gradient: "from-yellow-400 via-amber-400 to-orange-500", // Ouro Vibrante
-      ring: "ring-4 ring-yellow-400 shadow-yellow-500/50",
-      text: "text-amber-800 dark:text-amber-100",
-      badgeBg: "bg-gradient-to-r from-yellow-400 to-amber-500",
-      scale: "scale-105 z-20 order-2 -mt-10", // Central e elevado
-      icon: <Crown className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-500 fill-yellow-400 absolute -top-10 sm:-top-12 animate-bounce drop-shadow-md" />,
-      baseGlow: "bg-yellow-500/20"
+      height: "h-52 sm:h-64", 
+      avatarSize: "w-24 h-24 sm:w-28 sm:h-28",
+      blockGradient: "bg-gradient-to-b from-yellow-300 via-amber-500 to-orange-600 shadow-[0_0_40px_-5px_rgba(251,191,36,0.5)] border-t border-white/40",
+      ring: "ring-4 ring-yellow-400 shadow-2xl shadow-yellow-500/40",
+      text: "text-amber-600 dark:text-amber-300",
+      badgeBg: "bg-yellow-500 text-white border-2 border-yellow-200",
+      scale: "scale-105 z-30 order-2 -mt-16", 
+      icon: <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-yellow-400 fill-yellow-200 absolute -top-14 animate-bounce drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" />,
+      baseGlow: "bg-yellow-500/40"
     },
     2: {
-      height: "h-36 sm:h-44",
+      height: "h-40 sm:h-48",
       avatarSize: "w-16 h-16 sm:w-20 sm:h-20",
-      gradient: "from-slate-300 via-slate-400 to-slate-500", // Prata
-      ring: "ring-4 ring-slate-300 shadow-slate-400/50",
-      text: "text-slate-700 dark:text-slate-200",
-      badgeBg: "bg-gradient-to-r from-slate-300 to-slate-400",
-      scale: "z-10 order-1", // Esquerda
+      blockGradient: "bg-gradient-to-b from-slate-200 via-slate-400 to-slate-600 shadow-[0_0_30px_-5px_rgba(148,163,184,0.4)] border-t border-white/40",
+      ring: "ring-4 ring-slate-300 shadow-xl shadow-slate-400/30",
+      text: "text-slate-600 dark:text-slate-300",
+      badgeBg: "bg-slate-500 text-white border-2 border-slate-300",
+      scale: "z-20 order-1", 
       icon: null,
-      baseGlow: "bg-slate-500/20"
+      baseGlow: "bg-slate-500/30"
     },
     3: {
-      height: "h-28 sm:h-36",
+      height: "h-32 sm:h-36",
       avatarSize: "w-16 h-16 sm:w-20 sm:h-20",
-      gradient: "from-orange-300 via-orange-400 to-red-400", // Bronze
-      ring: "ring-4 ring-orange-300 shadow-orange-400/50",
-      text: "text-orange-800 dark:text-orange-100",
-      badgeBg: "bg-gradient-to-r from-orange-300 to-orange-400",
-      scale: "z-10 order-3 mt-4", // Direita e levemente mais baixo
+      blockGradient: "bg-gradient-to-b from-orange-300 via-orange-500 to-red-700 shadow-[0_0_30px_-5px_rgba(234,88,12,0.4)] border-t border-white/40",
+      ring: "ring-4 ring-orange-400 shadow-xl shadow-orange-500/30",
+      text: "text-orange-700 dark:text-orange-300",
+      badgeBg: "bg-orange-600 text-white border-2 border-orange-300",
+      scale: "z-20 order-3 mt-8", 
       icon: null,
-      baseGlow: "bg-orange-500/20"
+      baseGlow: "bg-orange-500/30"
     }
   };
 
@@ -191,44 +191,44 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
   const fullName = `${user.first_name} ${user.last_name || ''}`.trim();
 
   return (
-    <div className={cn("flex flex-col items-center justify-end w-1/3 max-w-[140px] group relative", currentStyle.scale)}>
-      
+    <div className={cn("flex flex-col items-center justify-end w-1/3 max-w-[140px] group transition-all duration-500", currentStyle.scale)}>
       {/* Avatar Section */}
-      <div className="relative flex flex-col items-center mb-4 z-20">
+      <div className="relative flex flex-col items-center mb-3 z-10">
         {currentStyle.icon}
         <Link to={`/user/${user.user_id}`} className="transition-transform hover:scale-105 duration-300 relative">
-           <div className={cn("absolute inset-0 rounded-full blur-xl opacity-40", currentStyle.baseGlow)} />
-           <Avatar className={cn("border-4 border-background shadow-2xl", currentStyle.avatarSize, currentStyle.ring)}>
+           <div className={cn("absolute inset-0 rounded-full blur-xl opacity-60", currentStyle.baseGlow)} />
+           <Avatar className={cn("border-4 border-white dark:border-slate-900", currentStyle.avatarSize, currentStyle.ring)}>
             <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
             <AvatarFallback className={cn("text-white font-bold text-xl sm:text-2xl", fallbackColor)}>
               {user.first_name?.[0]}
             </AvatarFallback>
           </Avatar>
         </Link>
-        <div className={cn("absolute -bottom-3 px-3 py-0.5 rounded-full text-white text-xs sm:text-sm font-black shadow-md border-2 border-white dark:border-slate-900 tracking-wider", currentStyle.badgeBg)}>
+        <div className={cn("absolute -bottom-3 px-3 py-0.5 rounded-full text-xs sm:text-sm font-black shadow-lg tracking-wider", currentStyle.badgeBg)}>
           {position}º
         </div>
       </div>
       
-      {/* Info Section - Nomes Completos */}
-      <div className="text-center mb-3 w-full px-1 z-20 min-h-[3rem] flex flex-col justify-end">
-        <Link to={`/user/${user.user_id}`} className="block font-bold text-xs sm:text-sm leading-tight text-foreground hover:text-primary transition-colors line-clamp-2 break-words w-full" title={fullName}>
+      {/* Info Section - Nome completo sem corte */}
+      <div className="text-center mb-2 w-full px-1 flex flex-col justify-end min-h-[3.5rem] z-10">
+        <Link to={`/user/${user.user_id}`} className="block font-bold text-xs sm:text-sm leading-tight text-foreground hover:text-primary transition-colors w-full break-words" title={fullName}>
           {fullName}
         </Link>
-        <p className={cn("text-[10px] sm:text-xs font-bold mt-1 opacity-80", currentStyle.text)}>
+        <p className={cn("text-[10px] sm:text-xs font-black mt-1 uppercase tracking-wide", currentStyle.text)}>
           {user.score} pts
         </p>
       </div>
 
-      {/* Podium Block - Glassmorphism */}
-      <div className={cn(
-        "w-full rounded-t-2xl shadow-lg backdrop-blur-md relative overflow-hidden border-t border-x border-white/20", 
-        currentStyle.gradient, 
-        currentStyle.height
-      )}>
-         {/* Efeito de brilho/reflexo no bloco */}
-         <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
-         <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-black/10 to-transparent" />
+      {/* Podium Block - Vibrant Gradient */}
+      <div className={cn("w-full rounded-t-2xl relative overflow-hidden", currentStyle.blockGradient, currentStyle.height)}>
+         {/* Glossy Effect */}
+         <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+         <div className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+         
+         {/* Position Number on Block */}
+         <div className="absolute bottom-4 left-0 right-0 text-center opacity-20 text-white font-black text-6xl select-none">
+            {position}
+         </div>
       </div>
     </div>
   );
@@ -261,7 +261,7 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
               {fullName}
             </p>
             {isCurrentUser && (
-              <Badge variant="default" className="text-[9px] h-4 px-1.5 bg-primary/90 hover:bg-primary w-fit">Você</Badge>
+              <Badge variant="default" className="text-[10px] h-5 px-1.5 bg-primary/90 hover:bg-primary w-fit">Você</Badge>
             )}
           </div>
           <div className="flex items-center gap-3 mt-0.5">
@@ -273,7 +273,7 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
         </div>
 
         <div className="text-right shrink-0">
-          <span className="block font-black text-sm sm:text-lg text-primary">{user.score}</span>
+          <span className="block font-black text-base sm:text-lg text-primary">{user.score}</span>
           <span className="text-[9px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
         </div>
         
@@ -419,17 +419,17 @@ const Ranking = () => {
             <>
               {/* Podium Section */}
               {top3.length > 0 && (
-                <div className="relative pt-12 pb-4">
+                <div className="relative pt-8">
                    {/* Light glow behind podium */}
                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-32 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
                    
-                   <div className="flex justify-center items-end gap-2 sm:gap-4 px-2 relative z-10">
+                   <div className="flex justify-center items-end gap-2 sm:gap-6 px-2 relative z-10">
                     {/* 2nd Place */}
-                    <div className="order-1 flex justify-center w-1/3">{top3[1] && <PodiumItem user={top3[1]} position={2} />}</div>
+                    <div className="order-1">{top3[1] && <PodiumItem user={top3[1]} position={2} />}</div>
                     {/* 1st Place */}
-                    <div className="order-2 flex justify-center w-1/3 -mx-2 sm:-mx-4 z-20">{top3[0] && <PodiumItem user={top3[0]} position={1} />}</div>
+                    <div className="order-2 -mt-8">{top3[0] && <PodiumItem user={top3[0]} position={1} />}</div>
                     {/* 3rd Place */}
-                    <div className="order-3 flex justify-center w-1/3">{top3[2] && <PodiumItem user={top3[2]} position={3} />}</div>
+                    <div className="order-3">{top3[2] && <PodiumItem user={top3[2]} position={3} />}</div>
                   </div>
                 </div>
               )}
