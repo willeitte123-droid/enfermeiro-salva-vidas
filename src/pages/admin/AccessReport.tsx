@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 
-const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4'];
+const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4', '#6366f1', '#14b8a6', '#f97316', '#d946ef', '#84cc16'];
 
 const fetchAccessData = async () => {
   const today = new Date();
@@ -227,19 +227,60 @@ const AccessReport = () => {
       if (path === '/') {
         return;
       }
+      
+      // Normalização para evitar duplicidade com query params ou trailing slash
+      path = path.split('?')[0].replace(/\/$/, '');
 
+      // Mapeamento Detalhado
       if (path.startsWith('/questions')) path = 'Questões';
       else if (path.startsWith('/simulado')) path = 'Simulado';
       else if (path.startsWith('/medications')) path = 'Medicamentos';
       else if (path.startsWith('/emergency')) path = 'Emergências';
       else if (path.startsWith('/concursos')) path = 'Concursos';
       else if (path.startsWith('/library')) path = 'Biblioteca';
-      else if (path.startsWith('/video')) path = 'Vídeos';
-      else if (path.startsWith('/tools')) path = 'Ferramentas';
+      else if (path.startsWith('/video-library')) path = 'Vídeos'; 
+      else if (path.startsWith('/study-tracks')) path = 'Trilha de Estudos';
+      else if (path.startsWith('/concurseiro')) path = 'Área do Concurseiro';
+      else if (path.startsWith('/clinical-cases')) path = 'Casos Clínicos';
+      else if (path.startsWith('/flashcards')) path = 'Flashcards';
+      else if (path.startsWith('/review-area')) path = 'Área de Revisão';
+      else if (path.startsWith('/anatomy')) path = 'Anatomia';
+      else if (path.startsWith('/semiology')) path = 'Semiologia';
+      else if (path.startsWith('/semiotechnique')) path = 'Semiotécnica';
+      else if (path.startsWith('/ecg')) path = 'Guia de ECG';
+      else if (path.startsWith('/nursing-notes')) path = 'Anotações de Enfermagem';
+      else if (path.startsWith('/technical-terms')) path = 'Termos Técnicos';
+      else if (path.startsWith('/calculator')) path = 'Calculadora Gotejamento';
+      else if (path.startsWith('/favorites')) path = 'Favoritos';
+      else if (path.startsWith('/ranking')) path = 'Ranking';
+      else if (path.startsWith('/wound-care')) path = 'Curativos';
+      else if (path.startsWith('/procedures')) path = 'Procedimentos';
+      
+      // Ferramentas Específicas
+      else if (path.startsWith('/tools/dose-calculator')) path = 'Calc. Doses';
+      else if (path.startsWith('/tools/lab-values')) path = 'Valores Lab.';
+      else if (path.startsWith('/tools/bloco-de-notas')) path = 'Bloco de Notas';
+      else if (path.startsWith('/tools/integrated-calculators')) path = 'Calc. Integradas';
+      else if (path.startsWith('/tools/performance')) path = 'Desempenho';
+      
       else if (path.startsWith('/scales')) path = 'Escalas';
+      
+      // Perfis
       else if (path.startsWith('/user')) path = 'Perfil Público';
       else if (path.startsWith('/profile')) path = 'Meu Perfil';
-      else path = 'Outros';
+      else if (path.startsWith('/update-password')) path = 'Atualizar Senha';
+      
+      // Fallback para qualquer outra rota não mapeada explicitamente
+      else {
+          // Remove barra inicial e capitaliza
+          const cleanPath = path.replace(/^\//, '');
+          if (cleanPath) {
+              // Tenta converter slug em texto legível
+              path = cleanPath.split('/').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' > ');
+          } else {
+              path = 'Outros';
+          }
+      }
 
       pathMap[path] = (pathMap[path] || 0) + 1;
     });
@@ -247,7 +288,7 @@ const AccessReport = () => {
     const modulesData = Object.entries(pathMap)
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value)
-      .slice(0, 8); 
+      .slice(0, 15); // Aumentado para 15 para mostrar mais detalhes
 
     return {
       activeUsersToday,
@@ -455,7 +496,7 @@ const AccessReport = () => {
                           </div>
                           <div className="flex-1">
                              <div className="flex justify-between mb-1">
-                                <span className="font-semibold text-sm">{item.name}</span>
+                                <span className="font-semibold text-sm truncate max-w-[250px]" title={item.name}>{item.name}</span>
                                 <span className="font-bold text-primary">{item.value}</span>
                              </div>
                              <div className="w-full bg-muted rounded-full h-1.5">
