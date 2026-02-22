@@ -51,23 +51,23 @@ export function StudyTimer() {
           variant="outline" 
           size="sm" 
           className={cn(
-            "relative gap-2 px-3 h-9 transition-all duration-300 border",
+            "relative gap-2 px-4 h-9 transition-all duration-300 border rounded-full font-medium shadow-sm",
             isActive 
-              ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 dark:bg-indigo-950/30 dark:border-indigo-800 dark:text-indigo-300" 
-              : "hover:bg-muted text-muted-foreground hover:text-foreground border-transparent bg-transparent"
+              ? "bg-indigo-600 border-indigo-500 text-white hover:bg-indigo-700 hover:text-white shadow-indigo-500/20" 
+              : "bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 hover:text-blue-800 hover:border-blue-300 dark:bg-blue-950/40 dark:border-blue-800 dark:text-blue-400"
           )}
         >
           {isActive ? (
             <span className="relative flex h-2.5 w-2.5 mr-1">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
             </span>
           ) : (
-            <Timer className="h-4 w-4" />
+            <Clock className="h-4 w-4" />
           )}
           
           <span className="hidden md:inline font-mono font-semibold tabular-nums min-w-[4.5rem] text-left">
-             {isActive || seconds > 0 ? timeObj.formatted : "Cronômetro"}
+             {isActive || seconds > 0 ? timeObj.formatted : "Tempo de estudo"}
           </span>
         </Button>
       </PopoverTrigger>
