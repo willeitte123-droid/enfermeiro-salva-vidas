@@ -191,7 +191,8 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
   const fullName = `${user.first_name} ${user.last_name || ''}`.trim();
 
   return (
-    <div className={cn("flex flex-col items-center justify-end w-1/3 sm:w-full sm:max-w-[160px] group relative", currentStyle.scale)}>
+    // FIX: Removido w-1/3 para w-full para aproveitar todo o espaço da coluna do grid pai
+    <div className={cn("flex flex-col items-center justify-end w-full sm:max-w-[160px] group relative", currentStyle.scale)}>
       
       {/* Avatar Section */}
       <div className="relative flex flex-col items-center mb-2 sm:mb-4 z-20">
@@ -212,7 +213,8 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
       
       {/* Info Section - Nomes Completos */}
       <div className="text-center mb-1 sm:mb-2 w-full px-0.5 z-20 min-h-[2.5rem] sm:min-h-[3.5rem] flex flex-col justify-end">
-        <Link to={`/user/${user.user_id}`} className="block font-bold text-[10px] sm:text-sm leading-tight text-foreground hover:text-primary transition-colors w-full break-words line-clamp-2" title={fullName}>
+        {/* FIX: line-clamp-2 e break-words ajustados para mobile */}
+        <Link to={`/user/${user.user_id}`} className="block font-bold text-[10px] sm:text-sm leading-tight text-foreground hover:text-primary transition-colors w-full break-words line-clamp-2 px-1" title={fullName}>
           {fullName}
         </Link>
         <p className={cn("text-[9px] sm:text-xs font-black mt-0.5 sm:mt-1 uppercase tracking-wide", currentStyle.text)}>
@@ -279,7 +281,7 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
 
         <div className="text-right shrink-0">
           <span className="block font-black text-sm sm:text-lg text-primary">{user.score}</span>
-          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
+          <span className="text-[8px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
         </div>
         
         <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground/30 group-hover:text-primary/50 group-hover:translate-x-1 transition-all hidden sm:block" />
@@ -367,16 +369,16 @@ const Ranking = () => {
     <div className="space-y-6 sm:space-y-8 pb-10 animate-in fade-in duration-700">
       
       {/* Modern Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 p-8 sm:p-12 text-white shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 p-6 sm:p-12 text-white shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left space-y-2">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
-                <Globe className="h-6 w-6 text-yellow-300" />
+                <Globe className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-300" />
               </div>
-              <h1 className="text-3xl sm:text-5xl font-black tracking-tight">Ranking Geral</h1>
+              <h1 className="text-2xl sm:text-5xl font-black tracking-tight">Ranking Geral</h1>
             </div>
-            <p className="text-purple-100 text-sm sm:text-lg max-w-md mx-auto md:mx-0 font-medium">
+            <p className="text-purple-100 text-xs sm:text-lg max-w-md mx-auto md:mx-0 font-medium leading-relaxed">
               Supere seus limites e conquiste seu lugar entre os melhores profissionais.
             </p>
           </div>
@@ -386,20 +388,20 @@ const Ranking = () => {
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 flex items-center gap-6 shadow-xl animate-in slide-in-from-right-8 duration-700">
               <div className="text-center">
                 <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Sua Posição</p>
-                <p className="text-3xl font-black text-white drop-shadow-sm">#{myRankIndex + 1}</p>
+                <p className="text-2xl sm:text-3xl font-black text-white drop-shadow-sm">#{myRankIndex + 1}</p>
               </div>
-              <div className="w-px h-10 bg-white/20" />
+              <div className="w-px h-8 sm:h-10 bg-white/20" />
               <div className="text-center">
                 <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Seus Pontos</p>
-                <p className="text-3xl font-black text-yellow-300 drop-shadow-sm">{myRank.score}</p>
+                <p className="text-2xl sm:text-3xl font-black text-yellow-300 drop-shadow-sm">{myRank.score}</p>
               </div>
             </div>
           )}
         </div>
         
         {/* Background Particles */}
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-64 sm:w-96 h-64 sm:h-96 bg-purple-500/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-64 sm:w-80 h-64 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" />
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
       </div>
 
@@ -407,7 +409,7 @@ const Ranking = () => {
 
       <Tabs defaultValue="ranking" className="w-full">
         <div className="flex justify-center mb-8">
-          <TabsList className="grid w-full max-w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full h-12 shadow-inner">
+          <TabsList className="grid w-full max-w-[280px] sm:max-w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full h-10 sm:h-12 shadow-inner">
             <TabsTrigger value="ranking" className="rounded-full text-xs font-bold data-[state=active]:bg-white dark:data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-md transition-all">
                🏆 Classificação
             </TabsTrigger>
@@ -417,7 +419,7 @@ const Ranking = () => {
           </TabsList>
         </div>
 
-        <TabsContent value="ranking" className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <TabsContent value="ranking" className="space-y-8 sm:space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {isLoadingRanking ? (
             <RankingSkeleton />
           ) : (
@@ -440,7 +442,7 @@ const Ranking = () => {
               )}
 
               {/* List Section */}
-              <div className="max-w-3xl mx-auto space-y-3 pb-8">
+              <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3 pb-8">
                 {restOfRanking.length > 0 ? (
                   <>
                     <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest px-4 mb-2">Outros Competidores</div>
