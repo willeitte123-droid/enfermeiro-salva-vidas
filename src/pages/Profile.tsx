@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { 
   Loader2, Camera, MapPin, Briefcase, GraduationCap, 
-  Edit2, Save, X, Plus, Trash2, Medal, Zap, Target
+  Edit2, Save, X, Plus, Trash2, Medal, Zap, Target, Calendar
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,8 @@ import { useQueryClient, useQuery } from "@tanstack/react-query";
 import ImageCropperDialog from "@/components/ImageCropperDialog";
 import { useUserLevel } from "@/hooks/useUserLevel";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 interface Profile {
   id: string;
@@ -34,6 +36,8 @@ interface Profile {
   role: string;
   email?: string;
   status?: string; 
+  plan?: string;
+  access_expires_at?: string | null;
 }
 
 const profileSchema = z.object({
@@ -526,6 +530,15 @@ const ProfilePage = () => {
                     <div className="flex justify-between py-2 border-b">
                       <span className="font-medium text-sm text-muted-foreground">Plano Atual</span>
                       <Badge variant="outline" className="capitalize">{profile?.plan || "Free"}</Badge>
+                    </div>
+                    <div className="flex justify-between py-2 border-b">
+                      <span className="font-medium text-sm text-muted-foreground">Vencimento</span>
+                      <span className="text-sm font-semibold flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+                        {profile?.access_expires_at 
+                          ? format(new Date(profile.access_expires_at), "dd 'de' MMMM 'de' yyyy", { locale: ptBR }) 
+                          : "Vitalício / Indeterminado"}
+                      </span>
                     </div>
                     <div className="flex justify-between py-2 border-b">
                       <span className="font-medium text-sm text-muted-foreground">Função</span>
