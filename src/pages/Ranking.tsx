@@ -152,70 +152,96 @@ const ProfileIncentiveCard = ({ profile }: { profile: Profile }) => {
 const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 }) => {
   const styles = {
     1: {
-      height: "h-40 sm:h-48",
-      gradient: "from-yellow-300/80 via-amber-400/80 to-orange-500/80",
-      ring: "ring-yellow-400",
-      text: "text-amber-600 dark:text-amber-400",
-      scale: "scale-110 z-20",
-      icon: <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-500 fill-yellow-500 absolute -top-8 animate-bounce" />
+      height: "h-48 sm:h-56", // Mais alto
+      avatarSize: "w-20 h-20 sm:w-24 sm:h-24",
+      gradient: "from-yellow-400 via-amber-400 to-orange-500", // Ouro Vibrante
+      ring: "ring-4 ring-yellow-400 shadow-yellow-500/50",
+      text: "text-amber-800 dark:text-amber-100",
+      badgeBg: "bg-gradient-to-r from-yellow-400 to-amber-500",
+      scale: "scale-105 z-20 order-2 -mt-10", // Central e elevado
+      icon: <Crown className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-500 fill-yellow-400 absolute -top-10 sm:-top-12 animate-bounce drop-shadow-md" />,
+      baseGlow: "bg-yellow-500/20"
     },
     2: {
-      height: "h-32 sm:h-36",
-      gradient: "from-slate-300/80 via-slate-400/80 to-slate-500/80",
-      ring: "ring-slate-400",
-      text: "text-slate-600 dark:text-slate-400",
-      scale: "z-10 mt-8",
-      icon: null
+      height: "h-36 sm:h-44",
+      avatarSize: "w-16 h-16 sm:w-20 sm:h-20",
+      gradient: "from-slate-300 via-slate-400 to-slate-500", // Prata
+      ring: "ring-4 ring-slate-300 shadow-slate-400/50",
+      text: "text-slate-700 dark:text-slate-200",
+      badgeBg: "bg-gradient-to-r from-slate-300 to-slate-400",
+      scale: "z-10 order-1", // Esquerda
+      icon: null,
+      baseGlow: "bg-slate-500/20"
     },
     3: {
-      height: "h-24 sm:h-28",
-      gradient: "from-orange-300/80 via-orange-400/80 to-red-500/80",
-      ring: "ring-orange-400",
-      text: "text-orange-600 dark:text-orange-400",
-      scale: "z-10 mt-12",
-      icon: null
+      height: "h-28 sm:h-36",
+      avatarSize: "w-16 h-16 sm:w-20 sm:h-20",
+      gradient: "from-orange-300 via-orange-400 to-red-400", // Bronze
+      ring: "ring-4 ring-orange-300 shadow-orange-400/50",
+      text: "text-orange-800 dark:text-orange-100",
+      badgeBg: "bg-gradient-to-r from-orange-300 to-orange-400",
+      scale: "z-10 order-3 mt-4", // Direita e levemente mais baixo
+      icon: null,
+      baseGlow: "bg-orange-500/20"
     }
   };
 
   const currentStyle = styles[position];
   const fallbackColor = getUserColor(user.user_id);
+  const fullName = `${user.first_name} ${user.last_name || ''}`.trim();
 
   return (
-    <div className={cn("flex flex-col items-center justify-end w-1/3 max-w-[130px] group transition-all duration-500", currentStyle.scale)}>
-      <div className="relative flex flex-col items-center mb-3">
+    <div className={cn("flex flex-col items-center justify-end w-1/3 max-w-[140px] group relative", currentStyle.scale)}>
+      
+      {/* Avatar Section */}
+      <div className="relative flex flex-col items-center mb-4 z-20">
         {currentStyle.icon}
-        <Link to={`/user/${user.user_id}`} className="transition-transform hover:scale-105">
-          <Avatar className={cn("w-14 h-14 sm:w-20 sm:h-20 border-4 shadow-lg", currentStyle.ring, "bg-background")}>
+        <Link to={`/user/${user.user_id}`} className="transition-transform hover:scale-105 duration-300 relative">
+           <div className={cn("absolute inset-0 rounded-full blur-xl opacity-40", currentStyle.baseGlow)} />
+           <Avatar className={cn("border-4 border-background shadow-2xl", currentStyle.avatarSize, currentStyle.ring)}>
             <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
-            <AvatarFallback className={cn("text-white font-bold text-lg", fallbackColor)}>
+            <AvatarFallback className={cn("text-white font-bold text-xl sm:text-2xl", fallbackColor)}>
               {user.first_name?.[0]}
             </AvatarFallback>
           </Avatar>
         </Link>
-        <div className={cn("absolute -bottom-3 px-2 py-0.5 rounded-full bg-background border shadow-sm text-xs font-bold", currentStyle.text)}>
+        <div className={cn("absolute -bottom-3 px-3 py-0.5 rounded-full text-white text-xs sm:text-sm font-black shadow-md border-2 border-white dark:border-slate-900 tracking-wider", currentStyle.badgeBg)}>
           {position}º
         </div>
       </div>
       
-      <div className="text-center mb-2 w-full px-1">
-        <Link to={`/user/${user.user_id}`} className="block font-bold text-sm sm:text-base truncate hover:text-primary transition-colors">
-          {user.first_name}
+      {/* Info Section - Nomes Completos */}
+      <div className="text-center mb-3 w-full px-1 z-20 min-h-[3rem] flex flex-col justify-end">
+        <Link to={`/user/${user.user_id}`} className="block font-bold text-xs sm:text-sm leading-tight text-foreground hover:text-primary transition-colors line-clamp-2 break-words w-full" title={fullName}>
+          {fullName}
         </Link>
-        <p className="text-xs font-bold text-muted-foreground/80">{user.score} pts</p>
+        <p className={cn("text-[10px] sm:text-xs font-bold mt-1 opacity-80", currentStyle.text)}>
+          {user.score} pts
+        </p>
       </div>
 
-      <div className={cn("w-full rounded-t-2xl shadow-inner backdrop-blur-sm bg-gradient-to-t border-x border-t border-white/20", currentStyle.gradient)} />
+      {/* Podium Block - Glassmorphism */}
+      <div className={cn(
+        "w-full rounded-t-2xl shadow-lg backdrop-blur-md relative overflow-hidden border-t border-x border-white/20", 
+        currentStyle.gradient, 
+        currentStyle.height
+      )}>
+         {/* Efeito de brilho/reflexo no bloco */}
+         <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
+         <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-black/10 to-transparent" />
+      </div>
     </div>
   );
 };
 
 const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; position: number; isCurrentUser: boolean }) => {
   const fallbackColor = getUserColor(user.user_id);
+  const fullName = `${user.first_name} ${user.last_name || ''}`.trim();
 
   return (
     <Link to={`/user/${user.user_id}`}>
       <div className={cn(
-        "flex items-center gap-4 p-3 sm:p-4 rounded-2xl border transition-all duration-300 hover:shadow-md group",
+        "flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-2xl border transition-all duration-300 hover:shadow-md group",
         isCurrentUser 
           ? "bg-primary/5 border-primary/30 ring-1 ring-primary/20 sticky bottom-4 shadow-lg z-30 backdrop-blur-md" 
           : "bg-card border-border/50 hover:border-primary/20 hover:bg-accent/50"
@@ -230,28 +256,28 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
         </Avatar>
         
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <p className={cn("font-bold text-sm sm:text-base truncate group-hover:text-primary transition-colors", isCurrentUser && "text-primary")}>
-              {user.first_name} {user.last_name}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+            <p className={cn("font-bold text-sm sm:text-base group-hover:text-primary transition-colors truncate max-w-full", isCurrentUser && "text-primary")}>
+              {fullName}
             </p>
             {isCurrentUser && (
-              <Badge variant="default" className="text-[10px] h-5 px-1.5 bg-primary/90 hover:bg-primary">Você</Badge>
+              <Badge variant="default" className="text-[9px] h-4 px-1.5 bg-primary/90 hover:bg-primary w-fit">Você</Badge>
             )}
           </div>
-          <div className="flex items-center gap-3 mt-1">
-             <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <div className="flex items-center gap-3 mt-0.5">
+             <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground">
                 <Target className="w-3 h-3 text-green-500" />
                 <span className="font-medium text-foreground/80">{user.accuracy}%</span> precisão
              </div>
           </div>
         </div>
 
-        <div className="text-right">
-          <span className="block font-black text-base sm:text-lg text-primary">{user.score}</span>
-          <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
+        <div className="text-right shrink-0">
+          <span className="block font-black text-sm sm:text-lg text-primary">{user.score}</span>
+          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
         </div>
         
-        <ChevronRight className="w-5 h-5 text-muted-foreground/30 group-hover:text-primary/50 group-hover:translate-x-1 transition-all" />
+        <ChevronRight className="w-5 h-5 text-muted-foreground/30 group-hover:text-primary/50 group-hover:translate-x-1 transition-all hidden sm:block" />
       </div>
     </Link>
   );
@@ -393,17 +419,17 @@ const Ranking = () => {
             <>
               {/* Podium Section */}
               {top3.length > 0 && (
-                <div className="relative pt-8">
+                <div className="relative pt-12 pb-4">
                    {/* Light glow behind podium */}
                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-32 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
                    
-                   <div className="flex justify-center items-end gap-2 sm:gap-6 px-2 relative z-10">
+                   <div className="flex justify-center items-end gap-2 sm:gap-4 px-2 relative z-10">
                     {/* 2nd Place */}
-                    <div className="order-1">{top3[1] && <PodiumItem user={top3[1]} position={2} />}</div>
+                    <div className="order-1 flex justify-center w-1/3">{top3[1] && <PodiumItem user={top3[1]} position={2} />}</div>
                     {/* 1st Place */}
-                    <div className="order-2 -mt-8">{top3[0] && <PodiumItem user={top3[0]} position={1} />}</div>
+                    <div className="order-2 flex justify-center w-1/3 -mx-2 sm:-mx-4 z-20">{top3[0] && <PodiumItem user={top3[0]} position={1} />}</div>
                     {/* 3rd Place */}
-                    <div className="order-3">{top3[2] && <PodiumItem user={top3[2]} position={3} />}</div>
+                    <div className="order-3 flex justify-center w-1/3">{top3[2] && <PodiumItem user={top3[2]} position={3} />}</div>
                   </div>
                 </div>
               )}
