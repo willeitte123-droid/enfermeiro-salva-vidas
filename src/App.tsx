@@ -3,6 +3,7 @@ import { useAuth } from "./context/AuthContext";
 import { AppRoutes } from "./routes";
 import { Toaster } from "@/components/ui/sonner";
 import { Loader2 } from "lucide-react";
+import { TimerProvider } from "./context/TimerContext";
 
 function App() {
   const auth = useAuth();
@@ -17,8 +18,10 @@ function App() {
 
   return (
     <Router>
-      <AppRoutes auth={auth} />
-      <Toaster richColors position="top-right" />
+      <TimerProvider>
+        <AppRoutes auth={auth} />
+        <Toaster richColors position="top-right" />
+      </TimerProvider>
     </Router>
   );
 }
