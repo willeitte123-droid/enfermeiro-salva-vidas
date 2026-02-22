@@ -265,21 +265,19 @@ const AccessReport = () => {
       
       else if (path.startsWith('/scales')) path = 'Escalas';
       
-      // Perfis
+      // Perfis e Auth
       else if (path.startsWith('/user')) path = 'Perfil Público';
       else if (path.startsWith('/profile')) path = 'Meu Perfil';
-      else if (path.startsWith('/update-password')) path = 'Atualizar Senha';
+      else if (path.startsWith('/update-password')) path = 'Recuperar Senha';
+      else if (path.startsWith('/login')) path = 'Login';
+      else if (path.startsWith('/register')) path = 'Cadastro';
+      else if (path.startsWith('/oferta')) path = 'Landing Page';
       
       // Fallback para qualquer outra rota não mapeada explicitamente
       else {
-          // Remove barra inicial e capitaliza
-          const cleanPath = path.replace(/^\//, '');
-          if (cleanPath) {
-              // Tenta converter slug em texto legível
-              path = cleanPath.split('/').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' > ');
-          } else {
-              path = 'Outros';
-          }
+          // Agrupa qualquer outra coisa como "Outros" para evitar nomes estranhos (como "Curso")
+          // que possam ter sido logados por erro ou testes antigos.
+          path = 'Outros / Desconhecido';
       }
 
       pathMap[path] = (pathMap[path] || 0) + 1;
@@ -288,7 +286,7 @@ const AccessReport = () => {
     const modulesData = Object.entries(pathMap)
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value)
-      .slice(0, 15); // Aumentado para 15 para mostrar mais detalhes
+      .slice(0, 15); 
 
     return {
       activeUsersToday,
