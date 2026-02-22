@@ -16,7 +16,7 @@ export interface LevelData {
 const LEVELS = [
   { min: 0, name: "Novato", target: 10 },
   { min: 20, name: "Aprendiz", target: 30 },
-  { min: 50, name: "Estudante", target: 50 },
+  { min: 50, name: "Iniciado", target: 50 }, // Renomeado de "Estudante" para evitar confusão
   { min: 100, name: "Praticante", target: 70 },
   { min: 200, name: "Intermediário", target: 100 },
   { min: 400, name: "Avançado", target: 150 },

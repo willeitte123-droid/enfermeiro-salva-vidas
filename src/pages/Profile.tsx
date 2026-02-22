@@ -21,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import ImageCropperDialog from "@/components/ImageCropperDialog";
 import { useUserLevel } from "@/hooks/useUserLevel";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Profile {
   id: string;
@@ -32,7 +33,7 @@ interface Profile {
   specializations?: string[];
   role: string;
   email?: string;
-  status?: string; // Adicionado status aqui
+  status?: string; 
 }
 
 const profileSchema = z.object({
@@ -342,13 +343,33 @@ const ProfilePage = () => {
                   </div>
                 ) : (
                   <div className="text-center pb-6">
-                    <h2 className="text-2xl font-bold text-foreground">{profile?.first_name} {profile?.last_name}</h2>
-                    <p className="text-muted-foreground font-medium flex items-center justify-center gap-1 mt-1">
-                      <Briefcase className="w-4 h-4" /> {profile?.profession || "Profissional de Saúde"}
-                    </p>
-                    <Badge variant="outline" className="mt-3 border-primary/30 bg-primary/5 text-primary">
-                      {levelData?.levelName || "Nível 1"} • {levelData?.currentXP || 0} XP
-                    </Badge>
+                    <div className="flex items-center justify-center gap-2 group cursor-pointer" onClick={() => setIsEditing(true)} title="Clique para editar">
+                      <h2 className="text-2xl font-bold text-foreground">{profile?.first_name} {profile?.last_name}</h2>
+                      <Edit2 className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    
+                    <div 
+                      className="text-muted-foreground font-medium flex items-center justify-center gap-1 mt-1 cursor-pointer hover:text-primary transition-colors group"
+                      onClick={() => setIsEditing(true)}
+                      title="Clique para alterar sua profissão"
+                    >
+                      <Briefcase className="w-4 h-4" /> 
+                      {profile?.profession || "Profissional de Saúde"}
+                      <Edit2 className="w-3 h-3 ml-1 opacity-0 group-hover:opacity-50 transition-opacity" />
+                    </div>
+
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Badge variant="outline" className="mt-3 border-primary/30 bg-primary/5 text-primary cursor-help">
+                                    {levelData?.levelName || "Nível 1"} • {levelData?.currentXP || 0} XP
+                                </Badge>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Este é seu nível de engajamento na plataforma (XP), não sua formação profissional.</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                   </div>
                 )}
 
@@ -428,7 +449,14 @@ const ProfilePage = () => {
             {/* Bio Section */}
             <Card>
               <CardHeader>
-                <CardTitle>Sobre Mim</CardTitle>
+                <div className="flex items-center justify-between">
+                    <CardTitle>Sobre Mim</CardTitle>
+                    {!isEditing && (
+                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setIsEditing(true)} title="Editar Biografia">
+                            <Edit2 className="w-3 h-3 text-muted-foreground" />
+                        </Button>
+                    )}
+                </div>
               </CardHeader>
               <CardContent>
                 {isEditing ? (
@@ -438,8 +466,8 @@ const ProfilePage = () => {
                     className="min-h-[150px] resize-none"
                   />
                 ) : (
-                  <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                    {profile?.bio || "Olá! Ainda não escrevi minha biografia."}
+                  <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap cursor-pointer hover:text-foreground transition-colors" onClick={() => setIsEditing(true)}>
+                    {profile?.bio || "Olá! Ainda não escrevi minha biografia. Clique para editar."}
                   </p>
                 )}
               </CardContent>
