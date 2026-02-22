@@ -154,18 +154,18 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
     1: {
       height: "h-48 sm:h-56", // Mais alto
       avatarSize: "w-20 h-20 sm:w-24 sm:h-24",
-      gradient: "from-yellow-400 via-amber-400 to-orange-500", // Ouro Vibrante
+      gradient: "bg-gradient-to-b from-yellow-300 via-amber-500 to-orange-600", // Ouro Vibrante
       ring: "ring-4 ring-yellow-400 shadow-yellow-500/50",
       text: "text-amber-800 dark:text-amber-100",
       badgeBg: "bg-gradient-to-r from-yellow-400 to-amber-500",
-      scale: "scale-110 z-20 order-2 -mt-10", // Central e elevado
+      scale: "scale-105 z-20 order-2 -mt-10", // Central e elevado
       icon: <Crown className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-500 fill-yellow-400 absolute -top-10 sm:-top-12 animate-bounce drop-shadow-md" />,
       baseGlow: "bg-yellow-500/20"
     },
     2: {
       height: "h-36 sm:h-44",
       avatarSize: "w-16 h-16 sm:w-20 sm:h-20",
-      gradient: "from-slate-300 via-slate-400 to-slate-500", // Prata
+      gradient: "bg-gradient-to-b from-slate-200 via-slate-400 to-slate-600", // Prata
       ring: "ring-4 ring-slate-300 shadow-slate-400/50",
       text: "text-slate-700 dark:text-slate-200",
       badgeBg: "bg-gradient-to-r from-slate-300 to-slate-400",
@@ -176,7 +176,7 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
     3: {
       height: "h-28 sm:h-36",
       avatarSize: "w-16 h-16 sm:w-20 sm:h-20",
-      gradient: "from-orange-300 via-orange-400 to-red-400", // Bronze
+      gradient: "bg-gradient-to-b from-orange-300 via-orange-500 to-red-700", // Bronze
       ring: "ring-4 ring-orange-300 shadow-orange-400/50",
       text: "text-orange-800 dark:text-orange-100",
       badgeBg: "bg-gradient-to-r from-orange-300 to-orange-400",
@@ -191,7 +191,7 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
   const fullName = `${user.first_name} ${user.last_name || ''}`.trim();
 
   return (
-    <div className={cn("flex flex-col items-center justify-end w-full max-w-[160px] group relative", currentStyle.scale)}>
+    <div className={cn("flex flex-col items-center justify-end w-1/3 max-w-[140px] group relative", currentStyle.scale)}>
       
       {/* Avatar Section */}
       <div className="relative flex flex-col items-center mb-4 z-20">
