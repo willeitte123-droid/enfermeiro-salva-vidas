@@ -114,14 +114,10 @@ const RankingSkeleton = () => (
 
 const ProfileIncentiveCard = ({ profile }: { profile: Profile }) => {
   const hasAvatar = !!profile.avatar_url;
-  const hasProfession = !!profile.profession;
-  const hasBio = !!profile.bio;
-  const isComplete = hasAvatar && hasProfession && hasBio;
   const isAdmin = profile.role === 'admin';
 
-  // Se o perfil está completo e NÃO é admin, esconde o banner.
-  // Se for admin, mostra sempre (para teste/visualização).
-  if (isComplete && !isAdmin) return null;
+  // O banner desaparece se o usuário tiver foto, a menos que seja admin (para visualização)
+  if (hasAvatar && !isAdmin) return null;
 
   return (
     <Card className="bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-950/20 dark:to-indigo-950/20 border-violet-200 dark:border-violet-900 mb-8 overflow-hidden relative">
@@ -134,24 +130,17 @@ const ProfileIncentiveCard = ({ profile }: { profile: Profile }) => {
         </div>
         <div className="flex-1 text-center sm:text-left space-y-1">
           <h3 className="font-bold text-lg text-violet-900 dark:text-violet-100">
-            {isComplete ? "Perfil Completo (Visualização de Admin)" : "Destaque-se no Ranking!"}
+             {hasAvatar && isAdmin ? "Visualização do Administrador" : "Destaque-se no Ranking!"}
           </h3>
           <p className="text-sm text-violet-700 dark:text-violet-300 leading-relaxed max-w-lg">
-            {isComplete 
-              ? "Seu perfil já possui todas as informações necessárias. Este banner continua visível apenas para você (Administrador)."
-              : <>
-                  Personalize seu perfil para que outros colegas te conheçam. 
-                  {!hasAvatar && " Adicione uma foto,"}
-                  {!hasProfession && " conte sua profissão"}
-                  {!hasBio && " e escreva uma breve bio"}.
-                </>
-            }
+            Adicione uma foto de perfil e atualize sua biografia para que os outros usuários possam te conhecer melhor.
+            {hasAvatar && isAdmin && <span className="block mt-1 font-semibold opacity-80">(Este banner é exibido para usuários sem foto. Você o vê porque é admin.)</span>}
           </p>
         </div>
         <Button asChild className="bg-violet-600 hover:bg-violet-700 text-white rounded-full px-6 shadow-lg shadow-violet-500/20 shrink-0">
           <Link to="/profile">
             <Camera className="w-4 h-4 mr-2" />
-            {isComplete ? "Editar Perfil" : "Completar Perfil"}
+            {hasAvatar ? "Editar Perfil" : "Adicionar Foto"}
           </Link>
         </Button>
       </CardContent>
@@ -398,7 +387,7 @@ const Ranking = () => {
                 <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Sua Posição</p>
                 <p className="text-2xl sm:text-3xl font-black text-white drop-shadow-sm">#{myRankIndex + 1}</p>
               </div>
-              <div className="w-px h-8 sm:h-10 bg-white/20" />
+              <div className="w-px h-10 bg-white/20" />
               <div className="text-center">
                 <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Seus Pontos</p>
                 <p className="text-2xl sm:text-3xl font-black text-yellow-300 drop-shadow-sm">{myRank.score}</p>
@@ -417,7 +406,7 @@ const Ranking = () => {
 
       <Tabs defaultValue="ranking" className="w-full">
         <div className="flex justify-center mb-8">
-          <TabsList className="grid w-full max-w-[280px] sm:max-w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full h-10 sm:h-12 shadow-inner">
+          <TabsList className="grid w-full max-w-[280px] sm:max-w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full h-12 shadow-inner">
             <TabsTrigger value="ranking" className="rounded-full text-xs font-bold data-[state=active]:bg-white dark:data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-md transition-all">
                🏆 Classificação
             </TabsTrigger>
@@ -427,7 +416,7 @@ const Ranking = () => {
           </TabsList>
         </div>
 
-        <TabsContent value="ranking" className="space-y-8 sm:space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <TabsContent value="ranking" className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {isLoadingRanking ? (
             <RankingSkeleton />
           ) : (
@@ -450,7 +439,7 @@ const Ranking = () => {
               )}
 
               {/* List Section */}
-              <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3 pb-8">
+              <div className="max-w-3xl mx-auto space-y-3 pb-8">
                 {restOfRanking.length > 0 ? (
                   <>
                     <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest px-4 mb-2">Outros Competidores</div>
