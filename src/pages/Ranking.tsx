@@ -6,15 +6,21 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Medal, Crown, Lock, Star, Target, CheckCircle2, Globe } from "lucide-react";
+import { Trophy, Medal, Crown, Lock, Star, Target, CheckCircle2, Globe, UserPlus, Camera, ChevronRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BADGES, BadgeDef } from "@/data/badges";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 
 interface Profile {
   id: string;
+  first_name?: string;
+  last_name?: string;
+  avatar_url?: string;
+  profession?: string;
+  bio?: string;
 }
 
 interface RankedUser {
@@ -39,27 +45,6 @@ const AVATAR_COLORS = [
   "bg-pink-600", "bg-rose-600"
 ];
 
-// Lista de estilos para os Badges de porcentagem (Fundo claro + Texto escuro)
-const BADGE_STYLES = [
-  "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
-  "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
-  "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
-  "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300",
-  "bg-lime-100 text-lime-700 dark:bg-lime-900/30 dark:text-lime-300",
-  "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-  "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
-  "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300",
-  "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300",
-  "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300",
-  "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-  "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300",
-  "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300",
-  "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
-  "bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900/30 dark:text-fuchsia-300",
-  "bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300",
-  "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300"
-];
-
 // Função para obter uma cor consistente baseada no ID do usuário
 const getUserColor = (userId: string) => {
   let hash = 0;
@@ -68,16 +53,6 @@ const getUserColor = (userId: string) => {
   }
   const index = Math.abs(hash) % AVATAR_COLORS.length;
   return AVATAR_COLORS[index];
-};
-
-// Função para obter estilo do badge
-const getBadgeStyle = (userId: string) => {
-  let hash = 0;
-  for (let i = 0; i < userId.length; i++) {
-    hash = userId.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const index = Math.abs(hash) % BADGE_STYLES.length;
-  return BADGE_STYLES[index];
 };
 
 const fetchRanking = async () => {
@@ -98,194 +73,223 @@ const fetchUserBadges = async (userId: string) => {
 const RankingSkeleton = () => (
   <div className="space-y-8 animate-pulse">
     {/* Podium Skeleton */}
-    <div className="flex justify-center items-end gap-2 sm:gap-4 pb-6 border-b border-dashed px-1 h-48">
+    <div className="flex justify-center items-end gap-4 pb-6 h-64 px-4">
       {/* 2nd Place */}
-      <div className="flex flex-col items-center gap-2 w-1/3">
-        <Skeleton className="w-14 h-14 sm:w-16 sm:h-16 rounded-full" />
-        <Skeleton className="h-3 w-16 sm:h-4 sm:w-20" />
-        <Skeleton className="h-20 sm:h-24 w-full max-w-[80px] rounded-t-lg bg-muted/50" />
+      <div className="flex flex-col items-center gap-2 w-1/3 max-w-[120px]">
+        <Skeleton className="w-16 h-16 rounded-full" />
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-32 w-full rounded-t-2xl bg-muted/30" />
       </div>
       {/* 1st Place */}
-      <div className="flex flex-col items-center gap-2 w-1/3">
-        <Skeleton className="w-16 h-16 sm:w-20 sm:h-20 rounded-full" />
-        <Skeleton className="h-3 w-20 sm:h-4 sm:w-24" />
-        <Skeleton className="h-28 sm:h-32 w-full max-w-[80px] rounded-t-lg bg-muted/50" />
+      <div className="flex flex-col items-center gap-2 w-1/3 max-w-[120px]">
+        <Skeleton className="w-20 h-20 rounded-full" />
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-40 w-full rounded-t-2xl bg-muted/30" />
       </div>
       {/* 3rd Place */}
-      <div className="flex flex-col items-center gap-2 w-1/3">
-        <Skeleton className="w-14 h-14 sm:w-16 sm:h-16 rounded-full" />
-        <Skeleton className="h-3 w-16 sm:h-4 sm:w-20" />
-        <Skeleton className="h-16 sm:h-20 w-full max-w-[80px] rounded-t-lg bg-muted/50" />
+      <div className="flex flex-col items-center gap-2 w-1/3 max-w-[120px]">
+        <Skeleton className="w-16 h-16 rounded-full" />
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-24 w-full rounded-t-2xl bg-muted/30" />
       </div>
     </div>
 
     {/* List Skeleton */}
     <div className="max-w-3xl mx-auto space-y-3">
       {[1, 2, 3, 4, 5].map((i) => (
-        <div key={i} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border bg-card/50">
-          <Skeleton className="h-5 w-5 sm:h-6 sm:w-6 rounded" />
-          <Skeleton className="h-9 w-9 sm:h-10 sm:w-10 rounded-full" />
-          <div className="flex-1 space-y-1.5 sm:space-y-2">
-            <Skeleton className="h-3 sm:h-4 w-24 sm:w-32" />
-            <Skeleton className="h-2 sm:h-3 w-12 sm:w-16" />
+        <div key={i} className="flex items-center gap-4 p-4 rounded-2xl border bg-card/50">
+          <Skeleton className="h-6 w-6 rounded" />
+          <Skeleton className="h-10 w-10 rounded-full" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-3 w-16" />
           </div>
-          <Skeleton className="h-5 sm:h-6 w-10 sm:w-12" />
+          <Skeleton className="h-6 w-12" />
         </div>
       ))}
     </div>
   </div>
 );
 
+const ProfileIncentiveCard = ({ profile }: { profile: Profile }) => {
+  const hasAvatar = !!profile.avatar_url;
+  const hasProfession = !!profile.profession;
+  const hasBio = !!profile.bio;
+
+  if (hasAvatar && hasProfession && hasBio) return null;
+
+  return (
+    <Card className="bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-950/20 dark:to-indigo-950/20 border-violet-200 dark:border-violet-900 mb-8 overflow-hidden relative">
+      <div className="absolute top-0 right-0 p-8 opacity-10">
+        <Sparkles className="w-32 h-32 text-violet-500 rotate-12" />
+      </div>
+      <CardContent className="p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-6 relative z-10">
+        <div className="p-4 bg-white dark:bg-violet-900/50 rounded-full shadow-md shrink-0">
+          <UserPlus className="w-8 h-8 text-violet-600 dark:text-violet-300" />
+        </div>
+        <div className="flex-1 text-center sm:text-left space-y-1">
+          <h3 className="font-bold text-lg text-violet-900 dark:text-violet-100">
+            Destaque-se no Ranking!
+          </h3>
+          <p className="text-sm text-violet-700 dark:text-violet-300 leading-relaxed max-w-lg">
+            Personalize seu perfil para que outros colegas te conheçam. 
+            {!hasAvatar && " Adicione uma foto,"}
+            {!hasProfession && " conte sua profissão"}
+            {!hasBio && " e escreva uma breve bio"}.
+          </p>
+        </div>
+        <Button asChild className="bg-violet-600 hover:bg-violet-700 text-white rounded-full px-6 shadow-lg shadow-violet-500/20 shrink-0">
+          <Link to="/profile">
+            <Camera className="w-4 h-4 mr-2" />
+            Completar Perfil
+          </Link>
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
+
 const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 }) => {
-  const colors = {
-    1: "from-yellow-300 to-amber-500 ring-amber-400",
-    2: "from-slate-300 to-slate-400 ring-slate-400",
-    3: "from-orange-300 to-orange-500 ring-orange-400"
+  const styles = {
+    1: {
+      height: "h-40 sm:h-48",
+      gradient: "from-yellow-300/80 via-amber-400/80 to-orange-500/80",
+      ring: "ring-yellow-400",
+      text: "text-amber-600 dark:text-amber-400",
+      scale: "scale-110 z-20",
+      icon: <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-500 fill-yellow-500 absolute -top-8 animate-bounce" />
+    },
+    2: {
+      height: "h-32 sm:h-36",
+      gradient: "from-slate-300/80 via-slate-400/80 to-slate-500/80",
+      ring: "ring-slate-400",
+      text: "text-slate-600 dark:text-slate-400",
+      scale: "z-10 mt-8",
+      icon: null
+    },
+    3: {
+      height: "h-24 sm:h-28",
+      gradient: "from-orange-300/80 via-orange-400/80 to-red-500/80",
+      ring: "ring-orange-400",
+      text: "text-orange-600 dark:text-orange-400",
+      scale: "z-10 mt-12",
+      icon: null
+    }
   };
 
-  const height = {
-    1: "h-32 sm:h-40",
-    2: "h-24 sm:h-32",
-    3: "h-20 sm:h-28"
-  };
-
-  const avatarSize = {
-    1: "w-16 h-16 sm:w-20 sm:h-20",
-    2: "w-12 h-12 sm:w-16 sm:h-16",
-    3: "w-12 h-12 sm:w-16 sm:h-16"
-  };
-
+  const currentStyle = styles[position];
   const fallbackColor = getUserColor(user.user_id);
 
   return (
-    <div className="flex flex-col items-center justify-end group w-1/3 max-w-[140px] animate-in slide-in-from-bottom-4 duration-700 fade-in relative z-10">
-      <Link to={`/user/${user.user_id}`} className="relative mb-2 sm:mb-3 cursor-pointer transition-transform hover:scale-105 active:scale-95 flex flex-col items-center">
-        {position === 1 && <Crown className="absolute -top-6 sm:-top-8 left-1/2 -translate-x-1/2 w-6 h-6 sm:w-8 sm:h-8 text-yellow-400 fill-yellow-400 animate-bounce" />}
-        <Avatar className={cn("border-2 sm:border-4 transition-all shadow-md", colors[position].split(' ')[2], avatarSize[position])}>
-          <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
-          <AvatarFallback className={cn("font-bold text-sm sm:text-lg text-white", fallbackColor)}>{user.first_name?.[0]}</AvatarFallback>
-        </Avatar>
-        <div className={cn("absolute -bottom-2 sm:-bottom-3 left-1/2 -translate-x-1/2 w-5 h-5 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white font-bold text-[10px] sm:text-sm shadow-lg bg-gradient-to-br", colors[position])}>
-          {position}
-        </div>
-      </Link>
-      
-      <div className="text-center mb-1 sm:mb-2 w-full px-0.5">
-        <Link to={`/user/${user.user_id}`} className="font-bold text-foreground truncate text-xs sm:text-sm md:text-base hover:text-primary hover:underline transition-colors block leading-tight mb-1">
-          {user.first_name}
+    <div className={cn("flex flex-col items-center justify-end w-1/3 max-w-[130px] group transition-all duration-500", currentStyle.scale)}>
+      <div className="relative flex flex-col items-center mb-3">
+        {currentStyle.icon}
+        <Link to={`/user/${user.user_id}`} className="transition-transform hover:scale-105">
+          <Avatar className={cn("w-14 h-14 sm:w-20 sm:h-20 border-4 shadow-lg", currentStyle.ring, "bg-background")}>
+            <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
+            <AvatarFallback className={cn("text-white font-bold text-lg", fallbackColor)}>
+              {user.first_name?.[0]}
+            </AvatarFallback>
+          </Avatar>
         </Link>
-        
-        {/* Stats Container - Compacto no mobile */}
-        <div className="flex flex-col items-center space-y-0.5 sm:space-y-1">
-          <div className="flex flex-col items-center leading-none">
-            <span className="font-black text-sm sm:text-xl text-primary">{user.score}</span>
-            <span className="text-[8px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-wide scale-75 sm:scale-100 origin-center">pts</span>
-          </div>
-          
-          <div className="flex items-center gap-1 bg-green-100 dark:bg-green-900/30 px-1.5 py-0.5 rounded-full mt-0.5">
-            <Target className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-green-600 dark:text-green-400" />
-            <span className="text-[9px] sm:text-[10px] font-bold text-green-700 dark:text-green-300">{user.accuracy}%</span>
-          </div>
+        <div className={cn("absolute -bottom-3 px-2 py-0.5 rounded-full bg-background border shadow-sm text-xs font-bold", currentStyle.text)}>
+          {position}º
         </div>
       </div>
+      
+      <div className="text-center mb-2 w-full px-1">
+        <Link to={`/user/${user.user_id}`} className="block font-bold text-sm sm:text-base truncate hover:text-primary transition-colors">
+          {user.first_name}
+        </Link>
+        <p className="text-xs font-bold text-muted-foreground/80">{user.score} pts</p>
+      </div>
 
-      <div className={cn("w-full rounded-t-lg bg-gradient-to-t opacity-80 shadow-inner group-hover:opacity-100 transition-opacity", colors[position], height[position])} />
+      <div className={cn("w-full rounded-t-2xl shadow-inner backdrop-blur-sm bg-gradient-to-t border-x border-t border-white/20", currentStyle.gradient)} />
     </div>
   );
 };
 
 const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; position: number; isCurrentUser: boolean }) => {
   const fallbackColor = getUserColor(user.user_id);
-  const badgeStyle = getBadgeStyle(user.user_id);
 
   return (
-    <div className={cn(
-      "flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border transition-all hover:scale-[1.01] group",
-      isCurrentUser 
-        ? "bg-primary/10 border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.2)]" 
-        : "bg-card border-border hover:border-primary/30"
-    )}>
-      <div className={cn("font-bold text-center text-sm sm:text-base w-6 sm:w-8", position <= 3 ? "text-primary" : "text-muted-foreground")}>
-        {position}º
-      </div>
-      
-      <Link to={`/user/${user.user_id}`} className="flex flex-1 items-center gap-3 sm:gap-4 min-w-0 cursor-pointer">
-        <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm group-hover:border-primary transition-colors shrink-0">
+    <Link to={`/user/${user.user_id}`}>
+      <div className={cn(
+        "flex items-center gap-4 p-3 sm:p-4 rounded-2xl border transition-all duration-300 hover:shadow-md group",
+        isCurrentUser 
+          ? "bg-primary/5 border-primary/30 ring-1 ring-primary/20 sticky bottom-4 shadow-lg z-30 backdrop-blur-md" 
+          : "bg-card border-border/50 hover:border-primary/20 hover:bg-accent/50"
+      )}>
+        <div className="w-8 text-center font-bold text-muted-foreground text-sm sm:text-base group-hover:text-primary transition-colors">
+          {position}º
+        </div>
+        
+        <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm shrink-0">
           <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
-          <AvatarFallback className={cn("text-white font-medium", fallbackColor)}>{user.first_name?.[0]}</AvatarFallback>
+          <AvatarFallback className={cn("text-white font-bold", fallbackColor)}>{user.first_name?.[0]}</AvatarFallback>
         </Avatar>
+        
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <p className={cn("font-semibold text-sm sm:text-base truncate group-hover:text-primary group-hover:underline transition-colors max-w-[120px] sm:max-w-none", isCurrentUser && "text-primary")}>
+            <p className={cn("font-bold text-sm sm:text-base truncate group-hover:text-primary transition-colors", isCurrentUser && "text-primary")}>
               {user.first_name} {user.last_name}
             </p>
-            {isCurrentUser && <span className="text-[9px] sm:text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full no-underline shrink-0">Você</span>}
+            {isCurrentUser && (
+              <Badge variant="default" className="text-[10px] h-5 px-1.5 bg-primary/90 hover:bg-primary">Você</Badge>
+            )}
           </div>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-            <Badge variant="secondary" className={cn("h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] font-normal flex gap-1 items-center border-0", badgeStyle)}>
-                <Target className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> {user.accuracy}%
-            </Badge>
+          <div className="flex items-center gap-3 mt-1">
+             <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Target className="w-3 h-3 text-green-500" />
+                <span className="font-medium text-foreground/80">{user.accuracy}%</span> precisão
+             </div>
           </div>
         </div>
-      </Link>
 
-      <div className="text-right pl-2">
-        <p className="font-bold text-base sm:text-xl text-primary leading-none">{user.score}</p>
-        <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase font-bold tracking-wider hidden sm:block">Pontos</p>
-        <p className="text-[9px] text-muted-foreground sm:hidden">pts</p>
+        <div className="text-right">
+          <span className="block font-black text-base sm:text-lg text-primary">{user.score}</span>
+          <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
+        </div>
+        
+        <ChevronRight className="w-5 h-5 text-muted-foreground/30 group-hover:text-primary/50 group-hover:translate-x-1 transition-all" />
       </div>
-    </div>
+    </Link>
   );
 };
 
 const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnlocked: boolean; earnedDate?: string }) => {
   const Icon = badge.icon;
   
-  const difficultyColor = {
-    "Fácil": "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-    "Médio": "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-    "Difícil": "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
-    "Lendário": "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
-  };
-
   return (
     <div className={cn(
-      "relative p-3 sm:p-4 rounded-xl border transition-all duration-300 overflow-hidden group flex flex-col justify-between h-full min-h-[120px] sm:min-h-[110px]",
+      "relative p-4 rounded-2xl border transition-all duration-300 overflow-hidden group flex flex-col items-center text-center h-full",
       isUnlocked 
-        ? `bg-gradient-to-br ${badge.bgGradient} border-primary/20 hover:shadow-lg hover:border-primary/40` 
-        : "bg-muted/30 border-dashed border-border opacity-80 hover:opacity-100"
+        ? `bg-gradient-to-br ${badge.bgGradient} border-primary/10 shadow-sm hover:shadow-md` 
+        : "bg-muted/20 border-dashed border-border opacity-70 hover:opacity-100 grayscale hover:grayscale-0"
     )}>
-      {isUnlocked && (
-        <div className="absolute top-0 right-0 p-2">
-          <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400 animate-pulse-subtle" />
-        </div>
-      )}
-      
-      <div className="flex flex-col gap-2 text-center items-center">
-        <div className={cn(
-          "p-2 sm:p-3 rounded-full shrink-0 transition-transform group-hover:scale-110 relative",
-          isUnlocked ? "bg-background shadow-sm" : "bg-muted grayscale"
-        )}>
-          <Icon className={cn("w-5 h-5 sm:w-6 sm:h-6", isUnlocked ? badge.color : "text-muted-foreground")} />
-          {!isUnlocked && <Lock className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground bg-background rounded-full p-0.5" />}
-        </div>
-        <div className="w-full min-w-0">
-          <h3 className={cn("font-bold text-xs sm:text-sm leading-tight truncate px-1", isUnlocked ? "text-foreground" : "text-muted-foreground")}>{badge.name}</h3>
-          <p className="text-[10px] text-muted-foreground mt-1 leading-snug line-clamp-3 sm:line-clamp-2">{badge.description}</p>
-        </div>
+      <div className={cn(
+        "p-3 rounded-full mb-3 transition-transform group-hover:scale-110 relative",
+        isUnlocked ? "bg-background shadow-inner" : "bg-muted"
+      )}>
+        <Icon className={cn("w-6 h-6", isUnlocked ? badge.color : "text-muted-foreground")} />
+        {!isUnlocked && <Lock className="absolute -bottom-1 -right-1 w-4 h-4 text-muted-foreground bg-background rounded-full p-0.5 border" />}
       </div>
 
-      <div className="flex justify-center sm:justify-between items-center mt-2 sm:mt-3 pt-2 border-t border-border/10 w-full">
-        <Badge variant="outline" className={cn("text-[8px] sm:text-9px font-bold border-0 px-1.5 py-0.5", difficultyColor[badge.difficulty])}>
-          {badge.difficulty}
-        </Badge>
-        
-        {isUnlocked && earnedDate && (
-          <p className="text-[9px] text-primary/80 font-medium hidden sm:block">
-            {new Date(earnedDate).toLocaleDateString('pt-BR')}
-          </p>
-        )}
-      </div>
+      <h3 className={cn("font-bold text-sm leading-tight mb-1", isUnlocked ? "text-foreground" : "text-muted-foreground")}>
+        {badge.name}
+      </h3>
+      
+      <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+        {badge.description}
+      </p>
+
+      {isUnlocked && (
+        <div className="mt-auto pt-3 w-full">
+           <Badge variant="secondary" className="text-[9px] h-5 bg-background/50 backdrop-blur-sm border-0 w-full justify-center">
+             {new Date(earnedDate!).toLocaleDateString('pt-BR')}
+           </Badge>
+        </div>
+      )}
     </div>
   );
 };
@@ -302,7 +306,7 @@ const Ranking = () => {
   const { data: ranking = [], isLoading: isLoadingRanking } = useQuery({
     queryKey: ['globalRanking'], 
     queryFn: fetchRanking,
-    refetchInterval: 30000, 
+    refetchInterval: 60000, 
     refetchOnWindowFocus: true,
   });
 
@@ -315,44 +319,12 @@ const Ranking = () => {
 
   useEffect(() => {
     if (!profile) return;
-
     const rankingChannel = supabase.channel('ranking-updates')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'user_question_answers' },
-        () => queryClient.invalidateQueries({ queryKey: ['globalRanking'] })
-      )
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'user_simulations' },
-        () => queryClient.invalidateQueries({ queryKey: ['globalRanking'] })
-      )
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'user_question_answers' }, () => queryClient.invalidateQueries({ queryKey: ['globalRanking'] }))
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'user_simulations' }, () => queryClient.invalidateQueries({ queryKey: ['globalRanking'] }))
       .subscribe();
 
-    const badgesChannel = supabase.channel('badges-updates')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'user_badges', filter: `user_id=eq.${profile.id}` },
-        (payload) => {
-          queryClient.invalidateQueries({ queryKey: ['myBadges', profile.id] });
-          const newBadgeCode = payload.new.badge_code;
-          const badgeInfo = BADGES.find(b => b.id === newBadgeCode);
-          if (badgeInfo) {
-            toast.success(`Nova Conquista: ${badgeInfo.name}`, {
-                description: badgeInfo.description,
-                icon: <Trophy className="h-5 w-5 text-yellow-500" />,
-                duration: 5000,
-                className: "border-l-4 border-yellow-500 bg-background"
-            });
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(rankingChannel);
-      supabase.removeChannel(badgesChannel);
-    };
+    return () => { supabase.removeChannel(rankingChannel); };
   }, [profile, queryClient]);
 
   const top3 = ranking.slice(0, 3);
@@ -361,72 +333,86 @@ const Ranking = () => {
   const myRank = myRankIndex !== -1 ? ranking[myRankIndex] : null;
 
   return (
-    <div className="space-y-6 sm:space-y-8 pb-10 animate-in fade-in duration-500">
-      {/* Header Otimizado */}
-      <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 p-4 sm:p-8 text-white shadow-xl">
-        <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
-          <div className="text-center md:text-left w-full">
-            <div className="flex items-center justify-center md:justify-start gap-2 sm:gap-3 mb-2">
-              <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
-                <Globe className="h-5 w-5 sm:h-7 sm:w-7 text-yellow-300" />
+    <div className="space-y-6 sm:space-y-8 pb-10 animate-in fade-in duration-700">
+      
+      {/* Modern Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 p-8 sm:p-12 text-white shadow-2xl">
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left space-y-2">
+            <div className="flex items-center justify-center md:justify-start gap-3">
+              <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
+                <Globe className="h-6 w-6 text-yellow-300" />
               </div>
-              <h1 className="text-2xl sm:text-4xl font-black tracking-tight">Ranking Geral</h1>
+              <h1 className="text-3xl sm:text-5xl font-black tracking-tight">Ranking Geral</h1>
             </div>
-            <p className="text-purple-100 text-xs sm:text-base max-w-md mx-auto md:mx-0">
-              Supere seus limites e conquiste seu lugar entre os melhores.
+            <p className="text-purple-100 text-sm sm:text-lg max-w-md mx-auto md:mx-0 font-medium">
+              Supere seus limites e conquiste seu lugar entre os melhores profissionais.
             </p>
           </div>
-          
+
+          {/* User Rank Card */}
           {myRank && (
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 sm:p-4 border border-white/20 flex items-center gap-3 sm:gap-4 w-full md:w-auto justify-center">
-              <div className="text-center border-r border-white/20 pr-3 sm:pr-4">
-                <p className="text-[10px] sm:text-xs text-purple-200 font-bold uppercase">Posição</p>
-                <p className="text-xl sm:text-2xl font-black">#{myRankIndex + 1}</p>
-              </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 flex items-center gap-6 shadow-xl animate-in slide-in-from-right-8 duration-700">
               <div className="text-center">
-                <p className="text-[10px] sm:text-xs text-purple-200 font-bold uppercase">Pontos</p>
-                <p className="text-xl sm:text-2xl font-black text-yellow-300">{myRank.score}</p>
+                <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Sua Posição</p>
+                <p className="text-3xl font-black text-white drop-shadow-sm">#{myRankIndex + 1}</p>
+              </div>
+              <div className="w-px h-10 bg-white/20" />
+              <div className="text-center">
+                <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Seus Pontos</p>
+                <p className="text-3xl font-black text-yellow-300 drop-shadow-sm">{myRank.score}</p>
               </div>
             </div>
           )}
         </div>
         
-        {/* Background Patterns */}
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-64 h-64 bg-indigo-400/20 rounded-full blur-3xl" />
+        {/* Background Particles */}
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
       </div>
 
+      {profile && <ProfileIncentiveCard profile={profile} />}
+
       <Tabs defaultValue="ranking" className="w-full">
-        <div className="flex justify-center mb-4 sm:mb-6">
-          <TabsList className="grid w-full max-w-[280px] sm:max-w-md grid-cols-2 bg-muted/50 p-1 rounded-full h-9 sm:h-11">
-            <TabsTrigger value="ranking" className="rounded-full text-[10px] sm:text-sm font-semibold data-[state=active]:bg-white dark:data-[state=active]:bg-primary data-[state=active]:shadow-sm transition-all">Ranking Geral</TabsTrigger>
-            <TabsTrigger value="badges" className="rounded-full text-[10px] sm:text-sm font-semibold data-[state=active]:bg-white dark:data-[state=active]:bg-primary data-[state=active]:shadow-sm transition-all">Conquistas</TabsTrigger>
+        <div className="flex justify-center mb-8">
+          <TabsList className="grid w-full max-w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full h-12 shadow-inner">
+            <TabsTrigger value="ranking" className="rounded-full text-xs font-bold data-[state=active]:bg-white dark:data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-md transition-all">
+               🏆 Classificação
+            </TabsTrigger>
+            <TabsTrigger value="badges" className="rounded-full text-xs font-bold data-[state=active]:bg-white dark:data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-md transition-all">
+               🏅 Conquistas
+            </TabsTrigger>
           </TabsList>
         </div>
 
-        <TabsContent value="ranking" className="space-y-6 sm:space-y-8 animate-in slide-in-from-bottom-4 duration-500">
+        <TabsContent value="ranking" className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {isLoadingRanking ? (
             <RankingSkeleton />
           ) : (
             <>
-              {/* Podium Mobile Friendly */}
+              {/* Podium Section */}
               {top3.length > 0 && (
-                <div className="flex justify-center items-end gap-1 sm:gap-4 pb-4 sm:pb-6 border-b border-dashed px-1">
-                  {/* 2º Lugar */}
-                  {top3[1] && <PodiumItem user={top3[1]} position={2} />}
-                  
-                  {/* 1º Lugar */}
-                  {top3[0] && <PodiumItem user={top3[0]} position={1} />}
-                  
-                  {/* 3º Lugar */}
-                  {top3[2] && <PodiumItem user={top3[2]} position={3} />}
+                <div className="relative pt-8">
+                   {/* Light glow behind podium */}
+                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-32 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
+                   
+                   <div className="flex justify-center items-end gap-2 sm:gap-6 px-2 relative z-10">
+                    {/* 2nd Place */}
+                    <div className="order-1">{top3[1] && <PodiumItem user={top3[1]} position={2} />}</div>
+                    {/* 1st Place */}
+                    <div className="order-2 -mt-8">{top3[0] && <PodiumItem user={top3[0]} position={1} />}</div>
+                    {/* 3rd Place */}
+                    <div className="order-3">{top3[2] && <PodiumItem user={top3[2]} position={3} />}</div>
+                  </div>
                 </div>
               )}
 
-              {/* Listagem (Limitada até o 10º colocado) */}
-              <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3">
+              {/* List Section */}
+              <div className="max-w-3xl mx-auto space-y-3 pb-8">
                 {restOfRanking.length > 0 ? (
                   <>
+                    <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest px-4 mb-2">Outros Competidores</div>
                     {restOfRanking.map((user, index) => (
                       <RankingItem 
                         key={user.user_id} 
@@ -436,22 +422,34 @@ const Ranking = () => {
                       />
                     ))}
                     
+                    {/* Sticky Current User Rank if not in top 10 */}
                     {myRankIndex >= 10 && myRank && (
                       <>
-                        <div className="flex items-center justify-center py-2 text-muted-foreground text-xs font-medium">...</div>
-                        <RankingItem 
-                          user={myRank} 
-                          position={myRankIndex + 1} 
-                          isCurrentUser={true}
-                        />
+                        <div className="flex items-center justify-center py-4">
+                           <div className="h-1 w-1 bg-muted-foreground/30 rounded-full mx-1" />
+                           <div className="h-1 w-1 bg-muted-foreground/30 rounded-full mx-1" />
+                           <div className="h-1 w-1 bg-muted-foreground/30 rounded-full mx-1" />
+                        </div>
+                        <div className="sticky bottom-4 z-40 animate-in slide-in-from-bottom-10 duration-700 delay-300">
+                           <RankingItem 
+                             user={myRank} 
+                             position={myRankIndex + 1} 
+                             isCurrentUser={true}
+                           />
+                        </div>
                       </>
                     )}
                   </>
                 ) : ranking.length === 0 ? (
-                  <div className="text-center py-12 text-muted-foreground animate-in fade-in zoom-in duration-500">
-                    <Trophy className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-20 text-yellow-500" />
-                    <h3 className="text-base sm:text-lg font-semibold text-foreground">O Ranking está vazio</h3>
-                    <p className="text-xs sm:text-sm">Seja o primeiro a pontuar!</p>
+                  <div className="text-center py-16 bg-muted/20 rounded-3xl border border-dashed animate-in fade-in zoom-in duration-500">
+                    <div className="bg-muted p-4 rounded-full w-fit mx-auto mb-4">
+                       <Trophy className="w-10 h-10 opacity-30 text-yellow-500" />
+                    </div>
+                    <h3 className="text-lg font-bold text-foreground">O Ranking está vazio</h3>
+                    <p className="text-sm text-muted-foreground mt-1">Seja o primeiro a pontuar!</p>
+                    <Button variant="outline" className="mt-4" asChild>
+                       <Link to="/questions">Começar Agora</Link>
+                    </Button>
                   </div>
                 ) : null}
               </div>
@@ -459,20 +457,22 @@ const Ranking = () => {
           )}
         </TabsContent>
 
-        <TabsContent value="badges" className="animate-in slide-in-from-bottom-4 duration-500">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4">
-            {BADGES.map((badge) => {
-              const userBadge = myBadges.find(b => b.badge_code === badge.id);
-              return (
-                <BadgeCard 
-                  key={badge.id}
-                  badge={badge}
-                  isUnlocked={!!userBadge}
-                  earnedDate={userBadge?.earned_at}
-                />
-              );
-            })}
-          </div>
+        <TabsContent value="badges" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+           <div className="max-w-5xl mx-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                {BADGES.map((badge) => {
+                  const userBadge = myBadges.find(b => b.badge_code === badge.id);
+                  return (
+                    <BadgeCard 
+                      key={badge.id}
+                      badge={badge}
+                      isUnlocked={!!userBadge}
+                      earnedDate={userBadge?.earned_at}
+                    />
+                  );
+                })}
+              </div>
+           </div>
         </TabsContent>
       </Tabs>
     </div>
