@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
   Loader2, Plus, Trash2, Check, Search, 
-  ArrowLeft, FileText, MoreVertical, PenLine, Calendar, Clock
+  ArrowLeft, FileText, MoreVertical, PenLine, Calendar, Clock, NotebookText
 } from "lucide-react";
 import { toast } from "sonner";
 import { useOutletContext } from "react-router-dom";
