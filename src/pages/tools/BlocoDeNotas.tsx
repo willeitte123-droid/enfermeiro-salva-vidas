@@ -61,9 +61,11 @@ const BlocoDeNotas = () => {
   const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [isEditing, setIsEditing] = useState(false); // Modo leitura vs edição (útil para markdown)
+  const [isEditing, setIsEditing] = useState(true); // Default true para edição imediata
   const [noteSearchTerm, setNoteSearchTerm] = useState("");
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  // Estado para controlar a visualização mobile (Lista vs Editor)
+  const [mobileView, setMobileView] = useState<"list" | "editor">("list");
 
   useEffect(() => {
     addActivity({ type: 'Ferramenta', title: 'Bloco de Anotações', path: '/tools/bloco-de-notas', icon: 'NotebookText' });
@@ -92,59 +94,64 @@ const BlocoDeNotas = () => {
     if (selectedNote) {
       setTitle(selectedNote.title || "");
       setContent(selectedNote.content || "");
-      // No mobile, ao selecionar, entramos no modo edição por padrão
-      // No desktop, mantemos o estado anterior ou default
-      if (isMobile) setIsEditing(true); 
-    } else {
-      setTitle("");
-      setContent("");
+      setIsEditing(true); 
     }
-  }, [selectedNote, isMobile]);
+    // NOTA: Se selectedNote for null, não limpamos automaticamente aqui para permitir
+    // que o usuário inicie uma nova nota sem limpar se ele clicar em "Nova Nota"
+  }, [selectedNote]);
 
-  // Seleciona a primeira nota automaticamente apenas no Desktop
-  useEffect(() => {
-    if (!isMobile && !selectedNoteId && notes.length > 0 && !isLoading) {
-      setSelectedNoteId(notes[0].id);
-    }
-  }, [notes, isMobile, isLoading, selectedNoteId]);
+  // Handler para iniciar uma nova nota (Reseta estados)
+  const handleNewNote = () => {
+    setSelectedNoteId(null);
+    setTitle("");
+    setContent("");
+    setIsEditing(true);
+    if (isMobile) setMobileView("editor");
+  };
 
-  const createNoteMutation = useMutation({
+  const saveNoteMutation = useMutation({
     mutationFn: async () => {
       if (!profile) throw new Error("Usuário não autenticado.");
-      const { data, error } = await supabase.from("notes").insert({
-        user_id: profile.id,
-        title: "",
-        content: ""
-      }).select().single();
-      if (error) throw error;
-      return data;
+      
+      // Se tiver ID, atualiza. Se não, cria.
+      if (selectedNoteId) {
+        const { error } = await supabase.from("notes").update({ 
+          title, 
+          content,
+          updated_at: new Date().toISOString()
+        }).eq("id", selectedNoteId);
+        if (error) throw error;
+        return { id: selectedNoteId, type: 'update' };
+      } else {
+        const { data, error } = await supabase.from("notes").insert({
+          user_id: profile.id,
+          title: title || "Sem Título",
+          content
+        }).select().single();
+        if (error) throw error;
+        return { id: data.id, type: 'create' };
+      }
+    },
+    onMutate: () => {
+      setIsSaving(true);
+      setIsSaved(false);
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["notes", profile?.id] });
-      setSelectedNoteId(data.id);
-      setTitle("");
-      setContent("");
-      setIsEditing(true);
-      if (isMobile) {
-        // Foca no título se possível, ou apenas garante que a view mude
+      setIsSaving(false);
+      setIsSaved(true);
+      
+      if (data.type === 'create') {
+        setSelectedNoteId(data.id);
+        toast.success("Nota criada com sucesso!");
       }
-    },
-    onError: (error) => toast.error("Erro ao criar nota", { description: error.message }),
-  });
 
-  const updateNoteMutation = useMutation({
-    mutationFn: async (updatedNote: { id: string; title: string; content: string }) => {
-      const { error } = await supabase.from("notes").update({ 
-        title: updatedNote.title, 
-        content: updatedNote.content,
-        updated_at: new Date().toISOString()
-      }).eq("id", updatedNote.id);
-      if (error) throw error;
+      setTimeout(() => setIsSaved(false), 2000);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes", profile?.id] });
+    onError: (error) => {
+      setIsSaving(false);
+      toast.error("Erro ao salvar nota", { description: error.message });
     },
-    onError: () => setIsSaving(false),
   });
 
   const deleteNoteMutation = useMutation({
@@ -154,43 +161,53 @@ const BlocoDeNotas = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes", profile?.id] });
-      setSelectedNoteId(null);
+      // Se deletou a nota atual, volta para modo 'nova nota'
+      if (selectedNoteId) {
+        handleNewNote();
+      }
       setIsDeleteDialogOpen(false);
+      if (isMobile) setMobileView("list");
       toast.success("Nota excluída.");
     },
     onError: (error) => toast.error("Erro ao excluir", { description: error.message }),
   });
 
-  // Auto-save logic
+  // Auto-save logic (Apenas se já tiver ID, para não criar notas lixo enquanto digita a primeira vez)
   useEffect(() => {
     if (!selectedNoteId) return;
     
-    // Evita salvar se não houve mudança real
-    if (title === selectedNote?.title && content === selectedNote?.content) {
+    // Evita salvar se não houve mudança real comparado ao banco
+    if (selectedNote && title === selectedNote.title && content === selectedNote.content) {
       return;
     }
 
-    setIsSaving(true);
-    setIsSaved(false);
-
     const handler = setTimeout(() => {
-      updateNoteMutation.mutate({ id: selectedNoteId, title, content }, {
-        onSuccess: () => {
-          setIsSaving(false);
-          setIsSaved(true);
-          setTimeout(() => setIsSaved(false), 2000);
-        }
-      });
-    }, 1000); // Debounce de 1s
+      saveNoteMutation.mutate();
+    }, 1500); // Debounce de 1.5s para autosave
 
     return () => clearTimeout(handler);
   }, [title, content, selectedNoteId]);
 
-  const handleBackToList = () => {
-    setSelectedNoteId(null);
+  const handleManualSave = () => {
+    if (!title && !content) {
+      toast.warning("Escreva algo para salvar.");
+      return;
+    }
+    saveNoteMutation.mutate();
   };
 
-  // Renderização da Lista de Notas (Sidebar ou Tela Cheia Mobile)
+  const handleSelectNote = (id: string) => {
+    setSelectedNoteId(id);
+    if (isMobile) setMobileView("editor");
+  };
+
+  const handleBackToList = () => {
+    setMobileView("list");
+    // Não limpamos o selectedNoteId imediatamente para manter o estado se voltar, 
+    // mas se quiser comportamento de "fechar", poderia limpar.
+  };
+
+  // Renderização da Lista de Notas
   const renderNoteList = () => (
     <div className={cn(
       "flex flex-col h-full bg-muted/10 border-r transition-all duration-300",
@@ -203,13 +220,12 @@ const BlocoDeNotas = () => {
             <NotebookText className="w-5 h-5 text-primary" /> Notas
           </h1>
           <Button 
-            onClick={() => createNoteMutation.mutate()} 
+            onClick={handleNewNote}
             size="sm" 
             className="rounded-full shadow-sm bg-primary hover:bg-primary/90 text-xs px-3"
-            disabled={createNoteMutation.isPending}
           >
-            {createNoteMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Save className="w-3 h-3 mr-1" />}
-            Salvar Anotação
+            <Plus className="w-3 h-3 mr-1" />
+            Nova Nota
           </Button>
         </div>
         <div className="relative">
@@ -234,14 +250,14 @@ const BlocoDeNotas = () => {
           <div className="flex flex-col items-center justify-center h-40 text-muted-foreground text-center px-4">
             <FileText className="w-10 h-10 mb-2 opacity-10" />
             <p className="text-sm font-medium">Sua lista está vazia</p>
-            {noteSearchTerm && <p className="text-xs mt-1 opacity-70">Tente outro termo de busca.</p>}
+            <Button variant="link" onClick={handleNewNote} className="text-xs mt-1">Criar a primeira nota</Button>
           </div>
         ) : (
           <div className="space-y-2 pb-20 md:pb-0">
             {filteredNotes.map((note) => (
               <button
                 key={note.id}
-                onClick={() => setSelectedNoteId(note.id)}
+                onClick={() => handleSelectNote(note.id)}
                 className={cn(
                   "w-full text-left p-3 rounded-lg transition-all duration-200 border group relative overflow-hidden",
                   selectedNoteId === note.id
@@ -256,7 +272,7 @@ const BlocoDeNotas = () => {
                     {note.title || "Sem título"}
                   </h3>
                   <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed mt-0.5 opacity-80 h-8">
-                    {note.content || "Toque para escrever..."}
+                    {note.content || "..."}
                   </p>
                   <span className="text-[10px] text-muted-foreground/50 mt-2 block font-medium">
                     {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true, locale: ptBR })}
@@ -270,20 +286,8 @@ const BlocoDeNotas = () => {
     </div>
   );
 
-  // Renderização do Editor (Tela Cheia no Mobile, Coluna Direita no Desktop)
+  // Renderização do Editor
   const renderEditor = () => {
-    if (!selectedNoteId) {
-      return (
-        <div className="hidden md:flex flex-1 flex-col items-center justify-center text-muted-foreground bg-background h-full">
-          <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mb-4">
-            <PenLine className="w-8 h-8 opacity-20" />
-          </div>
-          <h2 className="text-lg font-semibold text-foreground/80">Nenhuma nota selecionada</h2>
-          <p className="text-sm text-muted-foreground mt-1">Selecione uma nota ou crie uma nova para começar.</p>
-        </div>
-      );
-    }
-
     return (
       <div className="flex flex-col h-full bg-background w-full relative">
         {/* Top Decorative Gradient */}
@@ -301,34 +305,48 @@ const BlocoDeNotas = () => {
               <span className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground flex items-center gap-1.5">
                 {isSaving ? <><Loader2 className="w-3 h-3 animate-spin text-primary" /> Salvando...</> : 
                  isSaved ? <><Check className="w-3 h-3 text-green-500" /> Salvo</> : 
-                 selectedNote ? format(new Date(selectedNote.updated_at), "dd 'de' MMM, HH:mm", { locale: ptBR }) : ""}
+                 selectedNote ? format(new Date(selectedNote.updated_at), "dd 'de' MMM, HH:mm", { locale: ptBR }) : "Nova Anotação"}
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-1">
+            {/* Botão de Salvar Manual (Principalmente para notas novas) */}
+            <Button 
+               variant="default"
+               size="sm"
+               onClick={handleManualSave}
+               disabled={isSaving || (!title && !content)}
+               className="h-8 text-xs font-semibold bg-primary hover:bg-primary/90 rounded-full px-4 shadow-sm"
+            >
+               {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3 mr-1.5" />}
+               Salvar
+            </Button>
+
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => setIsEditing(!isEditing)}
-              className={cn("text-xs font-medium h-8 px-3 rounded-full transition-all", isEditing ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")}
+              className={cn("text-xs font-medium h-8 px-3 rounded-full transition-all hidden sm:flex", isEditing ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")}
             >
               {isEditing ? "Visualizar" : "Editar"}
             </Button>
             
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full"><MoreVertical className="w-4 h-4" /></Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40">
-                <DropdownMenuItem 
-                  className="text-destructive focus:text-destructive cursor-pointer gap-2"
-                  onClick={() => setIsDeleteDialogOpen(true)}
-                >
-                  <Trash2 className="w-4 h-4" /> Excluir Nota
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {selectedNoteId && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full"><MoreVertical className="w-4 h-4" /></Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40">
+                  <DropdownMenuItem 
+                    className="text-destructive focus:text-destructive cursor-pointer gap-2"
+                    onClick={() => setIsDeleteDialogOpen(true)}
+                  >
+                    <Trash2 className="w-4 h-4" /> Excluir Nota
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
 
@@ -348,7 +366,7 @@ const BlocoDeNotas = () => {
             <div className="flex items-center gap-3 mt-4 mb-6">
               <Badge variant="outline" className="text-[10px] font-normal text-muted-foreground border-border/60 bg-muted/10 gap-1.5 py-0.5">
                 <Calendar className="w-3 h-3" /> 
-                {selectedNote ? format(new Date(selectedNote.updated_at), "dd MMM yyyy", { locale: ptBR }) : "Hoje"}
+                {selectedNote ? format(new Date(selectedNote.updated_at), "dd MMM yyyy", { locale: ptBR }) : "Rascunho"}
               </Badge>
               <Badge variant="outline" className="text-[10px] font-normal text-muted-foreground border-border/60 bg-muted/10 gap-1.5 py-0.5">
                 <Clock className="w-3 h-3" />
@@ -364,7 +382,7 @@ const BlocoDeNotas = () => {
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Comece a escrever suas ideias..."
                 className="w-full resize-none border-none shadow-none focus-visible:ring-0 px-0 text-base sm:text-lg leading-relaxed bg-transparent min-h-[50vh] font-serif text-foreground/90 placeholder:text-muted-foreground/30"
-                autoFocus={!isMobile} 
+                autoFocus={!isMobile && !selectedNoteId} // Autofocus se for nova nota no desktop
               />
             ) : (
               <div className="prose prose-slate dark:prose-invert max-w-none prose-lg prose-headings:font-bold prose-p:leading-loose prose-a:text-primary">
@@ -402,11 +420,11 @@ const BlocoDeNotas = () => {
 
   return (
     <div className="h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] overflow-hidden rounded-xl border bg-background shadow-sm flex flex-col md:flex-row">
-      {/* Mobile: Mostra lista SE nenhuma nota selecionada. Desktop: Sempre mostra lista */}
-      {(!isMobile || !selectedNoteId) && renderNoteList()}
+      {/* Mobile: Mostra lista SE view for 'list'. Desktop: Sempre mostra lista */}
+      {(!isMobile || mobileView === "list") && renderNoteList()}
       
-      {/* Mobile: Mostra editor SE nota selecionada. Desktop: Sempre mostra editor (ao lado) */}
-      {(!isMobile || selectedNoteId) && (
+      {/* Mobile: Mostra editor SE view for 'editor'. Desktop: Sempre mostra editor (ao lado) */}
+      {(!isMobile || mobileView === "editor") && (
         <div className="flex-1 h-full overflow-hidden border-l border-border/40">
            {renderEditor()}
         </div>
