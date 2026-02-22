@@ -73,24 +73,24 @@ const fetchUserBadges = async (userId: string) => {
 const RankingSkeleton = () => (
   <div className="space-y-8 animate-pulse">
     {/* Podium Skeleton */}
-    <div className="flex justify-center items-end gap-4 pb-6 h-64 px-4">
+    <div className="flex justify-center items-end gap-2 sm:gap-4 pb-6 h-48 sm:h-64 px-4">
       {/* 2nd Place */}
       <div className="flex flex-col items-center gap-2 w-1/3 max-w-[120px]">
-        <Skeleton className="w-16 h-16 rounded-full" />
-        <Skeleton className="h-4 w-20" />
-        <Skeleton className="h-32 w-full rounded-t-2xl bg-muted/30" />
+        <Skeleton className="w-12 h-12 sm:w-16 sm:h-16 rounded-full" />
+        <Skeleton className="h-3 w-16 sm:h-4 sm:w-20" />
+        <Skeleton className="h-24 sm:h-32 w-full rounded-t-2xl bg-muted/30" />
       </div>
       {/* 1st Place */}
       <div className="flex flex-col items-center gap-2 w-1/3 max-w-[120px]">
-        <Skeleton className="w-20 h-20 rounded-full" />
-        <Skeleton className="h-4 w-24" />
-        <Skeleton className="h-40 w-full rounded-t-2xl bg-muted/30" />
+        <Skeleton className="w-16 h-16 sm:w-20 sm:h-20 rounded-full" />
+        <Skeleton className="h-3 w-20 sm:h-4 sm:w-24" />
+        <Skeleton className="h-32 sm:h-40 w-full rounded-t-2xl bg-muted/30" />
       </div>
       {/* 3rd Place */}
       <div className="flex flex-col items-center gap-2 w-1/3 max-w-[120px]">
-        <Skeleton className="w-16 h-16 rounded-full" />
-        <Skeleton className="h-4 w-20" />
-        <Skeleton className="h-24 w-full rounded-t-2xl bg-muted/30" />
+        <Skeleton className="w-12 h-12 sm:w-16 sm:h-16 rounded-full" />
+        <Skeleton className="h-3 w-16 sm:h-4 sm:w-20" />
+        <Skeleton className="h-16 sm:h-24 w-full rounded-t-2xl bg-muted/30" />
       </div>
     </div>
 
@@ -152,35 +152,35 @@ const ProfileIncentiveCard = ({ profile }: { profile: Profile }) => {
 const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 }) => {
   const styles = {
     1: {
-      height: "h-48 sm:h-56", // Mais alto
-      avatarSize: "w-20 h-20 sm:w-24 sm:h-24",
-      gradient: "bg-gradient-to-b from-yellow-300 via-amber-500 to-orange-600", // Ouro Vibrante
-      ring: "ring-4 ring-yellow-400 shadow-yellow-500/50",
+      height: "h-40 sm:h-64", 
+      avatarSize: "w-16 h-16 sm:w-28 sm:h-28",
+      blockGradient: "bg-gradient-to-b from-yellow-300 via-amber-500 to-orange-600 shadow-[0_0_40px_-5px_rgba(251,191,36,0.5)] border-t border-white/40",
+      ring: "ring-2 sm:ring-4 ring-yellow-400 shadow-2xl shadow-yellow-500/40",
       text: "text-amber-800 dark:text-amber-100",
       badgeBg: "bg-gradient-to-r from-yellow-400 to-amber-500",
-      scale: "scale-105 z-20 order-2 -mt-10", // Central e elevado
-      icon: <Crown className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-500 fill-yellow-400 absolute -top-10 sm:-top-12 animate-bounce drop-shadow-md" />,
-      baseGlow: "bg-yellow-500/20"
+      scale: "scale-105 z-30 order-2 -mt-8 sm:-mt-16",
+      icon: <Crown className="w-6 h-6 sm:w-12 sm:h-12 text-yellow-400 fill-yellow-200 absolute -top-8 sm:-top-14 animate-bounce drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" />,
+      baseGlow: "bg-yellow-500/40"
     },
     2: {
-      height: "h-36 sm:h-44",
-      avatarSize: "w-16 h-16 sm:w-20 sm:h-20",
-      gradient: "bg-gradient-to-b from-slate-200 via-slate-400 to-slate-600", // Prata
-      ring: "ring-4 ring-slate-300 shadow-slate-400/50",
+      height: "h-28 sm:h-48",
+      avatarSize: "w-12 h-12 sm:w-20 sm:h-20",
+      blockGradient: "bg-gradient-to-b from-slate-200 via-slate-400 to-slate-600 shadow-[0_0_30px_-5px_rgba(148,163,184,0.4)] border-t border-white/40",
+      ring: "ring-2 sm:ring-4 ring-slate-300 shadow-xl shadow-slate-400/30",
       text: "text-slate-700 dark:text-slate-200",
       badgeBg: "bg-gradient-to-r from-slate-300 to-slate-400",
-      scale: "z-10 order-1", // Esquerda
+      scale: "z-20 order-1", 
       icon: null,
-      baseGlow: "bg-slate-500/20"
+      baseGlow: "bg-slate-500/30"
     },
     3: {
-      height: "h-28 sm:h-36",
-      avatarSize: "w-16 h-16 sm:w-20 sm:h-20",
-      gradient: "bg-gradient-to-b from-orange-300 via-orange-500 to-red-700", // Bronze
-      ring: "ring-4 ring-orange-300 shadow-orange-400/50",
+      height: "h-20 sm:h-36",
+      avatarSize: "w-12 h-12 sm:w-20 sm:h-20",
+      blockGradient: "bg-gradient-to-b from-orange-300 via-orange-400 to-red-400 shadow-[0_0_30px_-5px_rgba(234,88,12,0.4)] border-t border-white/40",
+      ring: "ring-2 sm:ring-4 ring-orange-300 shadow-xl shadow-orange-500/30",
       text: "text-orange-800 dark:text-orange-100",
       badgeBg: "bg-gradient-to-r from-orange-300 to-orange-400",
-      scale: "z-10 order-3 mt-4", // Direita e levemente mais baixo
+      scale: "z-20 order-3 mt-4 sm:mt-8", 
       icon: null,
       baseGlow: "bg-orange-500/20"
     }
@@ -191,47 +191,47 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
   const fullName = `${user.first_name} ${user.last_name || ''}`.trim();
 
   return (
-    <div className={cn("flex flex-col items-center justify-end w-1/3 max-w-[140px] group relative", currentStyle.scale)}>
+    <div className={cn("flex flex-col items-center justify-end w-1/3 sm:w-full sm:max-w-[160px] group relative", currentStyle.scale)}>
       
       {/* Avatar Section */}
-      <div className="relative flex flex-col items-center mb-4 z-20">
+      <div className="relative flex flex-col items-center mb-2 sm:mb-4 z-20">
         {currentStyle.icon}
         <Link to={`/user/${user.user_id}`} className="transition-transform hover:scale-105 duration-300 relative">
-           <div className={cn("absolute inset-0 rounded-full blur-xl opacity-40", currentStyle.baseGlow)} />
-           <Avatar className={cn("border-4 border-background shadow-2xl", currentStyle.avatarSize, currentStyle.ring)}>
+           <div className={cn("absolute inset-0 rounded-full blur-xl opacity-60", currentStyle.baseGlow)} />
+           <Avatar className={cn("border-2 sm:border-4 border-white dark:border-slate-900", currentStyle.avatarSize, currentStyle.ring)}>
             <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
-            <AvatarFallback className={cn("text-white font-bold text-xl sm:text-2xl", fallbackColor)}>
+            <AvatarFallback className={cn("text-white font-bold text-base sm:text-2xl", fallbackColor)}>
               {user.first_name?.[0]}
             </AvatarFallback>
           </Avatar>
         </Link>
-        <div className={cn("absolute -bottom-3 px-3 py-0.5 rounded-full text-white text-xs sm:text-sm font-black shadow-md border-2 border-white dark:border-slate-900 tracking-wider", currentStyle.badgeBg)}>
+        <div className={cn("absolute -bottom-2 sm:-bottom-3 px-2 sm:px-3 py-0.5 rounded-full text-[10px] sm:text-sm font-black shadow-lg tracking-wider", currentStyle.badgeBg)}>
           {position}º
         </div>
       </div>
       
       {/* Info Section - Nomes Completos */}
-      <div className="text-center mb-3 w-full px-0.5 z-20 min-h-[3rem] flex flex-col justify-end">
-        <Link to={`/user/${user.user_id}`} className="block font-bold text-xs sm:text-sm leading-tight text-foreground hover:text-primary transition-colors line-clamp-2 w-full px-1" title={fullName}>
+      <div className="text-center mb-1 sm:mb-2 w-full px-0.5 z-20 min-h-[2.5rem] sm:min-h-[3.5rem] flex flex-col justify-end">
+        <Link to={`/user/${user.user_id}`} className="block font-bold text-[10px] sm:text-sm leading-tight text-foreground hover:text-primary transition-colors w-full break-words line-clamp-2" title={fullName}>
           {fullName}
         </Link>
-        <p className={cn("text-[10px] sm:text-xs font-bold mt-1 opacity-80", currentStyle.text)}>
+        <p className={cn("text-[9px] sm:text-xs font-black mt-0.5 sm:mt-1 uppercase tracking-wide", currentStyle.text)}>
           {user.score} pts
         </p>
       </div>
 
       {/* Podium Block - Vibrant Gradient */}
       <div className={cn(
-        "w-full rounded-t-2xl shadow-lg backdrop-blur-md relative overflow-hidden border-t border-x border-white/20", 
-        currentStyle.gradient, 
+        "w-full rounded-t-lg sm:rounded-t-2xl shadow-lg backdrop-blur-md relative overflow-hidden border-t border-x border-white/20", 
+        currentStyle.blockGradient, 
         currentStyle.height
       )}>
-         {/* Efeito de brilho/reflexo no bloco */}
-         <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
-         <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-black/10 to-transparent" />
+         {/* Glossy Effect */}
+         <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+         <div className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
          
-         {/* Position Number on Block - Optional Aesthetic */}
-         <div className="absolute bottom-2 left-0 right-0 text-center opacity-10 text-white font-black text-6xl select-none">
+         {/* Position Number on Block */}
+         <div className="absolute bottom-1 sm:bottom-4 left-0 right-0 text-center opacity-20 text-white font-black text-3xl sm:text-6xl select-none">
             {position}
          </div>
       </div>
@@ -251,27 +251,27 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
           ? "bg-primary/5 border-primary/30 ring-1 ring-primary/20 sticky bottom-4 shadow-lg z-30 backdrop-blur-md" 
           : "bg-card border-border/50 hover:border-primary/20 hover:bg-accent/50"
       )}>
-        <div className="w-8 text-center font-bold text-muted-foreground text-sm sm:text-base group-hover:text-primary transition-colors">
+        <div className="w-6 sm:w-8 text-center font-bold text-muted-foreground text-xs sm:text-base group-hover:text-primary transition-colors shrink-0">
           {position}º
         </div>
         
-        <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-background shadow-sm shrink-0">
+        <Avatar className="h-8 w-8 sm:h-12 sm:w-12 border-2 border-background shadow-sm shrink-0">
           <AvatarImage src={user.avatar_url || undefined} className="object-cover" />
-          <AvatarFallback className={cn("text-white font-bold", fallbackColor)}>{user.first_name?.[0]}</AvatarFallback>
+          <AvatarFallback className={cn("text-white font-bold text-xs sm:text-base", fallbackColor)}>{user.first_name?.[0]}</AvatarFallback>
         </Avatar>
         
         <div className="flex-1 min-w-0">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-            <p className={cn("font-bold text-sm sm:text-base group-hover:text-primary transition-colors truncate max-w-full", isCurrentUser && "text-primary")}>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2">
+            <p className={cn("font-bold text-xs sm:text-base group-hover:text-primary transition-colors truncate max-w-full", isCurrentUser && "text-primary")}>
               {fullName}
             </p>
             {isCurrentUser && (
-              <Badge variant="default" className="text-[9px] h-4 px-1.5 bg-primary/90 hover:bg-primary w-fit">Você</Badge>
+              <Badge variant="default" className="text-[8px] sm:text-[10px] h-4 sm:h-5 px-1 sm:px-1.5 bg-primary/90 hover:bg-primary w-fit">Você</Badge>
             )}
           </div>
           <div className="flex items-center gap-3 mt-0.5">
-             <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground">
-                <Target className="w-3 h-3 text-green-500" />
+             <div className="flex items-center gap-1 text-[9px] sm:text-xs text-muted-foreground">
+                <Target className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-green-500" />
                 <span className="font-medium text-foreground/80">{user.accuracy}%</span> precisão
              </div>
           </div>
@@ -279,10 +279,10 @@ const RankingItem = ({ user, position, isCurrentUser }: { user: RankedUser; posi
 
         <div className="text-right shrink-0">
           <span className="block font-black text-sm sm:text-lg text-primary">{user.score}</span>
-          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
+          <span className="text-[8px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Pontos</span>
         </div>
         
-        <ChevronRight className="w-5 h-5 text-muted-foreground/30 group-hover:text-primary/50 group-hover:translate-x-1 transition-all hidden sm:block" />
+        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground/30 group-hover:text-primary/50 group-hover:translate-x-1 transition-all hidden sm:block" />
       </div>
     </Link>
   );
@@ -293,30 +293,30 @@ const BadgeCard = ({ badge, isUnlocked, earnedDate }: { badge: BadgeDef; isUnloc
   
   return (
     <div className={cn(
-      "relative p-4 rounded-2xl border transition-all duration-300 overflow-hidden group flex flex-col items-center text-center h-full",
+      "relative p-3 sm:p-4 rounded-2xl border transition-all duration-300 overflow-hidden group flex flex-col items-center text-center h-full",
       isUnlocked 
         ? `bg-gradient-to-br ${badge.bgGradient} border-primary/10 shadow-sm hover:shadow-md` 
         : "bg-muted/20 border-dashed border-border opacity-70 hover:opacity-100 grayscale hover:grayscale-0"
     )}>
       <div className={cn(
-        "p-3 rounded-full mb-3 transition-transform group-hover:scale-110 relative",
+        "p-2 sm:p-3 rounded-full mb-2 sm:mb-3 transition-transform group-hover:scale-110 relative",
         isUnlocked ? "bg-background shadow-inner" : "bg-muted"
       )}>
-        <Icon className={cn("w-6 h-6", isUnlocked ? badge.color : "text-muted-foreground")} />
-        {!isUnlocked && <Lock className="absolute -bottom-1 -right-1 w-4 h-4 text-muted-foreground bg-background rounded-full p-0.5 border" />}
+        <Icon className={cn("w-5 h-5 sm:w-6 sm:h-6", isUnlocked ? badge.color : "text-muted-foreground")} />
+        {!isUnlocked && <Lock className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground bg-background rounded-full p-0.5 border" />}
       </div>
 
-      <h3 className={cn("font-bold text-sm leading-tight mb-1", isUnlocked ? "text-foreground" : "text-muted-foreground")}>
+      <h3 className={cn("font-bold text-xs sm:text-sm leading-tight mb-1", isUnlocked ? "text-foreground" : "text-muted-foreground")}>
         {badge.name}
       </h3>
       
-      <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+      <p className="text-[9px] sm:text-xs text-muted-foreground line-clamp-2 leading-relaxed">
         {badge.description}
       </p>
 
       {isUnlocked && (
-        <div className="mt-auto pt-3 w-full">
-           <Badge variant="secondary" className="text-[9px] h-5 bg-background/50 backdrop-blur-sm border-0 w-full justify-center">
+        <div className="mt-auto pt-2 sm:pt-3 w-full">
+           <Badge variant="secondary" className="text-[8px] sm:text-[9px] h-4 sm:h-5 bg-background/50 backdrop-blur-sm border-0 w-full justify-center">
              {new Date(earnedDate!).toLocaleDateString('pt-BR')}
            </Badge>
         </div>
@@ -367,16 +367,16 @@ const Ranking = () => {
     <div className="space-y-6 sm:space-y-8 pb-10 animate-in fade-in duration-700">
       
       {/* Modern Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 p-8 sm:p-12 text-white shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 p-6 sm:p-12 text-white shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left space-y-2">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
-                <Globe className="h-6 w-6 text-yellow-300" />
+                <Globe className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-300" />
               </div>
-              <h1 className="text-3xl sm:text-5xl font-black tracking-tight">Ranking Geral</h1>
+              <h1 className="text-2xl sm:text-5xl font-black tracking-tight">Ranking Geral</h1>
             </div>
-            <p className="text-purple-100 text-sm sm:text-lg max-w-md mx-auto md:mx-0 font-medium">
+            <p className="text-purple-100 text-xs sm:text-lg max-w-md mx-auto md:mx-0 font-medium leading-relaxed">
               Supere seus limites e conquiste seu lugar entre os melhores profissionais.
             </p>
           </div>
@@ -386,20 +386,20 @@ const Ranking = () => {
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 flex items-center gap-6 shadow-xl animate-in slide-in-from-right-8 duration-700">
               <div className="text-center">
                 <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Sua Posição</p>
-                <p className="text-3xl font-black text-white drop-shadow-sm">#{myRankIndex + 1}</p>
+                <p className="text-2xl sm:text-3xl font-black text-white drop-shadow-sm">#{myRankIndex + 1}</p>
               </div>
-              <div className="w-px h-10 bg-white/20" />
+              <div className="w-px h-8 sm:h-10 bg-white/20" />
               <div className="text-center">
                 <p className="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Seus Pontos</p>
-                <p className="text-3xl font-black text-yellow-300 drop-shadow-sm">{myRank.score}</p>
+                <p className="text-2xl sm:text-3xl font-black text-yellow-300 drop-shadow-sm">{myRank.score}</p>
               </div>
             </div>
           )}
         </div>
         
         {/* Background Particles */}
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-64 sm:w-96 h-64 sm:h-96 bg-purple-500/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-64 sm:w-80 h-64 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" />
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
       </div>
 
@@ -407,7 +407,7 @@ const Ranking = () => {
 
       <Tabs defaultValue="ranking" className="w-full">
         <div className="flex justify-center mb-8">
-          <TabsList className="grid w-full max-w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full h-12 shadow-inner">
+          <TabsList className="grid w-full max-w-[280px] sm:max-w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full h-10 sm:h-12 shadow-inner">
             <TabsTrigger value="ranking" className="rounded-full text-xs font-bold data-[state=active]:bg-white dark:data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-md transition-all">
                🏆 Classificação
             </TabsTrigger>
@@ -417,22 +417,22 @@ const Ranking = () => {
           </TabsList>
         </div>
 
-        <TabsContent value="ranking" className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <TabsContent value="ranking" className="space-y-8 sm:space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {isLoadingRanking ? (
             <RankingSkeleton />
           ) : (
             <>
               {/* Podium Section */}
               {top3.length > 0 && (
-                <div className="relative pt-12 pb-4">
+                <div className="relative pt-6 sm:pt-8">
                    {/* Light glow behind podium */}
                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-32 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
                    
-                   <div className="flex justify-center items-end gap-2 sm:gap-4 px-2 relative z-10 w-full max-w-3xl mx-auto">
+                   <div className="flex justify-center items-end gap-2 sm:gap-6 px-2 relative z-10 w-full max-w-3xl mx-auto">
                     {/* 2nd Place */}
                     <div className="order-1 flex justify-center w-1/3">{top3[1] && <PodiumItem user={top3[1]} position={2} />}</div>
                     {/* 1st Place */}
-                    <div className="order-2 flex justify-center w-1/3 -mx-2 sm:-mx-4 z-20">{top3[0] && <PodiumItem user={top3[0]} position={1} />}</div>
+                    <div className="order-2 flex justify-center w-1/3 -mx-2 sm:-mx-4 z-20 -mt-6 sm:-mt-8">{top3[0] && <PodiumItem user={top3[0]} position={1} />}</div>
                     {/* 3rd Place */}
                     <div className="order-3 flex justify-center w-1/3">{top3[2] && <PodiumItem user={top3[2]} position={3} />}</div>
                   </div>
@@ -440,7 +440,7 @@ const Ranking = () => {
               )}
 
               {/* List Section */}
-              <div className="max-w-3xl mx-auto space-y-3 pb-8">
+              <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3 pb-8">
                 {restOfRanking.length > 0 ? (
                   <>
                     <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest px-4 mb-2">Outros Competidores</div>
