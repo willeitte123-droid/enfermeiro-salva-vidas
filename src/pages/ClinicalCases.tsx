@@ -142,13 +142,14 @@ const ClinicalCases = () => {
         .eq('user_id', profile.id);
       
       if (error) {
-        // Se a tabela não existir ainda (erro de migração não aplicada), ignora silenciosamente para não quebrar a UI
-        console.warn("Erro ao buscar progresso:", error);
+        // Se a tabela não existir, retorna array vazio mas loga o erro
+        console.error("Erro ao buscar progresso:", error);
         return [];
       }
       return data.map(c => c.case_id) as string[];
     },
-    enabled: !!profile?.id
+    enabled: !!profile?.id,
+    refetchOnWindowFocus: true
   });
 
   // Mutação para salvar conclusão
@@ -174,6 +175,12 @@ const ClinicalCases = () => {
         });
         setHasSavedCompletion(true);
       }
+    },
+    onError: (error) => {
+      console.error("Erro ao salvar progresso:", error);
+      toast.error("Erro ao salvar progresso", { 
+        description: "Seu caso foi finalizado, mas houve um erro ao salvar no banco de dados." 
+      });
     }
   });
 
@@ -191,6 +198,8 @@ const ClinicalCases = () => {
     setActiveCase(null);
     setCurrentNodeId(null);
     setHasSavedCompletion(false);
+    // Força refetch ao voltar para garantir que a UI atualize
+    queryClient.invalidateQueries({ queryKey: ['completedCases'] });
   };
 
   // Efeito para salvar automaticamente se vencer
