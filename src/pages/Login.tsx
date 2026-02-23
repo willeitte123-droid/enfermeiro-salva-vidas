@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, Lock, Stethoscope } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import {
@@ -40,12 +40,6 @@ const Login = () => {
   const [resetEmail, setResetEmail] = useState("");
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [cooldown, setCooldown] = useState(0);
-
-  // Pré-carregamento da imagem para cache imediato
-  useEffect(() => {
-    const img = new Image();
-    img.src = "/images/logo-pro-login.png";
-  }, []);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -113,13 +107,7 @@ const Login = () => {
         {/* Content */}
         <div className="relative z-10 max-w-2xl text-center flex flex-col items-center">
           <div className="mb-6 p-4 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl animate-in fade-in zoom-in duration-700">
-             {/* Usando a imagem local otimizada */}
-             <img 
-                src="/images/logo-pro-login.png" 
-                alt="Logo Enfermagem Pro" 
-                className="h-20 w-20 object-contain drop-shadow-md" 
-                loading="eager" // Força o carregamento prioritário
-              />
+             <Stethoscope className="h-16 w-16 text-white drop-shadow-md" strokeWidth={1.5} />
           </div>
           
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
