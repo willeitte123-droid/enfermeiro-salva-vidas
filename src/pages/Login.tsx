@@ -35,8 +35,18 @@ const formSchema = z.object({
   password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
 });
 
+const MicrosoftLogo = () => (
+  <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
+    <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
+    <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
+    <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
+  </svg>
+);
+
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isMicrosoftLoading, setIsMicrosoftLoading] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
@@ -96,6 +106,23 @@ const Login = () => {
       setIsResetDialogOpen(false);
     }
   }
+
+  const handleMicrosoftLogin = async () => {
+    setIsMicrosoftLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'azure',
+      options: {
+        scopes: 'email',
+        redirectTo: `${window.location.origin}/`,
+      },
+    });
+
+    if (error) {
+      setIsMicrosoftLoading(false);
+      toast.error("Erro no login com Microsoft", { description: error.message });
+    }
+    // Não definimos isLoading como false no sucesso pois a página irá redirecionar
+  };
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-background">
@@ -235,11 +262,38 @@ const Login = () => {
                   )}
                 />
                 
-                <Button type="submit" className="w-full h-11 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all" disabled={isLoading}>
+                <Button type="submit" className="w-full h-11 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all" disabled={isLoading || isMicrosoftLoading}>
                   {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Entrando...</> : "Acessar Plataforma"}
                 </Button>
               </form>
             </Form>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-muted-foreground/20" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground font-medium">
+                  Ou continue com
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2">
+              <Button 
+                variant="outline" 
+                className="h-11 bg-background hover:bg-muted/50 border-muted-foreground/20"
+                onClick={handleMicrosoftLogin}
+                disabled={isLoading || isMicrosoftLoading}
+              >
+                {isMicrosoftLoading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <MicrosoftLogo />
+                )}
+                <span className="ml-2">Microsoft</span>
+              </Button>
+            </div>
           </div>
           
           <p className="text-center text-xs text-muted-foreground mt-8 px-4">
