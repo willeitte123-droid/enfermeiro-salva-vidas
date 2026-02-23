@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { 
   CheckCircle2, XCircle, Loader2, Lightbulb, MessageSquare, 
   Smile, Trash2, ChevronLeft, ChevronRight, Shuffle, Filter, 
-  BookOpen, Trophy, Flag, Share2, AlertCircle
+  BookOpen, Trophy, AlertCircle
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -408,14 +408,6 @@ const Questions = () => {
                     </Badge>
                     <Badge variant="secondary" className="opacity-70">Enfermagem</Badge>
                     {isRandomMode && <Badge variant="secondary" className="gap-1 bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300"><Shuffle className="w-3 h-3"/> Aleatório</Badge>}
-                 </div>
-                 <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" title="Reportar Erro">
-                       <Flag className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" title="Compartilhar">
-                       <Share2 className="w-4 h-4" />
-                    </Button>
                  </div>
               </div>
               <h3 className="text-lg md:text-xl font-medium leading-relaxed text-foreground/90 font-serif tracking-wide">
