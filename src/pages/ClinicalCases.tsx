@@ -256,9 +256,9 @@ const ClinicalCases = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardFooter className="mt-auto pt-0">
-                  <Button onClick={() => handleStartCase(clinicalCase)} className={cn("w-full gap-2 text-sm sm:text-base", isCompleted ? "bg-green-600 hover:bg-green-700" : "")}>
+                  <Button onClick={() => handleStartCase(clinicalCase)} className={cn("w-full gap-2 text-sm sm:text-base", isCompleted ? "bg-green-600 hover:bg-green-700 text-white" : "bg-primary text-primary-foreground")}>
                     {isCompleted ? <RotateCcw className="h-4 w-4" /> : <PlayCircle className="h-4 w-4" />}
-                    {isCompleted ? "Refazer Caso" : "Iniciar Caso"}
+                    {isCompleted ? "Concluído (Refazer)" : "Iniciar Caso"}
                   </Button>
                 </CardFooter>
               </Card>
