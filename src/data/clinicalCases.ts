@@ -42,7 +42,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Sr. Valdir, 68 anos, chega à sala vermelha com tontura e dor torácica. Monitor mostra BAV de 3º Grau (bloqueio total).\n\nO médico solicitou atropina 1mg, mas não houve resposta. O paciente está rebaixando.\n\nSSVV: FC 28 bpm | PA 70/40 mmHg | SpO2 88%.",
-        vitals: { hr: 28, bp: "70/40", spo2: 88, resp: 22, temp: 36.0, status: "critical" },
+        vitals: { hr: 28, bp: "70/40", spo2: 88, resp: 22, temp: 36.0, status: "warning" },
         options: [
           { label: "Instalar pás do DEA/Monitor e iniciar Marcapasso Transcutâneo (MPTC)", nextNodeId: "mptc_start", type: "intervention" },
           { label: "Repetir Atropina (dose máxima 3mg) e aguardar", nextNodeId: "atropine_fail", type: "medication" },
@@ -65,7 +65,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "mptc_start": {
         id: "mptc_start",
         text: "Você conectou as pás adesivas (anteroposterior) e ligou o modo 'Marcapasso'. Definiu a frequência em 70 bpm.\n\nAgora você precisa ajustar a corrente (mA) para obter a captura. O paciente geme de dor com os choques.",
-        vitals: { hr: 28, bp: "65/40", spo2: 85, resp: 24, temp: 36.0, status: "critical" },
+        vitals: { hr: 28, bp: "65/40", spo2: 85, resp: 24, temp: 36.0, status: "warning" },
         options: [
           { label: "Aumentar a corrente (mA) até ver a espícula seguida de QRS largo (Captura Elétrica)", nextNodeId: "capture_success", type: "intervention" },
           { label: "Iniciar sedação/analgesia IMEDIATA antes de ajustar a corrente", nextNodeId: "sedation_first", type: "medication" },
@@ -129,7 +129,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Você entra no quarto e encontra o Sr. Marcos, pós-op de Lobectomia, segurando o dreno de tórax na mão. O dreno foi arrancado completamente.\n\nHá um orifício aberto na parede torácica e você ouve um som de sucção ('shhh') quando ele inspira.\n\nSSVV: FC 110 | SpO2 caindo (90%) | Dispneia.",
-        vitals: { hr: 110, bp: "110/70", spo2: 90, resp: 28, temp: 36.5, status: "critical" },
+        vitals: { hr: 110, bp: "110/70", spo2: 90, resp: 28, temp: 36.5, status: "warning" },
         options: [
           { label: "Realizar Curativo de Três Pontas imediatamente", nextNodeId: "three_points", type: "intervention" },
           { label: "Ocluir totalmente o orifício com curativo compressivo (4 pontas)", nextNodeId: "tension_pneumo", type: "intervention" },
@@ -145,7 +145,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "tension_pneumo": {
         id: "tension_pneumo",
         text: "Você ocluiu totalmente o orifício. O ar que vaza do pulmão lesado não tem para onde sair.\n\nO paciente desenvolve Pneumotórax Hipertensivo. Desvio de traqueia, turgência jugular e choque obstrutivo.",
-        vitals: { hr: 150, bp: "60/30", spo2: 75, resp: 40, temp: 36.5, status: "critical" },
+        vitals: { hr: 150, bp: "60/30", spo2: 75, resp: 40, temp: 36.5, status: "warning" },
         feedback: "Fechar os 4 lados cria um mecanismo de válvula unidirecional retentora: o ar entra (do pulmão) e não sai, pressurizando o tórax.",
         options: [
           { label: "Abrir o curativo imediatamente (deixar 1 lado solto)", nextNodeId: "relief_maneuver", type: "intervention" },
@@ -184,7 +184,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "start": {
         id: "start",
         text: "Lara, 3 anos, chega em choque séptico (pele moteada, TEC > 4s, hipotensa). Dois técnicos experientes tentaram acesso venoso periférico sem sucesso (2 min se passaram).\n\nA criança está rebaixando.\n\nSSVV: FC 170 | PA 60/30 | SpO2 88%.",
-        vitals: { hr: 170, bp: "60/30", spo2: 88, resp: 40, temp: 38.5, status: "critical" },
+        vitals: { hr: 170, bp: "60/30", spo2: 88, resp: 40, temp: 38.5, status: "warning" },
         options: [
           { label: "Realizar Punção Intraóssea (IO) na tíbia proximal", nextNodeId: "io_success", type: "intervention" },
           { label: "Tentar jugular externa ou femoral (Central)", nextNodeId: "cvc_delay", type: "intervention" },
@@ -201,7 +201,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "cvc_delay": {
         id: "cvc_delay",
         text: "Passar um CVC em criança chocada e hipovolêmica é tecnicamente difícil e demorado. Houve punção arterial acidental e hematoma cervical, comprimindo via aérea.\n\nAcesso não obtido. Tempo perdido: 15 min.",
-        vitals: { hr: 180, bp: "50/20", spo2: 80, resp: 45, temp: 38.5, status: "critical" },
+        vitals: { hr: 180, bp: "50/20", spo2: 80, resp: 45, temp: 38.5, status: "warning" },
         options: [
           { label: "Desistir do central e fazer Intraóssea AGORA", nextNodeId: "io_late", type: "intervention" },
           { label: "Chamar cirurgião para dissecção venosa", nextNodeId: "surgical_delay", type: "critical" }
@@ -216,7 +216,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "io_late": {
           id: "io_late",
           text: "A IO foi obtida em 1 minuto. A ressuscitação começou, mas o atraso anterior gerou lesão isquêmica renal e neurológica. Prognóstico reservado.",
-          vitals: { hr: 140, bp: "80/40", spo2: 92, resp: 30, temp: 37.5, status: "stable" },
+          vitals: { hr: 140, bp: "80/40", spo2: 92, resp: 30, temp: 37.5, status: "critical" },
           options: []
       },
       "io_success": {
@@ -577,7 +577,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         feedback: "Introduza a sonda suavemente até sentir resistência, recue 1cm e SÓ ENTÃO aplique vácuo na retirada.",
         options: [
            { label: "Interromper e hiperoxigenar", nextNodeId: "correct_suction", type: "intervention" },
-           { label: "Continuar aspirando do mesmo jeito", nextNodeId: "mucosa_bleeding", type: "critical" }
+           { label: "Continuar aspirando", nextNodeId: "mucosa_bleeding", type: "critical" }
         ]
       },
       "mucosa_bleeding": {
@@ -885,9 +885,10 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "dipyrone_only": {
         id: "dipyrone_only",
         text: "A febre baixou, mas a hipotensão piorou (choque séptico). Você perdeu a hora de ouro.\n\nA paciente evoluiu com oligúria e acidose metabólica.",
-        vitals: { hr: 130, bp: "70/40", spo2: 88, resp: 30, temp: 36.0, status: "critical" },
+        vitals: { hr: 130, bp: "70/40", spo2: 88, resp: 30, temp: 36.0, status: "warning" },
         options: [
-          { label: "Iniciar ressuscitação volêmica agressiva agora", nextNodeId: "late_resuscitation", type: "intervention" }
+          { label: "Iniciar ressuscitação volêmica agressiva agora", nextNodeId: "late_resuscitation", type: "intervention" },
+          { label: "Aguardar exames", nextNodeId: "kidney_failure", type: "critical" }
         ]
       },
       "sepsis_bundle": {
@@ -987,7 +988,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "volume_overload": {
         id: "volume_overload",
         text: "Você infundiu 4 litros de soro. A paciente começou a estertorar (edema agudo de pulmão) e precisou ser intubada, sem melhora significativa da PA média.",
-        vitals: { hr: 120, bp: "85/50", spo2: 85, resp: 35, temp: 37.8, status: "critical" },
+        vitals: { hr: 120, bp: "85/50", spo2: 85, resp: 35, temp: 37.8, status: "warning" },
         feedback: "Se o paciente não responde ao volume inicial, não insista indefinidamente. Inicie o vasopressor para garantir PAM >= 65 mmHg.",
         options: [
           { label: "Iniciar Noradrenalina e Diurético", nextNodeId: "late_rescue", type: "intervention" },
@@ -1300,7 +1301,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "late_rescue_hpp": {
         id: "late_rescue_hpp",
         text: "A paciente foi levada às pressas para Histerectomia de emergência. Sobreviveu, mas perdeu o útero e precisou de UTI.",
-        vitals: { hr: 120, bp: "90/50", spo2: 95, resp: 24, temp: 36.0, status: "stable" },
+        vitals: { hr: 120, bp: "90/50", spo2: 95, resp: 24, temp: 36.0, status: "recovered" },
         feedback: "O atraso no tratamento da atonia frequentemente leva à perda do órgão ou morte.",
         options: []
       },
