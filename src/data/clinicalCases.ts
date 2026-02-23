@@ -30,6 +30,205 @@ export interface ClinicalCase {
 }
 
 export const CLINICAL_CASES: ClinicalCase[] = [
+  // --- NOVOS CASOS AVANÇADOS ---
+  {
+    id: "bradicardia-instavel",
+    title: "Bradicardia Instável e Marcapasso",
+    difficulty: "Avançado",
+    category: "Urgência",
+    description: "Paciente com BAV Total apresenta sinais de choque. A atropina não funcionou. Você precisa assumir o Marcapasso Transcutâneo.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Sr. Valdir, 68 anos, chega à sala vermelha com tontura e dor torácica. Monitor mostra BAV de 3º Grau (bloqueio total).\n\nO médico solicitou atropina 1mg, mas não houve resposta. O paciente está rebaixando.\n\nSSVV: FC 28 bpm | PA 70/40 mmHg | SpO2 88%.",
+        vitals: { hr: 28, bp: "70/40", spo2: 88, resp: 22, temp: 36.0, status: "critical" },
+        options: [
+          { label: "Instalar pás do DEA/Monitor e iniciar Marcapasso Transcutâneo (MPTC)", nextNodeId: "mptc_start", type: "intervention" },
+          { label: "Repetir Atropina (dose máxima 3mg) e aguardar", nextNodeId: "atropine_fail", type: "medication" },
+          { label: "Iniciar Dopamina em acesso periférico", nextNodeId: "dopa_delay", type: "medication" }
+        ]
+      },
+      "atropine_fail": {
+        id: "atropine_fail",
+        text: "No BAV Total (infra-hissiano), a Atropina geralmente não funciona. Enquanto você preparava a segunda dose, o paciente perdeu a consciência e entrou em PCR (Assistolia).",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        feedback: "Em bradicardias instáveis que não respondem à atropina (ou onde ela não é indicada, como BAVT), o MPTC é a prioridade classe I.",
+        options: []
+      },
+      "dopa_delay": {
+        id: "dopa_delay",
+        text: "Dopamina/Adrenalina são opções farmacológicas (2ª linha), mas requerem bomba de infusão e titulação. A preparação demorou muito.\n\nO débito cardíaco zerou durante o preparo. PCR.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        options: []
+      },
+      "mptc_start": {
+        id: "mptc_start",
+        text: "Você conectou as pás adesivas (anteroposterior) e ligou o modo 'Marcapasso'. Definiu a frequência em 70 bpm.\n\nAgora você precisa ajustar a corrente (mA) para obter a captura. O paciente geme de dor com os choques.",
+        vitals: { hr: 28, bp: "65/40", spo2: 85, resp: 24, temp: 36.0, status: "critical" },
+        options: [
+          { label: "Aumentar a corrente (mA) até ver a espícula seguida de QRS largo (Captura Elétrica)", nextNodeId: "capture_success", type: "intervention" },
+          { label: "Iniciar sedação/analgesia IMEDIATA antes de ajustar a corrente", nextNodeId: "sedation_first", type: "medication" },
+          { label: "Manter corrente baixa para não machucar o paciente", nextNodeId: "no_capture", type: "critical" }
+        ]
+      },
+      "sedation_first": {
+        id: "sedation_first",
+        text: "A sedação é importante, mas o paciente está em choque grave (quase parando). Sedativos podem causar hipotensão fatal.\n\nMelhor estratégia: Capturar o ritmo primeiro (salvar a vida) e sedar imediatamente depois (conforto). Mas você conseguiu sedar com Etomidato e depois capturar.",
+        vitals: { hr: 70, bp: "90/60", spo2: 92, resp: 18, temp: 36.0, status: "stable" },
+        feedback: "Cuidado com sedação em paciente hipotenso. Priorize a estabilização hemodinâmica com o MPTC, depois analgesia.",
+        options: [
+           { label: "Checar pulso femoral/carotídeo para confirmar Captura Mecânica", nextNodeId: "final_check", type: "assessment" },
+           { label: "Confiar apenas no monitor e aguardar", nextNodeId: "false_capture", type: "critical" }
+        ]
+      },
+      "no_capture": {
+        id: "no_capture",
+        text: "Sem corrente suficiente, o marcapasso dispara espículas mas o coração não contrai (sem captura). O paciente continua com FC de 28 bpm e entra em PCR.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        options: []
+      },
+      "capture_success": {
+        id: "capture_success",
+        text: "Você aumentou para 60mA e observou captura elétrica no monitor (QRS largo após cada espícula).\n\nO paciente ainda está hipotenso, mas acordando devido ao estímulo doloroso.",
+        vitals: { hr: 70, bp: "85/50", spo2: 90, resp: 20, temp: 36.0, status: "warning" },
+        options: [
+          { label: "Checar pulso femoral (longe do tórax) para confirmar Captura Mecânica e realizar analgesia", nextNodeId: "final_check", type: "intervention" },
+          { label: "Desligar o marcapasso porque o paciente está reclamando", nextNodeId: "stop_pacing_error", type: "critical" }
+        ]
+      },
+      "stop_pacing_error": {
+        id: "stop_pacing_error",
+        text: "Você desligou o suporte vital. O coração parou.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        options: []
+      },
+      "false_capture": {
+        id: "false_capture",
+        text: "O monitor mostrava atividade elétrica, mas era AESP (Atividade Elétrica Sem Pulso). O coração não estava bombeando sangue efetivamente.\n\nVocê não checou o pulso e o paciente faleceu achando que estava controlado.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        feedback: "Sempre confirme a CAPTURA MECÂNICA checando o pulso (preferencialmente femoral para evitar confundir com a contração muscular do tórax).",
+        options: []
+      },
+      "final_check": {
+        id: "final_check",
+        text: "Pulso femoral palpável e sincrônico com o marcapasso. Pressão subiu para 100/60. Analgesia feita (Fentanil em dose baixa). Paciente estável aguardando marcapasso transvenoso definitivo.",
+        vitals: { hr: 70, bp: "100/60", spo2: 96, resp: 16, temp: 36.5, status: "recovered" },
+        options: []
+      }
+    }
+  },
+  {
+    id: "dreno-torax-acidente",
+    title: "Acidente com Dreno de Tórax",
+    difficulty: "Avançado",
+    category: "Fundamentos",
+    description: "Paciente no pós-operatório de cirurgia torácica acidentalmente arranca o dreno. Risco de Pneumotórax.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Você entra no quarto e encontra o Sr. Marcos, pós-op de Lobectomia, segurando o dreno de tórax na mão. O dreno foi arrancado completamente.\n\nHá um orifício aberto na parede torácica e você ouve um som de sucção ('shhh') quando ele inspira.\n\nSSVV: FC 110 | SpO2 caindo (90%) | Dispneia.",
+        vitals: { hr: 110, bp: "110/70", spo2: 90, resp: 28, temp: 36.5, status: "critical" },
+        options: [
+          { label: "Realizar Curativo de Três Pontas imediatamente", nextNodeId: "three_points", type: "intervention" },
+          { label: "Ocluir totalmente o orifício com curativo compressivo (4 pontas)", nextNodeId: "tension_pneumo", type: "intervention" },
+          { label: "Tentar reintroduzir o dreno rapidamente antes que feche", nextNodeId: "reinsert_error", type: "critical" }
+        ]
+      },
+      "reinsert_error": {
+        id: "reinsert_error",
+        text: "Nunca se reintroduz um dreno que saiu (contaminado). Além disso, você lesionou o parênquima pulmonar e causou hemorragia grave.\n\nPaciente evoluiu para choque hemorrágico e sepse.",
+        vitals: { hr: 140, bp: "70/40", spo2: 80, resp: 35, temp: 36.5, status: "critical" },
+        options: []
+      },
+      "tension_pneumo": {
+        id: "tension_pneumo",
+        text: "Você ocluiu totalmente o orifício. O ar que vaza do pulmão lesado não tem para onde sair.\n\nO paciente desenvolve Pneumotórax Hipertensivo. Desvio de traqueia, turgência jugular e choque obstrutivo.",
+        vitals: { hr: 150, bp: "60/30", spo2: 75, resp: 40, temp: 36.5, status: "critical" },
+        feedback: "Fechar os 4 lados cria um mecanismo de válvula unidirecional retentora: o ar entra (do pulmão) e não sai, pressurizando o tórax.",
+        options: [
+          { label: "Abrir o curativo imediatamente (deixar 1 lado solto)", nextNodeId: "relief_maneuver", type: "intervention" },
+          { label: "Iniciar RCP", nextNodeId: "cpr_futile", type: "critical" }
+        ]
+      },
+      "cpr_futile": {
+        id: "cpr_futile",
+        text: "A RCP em pneumotórax hipertensivo é inútil se o tórax não for descomprimido. O coração está esmagado e não enche. Óbito.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+        options: []
+      },
+      "relief_maneuver": {
+        id: "relief_maneuver",
+        text: "Ao abrir o curativo, houve saída violenta de ar sob pressão. A hemodinâmica melhorou instantaneamente.\n\nVocê converteu o curativo para 3 pontas enquanto aguarda o cirurgião para redrenagem.",
+        vitals: { hr: 100, bp: "100/60", spo2: 92, resp: 24, temp: 36.5, status: "stable" },
+        options: []
+      },
+      "three_points": {
+        id: "three_points",
+        text: "Perfeito! Você usou plástico/gaze vasinada e fixou apenas 3 lados.\n\nIsso funciona como válvula: Na expiração, o ar sai. Na inspiração, o plástico cola na pele e impede a entrada de ar.\n\nPaciente estabilizou até a chegada da equipe cirúrgica.",
+        vitals: { hr: 95, bp: "120/80", spo2: 95, resp: 20, temp: 36.5, status: "recovered" },
+        feedback: "O curativo de 3 pontas é a conduta padrão ouro imediata para ferimentos torácicos abertos (sucking chest wounds) ou avulsão de dreno.",
+        options: []
+      }
+    }
+  },
+  {
+    id: "intraossea-ped",
+    title: "Acesso Difícil no Choque Séptico",
+    difficulty: "Avançado",
+    category: "Pediatria",
+    description: "Criança de 3 anos em choque. Veias periféricas colabadas. Decisão crítica sobre via de administração.",
+    initialNodeId: "start",
+    nodes: {
+      "start": {
+        id: "start",
+        text: "Lara, 3 anos, chega em choque séptico (pele moteada, TEC > 4s, hipotensa). Dois técnicos experientes tentaram acesso venoso periférico sem sucesso (2 min se passaram).\n\nA criança está rebaixando.\n\nSSVV: FC 170 | PA 60/30 | SpO2 88%.",
+        vitals: { hr: 170, bp: "60/30", spo2: 88, resp: 40, temp: 38.5, status: "critical" },
+        options: [
+          { label: "Realizar Punção Intraóssea (IO) na tíbia proximal", nextNodeId: "io_success", type: "intervention" },
+          { label: "Tentar jugular externa ou femoral (Central)", nextNodeId: "cvc_delay", type: "intervention" },
+          { label: "Continuar tentando acesso periférico com luz transiluminadora", nextNodeId: "peripheral_death", type: "critical" }
+        ]
+      },
+      "peripheral_death": {
+        id: "peripheral_death",
+        text: "Você insistiu no periférico por mais 5 minutos. O choque progrediu para irreversível.\n\nSem volume e antibiótico, a criança parou em AESP.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 38.0, status: "dead" },
+        feedback: "Protocolo PALS: Se acesso periférico falhar ou demorar > 90 segundos em paciente instável, a via Intraóssea é IMEDIATA.",
+        options: []
+      },
+      "cvc_delay": {
+        id: "cvc_delay",
+        text: "Passar um CVC em criança chocada e hipovolêmica é tecnicamente difícil e demorado. Houve punção arterial acidental e hematoma cervical, comprimindo via aérea.\n\nAcesso não obtido. Tempo perdido: 15 min.",
+        vitals: { hr: 180, bp: "50/20", spo2: 80, resp: 45, temp: 38.5, status: "critical" },
+        options: [
+          { label: "Desistir do central e fazer Intraóssea AGORA", nextNodeId: "io_late", type: "intervention" },
+          { label: "Chamar cirurgião para dissecção venosa", nextNodeId: "surgical_delay", type: "critical" }
+        ]
+      },
+      "surgical_delay": {
+          id: "surgical_delay",
+          text: "A dissecção demorou demais. A criança faleceu antes da infusão.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 38.0, status: "dead" },
+          options: []
+      },
+      "io_late": {
+          id: "io_late",
+          text: "A IO foi obtida em 1 minuto. A ressuscitação começou, mas o atraso anterior gerou lesão isquêmica renal e neurológica. Prognóstico reservado.",
+          vitals: { hr: 140, bp: "80/40", spo2: 92, resp: 30, temp: 37.5, status: "stable" },
+          options: []
+      },
+      "io_success": {
+        id: "io_success",
+        text: "Decisão correta! Você localizou a tuberosidade da tíbia (1-2cm abaixo e medial), inseriu a agulha IO e aspirou medula.\n\nFez o flush (bolus) e iniciou Soro Fisiológico 20ml/kg em seringa (push-pull).\n\nEm 5 minutos, a perfusão melhorou e a criança acordou.",
+        vitals: { hr: 130, bp: "90/50", spo2: 96, resp: 28, temp: 37.5, status: "recovered" },
+        feedback: "A via intraóssea é segura, rápida (< 1 min) e permite administrar qualquer droga/fluido que se faria na veia.",
+        options: []
+      }
+    }
+  },
+
   // --- NOVOS CASOS: FUNDAMENTOS E PROCEDIMENTOS (CORRIGIDOS) ---
   {
     id: "sne-seguranca",
@@ -373,12 +572,12 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "mucosa_trauma": {
         id: "mucosa_trauma",
-        text: "Aspirar enquanto introduz a sonda causa 'ventosa' na mucosa traqueal, provocando sangramento e edema.\n\nA secreção agora vem misturada com sangue vivo.",
+        text: "Aspirar enquanto introduz a sonda causa 'ventosa' na mucosa traqueal, provocando sangramento e edema.\n\nA secreção agora vem misturada com sangue vivo. O trauma desnecessário aumenta o risco de infecção.",
         vitals: { hr: 110, bp: "135/85", spo2: 90, resp: 26, temp: 37.0, status: "warning" },
         feedback: "Introduza a sonda suavemente até sentir resistência, recue 1cm e SÓ ENTÃO aplique vácuo na retirada.",
         options: [
            { label: "Interromper e hiperoxigenar", nextNodeId: "correct_suction", type: "intervention" },
-           { label: "Continuar aspirando", nextNodeId: "mucosa_bleeding", type: "critical" }
+           { label: "Continuar aspirando do mesmo jeito", nextNodeId: "mucosa_bleeding", type: "critical" }
         ]
       },
       "mucosa_bleeding": {
@@ -790,6 +989,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "Você infundiu 4 litros de soro. A paciente começou a estertorar (edema agudo de pulmão) e precisou ser intubada, sem melhora significativa da PA média.",
         vitals: { hr: 120, bp: "85/50", spo2: 85, resp: 35, temp: 37.8, status: "critical" },
         feedback: "Se o paciente não responde ao volume inicial, não insista indefinidamente. Inicie o vasopressor para garantir PAM >= 65 mmHg.",
+        options: [
+          { label: "Iniciar Noradrenalina e Diurético", nextNodeId: "late_rescue", type: "intervention" },
+          { label: "Continuar volume até PVC subir", nextNodeId: "pulmonary_edema_death", type: "critical" }
+        ]
+      },
+      "pulmonary_edema_death": {
+        id: "pulmonary_edema_death",
+        text: "O edema pulmonar maciço causou hipóxia refratária e PCR.",
+        vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 37.0, status: "dead" },
         options: []
       },
       "late_rescue": {
