@@ -44,9 +44,19 @@ const MicrosoftLogo = () => (
   </svg>
 );
 
+const GoogleLogo = () => (
+  <svg width="21" height="21" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20.5 10.74c0-.73-.06-1.43-.19-2.11H10.5v3.99h5.62c-.24 1.28-.97 2.37-2.07 3.11v2.58h3.35c1.96-1.8 3.1-4.46 3.1-7.57z" fill="#4285F4"/>
+    <path d="M10.5 20.9c2.81 0 5.17-.93 6.89-2.52l-3.35-2.58c-.93.63-2.12 1-3.54 1-2.71 0-5.19-1.83-6.01-4.29H1.07v2.66C2.84 18.72 6.43 20.9 10.5 20.9z" fill="#34A853"/>
+    <path d="M4.49 12.51c-.21-.63-.33-1.3-.33-2.01s.12-1.38.33-2.01V5.83H1.07C.38 7.2 0 8.81 0 10.5s.38 3.3 1.07 4.67l3.42-2.66z" fill="#FBBC05"/>
+    <path d="M10.5 4.1c1.53 0 2.9.53 3.98 1.56l2.99-2.99C15.66.99 13.3 0 10.5 0 6.43 0 2.84 2.18 1.07 5.83l3.42 2.66c.82-2.46 3.3-4.39 6.01-4.39z" fill="#EA4335"/>
+  </svg>
+);
+
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isMicrosoftLoading, setIsMicrosoftLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
@@ -121,7 +131,21 @@ const Login = () => {
       setIsMicrosoftLoading(false);
       toast.error("Erro no login com Microsoft", { description: error.message });
     }
-    // Não definimos isLoading como false no sucesso pois a página irá redirecionar
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsGoogleLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/`,
+      },
+    });
+
+    if (error) {
+      setIsGoogleLoading(false);
+      toast.error("Erro no login com Google", { description: error.message });
+    }
   };
 
   return (
@@ -262,7 +286,7 @@ const Login = () => {
                   )}
                 />
                 
-                <Button type="submit" className="w-full h-11 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all" disabled={isLoading || isMicrosoftLoading}>
+                <Button type="submit" className="w-full h-11 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all" disabled={isLoading || isMicrosoftLoading || isGoogleLoading}>
                   {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Entrando...</> : "Acessar Plataforma"}
                 </Button>
               </form>
@@ -279,12 +303,26 @@ const Login = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-2 gap-3">
+              <Button 
+                variant="outline" 
+                className="h-11 bg-background hover:bg-muted/50 border-muted-foreground/20"
+                onClick={handleGoogleLogin}
+                disabled={isLoading || isMicrosoftLoading || isGoogleLoading}
+              >
+                {isGoogleLoading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <GoogleLogo />
+                )}
+                <span className="ml-2">Google</span>
+              </Button>
+
               <Button 
                 variant="outline" 
                 className="h-11 bg-background hover:bg-muted/50 border-muted-foreground/20"
                 onClick={handleMicrosoftLogin}
-                disabled={isLoading || isMicrosoftLoading}
+                disabled={isLoading || isMicrosoftLoading || isGoogleLoading}
               >
                 {isMicrosoftLoading ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
