@@ -720,7 +720,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "late_rescue": {
         id: "late_rescue",
         text: "Você corrigiu a conduta, mas houve atraso. A paciente estabilizou, mas a necrose no braço pelo extravasamento da noradrenalina exigirá desbridamento cirúrgico.",
-        vitals: { hr: 100, bp: "110/70", spo2: 95, resp: 20, temp: 37.5, status: "stable" },
+        vitals: { hr: 100, bp: "110/70", spo2: 95, resp: 20, temp: 37.5, status: "recovered" },
         feedback: "Vasopressores idealmente em acesso central. Se periférico, use veia calibrosa, diluição correta e por curto período.",
         options: []
       },
@@ -1159,7 +1159,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         options: [
           { label: "Administrar Diazepam 10mg IV lento (1ª Linha)", nextNodeId: "benzo_ok", type: "medication" },
           { label: "Administrar Fenitoína IV direto (2ª Linha)", nextNodeId: "phenytoin_slow", type: "medication" },
-          { label: "Colocar cânula de Guedel à força para abrir a boca", nextNodeId: "guedel_error", type: "intervention" }
+          { label: "Colocar cânula de Guedel à força para abrir o boca", nextNodeId: "guedel_error", type: "intervention" }
         ]
       },
       "benzo_ok": {
