@@ -229,7 +229,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
     }
   },
 
-  // --- NOVOS CASOS: FUNDAMENTOS E PROCEDIMENTOS (CORRIGIDOS) ---
+  // --- CASOS EXISTENTES REVISADOS ---
   {
     id: "sne-seguranca",
     title: "Segurança na Sonda Nasoenteral",
@@ -252,21 +252,19 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         id: "ausculta_error",
         text: "Você realizou a ausculta epigástrica, ouviu o ruído de ar e iniciou a dieta.\n\nMinutos depois, o paciente começou a tossir violentamente, ficou cianótico e a saturação caiu para 75%.\n\nO som da ausculta foi transmitido, mas a ponta da sonda estava na entrada da traqueia ou esôfago alto. O paciente sofreu broncoaspiração maciça de dieta.",
         vitals: { hr: 140, bp: "150/90", spo2: 75, resp: 40, temp: 36.5, status: "critical" },
-        feedback: "ERRO CRÍTICO: O teste de ausculta NÃO é seguro para confirmar posicionamento de sondas enterais finas (Dobbhoff), pois o som pode ser transmitido dos pulmões ou esôfago. O Padrão-Ouro é o Raio-X ou teste de pH (se validado na instituição).",
+        feedback: "ERRO CRÍTICO: O teste de ausculta NÃO é seguro para confirmar posicionamento de sondas enterais finas (Dobbhoff).",
         options: []
       },
       "blind_push_error": {
         id: "blind_push_error",
         text: "Ao reintroduzir a sonda sem o fio guia e sem visão, a ponta flexível se enrolou na orofaringe ou migrou para a via aérea.\n\nVocê iniciou a dieta achando que estava no estômago. O paciente broncoaspirou imediatamente, evoluindo para pneumonia aspirativa grave.",
         vitals: { hr: 130, bp: "140/90", spo2: 80, resp: 35, temp: 36.5, status: "critical" },
-        feedback: "ERRO: Nunca reintroduza uma sonda deslocada às cegas. Se a sonda saiu significativamente, o protocolo é: suspender dieta, avaliar necessidade de repassagem total ou confirmação radiológica da posição atual.",
         options: []
       },
       "xray_success": {
         id: "xray_success",
-        text: "Conduta perfeita. Você suspendeu a dieta e solicitou o RX.\n\nO exame mostrou a ponta da sonda no esôfago médio (risco altíssimo de aspiração se a dieta fosse ligada). A sonda foi repassada com técnica correta e um novo RX confirmou a posição no duodeno.\n\nDieta liberada com segurança.",
+        text: "Conduta perfeita. Você suspendeu a dieta e solicitou o RX.\n\nO exame mostrou a ponta da sonda no esôfago médio. A sonda foi repassada com técnica correta e um novo RX confirmou a posição no duodeno.",
         vitals: { hr: 85, bp: "120/80", spo2: 96, resp: 18, temp: 36.5, status: "recovered" },
-        feedback: "A segurança do paciente vem primeiro. Na dúvida sobre a posição da sonda (fixação solta, marcação alterada), nunca infunda nada até ter certeza radiológica.",
         options: []
       }
     }
@@ -291,9 +289,8 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "trauma_urethra": {
         id: "trauma_urethra",
-        text: "A uretra não foi lubrificada/anestesiada adequadamente em toda sua extensão. O paciente contraiu o esfíncter por dor.\n\nVocê forçou a passagem contra a resistência da próstata e causou uma falsa via (perfuração uretral). Sangramento intenso pelo meato (uretrorragia) e a sonda não drenou urina.",
+        text: "A uretra não foi lubrificada/anestesiada adequadamente. O paciente contraiu o esfíncter.\n\nVocê forçou a passagem e causou uma falsa via (perfuração uretral). Sangramento intenso pelo meato.",
         vitals: { hr: 125, bp: "170/100", spo2: 96, resp: 24, temp: 36.5, status: "warning" },
-        feedback: "Em homens, a injeção intrauretral de gel anestésico (seringa de 20ml sem agulha) e o tempo de latência são obrigatórios para distender a uretra, anestesiar e lubrificar.",
         options: [
           { label: "Suspender procedimento, não tentar novamente e chamar Urologia", nextNodeId: "urology_call", type: "assessment" },
           { label: "Tentar passar a sonda novamente com mais força", nextNodeId: "critical_trauma", type: "critical" }
@@ -301,9 +298,8 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "thin_probe_fail": {
         id: "thin_probe_fail",
-        text: "Sondas muito finas (<14Fr) são muito flexíveis. Ao encontrar a resistência da próstata aumentada, a sonda dobrou dentro da uretra e não progrediu, causando dor e trauma leve.\n\nO paciente continua com bexigoma.",
+        text: "Sondas muito finas (<14Fr) são muito flexíveis. Ao encontrar a resistência da próstata aumentada, a sonda dobrou dentro da uretra e não progrediu.\n\nO paciente continua com bexigoma.",
         vitals: { hr: 115, bp: "160/100", spo2: 96, resp: 22, temp: 36.5, status: "warning" },
-        feedback: "Paradoxalmente, em casos de HPB, sondas de calibre médio/maior (16-18Fr) ou ponta de Coudé (ponta curva e rígida) têm mais firmeza para vencer a obstrução prostática sem dobrar.",
         options: [
            { label: "Trocar material e tentar com técnica correta (gel + calibre 16/18)", nextNodeId: "technique_correct", type: "intervention" },
            { label: "Tentar empurrar a sonda fina com mais força", nextNodeId: "trauma_urethra", type: "critical" }
@@ -313,19 +309,17 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         id: "technique_correct",
         text: "Você injetou 15ml de gel anestésico na uretra e aguardou 5 minutos com o pênis pinçado. A uretra distendeu e anestesiou.\n\nA sonda 16Fr passou suavemente pela próstata. Houve saída de 1200ml de urina clara. O paciente sentiu alívio imediato.",
         vitals: { hr: 80, bp: "130/80", spo2: 97, resp: 16, temp: 36.5, status: "recovered" },
-        feedback: "Excelente! A técnica correta e a paciência na anestesia local são o segredo da sondagem masculina atraumática.",
         options: []
       },
       "urology_call": {
         id: "urology_call",
-        text: "O Urologista avaliou e confirmou lesão de uretra (falsa via). O paciente precisou ir ao Centro Cirúrgico para cistoscopia de emergência e sondagem guiada por fio guia.\n\nEmbora o paciente esteja vivo, o procedimento de enfermagem causou um dano (iatrogenia) que exigiu intervenção cirúrgica.",
+        text: "O Urologista avaliou e confirmou lesão de uretra. O paciente precisou ir ao Centro Cirúrgico para cistoscopia.\n\nO procedimento causou um dano (iatrogenia) que exigiu intervenção cirúrgica.",
         vitals: { hr: 100, bp: "140/90", spo2: 96, resp: 20, temp: 36.5, status: "critical" },
-        feedback: "Uretrorragia é sinal de trauma grave. Diante de resistência, nunca force. A prevenção (técnica adequada) é o único caminho.",
         options: []
       },
       "critical_trauma": {
         id: "critical_trauma",
-        text: "Você insistiu no erro. A lesão uretral se transformou em ruptura completa. O paciente desenvolveu hematoma perineal extenso e infecção grave (Síndrome de Fournier) dias depois.",
+        text: "Você insistiu no erro. A lesão uretral se transformou em ruptura completa. O paciente desenvolveu hematoma perineal extenso.",
         vitals: { hr: 140, bp: "180/110", spo2: 95, resp: 30, temp: 37.0, status: "critical" },
         options: []
       }
@@ -351,16 +345,14 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "hydrocolloid_fail": {
         id: "hydrocolloid_fail",
-        text: "O Hidrocoloide é oclusivo. Em ferida infectada e com muito exsudato, ele reteve as bactérias e secreção (efeito estufa) e macerou as bordas.\n\nA paciente evoluiu com aumento da área de necrose, febre alta e sepse de foco cutâneo.",
+        text: "O Hidrocoloide é oclusivo. Em ferida infectada e com muito exsudato, ele reteve as bactérias e secreção e macerou as bordas.\n\nA paciente evoluiu com aumento da área de necrose, febre alta e sepse de foco cutâneo.",
         vitals: { hr: 120, bp: "90/60", spo2: 94, resp: 24, temp: 39.0, status: "critical" },
-        feedback: "Regra básica: Hidrocoloide é CONTRAINDICADO em feridas infectadas ou com exsudato abundante.",
         options: []
       },
       "hydrogel_fail": {
         id: "hydrogel_fail",
-        text: "O Hidrogel tem função de doar umidade. A ferida já estava muito úmida (exsudato abundante).\n\nO resultado foi maceração extensa da pele perilesional, aumentando o tamanho da ferida. Além disso, o hidrogel simples não combate a infecção/odor.",
+        text: "O Hidrogel tem função de doar umidade. A ferida já estava muito úmida.\n\nO resultado foi maceração extensa da pele perilesional. Além disso, o hidrogel simples não combate a infecção/odor.",
         vitals: { hr: 95, bp: "120/80", spo2: 96, resp: 18, temp: 38.0, status: "warning" },
-        feedback: "Hidrogel é indicado para feridas secas ou com necrose que precisa ser amolecida. Não para feridas muito exsudativas e infectadas.",
         options: [
            { label: "Trocar para cobertura absorvente com prata (Carvão/Alginato)", nextNodeId: "charcoal_success", type: "intervention" },
            { label: "Manter Hidrogel e fechar com gaze", nextNodeId: "infection_worsens", type: "critical" }
@@ -374,15 +366,12 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "charcoal_success": {
         id: "charcoal_success",
-        text: "Excelente escolha. O Carvão Ativado controla o odor e absorve o exsudato. A Prata combate a infecção local (bactericida).\n\nApós 48h de uso, o odor desapareceu, o exsudato diminuiu e o tecido de granulação começou a aparecer.\n\nSinais vitais normalizaram.",
+        text: "Excelente escolha. O Carvão Ativado controla o odor e absorve o exsudato. A Prata combate a infecção local (bactericida).\n\nApós 48h de uso, o odor desapareceu, o exsudato diminuiu e o tecido de granulação começou a aparecer.",
         vitals: { hr: 80, bp: "120/80", spo2: 98, resp: 16, temp: 36.8, status: "recovered" },
-        feedback: "Para feridas infectadas, exsudativas e com odor, o Carvão com Prata é uma das melhores opções de primeira linha. Alginato com Prata também seria uma boa opção.",
         options: []
       }
     }
   },
-
-  // --- CASOS EXISTENTES (Mantidos abaixo) ---
   {
     id: "tce-cushing",
     title: "Herniação Cerebral Iminente",
@@ -403,21 +392,19 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "hypotension_death": {
         id: "hypotension_death",
-        text: "ERRO CRÍTICO.\n\nA hipertensão era um reflexo de defesa (Reflexo de Cushing) para manter o sangue chegando ao cérebro contra a alta pressão intracraniana (PIC).\n\nAo baixar a PA, você matou a Perfusão Cerebral (PPC = PAM - PIC). O cérebro isque miou e herniou fatalmente.",
+        text: "ERRO CRÍTICO.\n\nA hipertensão era um reflexo de defesa (Reflexo de Cushing). Ao baixar a PA, você matou a Perfusão Cerebral.\n\nO cérebro isque miou e herniou fatalmente.",
         vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
-        feedback: "A Tríade de Cushing (Hipertensão + Bradicardia + Resp. Irregular) indica HIC grave. Nunca baixe a pressão sem monitorar a PIC ou tratar a causa.",
         options: []
       },
       "atropine_useless": {
         id: "atropine_useless",
-        text: "A atropina não teve efeito. A bradicardia é central (compressão do tronco encefálico), não cardíaca.\n\nEnquanto você tentava tratar o coração, o cérebro herniou (uncus comprimiu o tronco). O paciente parou.",
+        text: "A atropina não teve efeito. A bradicardia é central (compressão do tronco encefálico).\n\nEnquanto você tentava tratar o coração, o cérebro herniou. O paciente parou.",
         vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
-        feedback: "Não trate o sinal vital isolado. Entenda o contexto neurológico.",
         options: []
       },
       "icp_control": {
         id: "icp_control",
-        text: "SALVOU A VIDA.\n\nVocê reconheceu a herniação uncal. A hiperventilação (alvo PCO2 30-35) causa vasoconstrição cerebral e reduz a PIC agudamente.\n\nO Manitol 'puxou' líquido do cérebro. A pupila voltou ao normal e o paciente foi para TC/Cirurgia descompressiva a tempo.",
+        text: "SALVOU A VIDA.\n\nVocê reconheceu a herniação uncal. A hiperventilação e o Manitol reduziram a PIC agudamente.\n\nA pupila voltou ao normal e o paciente foi para TC/Cirurgia descompressiva a tempo.",
         vitals: { hr: 80, bp: "140/90", spo2: 98, resp: 16, temp: 36.5, status: "recovered" },
         options: []
       }
@@ -443,9 +430,9 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "urethral_tear": {
         id: "urethral_tear",
-        text: "Ao tentar introduzir a sonda, você encontrou resistência e o paciente gritou de dor. Houve saída de mais sangue.\n\nVocê transformou uma lesão parcial de uretra em uma ruptura total, criando um falso trajeto. O paciente precisará de cirurgia complexa.",
+        text: "Ao tentar introduzir a sonda, você encontrou resistência e o paciente gritou de dor. Houve saída de mais sangue.\n\nVocê transformou uma lesão parcial de uretra em uma ruptura total, criando um falso trajeto.",
         vitals: { hr: 140, bp: "100/60", spo2: 95, resp: 28, temp: 36.5, status: "critical" },
-        feedback: "Uretrorragia em trauma pélvico é CONTRAINDICAÇÃO ABSOLUTA para sondagem vesical cega. É necessário uretrocistografia retrógrada ou cistostomia.",
+        feedback: "Uretrorragia em trauma pélvico é CONTRAINDICAÇÃO ABSOLUTA para sondagem vesical cega.",
         options: []
       },
       "correct_action": {
@@ -476,7 +463,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "air_embolism": {
         id: "air_embolism",
-        text: "Ao retirar o cateter com o paciente sentado e inspirando (pressão negativa no tórax), o ar entrou rapidamente pela veia.\n\nO paciente apresentou dispneia súbita, cianose e perdeu a consciência (Embolia Gasosa Maciça).",
+        text: "Ao retirar o cateter com o paciente sentado e inspirando, o ar entrou rapidamente pela veia.\n\nO paciente apresentou dispneia súbita, cianose e perdeu a consciência (Embolia Gasosa Maciça).",
         vitals: { hr: 150, bp: "60/40", spo2: 70, resp: 40, temp: 36.5, status: "warning" },
         feedback: "Nunca retire CVC de jugular/subclávia com paciente sentado ou inspirando. O risco de embolia gasosa é altíssimo.",
         options: [
@@ -494,20 +481,19 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         id: "unnecessary_risk",
         text: "Aspirar não é a técnica padrão e retirar lentamente aumenta o tempo de exposição do orifício ao ar.\n\nO paciente não teve embolia por sorte, mas a técnica foi inadequada. Você colocou o paciente em risco desnecessário.",
         vitals: { hr: 90, bp: "125/80", spo2: 97, resp: 18, temp: 36.5, status: "stable" },
-        feedback: "A retirada deve ser rápida e contínua, seguida de compressão e oclusão imediata.",
         options: [
            { label: "Observar paciente e realizar curativo oclusivo", nextNodeId: "safe_removal", type: "intervention" }
         ]
       },
       "rescue_maneuver": {
           id: "rescue_maneuver",
-          text: "A Manobra de Durant (DLE + Trendelenburg) tenta prender o ar no ápice do ventrículo direito, impedindo que vá para o pulmão.\n\nO paciente estabilizou precariamente e foi para a UTI. O erro técnico causou um evento adverso grave.",
+          text: "A Manobra de Durant (DLE + Trendelenburg) tenta prender o ar no ápice do ventrículo direito.\n\nO paciente estabilizou precariamente e foi para a UTI. O erro técnico causou um evento adverso grave.",
           vitals: { hr: 130, bp: "90/60", spo2: 88, resp: 28, temp: 36.5, status: "critical" },
           options: []
       },
       "embolism_death": {
           id: "embolism_death",
-          text: "Sentar o paciente facilitou a migração do ar para o cérebro (embolia paradoxal se FOP) ou bloqueio pulmonar total. PCR irreversível.",
+          text: "Sentar o paciente facilitou a migração do ar para o cérebro ou bloqueio pulmonar total. PCR irreversível.",
           vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
           options: []
       }
@@ -535,7 +521,6 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         id: "lethal_injection",
         text: "ERRO FATAL. O Potássio em bolus causa despolarização maciça do miocárdio.\n\nO paciente gritou de dor no braço e entrou em PCR em Assistolia imediatamente. Não houve retorno à circulação.",
         vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
-        feedback: "NUNCA, sob hipótese alguma, administre KCl endovenoso em bolus. É uma injeção letal.",
         options: []
       },
       "cardiac_arrest_risk": {
@@ -577,7 +562,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         feedback: "Introduza a sonda suavemente até sentir resistência, recue 1cm e SÓ ENTÃO aplique vácuo na retirada.",
         options: [
            { label: "Interromper e hiperoxigenar", nextNodeId: "correct_suction", type: "intervention" },
-           { label: "Continuar aspirando", nextNodeId: "mucosa_bleeding", type: "critical" }
+           { label: "Continuar aspirando do mesmo jeito", nextNodeId: "mucosa_bleeding", type: "critical" }
         ]
       },
       "mucosa_bleeding": {
@@ -590,7 +575,6 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         id: "vagal_bradycardia",
         text: "Aspiração prolongada causou hipóxia severa e estímulo vagal.\n\nO paciente fez bradicardia súbita (FC 35) e hipotensão.",
         vitals: { hr: 35, bp: "60/40", spo2: 75, resp: 10, temp: 37.0, status: "warning" },
-        feedback: "O tempo de aspiração não deve exceder 10-15 segundos. O paciente não respira enquanto você aspira.",
         options: [
            { label: "Parar, reconectar ventilador e dar O2 100%", nextNodeId: "rescue_brady", type: "intervention" },
            { label: "Administrar Atropina", nextNodeId: "atropine_rescue", type: "medication" }
@@ -653,7 +637,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "antibiotic_resistance": {
           id: "antibiotic_resistance",
           text: "A paciente desenvolveu infecção por fungo devido ao uso prolongado de antibióticos desnecessários.",
-          vitals: { hr: 110, bp: "100/60", spo2: 95, resp: 22, temp: 38.0, status: "warning" },
+          vitals: { hr: 110, bp: "100/60", spo2: 95, resp: 22, temp: 38.0, status: "critical" },
           options: []
       },
       "low_sensitivity": {
@@ -834,9 +818,10 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "restraint_error": {
         id: "restraint_error",
         text: "Você conteve o paciente, interpretando a agitação como psiquiátrica. A hipoglicemia continuou agindo no cérebro (neuroglicopenia).\n\nApós 30 minutos, o paciente 'acalmou' porque entrou em coma hipoglicêmico.",
-        vitals: { hr: 50, bp: "80/40", spo2: 90, resp: 8, temp: 35.5, status: "critical" },
+        vitals: { hr: 50, bp: "80/40", spo2: 90, resp: 8, temp: 35.5, status: "warning" },
         options: [
-          { label: "Verificar HGT agora", nextNodeId: "check_hgt", type: "assessment" }
+          { label: "Verificar HGT agora", nextNodeId: "check_hgt", type: "assessment" },
+          { label: "Continuar monitorando", nextNodeId: "insulin_error", type: "critical" }
         ]
       },
       "oral_risk": {
@@ -888,7 +873,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 130, bp: "70/40", spo2: 88, resp: 30, temp: 36.0, status: "warning" },
         options: [
           { label: "Iniciar ressuscitação volêmica agressiva agora", nextNodeId: "late_resuscitation", type: "intervention" },
-          { label: "Aguardar exames", nextNodeId: "kidney_failure", type: "critical" }
+          { label: "Manter observação", nextNodeId: "kidney_failure", type: "critical" }
         ]
       },
       "sepsis_bundle": {
@@ -1301,7 +1286,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "late_rescue_hpp": {
         id: "late_rescue_hpp",
         text: "A paciente foi levada às pressas para Histerectomia de emergência. Sobreviveu, mas perdeu o útero e precisou de UTI.",
-        vitals: { hr: 120, bp: "90/50", spo2: 95, resp: 24, temp: 36.0, status: "recovered" },
+        vitals: { hr: 120, bp: "90/50", spo2: 95, resp: 24, temp: 36.0, status: "stable" },
         feedback: "O atraso no tratamento da atonia frequentemente leva à perda do órgão ou morte.",
         options: []
       },
@@ -1359,7 +1344,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "wait_error": {
         id: "wait_error",
         text: "Você esperou 3 horas. Os sintomas persistiram. Quando a TC foi feita, já havia passado a janela terapêutica de 4,5h para trombólise.\n\nA paciente ficou com sequelas motoras definitivas que poderiam ter sido evitadas.",
-        vitals: { hr: 80, bp: "180/100", spo2: 96, resp: 16, temp: 36.5, status: "stable" },
+        vitals: { hr: 80, bp: "180/100", spo2: 96, resp: 16, temp: 36.5, status: "critical" },
         feedback: "Tempo é cérebro. Cada minuto perdido no AVC significa milhões de neurônios mortos.",
         options: []
       },
