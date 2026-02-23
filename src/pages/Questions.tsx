@@ -298,8 +298,8 @@ const Questions = () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Hero Header */}
-      <div className="mb-8 relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 text-white shadow-xl">
+      {/* Hero Header - BLUE THEME */}
+      <div className="mb-8 relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-700 text-white shadow-xl">
          <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
             <BookOpen className="w-64 h-64 -mr-16 -mt-16 rotate-12" />
          </div>
@@ -309,16 +309,16 @@ const Questions = () => {
               <div>
                 <Badge className="bg-white/20 hover:bg-white/30 text-white border-none mb-3 backdrop-blur-sm">Modo de Estudo</Badge>
                 <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-2">Banca de Questões</h1>
-                <p className="text-indigo-100 max-w-xl text-lg opacity-90">
+                <p className="text-blue-100 max-w-xl text-lg opacity-90">
                   Treine com milhares de questões comentadas. Afie seu raciocínio clínico e domine o conteúdo.
                 </p>
               </div>
               
               {!isSingleQuestionMode && (
                  <div className="flex flex-col gap-2 min-w-[200px] bg-white/10 p-3 rounded-xl backdrop-blur-sm border border-white/10">
-                    <span className="text-xs uppercase font-bold tracking-wider text-indigo-200">Filtros Ativos</span>
+                    <span className="text-xs uppercase font-bold tracking-wider text-blue-200">Filtros Ativos</span>
                     <div className="flex items-center gap-2">
-                       <Filter className="w-4 h-4 text-indigo-300" />
+                       <Filter className="w-4 h-4 text-cyan-200" />
                        <span className="font-semibold text-sm truncate">{selectedCategory}</span>
                     </div>
                  </div>
@@ -356,7 +356,7 @@ const Questions = () => {
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
              {isRandomMode ? (
-                <Badge variant="secondary" className="gap-1 px-3 py-1"><Shuffle className="w-3 h-3"/> Aleatório</Badge>
+                <Badge variant="secondary" className="gap-1 px-3 py-1 bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300"><Shuffle className="w-3 h-3"/> Aleatório</Badge>
              ) : (
                 <>
                   <span className="hidden md:inline">Progresso:</span>
@@ -374,9 +374,9 @@ const Questions = () => {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-64 gap-4">
              <div className="relative">
-                <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping"></div>
+                <div className="absolute inset-0 bg-blue-500/20 rounded-full animate-ping"></div>
                 <div className="relative bg-background p-4 rounded-full border shadow-sm">
-                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                   <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
                 </div>
              </div>
              <span className="text-muted-foreground font-medium animate-pulse">Carregando questão...</span>
@@ -399,15 +399,15 @@ const Questions = () => {
              <Button variant="outline" onClick={() => {setAnswerStatusFilter('all'); setSelectedCategory('Todas');}}>Limpar Filtros</Button>
           </div>
         ) : (
-          <Card className="overflow-hidden border-t-4 border-t-primary shadow-lg transition-all duration-300">
+          <Card className="overflow-hidden border-t-4 border-t-blue-500 shadow-lg transition-all duration-300">
             <CardHeader className="bg-muted/5 pb-6">
               <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline" className="bg-background font-semibold text-primary border-primary/20 px-3 py-1">
+                    <Badge variant="outline" className="bg-background font-semibold text-blue-700 border-blue-200 px-3 py-1 dark:text-blue-300 dark:border-blue-800">
                        {currentQuestion.category}
                     </Badge>
                     <Badge variant="secondary" className="opacity-70">Enfermagem</Badge>
-                    {isRandomMode && <Badge variant="secondary" className="gap-1"><Shuffle className="w-3 h-3"/> Aleatório</Badge>}
+                    {isRandomMode && <Badge variant="secondary" className="gap-1 bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300"><Shuffle className="w-3 h-3"/> Aleatório</Badge>}
                  </div>
                  <div className="flex gap-2">
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" title="Reportar Erro">
@@ -438,8 +438,8 @@ const Questions = () => {
                         htmlFor={`${option.id}-${currentQuestion.id}`} 
                         className={cn(
                            "flex items-start space-x-4 p-4 rounded-xl border transition-all duration-200 cursor-pointer relative overflow-hidden group",
-                           isNeutral && "hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm",
-                           isSelected && isNeutral && "border-primary bg-primary/5 ring-1 ring-primary/20",
+                           isNeutral && "hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 hover:shadow-sm",
+                           isSelected && isNeutral && "border-blue-500 bg-blue-50/80 dark:bg-blue-900/30 ring-1 ring-blue-500/30",
                            showSuccess && "border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-500/50",
                            showError && "border-red-500 bg-red-50 dark:bg-red-950/30 opacity-90",
                            showExplanation && !isCorrect && !isSelected && "opacity-50 grayscale"
@@ -448,7 +448,7 @@ const Questions = () => {
                         {showSuccess && <div className="absolute right-0 top-0 p-1 bg-green-500 text-white rounded-bl-lg"><CheckCircle2 className="w-4 h-4" /></div>}
                         {showError && <div className="absolute right-0 top-0 p-1 bg-red-500 text-white rounded-bl-lg"><XCircle className="w-4 h-4" /></div>}
                         
-                        <RadioGroupItem value={option.id} id={`${option.id}-${currentQuestion.id}`} className="mt-1" />
+                        <RadioGroupItem value={option.id} id={`${option.id}-${currentQuestion.id}`} className="mt-1 border-blue-500 text-blue-600 focus:ring-blue-500" />
                         <div className="flex-1 space-y-1">
                            <span className={cn(
                               "font-bold mr-2 inline-block w-6", 
@@ -493,7 +493,7 @@ const Questions = () => {
                       <CollapsibleTrigger asChild>
                          <div className="w-full flex items-center justify-between p-4 bg-muted/20 hover:bg-muted/40 cursor-pointer transition-colors group">
                            <div className="flex items-center gap-2 font-medium text-sm">
-                              <MessageSquare className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
+                              <MessageSquare className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
                               Comentários da Comunidade 
                               <Badge variant="secondary" className="ml-2 text-xs h-5 px-1.5 min-w-[1.25rem]">{comments.length}</Badge>
                            </div>
@@ -503,7 +503,7 @@ const Questions = () => {
                       <CollapsibleContent>
                         <div className="p-4 bg-muted/5 space-y-6">
                            {/* Add Comment Form */}
-                           <Form {...form}><form onSubmit={form.handleSubmit(onCommentSubmit)} className="flex gap-3 items-start p-3 bg-background rounded-lg border shadow-sm focus-within:ring-1 focus-within:ring-primary"><Avatar className="w-8 h-8 mt-1"><AvatarImage src={profile?.avatar_url} /><AvatarFallback>EU</AvatarFallback></Avatar><div className="flex-1 space-y-2"><FormField control={form.control} name="content" render={({ field }) => (<FormItem className="space-y-0"><FormControl><Textarea placeholder="Adicione uma dica ou comentário..." className="min-h-[60px] resize-none border-none shadow-none focus-visible:ring-0 p-0 text-sm" {...field} /></FormControl><FormMessage /></FormItem>)} /><div className="flex justify-between items-center pt-2 border-t border-dashed"><Popover><PopoverTrigger asChild><Button type="button" variant="ghost" size="sm" className="h-8 w-8 rounded-full text-muted-foreground hover:text-primary"><Smile className="h-4 w-4" /></Button></PopoverTrigger><PopoverContent className="p-0 w-full"><EmojiPicker onEmojiClick={(emojiObject) => {form.setValue('content', form.getValues('content') + emojiObject.emoji);}} height={300} width="100%" /></PopoverContent></Popover><Button type="submit" size="sm" disabled={isSubmittingComment} className="h-7 text-xs px-4">{isSubmittingComment ? <Loader2 className="h-3 w-3 animate-spin" /> : "Publicar"}</Button></div></div></form></Form>
+                           <Form {...form}><form onSubmit={form.handleSubmit(onCommentSubmit)} className="flex gap-3 items-start p-3 bg-background rounded-lg border shadow-sm focus-within:ring-1 focus-within:ring-blue-500"><Avatar className="w-8 h-8 mt-1"><AvatarImage src={profile?.avatar_url} /><AvatarFallback>EU</AvatarFallback></Avatar><div className="flex-1 space-y-2"><FormField control={form.control} name="content" render={({ field }) => (<FormItem className="space-y-0"><FormControl><Textarea placeholder="Adicione uma dica ou comentário..." className="min-h-[60px] resize-none border-none shadow-none focus-visible:ring-0 p-0 text-sm" {...field} /></FormControl><FormMessage /></FormItem>)} /><div className="flex justify-between items-center pt-2 border-t border-dashed"><Popover><PopoverTrigger asChild><Button type="button" variant="ghost" size="sm" className="h-8 w-8 rounded-full text-muted-foreground hover:text-blue-600"><Smile className="h-4 w-4" /></Button></PopoverTrigger><PopoverContent className="p-0 w-full"><EmojiPicker onEmojiClick={(emojiObject) => {form.setValue('content', form.getValues('content') + emojiObject.emoji);}} height={300} width="100%" /></PopoverContent></Popover><Button type="submit" size="sm" disabled={isSubmittingComment} className="h-7 text-xs px-4 bg-blue-600 hover:bg-blue-700 text-white">{isSubmittingComment ? <Loader2 className="h-3 w-3 animate-spin" /> : "Publicar"}</Button></div></div></form></Form>
 
                            <Separator />
 
@@ -513,15 +513,15 @@ const Questions = () => {
                                  {comments.map(comment => (
                                    <div key={comment.id} className="flex gap-3 group">
                                      <Link to={`/user/${comment.profiles?.id}`} className="flex-shrink-0 mt-1">
-                                       <Avatar className="h-8 w-8 border shadow-sm ring-2 ring-transparent group-hover:ring-primary/20 transition-all">
+                                       <Avatar className="h-8 w-8 border shadow-sm ring-2 ring-transparent group-hover:ring-blue-200 transition-all">
                                           <AvatarImage src={comment.profiles?.avatar_url} className="object-cover" />
-                                          <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback>
+                                          <AvatarFallback className="bg-blue-100 text-blue-700 text-xs font-bold">{`${comment.profiles?.first_name?.[0] || ''}${comment.profiles?.last_name?.[0] || ''}`}</AvatarFallback>
                                        </Avatar>
                                      </Link>
                                      <div className="flex-1 space-y-1">
                                        <div className="flex items-center justify-between">
                                           <div className="flex items-center gap-2">
-                                             <Link to={`/user/${comment.profiles?.id}`} className="font-semibold text-sm hover:underline hover:text-primary">
+                                             <Link to={`/user/${comment.profiles?.id}`} className="font-semibold text-sm hover:underline hover:text-blue-600">
                                                 {`${comment.profiles?.first_name} ${comment.profiles?.last_name}`}
                                              </Link>
                                              <span className="text-[10px] text-muted-foreground">• {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}</span>
@@ -572,7 +572,7 @@ const Questions = () => {
                      onClick={handleAnswerSubmit} 
                      disabled={!selectedAnswer || isFetching} 
                      size="lg" 
-                     className="w-full sm:w-auto shadow-md font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 border-0"
+                     className="w-full sm:w-auto shadow-md font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0"
                    >
                      {isFetching ? <Loader2 className="h-4 w-4 animate-spin mr-2"/> : <CheckCircle2 className="h-4 w-4 mr-2" />}
                      Responder
@@ -582,7 +582,7 @@ const Questions = () => {
                      onClick={handleNextQuestion} 
                      disabled={(currentPage >= totalPages - 1 && !isRandomMode) || isFetching}
                      size="lg"
-                     className="w-full sm:w-auto font-bold animate-pulse-subtle"
+                     className="w-full sm:w-auto font-bold animate-pulse-subtle bg-blue-600 hover:bg-blue-700 text-white"
                    >
                      {isRandomMode ? "Sortear Próxima" : "Próxima Questão"} <ChevronRight className="h-4 w-4 ml-2" />
                    </Button>
