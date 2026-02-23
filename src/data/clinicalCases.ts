@@ -161,7 +161,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "relief_maneuver": {
         id: "relief_maneuver",
         text: "Ao abrir o curativo, houve saída violenta de ar sob pressão. A hemodinâmica melhorou instantaneamente.\n\nVocê converteu o curativo para 3 pontas enquanto aguarda o cirurgião para redrenagem.",
-        vitals: { hr: 100, bp: "100/60", spo2: 92, resp: 24, temp: 36.5, status: "stable" },
+        vitals: { hr: 100, bp: "100/60", spo2: 92, resp: 24, temp: 36.5, status: "recovered" },
         options: []
       },
       "three_points": {
@@ -289,8 +289,9 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "trauma_urethra": {
         id: "trauma_urethra",
-        text: "A uretra não foi lubrificada/anestesiada adequadamente. O paciente contraiu o esfíncter.\n\nVocê forçou a passagem e causou uma falsa via (perfuração uretral). Sangramento intenso pelo meato.",
+        text: "A uretra não foi lubrificada/anestesiada adequadamente em toda sua extensão. O paciente contraiu o esfíncter por dor.\n\nVocê forçou a passagem contra a resistência da próstata e causou uma falsa via (perfuração uretral). Sangramento intenso pelo meato (uretrorragia) e a sonda não drenou urina.",
         vitals: { hr: 125, bp: "170/100", spo2: 96, resp: 24, temp: 36.5, status: "warning" },
+        feedback: "Em homens, a injeção intrauretral de gel anestésico (seringa de 20ml sem agulha) e o tempo de latência são obrigatórios para distender a uretra, anestesiar e lubrificar.",
         options: [
           { label: "Suspender procedimento, não tentar novamente e chamar Urologia", nextNodeId: "urology_call", type: "assessment" },
           { label: "Tentar passar a sonda novamente com mais força", nextNodeId: "critical_trauma", type: "critical" }
@@ -392,13 +393,13 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "hypotension_death": {
         id: "hypotension_death",
-        text: "ERRO CRÍTICO.\n\nA hipertensão era um reflexo de defesa (Reflexo de Cushing). Ao baixar a PA, você matou a Perfusão Cerebral.\n\nO cérebro isque miou e herniou fatalmente.",
+        text: "ERRO CRÍTICO.\n\nA hipertensão era um reflexo de defesa (Reflexo de Cushing) para manter o sangue chegando ao cérebro contra a alta pressão intracraniana (PIC).\n\nAo baixar a PA, você matou a Perfusão Cerebral (PPC = PAM - PIC). O cérebro isque miou e herniou fatalmente.",
         vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
         options: []
       },
       "atropine_useless": {
         id: "atropine_useless",
-        text: "A atropina não teve efeito. A bradicardia é central (compressão do tronco encefálico).\n\nEnquanto você tentava tratar o coração, o cérebro herniou. O paciente parou.",
+        text: "A atropina não teve efeito. A bradicardia é central (compressão do tronco encefálico), não cardíaca.\n\nEnquanto você tentava tratar o coração, o cérebro herniou. O paciente parou.",
         vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
         options: []
       },
@@ -562,7 +563,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         feedback: "Introduza a sonda suavemente até sentir resistência, recue 1cm e SÓ ENTÃO aplique vácuo na retirada.",
         options: [
            { label: "Interromper e hiperoxigenar", nextNodeId: "correct_suction", type: "intervention" },
-           { label: "Continuar aspirando do mesmo jeito", nextNodeId: "mucosa_bleeding", type: "critical" }
+           { label: "Continuar aspirando", nextNodeId: "mucosa_bleeding", type: "critical" }
         ]
       },
       "mucosa_bleeding": {
@@ -818,10 +819,9 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "restraint_error": {
         id: "restraint_error",
         text: "Você conteve o paciente, interpretando a agitação como psiquiátrica. A hipoglicemia continuou agindo no cérebro (neuroglicopenia).\n\nApós 30 minutos, o paciente 'acalmou' porque entrou em coma hipoglicêmico.",
-        vitals: { hr: 50, bp: "80/40", spo2: 90, resp: 8, temp: 35.5, status: "warning" },
+        vitals: { hr: 50, bp: "80/40", spo2: 90, resp: 8, temp: 35.5, status: "critical" },
         options: [
-          { label: "Verificar HGT agora", nextNodeId: "check_hgt", type: "assessment" },
-          { label: "Continuar monitorando", nextNodeId: "insulin_error", type: "critical" }
+          { label: "Verificar HGT agora", nextNodeId: "check_hgt", type: "assessment" }
         ]
       },
       "oral_risk": {
@@ -872,8 +872,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "A febre baixou, mas a hipotensão piorou (choque séptico). Você perdeu a hora de ouro.\n\nA paciente evoluiu com oligúria e acidose metabólica.",
         vitals: { hr: 130, bp: "70/40", spo2: 88, resp: 30, temp: 36.0, status: "warning" },
         options: [
-          { label: "Iniciar ressuscitação volêmica agressiva agora", nextNodeId: "late_resuscitation", type: "intervention" },
-          { label: "Manter observação", nextNodeId: "kidney_failure", type: "critical" }
+          { label: "Iniciar ressuscitação volêmica agressiva agora", nextNodeId: "late_resuscitation", type: "intervention" }
         ]
       },
       "sepsis_bundle": {
@@ -1344,7 +1343,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "wait_error": {
         id: "wait_error",
         text: "Você esperou 3 horas. Os sintomas persistiram. Quando a TC foi feita, já havia passado a janela terapêutica de 4,5h para trombólise.\n\nA paciente ficou com sequelas motoras definitivas que poderiam ter sido evitadas.",
-        vitals: { hr: 80, bp: "180/100", spo2: 96, resp: 16, temp: 36.5, status: "critical" },
+        vitals: { hr: 80, bp: "180/100", spo2: 96, resp: 16, temp: 36.5, status: "stable" },
         feedback: "Tempo é cérebro. Cada minuto perdido no AVC significa milhões de neurônios mortos.",
         options: []
       },
