@@ -106,7 +106,8 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 115, bp: "160/100", spo2: 96, resp: 22, temp: 36.5, status: "warning" },
         feedback: "Paradoxalmente, em casos de HPB, sondas de calibre médio/maior (16-18Fr) ou ponta de Coudé (ponta curva e rígida) têm mais firmeza para vencer a obstrução prostática sem dobrar.",
         options: [
-           { label: "Trocar material e tentar com técnica correta (gel + calibre 16/18)", nextNodeId: "technique_correct", type: "intervention" }
+           { label: "Trocar material e tentar com técnica correta (gel + calibre 16/18)", nextNodeId: "technique_correct", type: "intervention" },
+           { label: "Tentar empurrar a sonda fina com mais força", nextNodeId: "trauma_urethra", type: "critical" }
         ]
       },
       "technique_correct": {
@@ -162,8 +163,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 95, bp: "120/80", spo2: 96, resp: 18, temp: 38.0, status: "warning" },
         feedback: "Hidrogel é indicado para feridas secas ou com necrose que precisa ser amolecida. Não para feridas muito exsudativas e infectadas.",
         options: [
-           { label: "Trocar para cobertura absorvente com prata (Carvão/Alginato)", nextNodeId: "charcoal_success", type: "intervention" }
+           { label: "Trocar para cobertura absorvente com prata (Carvão/Alginato)", nextNodeId: "charcoal_success", type: "intervention" },
+           { label: "Manter Hidrogel e fechar com gaze", nextNodeId: "infection_worsens", type: "critical" }
         ]
+      },
+      "infection_worsens": {
+          id: "infection_worsens",
+          text: "A infecção não foi controlada e o excesso de umidade macerou ainda mais a pele. A ferida aumentou e a paciente entrou em sepse.",
+          vitals: { hr: 110, bp: "90/60", spo2: 94, resp: 24, temp: 39.2, status: "critical" },
+          options: []
       },
       "charcoal_success": {
         id: "charcoal_success",
@@ -273,7 +281,8 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 150, bp: "60/40", spo2: 70, resp: 40, temp: 36.5, status: "warning" },
         feedback: "Nunca retire CVC de jugular/subclávia com paciente sentado ou inspirando. O risco de embolia gasosa é altíssimo.",
         options: [
-           { label: "Decúbito Lateral Esquerdo + Trendelenburg + O2 100%", nextNodeId: "rescue_maneuver", type: "intervention" }
+           { label: "Decúbito Lateral Esquerdo + Trendelenburg + O2 100%", nextNodeId: "rescue_maneuver", type: "intervention" },
+           { label: "Colocar sentado e dar O2", nextNodeId: "embolism_death", type: "critical" }
         ]
       },
       "safe_removal": {
@@ -285,14 +294,22 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "unnecessary_risk": {
         id: "unnecessary_risk",
         text: "Aspirar não é a técnica padrão e retirar lentamente aumenta o tempo de exposição do orifício ao ar.\n\nO paciente não teve embolia por sorte, mas a técnica foi inadequada. Você colocou o paciente em risco desnecessário.",
-        vitals: { hr: 90, bp: "125/80", spo2: 97, resp: 18, temp: 36.5, status: "critical" },
-        feedback: "A retirada deve ser rápida e contínua, seguida de compressão e oclusão imediata. Não tente 'inventar' etapas.",
-        options: []
+        vitals: { hr: 90, bp: "125/80", spo2: 97, resp: 18, temp: 36.5, status: "stable" },
+        feedback: "A retirada deve ser rápida e contínua, seguida de compressão e oclusão imediata.",
+        options: [
+           { label: "Observar paciente e realizar curativo oclusivo", nextNodeId: "safe_removal", type: "intervention" }
+        ]
       },
       "rescue_maneuver": {
           id: "rescue_maneuver",
           text: "A Manobra de Durant (DLE + Trendelenburg) tenta prender o ar no ápice do ventrículo direito, impedindo que vá para o pulmão.\n\nO paciente estabilizou precariamente e foi para a UTI. O erro técnico causou um evento adverso grave.",
           vitals: { hr: 130, bp: "90/60", spo2: 88, resp: 28, temp: 36.5, status: "critical" },
+          options: []
+      },
+      "embolism_death": {
+          id: "embolism_death",
+          text: "Sentar o paciente facilitou a migração do ar para o cérebro (embolia paradoxal se FOP) ou bloqueio pulmonar total. PCR irreversível.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.5, status: "dead" },
           options: []
       }
     }
@@ -356,12 +373,19 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "mucosa_trauma": {
         id: "mucosa_trauma",
-        text: "Aspirar enquanto introduz a sonda causa 'ventosa' na mucosa traqueal, provocando sangramento e edema.\n\nA secreção agora vem misturada com sangue vivo. O trauma desnecessário aumenta o risco de infecção.",
+        text: "Aspirar enquanto introduz a sonda causa 'ventosa' na mucosa traqueal, provocando sangramento e edema.\n\nA secreção agora vem misturada com sangue vivo.",
         vitals: { hr: 110, bp: "135/85", spo2: 90, resp: 26, temp: 37.0, status: "warning" },
         feedback: "Introduza a sonda suavemente até sentir resistência, recue 1cm e SÓ ENTÃO aplique vácuo na retirada.",
         options: [
-           { label: "Interromper e hiperoxigenar", nextNodeId: "correct_suction", type: "intervention" }
+           { label: "Interromper e hiperoxigenar", nextNodeId: "correct_suction", type: "intervention" },
+           { label: "Continuar aspirando", nextNodeId: "mucosa_bleeding", type: "critical" }
         ]
+      },
+      "mucosa_bleeding": {
+          id: "mucosa_bleeding",
+          text: "O sangramento se intensificou, formando rolhas que obstruíram parcialmente o tubo. O paciente dessaturou gravemente.",
+          vitals: { hr: 140, bp: "150/90", spo2: 70, resp: 35, temp: 37.0, status: "critical" },
+          options: []
       },
       "vagal_bradycardia": {
         id: "vagal_bradycardia",
@@ -369,13 +393,20 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 35, bp: "60/40", spo2: 75, resp: 10, temp: 37.0, status: "warning" },
         feedback: "O tempo de aspiração não deve exceder 10-15 segundos. O paciente não respira enquanto você aspira.",
         options: [
-           { label: "Parar, reconectar ventilador e dar O2 100%", nextNodeId: "rescue_brady", type: "intervention" }
+           { label: "Parar, reconectar ventilador e dar O2 100%", nextNodeId: "rescue_brady", type: "intervention" },
+           { label: "Administrar Atropina", nextNodeId: "atropine_rescue", type: "medication" }
         ]
       },
       "rescue_brady": {
           id: "rescue_brady",
           text: "Após reconectar e oxigenar, a FC subiu para 90 e a saturação recuperou. Foi um susto desnecessário, mas o paciente recuperou.",
           vitals: { hr: 90, bp: "110/70", spo2: 95, resp: 18, temp: 37.0, status: "recovered" },
+          options: []
+      },
+      "atropine_rescue": {
+          id: "atropine_rescue",
+          text: "A atropina corrigiu a frequência, mas a hipóxia continuou até você reconectar o oxigênio. A causa primária era hipóxia/vagal, não cardíaca pura. Paciente recuperou.",
+          vitals: { hr: 100, bp: "120/70", spo2: 96, resp: 20, temp: 37.0, status: "recovered" },
           options: []
       },
       "correct_suction": {
@@ -407,9 +438,24 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "catheter_contamination": {
         id: "catheter_contamination",
         text: "A amostra do cateter antigo veio positiva para 'Staphylococcus epidermidis' (pele), enquanto a punção nova veio negativa.\n\nO médico tratou como infecção por conta do falso positivo, usando antibiótico forte desnecessariamente (risco de resistência e toxicidade).",
-        vitals: { hr: 90, bp: "110/70", spo2: 97, resp: 18, temp: 37.0, status: "critical" },
+        vitals: { hr: 90, bp: "110/70", spo2: 97, resp: 18, temp: 37.0, status: "stable" },
         feedback: "Hemoculturas não devem ser coletadas de cateteres periféricos existentes, pois eles são colonizados. Sempre punção nova.",
-        options: []
+        options: [
+           { label: "Avisar o médico sobre a coleta do cateter", nextNodeId: "medical_review", type: "assessment" },
+           { label: "Não avisar e deixar tratar", nextNodeId: "antibiotic_resistance", type: "critical" }
+        ]
+      },
+      "medical_review": {
+          id: "medical_review",
+          text: "O médico suspendeu o antibiótico ao saber que uma amostra veio do cateter (provável contaminação). Solicitou nova coleta adequada.",
+          vitals: { hr: 95, bp: "110/70", spo2: 97, resp: 18, temp: 37.5, status: "recovered" },
+          options: []
+      },
+      "antibiotic_resistance": {
+          id: "antibiotic_resistance",
+          text: "A paciente desenvolveu infecção por fungo devido ao uso prolongado de antibióticos desnecessários.",
+          vitals: { hr: 110, bp: "100/60", spo2: 95, resp: 22, temp: 38.0, status: "warning" },
+          options: []
       },
       "low_sensitivity": {
         id: "low_sensitivity",
@@ -463,8 +509,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 50, bp: "70/40", spo2: 80, resp: 40, temp: 36.0, status: "warning" },
         feedback: "Betabloqueadores são contraindicados na fase aguda descompensada da IC ('paciente úmido e frio' ou com baixo débito).",
         options: [
-           { label: "Suspender BB e iniciar Dobutamina", nextNodeId: "management_correct", type: "intervention" }
+           { label: "Suspender BB e iniciar Dobutamina", nextNodeId: "management_correct", type: "intervention" },
+           { label: "Aumentar dose do Betabloqueador", nextNodeId: "shock_death", type: "critical" }
         ]
+      },
+      "shock_death": {
+          id: "shock_death",
+          text: "O coração parou em diástole por falência de bomba. Óbito.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+          options: []
       }
     }
   },
@@ -518,7 +571,8 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "Acesso garantido e exames coletados. Porém, o ECG ainda não foi feito e o tempo porta-eletro estourou (> 10 min).\n\nO paciente volta a queixar-se de piora da dor.",
         vitals: { hr: 115, bp: "165/105", spo2: 93, resp: 24, temp: 36.5, status: "warning" },
         options: [
-          { label: "Realizar ECG agora", nextNodeId: "ecg_done", type: "assessment" }
+          { label: "Realizar ECG agora", nextNodeId: "ecg_done", type: "assessment" },
+          { label: "Administrar analgesia antes do ECG", nextNodeId: "morphine_early", type: "medication" }
         ]
       },
       "wait_troponin": {
@@ -592,8 +646,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 130, bp: "140/90", spo2: 85, resp: 30, temp: 36.0, status: "warning" },
         feedback: "Em pacientes com rebaixamento do nível de consciência ou disfagia, a via oral é contraindicada pelo risco de aspiração. Use a via IV.",
         options: [
-          { label: "Realizar Glicose IV agora", nextNodeId: "glucose_iv", type: "medication" }
+          { label: "Realizar Glicose IV agora", nextNodeId: "glucose_iv", type: "medication" },
+          { label: "Aspirar vias aéreas e dar O2", nextNodeId: "aspiration_pneumonia", type: "critical" }
         ]
+      },
+      "aspiration_pneumonia": {
+          id: "aspiration_pneumonia",
+          text: "A pneumonia aspirativa foi grave. O paciente foi intubado e foi para UTI.",
+          vitals: { hr: 120, bp: "100/60", spo2: 88, resp: 28, temp: 38.0, status: "critical" },
+          options: []
       },
       "glucose_iv": {
         id: "glucose_iv",
@@ -657,8 +718,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "Ao suspender o volume precocemente, a perfusão tecidual caiu novamente. Lactato subiu de 2 para 4 mmol/L.\n\nOtimização volêmica guiada por metas é essencial.",
         vitals: { hr: 110, bp: "90/50", spo2: 94, resp: 24, temp: 37.0, status: "warning" },
         options: [
-          { label: "Retomar volume e considerar vasopressor se necessário", nextNodeId: "sepsis_bundle", type: "intervention" }
+          { label: "Retomar volume e considerar vasopressor se necessário", nextNodeId: "sepsis_bundle", type: "intervention" },
+          { label: "Iniciar diurético (Furosemida)", nextNodeId: "kidney_failure", type: "critical" }
         ]
+      },
+      "kidney_failure": {
+          id: "kidney_failure",
+          text: "O diurético em paciente hipovolêmico causou NTA (Necrose Tubular Aguda). Paciente em anúria e choque refratário.",
+          vitals: { hr: 130, bp: "70/40", spo2: 90, resp: 30, temp: 37.0, status: "critical" },
+          options: []
       },
       "sepsis_success": {
         id: "sepsis_success",
@@ -698,8 +766,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "Você iniciou o vasopressor precocemente. A pressão subiu para 100/60 mmHg.\n\nPorém, a paciente ainda está 'vazia' (hipovolêmica). O vasopressor 'espreme' vasos vazios, piorando a microcirculação a longo prazo se não houver volume.\n\nAlém disso, iniciou em acesso periférico sem diluição adequada, causando necrose tecidual no braço.",
         vitals: { hr: 130, bp: "100/60", spo2: 90, resp: 26, temp: 38.2, status: "warning" },
         options: [
-          { label: "Realizar expansão volêmica agora + Coletar Lactato/Culturas", nextNodeId: "late_rescue", type: "intervention" }
+          { label: "Realizar expansão volêmica agora + Coletar Lactato/Culturas", nextNodeId: "late_rescue", type: "intervention" },
+          { label: "Aumentar a dose da Noradrenalina", nextNodeId: "ischemia_limb", type: "critical" }
         ]
+      },
+      "ischemia_limb": {
+          id: "ischemia_limb",
+          text: "A dose alta em acesso periférico causou vasoconstrição extrema e necrose extensa do membro superior. A paciente precisará de amputação.",
+          vitals: { hr: 140, bp: "140/90", spo2: 90, resp: 30, temp: 38.0, status: "critical" },
+          options: []
       },
       "volume_ok": {
         id: "volume_ok",
@@ -772,8 +847,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 60, bp: "50/30", spo2: 60, resp: 0, temp: 36.5, status: "warning" },
         feedback: "A IOT na asma é a última linha. É um procedimento de altíssimo risco. Tente ventilar com máscara e ambu + O2 100%.",
         options: [
-           { label: "Ventilar com bolsa-válvula-máscara e O2 100%", nextNodeId: "cpr_asthma", type: "intervention" }
+           { label: "Ventilar com bolsa-válvula-máscara e O2 100%", nextNodeId: "cpr_asthma", type: "intervention" },
+           { label: "Tentar reintubar imediatamente", nextNodeId: "cardiac_arrest_death", type: "critical" }
         ]
+      },
+      "cardiac_arrest_death": {
+          id: "cardiac_arrest_death",
+          text: "A tentativa repetida de intubação em hipóxia causou PCR em assistolia. Óbito.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+          options: []
       },
       "cpr_asthma": {
           id: "cpr_asthma",
@@ -786,16 +868,30 @@ export const CLINICAL_CASES: ClinicalCase[] = [
           text: "Você enviou a criança instável para o Raio-X. No caminho, a hipóxia piorou significativamente.\n\nO tratamento da asma é clínico e imediato. Exames não devem atrasar o broncodilatador.",
           vitals: { hr: 160, bp: "90/50", spo2: 82, resp: 50, temp: 37.0, status: "warning" },
           options: [
-              { label: "Retornar e iniciar protocolo de asma grave agora", nextNodeId: "beta2_o2", type: "intervention" }
+              { label: "Retornar e iniciar protocolo de asma grave agora", nextNodeId: "beta2_o2", type: "intervention" },
+              { label: "Esperar o resultado do Raio-X", nextNodeId: "respiratory_failure", type: "critical" }
           ]
+      },
+      "respiratory_failure": {
+          id: "respiratory_failure",
+          text: "A demora causou fadiga muscular respiratória. A criança entrou em insuficiência respiratória franca e parou.",
+          vitals: { hr: 40, bp: "60/30", spo2: 70, resp: 8, temp: 37.0, status: "critical" },
+          options: []
       },
       "stop_meds": {
           id: "stop_meds",
           text: "Você suspendeu o tratamento precocemente. O efeito do broncodilatador passou e a obstrução retornou pior (efeito rebote).",
           vitals: { hr: 150, bp: "95/55", spo2: 85, resp: 45, temp: 37.0, status: "warning" },
           options: [
-               { label: "Reiniciar protocolo agressivo + Magnésio IV", nextNodeId: "corticoid_added", type: "intervention" }
+               { label: "Reiniciar protocolo agressivo + Magnésio IV", nextNodeId: "corticoid_added", type: "intervention" },
+               { label: "Dar alta para casa", nextNodeId: "return_critical", type: "critical" }
           ]
+      },
+      "return_critical": {
+          id: "return_critical",
+          text: "A criança voltou 2 horas depois em parada respiratória.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+          options: []
       }
     }
   },
@@ -845,8 +941,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
           text: "Você fez insulina sem hidratar e sem ver o potássio. A glicemia caiu rápido, mas a desidratação persistiu e o risco de hipocalemia não foi avaliado.\n\nO paciente hipotendeu e fez uma arritmia leve.",
           vitals: { hr: 140, bp: "70/40", spo2: 90, resp: 30, temp: 36.5, status: "warning" },
           options: [
-              { label: "Suspender insulina, Volume + K+", nextNodeId: "hydration", type: "intervention" }
+              { label: "Suspender insulina, Volume + K+", nextNodeId: "hydration", type: "intervention" },
+              { label: "Repetir insulina", nextNodeId: "hypokalemia_arrest", type: "critical" }
           ]
+      },
+      "hypokalemia_arrest": {
+          id: "hypokalemia_arrest",
+          text: "A insulina repetida baixou o potássio criticamente. PCR em FV.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+          options: []
       },
       "bicarb_error": {
           id: "bicarb_error",
@@ -854,8 +957,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
           vitals: { hr: 110, bp: "100/60", spo2: 95, resp: 12, temp: 36.5, status: "warning" },
           feedback: "Bicarbonato não é tratamento de rotina para cetoacidose.",
           options: [
-               { label: "Focar na Hidratação e Insulina", nextNodeId: "hydration", type: "intervention" }
+               { label: "Focar na Hidratação e Insulina", nextNodeId: "hydration", type: "intervention" },
+               { label: "Dar mais bicarbonato", nextNodeId: "cerebral_edema", type: "critical" }
           ]
+      },
+      "cerebral_edema": {
+          id: "cerebral_edema",
+          text: "O excesso de bicarbonato e a mudança rápida de osmolaridade causaram edema cerebral fatal.",
+          vitals: { hr: 40, bp: "200/100", spo2: 90, resp: 6, temp: 37.0, status: "dead" },
+          options: []
       }
     }
   },
@@ -911,8 +1021,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
           text: "Ao soltar o torniquete fora do centro cirúrgico, o paciente voltou a sangrar massivamente e os coágulos formados se soltaram.\n\nChoque descompensado.",
           vitals: { hr: 150, bp: "60/30", spo2: 85, resp: 30, temp: 35.5, status: "warning" },
           options: [
-              { label: "Reaplicar torniquete e correr para CC", nextNodeId: "torniquete", type: "intervention" }
+              { label: "Reaplicar torniquete e correr para CC", nextNodeId: "torniquete", type: "intervention" },
+              { label: "Manter solto e comprimir com gaze", nextNodeId: "bleed_out", type: "critical" }
           ]
+      },
+      "bleed_out": {
+          id: "bleed_out",
+          text: "A compressão manual não foi suficiente para a artéria femoral rompida. Exsanguinação fatal.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 35.0, status: "dead" },
+          options: []
       }
     }
   },
@@ -955,8 +1072,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "A posição melhorou o retorno venoso momentaneamente, mas a causa (Atonia) não foi tratada. O útero continua sangrando massivamente (como uma torneira aberta).\n\nPaciente entra em choque grau III.",
         vitals: { hr: 140, bp: "70/40", spo2: 90, resp: 30, temp: 36.0, status: "warning" },
         options: [
-          { label: "Iniciar protocolo de Transfusão Maciça e Massagem agora", nextNodeId: "late_rescue_hpp", type: "intervention" }
+          { label: "Iniciar protocolo de Transfusão Maciça e Massagem agora", nextNodeId: "late_rescue_hpp", type: "intervention" },
+          { label: "Aguardar contração espontânea", nextNodeId: "shock_irreversible", type: "critical" }
         ]
+      },
+      "shock_irreversible": {
+          id: "shock_irreversible",
+          text: "A perda sanguínea massiva levou a choque irreversível e coagulopatia. Óbito.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 35.0, status: "dead" },
+          options: []
       },
       "wait_doctor": {
         id: "wait_doctor",
@@ -968,7 +1092,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "late_rescue_hpp": {
         id: "late_rescue_hpp",
         text: "A paciente foi levada às pressas para Histerectomia de emergência. Sobreviveu, mas perdeu o útero e precisou de UTI.",
-        vitals: { hr: 120, bp: "90/50", spo2: 95, resp: 24, temp: 36.0, status: "recovered" },
+        vitals: { hr: 120, bp: "90/50", spo2: 95, resp: 24, temp: 36.0, status: "stable" },
         feedback: "O atraso no tratamento da atonia frequentemente leva à perda do órgão ou morte.",
         options: []
       },
@@ -977,8 +1101,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "A massagem sozinha não foi suficiente para manter o tônus. O sangramento voltou a aumentar, exigindo medidas invasivas.",
         vitals: { hr: 125, bp: "85/50", spo2: 94, resp: 22, temp: 36.5, status: "warning" },
         options: [
-           { label: "Escalonar para Misoprostol/Ergotamina", nextNodeId: "second_line_meds", type: "medication" }
+           { label: "Escalonar para Misoprostol/Ergotamina", nextNodeId: "second_line_meds", type: "medication" },
+           { label: "Aumentar apenas a Ocitocina", nextNodeId: "uterus_fatigue", type: "critical" }
         ]
+      },
+      "uterus_fatigue": {
+          id: "uterus_fatigue",
+          text: "Os receptores de ocitocina saturaram. O útero não responde mais e o sangramento continua. Histerectomia será necessária.",
+          vitals: { hr: 130, bp: "80/40", spo2: 92, resp: 24, temp: 36.5, status: "critical" },
+          options: []
       }
     }
   },
@@ -1019,7 +1150,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "wait_error": {
         id: "wait_error",
         text: "Você esperou 3 horas. Os sintomas persistiram. Quando a TC foi feita, já havia passado a janela terapêutica de 4,5h para trombólise.\n\nA paciente ficou com sequelas motoras definitivas que poderiam ter sido evitadas.",
-        vitals: { hr: 80, bp: "180/100", spo2: 96, resp: 16, temp: 36.5, status: "critical" },
+        vitals: { hr: 80, bp: "180/100", spo2: 96, resp: 16, temp: 36.5, status: "stable" },
         feedback: "Tempo é cérebro. Cada minuto perdido no AVC significa milhões de neurônios mortos.",
         options: []
       },
@@ -1061,8 +1192,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "Você parou o sangue, trocou o equipo e manteve a veia aberta com Soro Fisiológico.\n\nNotificou o médico e o Banco de Sangue. Checou os dados da bolsa novamente e percebeu erro na identificação (Troca de bolsa).\n\nO paciente está estabilizando com volume e corticoide.",
         vitals: { hr: 110, bp: "95/60", spo2: 95, resp: 20, temp: 38.0, status: "stable" },
         options: [
-          { label: "Enviar bolsa e amostras de sangue/urina ao laboratório", nextNodeId: "investigation", type: "assessment" }
+          { label: "Enviar bolsa e amostras de sangue/urina ao laboratório", nextNodeId: "investigation", type: "assessment" },
+          { label: "Reiniciar transfusão lentamente", nextNodeId: "second_reaction", type: "critical" }
         ]
+      },
+      "second_reaction": {
+          id: "second_reaction",
+          text: "A reação hemolítica recomeçou imediatamente com maior gravidade. Choque e CIVD.",
+          vitals: { hr: 140, bp: "60/40", spo2: 85, resp: 30, temp: 39.5, status: "critical" },
+          options: []
       },
       "slow_down_error": {
         id: "slow_down_error",
@@ -1139,8 +1277,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "Ao retirar a agulha sem o dreno definitivo, o ar voltou a acumular (efeito válvula). O paciente chocou novamente em minutos.",
         vitals: { hr: 140, bp: "60/40", spo2: 80, resp: 40, temp: 36.5, status: "warning" },
         options: [
-          { label: "Puncionar novamente", nextNodeId: "needle_decompression", type: "intervention" }
+          { label: "Puncionar novamente", nextNodeId: "needle_decompression", type: "intervention" },
+          { label: "Intubar", nextNodeId: "tension_recurrence", type: "critical" }
         ]
+      },
+      "tension_recurrence": {
+          id: "tension_recurrence",
+          text: "Intubação com pneumotórax hipertensivo não drenado = PCR.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+          options: []
       }
     }
   },
@@ -1177,8 +1322,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 150, bp: "160/100", spo2: 80, resp: 0, temp: 37.5, status: "warning" },
         feedback: "A 1ª linha para PARAR a crise é sempre um Benzodiazepínico (ação rápida). A Fenitoína serve para evitar que ela volte.",
         options: [
-          { label: "Fazer Diazepam agora", nextNodeId: "benzo_ok", type: "medication" }
+          { label: "Fazer Diazepam agora", nextNodeId: "benzo_ok", type: "medication" },
+          { label: "Aguardar o término da fenitoína", nextNodeId: "brain_damage", type: "critical" }
         ]
+      },
+      "brain_damage": {
+          id: "brain_damage",
+          text: "A crise durou 30 minutos. O paciente sofreu lesão cerebral hipóxica irreversível e aspiração pulmonar.",
+          vitals: { hr: 140, bp: "180/100", spo2: 80, resp: 0, temp: 38.0, status: "critical" },
+          options: []
       },
       "guedel_error": {
         id: "guedel_error",
@@ -1225,8 +1377,17 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "A suspeita clínica de Tromboembolismo Pulmonar (TEP) foi precisa (DPO ortopédico + Dispneia súbita + Pulmão limpo + TVP provável).\n\nIniciada anticoagulação plena e O2. Paciente estabilizou SpO2 em 94%.",
         vitals: { hr: 100, bp: "110/70", spo2: 94, resp: 22, temp: 36.5, status: "stable" },
         options: [
-          { label: "Encaminhar para Angiotomografia de Tórax (Confirmar)", nextNodeId: "angiotc_confirm", type: "assessment" }
+          { label: "Encaminhar para Angiotomografia de Tórax (Confirmar)", nextNodeId: "angiotc_confirm", type: "assessment" },
+          { label: "Adicionar AAS", nextNodeId: "bleeding_risk", type: "medication" }
         ]
+      },
+      "bleeding_risk": {
+          id: "bleeding_risk",
+          text: "AAS não é tratamento para TEP e aumenta risco de sangramento em pós-operatório. Mas a heparina evitou o pior.",
+          vitals: { hr: 100, bp: "110/70", spo2: 94, resp: 22, temp: 36.5, status: "stable" },
+          options: [
+               { label: "Seguir para AngioTC", nextNodeId: "angiotc_confirm", type: "assessment" }
+          ]
       },
       "lasix_error": {
         id: "lasix_error",
@@ -1234,8 +1395,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         vitals: { hr: 140, bp: "60/30", spo2: 80, resp: 40, temp: 36.5, status: "warning" },
         feedback: "Cuidado! Ausculta limpa com hipóxia grave sugere TEP, não EAP. Diurético pode ser fatal no TEP maciço.",
         options: [
-          { label: "Volume rápido e Noradrenalina", nextNodeId: "shock_rescue", type: "intervention" }
+          { label: "Volume rápido e Noradrenalina", nextNodeId: "shock_rescue", type: "intervention" },
+          { label: "Dar mais Lasix", nextNodeId: "cardiac_arrest", type: "critical" }
         ]
+      },
+      "cardiac_arrest": {
+          id: "cardiac_arrest",
+          text: "Choque obstrutivo irreversível. PCR.",
+          vitals: { hr: 0, bp: "0/0", spo2: 0, resp: 0, temp: 36.0, status: "dead" },
+          options: []
       },
       "nebulization_delay": {
         id: "nebulization_delay",
@@ -1320,8 +1488,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
         text: "O extravasamento continuou, mesmo que mais lento. A lesão tecidual se tornou irreversível.",
         vitals: { hr: 90, bp: "120/80", spo2: 98, resp: 18, temp: 36.5, status: "warning" },
         options: [
-           { label: "Parar agora e aspirar", nextNodeId: "stop_aspirate", type: "intervention" }
+           { label: "Parar agora e aspirar", nextNodeId: "stop_aspirate", type: "intervention" },
+           { label: "Aplicar calor local", nextNodeId: "necrosis_worsens", type: "critical" }
         ]
+      },
+      "necrosis_worsens": {
+          id: "necrosis_worsens",
+          text: "O calor vasodilatou e espalhou a doxorrubicina. A necrose foi catastrófica. (Doxorrubicina exige frio).",
+          vitals: { hr: 100, bp: "120/80", spo2: 98, resp: 18, temp: 37.0, status: "critical" },
+          options: []
       },
       "stop_aspirate": {
         id: "stop_aspirate",
