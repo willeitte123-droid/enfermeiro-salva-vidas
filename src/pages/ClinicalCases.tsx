@@ -7,7 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { 
   HeartPulse, Activity, Wind, Thermometer, Brain, 
   ArrowRight, AlertTriangle, CheckCircle2, XCircle, 
-  RotateCcw, Trophy, Stethoscope, PlayCircle, Droplet, Skull, Check
+  RotateCcw, Trophy, Stethoscope, PlayCircle, Droplet, Skull, Check, Wrench, Loader2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CLINICAL_CASES, ClinicalCase, CaseNode } from "@/data/clinicalCases";
@@ -126,13 +126,14 @@ const ClinicalCases = () => {
   const [activeCase, setActiveCase] = useState<ClinicalCase | null>(null);
   const [currentNodeId, setCurrentNodeId] = useState<string | null>(null);
   const [hasSavedCompletion, setHasSavedCompletion] = useState(false);
+  const [isRepairing, setIsRepairing] = useState(false);
 
   useEffect(() => {
     addActivity({ type: 'Simulação', title: 'Casos Clínicos', path: '/clinical-cases', icon: 'Stethoscope' });
   }, [addActivity]);
 
   // Busca casos concluídos pelo usuário
-  const { data: completedCases = [] } = useQuery({
+  const { data: completedCases = [], isError: isLoadError } = useQuery({
     queryKey: ['completedCases', profile?.id],
     queryFn: async () => {
       if (!profile?.id) return [];
@@ -142,15 +143,31 @@ const ClinicalCases = () => {
         .eq('user_id', profile.id);
       
       if (error) {
-        // Se a tabela não existir, retorna array vazio mas loga o erro
-        console.error("Erro ao buscar progresso:", error);
-        return [];
+        throw error;
       }
       return data.map(c => c.case_id) as string[];
     },
     enabled: !!profile?.id,
-    refetchOnWindowFocus: true
+    refetchOnWindowFocus: true,
+    retry: 1
   });
+
+  const handleRepairDatabase = async () => {
+    setIsRepairing(true);
+    const toastId = toast.loading("Reparando tabelas de progresso...");
+    try {
+      const { data, error } = await supabase.functions.invoke('install-schema');
+      if (error) throw new Error(error.message);
+      if (data && data.error) throw new Error(data.error);
+
+      toast.success("Banco de dados reparado! Tente novamente.", { id: toastId });
+      queryClient.invalidateQueries({ queryKey: ['completedCases'] });
+    } catch (err: any) {
+      toast.error("Erro ao reparar: " + err.message, { id: toastId });
+    } finally {
+      setIsRepairing(false);
+    }
+  };
 
   // Mutação para salvar conclusão
   const completeCaseMutation = useMutation({
@@ -179,7 +196,7 @@ const ClinicalCases = () => {
     onError: (error) => {
       console.error("Erro ao salvar progresso:", error);
       toast.error("Erro ao salvar progresso", { 
-        description: "Seu caso foi finalizado, mas houve um erro ao salvar no banco de dados." 
+        description: "Seu caso foi finalizado, mas houve um erro ao salvar no banco de dados. Tente 'Reparar Banco' se persistir." 
       });
     }
   });
@@ -198,7 +215,6 @@ const ClinicalCases = () => {
     setActiveCase(null);
     setCurrentNodeId(null);
     setHasSavedCompletion(false);
-    // Força refetch ao voltar para garantir que a UI atualize
     queryClient.invalidateQueries({ queryKey: ['completedCases'] });
   };
 
@@ -222,12 +238,24 @@ const ClinicalCases = () => {
             <div className="p-3 sm:p-4 bg-white/10 rounded-full backdrop-blur-sm border border-white/20">
               <Brain className="h-8 w-8 sm:h-10 sm:w-10 text-cyan-300" />
             </div>
-            <div className="text-center md:text-left">
+            <div className="text-center md:text-left flex-1">
               <h1 className="text-2xl sm:text-4xl font-black tracking-tight mb-2">Simulação Clínica Interativa</h1>
               <p className="text-blue-100 max-w-xl text-sm sm:text-lg">
                 Treine seu raciocínio clínico em cenários realistas. Suas decisões determinam a vida do paciente.
               </p>
             </div>
+            {(isLoadError || completedCases.length === 0) && (
+               <Button 
+                 variant="outline" 
+                 size="sm" 
+                 onClick={handleRepairDatabase} 
+                 disabled={isRepairing}
+                 className="bg-white/10 hover:bg-white/20 text-white border-white/20"
+               >
+                 {isRepairing ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Wrench className="mr-2 h-4 w-4"/>}
+                 Reparar Banco
+               </Button>
+            )}
           </div>
           {/* Background FX */}
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/medical-icons.png')] opacity-5 pointer-events-none" />
