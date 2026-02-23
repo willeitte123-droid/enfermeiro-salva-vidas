@@ -284,15 +284,15 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "unnecessary_risk": {
         id: "unnecessary_risk",
-        text: "Aspirar não é a técnica padrão e retirar lentamente aumenta o tempo de exposição do orifício ao ar.\n\nO paciente não teve embolia por sorte, mas a técnica foi inadequada.",
-        vitals: { hr: 90, bp: "125/80", spo2: 97, resp: 18, temp: 36.5, status: "stable" },
-        feedback: "A retirada deve ser rápida e contínua, seguida de compressão e oclusão imediata.",
+        text: "Aspirar não é a técnica padrão e retirar lentamente aumenta o tempo de exposição do orifício ao ar.\n\nO paciente não teve embolia por sorte, mas a técnica foi inadequada. Você colocou o paciente em risco desnecessário.",
+        vitals: { hr: 90, bp: "125/80", spo2: 97, resp: 18, temp: 36.5, status: "critical" },
+        feedback: "A retirada deve ser rápida e contínua, seguida de compressão e oclusão imediata. Não tente 'inventar' etapas.",
         options: []
       },
       "rescue_maneuver": {
           id: "rescue_maneuver",
-          text: "A Manobra de Durant (DLE + Trendelenburg) tenta prender o ar no ápice do ventrículo direito, impedindo que vá para o pulmão.\n\nO paciente estabilizou precariamente e foi para a UTI.",
-          vitals: { hr: 130, bp: "90/60", spo2: 88, resp: 28, temp: 36.5, status: "warning" },
+          text: "A Manobra de Durant (DLE + Trendelenburg) tenta prender o ar no ápice do ventrículo direito, impedindo que vá para o pulmão.\n\nO paciente estabilizou precariamente e foi para a UTI. O erro técnico causou um evento adverso grave.",
+          vitals: { hr: 130, bp: "90/60", spo2: 88, resp: 28, temp: 36.5, status: "critical" },
           options: []
       }
     }
@@ -356,7 +356,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "mucosa_trauma": {
         id: "mucosa_trauma",
-        text: "Aspirar enquanto introduz a sonda causa 'ventosa' na mucosa traqueal, provocando sangramento e edema.\n\nA secreção agora vem misturada com sangue vivo.",
+        text: "Aspirar enquanto introduz a sonda causa 'ventosa' na mucosa traqueal, provocando sangramento e edema.\n\nA secreção agora vem misturada com sangue vivo. O trauma desnecessário aumenta o risco de infecção.",
         vitals: { hr: 110, bp: "135/85", spo2: 90, resp: 26, temp: 37.0, status: "warning" },
         feedback: "Introduza a sonda suavemente até sentir resistência, recue 1cm e SÓ ENTÃO aplique vácuo na retirada.",
         options: [
@@ -374,7 +374,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       },
       "rescue_brady": {
           id: "rescue_brady",
-          text: "Após reconectar e oxigenar, a FC subiu para 90 e a saturação recuperou. Foi um susto desnecessário.",
+          text: "Após reconectar e oxigenar, a FC subiu para 90 e a saturação recuperou. Foi um susto desnecessário, mas o paciente recuperou.",
           vitals: { hr: 90, bp: "110/70", spo2: 95, resp: 18, temp: 37.0, status: "recovered" },
           options: []
       },
@@ -407,14 +407,14 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "catheter_contamination": {
         id: "catheter_contamination",
         text: "A amostra do cateter antigo veio positiva para 'Staphylococcus epidermidis' (pele), enquanto a punção nova veio negativa.\n\nO médico tratou como infecção por conta do falso positivo, usando antibiótico forte desnecessariamente (risco de resistência e toxicidade).",
-        vitals: { hr: 90, bp: "110/70", spo2: 97, resp: 18, temp: 37.0, status: "stable" },
+        vitals: { hr: 90, bp: "110/70", spo2: 97, resp: 18, temp: 37.0, status: "critical" },
         feedback: "Hemoculturas não devem ser coletadas de cateteres periféricos existentes, pois eles são colonizados. Sempre punção nova.",
         options: []
       },
       "low_sensitivity": {
         id: "low_sensitivity",
-        text: "A coleta de apenas 1 par reduz a sensibilidade do exame em 20-30%.\n\nA bacteremia era intermitente e você 'errou o alvo'. O exame veio falso negativo e a sepse não foi tratada adequadamente.",
-        vitals: { hr: 120, bp: "90/60", spo2: 92, resp: 24, temp: 39.0, status: "warning" },
+        text: "A coleta de apenas 1 par reduz a sensibilidade do exame em 20-30%.\n\nA bacteremia era intermitente e você 'errou o alvo'. O exame veio falso negativo e a sepse não foi tratada adequadamente. O atraso no diagnóstico correto piorou o prognóstico.",
+        vitals: { hr: 120, bp: "90/60", spo2: 92, resp: 24, temp: 39.0, status: "critical" },
         feedback: "O padrão-ouro são 2 ou 3 pares (4 a 6 frascos) de sítios diferentes para aumentar a chance de pegar a bactéria.",
         options: []
       },
@@ -968,7 +968,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "late_rescue_hpp": {
         id: "late_rescue_hpp",
         text: "A paciente foi levada às pressas para Histerectomia de emergência. Sobreviveu, mas perdeu o útero e precisou de UTI.",
-        vitals: { hr: 120, bp: "90/50", spo2: 95, resp: 24, temp: 36.0, status: "stable" },
+        vitals: { hr: 120, bp: "90/50", spo2: 95, resp: 24, temp: 36.0, status: "recovered" },
         feedback: "O atraso no tratamento da atonia frequentemente leva à perda do órgão ou morte.",
         options: []
       },
@@ -1019,7 +1019,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "wait_error": {
         id: "wait_error",
         text: "Você esperou 3 horas. Os sintomas persistiram. Quando a TC foi feita, já havia passado a janela terapêutica de 4,5h para trombólise.\n\nA paciente ficou com sequelas motoras definitivas que poderiam ter sido evitadas.",
-        vitals: { hr: 80, bp: "180/100", spo2: 96, resp: 16, temp: 36.5, status: "stable" },
+        vitals: { hr: 80, bp: "180/100", spo2: 96, resp: 16, temp: 36.5, status: "critical" },
         feedback: "Tempo é cérebro. Cada minuto perdido no AVC significa milhões de neurônios mortos.",
         options: []
       },
@@ -1253,7 +1253,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "shock_rescue": {
         id: "shock_rescue",
         text: "O paciente foi estabilizado a duras penas na UTI e precisou de trombólise sistêmica (alto risco de sangramento na cirurgia do quadril). Sobreviveu com sequelas renais.",
-        vitals: { hr: 110, bp: "90/60", spo2: 92, resp: 24, temp: 36.5, status: "warning" },
+        vitals: { hr: 110, bp: "90/60", spo2: 92, resp: 24, temp: 36.5, status: "recovered" },
         options: []
       }
     }
@@ -1311,7 +1311,7 @@ export const CLINICAL_CASES: ClinicalCase[] = [
       "flush_error": {
         id: "flush_error",
         text: "Ao injetar soro ('flush'), você empurrou o quimioterápico vesicante para os tecidos vizinhos, aumentando a área de lesão.\n\nO paciente evoluiu com necrose extensa do dorso da mão e perda funcional.",
-        vitals: { hr: 100, bp: "130/80", spo2: 98, resp: 20, temp: 36.5, status: "warning" },
+        vitals: { hr: 100, bp: "130/80", spo2: 98, resp: 20, temp: 36.5, status: "critical" },
         feedback: "NUNCA faça flush se houver suspeita de extravasamento. Isso espalha a droga.",
         options: []
       },
