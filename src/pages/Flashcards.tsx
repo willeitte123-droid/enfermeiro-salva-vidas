@@ -71,16 +71,22 @@ const Flashcards = () => {
 
   // Agrupar decks e contar cartas disponíveis para revisão
   const decks = allFlashcards.reduce((acc, card) => {
-    if (!acc[card.deck_category]) {
-      acc[card.deck_category] = { total: 0, due: 0, cards: [] };
+    // Normalização de categorias: Unifica "Fundamentos" em "Fundamentos de Enfermagem"
+    let category = card.deck_category;
+    if (category === 'Fundamentos') {
+        category = 'Fundamentos de Enfermagem';
     }
-    acc[card.deck_category].total++;
-    acc[card.deck_category].cards.push(card);
+
+    if (!acc[category]) {
+      acc[category] = { total: 0, due: 0, cards: [] };
+    }
+    acc[category].total++;
+    acc[category].cards.push(card);
 
     const progress = userProgress.find(p => p.flashcard_id === card.id);
     const isDue = !progress || new Date(progress.next_review) <= new Date();
     
-    if (isDue) acc[card.deck_category].due++;
+    if (isDue) acc[category].due++;
     
     return acc;
   }, {} as Record<string, { total: number; due: number; cards: Flashcard[] }>);
@@ -189,7 +195,7 @@ const Flashcards = () => {
         <FlashcardItem 
           front={currentCard.front_content}
           back={currentCard.back_content}
-          category={currentCard.deck_category}
+          category={currentCard.deck_category === 'Fundamentos' ? 'Fundamentos de Enfermagem' : currentCard.deck_category}
           isFlipped={isFlipped}
           onFlip={() => setIsFlipped(!isFlipped)}
         />
@@ -203,7 +209,7 @@ const Flashcards = () => {
             <div className="grid grid-cols-4 gap-2 md:gap-4">
               <div className="flex flex-col gap-1">
                 <Button variant="outline" className="border-red-200 hover:bg-red-50 hover:text-red-700 text-red-600 h-12" onClick={() => handleRate(0)}>Errei</Button>
-                <span className="text-[10px] text-center text-muted-foreground">&lt; 1 min</span>
+                <span className="text-[10px] text-center text-muted-foreground">< 1 min</span>
               </div>
               <div className="flex flex-col gap-1">
                 <Button variant="outline" className="border-orange-200 hover:bg-orange-50 hover:text-orange-700 text-orange-600 h-12" onClick={() => handleRate(1)}>Difícil</Button>

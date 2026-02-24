@@ -100,6 +100,14 @@ serve(async (req) => {
       { auth: { persistSession: false } }
     );
 
+    // 1. Unificar categorias antigas no banco de dados para evitar duplicação
+    const { error: updateError } = await supabaseAdmin
+        .from('flashcards')
+        .update({ deck_category: 'Fundamentos de Enfermagem' })
+        .eq('deck_category', 'Fundamentos');
+
+    if (updateError) console.error("Erro ao atualizar categorias:", updateError);
+
     let insertedCount = 0;
 
     // Inserção com verificação de duplicidade (não insere se já existe exatamente igual)
