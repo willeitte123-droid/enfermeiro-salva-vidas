@@ -63,7 +63,7 @@ const FLASHCARDS_DATA = [
   { deck_category: 'Fundamentos', front_content: 'O que é Bradipneia?', back_content: 'Frequência respiratória abaixo do normal (< 12 irpm em adultos).' },
   { deck_category: 'Fundamentos', front_content: 'O que é a Posição de Trendelenburg?', back_content: 'Decúbito dorsal com o corpo inclinado, de forma que a cabeça fique mais baixa que os pés.' },
 
-  // --- REFORÇO CME/CENTRO CIRÚRGICO (Existentes) ---
+  // --- REFORÇO CME/CENTRO CIRÚRGICO ---
   { deck_category: 'Centro Cirúrgico', front_content: 'Segundo a classificação de Spaulding, o que são Artigos Críticos?', back_content: 'Artigos que penetram tecidos estéreis ou sistema vascular. Exigem ESTERILIZAÇÃO. Ex: Bisturi, pinças cirúrgicas.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Segundo a classificação de Spaulding, o que são Artigos Semicríticos?', back_content: 'Artigos que entram em contato com pele não íntegra ou mucosas íntegras. Exigem DESINFECÇÃO DE ALTO NÍVEL. Ex: Endoscópios, lâminas de laringoscópio.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Qual é o bioindicador utilizado para testar a autoclave (vapor saturado)?', back_content: 'Esporos de Geobacillus stearothermophilus.' },
@@ -72,7 +72,7 @@ const FLASHCARDS_DATA = [
   { deck_category: 'Centro Cirúrgico', front_content: 'O que significa o tempo cirúrgico "Hemostasia"?', back_content: 'É o procedimento para deter o sangramento (pinçamento, ligadura, eletrocauterização).' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Qual a diferença entre Assepsia e Antissepsia?', back_content: 'Assepsia: Medidas para impedir a entrada de germes em local estéril (ambiente). Antissepsia: Eliminação de germes em tecidos vivos (pele/mucosa).' },
 
-  // --- NOVAS 15 CARTAS: CME (RDC 15/2012) ---
+  // --- CME (RDC 15/2012) ---
   { deck_category: 'Centro Cirúrgico', front_content: 'O que é o fluxo unidirecional na CME e qual sua importância?', back_content: 'É o fluxo de trabalho que vai da área suja (expurgo) para a limpa (preparo) e estéril (guarda), sem cruzamento, para evitar contaminação cruzada.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'O que define uma CME Classe II segundo a RDC 15/2012?', back_content: 'É aquela que processa materiais complexos (conformation não tubular/tubular) e não complexos, atendendo a serviços de saúde que realizam cirurgias.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Qual a definição técnica de "Limpeza" na CME?', back_content: 'É a remoção de sujidade visível (orgânica e inorgânica) e redução da carga microbiana, sendo o passo obrigatório antes da desinfecção ou esterilização.' },
@@ -87,7 +87,29 @@ const FLASHCARDS_DATA = [
   { deck_category: 'Centro Cirúrgico', front_content: 'O que é Desinfecção de Alto Nível e qual produto é comumente usado?', back_content: 'Processo que elimina bactérias vegetativas, micobactérias, fungos, vírus e alguns esporos. Ex: Glutaraldeído, Ácido Peracético ou OPA (Ortoftalaldeído).' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Quais são os parâmetros físicos monitorados na autoclave a vapor?', back_content: 'Temperatura (ex: 134°C ou 121°C), Tempo de exposição e Pressão da câmara.' },
   { deck_category: 'Centro Cirúrgico', front_content: 'O que é a Esterilização "Flash" (Uso Imediato) e quando é permitida?', back_content: 'É um ciclo rápido sem embalagem ou com container específico. Só é permitida em urgências, para uso imediato, não podendo o material ser armazenado.' },
-  { deck_category: 'Centro Cirúrgico', front_content: 'O que é Rastreabilidade no processamento de produtos para saúde?', back_content: 'É a capacidade de recuperar o histórico do processo (quem lavou, quem esterilizou, qual autoclave, qual ciclo, testes realizados) através de registros/etiquetas.' }
+  { deck_category: 'Centro Cirúrgico', front_content: 'O que é Rastreabilidade no processamento de produtos para saúde?', back_content: 'É a capacidade de recuperar o histórico do processo (quem lavou, quem esterilizou, qual autoclave, qual ciclo, testes realizados) através de registros/etiquetas.' },
+
+  // --- BIOSSEGURANÇA (NOVOS 20 FLASHCARDS) ---
+  { deck_category: 'Biossegurança', front_content: 'NR-32: Qual a recomendação da norma sobre o uso de adornos pelos profissionais?', back_content: 'É vedado o uso de adornos (anéis, alianças, relógios, pulseiras, brincos, crachás pendurados) nos postos de trabalho.' },
+  { deck_category: 'Biossegurança', front_content: 'NR-32: É permitido o reencape de agulhas após o uso?', back_content: 'Não. O reencape manual de agulhas é estritamente proibido devido ao alto risco de acidentes.' },
+  { deck_category: 'Biossegurança', front_content: 'Quais vacinas a NR-32 obriga o empregador a fornecer gratuitamente aos trabalhadores?', back_content: 'Tétano, Difteria, Hepatite B e as estabelecidas no PCMSO (ex: Influenza, Tríplice Viral).' },
+  { deck_category: 'Biossegurança', front_content: 'RDC 222: Qual a cor do saco para descarte de resíduos do Grupo A (Infectantes)?', back_content: 'Saco branco leitoso, impermeável, com o símbolo de risco biológico.' },
+  { deck_category: 'Biossegurança', front_content: 'RDC 222: Onde devem ser descartados os materiais perfurocortantes (Grupo E)?', back_content: 'Em recipientes rígidos, com tampa, estanques e resistentes a perfuração (caixa amarela/Descarpack).' },
+  { deck_category: 'Biossegurança', front_content: 'Qual o limite máximo de enchimento da caixa de perfurocortantes?', back_content: 'Deve ser preenchida até 2/3 de sua capacidade ou até o nível da linha pontilhada indicada pelo fabricante.' },
+  { deck_category: 'Biossegurança', front_content: 'Precaução por Aerossóis: Qual máscara o profissional deve usar?', back_content: 'Máscara N95 ou PFF2 (deve ser colocada antes de entrar no quarto).' },
+  { deck_category: 'Biossegurança', front_content: 'Quais as principais doenças que exigem Precaução por Aerossóis?', back_content: 'Tuberculose, Sarampo, Varicela e Herpes Zoster disseminado.' },
+  { deck_category: 'Biossegurança', front_content: 'Precaução por Gotículas: Qual máscara o profissional deve usar?', back_content: 'Máscara Cirúrgica (ao entrar no quarto ou ficar a menos de 1 metro do paciente).' },
+  { deck_category: 'Biossegurança', front_content: 'Quais as principais doenças que exigem Precaução por Gotículas?', back_content: 'Meningite Bacteriana (Meningocócica), Influenza (Gripe), Rubéola, Caxumba e Coqueluche.' },
+  { deck_category: 'Biossegurança', front_content: 'O que caracteriza a Precaução de Contato?', back_content: 'Uso obrigatório de avental e luvas ao entrar no quarto/contato com paciente. Ex: Bactérias multirresistentes (KPC, MRSA), Escabiose.' },
+  { deck_category: 'Biossegurança', front_content: 'Quais são os 5 Momentos para Higiene das Mãos (OMS)?', back_content: '1. Antes de tocar o paciente; 2. Antes de procedimento limpo/asséptico; 3. Após risco de exposição a fluidos; 4. Após tocar o paciente; 5. Após tocar superfícies próximas.' },
+  { deck_category: 'Biossegurança', front_content: 'PEP (Profilaxia Pós-Exposição): Qual o tempo ideal para início após acidente com risco biológico?', back_content: 'Idealmente nas primeiras 2 horas, com tolerância máxima de até 72 horas após o acidente.' },
+  { deck_category: 'Biossegurança', front_content: 'Qual a ordem correta de paramentação (colocação de EPIs) geralmente recomendada?', back_content: 'Avental -> Máscara -> Óculos/Viseira -> Gorro -> Luvas (por cima do punho do avental).' },
+  { deck_category: 'Biossegurança', front_content: 'Qual a conduta imediata após exposição percutânea (picada de agulha)?', back_content: 'Lavar exaustivamente o local com água e sabão (sem espremer excessivamente) e procurar atendimento imediato.' },
+  { deck_category: 'Biossegurança', front_content: 'RDC 222: O que são resíduos do Grupo B e onde descartar?', back_content: 'Resíduos Químicos (medicamentos, reagentes). Descartar em recipientes rígidos (bombonas/galões), geralmente laranjas.' },
+  { deck_category: 'Biossegurança', front_content: 'Qual a definição de acidente de trajeto (in itinere) segundo a legislação previdenciária?', back_content: 'Acidente ocorrido no percurso da residência para o local de trabalho ou vice-versa. É equiparado ao acidente de trabalho.' },
+  { deck_category: 'Biossegurança', front_content: 'O que significa a sigla CAT e quando deve ser emitida?', back_content: 'Comunicação de Acidente de Trabalho. Deve ser emitida até o primeiro dia útil seguinte ao da ocorrência (em caso de morte, imediato).' },
+  { deck_category: 'Biossegurança', front_content: 'Qual a validade de um pacote estéril se a embalagem estiver íntegra?', back_content: 'Atualmente considera-se a "validade baseada em eventos" (integridade da embalagem), e não apenas no tempo, embora instituições definam prazos protocolares.' },
+  { deck_category: 'Biossegurança', front_content: 'O que fazer com um perfurocortante que caiu no chão?', back_content: 'Nunca tentar pegar com as mãos diretamente. Usar uma pinça ou pá e vassoura para recolher e descartar na caixa rígida.' }
 ];
 
 serve(async (req) => {
