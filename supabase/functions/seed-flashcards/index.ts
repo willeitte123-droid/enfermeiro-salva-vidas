@@ -7,6 +7,28 @@ const corsHeaders = {
 };
 
 const FLASHCARDS_DATA = [
+  // --- NOVOS FLASHCARDS: ÉTICA E LEGISLAÇÃO ---
+  { deck_category: 'Ética e Legislação', front_content: 'Qual atividade é privativa do Enfermeiro em relação à gestão de serviços de enfermagem, segundo a Lei 7.498/86?', back_content: 'A direção do órgão de enfermagem e a chefia de serviço e de unidade de enfermagem.' },
+  { deck_category: 'Ética e Legislação', front_content: 'A Consulta de Enfermagem pode ser realizada por um Técnico de Enfermagem?', back_content: 'Não. A Consulta de Enfermagem é uma atividade privativa do Enfermeiro.' },
+  { deck_category: 'Ética e Legislação', front_content: 'O que a Lei 7.498/86 estabelece sobre a supervisão das atividades do Técnico e do Auxiliar de Enfermagem?', back_content: 'Devem ser desempenhadas sob orientação e supervisão de um Enfermeiro.' },
+  { deck_category: 'Ética e Legislação', front_content: 'Qual profissional de enfermagem é responsável por cuidados a pacientes graves com risco de vida?', back_content: 'Privativamente o Enfermeiro.' },
+  { deck_category: 'Ética e Legislação', front_content: 'O que significa "Imperícia" no contexto da responsabilidade profissional?', back_content: 'A falta de habilidade técnica, conhecimento ou aptidão para realizar um ato profissional.' },
+  { deck_category: 'Ética e Legislação', front_content: 'O que significa "Negligência" no contexto da responsabilidade profissional?', back_content: 'A omissão, desatenção ou falta de cuidado na execução de uma tarefa. Ex: esquecer de levantar as grades do leito.' },
+  { deck_category: 'Ética e Legislação', front_content: 'O que significa "Imprudência" no contexto da responsabilidade profissional?', back_content: 'Uma ação precipitada, sem cautela ou que expõe o paciente a um risco desnecessário. Ex: administrar um medicamento IV rápido quando deveria ser lento.' },
+  { deck_category: 'Ética e Legislação', front_content: 'Qual é a penalidade mais branda prevista no Código de Ética dos Profissionais de Enfermagem?', back_content: 'Advertência Verbal.' },
+  { deck_category: 'Ética e Legislação', front_content: 'Qual penalidade consiste em uma repreensão pública, divulgada em jornais e no Diário Oficial?', back_content: 'Censura.' },
+  { deck_category: 'Ética e Legislação', front_content: 'Qual o prazo máximo de suspensão do exercício profissional previsto no Código de Ética?', back_content: 'Até 90 dias.' },
+  { deck_category: 'Ética e Legislação', front_content: 'Qual penalidade só pode ser aplicada pelo Conselho Federal de Enfermagem (COFEN)?', back_content: 'A Cassação do direito ao exercício profissional.' },
+  { deck_category: 'Ética e Legislação', front_content: 'O sigilo profissional pode ser quebrado? Se sim, em que situações?', back_content: 'Sim, em casos de justa causa (maus-tratos a vulneráveis), dever legal (notificação compulsória) ou autorização expressa do paciente.' },
+  { deck_category: 'Ética e Legislação', front_content: 'É permitido ao profissional de enfermagem executar uma prescrição que ele julgue errada ou que possa causar dano?', back_content: 'Não, é uma PROIBIÇÃO. O profissional tem o dever de questionar o prescritor e, se necessário, recusar-se a cumprir a prescrição.' },
+  { deck_category: 'Ética e Legislação', front_content: 'Quais são as 5 etapas do Processo de Enfermagem (PE), segundo a Resolução COFEN 358/2009?', back_content: '1. Coleta de Dados (Histórico); 2. Diagnóstico de Enfermagem; 3. Planejamento; 4. Implementação; 5. Avaliação.' },
+  { deck_category: 'Ética e Legislação', front_content: 'Qual etapa do Processo de Enfermagem é privativa do Enfermeiro?', back_content: 'O Diagnóstico de Enfermagem.' },
+  { deck_category: 'Ética e Legislação', front_content: 'O que significa a sigla P.E.S. na formulação de um Diagnóstico de Enfermagem da NANDA?', back_content: 'Problema (o diagnóstico em si), Etiologia (fatores relacionados) e Sinais e Sintomas (características definidoras).' },
+  { deck_category: 'Ética e Legislação', front_content: 'A implementação da SAE é obrigatória em quais ambientes?', back_content: 'Em todos os ambientes, públicos ou privados, onde ocorre o cuidado profissional de Enfermagem.' },
+  { deck_category: 'Ética e Legislação', front_content: 'Quando o Processo de Enfermagem é realizado em domicílio ou ambulatório, como ele é usualmente denominado?', back_content: 'Consulta de Enfermagem.' },
+  { deck_category: 'Ética e Legislação', front_content: 'Quais são os 4 princípios fundamentais da Bioética (Principialismo)?', back_content: 'Beneficência (fazer o bem), Não-maleficência (não causar dano), Autonomia (respeito à decisão do paciente) e Justiça (equidade).' },
+  { deck_category: 'Ética e Legislação', front_content: 'O que a Lei 7.498/86 diz sobre a prescrição de medicamentos pelo Enfermeiro?', back_content: 'O Enfermeiro pode prescrever medicamentos estabelecidos em programas de saúde pública e em rotina aprovada pela instituição de saúde.' },
+
   // --- NOVOS FLASHCARDS: LEGISLAÇÃO DO SUS ---
   { deck_category: 'Legislação do SUS', front_content: 'Qual artigo da Constituição Federal de 1988 define a saúde como "direito de todos e dever do Estado"?', back_content: 'Artigo 196.' },
   { deck_category: 'Legislação do SUS', front_content: 'Quais são as 3 diretrizes organizacionais do SUS, segundo o Art. 198 da Constituição?', back_content: '1. Descentralização (com direção única em cada esfera); 2. Atendimento Integral; 3. Participação da Comunidade.' },
