@@ -7,6 +7,28 @@ const corsHeaders = {
 };
 
 const FLASHCARDS_DATA = [
+  // --- NOVOS FLASHCARDS: SAÚDE DA MULHER ---
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual o número mínimo de consultas de pré-natal recomendado pelo Ministério da Saúde?', back_content: 'No mínimo 6 consultas.' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Cite 3 exames sorológicos obrigatórios no 1º trimestre de pré-natal.', back_content: 'VDRL (Sífilis), Anti-HIV e HBsAg (Hepatite B).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual exame é fundamental para o rastreio de Diabetes Gestacional entre 24 e 28 semanas?', back_content: 'Teste Oral de Tolerância à Glicose (TOTG 75g).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual exame é realizado entre 35 e 37 semanas para prevenir sepse neonatal precoce?', back_content: 'Pesquisa de Streptococcus do grupo B (swab vaginal e retal).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual vacina a gestante deve tomar a partir da 20ª semana em TODA gestação e por quê?', back_content: 'dTpa (Tríplice Bacteriana Acelular), para proteger o recém-nascido contra a coqueluche.' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Como a Regra de Naegele calcula a Data Provável do Parto (DPP)?', back_content: 'Somar 7 dias ao primeiro dia da DUM e subtrair 3 meses (ou somar 9 meses).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual é o 4º período clínico do parto e qual sua principal importância?', back_content: 'Período de Greenberg (1ª hora pós-parto). É crucial para a vigilância de Hemorragia Pós-Parto (HPP).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual o primeiro movimento cardinal do feto no mecanismo de parto?', back_content: 'Insinuação (quando o maior diâmetro da apresentação passa pelo estreito superior da bacia).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'No partograma, o que indicam as Linhas de Alerta e de Ação?', back_content: 'Linha de Alerta: Indica que a evolução da dilatação está lenta. Linha de Ação: Indica a necessidade de intervenção para corrigir a distócia.' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual a sequência de evolução normal dos lóquios?', back_content: 'Loquia rubra (vermelho, até 3-4 dias), Loquia serosa (rosado/acastanhado, até 10º dia) e Loquia alba (esbranquiçado, após 10º dia).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual a principal causa de Hemorragia Pós-Parto (HPP) imediata?', back_content: 'Atonia Uterina (falha na contração do útero).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual a primeira e mais importante conduta de enfermagem na suspeita de atonia uterina?', back_content: 'Massagem uterina externa (Manobra de Hamilton) e acionar a equipe para administração de ocitocina.' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual a faixa etária e a periodicidade do rastreamento para Câncer de Colo de Útero (Papanicolau)?', back_content: 'Mulheres de 25 a 64 anos. Os dois primeiros exames anuais e, se normais, a cada 3 anos.' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual a faixa etária e a periodicidade do rastreamento para Câncer de Mama (Mamografia) segundo o MS?', back_content: 'Mulheres de 50 a 69 anos, a cada 2 anos (bienal).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'O que define Pré-Eclâmpsia?', back_content: 'Hipertensão Arterial (PA ≥ 140/90 mmHg) após a 20ª semana de gestação + Proteinúria.' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual a diferença entre Pré-Eclâmpsia Grave e Eclâmpsia?', back_content: 'A Eclâmpsia é a ocorrência de convulsões em uma paciente com pré-eclâmpsia.' },
+  { deck_category: 'Saúde da Mulher', front_content: 'O que significa a sigla da Síndrome HELLP?', back_content: 'H (Hemolysis - Hemólise), EL (Elevated Liver enzymes - Enzimas hepáticas elevadas), LP (Low Platelets - Plaquetopenia).' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual o medicamento de escolha para PREVENÇÃO e TRATAMENTO da convulsão na Eclâmpsia?', back_content: 'Sulfato de Magnésio.' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual o antídoto para intoxicação por Sulfato de Magnésio?', back_content: 'Gluconato de Cálcio 10%.' },
+  { deck_category: 'Saúde da Mulher', front_content: 'Qual o primeiro sinal clínico de intoxicação por Sulfato de Magnésio?', back_content: 'A abolição (desaparecimento) do reflexo patelar.' },
+
   // --- NOVOS FLASHCARDS: ÉTICA E LEGISLAÇÃO ---
   { deck_category: 'Ética e Legislação', front_content: 'Qual atividade é privativa do Enfermeiro em relação à gestão de serviços de enfermagem, segundo a Lei 7.498/86?', back_content: 'A direção do órgão de enfermagem e a chefia de serviço e de unidade de enfermagem.' },
   { deck_category: 'Ética e Legislação', front_content: 'A Consulta de Enfermagem pode ser realizada por um Técnico de Enfermagem?', back_content: 'Não. A Consulta de Enfermagem é uma atividade privativa do Enfermeiro.' },
