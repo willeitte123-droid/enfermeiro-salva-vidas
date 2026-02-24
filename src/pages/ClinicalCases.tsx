@@ -293,9 +293,9 @@ const ClinicalCases = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardFooter className="mt-auto pt-0">
-                  <Button onClick={() => handleStartCase(clinicalCase)} className={cn("w-full gap-2 text-sm sm:text-base", isCompleted ? "bg-green-600 hover:bg-green-700 text-white" : "bg-primary text-primary-foreground")}>
-                    {isCompleted ? <RotateCcw className="h-4 w-4" /> : <PlayCircle className="h-4 w-4" />}
-                    {isCompleted ? "Concluído (Refazer)" : "Iniciar Caso"}
+                  <Button onClick={() => handleStartCase(clinicalCase)} className="w-full gap-2 text-sm sm:text-base bg-primary text-primary-foreground">
+                    <PlayCircle className="h-4 w-4" />
+                    Iniciar Caso
                   </Button>
                 </CardFooter>
               </Card>
