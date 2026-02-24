@@ -7,6 +7,28 @@ const corsHeaders = {
 };
 
 const FLASHCARDS_DATA = [
+  // --- NOVOS FLASHCARDS: LEGISLAÇÃO DO SUS ---
+  { deck_category: 'Legislação do SUS', front_content: 'Qual artigo da Constituição Federal de 1988 define a saúde como "direito de todos e dever do Estado"?', back_content: 'Artigo 196.' },
+  { deck_category: 'Legislação do SUS', front_content: 'Quais são as 3 diretrizes organizacionais do SUS, segundo o Art. 198 da Constituição?', back_content: '1. Descentralização (com direção única em cada esfera); 2. Atendimento Integral; 3. Participação da Comunidade.' },
+  { deck_category: 'Legislação do SUS', front_content: 'Segundo a Lei 8.080/90, a iniciativa privada participa do SUS em caráter complementar ou suplementar?', back_content: 'Complementar. (Suplementar refere-se aos planos de saúde).' },
+  { deck_category: 'Legislação do SUS', front_content: 'Qual a diferença entre os princípios da Universalidade e da Equidade no SUS?', back_content: 'Universalidade: saúde para todos. Equidade: tratar os desiguais de forma desigual, dando mais a quem mais precisa.' },
+  { deck_category: 'Legislação do SUS', front_content: 'De acordo com a Lei 8.080/90, qual esfera de governo é a principal EXECUTORA das ações de saúde?', back_content: 'O Município.' },
+  { deck_category: 'Legislação do SUS', front_content: 'Qual esfera de governo é responsável pela vigilância de portos, aeroportos e fronteiras?', back_content: 'A União (nível federal).' },
+  { deck_category: 'Legislação do SUS', front_content: 'Segundo a Lei 8.142/90, com que frequência a Conferência de Saúde deve se reunir?', back_content: 'A cada 4 anos.' },
+  { deck_category: 'Legislação do SUS', front_content: 'Qual o caráter do Conselho de Saúde, segundo a Lei 8.142/90?', back_content: 'Permanente e Deliberativo.' },
+  { deck_category: 'Legislação do SUS', front_content: 'Como é a composição paritária do Conselho de Saúde?', back_content: '50% usuários, 25% trabalhadores da saúde, 25% gestores e prestadores de serviços.' },
+  { deck_category: 'Legislação do SUS', front_content: 'O que é uma Região de Saúde, conforme o Decreto 7.508/11?', back_content: 'Um espaço geográfico contínuo de municípios limítrofes, com o objetivo de integrar o planejamento e a execução das ações de saúde.' },
+  { deck_category: 'Legislação do SUS', front_content: 'Cite as 4 Portas de Entrada do SUS definidas no Decreto 7.508/11.', back_content: '1. Atenção Primária; 2. Urgência e Emergência; 3. Atenção Psicossocial; 4. Serviços Especiais de Acesso Aberto.' },
+  { deck_category: 'Legislação do SUS', front_content: 'O que significa a sigla COAP, presente no Decreto 7.508/11?', back_content: 'Contrato Organizativo da Ação Pública da Saúde.' },
+  { deck_category: 'Legislação do SUS', front_content: 'O que é a RENASES?', back_content: 'Relação Nacional de Ações e Serviços de Saúde (a lista de tudo que o SUS oferece).' },
+  { deck_category: 'Legislação do SUS', front_content: 'Qual a composição mínima da Equipe de Saúde da Família (eSF) segundo a PNAB?', back_content: 'Médico, Enfermeiro, Técnico/Auxiliar de Enfermagem e Agente Comunitário de Saúde (ACS).' },
+  { deck_category: 'Legislação do SUS', front_content: 'O enfermeiro pode prescrever medicamentos na Atenção Básica?', back_content: 'Sim, desde que estabelecidos em programas de saúde pública ou em rotina aprovada pela instituição.' },
+  { deck_category: 'Legislação do SUS', front_content: 'Qual é a porta de entrada PREFERENCIAL do SUS?', back_content: 'A Atenção Básica (ou Atenção Primária).' },
+  { deck_category: 'Legislação do SUS', front_content: 'Qual o princípio fundamental da Política Nacional de Humanização (PNH)?', back_content: 'Transversalidade (a PNH deve atravessar todas as políticas e programas do SUS).' },
+  { deck_category: 'Legislação do SUS', front_content: 'O que é Acolhimento com Classificação de Risco?', back_content: 'É uma diretriz da PNH que organiza o fluxo de atendimento por gravidade (risco), e não por ordem de chegada.' },
+  { deck_category: 'Legislação do SUS', front_content: 'O que significa o conceito de Clínica Ampliada na PNH?', back_content: 'Olhar além da doença, considerando a singularidade do sujeito e seu contexto social para construir um projeto terapêutico compartilhado.' },
+  { deck_category: 'Legislação do SUS', front_content: 'O que é um Projeto Terapêutico Singular (PTS)?', back_content: 'Um plano de cuidados individualizado, discutido e elaborado por uma equipe multiprofissional junto com o usuário, para casos complexos.' },
+
   // --- EXISTENTES (Mantidos) ---
   { deck_category: 'Centro Cirúrgico', front_content: 'Quais são os 4 tempos cirúrgicos fundamentais, em ordem?', back_content: '1. Diérese (abertura/corte); 2. Hemostasia (controle de sangramento); 3. Exérese (cirurgia propriamente dita); 4. Síntese (fechamento/sutura).' },
   { deck_category: 'Centro Cirúrgico', front_content: 'Quais são os 3 momentos de verificação do Checklist de Cirurgia Segura da OMS?', back_content: '1. Sign In (Antes da indução anestésica); 2. Time Out (Antes da incisão da pele - Pausa Cirúrgica); 3. Sign Out (Antes do paciente sair da sala).' },
