@@ -71,7 +71,7 @@ const ConcurseiroArea = () => {
             <h1 className="text-3xl sm:text-4xl font-bold">Área do Concurseiro</h1>
           </div>
           <p className="max-w-2xl text-blue-100 text-sm sm:text-base mb-4">
-            Material de alta performance. Conteúdo aprofundado, organizado e direcionado para sua aprovação.
+            Aprovação sem rodeios. Conteúdo 'mastigado' e 100% focado nos temas que mais caem nos concursos de enfermagem.
           </p>
         </div>
         
