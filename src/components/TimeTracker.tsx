@@ -19,7 +19,11 @@ export const TimeTracker = () => {
     const saveTime = async () => {
       // Só salva se a página estiver realmente visível para o usuário
       if (document.visibilityState === 'visible') {
-        await supabase.rpc('increment_user_activity', { seconds_to_add: INTERVAL_SECONDS });
+        // Chamada para o tempo total (usado em Meu Desempenho)
+        supabase.rpc('increment_user_activity', { seconds_to_add: INTERVAL_SECONDS }).then();
+        
+        // Nova chamada para o tempo diário (usado no Dashboard Admin)
+        supabase.rpc('increment_daily_activity', { seconds_to_add: INTERVAL_SECONDS }).then();
       }
     };
 
