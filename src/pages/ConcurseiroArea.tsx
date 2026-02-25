@@ -131,20 +131,20 @@ const ConcurseiroArea = () => {
                         onClick={() => setSelectedTopic({ ...topic, categoryName: section.category, categoryColor: section.color })}
                         className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-muted/40 transition-all text-left group"
                     >
-                        <div className="flex items-start gap-4">
-                            <div className="mt-1 hidden sm:block">
+                        <div className="flex items-start gap-4 w-full">
+                            <div className="mt-1 hidden sm:block shrink-0">
                                 <div className="h-2 w-2 rounded-full bg-primary/40 group-hover:bg-primary transition-colors" />
                             </div>
-                            <div>
+                            <div className="flex-1 min-w-0">
                                 <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-tight">
                                     {topic.title}
                                 </h3>
-                                <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
+                                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
                                     {topic.summary}
                                 </p>
                             </div>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0 ml-2 self-center" />
                         </div>
-                        <ChevronRight className="h-5 w-5 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0 ml-4" />
                     </button>
                   ))}
                 </div>
@@ -173,7 +173,7 @@ const ConcurseiroArea = () => {
                     <SheetTitle className="text-xl sm:text-2xl font-bold leading-tight">
                         {selectedTopic.title}
                     </SheetTitle>
-                    <SheetDescription className="mt-1 line-clamp-2">
+                    <SheetDescription className="mt-1">
                         {selectedTopic.summary}
                     </SheetDescription>
                 </div>
