@@ -1,364 +1,263 @@
--- Inserção de 30 Questões sobre Biossegurança e Controle de Infecção
--- Aspas simples escapadas corretamente para evitar erro 42601
-
-INSERT INTO public.questions (category, banca, question, options, "correctAnswer", explanation) VALUES
-
--- QUESTÃO 1
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Segundo a NR-32, em relação aos materiais perfurocortantes, é estritamente VEDADO:', 
-'[
-  {"id": "A", "text": "O descarte em recipientes rígidos e impermeáveis."},
-  {"id": "B", "text": "A desconexão manual de agulhas e o reencape."},
-  {"id": "C", "text": "O uso de dispositivos de segurança."},
-  {"id": "D", "text": "A vacinação contra Tétano e Hepatite B."},
-  {"id": "E", "text": "O uso de luvas de procedimento durante o manuseio."}
-]', 
-'B', 
-'A NR-32 proíbe terminantemente o reencape e a desconexão manual de agulhas, pois são as principais causas de acidentes com material biológico.'),
-
--- QUESTÃO 2
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Para um paciente com diagnóstico confirmado de Tuberculose Pulmonar Bacilífera, qual tipo de precaução deve ser instituída e qual EPI é obrigatório para o profissional de saúde?', 
-'[
-  {"id": "A", "text": "Precaução de Contato; Luvas e Avental."},
-  {"id": "B", "text": "Precaução de Gotículas; Máscara Cirúrgica."},
-  {"id": "C", "text": "Precaução Padrão apenas; Luvas."},
-  {"id": "D", "text": "Precaução por Aerossóis; Máscara PFF2 (N95)."},
-  {"id": "E", "text": "Precaução Reversa; Máscara Cirúrgica."}
-]', 
-'D', 
-'A Tuberculose é transmitida por aerossóis (partículas < 5 micra que ficam suspensas no ar). Exige quarto privativo (pressão negativa se possível) e uso de máscara N95/PFF2 pelo profissional.'),
-
--- QUESTÃO 3
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'De acordo com a RDC 222/2018, que regulamenta os Resíduos de Serviços de Saúde, as agulhas, lâminas de bisturi e ampolas de vidro quebradas pertencem a qual grupo?', 
-'[
-  {"id": "A", "text": "Grupo A (Infectantes)."},
-  {"id": "B", "text": "Grupo B (Químicos)."},
-  {"id": "C", "text": "Grupo E (Perfurocortantes)."},
-  {"id": "D", "text": "Grupo D (Comuns)."},
-  {"id": "E", "text": "Grupo C (Radioativos)."}
-]', 
-'C', 
-'O Grupo E engloba os materiais perfurocortantes ou escarificantes. Devem ser descartados em recipientes rígidos, estanques e identificados.'),
-
--- QUESTÃO 4
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'A classificação de Spaulding divide os artigos hospitalares em Críticos, Semicríticos e Não Críticos. Um endoscópio digestivo, que entra em contato com mucosa íntegra, é classificado como:', 
-'[
-  {"id": "A", "text": "Crítico, exigindo esterilização."},
-  {"id": "B", "text": "Semicrítico, exigindo no mínimo desinfecção de alto nível."},
-  {"id": "C", "text": "Não Crítico, exigindo apenas limpeza."},
-  {"id": "D", "text": "Não Crítico, exigindo esterilização."},
-  {"id": "E", "text": "Descartável."}
-]', 
-'B', 
-'Artigos que entram em contato com membranas mucosas íntegras ou pele não intacta são Semicríticos e requerem desinfecção de alto nível (embora a esterilização seja preferível se o material suportar).'),
-
--- QUESTÃO 5
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Qual das doenças abaixo requer isolamento por PRECAUÇÃO DE GOTÍCULAS?', 
-'[
-  {"id": "A", "text": "Sarampo."},
-  {"id": "B", "text": "Varicela (Catapora)."},
-  {"id": "C", "text": "Meningite Meningocócica."},
-  {"id": "D", "text": "Tuberculose."},
-  {"id": "E", "text": "Escabiose."}
-]', 
-'C', 
-'A Meningite Meningocócica é transmitida por gotículas (partículas maiores que caem a até 1 metro). Exige máscara cirúrgica para o profissional. Sarampo, Varicela e TB são Aerossóis.'),
-
--- QUESTÃO 6
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'A higienização das mãos é a medida mais importante para prevenção de infecções. Em qual das situações abaixo o uso de álcool em gel NÃO substitui a lavagem com água e sabonete?', 
-'[
-  {"id": "A", "text": "Antes de tocar o paciente."},
-  {"id": "B", "text": "Após tocar o paciente."},
-  {"id": "C", "text": "Quando as mãos estiverem visivelmente sujas ou contaminadas com fluidos corporais."},
-  {"id": "D", "text": "Antes de realizar procedimento asséptico."},
-  {"id": "E", "text": "Após contato com áreas próximas ao paciente."}
-]', 
-'C', 
-'Se houver sujidade visível ou matéria orgânica, a lavagem com água e sabonete é obrigatória, pois o álcool perde eficácia na presença de matéria orgânica e não remove a sujeira.'),
-
--- QUESTÃO 7
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'O saco plástico de cor BRANCA LEITOSA é utilizado para o descarte de qual tipo de resíduo?', 
-'[
-  {"id": "A", "text": "Resíduos comuns (papel, copos)."},
-  {"id": "B", "text": "Resíduos químicos."},
-  {"id": "C", "text": "Resíduos infectantes (Grupo A)."},
-  {"id": "D", "text": "Resíduos radioativos."},
-  {"id": "E", "text": "Resíduos perfurocortantes."}
-]', 
-'C', 
-'O saco branco leitoso, com o símbolo de substância infectante, é exclusivo para o Grupo A (Infectantes) que não necessitam de tratamento prévio ou após tratamento.'),
-
--- QUESTÃO 8
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'A NR-32 estabelece a obrigatoriedade da vacinação para profissionais de saúde. Quais vacinas são citadas explicitamente como obrigatórias no programa de imunização fornecido pelo empregador?', 
-'[
-  {"id": "A", "text": "Febre Amarela e Dengue."},
-  {"id": "B", "text": "Tétano, Difteria e Hepatite B."},
-  {"id": "C", "text": "Hepatite A e Meningite."},
-  {"id": "D", "text": "HPV e Herpes Zoster."},
-  {"id": "E", "text": "Pneumonia e Cólera."}
-]', 
-'B', 
-'A NR-32 exige vacinação gratuita contra Tétano, Difteria e Hepatite B, além das demais estabelecidas no PCMSO.'),
-
--- QUESTÃO 9
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Em caso de acidente percutâneo com material biológico potencialmente contaminado, qual é a primeira conduta a ser realizada no local da exposição?', 
-'[
-  {"id": "A", "text": "Espremer a ferida para sair o sangue contaminado."},
-  {"id": "B", "text": "Aplicar torniquete acima da lesão."},
-  {"id": "C", "text": "Lavar exaustivamente com água e sabão (pele) ou soro fisiológico (mucosas)."},
-  {"id": "D", "text": "Jogar álcool puro ou hipoclorito na ferida."},
-  {"id": "E", "text": "Iniciar antirretrovirais imediatamente antes de lavar."}
-]', 
-'C', 
-'A primeira conduta é a lavagem com água e sabão. Não se deve espremer (aumenta a área de contato/trauma) nem usar soluções cáusticas (hipoclorito).'),
-
--- QUESTÃO 10
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Paciente com infecção por bactéria multirresistente (ex: KPC ou MRSA) deve ser mantido em qual tipo de precaução?', 
-'[
-  {"id": "A", "text": "Precaução Padrão apenas."},
-  {"id": "B", "text": "Precaução de Contato."},
-  {"id": "C", "text": "Precaução de Gotículas."},
-  {"id": "D", "text": "Precaução de Aerossóis."},
-  {"id": "E", "text": "Isolamento Reverso."}
-]', 
-'B', 
-'Bactérias multirresistentes são transmitidas principalmente pelo contato direto ou indireto (fômites). Exige uso de luvas e avental/capote para entrar no quarto.'),
-
--- QUESTÃO 11
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Sobre o uso de adornos (anéis, pulseiras, relógios, colares) em ambiente hospitalar, a NR-32 determina:', 
-'[
-  {"id": "A", "text": "Permitido apenas o uso de aliança."},
-  {"id": "B", "text": "Permitido se o profissional usar luvas."},
-  {"id": "C", "text": "Proibido apenas em centro cirúrgico."},
-  {"id": "D", "text": "Vedado o uso de adornos por todo trabalhador exposto a agentes biológicos."},
-  {"id": "E", "text": "Permitido uso discreto."}
-]', 
-'D', 
-'A NR-32 proíbe o uso de adornos para todos os trabalhadores que mantêm contato com agentes biológicos, pois eles dificultam a higienização correta das mãos e acumulam microrganismos.'),
-
--- QUESTÃO 12
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Qual é o nível de enchimento máximo recomendado para os recipientes de descarte de perfurocortantes (Descarpack)?', 
-'[
-  {"id": "A", "text": "Até a borda."},
-  {"id": "B", "text": "Até transbordar."},
-  {"id": "C", "text": "Até a linha pontilhada (2/3 da capacidade ou 5cm abaixo do bocal)."},
-  {"id": "D", "text": "Metade da caixa."},
-  {"id": "E", "text": "Não há limite, desde que feche a tampa."}
-]', 
-'C', 
-'O limite de enchimento é a linha pontilhada (aprox. 2/3 da capacidade). Encher demais aumenta drasticamente o risco de acidentes ao tentar forçar o descarte.'),
-
--- QUESTÃO 13
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'A esterilização é o processo que visa:', 
-'[
-  {"id": "A", "text": "Reduzir a carga microbiana a níveis seguros."},
-  {"id": "B", "text": "Eliminar apenas bactérias vegetativas."},
-  {"id": "C", "text": "Destruir todas as formas de vida microbiana, incluindo os esporos."},
-  {"id": "D", "text": "Limpar o material visivelmente sujo."},
-  {"id": "E", "text": "Remover a matéria orgânica."}
-]', 
-'C', 
-'A definição de esterilização é a destruição total de qualquer forma de vida microbiana, sendo os esporos bacterianos (formas de resistência) o parâmetro de eficácia.'),
-
--- QUESTÃO 14
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'O álcool a 70% é considerado um:', 
-'[
-  {"id": "A", "text": "Esterilizante químico."},
-  {"id": "B", "text": "Desinfetante de nível intermediário."},
-  {"id": "C", "text": "Detergente enzimático."},
-  {"id": "D", "text": "Desinfetante de alto nível."},
-  {"id": "E", "text": "Sabão degermante."}
-]', 
-'B', 
-'O álcool 70% é um desinfetante de nível intermediário. Ele mata bactérias vegetativas, fungos e vírus (incluindo HIV, Influenza), mas NÃO destrói esporos bacterianos.'),
-
--- QUESTÃO 15
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Um paciente com Herpes Zoster Disseminado requer quais tipos de precaução simultaneamente?', 
-'[
-  {"id": "A", "text": "Padrão e Gotículas."},
-  {"id": "B", "text": "Contato e Gotículas."},
-  {"id": "C", "text": "Aerossóis e Contato."},
-  {"id": "D", "text": "Apenas Contato."},
-  {"id": "E", "text": "Apenas Padrão."}
-]', 
-'C', 
-'O Herpes Zoster disseminado (ou em imunossuprimidos) transmite-se tanto por contato direto com as lesões quanto pela via inalatória (vírus Varicela-Zoster). Exige N95 e avental/luvas.'),
-
--- QUESTÃO 16
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'O uso de sapatos abertos (sandálias, chinelos) no ambiente hospitalar assistencial é:', 
-'[
-  {"id": "A", "text": "Permitido em dias quentes."},
-  {"id": "B", "text": "Permitido para conforto da equipe."},
-  {"id": "C", "text": "Vedado pela NR-32."},
-  {"id": "D", "text": "Permitido apenas para visitantes."},
-  {"id": "E", "text": "Critério da chefia de enfermagem."}
-]', 
-'C', 
-'A NR-32 veda o uso de calçados abertos. O calçado deve ser fechado, protegendo contra respingos, queda de materiais perfurocortantes e fluidos biológicos.'),
-
--- QUESTÃO 17
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Sobre a limpeza de superfícies com matéria orgânica (ex: sangue no chão), a conduta correta é:', 
-'[
-  {"id": "A", "text": "Jogar álcool 70% imediatamente sobre o sangue."},
-  {"id": "B", "text": "Varrer o local."},
-  {"id": "C", "text": "Remover o excesso de matéria orgânica com papel toalha/pano, limpar com água e sabão e depois desinfetar."},
-  {"id": "D", "text": "Esperar secar para limpar."},
-  {"id": "E", "text": "Usar hipoclorito puro sobre a mancha de sangue sem remover o excesso."}
-]', 
-'C', 
-'Primeiro remove-se a matéria orgânica (que inativa desinfetantes), depois limpa-se e por fim desinfeta-se. Jogar desinfetante direto sobre matéria orgânica é ineficaz (fixa a sujeira ou é inativado).'),
-
--- QUESTÃO 18
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'A autoclave utiliza qual método físico para esterilização?', 
-'[
-  {"id": "A", "text": "Calor seco."},
-  {"id": "B", "text": "Radiação gama."},
-  {"id": "C", "text": "Vapor saturado sob pressão (Calor úmido)."},
-  {"id": "D", "text": "Óxido de etileno."},
-  {"id": "E", "text": "Plasma de peróxido de hidrogênio."}
-]', 
-'C', 
-'A autoclave funciona através de vapor saturado sob pressão (calor úmido), que é o método mais seguro e econômico para materiais termorresistentes.'),
-
--- QUESTÃO 19
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Qual indicador é considerado o padrão-ouro para garantir a eficácia do processo de esterilização na autoclave, devendo ser feito rotineiramente?', 
-'[
-  {"id": "A", "text": "Fita zebrada (Indicador externo)."},
-  {"id": "B", "text": "Indicador Químico Classe 1."},
-  {"id": "C", "text": "Indicador Biológico (Geobacillus stearothermophilus)."},
-  {"id": "D", "text": "Teste de Bowie-Dick."},
-  {"id": "E", "text": "Leitura do manômetro."}
-]', 
-'C', 
-'O indicador biológico contém esporos viáveis. Se após o ciclo e incubação eles não crescerem, confirma-se que a esterilização ocorreu. É o único que prova a morte microbiana.'),
-
--- QUESTÃO 20
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Resíduos do Grupo B (Químicos) incluem:', 
-'[
-  {"id": "A", "text": "Fraldas e absorventes."},
-  {"id": "B", "text": "Peças anatômicas."},
-  {"id": "C", "text": "Agulhas e bisturis."},
-  {"id": "D", "text": "Reveladores de Raio-X, medicamentos vencidos e reagentes de laboratório."},
-  {"id": "E", "text": "Rejeitos radioativos."}
-]', 
-'D', 
-'O Grupo B refere-se a substâncias químicas que podem apresentar risco à saúde pública ou ao meio ambiente.'),
-
--- QUESTÃO 21
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Ao transportar um paciente em isolamento por GOTÍCULAS (ex: Influenza) para um exame fora da unidade, quem deve usar a máscara cirúrgica?', 
-'[
-  {"id": "A", "text": "Apenas o profissional que empurra a cadeira."},
-  {"id": "B", "text": "O paciente."},
-  {"id": "C", "text": "Ninguém, pois o corredor é ventilado."},
-  {"id": "D", "text": "O paciente deve usar N95."},
-  {"id": "E", "text": "Todos que estiverem no corredor."}
-]', 
-'B', 
-'Para conter a fonte de infecção, coloca-se a máscara cirúrgica NO PACIENTE durante o transporte. O profissional usa apenas se estiver prestando cuidado direto próximo ao paciente.'),
-
--- QUESTÃO 22
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'A Profilaxia Pós-Exposição (PEP) ao HIV, quando indicada após acidente ocupacional, deve ser iniciada idealmente:', 
-'[
-  {"id": "A", "text": "Em até 2 horas, não ultrapassando 72 horas."},
-  {"id": "B", "text": "Após 7 dias."},
-  {"id": "C", "text": "Apenas se o paciente fonte confirmar que tem HIV."},
-  {"id": "D", "text": "Imediatamente, via endovenosa."},
-  {"id": "E", "text": "Após o resultado do teste do funcionário, mesmo que demore uma semana."}
-]', 
-'A', 
-'A PEP é uma urgência médica. A eficácia é maior nas primeiras 2h. Após 72h, não é mais recomendada pois o vírus já se disseminou/integrou.'),
-
--- QUESTÃO 23
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Qual destes procedimentos é considerado CRÍTICO (invasivo) e exige técnica estéril rigorosa?', 
-'[
-  {"id": "A", "text": "Aferição de pressão arterial."},
-  {"id": "B", "text": "Banho no leito."},
-  {"id": "C", "text": "Sondagem Vesical de Demora."},
-  {"id": "D", "text": "Administração de medicação oral."},
-  {"id": "E", "text": "Instalação de nebulização."}
-]', 
-'C', 
-'A SVD invade um órgão estéril (bexiga) através de um trajeto estéril. A introdução de microrganismos causa ITU (Infecção do Trato Urinário), a infecção hospitalar mais comum.'),
-
--- QUESTÃO 24
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Na paramentação (colocação) de EPIs para atender um paciente em isolamento de contato e gotículas, qual a ordem correta?', 
-'[
-  {"id": "A", "text": "Luvas -> Máscara -> Óculos -> Avental."},
-  {"id": "B", "text": "Avental -> Máscara -> Óculos -> Luvas."},
-  {"id": "C", "text": "Luvas primeiro sempre."},
-  {"id": "D", "text": "Máscara -> Luvas -> Avental."},
-  {"id": "E", "text": "Não existe ordem definida."}
-]', 
-'B', 
-'Ordem recomendada pela ANVISA/CDC: 1. Avental (corpo), 2. Máscara (face), 3. Óculos/Face shield (olhos), 4. Luvas (por último, cobrindo o punho do avental). A retirada é o inverso (exceto máscara que sai por último fora do quarto).'),
-
--- QUESTÃO 25
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Qual das seguintes situações NÃO exige o uso de luvas de procedimento?', 
-'[
-  {"id": "A", "text": "Punção venosa."},
-  {"id": "B", "text": "Troca de fraldas com fezes."},
-  {"id": "C", "text": "Aferição de sinais vitais em paciente com pele íntegra sem isolamento."},
-  {"id": "D", "text": "Curativo de ferida aberta."},
-  {"id": "E", "text": "Manipulação de secreção traqueal."}
-]', 
-'C', 
-'O uso indiscriminado de luvas (ex: para verificar PA ou tocar pele íntegra) é desperdício e aumenta o risco de contaminação cruzada se a higiene das mãos for negligenciada. Luvas são para risco de contato com sangue/fluidos ou precaução de contato.'),
-
--- QUESTÃO 26
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'O teste de Bowie-Dick, utilizado diariamente na autoclave pré-vácuo, serve para:', 
-'[
-  {"id": "A", "text": "Testar a eficácia bactericida."},
-  {"id": "B", "text": "Verificar a qualidade da água."},
-  {"id": "C", "text": "Avaliar a eficácia da remoção de ar e penetração do vapor."},
-  {"id": "D", "text": "Medir a temperatura máxima."},
-  {"id": "E", "text": "Testar a vedação da porta."}
-]', 
-'C', 
-'O teste de Bowie-Dick detecta bolsas de ar residual no interior da câmara, que impediriam a penetração do vapor e a esterilização correta das cargas porosas.'),
-
--- QUESTÃO 27
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'A clorexidina degermante é utilizada para:', 
-'[
-  {"id": "A", "text": "Limpeza de chão e paredes."},
-  {"id": "B", "text": "Antissepsia das mãos (higienização) e preparo da pele do paciente (banho/campo operatório)."},
-  {"id": "C", "text": "Esterilização de instrumentos cirúrgicos."},
-  {"id": "D", "text": "Limpeza de materiais antes da autoclave."},
-  {"id": "E", "text": "Curativo de feridas abertas (uso exclusivo)."}
-]', 
-'B', 
-'A clorexidina degermante (com sabão) serve para degermação da pele (redução da flora transitória e residente) e lavagem das mãos da equipe cirúrgica.'),
-
--- QUESTÃO 28
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'O que caracteriza a "Infecção Cruzada"?', 
-'[
-  {"id": "A", "text": "Infecção causada pela própria flora do paciente."},
-  {"id": "B", "text": "Infecção transmitida de um paciente para outro (geralmente através das mãos da equipe ou equipamentos)."},
-  {"id": "C", "text": "Infecção adquirida na comunidade."},
-  {"id": "D", "text": "Infecção transmitida por vetor (mosquito)."},
-  {"id": "E", "text": "Infecção crônica que reativa."}
-]', 
-'B', 
-'Infecção cruzada ocorre quando microrganismos são transferidos de uma fonte (paciente A) para um hospedeiro (paciente B), sendo as mãos dos profissionais o principal veículo.'),
-
--- QUESTÃO 29
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'Em caso de derramamento de mercúrio (termômetro quebrado), a conduta correta é:', 
-'[
-  {"id": "A", "text": "Aspirar com aspirador de pó."},
-  {"id": "B", "text": "Varrer vigorosamente."},
-  {"id": "C", "text": "Recolher cuidadosamente com papel/seringa, colocar em recipiente com água, vedar e descartar como resíduo químico (B)."},
-  {"id": "D", "text": "Jogar no lixo comum."},
-  {"id": "E", "text": "Jogar na pia."}
-]', 
-'C', 
-'O mercúrio é tóxico e vaporiza à temperatura ambiente. Não se deve usar aspirador (vaporiza mais). Deve ser recolhido com cuidado e tratado como resíduo químico perigoso.'),
-
--- QUESTÃO 30
-('Biossegurança e Controle de Infecção', 'Enfermagem Pro', 'A "Precaução Empírica" deve ser adotada quando:', 
-'[
-  {"id": "A", "text": "O paciente tem diagnóstico confirmado."},
-  {"id": "B", "text": "O paciente chega com sinais clínicos suspeitos de doença transmissível (ex: tosse, febre, exantema) antes da confirmação laboratorial."},
-  {"id": "C", "text": "Apenas após sair o resultado da cultura."},
-  {"id": "D", "text": "O paciente solicita."},
-  {"id": "E", "text": "Nunca deve ser adotada."}
-]', 
-'B', 
-'A precaução deve ser instituída com base na suspeita clínica (sindrômica) para evitar a transmissão enquanto se aguarda a confirmação. Ex: Suspeita de Meningite = Gotículas imediato.');
+INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
+VALUES
+(
+  'Saúde Pública e Imunização',
+  'De acordo com o Calendário Nacional de Vacinação do Ministério da Saúde, quais vacinas devem ser administradas ao recém-nascido, preferencialmente nas primeiras 12 horas de vida?',
+  '[
+    {"id": "A", "text": "BCG e Poliomielite (VIP)."},
+    {"id": "B", "text": "BCG e Hepatite B."},
+    {"id": "C", "text": "Hepatite B e Poliomielite (VOP)."},
+    {"id": "D", "text": "BCG e Pentavalente."}
+  ]'::jsonb,
+  'B',
+  'Ao nascer, a criança deve receber a BCG (dose única) para prevenir formas graves de tuberculose e a primeira dose da vacina contra Hepatite B.',
+  'VUNESP'
+),
+(
+  'Saúde Pública e Imunização',
+  'A vacina Pentavalente, administrada aos 2, 4 e 6 meses de idade, protege contra quais doenças?',
+  '[
+    {"id": "A", "text": "Difteria, Tétano, Coqueluche, Hepatite B e Meningite C."},
+    {"id": "B", "text": "Difteria, Tétano, Coqueluche, Hepatite B e Haemophilus influenzae tipo b."},
+    {"id": "C", "text": "Sarampo, Caxumba, Rubéola, Varicela e Hepatite A."},
+    {"id": "D", "text": "Poliomielite, Tétano, Coqueluche, Hepatite B e Rotavírus."}
+  ]'::jsonb,
+  'B',
+  'A Pentavalente protege contra 5 doenças: Difteria, Tétano, Coqueluche (DTP), Hepatite B e Haemophilus influenzae tipo b (Hib).',
+  'IBFC'
+),
+(
+  'Saúde Pública e Imunização',
+  'Sobre a conservação de imunobiológicos na Rede de Frio, a temperatura ideal da geladeira na sala de vacina deve ser mantida entre:',
+  '[
+    {"id": "A", "text": "-2°C e 0°C."},
+    {"id": "B", "text": "+2°C e +8°C, sendo ideal +5°C."},
+    {"id": "C", "text": "+8°C e +12°C."},
+    {"id": "D", "text": "0°C e +10°C."}
+  ]'::jsonb,
+  'B',
+  'A faixa de segurança para a maioria das vacinas é de +2°C a +8°C. A temperatura de +5°C é considerada o alvo ideal para evitar congelamento ou aquecimento.',
+  'FCC'
+),
+(
+  'Saúde Pública e Imunização',
+  'Qual das seguintes vacinas é composta por vírus vivo atenuado e é contraindicada para gestantes e imunodeprimidos graves?',
+  '[
+    {"id": "A", "text": "Influenza (Gripe)."},
+    {"id": "B", "text": "Hepatite B."},
+    {"id": "C", "text": "Tríplice Viral (Sarampo, Caxumba e Rubéola)."},
+    {"id": "D", "text": "dT (Dupla Adulto)."}
+  ]'::jsonb,
+  'C',
+  'Vacinas de vírus vivos (como Tríplice Viral, Febre Amarela, Varicela) têm risco teórico de causar a doença no feto ou em imunodeprimidos, sendo contraindicadas.',
+  'FGV'
+),
+(
+  'Saúde Pública e Imunização',
+  'A vacina contra o Papilomavírus Humano (HPV) é disponibilizada no SUS. Qual é a população-alvo e o esquema vacinal atual para meninas e meninos imunocompetentes?',
+  '[
+    {"id": "A", "text": "9 a 14 anos, esquema de duas doses (0 e 6 meses)."},
+    {"id": "B", "text": "9 a 14 anos, esquema de dose única."},
+    {"id": "C", "text": "11 a 14 anos, esquema de três doses."},
+    {"id": "D", "text": "15 a 26 anos, esquema de duas doses."}
+  ]'::jsonb,
+  'B',
+  'O Ministério da Saúde atualizou o esquema em 2024: A vacina HPV quadrivalente passou a ser DOSE ÚNICA para meninas e meninos de 9 a 14 anos.',
+  'MS/PNI'
+),
+(
+  'Saúde Pública e Imunização',
+  'A vacina Rotavírus Humano (VORH) deve ser administrada via oral. Qual é o limite de idade para a administração da PRIMEIRA dose?',
+  '[
+    {"id": "A", "text": "2 meses."},
+    {"id": "B", "text": "3 meses e 15 dias."},
+    {"id": "C", "text": "5 meses."},
+    {"id": "D", "text": "7 meses e 29 dias."}
+  ]'::jsonb,
+  'B',
+  'A VORH tem prazos rígidos para evitar intussuscepção intestinal. 1ª dose: até 3 meses e 15 dias. 2ª dose: até 7 meses e 29 dias.',
+  'CEBRASPE'
+),
+(
+  'Saúde Pública e Imunização',
+  'Em relação à vacina BCG, é correto afirmar:',
+  '[
+    {"id": "A", "text": "Deve ser administrada por via intramuscular profunda."},
+    {"id": "B", "text": "A ausência da cicatriz vacinal após 6 meses indica necessidade de revacinação."},
+    {"id": "C", "text": "É administrada por via intradérmica, na inserção inferior do músculo deltoide direito."},
+    {"id": "D", "text": "A revacinação de crianças sem cicatriz não é mais recomendada pelo Ministério da Saúde."}
+  ]'::jsonb,
+  'D',
+  'O MS não recomenda mais a revacinação de crianças que não desenvolveram a cicatriz da BCG, pois a ausência de cicatriz não significa falta de proteção.',
+  'IDECAN'
+),
+(
+  'Saúde Pública e Imunização',
+  'Qual vacina deve ser administrada a partir da 20ª semana de gestação, a cada gestação, para proteger o recém-nascido contra a coqueluche?',
+  '[
+    {"id": "A", "text": "dT (Dupla Adulto)."},
+    {"id": "B", "text": "Hepatite B."},
+    {"id": "C", "text": "dTpa (Tríplice Bacteriana Acelular)."},
+    {"id": "D", "text": "Influenza."}
+  ]'::jsonb,
+  'C',
+  'A dTpa é indicada para gestantes a partir da 20ª semana para transferir anticorpos contra a coqueluche (Bordetella pertussis) para o feto via transplacentária.',
+  'CONSULPLAN'
+),
+(
+  'Saúde Pública e Imunização',
+  'Um evento adverso pós-vacinação (EAPV) caracterizado por hipotonia, hiporresponsividade e palidez, ocorrendo nas primeiras 48h após a vacinação (geralmente Pertussis), é chamado de:',
+  '[
+    {"id": "A", "text": "Choque Anafilático."},
+    {"id": "B", "text": "Episódio Hipotônico-Hiporresponsivo (EHH)."},
+    {"id": "C", "text": "Síndrome de Guillain-Barré."},
+    {"id": "D", "text": "Convulsão Febril."}
+  ]'::jsonb,
+  'B',
+  'O EHH é um evento raro e assustador, mas benigno e autolimitado, associado ao componente pertussis (célula inteira) da DTP/Penta.',
+  'AOCP'
+),
+(
+  'Saúde Pública e Imunização',
+  'Sobre a vacina Febre Amarela, qual a recomendação atual para áreas com recomendação de vacina (ACRV)?',
+  '[
+    {"id": "A", "text": "Dose única aos 9 meses, sem necessidade de reforço."},
+    {"id": "B", "text": "Uma dose aos 9 meses e um reforço aos 4 anos de idade."},
+    {"id": "C", "text": "Reforço a cada 10 anos para todos os adultos."},
+    {"id": "D", "text": "Apenas para viajantes internacionais."}
+  ]'::jsonb,
+  'B',
+  'Para crianças, o esquema é uma dose aos 9 meses e reforço aos 4 anos. Para quem toma a primeira dose após os 5 anos, é dose única.',
+  'IBFC'
+),
+(
+  'Saúde Pública e Imunização',
+  'Quais vacinas NUNCA devem ser congeladas, pois perdem a potência e podem provocar reações adversas aumentadas?',
+  '[
+    {"id": "A", "text": "VOP e Febre Amarela."},
+    {"id": "B", "text": "Tríplice Viral e Varicela."},
+    {"id": "C", "text": "Vacinas contendo adjuvante de alumínio (Tétano, Hepatite B, Penta, Pneumo)."},
+    {"id": "D", "text": "Todas as vacinas podem ser congeladas."}
+  ]'::jsonb,
+  'C',
+  'Vacinas com adjuvante de alumínio (toxóides e inativadas) sofrem ''desaglomeração'' do adjuvante se congeladas, perdendo eficácia e causando abcessos.',
+  'VUNESP'
+),
+(
+  'Saúde Pública e Imunização',
+  'A vacina Meningocócica C (Conjugada) faz parte do calendário infantil. Qual é o esquema básico recomendado?',
+  '[
+    {"id": "A", "text": "Dose única aos 12 meses."},
+    {"id": "B", "text": "Duas doses (3 e 5 meses) e reforço aos 12 meses."},
+    {"id": "C", "text": "Três doses (2, 4 e 6 meses) sem reforço."},
+    {"id": "D", "text": "Apenas para adolescentes."}
+  ]'::jsonb,
+  'B',
+  'O esquema da Meningo C é: 1ª dose aos 3 meses, 2ª dose aos 5 meses e Reforço aos 12 meses.',
+  'FGV'
+),
+(
+  'Saúde Pública e Imunização',
+  'Qual vacina substituiu a VOP (Gotinha) nas doses de 2, 4 e 6 meses para evitar a poliomielite vacinal?',
+  '[
+    {"id": "A", "text": "VIP (Vacina Inativada Poliomielite)."},
+    {"id": "B", "text": "Sabin."},
+    {"id": "C", "text": "Pentavalente."},
+    {"id": "D", "text": "DTP."}
+  ]'::jsonb,
+  'A',
+  'A VIP (injetável/vírus morto) é usada nas 3 primeiras doses para garantir imunidade sem risco de pólio vacinal. A VOP é usada apenas nos reforços (ou campanhas, embora a tendência seja a substituição total).',
+  'CEBRASPE'
+),
+(
+  'Saúde Pública e Imunização',
+  'Um profissional de saúde sofreu acidente com perfurocortante. Ele não tem anticorpos para Hepatite B (Anti-HBs negativo) e o paciente fonte é HBsAg positivo. Qual a conduta?',
+  '[
+    {"id": "A", "text": "Apenas lavar o local."},
+    {"id": "B", "text": "Iniciar esquema de vacina completo (0-1-6 meses)."},
+    {"id": "C", "text": "Administrar Imunoglobulina Humana Anti-Hepatite B (IGHAHB) + Iniciar Vacina."},
+    {"id": "D", "text": "Tomar apenas um reforço da vacina."}
+  ]'::jsonb,
+  'C',
+  'Se o profissional é suscetível e a fonte é positiva (alto risco), deve-se fazer a profilaxia passiva (Imunoglobulina) E ativa (Vacina) simultaneamente em sítios diferentes.',
+  'FCC'
+),
+(
+  'Saúde Pública e Imunização',
+  'A vacina Tríplice Viral protege contra:',
+  '[
+    {"id": "A", "text": "Sarampo, Rubéola e Varicela."},
+    {"id": "B", "text": "Sarampo, Caxumba e Rubéola."},
+    {"id": "C", "text": "Difteria, Tétano e Coqueluche."},
+    {"id": "D", "text": "Caxumba, Rubéola e Varicela."}
+  ]'::jsonb,
+  'B',
+  'SCR: Sarampo, Caxumba e Rubéola. A Tetra Viral inclui a Varicela.',
+  'CONSULPLAN'
+),
+(
+  'Saúde Pública e Imunização',
+  'Qual é a via de administração e o local recomendado para a vacina Hepatite B em recém-nascidos?',
+  '[
+    {"id": "A", "text": "Subcutânea, no braço."},
+    {"id": "B", "text": "Intramuscular, no glúteo."},
+    {"id": "C", "text": "Intramuscular, no vasto lateral da coxa."},
+    {"id": "D", "text": "Intradérmica, no deltoide."}
+  ]'::jsonb,
+  'C',
+  'Em menores de 2 anos, o local de escolha para IM é o Vasto Lateral da Coxa (músculo da coxa), para evitar lesão no nervo ciático e garantir boa absorção.',
+  'IBFC'
+),
+(
+  'Saúde Pública e Imunização',
+  'O Programa Nacional de Imunizações (PNI) recomenda a vacina Pneumocócica 10-valente para crianças. Qual o objetivo principal desta vacina?',
+  '[
+    {"id": "A", "text": "Prevenir pneumonia viral."},
+    {"id": "B", "text": "Prevenir doenças invasivas (meningite, sepse, pneumonia) causadas pelo Streptococcus pneumoniae."},
+    {"id": "C", "text": "Prevenir infecções de ouvido apenas."},
+    {"id": "D", "text": "Prevenir tuberculose pulmonar."}
+  ]'::jsonb,
+  'B',
+  'A Pneumo-10 protege contra os 10 sorotipos mais prevalentes de pneumococo, focando na redução de doenças invasivas graves e mortalidade infantil.',
+  'AOCP'
+),
+(
+  'Saúde Pública e Imunização',
+  'A vacina contra Varicela (Catapora) está disponível no SUS. Ela é administrada como:',
+  '[
+    {"id": "A", "text": "Dose única aos 12 meses (como monovalente)."},
+    {"id": "B", "text": "Uma dose aos 15 meses (Tetra Viral) e outra aos 4 anos (Varicela monovalente)."},
+    {"id": "C", "text": "Apenas em surtos."},
+    {"id": "D", "text": "Três doses no primeiro ano de vida."}
+  ]'::jsonb,
+  'B',
+  'O esquema atual inclui a 1ª dose aos 15 meses (dentro da Tetra Viral) e uma 2ª dose (reforço) aos 4 anos com a vacina Varicela atenuada.',
+  'VUNESP'
+),
+(
+  'Saúde Pública e Imunização',
+  'Sobre a conservação de vacinas após a abertura do frasco multidoses, qual a regra geral para vacinas liofilizadas (ex: Tríplice Viral, Febre Amarela) após reconstituição?',
+  '[
+    {"id": "A", "text": "Podem ser usadas por até 30 dias se refrigeradas."},
+    {"id": "B", "text": "Devem ser usadas em até 6 a 8 horas (conforme bula) e descartadas ao final do prazo ou da jornada."},
+    {"id": "C", "text": "Devem ser usadas imediatamente e o frasco descartado."},
+    {"id": "D", "text": "Podem ser recongeladas para uso posterior."}
+  ]'::jsonb,
+  'B',
+  'Vacinas liofilizadas reconstituídas têm validade curta (geralmente 6h a 8h) devido à perda de potência e risco de contaminação. Devem ser mantidas refrigeradas durante o uso.',
+  'IDECAN'
+),
+(
+  'Saúde Pública e Imunização',
+  'A vacina Hepatite A foi introduzida no calendário infantil. Qual é a idade recomendada para sua administração?',
+  '[
+    {"id": "A", "text": "Ao nascer."},
+    {"id": "B", "text": "Aos 6 meses."},
+    {"id": "C", "text": "Aos 12 meses."},
+    {"id": "D", "text": "Aos 15 meses."}
+  ]'::jsonb,
+  'D',
+  'A vacina Hepatite A é dose única aos 15 meses de idade.',
+  'FGV'
+)
+ON CONFLICT (question) DO NOTHING;
