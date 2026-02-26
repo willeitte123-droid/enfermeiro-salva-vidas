@@ -214,9 +214,15 @@ const PodiumItem = ({ user, position }: { user: RankedUser; position: 1 | 2 | 3 
         <Link to={`/user/${user.user_id}`} className="block font-bold text-[10px] sm:text-sm leading-tight text-foreground hover:text-primary transition-colors w-full break-words line-clamp-2 px-1" title={fullName}>
           {fullName}
         </Link>
-        <p className={cn("text-[9px] sm:text-xs font-black mt-0.5 sm:mt-1 uppercase tracking-wide", currentStyle.text)}>
-          {user.score} pts
-        </p>
+        <div className="flex flex-col items-center">
+          <p className={cn("text-[9px] sm:text-xs font-black mt-0.5 sm:mt-1 uppercase tracking-wide", currentStyle.text)}>
+            {user.score} pts
+          </p>
+          {/* Exibe a precisão abaixo da pontuação */}
+          <p className="text-[8px] sm:text-[10px] font-semibold text-muted-foreground/80 mt-0.5">
+            {user.accuracy}% precisão
+          </p>
+        </div>
       </div>
 
       {/* Podium Block - Vibrant Gradient */}
