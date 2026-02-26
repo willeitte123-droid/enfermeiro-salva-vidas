@@ -1,144 +1,263 @@
--- Lote de 20 questões de concurso para a categoria "Legislação do SUS"
-
-INSERT INTO public.questions (id, category, banca, question, options, "correctAnswer", explanation)
+INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
 VALUES
-    (9027, 'Legislação do SUS', 'FCC', 'De acordo com a Lei 8.142/90, a composição dos Conselhos de Saúde deve ser paritária, garantindo que a representação dos usuários corresponda a:', '[
-        {"id": "A", "text": "25% do total de vagas."},
-        {"id": "B", "text": "30% do total de vagas."},
-        {"id": "C", "text": "50% do total de vagas."},
-        {"id": "D", "text": "Um terço do total de vagas."},
-        {"id": "E", "text": "Uma representação igual à dos trabalhadores da saúde."}
-    ]', 'C', 'A Lei 8.142/90 estabelece a paridade na composição dos Conselhos e Conferências de Saúde. Isso significa que 50% das vagas são destinadas aos representantes dos usuários, enquanto os outros 50% são divididos entre trabalhadores da saúde (25%) e representantes do governo e prestadores de serviços (25%).'),
-    (9028, 'Legislação do SUS', 'Vunesp', 'O Decreto 7.508/2011 define as Portas de Entrada do SUS. Qual das seguintes opções NÃO é considerada uma Porta de Entrada?', '[
-        {"id": "A", "text": "Atenção Primária."},
-        {"id": "B", "text": "Atenção de Urgência e Emergência."},
-        {"id": "C", "text": "Atenção Psicossocial (CAPS)."},
-        {"id": "D", "text": "Atenção Ambulatorial Especializada e Hospitalar."},
-        {"id": "E", "text": "Serviços Especiais de Acesso Aberto."}
-    ]', 'D', 'O Decreto 7.508/11 estabelece que a Atenção Ambulatorial Especializada e Hospitalar são serviços de maior complexidade que devem ser acessados por meio de referenciamento a partir das Portas de Entrada, não sendo elas próprias uma porta de entrada direta (exceto em situações de urgência).'),
-    (9029, 'Legislação do SUS', 'FGV', 'A Constituição Federal de 1988, em seu Art. 199, permite a participação da iniciativa privada na assistência à saúde. Essa participação se dá em caráter:', '[
-        {"id": "A", "text": "Suplementar, com prioridade para entidades com fins lucrativos."},
-        {"id": "B", "text": "Complementar, com prioridade para entidades filantrópicas e sem fins lucrativos."},
-        {"id": "C", "text": "Principal, sendo o SUS responsável apenas pela atenção básica."},
-        {"id": "D", "text": "Obrigatório, devendo todos os serviços privados atenderem ao SUS."},
-        {"id": "E", "text": "Concorrente, disputando os mesmos recursos com o setor público."}
-    ]', 'B', 'A participação da iniciativa privada no SUS é de caráter complementar, ou seja, ela é acionada quando os recursos públicos são insuficientes. A lei dá preferência à contratação de entidades filantrópicas e sem fins lucrativos.'),
-    (9030, 'Legislação do SUS', 'Cebraspe', 'Segundo a Lei 8.080/90, a formulação de políticas nacionais de saúde e a coordenação de sistemas de alta complexidade são competências da:', '[
-        {"id": "A", "text": "Direção Municipal do SUS."},
-        {"id": "B", "text": "Direção Estadual do SUS."},
-        {"id": "C", "text": "Direção Nacional do SUS."},
-        {"id": "D", "text": "Comissão Intergestores Bipartite (CIB)."},
-        {"id": "E", "text": "Agência Nacional de Vigilância Sanitária (ANVISA)."}
-    ]', 'C', 'A Direção Nacional do SUS, exercida pelo Ministério da Saúde, é responsável por formular, avaliar e apoiar as políticas de âmbito nacional, bem como definir e coordenar os sistemas de redes de assistência de alta complexidade e vigilância.'),
-    (9031, 'Legislação do SUS', 'IBFC', 'A Política Nacional de Atenção Básica (PNAB) estabelece a composição mínima para uma Equipe de Saúde da Família (eSF). Qual é essa composição?', '[
-        {"id": "A", "text": "Médico, Enfermeiro e Agente Comunitário de Saúde (ACS)."},
-        {"id": "B", "text": "Médico, Enfermeiro, Técnico de Enfermagem e Cirurgião-Dentista."},
-        {"id": "C", "text": "Médico, Enfermeiro, Auxiliar e/ou Técnico de Enfermagem e Agente Comunitário de Saúde (ACS)."},
-        {"id": "D", "text": "Enfermeiro, Técnico de Enfermagem, ACS e Fisioterapeuta."},
-        {"id": "E", "text": "Médico, Enfermeiro e dois Técnicos de Enfermagem."}
-    ]', 'C', 'A composição mínima obrigatória para uma eSF é: Médico (preferencialmente da especialidade Medicina de Família e Comunidade), Enfermeiro (preferencialmente especialista em Saúde da Família), Auxiliar e/ou Técnico de Enfermagem e Agentes Comunitários de Saúde. Profissionais de saúde bucal podem ser adicionados à equipe.'),
-    (9032, 'Legislação do SUS', 'AOCP', 'A Política Nacional de Humanização (PNH) possui como um de seus princípios fundamentais a ideia de que a política deve se fazer presente e estar inserida em todas as políticas e programas do SUS. Este princípio é conhecido como:', '[
-        {"id": "A", "text": "Protagonismo."},
-        {"id": "B", "text": "Transversalidade."},
-        {"id": "C", "text": "Indissociabilidade entre atenção e gestão."},
-        {"id": "D", "text": "Ambiência."},
-        {"id": "E", "text": "Clínica Ampliada."}
-    ]', 'B', 'A transversalidade é o princípio que define que a PNH não é um programa isolado, mas uma política que deve atravessar e influenciar todas as outras áreas e níveis de atenção e gestão do SUS, modificando os modos de cuidar e gerir.'),
-    (9033, 'Legislação do SUS', 'FCC', 'Para que um município possa receber os recursos do Fundo Nacional de Saúde de forma regular e automática, a Lei 8.142/90 exige, entre outros requisitos, a existência de:', '[
-        {"id": "A", "text": "Um hospital municipal de referência."},
-        {"id": "B", "text": "Plano de Saúde, Conselho de Saúde e Fundo de Saúde."},
-        {"id": "C", "text": "Pelo menos dez Equipes de Saúde da Família."},
-        {"id": "D", "text": "Uma Comissão Intergestores Regional (CIR) própria."},
-        {"id": "E", "text": "Um programa de residência médica financiado pelo município."}
-    ]', 'B', 'O Art. 4º da Lei 8.142/90 estabelece que, para receber os recursos, os municípios devem contar com: Fundo de Saúde, Conselho de Saúde (com composição paritária), Plano de Saúde, Relatórios de Gestão, contrapartida de recursos e PCCS.'),
-    (9034, 'Legislação do SUS', 'Vunesp', 'O Contrato Organizativo da Ação Pública da Saúde (COAP), definido no Decreto 7.508/11, é um:', '[
-        {"id": "A", "text": "Contrato de trabalho para profissionais do SUS."},
-        {"id": "B", "text": "Acordo para compra de serviços do setor privado."},
-        {"id": "C", "text": "Acordo de colaboração entre entes federativos para organizar a rede de atenção em uma Região de Saúde."},
-        {"id": "D", "text": "Documento que autoriza a criação de um novo município."},
-        {"id": "E", "text": "Plano de metas individual para cada unidade de saúde."}
-    ]', 'C', 'O COAP é o instrumento jurídico que formaliza a pactuação entre União, Estados e Municípios dentro de uma Região de Saúde, definindo responsabilidades, metas, indicadores e recursos para garantir a integralidade da assistência.'),
-    (9035, 'Legislação do SUS', 'FGV', 'O princípio doutrinário do SUS que busca diminuir as desigualdades, tratando desigualmente os desiguais e investindo mais onde a carência é maior, é o da:', '[
-        {"id": "A", "text": "Universalidade."},
-        {"id": "B", "text": "Integralidade."},
-        {"id": "C", "text": "Equidade."},
-        {"id": "D", "text": "Descentralização."},
-        {"id": "E", "text": "Participação Social."}
-    ]', 'C', 'A Equidade é o princípio que reconhece as diferenças nas condições de vida e saúde da população e busca oferecer mais a quem mais precisa, visando reduzir as desigualdades. É a materialização da justiça social no SUS.'),
-    (9036, 'Legislação do SUS', 'Cebraspe', 'O Art. 198 da Constituição Federal estabelece as diretrizes organizacionais do SUS, que são:', '[
-        {"id": "A", "text": "Universalidade, Integralidade e Equidade."},
-        {"id": "B", "text": "Descentralização, Atendimento Integral e Participação da Comunidade."},
-        {"id": "C", "text": "Regionalização, Hierarquização e Financiamento Tripartite."},
-        {"id": "D", "text": "Controle Social, Gestão Participativa e Financiamento Público."},
-        {"id": "E", "text": "Promoção, Proteção e Recuperação da Saúde."}
-    ]', 'B', 'As três diretrizes organizacionais do SUS, conforme o Art. 198 da CF/88, são: I - Descentralização, com direção única em cada esfera de governo; II - Atendimento Integral, com prioridade para as atividades preventivas; e III - Participação da Comunidade.'),
-    (9037, 'Legislação do SUS', 'IBFC', 'De acordo com a PNAB, uma atribuição específica do Agente Comunitário de Saúde (ACS) é:', '[
-        {"id": "A", "text": "Realizar consulta de enfermagem e prescrever medicações conforme protocolos."},
-        {"id": "B", "text": "Realizar procedimentos como curativos e administração de vacinas."},
-        {"id": "C", "text": "Trabalhar com adscrição de famílias em base geográfica definida, a microárea."},
-        {"id": "D", "text": "Coordenar e supervisionar as ações da equipe de enfermagem."},
-        {"id": "E", "text": "Realizar o diagnóstico e tratamento de doenças de baixa complexidade."}
-    ]', 'C', 'A principal característica do trabalho do ACS é a sua atuação no território, com a adscrição de um número definido de famílias em uma microárea. Ele é o elo entre a comunidade e a unidade de saúde, realizando visitas domiciliares e acompanhamento contínuo.'),
-    (9038, 'Legislação do SUS', 'AOCP', 'Na Política Nacional de Humanização (PNH), o dispositivo que busca compreender o adoecimento para além dos sintomas biológicos, considerando a singularidade do sujeito e compartilhando decisões, é a:', '[
-        {"id": "A", "text": "Ambiência."},
-        {"id": "B", "text": "Clínica Ampliada e Compartilhada."},
-        {"id": "C", "text": "Gestão Participativa."},
-        {"id": "D", "text": "Acolhimento com Classificação de Risco."},
-        {"id": "E", "text": "Transversalidade."}
-    ]', 'B', 'A Clínica Ampliada é uma diretriz da PNH que propõe uma abordagem que vai além do diagnóstico e tratamento da doença, buscando incluir o contexto de vida, a subjetividade e a autonomia do usuário no processo de cuidado, com decisões compartilhadas entre equipe e paciente.'),
-    (9039, 'Legislação do SUS', 'FCC', 'A Lei 8.080/90 inclui, no campo de atuação do SUS, a execução de ações de saúde do trabalhador. Isso compreende:', '[
-        {"id": "A", "text": "Apenas o pagamento de auxílio-doença e aposentadoria por invalidez."},
-        {"id": "B", "text": "A assistência médica e a reabilitação de trabalhadores acidentados, mas não a vigilância dos ambientes de trabalho."},
-        {"id": "C", "text": "A vigilância dos ambientes de trabalho, a assistência aos trabalhadores e a notificação de acidentes e doenças relacionadas ao trabalho."},
-        {"id": "D", "text": "A fiscalização exclusiva de empresas privadas, não se aplicando a órgãos públicos."},
-        {"id": "E", "text": "Apenas a realização de exames admissionais e demissionais."}
-    ]', 'C', 'A saúde do trabalhador no SUS é concebida de forma integral, abrangendo ações de vigilância epidemiológica e sanitária, promoção e proteção da saúde, recuperação e reabilitação, incluindo a investigação e notificação de acidentes e doenças relacionadas ao trabalho.'),
-    (9040, 'Legislação do SUS', 'Vunesp', 'Para que uma Região de Saúde seja instituída, o Decreto 7.508/11 exige que ela contenha, no mínimo, ações e serviços de:', '[
-        {"id": "A", "text": "Atenção primária, hospitalar e transporte sanitário."},
-        {"id": "B", "text": "Atenção primária, urgência e emergência, atenção psicossocial, atenção ambulatorial especializada e hospitalar, e vigilância em saúde."},
-        {"id": "C", "text": "Atenção primária, um hospital de alta complexidade e um laboratório central."},
-        {"id": "D", "text": "Atenção primária, atenção psicossocial e um centro de especialidades odontológicas."},
-        {"id": "E", "text": "Urgência e emergência, atenção hospitalar e um hemocentro regional."}
-    ]', 'B', 'O Art. 5º do Decreto 7.508/11 estabelece que uma Região de Saúde, para ser instituída, deve garantir um conjunto mínimo de serviços para assegurar a integralidade do cuidado, que são: atenção primária, urgência e emergência, atenção psicossocial, atenção especializada (ambulatorial e hospitalar) e vigilância em saúde.'),
-    (9041, 'Legislação do SUS', 'FGV', 'Qual a principal diferença entre a Conferência de Saúde e o Conselho de Saúde, segundo a Lei 8.142/90?', '[
-        {"id": "A", "text": "A Conferência é permanente e o Conselho ocorre a cada 4 anos."},
-        {"id": "B", "text": "A Conferência propõe diretrizes para a política de saúde, enquanto o Conselho fiscaliza a execução dessa política."},
-        {"id": "C", "text": "Apenas o Conselho tem representação paritária dos usuários."},
-        {"id": "D", "text": "A Conferência tem poder deliberativo, e o Conselho tem poder apenas consultivo."},
-        {"id": "E", "text": "A Conferência é convocada pelo Conselho, e o Conselho é convocado pelo Poder Executivo."}
-    ]', 'B', 'A Conferência de Saúde se reúne a cada 4 anos para avaliar a situação e propor diretrizes (planejamento estratégico). O Conselho de Saúde é um órgão permanente, com reuniões mensais, que atua na formulação de estratégias e no controle da execução da política, inclusive nos aspectos financeiros (fiscalização e deliberação).'),
-    (9042, 'Legislação do SUS', 'Cebraspe', 'A Lei 8.080/90, em seu Art. 3º, estabelece que a saúde tem como determinantes e condicionantes, entre outros, a alimentação, a moradia, o saneamento básico e o trabalho. Esse conceito é conhecido como:', '[
-        {"id": "A", "text": "Modelo Biomédico."},
-        {"id": "B", "text": "Conceito Ampliado de Saúde."},
-        {"id": "C", "text": "Princípio da Integralidade."},
-        {"id": "D", "text": "Hierarquização do sistema."},
-        {"id": "E", "text": "Vigilância em Saúde."}
-    ]', 'B', 'O Conceito Ampliado de Saúde, adotado pelo SUS, entende que a saúde não é apenas a ausência de doença, mas um resultado de diversos fatores sociais, econômicos, culturais e ambientais, conhecidos como Determinantes Sociais da Saúde (DSS).'),
-    (9043, 'Legislação do SUS', 'IBFC', 'Além da Equipe de Saúde da Família (eSF), a PNAB prevê a Equipe de Atenção Primária (eAP). A principal diferença da eAP em relação à eSF é:', '[
-        {"id": "A", "text": "A eAP não pode ter médico em sua composição."},
-        {"id": "B", "text": "A eAP atua exclusivamente em áreas rurais."},
-        {"id": "C", "text": "A eAP pode ter carga horária flexível (20 ou 30h) e a presença do ACS não é obrigatória."},
-        {"id": "D", "text": "A eAP é focada apenas em atendimento de urgência."},
-        {"id": "E", "text": "A eAP não pode contar com profissionais de saúde bucal."}
-    ]', 'C', 'A Equipe de Atenção Primária (eAP) foi criada para permitir maior flexibilidade aos gestores. Sua composição mínima é médico e enfermeiro, com carga horária de 20 ou 30 horas semanais, e a inclusão do Agente Comunitário de Saúde (ACS) é recomendada, mas não obrigatória, diferentemente da eSF.'),
-    (9044, 'Legislação do SUS', 'AOCP', 'O dispositivo da Política Nacional de Humanização (PNH) que organiza o fluxo de pacientes nos serviços de urgência, atendendo por critério de gravidade e não por ordem de chegada, é o:', '[
-        {"id": "A", "text": "Projeto Terapêutico Singular (PTS)."},
-        {"id": "B", "text": "Acolhimento com Classificação de Risco (ACCR)."},
-        {"id": "C", "text": "Colegiado Gestor."},
-        {"id": "D", "text": "Visita Aberta e Direito a Acompanhante."},
-        {"id": "E", "text": "Ambiência."}
-    ]', 'B', 'O Acolhimento com Classificação de Risco (ACCR) é a ferramenta da PNH que reorienta a porta de entrada dos serviços de urgência. Ele combina a escuta qualificada do acolhimento com uma classificação de risco (ex: Protocolo de Manchester) para garantir que os pacientes mais graves sejam atendidos primeiro.'),
-    (9045, 'Legislação do SUS', 'FCC', 'A Relação Nacional de Ações e Serviços de Saúde (RENASES) e a Relação Nacional de Medicamentos Essenciais (RENAME) são atualizadas e publicadas por qual órgão?', '[
-        {"id": "A", "text": "Conselho Nacional de Saúde (CNS)."},
-        {"id": "B", "text": "Agência Nacional de Vigilância Sanitária (ANVISA)."},
-        {"id": "C", "text": "Ministério da Saúde."},
-        {"id": "D", "text": "Comissão Intergestores Tripartite (CIT)."},
-        {"id": "E", "text": "Conselho Nacional de Secretários de Saúde (CONASS)."}
-    ]', 'C', 'Conforme o Decreto 7.508/11, o Ministério da Saúde é o órgão competente para dispor sobre a RENASES e a RENAME. A RENAME, especificamente, deve ser atualizada a cada dois anos.'),
-    (9046, 'Legislação do SUS', 'Vunesp', 'A Lei 8.080/90 estabelece que, quando os recursos públicos forem insuficientes, o SUS poderá recorrer à iniciativa privada. Nesse caso, a lei determina que:', '[
-        {"id": "A", "text": "Os hospitais universitários públicos devem ser priorizados."},
-        {"id": "B", "text": "As entidades filantrópicas e as sem fins lucrativos terão preferência."},
-        {"id": "C", "text": "Os hospitais privados com fins lucrativos terão preferência por terem maior capacidade."},
-        {"id": "D", "text": "A contratação deve ser feita por meio de leilão público."},
-        {"id": "E", "text": "Não há nenhuma ordem de preferência estabelecida."}
-    ]', 'B', 'O Art. 25 da Lei 8.080/90 é claro ao estabelecer uma ordem de preferência para a contratação complementar de serviços. As entidades filantrópicas (como as Santas Casas) e as sem fins lucrativos têm prioridade sobre as entidades privadas com fins lucrativos.');
+(
+  'Legislação do SUS',
+  'A Constituição Federal de 1988, em seu artigo 198, estabelece que as ações e serviços públicos de saúde integram uma rede regionalizada e hierarquizada e constituem um sistema único. São diretrizes do SUS, EXCETO:',
+  '[
+    {"id": "A", "text": "Descentralização, com direção única em cada esfera de governo."},
+    {"id": "B", "text": "Atendimento integral, com prioridade para as atividades preventivas, sem prejuízo dos serviços assistenciais."},
+    {"id": "C", "text": "Participação da comunidade."},
+    {"id": "D", "text": "Centralização normativa e financeira na esfera federal."}
+  ]'::jsonb,
+  'D',
+  'A diretriz correta é a DESCENTRALIZAÇÃO. A centralização é uma característica do sistema anterior (INAMPS). A CF/88 determina descentralização com direção única em cada esfera.',
+  'VUNESP'
+),
+(
+  'Legislação do SUS',
+  'De acordo com a Lei 8.080/90, a participação da iniciativa privada no Sistema Único de Saúde (SUS) ocorre:',
+  '[
+    {"id": "A", "text": "Em caráter suplementar, substituindo o Estado quando este for incapaz."},
+    {"id": "B", "text": "Em caráter complementar, quando as disponibilidades do SUS forem insuficientes."},
+    {"id": "C", "text": "Em caráter preferencial, priorizando hospitais com fins lucrativos."},
+    {"id": "D", "text": "Apenas em situações de calamidade pública ou epidemias."}
+  ]'::jsonb,
+  'B',
+  'A iniciativa privada participa em caráter COMPLEMENTAR (não suplementar, que é plano de saúde), mediante contrato ou convênio, tendo preferência as entidades filantrópicas e sem fins lucrativos.',
+  'IBFC'
+),
+(
+  'Legislação do SUS',
+  'Segundo a Lei 8.142/90, a Conferência de Saúde deve se reunir com qual periodicidade e com qual objetivo principal?',
+  '[
+    {"id": "A", "text": "Anualmente, para fiscalizar os gastos do gestor."},
+    {"id": "B", "text": "A cada dois anos, para eleger o Secretário de Saúde."},
+    {"id": "C", "text": "A cada quatro anos, para avaliar a situação de saúde e propor diretrizes para a formulação da política de saúde."},
+    {"id": "D", "text": "Semestralmente, para aprovar o Plano Municipal de Saúde."}
+  ]'::jsonb,
+  'C',
+  'As Conferências de Saúde ocorrem a cada 4 anos. Sua função é avaliar a situação e propor diretrizes (é a base para o Plano de Saúde). Quem fiscaliza e é permanente é o Conselho de Saúde.',
+  'FGV'
+),
+(
+  'Legislação do SUS',
+  'O Decreto nº 7.508/2011 define Região de Saúde como espaço geográfico contínuo constituído por agrupamentos de municípios limítrofes. Para ser instituída, a Região de Saúde deve conter, no mínimo, ações e serviços de:',
+  '[
+    {"id": "A", "text": "Atenção primária, urgência e emergência, atenção psicossocial, atenção ambulatorial especializada e hospitalar, e vigilância em saúde."},
+    {"id": "B", "text": "Atenção primária, hospitais de grande porte e centros de pesquisa clínica."},
+    {"id": "C", "text": "Atenção básica e vigilância sanitária apenas."},
+    {"id": "D", "text": "Urgência e emergência e atenção hospitalar, sendo a atenção primária responsabilidade exclusiva do município isolado."}
+  ]'::jsonb,
+  'A',
+  'O Decreto exige o mínimo de 5 componentes (V.A.U.P.A.): Vigilância, Atenção Primária, Urgência, Psicossocial, Ambulatorial/Hospitalar.',
+  'CEBRASPE'
+),
+(
+  'Legislação do SUS',
+  'Sobre os Princípios Doutrinários do SUS, aquele que assegura o acesso às ações e serviços de saúde a todos os cidadãos, sem qualquer tipo de barreira ou discriminação, é chamado de:',
+  '[
+    {"id": "A", "text": "Integralidade."},
+    {"id": "B", "text": "Equidade."},
+    {"id": "C", "text": "Universalidade."},
+    {"id": "D", "text": "Resolubilidade."}
+  ]'::jsonb,
+  'C',
+  'Universalidade = Saúde é direito de TODOS. Equidade = Tratar desigualmente os desiguais. Integralidade = Todas as necessidades (promoção, prevenção, cura, reabilitação).',
+  'AOCP'
+),
+(
+  'Legislação do SUS',
+  'A composição dos Conselhos de Saúde deve ser paritária. Isso significa que:',
+  '[
+    {"id": "A", "text": "50% dos membros são gestores e 50% trabalhadores."},
+    {"id": "B", "text": "50% dos membros são representantes dos usuários e 50% divididos entre os demais segmentos."},
+    {"id": "C", "text": "Todos os segmentos têm o mesmo número de representantes (25% cada)."},
+    {"id": "D", "text": "A maioria absoluta deve ser de profissionais de saúde."}
+  ]'::jsonb,
+  'B',
+  'A paridade no SUS (Res. 453/12) é em relação aos usuários. 50% Usuários, 25% Trabalhadores, 25% Gestores/Prestadores.',
+  'CONSULPLAN'
+),
+(
+  'Legislação do SUS',
+  'O acordo de colaboração firmado entre entes federativos com a finalidade de organizar e integrar as ações e serviços de saúde na rede regionalizada e hierarquizada é denominado:',
+  '[
+    {"id": "A", "text": "Contrato de Gestão."},
+    {"id": "B", "text": "Termo de Ajustamento de Conduta (TAC)."},
+    {"id": "C", "text": "Contrato Organizativo da Ação Pública da Saúde (COAP)."},
+    {"id": "D", "text": "Plano Diretor de Regionalização (PDR)."}
+  ]'::jsonb,
+  'C',
+  'O COAP (Contrato Organizativo da Ação Pública) é o instrumento jurídico definido no Decreto 7.508/11 para firmar as responsabilidades na Região de Saúde.',
+  'VUNESP'
+),
+(
+  'Legislação do SUS',
+  'Compete à Direção Nacional do Sistema Único de Saúde (Ministério da Saúde), EXCETO:',
+  '[
+    {"id": "A", "text": "Definir e coordenar os sistemas de vigilância epidemiológica e sanitária."},
+    {"id": "B", "text": "Executar diretamente ações de vigilância sanitária em portos, aeroportos e fronteiras."},
+    {"id": "C", "text": "Gerir e executar os serviços públicos de saúde em âmbito municipal."},
+    {"id": "D", "text": "Participar na formulação e na implementação das políticas de controle das agressões ao meio ambiente."}
+  ]'::jsonb,
+  'C',
+  'A execução dos serviços públicos de saúde (atenção básica, UPAs, etc.) é competência prioritária da Direção MUNICIPAL. A União tem papel normativo e de coordenação, executando apenas em caráter supletivo ou em portos/fronteiras.',
+  'FCC'
+),
+(
+  'Legislação do SUS',
+  'O conjunto de ações capaz de eliminar, diminuir ou prevenir riscos à saúde e de intervir nos problemas sanitários decorrentes do meio ambiente, da produção e circulação de bens e da prestação de serviços de interesse da saúde, define:',
+  '[
+    {"id": "A", "text": "Vigilância Epidemiológica."},
+    {"id": "B", "text": "Vigilância Sanitária."},
+    {"id": "C", "text": "Saúde do Trabalhador."},
+    {"id": "D", "text": "Atenção Primária."}
+  ]'::jsonb,
+  'B',
+  'Definição clássica de Vigilância Sanitária (Art. 6º da Lei 8.080). Foco em bens, produtos e serviços. A Epidemiológica foca em doenças, agravos e fatores determinantes.',
+  'IDECAN'
+),
+(
+  'Legislação do SUS',
+  'Para que os Municípios, Estados e o Distrito Federal recebam os recursos do Fundo Nacional de Saúde de forma regular e automática, a Lei 8.142/90 exige a existência de, EXCETO:',
+  '[
+    {"id": "A", "text": "Fundo de Saúde."},
+    {"id": "B", "text": "Conselho de Saúde."},
+    {"id": "C", "text": "Plano de Carreira, Cargos e Salários (PCCS)."},
+    {"id": "D", "text": "Número mínimo de habitantes superior a 50.000."}
+  ]'::jsonb,
+  'D',
+  'Não existe exigência de número mínimo de habitantes na Lei 8.142/90. Os requisitos são: Fundo, Conselho, Plano de Saúde, Relatórios, Contrapartida e PCCS.',
+  'IBFC'
+),
+(
+  'Legislação do SUS',
+  'Sobre a Comissão Intergestores Tripartite (CIT), é correto afirmar que:',
+  '[
+    {"id": "A", "text": "É composta por representantes da União, dos Estados e dos Municípios."},
+    {"id": "B", "text": "Conta com a participação de representantes dos usuários do SUS."},
+    {"id": "C", "text": "Tem caráter apenas consultivo, sem poder de pactuação."},
+    {"id": "D", "text": "É vinculada ao Conselho Nacional de Justiça."}
+  ]'::jsonb,
+  'A',
+  'A CIT é um foro de negociação e pactuação entre GESTORES (União, Estado e Município). Usuários participam dos Conselhos, não das Comissões Intergestores.',
+  'FGV'
+),
+(
+  'Legislação do SUS',
+  'A Relação Nacional de Medicamentos Essenciais (RENAME) deve ser atualizada pelo Ministério da Saúde a cada:',
+  '[
+    {"id": "A", "text": "6 meses."},
+    {"id": "B", "text": "1 ano."},
+    {"id": "C", "text": "2 anos."},
+    {"id": "D", "text": "4 anos."}
+  ]'::jsonb,
+  'C',
+  'O Decreto 7.508/11 estabelece que a RENAME deve ser atualizada a cada dois anos.',
+  'CEBRASPE'
+),
+(
+  'Legislação do SUS',
+  'Segundo a Constituição Federal, é VEDADA:',
+  '[
+    {"id": "A", "text": "A participação da iniciativa privada no SUS."},
+    {"id": "B", "text": "A destinação de recursos públicos para auxílios ou subvenções às instituições privadas com fins lucrativos."},
+    {"id": "C", "text": "A contratação de serviços privados por entidades filantrópicas."},
+    {"id": "D", "text": "A cobrança de serviços de saúde suplementar."}
+  ]'::jsonb,
+  'B',
+  'Art. 199, § 2º da CF/88: É vedada a destinação de recursos públicos para auxílios ou subvenções às instituições privadas com fins lucrativos.',
+  'VUNESP'
+),
+(
+  'Legislação do SUS',
+  'O princípio da Equidade no SUS refere-se a:',
+  '[
+    {"id": "A", "text": "Oferecer o mesmo atendimento a todos, independente da necessidade."},
+    {"id": "B", "text": "Garantir que todos paguem a mesma taxa de contribuição."},
+    {"id": "C", "text": "Reconhecer as diferenças e oferecer mais a quem mais precisa, diminuindo desigualdades."},
+    {"id": "D", "text": "Priorizar o atendimento hospitalar em detrimento da atenção básica."}
+  ]'::jsonb,
+  'C',
+  'Equidade é tratar desigualmente os desiguais, investindo mais onde a carência é maior para reduzir as disparidades sociais e regionais.',
+  'AOCP'
+),
+(
+  'Legislação do SUS',
+  'A descrição geográfica da distribuição de recursos humanos e de ações e serviços de saúde ofertados pelo SUS e pela iniciativa privada, considerando a capacidade instalada, é denominada:',
+  '[
+    {"id": "A", "text": "Plano de Saúde."},
+    {"id": "B", "text": "Mapa da Saúde."},
+    {"id": "C", "text": "Relatório de Gestão."},
+    {"id": "D", "text": "Programação Pactuada Integrada (PPI)."}
+  ]'::jsonb,
+  'B',
+  'Definição de Mapa da Saúde (Decreto 7.508). Ele serve para identificar vazios assistenciais e orientar o planejamento regional.',
+  'CONSULPLAN'
+),
+(
+  'Legislação do SUS',
+  'O Subsistema de Atenção à Saúde Indígena, criado pela Lei 9.836/99, é financiado com recursos:',
+  '[
+    {"id": "A", "text": "Exclusivos dos Municípios onde se localizam as aldeias."},
+    {"id": "B", "text": "Da União, dos Estados e dos Municípios, de forma igualitária."},
+    {"id": "C", "text": "Da União (Governo Federal)."},
+    {"id": "D", "text": "De ONGs internacionais."}
+  ]'::jsonb,
+  'C',
+  'Lei 8.080, Art. 19-B: Cabe à União, com seus recursos próprios, financiar o Subsistema de Atenção à Saúde Indígena.',
+  'IBFC'
+),
+(
+  'Legislação do SUS',
+  'A articulação das políticas e programas de saúde e a atuação intersetorial são competências das:',
+  '[
+    {"id": "A", "text": "Comissões Intersetoriais."},
+    {"id": "B", "text": "Comissões Parlamentares de Inquérito."},
+    {"id": "C", "text": "Diretorias Regionais de Saúde."},
+    {"id": "D", "text": "Fundações Estatais."}
+  ]'::jsonb,
+  'A',
+  'Art. 12 da Lei 8.080: As Comissões Intersetoriais têm a finalidade de articular políticas e programas de interesse para a saúde (ex: alimentação, saneamento, ciência e tecnologia).',
+  'FGV'
+),
+(
+  'Legislação do SUS',
+  'Qual é a porta de entrada PREFERENCIAL do SUS, ordenadora do cuidado e coordenadora da rede?',
+  '[
+    {"id": "A", "text": "Atenção de Urgência e Emergência (UPA)."},
+    {"id": "B", "text": "Atenção Primária à Saúde (APS/Atenção Básica)."},
+    {"id": "C", "text": "Atenção Ambulatorial Especializada."},
+    {"id": "D", "text": "Atenção Hospitalar."}
+  ]'::jsonb,
+  'B',
+  'A Atenção Primária é o centro de comunicação e a porta preferencial. Embora Urgência, CAPS e Serviços Especiais também sejam portas, a APS tem a função de ordenar o cuidado.',
+  'CEBRASPE'
+),
+(
+  'Legislação do SUS',
+  'Os recursos financeiros do Sistema Único de Saúde (SUS) serão depositados em conta especial, em cada esfera de sua atuação, e movimentados sob fiscalização do:',
+  '[
+    {"id": "A", "text": "Ministério Público."},
+    {"id": "B", "text": "Poder Legislativo."},
+    {"id": "C", "text": "Respectivo Conselho de Saúde."},
+    {"id": "D", "text": "Tribunal de Contas da União."}
+  ]'::jsonb,
+  'C',
+  'Lei 8.142, Art. 3º, § 2º: Os recursos serão movimentados sob a fiscalização dos respectivos Conselhos de Saúde.',
+  'VUNESP'
+),
+(
+  'Legislação do SUS',
+  'O princípio da Integralidade implica em:',
+  '[
+    {"id": "A", "text": "Atender apenas pacientes que não possuem plano de saúde privado."},
+    {"id": "B", "text": "Oferecer apenas consultas médicas, excluindo exames complexos."},
+    {"id": "C", "text": "Garantir ao usuário o acesso a todos os níveis de complexidade do sistema, desde a prevenção até a reabilitação, considerando o indivíduo como um todo."},
+    {"id": "D", "text": "Integrar os sistemas de saúde do Brasil com os de países vizinhos."}
+  ]'::jsonb,
+  'C',
+  'Integralidade é ver o ser humano de forma indivisível (biopsicossocial) e garantir a continuidade do cuidado em todos os níveis de atenção (promoção, prevenção, cura e reabilitação).',
+  'IBFC'
+)
+ON CONFLICT (question) DO NOTHING;
