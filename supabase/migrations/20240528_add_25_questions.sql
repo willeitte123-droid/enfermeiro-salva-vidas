@@ -1,213 +1,328 @@
--- Inserção de Novas Questões para balancear a banca
-
 INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
 VALUES
--- BIOSSEGURANÇA E CONTROLE DE INFECÇÃO (5 Questões)
 (
-  'Biossegurança e Controle de Infecção',
-  'Sobre a higienização das mãos, de acordo com a ANVISA, é correto afirmar que:',
-  '[{"id": "A", "text": "O uso de luvas substitui a necessidade de higienização das mãos em procedimentos semicríticos."}, {"id": "B", "text": "A higienização simples das mãos deve durar no mínimo 3 minutos."}, {"id": "C", "text": "O álcool a 70% pode ser utilizado em substituição à água e sabonete quando as mãos não estiverem visivelmente sujas."}, {"id": "D", "text": "A higienização antisséptica (com degermante) é obrigatória antes de tocar qualquer paciente."}, {"id": "E", "text": "Deve-se utilizar água quente para melhor remoção das bactérias."}]'::jsonb,
-  'C',
-  'Segundo a ANVISA e OMS, a fricção antisséptica com preparações alcoólicas é a preferencial quando as mãos não estiverem visivelmente sujas, por ser mais rápida e eficaz.',
-  'ANVISA'
+  'Urgência e Emergência',
+  'Durante o atendimento a uma Parada Cardiorrespiratória (PCR) em um adulto, qual é a relação correta entre compressões e ventilações quando não há via aérea avançada instalada?',
+  '[
+    {"id": "A", "text": "15 compressões para 2 ventilações."},
+    {"id": "B", "text": "30 compressões para 2 ventilações."},
+    {"id": "C", "text": "30 compressões para 1 ventilação."},
+    {"id": "D", "text": "Compressões contínuas sem ventilação."}
+  ]'::jsonb,
+  'B',
+  'Segundo as diretrizes da AHA, a relação compressão-ventilação para adultos sem via aérea avançada é de 30:2.',
+  'AHA'
 ),
 (
-  'Biossegurança e Controle de Infecção',
-  'Para um paciente com diagnóstico confirmado de Tuberculose Pulmonar Bacilífera, qual o tipo de precaução e o EPI obrigatório para o profissional?',
-  '[{"id": "A", "text": "Precaução de Contato e Luvas estéreis."}, {"id": "B", "text": "Precaução Padrão e Máscara Cirúrgica."}, {"id": "C", "text": "Precaução de Gotículas e Máscara Cirúrgica."}, {"id": "D", "text": "Precaução para Aerossóis e Máscara PFF2 (N95)."}, {"id": "E", "text": "Precaução Reversa e Avental impermeável."}]'::jsonb,
-  'D',
-  'A Tuberculose é transmitida por aerossóis (partículas < 5 micra). O profissional deve usar máscara N95/PFF2 e o paciente deve ficar em quarto privativo (pressão negativa idealmente).',
-  'EBSERH'
+  'Urgência e Emergência',
+  'Em um paciente com PCR em ritmo de Fibrilação Ventricular (FV) ou Taquicardia Ventricular sem pulso (TVSP), qual é a prioridade imediata após o reconhecimento do ritmo?',
+  '[
+    {"id": "A", "text": "Administração de Adrenalina."},
+    {"id": "B", "text": "Intubação Orotraqueal."},
+    {"id": "C", "text": "Desfibrilação Precoce."},
+    {"id": "D", "text": "Acesso Venoso Periférico."}
+  ]'::jsonb,
+  'C',
+  'A desfibrilação precoce é a única terapia eficaz para reverter FV/TVSP e é a prioridade absoluta nesses ritmos chocáveis.',
+  'AHA'
 ),
 (
-  'Biossegurança e Controle de Infecção',
-  'Conforme a classificação de Spaulding, um endoscópio digestivo é considerado um artigo:',
-  '[{"id": "A", "text": "Crítico, exigindo esterilização."}, {"id": "B", "text": "Não crítico, exigindo limpeza apenas."}, {"id": "C", "text": "Semicrítico, exigindo desinfecção de alto nível."}, {"id": "D", "text": "Semicrítico, exigindo esterilização obrigatória."}, {"id": "E", "text": "Crítico, exigindo desinfecção de nível intermediário."}]'::jsonb,
+  'Urgência e Emergência',
+  'Qual é a droga de primeira linha utilizada no tratamento da anafilaxia grave (choque anafilático)?',
+  '[
+    {"id": "A", "text": "Dexametasona (Corticoide)."},
+    {"id": "B", "text": "Prometazina (Anti-histamínico)."},
+    {"id": "C", "text": "Adrenalina (Epinefrina) Intramuscular."},
+    {"id": "D", "text": "Noradrenalina Endovenosa."}
+  ]'::jsonb,
   'C',
-  'Artigos semicríticos entram em contato com mucosa íntegra ou pele não intacta. Requerem, no mínimo, desinfecção de alto nível (embora a esterilização seja desejável, não é obrigatória se não invadir tecidos estéreis).',
+  'A Adrenalina IM é a droga de escolha e deve ser administrada imediatamente. Corticoides e anti-histamínicos são adjuvantes secundários.',
   'VUNESP'
 ),
 (
-  'Biossegurança e Controle de Infecção',
-  'O tempo recomendado para a fricção das mãos com preparação alcoólica é de:',
-  '[{"id": "A", "text": "10 a 20 segundos."}, {"id": "B", "text": "20 a 30 segundos."}, {"id": "C", "text": "40 a 60 segundos."}, {"id": "D", "text": "1 a 2 minutos."}, {"id": "E", "text": "3 a 5 minutos."}]'::jsonb,
-  'B',
-  'Para a higiene com água e sabonete, o tempo é de 40-60 segundos. Para a fricção com álcool (álcool gel), o tempo é de 20-30 segundos.',
-  'OMS'
-),
-(
-  'Biossegurança e Controle de Infecção',
-  'Em relação ao descarte de resíduos de saúde (RDC 222/2018), as agulhas e lâminas de bisturi devem ser descartadas em:',
-  '[{"id": "A", "text": "Saco branco leitoso."}, {"id": "B", "text": "Saco laranja."}, {"id": "C", "text": "Saco vermelho."}, {"id": "D", "text": "Recipiente rígido com tampa (Grupo E)."}, {"id": "E", "text": "Saco preto comum."}]'::jsonb,
-  'D',
-  'Perfurocortantes pertencem ao Grupo E e devem ser descartados em recipientes rígidos, resistentes à punctura e vazamento (ex: Descarpack).',
-  'ANVISA'
-),
-
--- ÉTICA E LEGISLAÇÃO (5 Questões)
-(
-  'Ética e Legislação',
-  'Segundo a Lei 7.498/86, a prescrição da assistência de enfermagem é atividade privativa do:',
-  '[{"id": "A", "text": "Técnico de Enfermagem."}, {"id": "B", "text": "Enfermeiro."}, {"id": "C", "text": "Médico."}, {"id": "D", "text": "Auxiliar de Enfermagem."}, {"id": "E", "text": "Equipe multiprofissional."}]'::jsonb,
-  'B',
-  'O Art. 11 da Lei do Exercício Profissional define que a Consulta de Enfermagem e a Prescrição da Assistência são privativas do Enfermeiro.',
-  'COFEN'
-),
-(
-  'Ética e Legislação',
-  'De acordo com o Código de Ética (Res. COFEN 564/2017), a penalidade de Cassação do direito ao exercício profissional é competência exclusiva do:',
-  '[{"id": "A", "text": "Coren."}, {"id": "B", "text": "Cofen."}, {"id": "C", "text": "Sindicato."}, {"id": "D", "text": "Empregador."}, {"id": "E", "text": "Ministério Público."}]'::jsonb,
-  'B',
-  'As penalidades de Advertência, Multa, Censura e Suspensão são aplicadas pelos Conselhos Regionais (Coren). A Cassação é competência exclusiva do Conselho Federal (Cofen).',
-  'COFEN'
-),
-(
-  'Ética e Legislação',
-  'Um técnico de enfermagem administra uma medicação por via errada por desconhecimento da técnica, causando dano ao paciente. Isso configura:',
-  '[{"id": "A", "text": "Negligência."}, {"id": "B", "text": "Imprudência."}, {"id": "C", "text": "Imperícia."}, {"id": "D", "text": "Dolo."}, {"id": "E", "text": "Infração Leve."}]'::jsonb,
+  'Urgência e Emergência',
+  'No atendimento ao politraumatizado, a letra "A" do XABCDE primário refere-se a:',
+  '[
+    {"id": "A", "text": "Avaliação da circulação e controle de hemorragias."},
+    {"id": "B", "text": "Avaliação neurológica e pupilas."},
+    {"id": "C", "text": "Manutenção das vias aéreas com proteção da coluna cervical."},
+    {"id": "D", "text": "Exposição do paciente e controle da hipotermia."}
+  ]'::jsonb,
   'C',
-  'Imperícia é a falta de conhecimento técnico, habilidade ou preparo prático para realizar determinada função.',
+  'O "A" (Airway) foca na permeabilidade das vias aéreas SIMULTANEAMENTE com a proteção da coluna cervical.',
+  'PHTLS'
+),
+(
+  'Urgência e Emergência',
+  'Um paciente chega à emergência com dor torácica típica. O ECG realizado em 5 minutos mostra supradesnivelamento do segmento ST em DII, DIII e aVF. Qual o diagnóstico provável?',
+  '[
+    {"id": "A", "text": "Infarto Agudo do Miocárdio de Parede Anterior."},
+    {"id": "B", "text": "Infarto Agudo do Miocárdio de Parede Inferior."},
+    {"id": "C", "text": "Pericardite Aguda."},
+    {"id": "D", "text": "Embolia Pulmonar Maciça."}
+  ]'::jsonb,
+  'B',
+  'As derivações DII, DIII e aVF "olham" para a parede inferior do coração (ventrículo direito). Supra nessas derivações indica IAM de parede inferior.',
+  'FCC'
+),
+(
+  'Urgência e Emergência',
+  'Qual é o tempo máximo recomendado (janela terapêutica padrão) para a administração de trombolíticos no AVC isquêmico agudo?',
+  '[
+    {"id": "A", "text": "Até 3 horas."},
+    {"id": "B", "text": "Até 4,5 horas."},
+    {"id": "C", "text": "Até 6 horas."},
+    {"id": "D", "text": "Até 12 horas."}
+  ]'::jsonb,
+  'B',
+  'A janela terapêutica padrão para trombólise endovenosa no AVC isquêmico é de até 4,5 horas do início dos sintomas.',
+  'CESPE'
+),
+(
+  'Urgência e Emergência',
+  'Na avaliação de um paciente com queimadura, a "Regra dos Nove" atribui qual porcentagem de superfície corporal queimada (SCQ) para cada membro superior (braço/antebraço/mão) em um adulto?',
+  '[
+    {"id": "A", "text": "4,5%."},
+    {"id": "B", "text": "9%."},
+    {"id": "C", "text": "18%."},
+    {"id": "D", "text": "1%."}
+  ]'::jsonb,
+  'B',
+  'Cada membro superior completo corresponde a 9% da SCQ em adultos (4,5% frente + 4,5% verso).',
   'IBFC'
 ),
 (
-  'Ética e Legislação',
-  'É um direito do profissional de enfermagem, segundo o Código de Ética:',
-  '[{"id": "A", "text": "Executar atividades que não sejam de sua competência técnica."}, {"id": "B", "text": "Negar assistência em casos de urgência."}, {"id": "C", "text": "Recusar-se a executar atividades que não ofereçam segurança ao profissional."}, {"id": "D", "text": "Delegar atividades privativas do enfermeiro ao técnico."}, {"id": "E", "text": "Assinar ações que não executou."}]'::jsonb,
-  'C',
-  'O Art. 22 garante o direito de recusar-se a executar atividades que não ofereçam segurança ao profissional ou à pessoa/família.',
-  'COFEN'
-),
-(
-  'Ética e Legislação',
-  'A anotação de enfermagem deve ser realizada:',
-  '[{"id": "A", "text": "A lápis, para permitir correções."}, {"id": "B", "text": "Apenas no final do plantão."}, {"id": "C", "text": "De forma cronológica, legível, sem rasuras e assinada."}, {"id": "D", "text": "Pelo enfermeiro chefe, baseada no relato da equipe."}, {"id": "E", "text": "Apenas se houver intercorrências graves."}]'::jsonb,
-  'C',
-  'O registro deve ser claro, objetivo, cronológico, legível, sem rasuras e conter a identificação do profissional (carimbo/assinatura).',
+  'Urgência e Emergência',
+  'Qual das seguintes opções é um sinal clássico de Tamponamento Cardíaco (Tríade de Beck)?',
+  '[
+    {"id": "A", "text": "Hipertensão, Bradicardia e Respiração Irregular."},
+    {"id": "B", "text": "Hipotensão, Turgência Jugular e Bulhas Cardíacas Abafadas."},
+    {"id": "C", "text": "Hipotensão, Taquicardia e Pele Quente."},
+    {"id": "D", "text": "Hipertensão, Taquicardia e Edema de MMII."}
+  ]'::jsonb,
+  'B',
+  'A Tríade de Beck para Tamponamento Cardíaco é: Hipotensão Arterial + Turgência Jugular (Jugulares distendidas) + Bulhas Hipofonéticas (Abafadas).',
   'FGV'
 ),
-
--- SAÚDE DO TRABALHADOR (5 Questões)
 (
-  'Saúde do Trabalhador',
-  'Conforme a NR-32, é vedado ao trabalhador de saúde:',
-  '[{"id": "A", "text": "Utilizar calçados fechados."}, {"id": "B", "text": "Usar adornos (anéis, pulseiras, relógios)."}, {"id": "C", "text": "Prender os cabelos longos."}, {"id": "D", "text": "Lavar as mãos antes e depois dos procedimentos."}, {"id": "E", "text": "Usar óculos de proteção."}]'::jsonb,
-  'B',
-  'A NR-32 proíbe o uso de adornos por profissionais que mantenham contato com agentes biológicos, pois dificultam a higienização e acumulam microrganismos.',
-  'MTE'
-),
-(
-  'Saúde do Trabalhador',
-  'Em caso de acidente com material biológico perfurocortante, a primeira conduta no local do acidente deve ser:',
-  '[{"id": "A", "text": "Espremer a lesão para sair o sangue contaminado."}, {"id": "B", "text": "Aplicar torniquete."}, {"id": "C", "text": "Lavar exaustivamente com água e sabão."}, {"id": "D", "text": "Usar hipoclorito de sódio puro."}, {"id": "E", "text": "Iniciar o coquetel anti-HIV imediatamente no local."}]'::jsonb,
+  'Urgência e Emergência',
+  'Qual a principal causa reversível de PCR (5Hs e 5Ts) que deve ser suspeitada em um paciente politraumatizado com turgência jugular, desvio de traqueia e ausência de murmúrio vesicular unilateral?',
+  '[
+    {"id": "A", "text": "Hipovolemia."},
+    {"id": "B", "text": "Trombose Coronariana."},
+    {"id": "C", "text": "Pneumotórax Hipertensivo (Tensão)."},
+    {"id": "D", "text": "Hipotermia."}
+  ]'::jsonb,
   'C',
-  'A recomendação é lavar a área com água e sabão. Não se deve espremer (aumenta a área de contato/microlesões) nem usar substâncias cáusticas.',
-  'MS'
+  'O quadro de choque obstrutivo com turgência, desvio de traqueia e silêncio auscultatório é clássico de Pneumotórax Hipertensivo (Tensão).',
+  'VUNESP'
 ),
 (
-  'Saúde do Trabalhador',
-  'As vacinas obrigatórias para todo trabalhador de saúde, segundo a NR-32, incluem:',
-  '[{"id": "A", "text": "Tétano, Difteria e Hepatite B."}, {"id": "B", "text": "Hepatite A e Meningocócica."}, {"id": "C", "text": "Febre Amarela e Dengue."}, {"id": "D", "text": "HPV e Varicela."}, {"id": "E", "text": "BCG e Rotavírus."}]'::jsonb,
+  'Urgência e Emergência',
+  'Em um paciente com Choque Hipovolêmico Classe III, espera-se encontrar:',
+  '[
+    {"id": "A", "text": "PA normal e FC < 100 bpm."},
+    {"id": "B", "text": "Hipotensão, Taquicardia (>120 bpm) e Confusão Mental."},
+    {"id": "C", "text": "Hipotensão e Bradicardia."},
+    {"id": "D", "text": "Hipertensão e Agitação."}
+  ]'::jsonb,
+  'B',
+  'No choque classe III (perda de 30-40% da volemia), os mecanismos compensatórios falham, surgindo hipotensão, taquicardia acentuada e alteração do estado mental.',
+  'CONSULPLAN'
+),
+(
+  'Urgência e Emergência',
+  'A manobra de Heimlich é indicada para:',
+  '[
+    {"id": "A", "text": "Reverter parada cardíaca em gestantes."},
+    {"id": "B", "text": "Desobstrução de vias aéreas em vítima consciente com obstrução grave."},
+    {"id": "C", "text": "Estabilização da coluna cervical."},
+    {"id": "D", "text": "Controle de hemorragia abdominal."}
+  ]'::jsonb,
+  'B',
+  'A Manobra de Heimlich (compressões abdominais) é usada para desobstruir a via aérea de corpo estranho em vítimas conscientes (adultos e crianças > 1 ano).',
+  'AOCP'
+),
+(
+  'Urgência e Emergência',
+  'Qual é a profundidade recomendada das compressões torácicas em um adulto durante a RCP?',
+  '[
+    {"id": "A", "text": "No mínimo 2 cm."},
+    {"id": "B", "text": "Entre 5 e 6 cm."},
+    {"id": "C", "text": "Aproximadamente 1/3 do diâmetro do tórax."},
+    {"id": "D", "text": "Máximo de 4 cm."}
+  ]'::jsonb,
+  'B',
+  'A AHA recomenda uma profundidade de pelo menos 5 cm (2 polegadas), mas não superior a 6 cm (2,4 polegadas) para adultos.',
+  'AHA'
+),
+(
+  'Urgência e Emergência',
+  'Em uma PCR com via aérea avançada (intubado), as ventilações devem ser feitas:',
+  '[
+    {"id": "A", "text": "Sincronizadas com as compressões (30:2)."},
+    {"id": "B", "text": "Uma ventilação a cada 6 segundos, sem pausar as compressões."},
+    {"id": "C", "text": "Duas ventilações a cada 15 compressões."},
+    {"id": "D", "text": "Hiperventilação contínua."}
+  ]'::jsonb,
+  'B',
+  'Com via aérea avançada, as compressões são contínuas e as ventilações são assíncronas, uma a cada 6 segundos (10 ventilações/min).',
+  'AHA'
+),
+(
+  'Urgência e Emergência',
+  'A Escala de Coma de Glasgow avalia três parâmetros. Quais são eles?',
+  '[
+    {"id": "A", "text": "Abertura Ocular, Resposta Verbal e Resposta Motora."},
+    {"id": "B", "text": "Consciência, Respiração e Circulação."},
+    {"id": "C", "text": "Pupilas, Força Muscular e Fala."},
+    {"id": "D", "text": "Orientação, Memória e Atenção."}
+  ]'::jsonb,
   'A',
-  'A NR-32 exige imunização contra Tétano, Difteria (dT) e Hepatite B para todos. Outras vacinas dependem do risco de exposição.',
-  'MTE'
+  'A ECG avalia Abertura Ocular (4), Resposta Verbal (5) e Resposta Motora (6). A avaliação pupilar foi adicionada recentemente como um fator de subtração na pontuação total.',
+  'IBFC'
 ),
 (
-  'Saúde do Trabalhador',
-  'Qual é o prazo máximo para emissão da Comunicação de Acidente de Trabalho (CAT) em caso de acidente típico?',
-  '[{"id": "A", "text": "Imediatamente."}, {"id": "B", "text": "Até o primeiro dia útil seguinte ao da ocorrência."}, {"id": "C", "text": "Até 48 horas."}, {"id": "D", "text": "Até 5 dias úteis."}, {"id": "E", "text": "Apenas se houver afastamento superior a 15 dias."}]'::jsonb,
+  'Urgência e Emergência',
+  'Qual a principal complicação do uso excessivo de oxigênio (hiperóxia) em pacientes com IAM e AVC sem hipoxemia?',
+  '[
+    {"id": "A", "text": "Vasodilatação excessiva."},
+    {"id": "B", "text": "Vasoconstrição e aumento da lesão tecidual por radicais livres."},
+    {"id": "C", "text": "Melhora da perfusão cerebral."},
+    {"id": "D", "text": "Bradicardia reflexa."}
+  ]'::jsonb,
   'B',
-  'A empresa deve comunicar o acidente até o primeiro dia útil seguinte. Em caso de morte, a comunicação deve ser imediata.',
-  'INSS'
+  'A hiperóxia causa vasoconstrição (piorando a isquemia) e aumenta a produção de radicais livres (lesão de reperfusão). Só se deve dar O2 se SpO2 < 90-94%.',
+  'IDECAN'
 ),
 (
-  'Saúde do Trabalhador',
-  'A Perda Auditiva Induzida por Ruído (PAIR) relacionada ao trabalho caracteriza-se por ser:',
-  '[{"id": "A", "text": "Condutiva e reversível."}, {"id": "B", "text": "Unilateral e aguda."}, {"id": "C", "text": "Neurossensorial, irreversível e geralmente bilateral."}, {"id": "D", "text": "Temporária, melhorando com repouso acústico de 24h."}, {"id": "E", "text": "Causada exclusivamente por vibração."}]'::jsonb,
-  'C',
-  'A PAIR é uma perda neurossensorial (lesão de células ciliadas), irreversível, progressiva e geralmente acomete ambos os ouvidos (bilateral).',
+  'Urgência e Emergência',
+  'No atendimento à criança em PCR, se houver apenas um socorrista, a relação compressão:ventilação recomendada é:',
+  '[
+    {"id": "A", "text": "15:2."},
+    {"id": "B", "text": "30:2."},
+    {"id": "C", "text": "3:1."},
+    {"id": "D", "text": "10:1."}
+  ]'::jsonb,
+  'B',
+  'Para 1 socorrista em pediatria, mantém-se 30:2. Se houver 2 socorristas, muda para 15:2.',
+  'AHA'
+),
+(
+  'Urgência e Emergência',
+  'Qual é o antídoto específico para a intoxicação por opióides (ex: morfina, fentanil)?',
+  '[
+    {"id": "A", "text": "Flumazenil."},
+    {"id": "B", "text": "Naloxona."},
+    {"id": "C", "text": "Atropina."},
+    {"id": "D", "text": "Acetilcisteína."}
+  ]'::jsonb,
+  'B',
+  'A Naloxona é o antagonista opióide específico. Flumazenil é para benzodiazepínicos.',
+  'VUNESP'
+),
+(
+  'Urgência e Emergência',
+  'O "Sinal de Battle" (equimose retroauricular) é indicativo de:',
+  '[
+    {"id": "A", "text": "Fratura de base de crânio."},
+    {"id": "B", "text": "Fratura de mandíbula."},
+    {"id": "C", "text": "Trauma ocular."},
+    {"id": "D", "text": "Lesão de coluna cervical."}
+  ]'::jsonb,
+  'A',
+  'Sinal de Battle e o Sinal do Guaxinim (equimose periorbital) são sinais clássicos de fratura de base de crânio.',
+  'PHTLS'
+),
+(
+  'Urgência e Emergência',
+  'Qual é a definição de uma Crise Hipertensiva tipo EMERGÊNCIA?',
+  '[
+    {"id": "A", "text": "PA elevada sem sintomas."},
+    {"id": "B", "text": "PA elevada com lesão aguda e progressiva de órgão-alvo (risco iminente de morte)."},
+    {"id": "C", "text": "PA elevada com cefaleia leve, sem lesão de órgão-alvo."},
+    {"id": "D", "text": "PA diastólica > 100 mmHg."}
+  ]'::jsonb,
+  'B',
+  'Emergência Hipertensiva exige redução imediata da PA (com drogas IV) devido à lesão de órgão-alvo em curso (ex: AVC, IAM, EAP). A Urgência não tem lesão aguda.',
   'FCC'
 ),
-
--- SAE - SISTEMATIZAÇÃO (5 Questões)
 (
-  'Sistematização da Assistência (SAE)',
-  'A etapa do Processo de Enfermagem que envolve a interpretação e agrupamento dos dados coletados para a tomada de decisão é:',
-  '[{"id": "A", "text": "Histórico de Enfermagem."}, {"id": "B", "text": "Diagnóstico de Enfermagem."}, {"id": "C", "text": "Planejamento."}, {"id": "D", "text": "Implementação."}, {"id": "E", "text": "Avaliação."}]'::jsonb,
+  'Urgência e Emergência',
+  'Na suspeita de Trauma Raquimedular (TRM), qual a técnica correta para abertura das vias aéreas?',
+  '[
+    {"id": "A", "text": "Hiperextensão da cabeça (Head Tilt)."},
+    {"id": "B", "text": "Elevação do queixo (Chin Lift) com extensão."},
+    {"id": "C", "text": "Anteriorização da Mandíbula (Jaw Thrust) sem extensão do pescoço."},
+    {"id": "D", "text": "Rotação lateral da cabeça."}
+  ]'::jsonb,
+  'C',
+  'O Jaw Thrust (tração da mandíbula) é a manobra segura pois não movimenta a coluna cervical, prevenindo lesão medular.',
+  'PHTLS'
+),
+(
+  'Urgência e Emergência',
+  'Qual é o ritmo de parada cardíaca caracterizado pela ausência total de atividade elétrica no monitor (linha reta)?',
+  '[
+    {"id": "A", "text": "Fibrilação Ventricular."},
+    {"id": "B", "text": "AESP."},
+    {"id": "C", "text": "Assistolia."},
+    {"id": "D", "text": "Torsades de Pointes."}
+  ]'::jsonb,
+  'C',
+  'Assistolia é a ausência de atividade elétrica. Requer protocolo da linha reta (cagada: Cabos, Ganho, Derivação) para confirmar.',
+  'AHA'
+),
+(
+  'Urgência e Emergência',
+  'A administração de Adenosina em bolus rápido é indicada para qual arritmia?',
+  '[
+    {"id": "A", "text": "Bradicardia Sinusal."},
+    {"id": "B", "text": "Taquicardia Supraventricular (TSV) estável."},
+    {"id": "C", "text": "Fibrilação Ventricular."},
+    {"id": "D", "text": "Bloqueio Atrioventricular Total."}
+  ]'::jsonb,
   'B',
-  'O Diagnóstico de Enfermagem é a etapa de julgamento clínico sobre as respostas da pessoa aos problemas de saúde, baseada nos dados do histórico.',
-  'COFEN'
+  'Adenosina causa bloqueio transitório no nó AV, revertendo taquicardias supraventriculares por reentrada. Deve ser feita em bolus ultra-rápido.',
+  'IDECAN'
 ),
 (
-  'Sistematização da Assistência (SAE)',
-  'Na taxonomia NANDA-I, um diagnóstico de enfermagem de "Risco" contém:',
-  '[{"id": "A", "text": "Título, Fatores Relacionados e Características Definidoras."}, {"id": "B", "text": "Título e Fatores de Risco, sem características definidoras."}, {"id": "C", "text": "Apenas o Título."}, {"id": "D", "text": "Título e Sinais/Sintomas."}, {"id": "E", "text": "Título, Etiologia e Evidências."}]'::jsonb,
+  'Urgência e Emergência',
+  'Em caso de hemorragia externa grave em extremidades, qual a primeira medida para controle do sangramento (após segurança da cena)?',
+  '[
+    {"id": "A", "text": "Elevação do membro."},
+    {"id": "B", "text": "Compressão direta sobre a ferida."},
+    {"id": "C", "text": "Torniquete (como primeira opção no PHTLS 9ª ed para sangramento massivo)."},
+    {"id": "D", "text": "Ponto de pressão na artéria proximal."}
+  ]'::jsonb,
+  'C',
+  'O PHTLS (9ª/10ª ed) atualizou a conduta: em hemorragias exsanguinantes de extremidades, o torniquete é a primeira escolha se a compressão direta não for imediatamente viável ou suficiente (protocolo XABCDE).',
+  'PHTLS'
+),
+(
+  'Urgência e Emergência',
+  'Qual é o sinal mais precoce de choque hipovolêmico?',
+  '[
+    {"id": "A", "text": "Hipotensão arterial."},
+    {"id": "B", "text": "Taquicardia."},
+    {"id": "C", "text": "Coma."},
+    {"id": "D", "text": "Bradicardia."}
+  ]'::jsonb,
   'B',
-  'Diagnósticos de risco descrevem vulnerabilidade. Como o problema ainda não aconteceu, não existem "Características Definidoras" (Sinais/Sintomas), apenas Fatores de Risco.',
-  'NANDA-I'
+  'A taquicardia é um mecanismo compensatório precoce. A hipotensão é um sinal tardio de choque (descompensado).',
+  'FGV'
 ),
 (
-  'Sistematização da Assistência (SAE)',
-  'A classificação NIC (Nursing Interventions Classification) refere-se a:',
-  '[{"id": "A", "text": "Resultados esperados."}, {"id": "B", "text": "Diagnósticos de enfermagem."}, {"id": "C", "text": "Intervenções de enfermagem."}, {"id": "D", "text": "Avaliação física."}, {"id": "E", "text": "Histórico do paciente."}]'::jsonb,
-  'C',
-  'NIC é a Classificação das Intervenções de Enfermagem, ou seja, o que a enfermagem "faz" para tratar o paciente.',
-  'SAE'
-),
-(
-  'Sistematização da Assistência (SAE)',
-  'O Processo de Enfermagem deve ser realizado em:',
-  '[{"id": "A", "text": "Apenas hospitais públicos."}, {"id": "B", "text": "Apenas unidades de terapia intensiva."}, {"id": "C", "text": "Todos os ambientes, públicos ou privados, onde ocorre o cuidado profissional de enfermagem."}, {"id": "D", "text": "Apenas em pacientes cirúrgicos."}, {"id": "E", "text": "Apenas na atenção primária."}]'::jsonb,
-  'C',
-  'A Resolução COFEN 358/2009 determina a obrigatoriedade do PE em todos os ambientes onde ocorre o cuidado de enfermagem.',
-  'COFEN'
-),
-(
-  'Sistematização da Assistência (SAE)',
-  'A etapa de Avaliação de Enfermagem consiste em:',
-  '[{"id": "A", "text": "Coletar dados iniciais do paciente."}, {"id": "B", "text": "Prescrever os medicamentos."}, {"id": "C", "text": "Verificar se os resultados esperados foram alcançados e reavaliar o plano."}, {"id": "D", "text": "Executar as técnicas de enfermagem."}, {"id": "E", "text": "Definir o diagnóstico médico."}]'::jsonb,
-  'C',
-  'A Avaliação é um processo contínuo de verificação da resposta do paciente às intervenções, determinando se as metas (NOC) foram atingidas.',
-  'SAE'
-),
-
--- FUNDAMENTOS DE ENFERMAGEM (5 Questões)
-(
-  'Fundamentos de Enfermagem',
-  'Ao aferir a pressão arterial, se o manguito utilizado for muito estreito (pequeno) para o braço do paciente, o valor tenderá a ser:',
-  '[{"id": "A", "text": "Falsamente elevado."}, {"id": "B", "text": "Falsamente baixo."}, {"id": "C", "text": "Exato."}, {"id": "D", "text": "Inaudível."}, {"id": "E", "text": "Variável sem padrão."}]'::jsonb,
-  'A',
-  'Um manguito pequeno exige mais pressão para ocluir a artéria, resultando em uma leitura falsamente elevada (hiperestimada). Manguito largo demais subestima a PA.',
-  'SOCESP'
-),
-(
-  'Fundamentos de Enfermagem',
-  'A posição de Fowler é caracterizada por:',
-  '[{"id": "A", "text": "Decúbito dorsal com a cabeceira elevada entre 45° e 60°."}, {"id": "B", "text": "Decúbito lateral esquerdo."}, {"id": "C", "text": "Decúbito ventral."}, {"id": "D", "text": "Pés elevados acima do nível da cabeça."}, {"id": "E", "text": "Cabeceira totalmente abaixada (0°)."}]'::jsonb,
-  'A',
-  'Fowler é a posição semi-sentada (45-60º), muito utilizada para melhorar a expansibilidade torácica e conforto respiratório.',
-  'Fundamentos'
-),
-(
-  'Fundamentos de Enfermagem',
-  'Qual é o local preferencial para administração de injeção intramuscular em crianças menores de 2 anos?',
-  '[{"id": "A", "text": "Região Deltoide."}, {"id": "B", "text": "Região Dorsoglútea."}, {"id": "C", "text": "Região Ventroglútea."}, {"id": "D", "text": "Vasto Lateral da Coxa."}, {"id": "E", "text": "Qualquer região muscular."}]'::jsonb,
-  'D',
-  'O Vasto Lateral da Coxa é o sítio preferencial em < 2 anos devido ao maior desenvolvimento muscular e ausência de grandes nervos/vasos nesta faixa etária.',
-  'MS'
-),
-(
-  'Fundamentos de Enfermagem',
-  'O termo "Bradipneia" refere-se a:',
-  '[{"id": "A", "text": "Frequência cardíaca baixa."}, {"id": "B", "text": "Pressão arterial baixa."}, {"id": "C", "text": "Frequência respiratória abaixo do normal."}, {"id": "D", "text": "Frequência respiratória acima do normal."}, {"id": "E", "text": "Dificuldade para respirar."}]'::jsonb,
-  'C',
-  'Bradipneia = Frequência respiratória lenta. Bradicardia = Frequência cardíaca lenta. Dispneia = Dificuldade respiratória.',
-  'Terminologia'
-),
-(
-  'Fundamentos de Enfermagem',
-  'Na realização do exame físico abdominal, qual a sequência correta das técnicas propedêuticas?',
-  '[{"id": "A", "text": "Inspeção, Palpação, Percussão, Ausculta."}, {"id": "B", "text": "Inspeção, Ausculta, Percussão, Palpação."}, {"id": "C", "text": "Palpação, Percussão, Inspeção, Ausculta."}, {"id": "D", "text": "Ausculta, Inspeção, Palpação, Percussão."}, {"id": "E", "text": "A ordem não interfere no resultado."}]'::jsonb,
+  'Urgência e Emergência',
+  'O que é o "T" da mnemônica 5Hs e 5Ts (causas reversíveis de PCR)?',
+  '[
+    {"id": "A", "text": "Trauma Crânio-Encefálico."},
+    {"id": "B", "text": "Trombose (Coronária ou Pulmonar), Tensão (Pneumotórax), Tamponamento, Toxinas."},
+    {"id": "C", "text": "Temperatura elevada (Hipertermia)."},
+    {"id": "D", "text": "Tireotoxicose."}
+  ]'::jsonb,
   'B',
-  'No abdome, a Ausculta deve preceder a Percussão e a Palpação para não alterar os ruídos hidroaéreos (peristaltismo) através da manipulação.',
-  'Semiologia'
-);
+  'Os 5 Ts são: Tensão (Pneumotórax), Tamponamento cardíaco, Toxinas, Trombose pulmonar e Trombose coronária.',
+  'AHA'
+)
+ON CONFLICT (question) DO NOTHING;
