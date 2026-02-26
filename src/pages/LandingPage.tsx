@@ -162,46 +162,12 @@ const Hero = () => {
 
             {/* IMAGE COLUMN (Right) */}
             <div className="flex-1 relative w-full flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-200">
-                <div className="relative z-10 w-full max-w-[600px]">
-                    {/* Main Visual */}
-                    <div className="relative rounded-2xl border border-white/10 bg-[#0B0F19]/80 backdrop-blur-xl shadow-2xl overflow-hidden p-2 lg:rotate-y-[-12deg] lg:hover:rotate-y-0 transition-transform duration-700 ease-out perspective-1000 group">
-                        {/* Glow effect inside card */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-purple-600/10 opacity-50 group-hover:opacity-100 transition-opacity" />
-                        
-                        <img 
-                            src="/images/screenshot2.png" 
-                            alt="Plataforma Enfermagem Pro" 
-                            className="w-full h-auto rounded-xl shadow-inner opacity-90 border border-white/5"
-                        />
-                        
-                        {/* Floating Element - "Notification" */}
-                        <div className="absolute -bottom-6 -left-6 md:bottom-10 md:-left-10 bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-2xl animate-bounce-slow max-w-[240px] z-20">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 shrink-0 border border-green-500/30">
-                                    <CheckCircle2 className="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Resultado</p>
-                                    <p className="text-white font-bold text-sm leading-tight">Aprovação em Concurso Garantida</p>
-                                </div>
-                            </div>
-                        </div>
-
-                         {/* Floating Element - "Stats" */}
-                         <div className="absolute top-10 -right-10 bg-slate-900/90 backdrop-blur-md p-3 rounded-2xl border border-white/10 shadow-2xl animate-pulse-subtle z-20 hidden md:block">
-                            <div className="flex flex-col gap-1 items-center">
-                                <span className="text-2xl font-black text-white">4.9</span>
-                                <div className="flex text-amber-400 gap-0.5">
-                                    <Star className="w-3 h-3 fill-current" />
-                                    <Star className="w-3 h-3 fill-current" />
-                                    <Star className="w-3 h-3 fill-current" />
-                                    <Star className="w-3 h-3 fill-current" />
-                                    <Star className="w-3 h-3 fill-current" />
-                                </div>
-                                <span className="text-[10px] text-slate-400 font-bold uppercase">Avaliação</span>
-                            </div>
-                        </div>
-                    </div>
+                <div className="relative z-10 w-full max-w-[800px]">
+                    <img 
+                        src="/images/mockup-hero.png" 
+                        alt="Plataforma Enfermagem Pro em dispositivos" 
+                        className="w-full h-auto drop-shadow-2xl"
+                    />
                 </div>
                 
                 {/* Ambient Glow */}
