@@ -1,415 +1,263 @@
--- PACOTE DE REFORÇO 9: DOENÇAS INFECCIOSAS E PARASITÁRIAS
--- Foco: Dengue, TB, Hanseníase, ISTs, Hepatites, Meningites, etc.
-
 INSERT INTO public.questions (category, question, options, "correctAnswer", explanation, banca)
 VALUES
-
-  -- 1. TUBERCULOSE
-  (
-    'Doenças Infecciosas',
-    'No tratamento da Tuberculose com o esquema básico (RIPE), um efeito adverso comum, porém não grave, que deve ser orientado ao paciente para evitar abandono do tratamento é:',
-    '[
-      {"id": "A", "text": "A surdez irreversível causada pela Isoniazida."},
-      {"id": "B", "text": "A coloração alaranjada da urina, suor e lágrimas causada pela Rifampicina."},
-      {"id": "C", "text": "A cegueira noturna causada pela Pirazinamida."},
-      {"id": "D", "text": "A tosse produtiva intensa causada pelo Etambutol."}
-    ]'::jsonb,
-    'B',
-    'A Rifampicina colore os fluidos corporais de laranja/vermelho. O paciente deve ser avisado para não se assustar e pensar que é sangue.',
-    'Ministério da Saúde'
-  ),
-  (
-    'Doenças Infecciosas',
-    'O Teste Rápido Molecular para Tuberculose (TRM-TB) é atualmente o exame de escolha para diagnóstico em muitas situações. Uma de suas principais vantagens em relação à baciloscopia é:',
-    '[
-      {"id": "A", "text": "Detectar simultaneamente o DNA do bacilo e a resistência à Rifampicina em 2 horas."},
-      {"id": "B", "text": "Ser capaz de detectar qualquer micobactéria não tuberculosa."},
-      {"id": "C", "text": "Dispensar a necessidade de coleta de escarro."},
-      {"id": "D", "text": "Ter menor custo e menor sensibilidade."}
-    ]'::jsonb,
-    'A',
-    'O TRM-TB revolucionou o diagnóstico por sua rapidez e por já identificar se o bacilo é resistente ao principal fármaco do esquema (Rifampicina).',
-    'Ministério da Saúde'
-  ),
-
-  -- 2. HANSENÍASE
-  (
-    'Doenças Infecciosas',
-    'Na avaliação neurológica simplificada de um paciente com suspeita de Hanseníase, a perda de sensibilidade nas lesões cutâneas ocorre geralmente na seguinte ordem:',
-    '[
-      {"id": "A", "text": "Tátil, depois Térmica, depois Dolorosa."},
-      {"id": "B", "text": "Dolorosa, depois Tátil, depois Térmica."},
-      {"id": "C", "text": "Térmica, depois Dolorosa, depois Tátil."},
-      {"id": "D", "text": "Todas as sensibilidades são perdidas simultaneamente."}
-    ]'::jsonb,
-    'C',
-    'A sensibilidade térmica (quente/frio) é a primeira a ser afetada, seguida da dolorosa e, por último, a tátil. Por isso o teste térmico é crucial.',
-    'Dermatologia Sanitária'
-  ),
-  (
-    'Doenças Infecciosas',
-    'A reação hansênica Tipo 2 (Eritema Nodoso Hansênico) caracteriza-se clinicamente por:',
-    '[
-      {"id": "A", "text": "Manchas hipocrômicas com bordas mal delimitadas."},
-      {"id": "B", "text": "Nódulos subcutâneos vermelhos e dolorosos, febre e mal-estar geral."},
-      {"id": "C", "text": "Inflamação das lesões pré-existentes (turgescência)."},
-      {"id": "D", "text": "Perda súbita de força muscular sem dor."}
-    ]'::jsonb,
-    'B',
-    'O ENH é uma reação sistêmica mediada por imunocomplexos, comum nos pacientes multibacilares, apresentando nódulos dolorosos e sintomas gerais.',
-    'Ministério da Saúde'
-  ),
-
-  -- 3. DENGUE E ARBOVIROSES
-  (
-    'Doenças Infecciosas',
-    'A Prova do Laço é um exame de triagem obrigatório em todo caso suspeito de Dengue. Ela avalia:',
-    '[
-      {"id": "A", "text": "A contagem de plaquetas."},
-      {"id": "B", "text": "A pressão arterial média."},
-      {"id": "C", "text": "A fragilidade capilar."},
-      {"id": "D", "text": "A coagulação sanguínea (TP e TTPA)."}
-    ]'::jsonb,
-    'C',
-    'A prova do laço positiva (petéquias sob o manguito) indica fragilidade dos vasos capilares, um sinal precoce de risco hemorrágico, mesmo com plaquetas normais.',
-    'Ministério da Saúde'
-  ),
-  (
-    'Doenças Infecciosas',
-    'Na Dengue, a fase crítica da doença, onde há maior risco de choque por extravasamento plasmático, ocorre geralmente:',
-    '[
-      {"id": "A", "text": "No primeiro dia de febre."},
-      {"id": "B", "text": "Durante o período de defervescência (queda da febre), entre o 3º e 7º dia."},
-      {"id": "C", "text": "Após o 10º dia de doença."},
-      {"id": "D", "text": "Apenas se houver sangramento visível."}
-    ]'::jsonb,
-    'B',
-    'Quando a febre vai embora é que o perigo aumenta. É o momento de vigiar os sinais de alarme e o choque.',
-    'Epidemiologia'
-  ),
-  (
-    'Doenças Infecciosas',
-    'Dentre as arboviroses urbanas, qual delas está mais associada à cronificação dos sintomas articulares (artralgia/artrite persistente por meses ou anos)?',
-    '[
-      {"id": "A", "text": "Dengue."},
-      {"id": "B", "text": "Zika."},
-      {"id": "C", "text": "Chikungunya."},
-      {"id": "D", "text": "Febre Amarela."}
-    ]'::jsonb,
-    'C',
-    'A Chikungunya tem forte tropismo articular, podendo deixar sequelas reumatológicas crônicas e incapacitantes.',
-    'Infectologia'
-  ),
-
-  -- 4. HIV/AIDS e ISTs
-  (
-    'Doenças Infecciosas',
-    'Em relação à transmissão vertical do HIV, é CORRETO afirmar:',
-    '[
-      {"id": "A", "text": "O aleitamento materno é permitido se a carga viral da mãe for indetectável."},
-      {"id": "B", "text": "A via de parto deve ser sempre cesárea, independente da carga viral."},
-      {"id": "C", "text": "O aleitamento materno é contraindicado no Brasil, devendo-se utilizar fórmula láctea."},
-      {"id": "D", "text": "O recém-nascido não precisa receber AZT xarope se a mãe tratou durante a gestação."}
-    ]'::jsonb,
-    'C',
-    'No Brasil, o aleitamento cruzado ou materno é contraindicado para mães HIV+, mesmo indetectáveis, devido ao risco residual de transmissão e disponibilidade de fórmula.',
-    'PCDT HIV'
-  ),
-  (
-    'Doenças Infecciosas',
-    'O VDRL é um teste não treponêmico utilizado para rastreio e monitoramento da Sífilis. Sobre ele, é correto afirmar:',
-    '[
-      {"id": "A", "text": "Um resultado reagente confirma o diagnóstico de sífilis, não sendo necessário outro teste."},
-      {"id": "B", "text": "A queda da titulação (ex: 1:64 para 1:16) indica resposta ao tratamento."},
-      {"id": "C", "text": "O resultado torna-se negativo imediatamente após a dose de Penicilina."},
-      {"id": "D", "text": "É um teste treponêmico específico que nunca negativa (cicatriz sorológica)."}
-    ]'::jsonb,
-    'B',
-    'O VDRL é quantitativo. A cura é monitorada pela queda dos títulos (pelo menos 2 diluições ou 4 vezes). O teste treponêmico (rápido/FTA-ABS) é que pode ficar positivo para sempre.',
-    'PCDT IST'
-  ),
-  (
-    'Doenças Infecciosas',
-    'A Profilaxia Pós-Exposição (PEP) para o HIV, em caso de acidente ocupacional com risco ou violência sexual, deve ser iniciada idealmente em até:',
-    '[
-      {"id": "A", "text": "2 horas (máximo 72h)."},
-      {"id": "B", "text": "24 horas (máximo 7 dias)."},
-      {"id": "C", "text": "30 minutos apenas."},
-      {"id": "D", "text": "Aguardar resultado do teste da fonte."}
-    ]'::jsonb,
-    'A',
-    'Quanto mais cedo, melhor. O tempo ideal é nas primeiras 2h. Após 72h, a eficácia é muito reduzida e não é mais indicada.',
-    'Biossegurança'
-  ),
-
-  -- 5. HEPATITES VIRAIS
-  (
-    'Doenças Infecciosas',
-    'Na interpretação sorológica da Hepatite B, a presença isolada do marcador Anti-HBs reagente (positivo) indica:',
-    '[
-      {"id": "A", "text": "Infecção aguda em curso."},
-      {"id": "B", "text": "Hepatite crônica ativa."},
-      {"id": "C", "text": "Imunidade (por vacinação ou cura)."},
-      {"id": "D", "text": "Alta infectividade viral."}
-    ]'::jsonb,
-    'C',
-    'O Anti-HBs é o anticorpo de superfície. Se ele é o único positivo, indica resposta vacinal. Se estiver junto com Anti-HBc IgG, indica cura de infecção passada.',
-    'Imunologia'
-  ),
-  (
-    'Doenças Infecciosas',
-    'A Hepatite A possui transmissão predominantemente:',
-    '[
-      {"id": "A", "text": "Parenteral (sangue)."},
-      {"id": "B", "text": "Sexual."},
-      {"id": "C", "text": "Fecal-oral."},
-      {"id": "D", "text": "Vertical."}
-    ]'::jsonb,
-    'C',
-    'A Hepatite A (e a E) é transmitida pela ingestão de água/alimentos contaminados (ciclo fecal-oral).',
-    'Infectologia'
-  ),
-
-  -- 6. DOENÇAS PREVENÍVEIS POR VACINA
-  (
-    'Doenças Infecciosas',
-    'O Sarampo é uma doença altamente contagiosa. Um sinal patognomônico (característico) que aparece na mucosa oral antes do exantema (manchas na pele) é:',
-    '[
-      {"id": "A", "text": "Placas de Peyer."},
-      {"id": "B", "text": "Manchas de Koplik."},
-      {"id": "C", "text": "Língua em framboesa."},
-      {"id": "D", "text": "Membrana acinzentada."}
-    ]'::jsonb,
-    'B',
-    'As manchas de Koplik são pequenos pontos brancos na parte interna da bochecha, surgindo dias antes da erupção cutânea.',
-    'Pediatria'
-  ),
-  (
-    'Doenças Infecciosas',
-    'O tratamento profilático da Raiva Humana após exposição (mordedura de cão/gato) depende da condição do animal. Se o animal for passível de observação, ele deve ser observado por:',
-    '[
-      {"id": "A", "text": "3 dias."},
-      {"id": "B", "text": "5 dias."},
-      {"id": "C", "text": "10 dias."},
-      {"id": "D", "text": "30 dias."}
-    ]'::jsonb,
-    'C',
-    'Se o cão/gato permanecer saudável por 10 dias após a mordida, ele não estava transmitindo vírus da raiva no momento do acidente, e o tratamento pode ser encerrado.',
-    'Vigilância Epidemiológica'
-  ),
-  (
-    'Doenças Infecciosas',
-    'O Tétano Acidental é prevenido pela vacinação. Em caso de ferimento com alto risco (profundo/sujo) em paciente com vacinação incerta ou < 3 doses, a conduta é:',
-    '[
-      {"id": "A", "text": "Apenas lavar com água e sabão."},
-      {"id": "B", "text": "Vacina antitetânica + Soro Antitetânico (SAT) ou Imunoglobulina (IGHAT)."},
-      {"id": "C", "text": "Apenas reforço da vacina."},
-      {"id": "D", "text": "Antibiótico profilático."}
-    ]'::jsonb,
-    'B',
-    'Ferimento de alto risco em não vacinado exige imunização passiva (soro/imunoglobulina) e ativa (vacina) para proteção imediata e duradoura.',
-    'Emergência'
-  ),
-
-  -- 7. MENINGITES E OUTRAS
-  (
-    'Doenças Infecciosas',
-    'A quimioprofilaxia para contatos íntimos de pacientes com Doença Meningocócica (Meningite) é realizada preferencialmente com:',
-    '[
-      {"id": "A", "text": "Rifampicina."},
-      {"id": "B", "text": "Penicilina."},
-      {"id": "C", "text": "Aciclovir."},
-      {"id": "D", "text": "Dexametasona."}
-    ]'::jsonb,
-    'A',
-    'A Rifampicina é a droga de escolha para eliminar o estado de portador do meningococo na nasofaringe dos contatos.',
-    'Infectologia'
-  ),
-  (
-    'Doenças Infecciosas',
-    'Na Leptospirose, a forma grave (Síndrome de Weil) é caracterizada pela tríade:',
-    '[
-      {"id": "A", "text": "Icterícia, Hemorragia e Insuficiência Renal."},
-      {"id": "B", "text": "Febre, Dor articular e Rash cutâneo."},
-      {"id": "C", "text": "Tosse, Dispneia e Hemoptise."},
-      {"id": "D", "text": "Cefaleia, Rigidez de nuca e Vômitos."}
-    ]'::jsonb,
-    'A',
-    'A tríade clássica de Weil reflete o dano vascular, hepático e renal causado pela leptospira.',
-    'Clínica Médica'
-  ),
-  (
-    'Doenças Infecciosas',
-    'A Leishmaniose Visceral (Calazar) tem como principal vetor no Brasil:',
-    '[
-      {"id": "A", "text": "Mosquito Aedes aegypti."},
-      {"id": "B", "text": "Flebótomo (Lutzomyia longipalpis / Mosquito Palha)."},
-      {"id": "C", "text": "Barbeiro (Triatomíneo)."},
-      {"id": "D", "text": "Carrapato estrela."}
-    ]'::jsonb,
-    'B',
-    'O vetor é o mosquito palha (birigui). O cão é o principal reservatório urbano. O agente é a Leishmania chagasi.',
-    'Saúde Pública'
-  ),
-  (
-    'Doenças Infecciosas',
-    'A Esquistossomose Mansônica é adquirida através:',
-    '[
-      {"id": "A", "text": "Da picada de insetos."},
-      {"id": "B", "text": "Da ingestão de carne de porco malcozida."},
-      {"id": "C", "text": "Da penetração ativa de cercárias na pele ao entrar em contato com água contaminada."},
-      {"id": "D", "text": "Do contato direto pessoa a pessoa."}
-    ]'::jsonb,
-    'C',
-    'O ciclo envolve o caramujo Biomphalaria (hospedeiro intermediário) que libera cercárias na água doce.',
-    'Parasitologia'
-  ),
-  (
-    'Doenças Infecciosas',
-    'O sinal de Romaña (edema bipalpebral unilateral indolor) é um sinal clássico, porém raro, da fase aguda de qual doença?',
-    '[
-      {"id": "A", "text": "Doença de Chagas."},
-      {"id": "B", "text": "Malária."},
-      {"id": "C", "text": "Toxoplasmose."},
-      {"id": "D", "text": "Tracoma."}
-    ]'::jsonb,
-    'A',
-    'Ocorre quando a porta de entrada do Trypanosoma cruzi é a conjuntiva ocular (contato com fezes do barbeiro).',
-    'Infectologia'
-  ),
-
-  -- 8. COVID-19 e INFLUENZA
-  (
-    'Doenças Infecciosas',
-    'O tratamento com Oseltamivir (Tamiflu) para Influenza (Síndrome Respiratória Aguda Grave) tem sua maior eficácia se iniciado:',
-    '[
-      {"id": "A", "text": "Após 7 dias de sintomas."},
-      {"id": "B", "text": "Nas primeiras 48 horas do início dos sintomas."},
-      {"id": "C", "text": "Apenas se houver confirmação laboratorial."},
-      {"id": "D", "text": "Apenas em pacientes intubados."}
-    ]'::jsonb,
-    'B',
-    'O antiviral inibe a neuraminidase e deve ser iniciado precocemente (janela de 48h) para reduzir a replicação viral e complicações.',
-    'Protocolo Influenza'
-  ),
-  (
-    'Doenças Infecciosas',
-    'Sobre a COVID-19, a transmissão ocorre principalmente por:',
-    '[
-      {"id": "A", "text": "Vetor (mosquito)."},
-      {"id": "B", "text": "Fecal-oral."},
-      {"id": "C", "text": "Gotículas respiratórias e aerossóis (em procedimentos geradores de aerossol)."},
-      {"id": "D", "text": "Sangue e derivados."}
-    ]'::jsonb,
-    'C',
-    'A principal via é respiratória. Gotículas para contato próximo e aerossóis em ambientes fechados ou procedimentos como intubação.',
-    'OMS'
-  ),
-
-  -- 9. OUTRAS
-  (
-    'Doenças Infecciosas',
-    'A Escabiose (Sarna) é caracterizada clinicamente por:',
-    '[
-      {"id": "A", "text": "Lesões bolhosas dolorosas."},
-      {"id": "B", "text": "Prurido intenso, predominantemente noturno, em áreas de dobras (interdigitais, punhos, axilas)."},
-      {"id": "C", "text": "Manchas vermelhas que desaparecem à vitropressão."},
-      {"id": "D", "text": "Descamação do couro cabeludo apenas."}
-    ]'::jsonb,
-    'B',
-    'O prurido noturno é clássico, causado pela movimentação do ácaro Sarcoptes scabiei nos túneis epidérmicos.',
-    'Dermatologia'
-  ),
-  (
-    'Doenças Infecciosas',
-    'Em relação à Toxoplasmose na gestação, a principal medida de prevenção primária para gestantes suscetíveis (IgG e IgM negativos) é:',
-    '[
-      {"id": "A", "text": "Vacinação no primeiro trimestre."},
-      {"id": "B", "text": "Uso profilático de Sulfadiazina."},
-      {"id": "C", "text": "Higiene alimentar (não comer carne crua/malpassada, lavar vegetais) e evitar contato com fezes de gatos."},
-      {"id": "D", "text": "Isolamento respiratório."}
-    ]'::jsonb,
-    'C',
-    'Não existe vacina. A prevenção é comportamental/alimentar para evitar a ingestão de oocistos ou cistos teciduais.',
-    'Obstetrícia'
-  ),
-  (
-    'Doenças Infecciosas',
-    'A Febre Maculosa Brasileira é transmitida pela picada de qual vetor?',
-    '[
-      {"id": "A", "text": "Carrapato-estrela (Amblyomma cajennense)."},
-      {"id": "B", "text": "Mosquito Aedes aegypti."},
-      {"id": "C", "text": "Pulga do rato."},
-      {"id": "D", "text": "Piolho."}
-    ]'::jsonb,
-    'A',
-    'Doença grave causada pela Rickettsia rickettsii. O vetor é o carrapato, comum em áreas com capivaras e cavalos.',
-    'Saúde Pública'
-  ),
-  (
-    'Doenças Infecciosas',
-    'Na administração da vacina BCG, a evolução normal da lesão vacinal segue a ordem:',
-    '[
-      {"id": "A", "text": "Mácula -> Pápula -> Pústula -> Úlcera -> Crosta -> Cicatriz."},
-      {"id": "B", "text": "Pápula -> Cicatriz imediata."},
-      {"id": "C", "text": "Vesícula -> Bolha -> Cicatriz."},
-      {"id": "D", "text": "Abscesso frio que exige drenagem."}
-    ]'::jsonb,
-    'A',
-    'O processo inflamatório é esperado e dura cerca de 6 a 12 semanas. Não se deve colocar curativos ou produtos na lesão.',
-    'PNI'
-  ),
-  (
-    'Doenças Infecciosas',
-    'O HPV (Papilomavírus Humano) é o principal agente etiológico associado ao câncer de:',
-    '[
-      {"id": "A", "text": "Ovário."},
-      {"id": "B", "text": "Endométrio."},
-      {"id": "C", "text": "Colo do útero."},
-      {"id": "D", "text": "Mama."}
-    ]'::jsonb,
-    'C',
-    'Os subtipos oncogênicos (16 e 18) são responsáveis por cerca de 70% dos casos de câncer cervical.',
-    'Oncologia'
-  ),
-  (
-    'Doenças Infecciosas',
-    'A gonorreia é uma IST que apresenta, no homem, o quadro clínico clássico de:',
-    '[
-      {"id": "A", "text": "Úlcera indolor (cancro duro)."},
-      {"id": "B", "text": "Uretrite com corrimento purulento abundante e disúria."},
-      {"id": "C", "text": "Verrugas genitais."},
-      {"id": "D", "text": "Vesículas dolorosas em cacho."}
-    ]'::jsonb,
-    'B',
-    'A uretrite gonocócica causa secreção amarela/esverdeada e muita dor ao urinar. Na mulher, muitas vezes é oligossintomática.',
-    'Infectologia'
-  ),
-  (
-    'Doenças Infecciosas',
-    'Qual das hepatites virais abaixo depende obrigatoriamente da presença do vírus da Hepatite B para se replicar (coinfecção ou superinfecção)?',
-    '[
-      {"id": "A", "text": "Hepatite A."},
-      {"id": "B", "text": "Hepatite C."},
-      {"id": "C", "text": "Hepatite D (Delta)."},
-      {"id": "D", "text": "Hepatite E."}
-    ]'::jsonb,
-    'C',
-    'O vírus Delta é um vírus defeituoso que usa o envelope do vírus B (HBsAg) para infectar. Sem o B, o D não existe.',
-    'Virologia'
-  ),
-  (
-    'Doenças Infecciosas',
-    'Para prevenção da Síndrome de Reye, o uso de Ácido Acetilsalicílico (AAS) é contraindicado em crianças e adolescentes com suspeita de:',
-    '[
-      {"id": "A", "text": "Dengue e Varicela."},
-      {"id": "B", "text": "Caxumba."},
-      {"id": "C", "text": "Coqueluche."},
-      {"id": "D", "text": "Meningite."}
-    ]'::jsonb,
-    'A',
-    'O uso de salicilatos em infecções virais (principalmente Varicela e Influenza) pode desencadear a Síndrome de Reye (encefalopatia + disfunção hepática grave). Na Dengue, é contraindicado pelo risco hemorrágico.',
-    'Pediatria'
-  )
-
+(
+  'Biossegurança e Controle de Infecção',
+  'Qual das seguintes doenças exige Precaução por Aerossóis e quarto privativo com pressão negativa?',
+  '[
+    {"id": "A", "text": "Meningite Meningocócica."},
+    {"id": "B", "text": "Tuberculose Pulmonar."},
+    {"id": "C", "text": "Influenza (Gripe)."},
+    {"id": "D", "text": "Hepatite B."}
+  ]'::jsonb,
+  'B',
+  'A Tuberculose é transmitida por aerossóis (partículas < 5 micra que ficam suspensas no ar). Exige máscara N95/PFF2 para o profissional e quarto com pressão negativa.',
+  'VUNESP'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'A Precaução de Contato é indicada para pacientes com infecção ou colonização por microrganismos multirresistentes (ex: KPC, MRSA). Quais são os EPIs obrigatórios para entrar no quarto desse paciente?',
+  '[
+    {"id": "A", "text": "Máscara Cirúrgica e Luvas."},
+    {"id": "B", "text": "Avental (capote) e Luvas."},
+    {"id": "C", "text": "Máscara N95 e Óculos."},
+    {"id": "D", "text": "Apenas higienização das mãos."}
+  ]'::jsonb,
+  'B',
+  'Na precaução de contato, o objetivo é evitar a transmissão por contato direto ou indireto (fômites). O uso de avental e luvas é mandatório ao entrar no quarto ou ter contato com o paciente/ambiente.',
+  'IBFC'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'A Meningite Meningocócica é transmitida por gotículas. Qual a medida de precaução correta?',
+  '[
+    {"id": "A", "text": "Precaução por Aerossóis (Máscara N95)."},
+    {"id": "B", "text": "Precaução de Contato (Avental e Luvas)."},
+    {"id": "C", "text": "Precaução por Gotículas (Máscara Cirúrgica) até 24h de tratamento efetivo."},
+    {"id": "D", "text": "Precaução Padrão apenas."}
+  ]'::jsonb,
+  'C',
+  'A transmissão ocorre por gotículas (partículas > 5 micra) que atingem até 1 metro. A máscara cirúrgica é suficiente. O isolamento pode ser suspenso após 24h de antibioticoterapia.',
+  'FCC'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'De acordo com a NR-32, sobre o descarte de materiais perfurocortantes, é CORRETO afirmar:',
+  '[
+    {"id": "A", "text": "O reencape de agulhas é permitido se feito com uma única mão."},
+    {"id": "B", "text": "Devem ser descartados em sacos plásticos brancos identificados."},
+    {"id": "C", "text": "O recipiente rígido deve ser preenchido até a borda para otimizar o espaço."},
+    {"id": "D", "text": "É vedado o reencape e a desconexão manual de agulhas."}
+  ]'::jsonb,
+  'D',
+  'A NR-32 proíbe terminantemente o reencape e a desconexão manual de agulhas. O descarte deve ser em recipiente rígido, preenchido apenas até o limite de segurança (2/3).',
+  'CEBRASPE'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'O Sarampo e a Varicela são doenças altamente contagiosas. Qual o tipo de precaução indicado para ambas?',
+  '[
+    {"id": "A", "text": "Precaução Padrão."},
+    {"id": "B", "text": "Precaução por Gotículas."},
+    {"id": "C", "text": "Precaução por Aerossóis."},
+    {"id": "D", "text": "Precaução Reversa."}
+  ]'::jsonb,
+  'C',
+  'Ambas são transmitidas por aerossóis (núcleos de gotículas) e exigem máscara N95/PFF2. A Varicela exige também Precaução de Contato devido às lesões cutâneas.',
+  'FGV'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'Qual é a ordem correta de paramentação (colocação dos EPIs) recomendada para minimizar o risco de contaminação?',
+  '[
+    {"id": "A", "text": "Luvas, Máscara, Óculos, Avental."},
+    {"id": "B", "text": "Avental, Máscara, Óculos/Viseira, Luvas."},
+    {"id": "C", "text": "Máscara, Óculos, Luvas, Avental."},
+    {"id": "D", "text": "Avental, Luvas, Máscara, Óculos."}
+  ]'::jsonb,
+  'B',
+  'A sequência recomendada é: 1. Avental; 2. Máscara; 3. Óculos/Viseira; 4. Luvas (cobrindo o punho do avental). A desparamentação segue ordem diferente para evitar autokcontaminação.',
+  'AOCP'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'Em caso de acidente com material biológico (perfurocortante), qual a primeira conduta a ser tomada no local da exposição cutânea?',
+  '[
+    {"id": "A", "text": "Espremer a ferida para estimular o sangramento."},
+    {"id": "B", "text": "Aplicar hipoclorito de sódio (água sanitária)."},
+    {"id": "C", "text": "Lavar exaustivamente com água e sabão."},
+    {"id": "D", "text": "Fazer torniquete proximal."}
+  ]'::jsonb,
+  'C',
+  'A recomendação é lavagem exaustiva com água e sabão. Não se deve espremer (pode aumentar a área de trauma e absorção) nem usar irritantes como cloro ou torniquete.',
+  'CONSULPLAN'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'A RDC 222/2018 classifica os resíduos de serviços de saúde. Os resíduos com presença de agentes biológicos que apresentam risco de infecção (ex: bolsa de sangue, cultura de laboratório) pertencem ao:',
+  '[
+    {"id": "A", "text": "Grupo A."},
+    {"id": "B", "text": "Grupo B."},
+    {"id": "C", "text": "Grupo D."},
+    {"id": "D", "text": "Grupo E."}
+  ]'::jsonb,
+  'A',
+  'Grupo A = Biológico/Infectante. Grupo B = Químico. Grupo C = Radioativo. Grupo D = Comum. Grupo E = Perfurocortante.',
+  'IDECAN'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'A lavagem das mãos é a medida mais importante para prevenir infecções. Qual é o tempo mínimo recomendado para a fricção antisséptica das mãos com preparação alcoólica (álcool gel)?',
+  '[
+    {"id": "A", "text": "10 a 15 segundos."},
+    {"id": "B", "text": "20 a 30 segundos."},
+    {"id": "C", "text": "40 a 60 segundos."},
+    {"id": "D", "text": "1 a 2 minutos."}
+  ]'::jsonb,
+  'B',
+  'Para fricção com álcool, o tempo é 20-30s. Para lavagem com água e sabonete, o tempo é 40-60s.',
+  'EBSERH'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'Para um paciente com Influenza (Gripe H1N1), além da Precaução Padrão, deve-se instituir:',
+  '[
+    {"id": "A", "text": "Precaução de Contato."},
+    {"id": "B", "text": "Precaução por Aerossóis."},
+    {"id": "C", "text": "Precaução por Gotículas."},
+    {"id": "D", "text": "Isolamento Reverso."}
+  ]'::jsonb,
+  'C',
+  'A Influenza é transmitida por gotículas. Profissionais devem usar máscara cirúrgica ao prestar assistência a menos de 1 metro.',
+  'VUNESP'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'A NR-32 estabelece que os trabalhadores com feridas ou lesões nos membros superiores:',
+  '[
+    {"id": "A", "text": "Podem trabalhar normalmente se usarem luvas estéreis."},
+    {"id": "B", "text": "Devem cobrir a lesão com curativo impermeável e trabalhar."},
+    {"id": "C", "text": "Só podem iniciar suas atividades após avaliação médica com liberação para o trabalho."},
+    {"id": "D", "text": "Devem ser demitidos por justa causa."}
+  ]'::jsonb,
+  'C',
+  'A NR-32 é explícita: trabalhadores com lesões nos membros superiores só podem trabalhar após avaliação médica e emissão de laudo de liberação, devido ao risco de contaminação (via de entrada).',
+  'CEBRASPE'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'O que são os "5 Momentos para Higiene das Mãos" definidos pela OMS?',
+  '[
+    {"id": "A", "text": "Ao chegar, antes do almoço, após o almoço, ao sair do banheiro, ao ir embora."},
+    {"id": "B", "text": "Antes de tocar o paciente, antes de procedimento asséptico, após risco de exposição a fluidos, após tocar o paciente, após tocar superfícies próximas."},
+    {"id": "C", "text": "Apenas quando as mãos estiverem visivelmente sujas."},
+    {"id": "D", "text": "Antes e após calçar luvas, antes de comer, após usar o banheiro."}
+  ]'::jsonb,
+  'B',
+  'Os 5 momentos são cruciais para interromper a cadeia de transmissão de infecções cruzadas no ambiente assistencial.',
+  'ANVISA'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'Qual a cor do saco de lixo utilizado para o descarte de resíduos do Grupo A (Infectantes) que não necessitam de tratamento prévio?',
+  '[
+    {"id": "A", "text": "Preto."},
+    {"id": "B", "text": "Vermelho."},
+    {"id": "C", "text": "Branco Leitoso."},
+    {"id": "D", "text": "Laranja."}
+  ]'::jsonb,
+  'C',
+  'Saco Branco Leitoso com símbolo de risco biológico é para infectantes (Grupo A). Saco Preto é para comum (Grupo D). Saco Vermelho é para peças anatômicas (Grupo A3) ou risco A5 (príons).',
+  'IBFC'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'A Escabiose (Sarna) exige qual tipo de precaução além da Padrão?',
+  '[
+    {"id": "A", "text": "Precaução por Gotículas."},
+    {"id": "B", "text": "Precaução de Contato."},
+    {"id": "C", "text": "Precaução por Aerossóis."},
+    {"id": "D", "text": "Nenhuma, apenas Padrão."}
+  ]'::jsonb,
+  'B',
+  'A escabiose é transmitida por contato direto pele a pele ou através de fômites (roupas de cama, toalhas). Exige precaução de contato (avental e luvas) até 24h de tratamento eficaz.',
+  'FCC'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'Sobre a máscara N95/PFF2, é correto afirmar:',
+  '[
+    {"id": "A", "text": "É descartável e deve ser trocada a cada atendimento."},
+    {"id": "B", "text": "Protege contra aerossóis e pode ser reutilizada pelo mesmo profissional, desde que íntegra e seca."},
+    {"id": "C", "text": "Deve ser usada para precaução de gotículas (ex: Meningite)."},
+    {"id": "D", "text": "O paciente com Tuberculose deve usar N95 durante o transporte."}
+  ]'::jsonb,
+  'B',
+  'A N95 pode ser reutilizada por um período determinado pela CCIH (geralmente dias/plantões), se mantida limpa, seca e íntegra. O paciente em transporte usa máscara CIRÚRGICA para conter a fonte.',
+  'EBSERH'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'Qual a vacina recomendada para profissionais de saúde que não possuem imunidade contra a Varicela?',
+  '[
+    {"id": "A", "text": "Tríplice Viral."},
+    {"id": "B", "text": "Dupla Viral."},
+    {"id": "C", "text": "Vacina contra Varicela (monovalente)."},
+    {"id": "D", "text": "Não há recomendação de vacina para adultos."}
+  ]'::jsonb,
+  'C',
+  'Profissionais de saúde suscetíveis devem receber 2 doses da vacina contra Varicela.',
+  'FGV'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'Os resíduos perfurocortantes (Grupo E) devem ser descartados em:',
+  '[
+    {"id": "A", "text": "Saco plástico vermelho."},
+    {"id": "B", "text": "Caixa de papelão comum."},
+    {"id": "C", "text": "Recipiente rígido, estanque, resistente a punctura e com tampa (caixa amarela)."},
+    {"id": "D", "text": "Saco branco leitoso dentro de um balde."}
+  ]'::jsonb,
+  'C',
+  'A caixa de perfurocortante (Descarpack) deve ser rígida para evitar acidentes. Deve ser montada antes do uso e preenchida até o limite de segurança (linha pontilhada).',
+  'AOCP'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'A difteria é uma doença transmitida por:',
+  '[
+    {"id": "A", "text": "Aerossóis."},
+    {"id": "B", "text": "Contato direto apenas."},
+    {"id": "C", "text": "Gotículas."},
+    {"id": "D", "text": "Vetores (mosquitos)."}
+  ]'::jsonb,
+  'C',
+  'A difteria (Corynebacterium diphtheriae) é transmitida por gotículas respiratórias. Exige precaução por gotículas.',
+  'CONSULPLAN'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'O Herpes Zoster DISSEMINADO requer quais precauções?',
+  '[
+    {"id": "A", "text": "Apenas Padrão."},
+    {"id": "B", "text": "Contato."},
+    {"id": "C", "text": "Gotículas e Contato."},
+    {"id": "D", "text": "Aerossóis e Contato."}
+  ]'::jsonb,
+  'D',
+  'O Herpes Zoster disseminado (ou em imunossuprimidos) pode transmitir o vírus da Varicela pelo ar (aerossóis) e pelo contato com as lesões. Exige N95 + Avental/Luvas + Quarto Privativo.',
+  'IDECAN'
+),
+(
+  'Biossegurança e Controle de Infecção',
+  'Qual a principal medida para prevenção de Pneumonia Associada à Ventilação Mecânica (PAV)?',
+  '[
+    {"id": "A", "text": "Troca do circuito do ventilador a cada 24h."},
+    {"id": "B", "text": "Manter a cabeceira elevada entre 30º e 45º."},
+    {"id": "C", "text": "Realizar cultura de secreção traqueal diariamente."},
+    {"id": "D", "text": "Usar antibiótico profilático."}
+  ]'::jsonb,
+  'B',
+  'A elevação da cabeceira (30-45º) é a medida de maior impacto do Bundle de PAV, pois previne a broncoaspiração silenciosa de conteúdo gástrico e orofaríngeo.',
+  'VUNESP'
+)
 ON CONFLICT (question) DO NOTHING;
