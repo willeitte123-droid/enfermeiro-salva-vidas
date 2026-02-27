@@ -447,9 +447,9 @@ const FeaturesList = () => {
   );
 };
 
-// --- STICKY STACK DIAGONAL SHOWCASE SECTION ---
+// --- STICKY STACK DIAGONAL SHOWCASE SECTION (FIXED) ---
 const AppShowcaseSection = () => {
-    // Usando nomes hifenizados corretamente conforme uploads
+    // Lista de telas com nomes normalizados que DEVEM funcionar se o arquivo estiver em public/images
     const screens = [
         { image: "/images/1-banca-de-questoes.png", alt: "Banca de Questões" },
         { image: "/images/2-simulado.png", alt: "Simulados" },
@@ -465,8 +465,8 @@ const AppShowcaseSection = () => {
             {/* Background Studio Light Effect */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
             
-            <div className="max-w-6xl mx-auto px-4 relative z-10">
-                <div className="text-center mb-20"> 
+            <div className="max-w-5xl mx-auto px-4 relative z-10">
+                <div className="text-center mb-24"> 
                     <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 tracking-tight">
                         Por Dentro do <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">EnfermagemPro</span>
                     </h2>
@@ -479,36 +479,51 @@ const AppShowcaseSection = () => {
                 </div>
                 
                 {/* 
-                    STICKY STACK DIAGONAL IMPLEMENTATION
+                    EXTREME ISOMETRIC STACK IMPLEMENTATION
+                    - Sticky behavior requires a very tall container.
+                    - Cards are sticky at slightly different 'top' positions.
+                    - Transform gives the 3D look.
                 */}
-                <div className="flex flex-col items-center w-full relative min-h-[200vh]"> 
+                <div className="relative w-full flex flex-col items-center" style={{ minHeight: '300vh' }}> 
                     {screens.map((screen, index) => (
                         <div 
                             key={index}
-                            className="sticky w-full max-w-4xl rounded-[1.5rem] bg-[#0A0E17] transition-all duration-500"
+                            className="sticky w-full max-w-4xl rounded-xl shadow-[20px_20px_60px_rgba(0,0,0,0.5)] border border-white/10 bg-[#0E121B] overflow-hidden group transition-all duration-500"
                             style={{ 
-                                // O "top" define onde o card para (empilha).
-                                top: `${15 + index * 4}vh`, 
-                                // O margin-bottom cria o espaço de rolagem necessário.
-                                marginBottom: index === screens.length - 1 ? '10vh' : '20vh',
-                                zIndex: index + 1,
-                                // Efeito Diagonal: Deslocamento para a direita e para baixo
-                                marginLeft: `${index * 40}px`,
-                                // 3D Transform
-                                transform: `translateY(${index * 10}px) scale(${1 - (screens.length - 1 - index) * 0.02})`,
-                                boxShadow: `-20px 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05)`
+                                // Sticky Top: Todos param no mesmo lugar ou levemente deslocados verticalmente
+                                top: `${150 + (index * 40)}px`, 
+                                // Z-Index crescente para empilhar corretamente
+                                zIndex: index + 10,
+                                // Offset diagonal agressivo (Margin Left)
+                                marginLeft: `${index * 50}px`, // Desloca cada card 50px para a direita
+                                // Largura reduzida para caber o deslocamento sem quebrar o layout mobile
+                                width: `calc(100% - ${index * 40}px)`,
+                                // Espaçamento entre o fim do scroll de um card e o próximo
+                                marginBottom: index === screens.length - 1 ? '50vh' : '50vh',
+                                // Transformação Isométrica leve ou apenas plana com sombra profunda? O prompt pediu "flat rectangular".
+                                // Vamos manter flat mas com sombra profunda e offset.
+                                transform: `translateY(${index * -10}px)`, // Leve subida visual para compensar o top
                             }}
                         >
                             {/* Inner Highlight Border */}
-                            <div className="absolute inset-0 rounded-[1.5rem] border border-white/10 pointer-events-none z-30" />
+                            <div className="absolute inset-0 rounded-xl border border-white/5 pointer-events-none z-30" />
                             
                             {/* Glass Reflection effect */}
                             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none z-20" />
 
+                            {/* Drop Shadow Profundo entre camadas (simulado via pseudo-elemento ou box-shadow direto) */}
+                            
                             <img 
                                 src={screen.image} 
                                 alt={screen.alt}
-                                className="w-full h-auto object-cover rounded-[1.5rem]"
+                                className="w-full h-auto object-cover object-top block"
+                                loading="lazy"
+                                onError={(e) => {
+                                    // Fallback para caso a imagem esteja quebrada: mostra um placeholder colorido
+                                    e.currentTarget.style.display = 'none';
+                                    e.currentTarget.parentElement!.style.background = `linear-gradient(135deg, #1e293b, #0f172a)`;
+                                    e.currentTarget.parentElement!.innerHTML += `<div class="p-10 text-center text-slate-500 font-mono text-xs">Imagem não carregada: ${screen.image}</div>`;
+                                }}
                             />
                         </div>
                     ))}
