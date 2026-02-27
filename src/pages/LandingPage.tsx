@@ -449,7 +449,7 @@ const FeaturesList = () => {
 
 // --- STICKY STACK SHOWCASE SECTION ---
 const AppShowcaseSection = () => {
-    // Nomes exatos conforme solicitado pelo usuário
+    // Usando nomes hifenizados corretamente conforme uploads e padrão web
     const screens = [
         { image: "/images/1-banca-de-questoes.png", alt: "Banca de Questões" },
         { image: "/images/2-simulado.png", alt: "Simulados" },
@@ -462,11 +462,11 @@ const AppShowcaseSection = () => {
 
     return (
         <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-24 pb-24">
-            {/* Studio Light Effect Background */}
+            {/* Background Studio Light Effect */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
             
             <div className="max-w-5xl mx-auto px-4 relative z-10">
-                <div className="text-center mb-20"> 
+                <div className="text-center mb-24"> 
                     <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 tracking-tight">
                         Por Dentro do <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">EnfermagemPro</span>
                     </h2>
@@ -478,27 +478,23 @@ const AppShowcaseSection = () => {
                     </p>
                 </div>
                 
-                {/* 
-                    STICKY STACK IMPLEMENTATION
-                    - O container principal deve ser alto para permitir scroll.
-                    - Cada item é "sticky" com um "top" diferente.
-                */}
-                <div className="flex flex-col items-center w-full relative"> 
+                <div className="flex flex-col items-center"> 
                     {screens.map((screen, index) => (
                         <div 
                             key={index}
-                            className="sticky w-full max-w-4xl aspect-[16/10] rounded-[2rem] shadow-[0_-15px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 bg-[#0A0E17] overflow-hidden group transition-transform duration-500 origin-top"
+                            className="sticky w-full max-w-4xl rounded-[1.5rem] shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#0A0E17] overflow-hidden group transition-all duration-500 hover:scale-[1.02]"
                             style={{ 
                                 // O "top" define onde o card para (empilha).
-                                // Incrementamos para que fiquem visíveis (efeito cascata).
-                                top: `${130 + index * 40}px`, 
-                                // O margin-bottom cria o espaço de rolagem necessário.
+                                top: `${15 + index * 5}vh`, 
+                                // O marginBottom garante que há espaço de scroll para "chegar" no próximo item
                                 marginBottom: index === screens.length - 1 ? '10vh' : '40vh',
-                                zIndex: index + 1
+                                zIndex: index + 1,
+                                // Adiciona um leve deslocamento horizontal alternado para efeito "baralho"
+                                marginLeft: index % 2 === 0 ? '-20px' : '20px',
                             }}
                         >
-                            {/* Inner Highlight Border for realism */}
-                            <div className="absolute inset-0 rounded-[2rem] border border-white/5 pointer-events-none z-20" />
+                            {/* Inner Highlight Border */}
+                            <div className="absolute inset-0 rounded-[1.5rem] border border-white/5 pointer-events-none z-20" />
                             
                             {/* Glass Reflection effect */}
                             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none z-10" />
@@ -506,7 +502,8 @@ const AppShowcaseSection = () => {
                             <img 
                                 src={screen.image} 
                                 alt={screen.alt}
-                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
+                                className="w-full h-auto object-cover object-top"
+                                loading="lazy"
                             />
                         </div>
                     ))}
