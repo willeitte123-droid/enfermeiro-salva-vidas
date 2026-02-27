@@ -447,26 +447,26 @@ const FeaturesList = () => {
   );
 };
 
-// --- STICKY STACK DIAGONAL SHOWCASE SECTION (FIXED) ---
+// --- EXTREME 3D ISOMETRIC STACK SHOWCASE SECTION ---
 const AppShowcaseSection = () => {
-    // Lista de telas com nomes normalizados que DEVEM funcionar se o arquivo estiver em public/images
+    // Definindo imagens com espaços e nomes hifenizados (fallback)
     const screens = [
-        { image: "/images/1-banca-de-questoes.png", alt: "Banca de Questões" },
+        { image: "/images/1-banca de questoes.png", alt: "Banca de Questões" },
         { image: "/images/2-simulado.png", alt: "Simulados" },
-        { image: "/images/3-trilha-de-estudos.png", alt: "Trilha de Estudos" },
+        { image: "/images/3-trilha de estudos.png", alt: "Trilha de Estudos" },
         { image: "/images/4-revisao.png", alt: "Área de Revisão" },
-        { image: "/images/5-area-do-concurseiro.png", alt: "Área do Concurseiro" },
+        { image: "/images/5-area do concurseiro.png", alt: "Área do Concurseiro" },
         { image: "/images/6-flashcards.png", alt: "Flashcards" },
         { image: "/images/7-desempenho.png", alt: "Análise de Desempenho" },
     ];
 
     return (
-        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-24 pb-24 overflow-visible">
+        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-32 pb-40 overflow-hidden">
             {/* Background Studio Light Effect */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
             
-            <div className="max-w-5xl mx-auto px-4 relative z-10">
-                <div className="text-center mb-24"> 
+            <div className="max-w-6xl mx-auto px-4 relative z-10">
+                <div className="text-center mb-32"> 
                     <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 tracking-tight">
                         Por Dentro do <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">EnfermagemPro</span>
                     </h2>
@@ -480,49 +480,84 @@ const AppShowcaseSection = () => {
                 
                 {/* 
                     EXTREME ISOMETRIC STACK IMPLEMENTATION
-                    - Sticky behavior requires a very tall container.
-                    - Cards are sticky at slightly different 'top' positions.
-                    - Transform gives the 3D look.
+                    - perspective: 2000px on container
+                    - position: sticky on items
+                    - transform: rotateX(50deg) rotateZ(30deg) rotateY(-20deg) (Isometric Angle)
+                    - Aggressive diagonal offset via margin-left and top
                 */}
-                <div className="relative w-full flex flex-col items-center" style={{ minHeight: '300vh' }}> 
+                <div 
+                    className="relative w-full flex flex-col items-center" 
+                    style={{ 
+                        perspective: '2000px', 
+                        minHeight: '350vh', // Altura suficiente para scroll
+                        paddingBottom: '20vh'
+                    }}
+                > 
                     {screens.map((screen, index) => (
                         <div 
                             key={index}
-                            className="sticky w-full max-w-4xl rounded-xl shadow-[20px_20px_60px_rgba(0,0,0,0.5)] border border-white/10 bg-[#0E121B] overflow-hidden group transition-all duration-500"
+                            className="sticky w-[85%] max-w-3xl rounded-xl transition-all duration-500 ease-out will-change-transform shadow-2xl"
                             style={{ 
-                                // Sticky Top: Todos param no mesmo lugar ou levemente deslocados verticalmente
-                                top: `${150 + (index * 40)}px`, 
-                                // Z-Index crescente para empilhar corretamente
-                                zIndex: index + 10,
-                                // Offset diagonal agressivo (Margin Left)
-                                marginLeft: `${index * 50}px`, // Desloca cada card 50px para a direita
-                                // Largura reduzida para caber o deslocamento sem quebrar o layout mobile
-                                width: `calc(100% - ${index * 40}px)`,
-                                // Espaçamento entre o fim do scroll de um card e o próximo
-                                marginBottom: index === screens.length - 1 ? '50vh' : '50vh',
-                                // Transformação Isométrica leve ou apenas plana com sombra profunda? O prompt pediu "flat rectangular".
-                                // Vamos manter flat mas com sombra profunda e offset.
-                                transform: `translateY(${index * -10}px)`, // Leve subida visual para compensar o top
+                                // Sticky Top com offset progressivo para criar a "escada"
+                                top: `${15 + index * 6}vh`, 
+                                // Z-Index crescente
+                                zIndex: index + 1,
+                                // Deslocamento diagonal agressivo para a esquerda e topo
+                                marginLeft: `${index * -50}px`,
+                                // Espaço entre o fim do scroll deste card e o próximo
+                                marginBottom: index === screens.length - 1 ? '10vh' : '30vh',
+                                // Transformação Isométrica Extrema
+                                transform: `
+                                    rotateX(40deg) 
+                                    rotateZ(-15deg) 
+                                    rotateY(10deg)
+                                    translateZ(${index * 50}px)
+                                `,
+                                // Sombra profunda e contrastante para separar camadas
+                                boxShadow: `
+                                    -30px 30px 60px rgba(0,0,0,0.8), 
+                                    -1px -1px 0 rgba(255,255,255,0.1) inset
+                                `,
+                                backgroundColor: '#1e293b' // Fallback bg
                             }}
                         >
-                            {/* Inner Highlight Border */}
-                            <div className="absolute inset-0 rounded-xl border border-white/5 pointer-events-none z-30" />
+                            {/* Borda brilhante interna */}
+                            <div className="absolute inset-0 rounded-xl border border-white/10 pointer-events-none z-30" />
                             
-                            {/* Glass Reflection effect */}
-                            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none z-20" />
+                            {/* Reflexo de vidro */}
+                            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/10 to-transparent pointer-events-none z-20" />
 
-                            {/* Drop Shadow Profundo entre camadas (simulado via pseudo-elemento ou box-shadow direto) */}
-                            
                             <img 
                                 src={screen.image} 
                                 alt={screen.alt}
-                                className="w-full h-auto object-cover object-top block"
+                                className="w-full h-auto object-cover rounded-xl block"
                                 loading="lazy"
                                 onError={(e) => {
-                                    // Fallback para caso a imagem esteja quebrada: mostra um placeholder colorido
+                                    // Fallback para caso a imagem esteja quebrada:
+                                    // Tenta carregar com hífens se falhar com espaços, ou vice-versa
+                                    const currentSrc = e.currentTarget.src;
+                                    const filename = currentSrc.split('/').pop();
+                                    if (filename && filename.includes('%20')) { // Se tem espaço (encoded), tenta com hífen
+                                        const newSrc = currentSrc.replace(/%20/g, '-');
+                                        if (newSrc !== currentSrc) {
+                                             e.currentTarget.src = newSrc;
+                                             return;
+                                        }
+                                    }
+                                    
+                                    // Se falhar tudo, mostra placeholder estilizado
                                     e.currentTarget.style.display = 'none';
-                                    e.currentTarget.parentElement!.style.background = `linear-gradient(135deg, #1e293b, #0f172a)`;
-                                    e.currentTarget.parentElement!.innerHTML += `<div class="p-10 text-center text-slate-500 font-mono text-xs">Imagem não carregada: ${screen.image}</div>`;
+                                    e.currentTarget.parentElement!.style.height = '400px';
+                                    e.currentTarget.parentElement!.style.display = 'flex';
+                                    e.currentTarget.parentElement!.style.alignItems = 'center';
+                                    e.currentTarget.parentElement!.style.justifyContent = 'center';
+                                    e.currentTarget.parentElement!.style.background = `linear-gradient(135deg, #0f172a, #1e293b)`;
+                                    e.currentTarget.parentElement!.innerHTML = `
+                                        <div class="text-center p-8">
+                                            <div class="text-4xl mb-4">🖼️</div>
+                                            <p class="text-slate-400 font-mono text-sm">${screen.alt}</p>
+                                        </div>
+                                    `;
                                 }}
                             />
                         </div>
@@ -570,6 +605,7 @@ const TestimonialsSection = () => {
                       src={src} 
                       alt={`Depoimento ${index + 1}`} 
                       className="w-full h-auto rounded-2xl shadow-xl border border-white/10 hover:border-blue-500/30 transition-all duration-300"
+                      onError={(e) => e.currentTarget.style.display = 'none'} 
                    />
                 </div>
              ))}
@@ -594,6 +630,7 @@ const Hero = () => {
           src="/images/background-hero.png" 
           alt="Enfermagem Background" 
           className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
+          onError={(e) => e.currentTarget.style.display = 'none'}
         />
         <div className="absolute inset-0 bg-[#02040a]/70" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#02040a]/80 via-transparent to-[#02040a]" />
@@ -655,6 +692,7 @@ const Hero = () => {
                         src="/images/mockup-hero.png" 
                         alt="Plataforma Enfermagem Pro em dispositivos" 
                         className="w-full h-auto drop-shadow-2xl"
+                        onError={(e) => e.currentTarget.style.display = 'none'}
                     />
                 </div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-600/20 blur-[100px] -z-10 rounded-full mix-blend-screen" />
