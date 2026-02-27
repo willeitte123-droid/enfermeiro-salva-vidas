@@ -503,27 +503,23 @@ const AppShowcaseSection = () => {
                     {screens.map((screen, index) => (
                         <div
                             key={index}
-                            className="sticky w-full max-w-5xl aspect-[16/10] rounded-xl shadow-2xl overflow-hidden bg-transparent"
+                            className="sticky w-full max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
                             style={{
-                                // A lógica de top incrementada cria o efeito de empilhamento (cascading)
-                                // Cada card para um pouco mais abaixo que o anterior, revelando o título do próximo
-                                top: `${150 + index * 40}px`,
-                                marginBottom: '10vh', // Espaço para rolar
+                                top: `${120 + index * 40}px`, // Stacking offset
+                                marginBottom: '20px', // Small space between fully scrolled cards
                                 zIndex: index + 1,
-                                boxShadow: '0 -20px 60px -10px rgba(0, 0, 0, 0.5)'
                             }}
                         >
-                            {/* Imagem direta, sem molduras extras, pois a imagem já é o mockup */}
-                            <img
+                             <img
                                 src={screen.image}
                                 alt={screen.title}
-                                className="w-full h-full object-contain rounded-xl"
+                                className="w-full h-auto block"
                             />
                         </div>
                     ))}
                     
                     {/* Espaço extra no final para o último card não ficar preso */}
-                    <div className="h-[40vh]" />
+                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
