@@ -473,7 +473,7 @@ const FeaturesList = () => {
   );
 };
 
-// Seção de Showcase com Efeito Cascading Windows REAL (Sticky Stack)
+// Seção de Showcase com Efeito Cascading Windows Real (Imagens puras empilhadas)
 const AppShowcaseSection = () => {
     const images = [
         "/images/showcase-1.png",
@@ -503,20 +503,20 @@ const AppShowcaseSection = () => {
                     {images.map((image, index) => (
                         <div
                             key={index}
-                            className="sticky w-full mb-[30vh] last:mb-0"
+                            className="sticky w-full mb-[40vh] last:mb-0"
                             style={{
-                                // O 'top' define onde a imagem "trava" no scroll.
-                                // O incremento de 40px cria o efeito de escalonamento (uma atrás da outra aparecendo o topo).
-                                top: `${100 + index * 40}px`,
+                                // Todas as imagens grudam no mesmo ponto do topo (top-24)
+                                // O z-index garante que a nova imagem cubra a anterior
+                                top: `96px`, 
                                 zIndex: index + 1,
                             }}
                         >
-                            {/* Imagem Pura, sem mockups ou textos extras */}
+                            {/* Imagem Pura, sem mockups, sem bordas pesadas, sem textos */}
                             <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_-20px_50px_-10px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811]">
                                 <img
                                     src={image}
                                     alt={`Tela ${index + 1}`}
-                                    className="w-full h-auto block object-cover"
+                                    className="w-full h-auto block"
                                 />
                                 {/* Overlay sutil para dar profundidade entre as camadas */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
