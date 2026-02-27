@@ -112,7 +112,7 @@ const ParticlesBackground = () => {
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
       {particles.map((p) => (
         <div
           key={p.id}
@@ -133,19 +133,29 @@ const Hero = () => {
   return (
     <>
     <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/images/background-hero.png" 
+          alt="Enfermagem Background" 
+          className="w-full h-full object-cover opacity-10"
+        />
+        <div className="absolute inset-0 bg-[#02040a]/90 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent" />
+      </div>
+
       {/* Background Gradients matching high-end style */}
-      <div className="absolute top-0 right-0 w-[70%] h-[120%] bg-gradient-to-l from-blue-900/30 via-purple-900/10 to-transparent pointer-events-none blur-3xl" />
+      <div className="absolute top-0 right-0 w-[70%] h-[120%] bg-gradient-to-l from-blue-900/30 via-purple-900/10 to-transparent pointer-events-none blur-3xl z-10" />
       <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#02040a] to-transparent z-20 pointer-events-none" />
       
       {/* Partículas Leves */}
       <ParticlesBackground />
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 relative z-20">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             
             {/* TEXT COLUMN (Left) */}
             <div className="flex-1 text-left max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {/* Badge Removido conforme solicitado */}
+                {/* Badge Removido */}
                 <div className="mb-6"></div>
 
                 {/* Title */}
