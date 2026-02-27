@@ -104,13 +104,12 @@ const ParticlesBackground = () => {
   const [particles, setParticles] = useState<{ id: number; top: string; left: string; delay: string; duration: string }[]>([]);
 
   useEffect(() => {
-    // Generate particles only on client side
     const newParticles = Array.from({ length: 30 }).map((_, i) => ({
       id: i,
       top: `${Math.random() * 100}%`,
       left: `${Math.random() * 100}%`,
       delay: `${Math.random() * 5}s`,
-      duration: `${Math.random() * 10 + 10}s`, // 10s to 20s
+      duration: `${Math.random() * 10 + 10}s`,
     }));
     setParticles(newParticles);
   }, []);
@@ -136,17 +135,10 @@ const ParticlesBackground = () => {
 const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: string; spo2: number; resp: number; temp: number }) => {
   return (
     <div className="bg-black/90 border-4 border-slate-800 rounded-xl p-3 sm:p-6 shadow-2xl relative overflow-hidden font-mono mb-4 w-full">
-      {/* Reflexo de tela */}
       <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none" />
-      
-      {/* Grid de fundo */}
-      <div className="absolute inset-0 opacity-10" 
-           style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
-      />
+      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8 relative z-10">
-        
-        {/* ECG / FC */}
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-green-500">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">ECG</span>
@@ -158,7 +150,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
             </span>
             <span className="text-[10px] sm:text-xs text-green-500/70 mb-1">bpm</span>
           </div>
-          {/* Linha de ECG simulada */}
           <div className="h-6 sm:h-8 w-full overflow-hidden relative opacity-70">
              {hr > 0 && (
                <svg viewBox="0 0 100 20" className="w-full h-full stroke-green-500 fill-none stroke-[2px]">
@@ -169,23 +160,17 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
              )}
           </div>
         </div>
-
-        {/* PA (PNI) */}
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-red-500">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">PNI</span>
             <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
-            <span className="text-2xl sm:text-4xl font-black leading-none text-red-500">
-              {bp}
-            </span>
+            <span className="text-2xl sm:text-4xl font-black leading-none text-red-500">{bp}</span>
             <span className="text-[10px] sm:text-xs text-red-500/70 mb-1">mmHg</span>
           </div>
           <span className="text-[9px] sm:text-xs text-red-500/50 block mt-0.5 sm:mt-1">PAM: {(parseInt(bp.split('/')[0]) + 2 * parseInt(bp.split('/')[1])) / 3 | 0}</span>
         </div>
-
-        {/* SpO2 */}
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
@@ -206,8 +191,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
              )}
           </div>
         </div>
-
-        {/* FR / Temp */}
         <div className="flex flex-col justify-between h-full gap-2">
           <div className="flex items-end justify-between">
             <div className="text-yellow-400 text-[10px] sm:text-xs font-bold uppercase">RESP</div>
@@ -218,7 +201,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
             <div className="text-xl sm:text-2xl font-bold text-purple-400 leading-none">{temp}°C</div>
           </div>
         </div>
-
       </div>
     </div>
   );
@@ -237,7 +219,6 @@ const ClinicalCaseSection = () => {
 
   return (
     <section className="py-24 bg-[#050811] relative overflow-hidden">
-      {/* Lights Background */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-indigo-900/10 blur-[100px] pointer-events-none" />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -251,7 +232,6 @@ const ClinicalCaseSection = () => {
         </div>
 
         <div className="max-w-4xl mx-auto">
-            {/* Monitor Section */}
             <VitalsMonitorDemo 
                hr={selectedOption === 'A' || selectedOption === 'B' ? 0 : 45} 
                bp={selectedOption === 'A' || selectedOption === 'B' ? "0/0" : "220/110"} 
@@ -260,7 +240,6 @@ const ClinicalCaseSection = () => {
                temp={37.0} 
             />
 
-            {/* Case Content Card */}
             <Card className={cn(
                "border-2 shadow-2xl transition-all duration-500", 
                selectedOption === null ? "border-yellow-500/30 bg-yellow-950/10" :
@@ -303,7 +282,6 @@ const ClinicalCaseSection = () => {
                     </div>
                  )}
 
-                 {/* Options */}
                  {selectedOption === null ? (
                     <div className="space-y-3 pt-4">
                         <p className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">Qual sua conduta?</p>
@@ -369,23 +347,18 @@ const VideoSection = () => {
           </p>
         </div>
 
-        {/* Video Container */}
         <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-          {/* Mock Video UI */}
           <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
-             {/* Thumbnail background */}
              <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
              </div>
              
-             {/* Play Button */}
              <div className="relative z-10 group-hover:scale-110 transition-transform duration-300">
                 <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-sm cursor-pointer shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]">
                    <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
                 </div>
              </div>
              
-             {/* Video UI Overlay */}
              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
                 <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-4">
                    <div className="h-full w-1/3 bg-blue-500 rounded-full" />
@@ -474,26 +447,24 @@ const FeaturesList = () => {
   );
 };
 
-// Seção Showcase: Sticky Stack com estrutura e visual "Dark Studio"
+// --- STICKY STACK SHOWCASE SECTION ---
 const AppShowcaseSection = () => {
-    // Usando os nomes exatos fornecidos pelo usuário, assumindo que estarão na pasta correta
     const screens = [
-        { image: "/images/1-banca-de-questoes.png", alt: "Banca de Questões" },
+        { image: "/images/1-banca de questoes.png", alt: "Banca de Questões" },
         { image: "/images/2-simulado.png", alt: "Simulados" },
-        { image: "/images/3-trilha-de-estudos.png", alt: "Trilha de Estudos" },
-        { image: "/images/4-revisao.png", alt: "Área de Revisão" },
-        { image: "/images/5-area-do-concurseiro.png", alt: "Área do Concurseiro" },
+        { image: "/images/3-trilha de estudos.png", alt: "Trilha de Estudos" },
+        { image: "/images/4-revisão.png", alt: "Área de Revisão" },
+        { image: "/images/5-area do concurseiro.png", alt: "Área do Concurseiro" },
         { image: "/images/6-flashcards.png", alt: "Flashcards" },
         { image: "/images/7-desempenho.png", alt: "Análise de Desempenho" },
     ];
 
     return (
         <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-24 pb-24">
-            {/* Background Studio Light Effect */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
             
             <div className="max-w-5xl mx-auto px-4 relative z-10">
-                <div className="text-center mb-20"> 
+                <div className="text-center mb-24"> 
                     <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 tracking-tight">
                         Por Dentro do <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">EnfermagemPro</span>
                     </h2>
@@ -509,29 +480,28 @@ const AppShowcaseSection = () => {
                     {screens.map((screen, index) => (
                         <div 
                             key={index}
-                            className="sticky w-full max-w-4xl aspect-[16/10] rounded-[2rem] shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#0A0E17] overflow-hidden group transition-transform duration-500"
+                            className="sticky w-full max-w-4xl"
                             style={{ 
-                                top: `${120 + index * 50}px`, // Aumentei um pouco o espaçamento do topo
-                                marginBottom: '15vh', // Ajuste no margin bottom para fluidez
+                                // O efeito "Cascade" funciona definindo um top que incrementa, permitindo que o próximo item
+                                // "cubra" o anterior parcialmente ou totalmente.
+                                top: `${15 + index * 5}vh`, 
+                                // O marginBottom garante que há espaço de scroll para "chegar" no próximo item
+                                marginBottom: index === screens.length - 1 ? '10vh' : '40vh',
                                 zIndex: index + 1
                             }}
                         >
-                            {/* Inner Highlight Border */}
-                            <div className="absolute inset-0 rounded-[2rem] border border-white/5 pointer-events-none z-20" />
-                            
-                            {/* Glass Reflection effect */}
-                            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none z-10" />
+                            <div className="aspect-[16/10] rounded-[2rem] shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#0A0E17] overflow-hidden group transition-all duration-500 hover:scale-[1.02]">
+                                <div className="absolute inset-0 rounded-[2rem] border border-white/5 pointer-events-none z-20" />
+                                <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none z-10" />
 
-                            <img 
-                                src={screen.image} 
-                                alt={screen.alt}
-                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
-                            />
+                                <img 
+                                    src={screen.image} 
+                                    alt={screen.alt}
+                                    className="w-full h-full object-cover object-top"
+                                />
+                            </div>
                         </div>
                     ))}
-                    
-                    {/* Espaçador final para permitir que o último card seja visto antes da próxima seção */}
-                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
@@ -564,14 +534,11 @@ const TestimonialsSection = () => {
          </div>
       </div>
 
-      {/* Infinite Carousel */}
       <div className="relative w-full overflow-hidden">
-          {/* Gradient Masks for fade effect */}
           <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#020617] to-transparent z-20 pointer-events-none" />
           <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#020617] to-transparent z-20 pointer-events-none" />
 
           <div className="flex w-max animate-marquee-slow hover:[animation-play-state:paused]">
-             {/* Duplicate the array to create seamless loop */}
              {[...testimonials, ...testimonials].map((src, index) => (
                 <div key={index} className="mx-4 w-[280px] sm:w-[350px] flex-shrink-0">
                    <img 
@@ -597,35 +564,28 @@ const Hero = () => {
   return (
     <>
     <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
-      {/* Background Image Layer - Updated opacity and overlay */}
       <div className="absolute inset-0 z-0">
         <img 
           src="/images/background-hero.png" 
           alt="Enfermagem Background" 
           className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
         />
-        {/* Dark overlay with gradient to ensure text readability while keeping image visible */}
         <div className="absolute inset-0 bg-[#02040a]/70" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#02040a]/80 via-transparent to-[#02040a]" />
       </div>
 
-      {/* Vibrant Gradient Blobs (Glow effects) */}
       <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen z-0 animate-pulse-subtle" />
       <div className="absolute bottom-[10%] right-[-5%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen z-0" />
       <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen z-0" />
       
-      {/* Partículas Leves */}
       <ParticlesBackground />
 
       <div className="container mx-auto px-4 md:px-6 relative z-20">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             
-            {/* TEXT COLUMN (Left) */}
             <div className="flex-1 text-left max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {/* Badge Removido */}
                 <div className="mb-6"></div>
 
-                {/* Title */}
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
                     Você não está atrasada. <br/>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
@@ -633,20 +593,17 @@ const Hero = () => {
                     </span>
                 </h1>
 
-                {/* Subtitle */}
                 <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
                     O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
                     <br/><br/>
                     <span className="text-slate-100 font-medium">Sem conteúdo solto. Sem bagunça. Sem sensação de estar sempre correndo atrás.</span>
                 </p>
 
-                {/* CTA Area */}
                 <div className="flex flex-col sm:flex-row items-center gap-6">
                     <Button size="lg" className="h-14 px-8 text-base md:text-lg font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-[0_0_40px_-10px_rgba(37,99,235,0.6)] hover:shadow-[0_0_60px_-10px_rgba(37,99,235,0.8)] transition-all hover:scale-105 w-full sm:w-auto">
                         Quero estudar com organização de verdade
                     </Button>
                     
-                    {/* Price Info */}
                     <div className="flex flex-col items-start min-w-fit">
                          <span className="text-xs text-slate-400 line-through font-medium">DE R$ 97,00</span>
                          <div className="flex items-baseline gap-1">
@@ -656,7 +613,6 @@ const Hero = () => {
                     </div>
                 </div>
                 
-                {/* Progress Bar */}
                 <div className="mt-8 max-w-sm">
                    <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden backdrop-blur-sm">
                       <div className="bg-gradient-to-r from-blue-500 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
@@ -668,7 +624,6 @@ const Hero = () => {
                 </div>
             </div>
 
-            {/* IMAGE COLUMN (Right) - Com animação de flutuação */}
             <div className="flex-1 relative w-full flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-200">
                 <div className="relative z-10 w-full max-w-[800px] animate-float">
                     <img 
@@ -677,8 +632,6 @@ const Hero = () => {
                         className="w-full h-auto drop-shadow-2xl"
                     />
                 </div>
-                
-                {/* Ambient Glow behind mockup */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-600/20 blur-[100px] -z-10 rounded-full mix-blend-screen" />
             </div>
         </div>
@@ -712,7 +665,6 @@ export default function LandingPage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-               {/* PLANO FREE */}
                <Card className="bg-slate-900/40 border-white/10 hover:border-white/20 transition-all flex flex-col">
                   <CardHeader>
                      <CardTitle className="text-white text-xl">Essencial</CardTitle>
@@ -733,7 +685,6 @@ export default function LandingPage() {
                   </CardContent>
                </Card>
 
-               {/* PLANO PRO */}
                <Card className="bg-slate-900 border-blue-500 shadow-[0_0_40px_rgba(37,99,235,0.15)] relative scale-105 z-10 flex flex-col">
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider shadow-lg">
                      Mais Vendido
@@ -764,7 +715,6 @@ export default function LandingPage() {
                   </CardContent>
                </Card>
 
-               {/* PLANO VITALÍCIO */}
                <Card className="bg-slate-900/40 border-white/10 hover:border-white/20 transition-all flex flex-col">
                   <CardHeader>
                      <CardTitle className="text-white text-xl">Vitalício</CardTitle>
@@ -789,7 +739,6 @@ export default function LandingPage() {
          </div>
       </section>
 
-      {/* FINAL CTA */}
       <section className="py-32 relative overflow-hidden bg-blue-600">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent" />
@@ -804,7 +753,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="bg-[#020617] py-12 border-t border-white/5">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
