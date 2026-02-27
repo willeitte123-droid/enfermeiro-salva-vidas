@@ -351,6 +351,55 @@ const ClinicalCaseSection = () => {
   );
 };
 
+const VideoSection = () => {
+  return (
+    <section className="py-24 bg-[#02040a] relative overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center max-w-4xl mx-auto mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
+            Veja como o EnfermagemPro <br className="hidden md:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+              organiza seus estudos na prática
+            </span>
+          </h2>
+          <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+            Nada de teoria solta. Aqui você vê exatamente como o sistema funciona por dentro e como ele elimina a insegurança nos estudos e no plantão.
+          </p>
+        </div>
+
+        {/* Video Container */}
+        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+          {/* Mock Video UI */}
+          <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
+             {/* Thumbnail background */}
+             <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+             </div>
+             
+             {/* Play Button */}
+             <div className="relative z-10 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-sm cursor-pointer shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]">
+                   <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
+                </div>
+             </div>
+             
+             {/* Video UI Overlay */}
+             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+                <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-4">
+                   <div className="h-full w-1/3 bg-blue-500 rounded-full" />
+                </div>
+                <div className="flex justify-between text-white/80 text-sm font-medium">
+                   <span>02:14</span>
+                   <span>05:30</span>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const FeaturesList = () => {
   const features = [
     {
