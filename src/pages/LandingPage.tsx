@@ -473,8 +473,9 @@ const FeaturesList = () => {
   );
 };
 
-// Nova Seção AppShowcase com Efeito Sticky Stack e Imagens Clean
+// Seção de Showcase com Efeito Cascading Windows (Escalonamento)
 const AppShowcaseSection = () => {
+    // Imagens que serão empilhadas
     const screens = [
         { title: "Banca de Questões", image: "/images/showcase-1.png" },
         { title: "Arena de Simulado", image: "/images/showcase-2.png" },
@@ -489,7 +490,7 @@ const AppShowcaseSection = () => {
         <section id="showcase" className="bg-[#050811] relative border-t border-white/5">
             <div className="max-w-6xl mx-auto px-4 relative z-10 pt-24 pb-24">
                 
-                {/* Header sticky for context while scrolling */}
+                {/* Header fixo para contexto enquanto rola */}
                 <div className="text-center mb-16 sticky top-24 z-0 bg-[#050811]/90 backdrop-blur-md py-4 transition-all duration-300">
                     <h2 className="text-3xl md:text-5xl font-bold text-white mb-3">
                         Por Dentro da <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">EnfermagemPro</span>
@@ -505,13 +506,15 @@ const AppShowcaseSection = () => {
                             key={index}
                             className="sticky w-full max-w-5xl aspect-[16/10] rounded-xl shadow-2xl overflow-hidden bg-transparent"
                             style={{
+                                // A lógica de top incrementada cria o efeito de empilhamento (cascading)
+                                // Cada card para um pouco mais abaixo que o anterior, revelando o título do próximo
                                 top: `${150 + index * 40}px`,
-                                marginBottom: '10vh', 
+                                marginBottom: '10vh', // Espaço para rolar
                                 zIndex: index + 1,
-                                boxShadow: '0 -20px 60px -10px rgba(0, 0, 0, 0.8)'
+                                boxShadow: '0 -20px 60px -10px rgba(0, 0, 0, 0.5)'
                             }}
                         >
-                            {/* Imagem direta, sem molduras ou barras */}
+                            {/* Imagem direta, sem molduras extras, pois a imagem já é o mockup */}
                             <img
                                 src={screen.image}
                                 alt={screen.title}
@@ -520,6 +523,7 @@ const AppShowcaseSection = () => {
                         </div>
                     ))}
                     
+                    {/* Espaço extra no final para o último card não ficar preso */}
                     <div className="h-[40vh]" />
                 </div>
             </div>
