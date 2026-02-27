@@ -475,6 +475,7 @@ const FeaturesList = () => {
 
 // Nova Seção AppShowcase com Efeito Sticky Stack e Imagens Clean (CORRIGIDO)
 const AppShowcaseSection = () => {
+    // Imagens que serão empilhadas
     const screens = [
         { title: "Banca de Questões", image: "/images/showcase-1.png" },
         { title: "Arena de Simulado", image: "/images/showcase-2.png" },
@@ -502,31 +503,27 @@ const AppShowcaseSection = () => {
                     {screens.map((screen, index) => (
                         <div
                             key={index}
-                            className="sticky w-full max-w-5xl rounded-2xl shadow-2xl border border-white/10 bg-[#050811] overflow-hidden" 
+                            className="sticky w-full max-w-5xl aspect-[16/10] rounded-xl shadow-2xl overflow-hidden bg-transparent"
                             style={{
-                                top: `${140 + index * 40}px`, // Stacking offset
-                                marginBottom: '40vh', // Space to scroll before next card arrives
+                                // A lógica de top incrementada cria o efeito de empilhamento (cascading)
+                                // Cada card para um pouco mais abaixo que o anterior, revelando o título do próximo
+                                top: `${150 + index * 40}px`,
+                                marginBottom: '10vh', // Espaço para rolar
                                 zIndex: index + 1,
+                                boxShadow: '0 -20px 60px -10px rgba(0, 0, 0, 0.5)'
                             }}
                         >
-                             {/* Header do Card (Opcional, mas ajuda no efeito baralho) */}
-                             <div className="bg-[#0f1320] px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                   <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50" />
-                                   <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
-                                   <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50" />
-                                </div>
-                                <h3 className="text-sm font-medium text-slate-400 uppercase tracking-widest">{screen.title}</h3>
-                                <div className="w-10" />
-                             </div>
-
-                             <img
+                            {/* Imagem direta, sem molduras extras, pois a imagem já é o mockup */}
+                            <img
                                 src={screen.image}
                                 alt={screen.title}
-                                className="w-full h-auto block"
+                                className="w-full h-full object-contain rounded-xl"
                             />
                         </div>
                     ))}
+                    
+                    {/* Espaço extra no final para o último card não ficar preso */}
+                    <div className="h-[40vh]" />
                 </div>
             </div>
         </section>
