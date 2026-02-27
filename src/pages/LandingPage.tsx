@@ -473,7 +473,7 @@ const FeaturesList = () => {
   );
 };
 
-// Seção de Showcase com Efeito Cascading Windows Real (Imagens puras empilhadas)
+// Seção Showcase com Efeito de Empilhamento (Sticky Stack) - CORRIGIDA
 const AppShowcaseSection = () => {
     const images = [
         "/images/showcase-1.png",
@@ -486,10 +486,10 @@ const AppShowcaseSection = () => {
     ];
 
     return (
-        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-24 pb-40">
-            <div className="container mx-auto px-4 relative z-10">
-                
-                <div className="text-center mb-32 max-w-3xl mx-auto">
+        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 py-24">
+            <div className="max-w-6xl mx-auto px-4 relative z-10">
+                {/* Header fixo para contexto visual */}
+                <div className="text-center mb-20 max-w-3xl mx-auto">
                     <h2 className="text-3xl md:text-6xl font-black text-white mb-6 tracking-tight">
                         Por Dentro da <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Plataforma</span>
                     </h2>
@@ -498,31 +498,35 @@ const AppShowcaseSection = () => {
                     </p>
                 </div>
 
-                {/* Container do Efeito Cascading */}
-                <div className="relative flex flex-col items-center w-full max-w-5xl mx-auto">
+                <div className="relative flex flex-col items-center w-full">
                     {images.map((image, index) => (
                         <div
                             key={index}
-                            className="sticky w-full mb-[40vh] last:mb-0"
+                            className="sticky w-full max-w-5xl"
                             style={{
-                                // Todas as imagens grudam no mesmo ponto do topo (top-24)
-                                // O z-index garante que a nova imagem cubra a anterior
-                                top: `96px`, 
+                                // Efeito de empilhamento: todas param no topo, mas com um pequeno incremento
+                                // para criar a sensação de "baralho"
+                                top: `${150 + index * 10}px`, 
+                                
+                                // O margin-bottom é CRUCIAL para que haja "espaço de scroll" entre uma imagem e outra.
+                                // Sem isso, todas grudam juntas instantaneamente.
+                                marginBottom: '60vh', 
                                 zIndex: index + 1,
                             }}
                         >
-                            {/* Imagem Pura, sem mockups, sem bordas pesadas, sem textos */}
-                            <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_-20px_50px_-10px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811]">
+                            <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#050811] transform transition-transform duration-300">
+                                {/* Imagem Pura */}
                                 <img
                                     src={image}
-                                    alt={`Tela ${index + 1}`}
-                                    className="w-full h-auto block"
+                                    alt={`Tela da Plataforma ${index + 1}`}
+                                    className="w-full h-full object-cover"
                                 />
-                                {/* Overlay sutil para dar profundidade entre as camadas */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
                             </div>
                         </div>
                     ))}
+                    
+                    {/* Espaçador final para garantir que o último item possa ser apreciado */}
+                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
