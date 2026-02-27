@@ -5,7 +5,7 @@ import {
   Timer, ArrowRight, Zap, 
   Syringe, LayoutDashboard,
   Stethoscope, GraduationCap, Star,
-  Menu, X
+  Menu, X, Play
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,29 +71,24 @@ const Navbar = () => {
 
 const InfiniteMarquee = () => {
   const words = [
-    "Banca de Questões",
-    "Área de Simulado",
-    "Trilha de Estudos",
-    "Flashcards",
-    "Video Aulas",
-    "Área do Concurseiro",
-    "Revisões Atualizadas",
-    "Práticas Clínicas"
+    "CONCURSOS", "RESIDÊNCIA", "CÁLCULOS", "FARMACOLOGIA", "TERAPIA INTENSIVA",
+    "SAÚDE PÚBLICA", "URGÊNCIA", "SAE", "EVOLUÇÃO", "TÉCNICAS", "ANATOMIA", 
+    "MEDICAMENTOS", "SIMULADOS", "FLASHCARDS", "LEGISLAÇÃO SUS"
   ];
 
   return (
-    <div className="w-full border-y border-white/10 bg-[#050811] overflow-hidden py-8 relative z-20">
+    <div className="w-full border-y border-white/5 bg-[#050811] overflow-hidden py-6 relative z-20">
       {/* Gradient Masks */}
-      <div className="absolute top-0 left-0 h-full w-32 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 right-0 h-full w-32 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
       
       <div className="flex animate-marquee whitespace-nowrap items-center">
-        {[...words, ...words, ...words, ...words].map((word, i) => (
+        {[...words, ...words, ...words].map((word, i) => (
           <div key={i} className="flex items-center mx-8">
-            <span className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 uppercase tracking-tight cursor-default">
+            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-600 to-slate-800 uppercase tracking-tight opacity-50 hover:opacity-100 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default">
               {word}
             </span>
-            <div className="ml-16 w-2 h-2 rounded-full bg-blue-500/50" />
+            <div className="ml-16 w-2 h-2 rounded-full bg-blue-900/50" />
           </div>
         ))}
       </div>
@@ -121,7 +116,7 @@ const ParticlesBackground = () => {
       {particles.map((p) => (
         <div
           key={p.id}
-          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-20 animate-drift"
+          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-30 animate-drift"
           style={{
             top: p.top,
             left: p.left,
@@ -228,6 +223,55 @@ const Hero = () => {
     
     <InfiniteMarquee />
     </>
+  );
+};
+
+const VideoSection = () => {
+  return (
+    <section className="py-24 bg-[#02040a] relative overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center max-w-4xl mx-auto mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
+            Veja como o EnfermagemPro <br className="hidden md:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+              organiza seus estudos na prática
+            </span>
+          </h2>
+          <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+            Nada de teoria solta. Aqui você vê exatamente como o sistema funciona por dentro e como ele elimina a insegurança nos estudos e no plantão.
+          </p>
+        </div>
+
+        {/* Video Container */}
+        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+          {/* Mock Video UI */}
+          <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
+             {/* Thumbnail background */}
+             <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+             </div>
+             
+             {/* Play Button */}
+             <div className="relative z-10 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-sm cursor-pointer shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]">
+                   <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
+                </div>
+             </div>
+             
+             {/* Video UI Overlay */}
+             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+                <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-4">
+                   <div className="h-full w-1/3 bg-blue-500 rounded-full" />
+                </div>
+                <div className="flex justify-between text-white/80 text-sm font-medium">
+                   <span>02:14</span>
+                   <span>05:30</span>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
@@ -346,6 +390,8 @@ export default function LandingPage() {
     <div className="min-h-screen bg-[#02040a] text-white font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden">
       <Navbar />
       <Hero />
+      <InfiniteMarquee />
+      <VideoSection />
       <FeaturesBento />
       
       {/* PRICING SECTION */}
