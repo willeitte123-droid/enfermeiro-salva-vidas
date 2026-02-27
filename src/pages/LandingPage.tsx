@@ -39,9 +39,9 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
           <button onClick={() => scrollToSection("funcionalidades")} className="hover:text-white transition-colors">Funcionalidades</button>
+          <button onClick={() => scrollToSection("showcase")} className="hover:text-white transition-colors">Plataforma</button>
           <button onClick={() => scrollToSection("depoimentos")} className="hover:text-white transition-colors">Depoimentos</button>
           <button onClick={() => scrollToSection("planos")} className="hover:text-white transition-colors">Planos</button>
-          <button onClick={() => scrollToSection("faq")} className="hover:text-white transition-colors">FAQ</button>
         </div>
 
         <div className="hidden md:flex items-center gap-4">
@@ -62,6 +62,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-[#030014] border-b border-white/10 p-6 flex flex-col gap-6 animate-in slide-in-from-top-5 shadow-2xl">
           <button onClick={() => scrollToSection("funcionalidades")} className="text-slate-300 hover:text-white text-left text-lg">Funcionalidades</button>
+          <button onClick={() => scrollToSection("showcase")} className="text-slate-300 hover:text-white text-left text-lg">Plataforma</button>
           <button onClick={() => scrollToSection("planos")} className="text-slate-300 hover:text-white text-left text-lg">Planos</button>
           <Link to="/login" className="text-slate-300 hover:text-white text-lg">Login</Link>
           <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-full h-12 text-lg">Começar Agora</Button>
@@ -472,6 +473,65 @@ const FeaturesList = () => {
   );
 };
 
+// Nova Seção AppShowcase com Efeito Sticky Stack
+const AppShowcaseSection = () => {
+    const screens = [
+        { title: "Banca de Questões", image: "/images/showcase-1.png" },
+        { title: "Arena de Simulado", image: "/images/showcase-2.png" },
+        { title: "Trilha de Estudos", image: "/images/showcase-3.png" },
+        { title: "Área de Revisão", image: "/images/showcase-4.png" },
+        { title: "Área do Concurseiro", image: "/images/showcase-5.png" },
+        { title: "Flashcards", image: "/images/showcase-6.png" },
+        { title: "Análise de Desempenho", image: "/images/showcase-7.png" }
+    ];
+
+    return (
+        <section id="showcase" className="bg-[#050811] relative border-t border-white/5">
+            <div className="max-w-5xl mx-auto px-4 relative z-10 pt-24 pb-24">
+                <div className="text-center mb-24">
+                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                        Por Dentro da <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">EnfermagemPro</span>
+                    </h2>
+                    <p className="text-slate-300 max-w-xl mx-auto text-lg md:text-xl font-light mb-4">
+                        Um sistema completo para transformar estudo solto em evolução real
+                    </p>
+                    <p className="text-slate-400 max-w-xl mx-auto text-base">
+                        Cada área da plataforma foi construída para eliminar insegurança e criar domínio progresso.
+                    </p>
+                </div>
+
+                <div className="flex flex-col items-center">
+                    {screens.map((screen, index) => (
+                        <div
+                            key={index}
+                            className="sticky w-full max-w-5xl aspect-[16/10] rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl border-[6px] md:border-[8px] border-[#1e293b] bg-slate-900 overflow-hidden"
+                            style={{
+                                top: `${120 + index * 40}px`,
+                                marginBottom: '15vh',
+                                zIndex: index + 1,
+                                boxShadow: '0 -20px 60px -10px rgba(0, 0, 0, 0.8)'
+                            }}
+                        >
+                            <div className="absolute top-0 left-0 w-full h-8 bg-[#1e293b] flex items-center px-4 gap-2 z-10">
+                                <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                                <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                                <div className="w-3 h-3 rounded-full bg-green-500/50" />
+                            </div>
+                            <img
+                                src={screen.image}
+                                alt={screen.title}
+                                className="w-full h-full object-cover pt-8"
+                            />
+                        </div>
+                    ))}
+                    
+                    <div className="h-[20vh]" />
+                </div>
+            </div>
+        </section>
+    );
+};
+
 const TestimonialsSection = () => {
   const testimonials = [
     "/images/testimonial-1.png",
@@ -632,6 +692,7 @@ export default function LandingPage() {
       <VideoSection />
       <ClinicalCaseSection />
       <FeaturesList />
+      <AppShowcaseSection /> {/* New Section Added Here */}
       <TestimonialsSection />
       
       {/* PRICING SECTION */}
