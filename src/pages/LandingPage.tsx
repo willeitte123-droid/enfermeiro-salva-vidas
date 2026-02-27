@@ -447,9 +447,9 @@ const FeaturesList = () => {
   );
 };
 
-// --- STICKY STACK SHOWCASE SECTION ---
+// --- STICKY STACK DIAGONAL SHOWCASE SECTION ---
 const AppShowcaseSection = () => {
-    // Usando nomes hifenizados corretamente conforme uploads e padrão web
+    // Usando nomes hifenizados corretamente conforme uploads
     const screens = [
         { image: "/images/1-banca-de-questoes.png", alt: "Banca de Questões" },
         { image: "/images/2-simulado.png", alt: "Simulados" },
@@ -461,12 +461,12 @@ const AppShowcaseSection = () => {
     ];
 
     return (
-        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-24 pb-24">
+        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-24 pb-24 overflow-visible">
             {/* Background Studio Light Effect */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
             
-            <div className="max-w-5xl mx-auto px-4 relative z-10">
-                <div className="text-center mb-24"> 
+            <div className="max-w-6xl mx-auto px-4 relative z-10">
+                <div className="text-center mb-20"> 
                     <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 tracking-tight">
                         Por Dentro do <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">EnfermagemPro</span>
                     </h2>
@@ -478,38 +478,40 @@ const AppShowcaseSection = () => {
                     </p>
                 </div>
                 
-                <div className="flex flex-col items-center"> 
+                {/* 
+                    STICKY STACK DIAGONAL IMPLEMENTATION
+                */}
+                <div className="flex flex-col items-center w-full relative min-h-[200vh]"> 
                     {screens.map((screen, index) => (
                         <div 
                             key={index}
-                            className="sticky w-full max-w-4xl rounded-[1.5rem] shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#0A0E17] overflow-hidden group transition-all duration-500 hover:scale-[1.02]"
+                            className="sticky w-full max-w-4xl rounded-[1.5rem] bg-[#0A0E17] transition-all duration-500"
                             style={{ 
                                 // O "top" define onde o card para (empilha).
-                                top: `${15 + index * 5}vh`, 
-                                // O marginBottom garante que há espaço de scroll para "chegar" no próximo item
-                                marginBottom: index === screens.length - 1 ? '10vh' : '40vh',
+                                top: `${15 + index * 4}vh`, 
+                                // O margin-bottom cria o espaço de rolagem necessário.
+                                marginBottom: index === screens.length - 1 ? '10vh' : '20vh',
                                 zIndex: index + 1,
-                                // Adiciona um leve deslocamento horizontal alternado para efeito "baralho"
-                                marginLeft: index % 2 === 0 ? '-20px' : '20px',
+                                // Efeito Diagonal: Deslocamento para a direita e para baixo
+                                marginLeft: `${index * 40}px`,
+                                // 3D Transform
+                                transform: `translateY(${index * 10}px) scale(${1 - (screens.length - 1 - index) * 0.02})`,
+                                boxShadow: `-20px 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05)`
                             }}
                         >
                             {/* Inner Highlight Border */}
-                            <div className="absolute inset-0 rounded-[1.5rem] border border-white/5 pointer-events-none z-20" />
+                            <div className="absolute inset-0 rounded-[1.5rem] border border-white/10 pointer-events-none z-30" />
                             
                             {/* Glass Reflection effect */}
-                            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none z-10" />
+                            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none z-20" />
 
                             <img 
                                 src={screen.image} 
                                 alt={screen.alt}
-                                className="w-full h-auto object-cover object-top"
-                                loading="lazy"
+                                className="w-full h-auto object-cover rounded-[1.5rem]"
                             />
                         </div>
                     ))}
-                    
-                    {/* Espaçador final para permitir que o último card seja visto antes da próxima seção */}
-                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
