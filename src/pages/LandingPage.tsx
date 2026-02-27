@@ -73,24 +73,29 @@ const Navbar = () => {
 
 const InfiniteMarquee = () => {
   const words = [
-    "CONCURSOS", "RESIDÊNCIA", "CÁLCULOS", "FARMACOLOGIA", "TERAPIA INTENSIVA",
-    "SAÚDE PÚBLICA", "URGÊNCIA", "SAE", "EVOLUÇÃO", "TÉCNICAS", "ANATOMIA", 
-    "MEDICAMENTOS", "SIMULADOS", "FLASHCARDS", "LEGISLAÇÃO SUS"
+    "Banca de Questões",
+    "Área de Simulado",
+    "Trilha de Estudos",
+    "Flashcards",
+    "Video Aulas",
+    "Área do Concurseiro",
+    "Revisões Atualizadas",
+    "Práticas Clínicas"
   ];
 
   return (
-    <div className="w-full border-y border-white/5 bg-[#050811] overflow-hidden py-6 relative z-20">
+    <div className="w-full border-y border-white/10 bg-[#050811] overflow-hidden py-8 relative z-20">
       {/* Gradient Masks */}
-      <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 h-full w-32 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 h-full w-32 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
       
       <div className="flex animate-marquee whitespace-nowrap items-center">
-        {[...words, ...words, ...words].map((word, i) => (
+        {[...words, ...words, ...words, ...words].map((word, i) => (
           <div key={i} className="flex items-center mx-8">
-            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-600 to-slate-800 uppercase tracking-tight opacity-50 hover:opacity-100 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default">
+            <span className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 uppercase tracking-tight cursor-default">
               {word}
             </span>
-            <div className="ml-16 w-2 h-2 rounded-full bg-blue-900/50" />
+            <div className="ml-16 w-2 h-2 rounded-full bg-blue-500/50" />
           </div>
         ))}
       </div>
@@ -118,7 +123,7 @@ const ParticlesBackground = () => {
       {particles.map((p) => (
         <div
           key={p.id}
-          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-30 animate-drift"
+          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-20 animate-drift"
           style={{
             top: p.top,
             left: p.left,
@@ -353,7 +358,6 @@ const ClinicalCaseSection = () => {
 
 const Hero = () => {
   return (
-    <>
     <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
       {/* Background Image Layer - Updated opacity and overlay */}
       <div className="absolute inset-0 z-0">
@@ -442,9 +446,6 @@ const Hero = () => {
         </div>
       </div>
     </section>
-    
-    <InfiniteMarquee />
-    </>
   );
 };
 
