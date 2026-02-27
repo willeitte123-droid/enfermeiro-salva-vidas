@@ -473,9 +473,8 @@ const FeaturesList = () => {
   );
 };
 
-// Nova Seção AppShowcase com Efeito Cascading Windows Real (Imagens limpas)
+// Seção de Showcase com Efeito Cascading Windows REAL (Sticky Stack)
 const AppShowcaseSection = () => {
-    // Lista de imagens para o efeito de empilhamento
     const images = [
         "/images/showcase-1.png",
         "/images/showcase-2.png",
@@ -487,48 +486,43 @@ const AppShowcaseSection = () => {
     ];
 
     return (
-        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 py-24">
-            <div className="max-w-6xl mx-auto px-4 relative z-10">
-                {/* Header fixo para contexto visual */}
-                <div className="text-center mb-20 max-w-3xl mx-auto">
-                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                        Por Dentro da <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">EnfermagemPro</span>
+        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-24 pb-40">
+            <div className="container mx-auto px-4 relative z-10">
+                
+                <div className="text-center mb-32 max-w-3xl mx-auto">
+                    <h2 className="text-3xl md:text-6xl font-black text-white mb-6 tracking-tight">
+                        Por Dentro da <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Plataforma</span>
                     </h2>
                     <p className="text-slate-400 text-lg md:text-xl font-light leading-relaxed">
                         Um sistema completo para transformar estudo solto em evolução real.
                     </p>
                 </div>
 
-                <div className="relative flex flex-col items-center w-full">
+                {/* Container do Efeito Cascading */}
+                <div className="relative flex flex-col items-center w-full max-w-5xl mx-auto">
                     {images.map((image, index) => (
                         <div
                             key={index}
-                            className="sticky w-full max-w-5xl"
+                            className="sticky w-full mb-[30vh] last:mb-0"
                             style={{
-                                // Lógica de empilhamento:
-                                // 'top' define onde a imagem "para" de rolar e começa a grudar.
-                                // Incrementamos o top para criar o efeito de cascata visível (como um baralho se abrindo).
-                                top: `${120 + index * 40}px`,
-                                
-                                // Margin bottom cria o espaço de rolagem necessário antes da próxima imagem "chegar" e grudar.
-                                // Se for pequeno, elas grudam muito rápido. Se for grande, a rolagem é mais suave.
-                                marginBottom: '100px', 
+                                // O 'top' define onde a imagem "trava" no scroll.
+                                // O incremento de 40px cria o efeito de escalonamento (uma atrás da outra aparecendo o topo).
+                                top: `${100 + index * 40}px`,
                                 zIndex: index + 1,
                             }}
                         >
-                            <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#050811]">
-                                {/* Imagem limpa, sem headers, sem textos */}
+                            {/* Imagem Pura, sem mockups ou textos extras */}
+                            <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_-20px_50px_-10px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811]">
                                 <img
                                     src={image}
-                                    alt={`Tela da Plataforma ${index + 1}`}
-                                    className="w-full h-full object-cover"
+                                    alt={`Tela ${index + 1}`}
+                                    className="w-full h-auto block object-cover"
                                 />
+                                {/* Overlay sutil para dar profundidade entre as camadas */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
                             </div>
                         </div>
                     ))}
-                    
-                    {/* Espaçador final para garantir que o último item possa ser apreciado antes da próxima seção 'empurrar' */}
-                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
