@@ -116,7 +116,7 @@ const ParticlesBackground = () => {
       {particles.map((p) => (
         <div
           key={p.id}
-          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-20 animate-drift"
+          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-30 animate-drift"
           style={{
             top: p.top,
             left: p.left,
@@ -133,19 +133,22 @@ const Hero = () => {
   return (
     <>
     <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
-      {/* Background Image Layer */}
+      {/* Background Image Layer - Updated opacity and overlay */}
       <div className="absolute inset-0 z-0">
         <img 
           src="/images/background-hero.png" 
           alt="Enfermagem Background" 
-          className="w-full h-full object-cover opacity-10"
+          className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
         />
-        <div className="absolute inset-0 bg-[#02040a]/90 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent" />
+        {/* Dark overlay with gradient to ensure text readability while keeping image visible */}
+        <div className="absolute inset-0 bg-[#02040a]/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#02040a]/80 via-transparent to-[#02040a]" />
       </div>
 
-      {/* Background Gradients matching high-end style */}
-      <div className="absolute top-0 right-0 w-[70%] h-[120%] bg-gradient-to-l from-blue-900/30 via-purple-900/10 to-transparent pointer-events-none blur-3xl z-10" />
-      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#02040a] to-transparent z-20 pointer-events-none" />
+      {/* Vibrant Gradient Blobs (Glow effects) */}
+      <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen z-0 animate-pulse-subtle" />
+      <div className="absolute bottom-[10%] right-[-5%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen z-0" />
+      <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen z-0" />
       
       {/* Partículas Leves */}
       <ParticlesBackground />
@@ -159,7 +162,7 @@ const Hero = () => {
                 <div className="mb-6"></div>
 
                 {/* Title */}
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
                     Você não está atrasada. <br/>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
                         Você só está estudando do jeito errado.
@@ -167,10 +170,10 @@ const Hero = () => {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed font-light">
+                <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
                     O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
                     <br/><br/>
-                    <span className="text-slate-200 font-medium">Sem conteúdo solto. Sem bagunça. Sem sensação de estar sempre correndo atrás.</span>
+                    <span className="text-slate-100 font-medium">Sem conteúdo solto. Sem bagunça. Sem sensação de estar sempre correndo atrás.</span>
                 </p>
 
                 {/* CTA Area */}
@@ -181,9 +184,9 @@ const Hero = () => {
                     
                     {/* Price Info */}
                     <div className="flex flex-col items-start min-w-fit">
-                         <span className="text-xs text-slate-500 line-through font-medium">DE R$ 97,00</span>
+                         <span className="text-xs text-slate-400 line-through font-medium">DE R$ 97,00</span>
                          <div className="flex items-baseline gap-1">
-                            <span className="text-sm text-slate-400">POR</span>
+                            <span className="text-sm text-slate-300">POR</span>
                             <span className="text-xl font-bold text-white">R$ 29,90</span>
                          </div>
                     </div>
@@ -191,10 +194,10 @@ const Hero = () => {
                 
                 {/* Progress Bar */}
                 <div className="mt-8 max-w-sm">
-                   <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                   <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden backdrop-blur-sm">
                       <div className="bg-gradient-to-r from-blue-500 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
                    </div>
-                   <p className="text-xs text-slate-500 mt-2 font-medium flex justify-between">
+                   <p className="text-xs text-slate-400 mt-2 font-medium flex justify-between">
                       <span>85% das vagas preenchidas</span>
                       <span className="text-white">Corra!</span>
                    </p>
@@ -211,8 +214,8 @@ const Hero = () => {
                     />
                 </div>
                 
-                {/* Ambient Glow */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-blue-600/20 blur-[120px] -z-10 rounded-full mix-blend-screen" />
+                {/* Ambient Glow behind mockup */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-600/20 blur-[100px] -z-10 rounded-full mix-blend-screen" />
             </div>
         </div>
       </div>
