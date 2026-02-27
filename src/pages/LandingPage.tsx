@@ -473,7 +473,7 @@ const FeaturesList = () => {
   );
 };
 
-// Seção Showcase com Efeito de Empilhamento (Sticky Stack) - CORRIGIDA
+// Seção Showcase: Sticky Stack com estrutura fiel à referência fornecida
 const AppShowcaseSection = () => {
     const images = [
         "/images/showcase-1.png",
@@ -486,47 +486,38 @@ const AppShowcaseSection = () => {
     ];
 
     return (
-        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 py-24">
-            <div className="max-w-6xl mx-auto px-4 relative z-10">
-                {/* Header fixo para contexto visual */}
-                <div className="text-center mb-20 max-w-3xl mx-auto">
-                    <h2 className="text-3xl md:text-6xl font-black text-white mb-6 tracking-tight">
+        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-24 pb-24">
+            <div className="max-w-5xl mx-auto px-4 relative z-10">
+                <div className="text-center mb-16"> 
+                    <h2 className="text-3xl md:text-6xl font-black text-white mb-3 tracking-tight">
                         Por Dentro da <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Plataforma</span>
                     </h2>
-                    <p className="text-slate-400 text-lg md:text-xl font-light leading-relaxed">
+                    <p className="text-slate-400 max-w-xl mx-auto text-base md:text-lg font-light leading-relaxed">
                         Um sistema completo para transformar estudo solto em evolução real.
                     </p>
                 </div>
-
-                <div className="relative flex flex-col items-center w-full">
+                
+                <div className="flex flex-col items-center"> 
                     {images.map((image, index) => (
-                        <div
+                        <div 
                             key={index}
-                            className="sticky w-full max-w-5xl"
-                            style={{
-                                // Efeito de empilhamento: todas param no topo, mas com um pequeno incremento
-                                // para criar a sensação de "baralho"
-                                top: `${150 + index * 10}px`, 
-                                
-                                // O margin-bottom é CRUCIAL para que haja "espaço de scroll" entre uma imagem e outra.
-                                // Sem isso, todas grudam juntas instantaneamente.
-                                marginBottom: '60vh', 
-                                zIndex: index + 1,
+                            className="sticky w-full max-w-4xl aspect-[16/10] rounded-[2rem] shadow-2xl border-4 border-white/10 bg-[#050811] overflow-hidden"
+                            style={{ 
+                                top: `${120 + index * 40}px`,
+                                marginBottom: '20vh',
+                                zIndex: index + 1
                             }}
                         >
-                            <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#050811] transform transition-transform duration-300">
-                                {/* Imagem Pura */}
-                                <img
-                                    src={image}
-                                    alt={`Tela da Plataforma ${index + 1}`}
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
+                            <img 
+                                src={image} 
+                                alt={`Tela ${index + 1}`}
+                                className="w-full h-full object-cover"
+                            />
                         </div>
                     ))}
                     
-                    {/* Espaçador final para garantir que o último item possa ser apreciado */}
-                    <div className="h-[20vh]" />
+                    {/* Espaçador final igual à referência */}
+                    <div className="h-[40vh]" />
                 </div>
             </div>
         </section>
