@@ -473,7 +473,6 @@ const FeaturesList = () => {
   );
 };
 
-// Nova Seção AppShowcase com Efeito Sticky Stack
 const AppShowcaseSection = () => {
     const screens = [
         { title: "Banca de Questões", image: "/images/showcase-1.png" },
@@ -488,11 +487,11 @@ const AppShowcaseSection = () => {
     return (
         <section id="showcase" className="bg-[#050811] relative border-t border-white/5">
             <div className="max-w-5xl mx-auto px-4 relative z-10 pt-24 pb-24">
-                <div className="text-center mb-24">
-                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-3">
                         Por Dentro da <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">EnfermagemPro</span>
                     </h2>
-                    <p className="text-slate-300 max-w-xl mx-auto text-lg md:text-xl font-light mb-4">
+                    <p className="text-slate-300 max-w-xl mx-auto text-lg md:text-xl font-light mb-2">
                         Um sistema completo para transformar estudo solto em evolução real
                     </p>
                     <p className="text-slate-400 max-w-xl mx-auto text-base">
@@ -504,15 +503,15 @@ const AppShowcaseSection = () => {
                     {screens.map((screen, index) => (
                         <div
                             key={index}
-                            className="sticky w-full max-w-5xl aspect-[16/10] rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl border-[6px] md:border-[8px] border-[#1e293b] bg-slate-900 overflow-hidden"
+                            className="sticky w-full max-w-4xl aspect-[16/10] rounded-[2rem] shadow-2xl border-[6px] border-[#1e293b] bg-slate-900 overflow-hidden"
                             style={{
                                 top: `${120 + index * 40}px`,
-                                marginBottom: '15vh',
+                                marginBottom: '20vh',
                                 zIndex: index + 1,
                                 boxShadow: '0 -20px 60px -10px rgba(0, 0, 0, 0.8)'
                             }}
                         >
-                            <div className="absolute top-0 left-0 w-full h-8 bg-[#1e293b] flex items-center px-4 gap-2 z-10">
+                             <div className="absolute top-0 left-0 w-full h-8 bg-[#1e293b] flex items-center px-4 gap-2 z-10">
                                 <div className="w-3 h-3 rounded-full bg-red-500/50" />
                                 <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
                                 <div className="w-3 h-3 rounded-full bg-green-500/50" />
@@ -525,7 +524,7 @@ const AppShowcaseSection = () => {
                         </div>
                     ))}
                     
-                    <div className="h-[20vh]" />
+                    <div className="h-[40vh]" />
                 </div>
             </div>
         </section>
@@ -551,7 +550,7 @@ const TestimonialsSection = () => {
                Eles estudavam sem direção. <br/>
                <span className="text-blue-500">Hoje estudam com estratégia.</span>
             </h2>
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed mb-4">
                Profissionais de enfermagem que se sentiam inseguros, erravam questões e não viam evolução.
                Hoje têm organização, desempenho mensurável e mais confiança no plantão.
             </p>
@@ -692,7 +691,7 @@ export default function LandingPage() {
       <VideoSection />
       <ClinicalCaseSection />
       <FeaturesList />
-      <AppShowcaseSection /> {/* New Section Added Here */}
+      <AppShowcaseSection />
       <TestimonialsSection />
       
       {/* PRICING SECTION */}
