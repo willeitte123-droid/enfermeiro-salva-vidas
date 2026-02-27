@@ -473,23 +473,24 @@ const FeaturesList = () => {
   );
 };
 
-// Nova Seção AppShowcase com Efeito Sticky Stack e Imagens Clean (CORRIGIDO)
+// Nova Seção AppShowcase com Efeito Cascading Windows Real (Imagens limpas)
 const AppShowcaseSection = () => {
-    const screens = [
-        { title: "Banca de Questões", image: "/images/showcase-1.png" },
-        { title: "Arena de Simulado", image: "/images/showcase-2.png" },
-        { title: "Trilha de Estudos", image: "/images/showcase-3.png" },
-        { title: "Área de Revisão", image: "/images/showcase-4.png" },
-        { title: "Área do Concurseiro", image: "/images/showcase-5.png" },
-        { title: "Flashcards", image: "/images/showcase-6.png" },
-        { title: "Análise de Desempenho", image: "/images/showcase-7.png" }
+    // Lista de imagens para o efeito de empilhamento
+    const images = [
+        "/images/showcase-1.png",
+        "/images/showcase-2.png",
+        "/images/showcase-3.png",
+        "/images/showcase-4.png",
+        "/images/showcase-5.png",
+        "/images/showcase-6.png",
+        "/images/showcase-7.png"
     ];
 
     return (
-        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-20 pb-40">
+        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 py-24">
             <div className="max-w-6xl mx-auto px-4 relative z-10">
-                
-                <div className="text-center mb-24 max-w-3xl mx-auto">
+                {/* Header fixo para contexto visual */}
+                <div className="text-center mb-20 max-w-3xl mx-auto">
                     <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
                         Por Dentro da <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">EnfermagemPro</span>
                     </h2>
@@ -498,35 +499,36 @@ const AppShowcaseSection = () => {
                     </p>
                 </div>
 
-                <div className="flex flex-col items-center">
-                    {screens.map((screen, index) => (
+                <div className="relative flex flex-col items-center w-full">
+                    {images.map((image, index) => (
                         <div
                             key={index}
-                            className="sticky w-full max-w-5xl rounded-2xl shadow-2xl border border-white/10 bg-[#050811] overflow-hidden" 
+                            className="sticky w-full max-w-5xl"
                             style={{
-                                top: `${140 + index * 40}px`, // Stacking offset
-                                marginBottom: '40vh', // Space to scroll before next card arrives
+                                // Lógica de empilhamento:
+                                // 'top' define onde a imagem "para" de rolar e começa a grudar.
+                                // Incrementamos o top para criar o efeito de cascata visível (como um baralho se abrindo).
+                                top: `${120 + index * 40}px`,
+                                
+                                // Margin bottom cria o espaço de rolagem necessário antes da próxima imagem "chegar" e grudar.
+                                // Se for pequeno, elas grudam muito rápido. Se for grande, a rolagem é mais suave.
+                                marginBottom: '100px', 
                                 zIndex: index + 1,
                             }}
                         >
-                             {/* Header do Card (Opcional, mas ajuda no efeito baralho) */}
-                             <div className="bg-[#0f1320] px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                   <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50" />
-                                   <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
-                                   <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50" />
-                                </div>
-                                <h3 className="text-sm font-medium text-slate-400 uppercase tracking-widest">{screen.title}</h3>
-                                <div className="w-10" />
-                             </div>
-
-                             <img
-                                src={screen.image}
-                                alt={screen.title}
-                                className="w-full h-auto block"
-                            />
+                            <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#050811]">
+                                {/* Imagem limpa, sem headers, sem textos */}
+                                <img
+                                    src={image}
+                                    alt={`Tela da Plataforma ${index + 1}`}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
                         </div>
                     ))}
+                    
+                    {/* Espaçador final para garantir que o último item possa ser apreciado antes da próxima seção 'empurrar' */}
+                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
