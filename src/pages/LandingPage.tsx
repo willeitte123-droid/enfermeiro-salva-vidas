@@ -87,7 +87,7 @@ const InfiniteMarquee = () => {
       <div className="flex animate-marquee whitespace-nowrap items-center">
         {[...words, ...words, ...words].map((word, i) => (
           <div key={i} className="flex items-center mx-8">
-            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-600 to-slate-800 uppercase tracking-tight opacity-50 hover:opacity-100 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default">
+            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default">
               {word}
             </span>
             <div className="ml-16 w-2 h-2 rounded-full bg-blue-900/50" />
