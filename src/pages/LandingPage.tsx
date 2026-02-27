@@ -5,11 +5,13 @@ import {
   Timer, ArrowRight, Zap, 
   Syringe, LayoutDashboard,
   Stethoscope, GraduationCap, Star,
-  Menu, X, Play
+  Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Componentes de UI isolados para manter o código limpo
 const Navbar = () => {
@@ -71,29 +73,24 @@ const Navbar = () => {
 
 const InfiniteMarquee = () => {
   const words = [
-    "Banca de Questões",
-    "Área de Simulado",
-    "Trilha de Estudos",
-    "Flashcards",
-    "Video Aulas",
-    "Área do Concurseiro",
-    "Revisões Atualizadas",
-    "Práticas Clínicas"
+    "CONCURSOS", "RESIDÊNCIA", "CÁLCULOS", "FARMACOLOGIA", "TERAPIA INTENSIVA",
+    "SAÚDE PÚBLICA", "URGÊNCIA", "SAE", "EVOLUÇÃO", "TÉCNICAS", "ANATOMIA", 
+    "MEDICAMENTOS", "SIMULADOS", "FLASHCARDS", "LEGISLAÇÃO SUS"
   ];
 
   return (
-    <div className="w-full border-y border-white/10 bg-[#050811] overflow-hidden py-8 relative z-20">
+    <div className="w-full border-y border-white/5 bg-[#050811] overflow-hidden py-6 relative z-20">
       {/* Gradient Masks */}
-      <div className="absolute top-0 left-0 h-full w-32 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 right-0 h-full w-32 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
       
       <div className="flex animate-marquee whitespace-nowrap items-center">
-        {[...words, ...words, ...words, ...words].map((word, i) => (
+        {[...words, ...words, ...words].map((word, i) => (
           <div key={i} className="flex items-center mx-8">
-            <span className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 uppercase tracking-tight cursor-default">
+            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-600 to-slate-800 uppercase tracking-tight opacity-50 hover:opacity-100 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default">
               {word}
             </span>
-            <div className="ml-16 w-2 h-2 rounded-full bg-blue-500/50" />
+            <div className="ml-16 w-2 h-2 rounded-full bg-blue-900/50" />
           </div>
         ))}
       </div>
@@ -121,7 +118,7 @@ const ParticlesBackground = () => {
       {particles.map((p) => (
         <div
           key={p.id}
-          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-20 animate-drift"
+          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-30 animate-drift"
           style={{
             top: p.top,
             left: p.left,
@@ -134,8 +131,229 @@ const ParticlesBackground = () => {
   );
 };
 
+const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: string; spo2: number; resp: number; temp: number }) => {
+  return (
+    <div className="bg-black/90 border-4 border-slate-800 rounded-xl p-3 sm:p-6 shadow-2xl relative overflow-hidden font-mono mb-4 w-full">
+      {/* Reflexo de tela */}
+      <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none" />
+      
+      {/* Grid de fundo */}
+      <div className="absolute inset-0 opacity-10" 
+           style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
+      />
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8 relative z-10">
+        
+        {/* ECG / FC */}
+        <div className="space-y-0.5 sm:space-y-1">
+          <div className="flex items-center justify-between text-green-500">
+            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">ECG</span>
+            <HeartPulse className="h-3 w-3 sm:h-4 sm:w-4 animate-pulse" />
+          </div>
+          <div className="flex items-end gap-1 sm:gap-2">
+            <span className={cn("text-3xl sm:text-5xl font-black leading-none", hr < 50 || hr > 120 ? "text-red-600 animate-pulse" : "text-green-500")}>
+              {hr === 0 ? "---" : hr}
+            </span>
+            <span className="text-[10px] sm:text-xs text-green-500/70 mb-1">bpm</span>
+          </div>
+          {/* Linha de ECG simulada */}
+          <div className="h-6 sm:h-8 w-full overflow-hidden relative opacity-70">
+             {hr > 0 && (
+               <svg viewBox="0 0 100 20" className="w-full h-full stroke-green-500 fill-none stroke-[2px]">
+                 <path d="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L50,10 L52,5 L54,15 L56,0 L58,20 L60,10 L100,10">
+                   <animate attributeName="d" dur="1s" repeatCount="indefinite" values="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L50,10 L52,5 L54,15 L56,0 L58,20 L60,10 L100,10; M-20,10 L-10,10 L-8,5 L-6,15 L-4,0 L-2,20 L0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L80,10" />
+                 </path>
+               </svg>
+             )}
+          </div>
+        </div>
+
+        {/* PA (PNI) */}
+        <div className="space-y-0.5 sm:space-y-1">
+          <div className="flex items-center justify-between text-red-500">
+            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">PNI</span>
+            <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
+          </div>
+          <div className="flex items-end gap-1 sm:gap-2">
+            <span className="text-2xl sm:text-4xl font-black leading-none text-red-500">
+              {bp}
+            </span>
+            <span className="text-[10px] sm:text-xs text-red-500/70 mb-1">mmHg</span>
+          </div>
+          <span className="text-[9px] sm:text-xs text-red-500/50 block mt-0.5 sm:mt-1">PAM: {(parseInt(bp.split('/')[0]) + 2 * parseInt(bp.split('/')[1])) / 3 | 0}</span>
+        </div>
+
+        {/* SpO2 */}
+        <div className="space-y-0.5 sm:space-y-1">
+          <div className="flex items-center justify-between text-blue-400">
+            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
+            <Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
+          </div>
+          <div className="flex items-end gap-1 sm:gap-2">
+            <span className={cn("text-3xl sm:text-5xl font-black leading-none", spo2 < 90 ? "text-yellow-400 animate-pulse" : "text-blue-400")}>
+              {spo2}%
+            </span>
+          </div>
+          <div className="h-4 sm:h-6 w-full overflow-hidden opacity-70">
+             {hr > 0 && (
+                <svg viewBox="0 0 100 20" className="w-full h-full stroke-blue-400 fill-none stroke-[2px]">
+                  <path d="M0,20 Q10,0 20,20 T40,20 T60,20 T80,20 T100,20">
+                    <animate attributeName="d" dur="2s" repeatCount="indefinite" values="M0,20 Q10,0 20,20 T40,20 T60,20 T80,20 T100,20; M-20,20 Q-10,0 0,20 T20,20 T40,20 T60,20 T80,20" />
+                  </path>
+                </svg>
+             )}
+          </div>
+        </div>
+
+        {/* FR / Temp */}
+        <div className="flex flex-col justify-between h-full gap-2">
+          <div className="flex items-end justify-between">
+            <div className="text-yellow-400 text-[10px] sm:text-xs font-bold uppercase">RESP</div>
+            <div className="text-xl sm:text-2xl font-bold text-yellow-400 leading-none">{resp} <span className="text-[9px] sm:text-[10px] opacity-60">irpm</span></div>
+          </div>
+          <div className="flex items-end justify-between">
+            <div className="text-purple-400 text-[10px] sm:text-xs font-bold uppercase">TEMP</div>
+            <div className="text-xl sm:text-2xl font-bold text-purple-400 leading-none">{temp}°C</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+const ClinicalCaseSection = () => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  const handleOption = (option: string) => {
+    setSelectedOption(option);
+  };
+
+  const resetCase = () => {
+    setSelectedOption(null);
+  };
+
+  return (
+    <section className="py-24 bg-[#050811] relative overflow-hidden">
+      {/* Lights Background */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-indigo-900/10 blur-[100px] pointer-events-none" />
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center max-w-4xl mx-auto mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
+            E se fosse você no plantão agora?
+          </h2>
+          <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+            Você saberia o que fazer… se o monitor disparasse agora?
+          </p>
+        </div>
+
+        <div className="max-w-4xl mx-auto">
+            {/* Monitor Section */}
+            <VitalsMonitorDemo 
+               hr={selectedOption === 'A' || selectedOption === 'B' ? 0 : 45} 
+               bp={selectedOption === 'A' || selectedOption === 'B' ? "0/0" : "220/110"} 
+               spo2={selectedOption === 'A' || selectedOption === 'B' ? 0 : 98} 
+               resp={selectedOption === 'A' || selectedOption === 'B' ? 0 : 10} 
+               temp={37.0} 
+            />
+
+            {/* Case Content Card */}
+            <Card className={cn(
+               "border-2 shadow-2xl transition-all duration-500", 
+               selectedOption === null ? "border-yellow-500/30 bg-yellow-950/10" :
+               selectedOption === 'C' ? "border-emerald-500/50 bg-emerald-950/20" :
+               "border-red-600/50 bg-red-950/20"
+            )}>
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                   {selectedOption === null && <Badge variant="outline" className="text-yellow-500 border-yellow-500/50 animate-pulse">EMERGÊNCIA</Badge>}
+                   {selectedOption === 'C' && <Badge className="bg-emerald-500 hover:bg-emerald-600"><CheckCircle2 className="w-3 h-3 mr-1"/> SUCESSO</Badge>}
+                   {(selectedOption === 'A' || selectedOption === 'B') && <Badge variant="destructive"><Skull className="w-3 h-3 mr-1"/> ÓBITO</Badge>}
+                </div>
+                <CardTitle className="text-white text-xl sm:text-2xl">Situação Atual</CardTitle>
+              </CardHeader>
+              
+              <CardContent className="space-y-6">
+                 {selectedOption === null ? (
+                    <div className="text-slate-300 text-base sm:text-lg leading-relaxed space-y-4">
+                        <p>Paciente jovem, TCE grave pós-acidente moto (D3 de UTI). Sedação suspensa para avaliação.</p>
+                        <p className="font-bold text-white">Subitamente, o monitor dispara. Pupila direita dilatou (Midríase - Anisocoria).</p>
+                        <p className="font-mono text-sm bg-black/30 p-3 rounded border border-white/10">SSVV: PA 220/110 mmHg | FC 45 bpm (Bradicardia) | FR Irregular (Cheyne-Stokes).</p>
+                    </div>
+                 ) : selectedOption === 'A' ? (
+                    <div className="space-y-4">
+                        <p className="text-white font-medium text-lg">ERRO CRÍTICO.</p>
+                        <p className="text-slate-300">A hipertensão era um reflexo de defesa (Reflexo de Cushing) para manter o sangue chegando ao cérebro contra a alta pressão intracraniana (PIC).</p>
+                        <p className="text-red-400 font-bold">Ao baixar a PA, você matou a Perfusão Cerebral. O cérebro isque miou e herniou fatalmente.</p>
+                    </div>
+                 ) : selectedOption === 'B' ? (
+                    <div className="space-y-4">
+                        <p className="text-white font-medium text-lg">CONDUTA INEFICAZ.</p>
+                        <p className="text-slate-300">A atropina não teve efeito. A bradicardia é central (compressão do tronco encefálico pela hipertensão intracraniana), não cardíaca.</p>
+                        <p className="text-red-400 font-bold">Enquanto você tentava tratar o coração, o cérebro herniou. O paciente parou.</p>
+                    </div>
+                 ) : (
+                    <div className="space-y-4">
+                        <p className="text-white font-medium text-lg">SALVOU A VIDA.</p>
+                        <p className="text-slate-300">Você reconheceu a <strong>Tríade de Cushing</strong> (Hipertensão + Bradicardia + Respiração Irregular) indicando Herniação Cerebral.</p>
+                        <p className="text-emerald-400 font-bold">A hiperventilação e o Manitol reduziram a PIC agudamente. A pupila voltou ao normal e o paciente foi para cirurgia a tempo.</p>
+                    </div>
+                 )}
+
+                 {/* Options */}
+                 {selectedOption === null ? (
+                    <div className="space-y-3 pt-4">
+                        <p className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">Qual sua conduta?</p>
+                        <Button 
+                           variant="outline" 
+                           className="w-full justify-start h-auto py-4 px-4 text-left whitespace-normal border-white/10 bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white"
+                           onClick={() => handleOption('A')}
+                        >
+                           <div className="flex items-start gap-3">
+                              <span className="bg-white/10 w-6 h-6 rounded flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">A</span>
+                              <span>Administrar Nitroprussiato (Nipride) para baixar a PA urgente</span>
+                           </div>
+                        </Button>
+                        <Button 
+                           variant="outline" 
+                           className="w-full justify-start h-auto py-4 px-4 text-left whitespace-normal border-white/10 bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white"
+                           onClick={() => handleOption('B')}
+                        >
+                           <div className="flex items-start gap-3">
+                              <span className="bg-white/10 w-6 h-6 rounded flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">B</span>
+                              <span>Administrar Atropina para corrigir a Bradicardia</span>
+                           </div>
+                        </Button>
+                        <Button 
+                           variant="outline" 
+                           className="w-full justify-start h-auto py-4 px-4 text-left whitespace-normal border-white/10 bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white"
+                           onClick={() => handleOption('C')}
+                        >
+                           <div className="flex items-start gap-3">
+                              <span className="bg-white/10 w-6 h-6 rounded flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">C</span>
+                              <span>Hiperventilação transitória + Manitol + Cabeceira elevada</span>
+                           </div>
+                        </Button>
+                    </div>
+                 ) : (
+                    <div className="pt-4 flex justify-end">
+                       <Button onClick={resetCase} className="bg-white text-black hover:bg-slate-200 font-bold">
+                          Tentar Novamente
+                       </Button>
+                    </div>
+                 )}
+              </CardContent>
+            </Card>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Hero = () => {
   return (
+    <>
     <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
       {/* Background Image Layer - Updated opacity and overlay */}
       <div className="absolute inset-0 z-0">
@@ -224,6 +442,9 @@ const Hero = () => {
         </div>
       </div>
     </section>
+    
+    <InfiniteMarquee />
+    </>
   );
 };
 
@@ -393,6 +614,7 @@ export default function LandingPage() {
       <Hero />
       <InfiniteMarquee />
       <VideoSection />
+      <ClinicalCaseSection />
       <FeaturesBento />
       
       {/* PRICING SECTION */}
