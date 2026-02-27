@@ -39,8 +39,8 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
           <button onClick={() => scrollToSection("funcionalidades")} className="hover:text-white transition-colors">Funcionalidades</button>
-          <button onClick={() => scrollToSection("showcase")} className="hover:text-white transition-colors">Plataforma</button>
           <button onClick={() => scrollToSection("depoimentos")} className="hover:text-white transition-colors">Depoimentos</button>
+          <button onClick={() => scrollToSection("showcase")} className="hover:text-white transition-colors">Por Dentro</button>
           <button onClick={() => scrollToSection("planos")} className="hover:text-white transition-colors">Planos</button>
         </div>
 
@@ -62,7 +62,8 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-[#030014] border-b border-white/10 p-6 flex flex-col gap-6 animate-in slide-in-from-top-5 shadow-2xl">
           <button onClick={() => scrollToSection("funcionalidades")} className="text-slate-300 hover:text-white text-left text-lg">Funcionalidades</button>
-          <button onClick={() => scrollToSection("showcase")} className="text-slate-300 hover:text-white text-left text-lg">Plataforma</button>
+          <button onClick={() => scrollToSection("depoimentos")} className="text-slate-300 hover:text-white text-left text-lg">Depoimentos</button>
+          <button onClick={() => scrollToSection("showcase")} className="text-slate-300 hover:text-white text-left text-lg">Por Dentro</button>
           <button onClick={() => scrollToSection("planos")} className="text-slate-300 hover:text-white text-left text-lg">Planos</button>
           <Link to="/login" className="text-slate-300 hover:text-white text-lg">Login</Link>
           <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-full h-12 text-lg">Começar Agora</Button>
@@ -473,51 +474,64 @@ const FeaturesList = () => {
   );
 };
 
-// Seção Showcase: Sticky Stack com estrutura fiel à referência fornecida
+// Seção Showcase: Sticky Stack com estrutura e visual "Dark Studio"
 const AppShowcaseSection = () => {
-    const images = [
-        "/images/showcase-1.png",
-        "/images/showcase-2.png",
-        "/images/showcase-3.png",
-        "/images/showcase-4.png",
-        "/images/showcase-5.png",
-        "/images/showcase-6.png",
-        "/images/showcase-7.png"
+    // Usando os nomes exatos fornecidos pelo usuário, assumindo que estarão na pasta correta
+    const screens = [
+        { image: "/images/1-banca-de-questoes.png", alt: "Banca de Questões" },
+        { image: "/images/2-simulado.png", alt: "Simulados" },
+        { image: "/images/3-trilha-de-estudos.png", alt: "Trilha de Estudos" },
+        { image: "/images/4-revisao.png", alt: "Área de Revisão" },
+        { image: "/images/5-area-do-concurseiro.png", alt: "Área do Concurseiro" },
+        { image: "/images/6-flashcards.png", alt: "Flashcards" },
+        { image: "/images/7-desempenho.png", alt: "Análise de Desempenho" },
     ];
 
     return (
         <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-24 pb-24">
+            {/* Background Studio Light Effect */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
+            
             <div className="max-w-5xl mx-auto px-4 relative z-10">
-                <div className="text-center mb-16"> 
-                    <h2 className="text-3xl md:text-6xl font-black text-white mb-3 tracking-tight">
-                        Por Dentro da <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Plataforma</span>
+                <div className="text-center mb-20"> 
+                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 tracking-tight">
+                        Por Dentro do <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">EnfermagemPro</span>
                     </h2>
-                    <p className="text-slate-400 max-w-xl mx-auto text-base md:text-lg font-light leading-relaxed">
-                        Um sistema completo para transformar estudo solto em evolução real.
+                    <h3 className="text-xl md:text-2xl font-medium text-slate-300 mb-6">
+                        Um sistema completo para transformar estudo solto em evolução real
+                    </h3>
+                    <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg font-light leading-relaxed">
+                        Cada área da plataforma foi construída para eliminar insegurança e criar domínio progressivo.
                     </p>
                 </div>
                 
                 <div className="flex flex-col items-center"> 
-                    {images.map((image, index) => (
+                    {screens.map((screen, index) => (
                         <div 
                             key={index}
-                            className="sticky w-full max-w-4xl aspect-[16/10] rounded-[2rem] shadow-2xl border-4 border-white/10 bg-[#050811] overflow-hidden"
+                            className="sticky w-full max-w-4xl aspect-[16/10] rounded-[2rem] shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#0A0E17] overflow-hidden group transition-transform duration-500"
                             style={{ 
-                                top: `${120 + index * 40}px`,
-                                marginBottom: '20vh',
+                                top: `${120 + index * 50}px`, // Aumentei um pouco o espaçamento do topo
+                                marginBottom: '15vh', // Ajuste no margin bottom para fluidez
                                 zIndex: index + 1
                             }}
                         >
+                            {/* Inner Highlight Border */}
+                            <div className="absolute inset-0 rounded-[2rem] border border-white/5 pointer-events-none z-20" />
+                            
+                            {/* Glass Reflection effect */}
+                            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none z-10" />
+
                             <img 
-                                src={image} 
-                                alt={`Tela ${index + 1}`}
-                                className="w-full h-full object-cover"
+                                src={screen.image} 
+                                alt={screen.alt}
+                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
                             />
                         </div>
                     ))}
                     
-                    {/* Espaçador final igual à referência */}
-                    <div className="h-[40vh]" />
+                    {/* Espaçador final para permitir que o último card seja visto antes da próxima seção */}
+                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
@@ -684,8 +698,8 @@ export default function LandingPage() {
       <VideoSection />
       <ClinicalCaseSection />
       <FeaturesList />
-      <AppShowcaseSection />
       <TestimonialsSection />
+      <AppShowcaseSection />
       
       {/* PRICING SECTION */}
       <section id="planos" className="py-24 relative overflow-hidden bg-[#020617] border-t border-white/5">
