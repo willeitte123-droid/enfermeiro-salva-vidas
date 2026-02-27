@@ -5,7 +5,7 @@ import {
   Timer, ArrowRight, Zap, 
   Syringe, LayoutDashboard,
   Stethoscope, GraduationCap, Star,
-  Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy
+  Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -472,6 +472,61 @@ const FeaturesList = () => {
   );
 };
 
+const TestimonialsSection = () => {
+  const testimonials = [
+    "/images/testimonial-1.png",
+    "/images/testimonial-2.png",
+    "/images/testimonial-3.png",
+    "/images/testimonial-4.png",
+    "/images/testimonial-5.png",
+    "/images/testimonial-6.png",
+    "/images/testimonial-7.png",
+  ];
+
+  return (
+    <section id="depoimentos" className="py-24 bg-[#020617] relative border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-4 mb-16 relative z-10">
+         <div className="text-center max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+               Eles estudavam sem direção. <br/>
+               <span className="text-blue-500">Hoje estudam com estratégia.</span>
+            </h2>
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+               Profissionais de enfermagem que se sentiam inseguros, erravam questões e não viam evolução.
+               Hoje têm organização, desempenho mensurável e mais confiança no plantão.
+            </p>
+         </div>
+      </div>
+
+      {/* Infinite Carousel */}
+      <div className="relative w-full overflow-hidden">
+          {/* Gradient Masks for fade effect */}
+          <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#020617] to-transparent z-20 pointer-events-none" />
+          <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#020617] to-transparent z-20 pointer-events-none" />
+
+          <div className="flex w-max animate-marquee-slow hover:[animation-play-state:paused]">
+             {/* Duplicate the array to create seamless loop */}
+             {[...testimonials, ...testimonials].map((src, index) => (
+                <div key={index} className="mx-4 w-[280px] sm:w-[350px] flex-shrink-0">
+                   <img 
+                      src={src} 
+                      alt={`Depoimento ${index + 1}`} 
+                      className="w-full h-auto rounded-2xl shadow-xl border border-white/10 hover:border-blue-500/30 transition-all duration-300"
+                   />
+                </div>
+             ))}
+          </div>
+      </div>
+
+      <div className="text-center mt-12 relative z-10">
+         <Button size="lg" className="h-14 px-8 text-lg font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-[0_0_30px_-5px_rgba(37,99,235,0.5)] transition-all hover:scale-105">
+            Quero estudar com método
+         </Button>
+      </div>
+    </section>
+  );
+};
+
 const Hero = () => {
   return (
     <>
@@ -577,6 +632,7 @@ export default function LandingPage() {
       <VideoSection />
       <ClinicalCaseSection />
       <FeaturesList />
+      <TestimonialsSection />
       
       {/* PRICING SECTION */}
       <section id="planos" className="py-24 relative overflow-hidden bg-[#020617] border-t border-white/5">
