@@ -5,7 +5,7 @@ import {
   Timer, ArrowRight, Zap, 
   Syringe, LayoutDashboard,
   Stethoscope, GraduationCap, Star,
-  Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy
+  Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -73,29 +73,24 @@ const Navbar = () => {
 
 const InfiniteMarquee = () => {
   const words = [
-    "Banca de Questões",
-    "Área de Simulado",
-    "Trilha de Estudos",
-    "Flashcards",
-    "Video Aulas",
-    "Área do Concurseiro",
-    "Revisões Atualizadas",
-    "Práticas Clínicas"
+    "CONCURSOS", "RESIDÊNCIA", "CÁLCULOS", "FARMACOLOGIA", "TERAPIA INTENSIVA",
+    "SAÚDE PÚBLICA", "URGÊNCIA", "SAE", "EVOLUÇÃO", "TÉCNICAS", "ANATOMIA", 
+    "MEDICAMENTOS", "SIMULADOS", "FLASHCARDS", "LEGISLAÇÃO SUS"
   ];
 
   return (
-    <div className="w-full border-y border-white/10 bg-[#050811] overflow-hidden py-8 relative z-20">
+    <div className="w-full border-y border-white/5 bg-[#050811] overflow-hidden py-6 relative z-20">
       {/* Gradient Masks */}
-      <div className="absolute top-0 left-0 h-full w-32 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 right-0 h-full w-32 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
       
       <div className="flex animate-marquee whitespace-nowrap items-center">
-        {[...words, ...words, ...words, ...words].map((word, i) => (
+        {[...words, ...words, ...words].map((word, i) => (
           <div key={i} className="flex items-center mx-8">
-            <span className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 uppercase tracking-tight cursor-default">
+            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-600 to-slate-800 uppercase tracking-tight opacity-50 hover:opacity-100 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default">
               {word}
             </span>
-            <div className="ml-16 w-2 h-2 rounded-full bg-blue-500/50" />
+            <div className="ml-16 w-2 h-2 rounded-full bg-blue-900/50" />
           </div>
         ))}
       </div>
@@ -123,7 +118,7 @@ const ParticlesBackground = () => {
       {particles.map((p) => (
         <div
           key={p.id}
-          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-20 animate-drift"
+          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-30 animate-drift"
           style={{
             top: p.top,
             left: p.left,
@@ -356,8 +351,81 @@ const ClinicalCaseSection = () => {
   );
 };
 
+const FeaturesList = () => {
+  const features = [
+    {
+      id: "01",
+      title: "TRILHA DE ESTUDOS ORGANIZADA",
+      description: "Siga uma sequência lógica e estratégica de aprendizado.\nVocê nunca mais vai perder tempo decidindo o que estudar. O sistema mostra exatamente o próximo passo.",
+      icon: Map
+    },
+    {
+      id: "02",
+      title: "BANCO DE QUESTÕES COMENTADAS",
+      description: "Mais de 2.000 questões comentadas com foco em raciocínio clínico e padrão de prova.\nVocê não apenas marca alternativa. Você entende o porquê e aprende como a banca pensa.",
+      icon: FileQuestion
+    },
+    {
+      id: "03",
+      title: "SIMULADOS COM ANÁLISE DE DESEMPENHO",
+      description: "Simulados cronometrados com relatório detalhado de desempenho.\nDescubra onde está errando, acompanhe sua evolução e estude com base em dados reais.",
+      icon: Timer
+    },
+    {
+      id: "04",
+      title: "CASOS CLÍNICOS INTERATIVOS",
+      description: "Tome decisões como se estivesse no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
+      icon: Stethoscope
+    },
+    {
+      id: "05",
+      title: "FLASHCARDS E REVISÃO INTELIGENTE",
+      description: "Fixação ativa e revisão direcionada para os pontos com maior índice de erro.\nRepetição organizada gera domínio e aumenta sua segurança nas decisões.",
+      icon: Copy
+    },
+    {
+      id: "06",
+      title: "ÁREA DO CONCURSEIRO",
+      description: "Organização por edital e foco no que realmente cai nas provas.\nEstude com estratégia, não no impulso.",
+      icon: GraduationCap
+    }
+  ];
+
+  return (
+    <section id="funcionalidades" className="py-24 bg-[#0B0F19] relative">
+      <div className="container mx-auto px-4">
+        <div className="mb-16">
+           <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">Funcionalidades</h2>
+           <p className="text-lg text-slate-400">que organizam seus estudos e aumentam sua segurança</p>
+           <div className="h-1 w-20 bg-blue-600 mt-4 rounded-full"></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {features.map((feature) => (
+            <div key={feature.id} className="group relative bg-slate-900/50 border border-white/5 p-8 rounded-3xl hover:border-blue-500/30 transition-all duration-300">
+              <span className="absolute top-6 right-8 text-4xl md:text-5xl font-black text-white/5 group-hover:text-blue-500/10 transition-colors">
+                {feature.id}
+              </span>
+
+              <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 text-blue-400 group-hover:scale-110 transition-transform">
+                <feature.icon className="w-6 h-6" />
+              </div>
+
+              <h3 className="text-xl font-bold text-white mb-4 tracking-wide">{feature.title}</h3>
+              <p className="text-slate-400 leading-relaxed whitespace-pre-line text-sm sm:text-base">
+                {feature.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Hero = () => {
   return (
+    <>
     <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
       {/* Background Image Layer - Updated opacity and overlay */}
       <div className="absolute inset-0 z-0">
@@ -446,165 +514,9 @@ const Hero = () => {
         </div>
       </div>
     </section>
-  );
-};
-
-const VideoSection = () => {
-  return (
-    <section className="py-24 bg-[#02040a] relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-4xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
-            Veja como o EnfermagemPro <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-              organiza seus estudos na prática
-            </span>
-          </h2>
-          <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
-            Nada de teoria solta. Aqui você vê exatamente como o sistema funciona por dentro e como ele elimina a insegurança nos estudos e no plantão.
-          </p>
-        </div>
-
-        {/* Video Container */}
-        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-          {/* Mock Video UI */}
-          <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
-             {/* Thumbnail background */}
-             <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-             </div>
-             
-             {/* Play Button */}
-             <div className="relative z-10 group-hover:scale-110 transition-transform duration-300">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-sm cursor-pointer shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]">
-                   <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
-                </div>
-             </div>
-             
-             {/* Video UI Overlay */}
-             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-4">
-                   <div className="h-full w-1/3 bg-blue-500 rounded-full" />
-                </div>
-                <div className="flex justify-between text-white/80 text-sm font-medium">
-                   <span>02:14</span>
-                   <span>05:30</span>
-                </div>
-             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const FeaturesBento = () => {
-  return (
-    <section id="funcionalidades" className="py-24 bg-[#0B0F19] relative">
-      <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-blue-500 font-bold tracking-wide uppercase text-sm mb-3">Tudo em um só lugar</h2>
-          <h3 className="text-3xl md:text-5xl font-bold mb-6 text-white">Ferramentas que transformam sua rotina.</h3>
-          <p className="text-slate-400 text-lg">
-            Substituímos apostilas pesadas e calculadoras manuais por tecnologia de ponta.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          
-          {/* Card 1: Large - Banca */}
-          <div className="md:col-span-2 row-span-2 rounded-3xl bg-slate-900/50 border border-white/5 p-8 relative overflow-hidden group hover:border-blue-500/30 transition-all">
-             <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity">
-                <LayoutDashboard className="w-40 h-40 text-blue-500" />
-             </div>
-             <div className="relative z-10">
-                <div className="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6 border border-blue-600/30">
-                   <Brain className="w-6 h-6 text-blue-400" />
-                </div>
-                <h4 className="text-2xl font-bold text-white mb-3">Banca de Questões Inteligente</h4>
-                <p className="text-slate-400 mb-6 max-w-md">
-                   Mais de 10.000 questões comentadas e filtradas por banca, cargo e assunto. Nosso algoritmo identifica seus pontos fracos e sugere revisões automáticas.
-                </p>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-300">
-                   <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-500"/> Filtros avançados</li>
-                   <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-500"/> Comentários de especialistas</li>
-                   <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-500"/> Estatísticas de desempenho</li>
-                   <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-500"/> Modo Simulado Real</li>
-                </ul>
-             </div>
-          </div>
-
-          {/* Card 2: Ferramentas */}
-          <div className="rounded-3xl bg-slate-900/50 border border-white/5 p-8 relative overflow-hidden group hover:border-cyan-500/30 transition-all">
-             <div className="relative z-10">
-                <div className="w-12 h-12 bg-cyan-600/20 rounded-xl flex items-center justify-center mb-6 border border-cyan-600/30">
-                   <Zap className="w-6 h-6 text-cyan-400" />
-                </div>
-                <h4 className="text-xl font-bold text-white mb-3">Ferramentas de Bolso</h4>
-                <p className="text-slate-400 text-sm mb-6">
-                   Calculadoras de gotejamento, doses, IMC e escalas (Braden, Glasgow) prontas para o uso no plantão.
-                </p>
-                <div className="bg-slate-950 rounded-xl p-4 border border-white/5">
-                   <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs font-bold text-slate-500 uppercase">Calculadora</span>
-                      <Timer className="w-4 h-4 text-cyan-500" />
-                   </div>
-                   <div className="text-2xl font-mono font-bold text-white">45 gts/min</div>
-                   <div className="text-xs text-slate-400">Volume: 500ml | Tempo: 6h</div>
-                  </div>
-             </div>
-          </div>
-
-          {/* Card 3: Simulação */}
-          <div className="rounded-3xl bg-slate-900/50 border border-white/5 p-8 relative overflow-hidden group hover:border-purple-500/30 transition-all">
-             <div className="relative z-10">
-                <div className="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center mb-6 border border-purple-600/30">
-                   <Stethoscope className="w-6 h-6 text-purple-400" />
-                </div>
-                <h4 className="text-xl font-bold text-white mb-3">Casos Clínicos Interativos</h4>
-                <p className="text-slate-400 text-sm">
-                   Treine sua tomada de decisão em cenários realistas de urgência e emergência. Aprenda errando em um ambiente seguro.
-                </p>
-             </div>
-          </div>
-
-          {/* Card 4: Wide - Concursos */}
-          <div className="md:col-span-2 rounded-3xl bg-gradient-to-br from-indigo-900/50 to-slate-900/50 border border-white/5 p-8 relative overflow-hidden group hover:border-indigo-500/30 transition-all">
-             <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-                <div className="flex-1">
-                   <div className="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center mb-6 border border-indigo-600/30">
-                      <GraduationCap className="w-6 h-6 text-indigo-400" />
-                   </div>
-                   <h4 className="text-2xl font-bold text-white mb-3">Mural de Concursos em Tempo Real</h4>
-                   <p className="text-slate-400 mb-4">
-                      Nosso robô varre a internet 24h por dia buscando novos editais para Enfermeiros e Técnicos. Seja o primeiro a saber das vagas.
-                   </p>
-                   <Button variant="link" className="text-indigo-400 p-0 h-auto hover:text-indigo-300">
-                      Ver editais abertos <ArrowRight className="w-4 h-4 ml-1" />
-                   </Button>
-                </div>
-                <div className="w-full md:w-1/2 bg-slate-950 rounded-xl border border-white/10 p-4 shadow-xl">
-                   <div className="flex items-center gap-3 mb-3 border-b border-white/5 pb-3">
-                      <Badge className="bg-green-500/20 text-green-400 hover:bg-green-500/20 border-0">Aberto</Badge>
-                      <div>
-                         <div className="text-sm font-bold text-white">Pref. de São Paulo</div>
-                         <div className="text-xs text-slate-500">Salário: R$ 6.500,00</div>
-                      </div>
-                   </div>
-                   <div className="flex items-center gap-3">
-                      <Badge className="bg-blue-500/20 text-blue-400 hover:bg-blue-500/20 border-0">Previsto</Badge>
-                      <div>
-                         <div className="text-sm font-bold text-white">EBSERH Nacional</div>
-                         <div className="text-xs text-slate-500">Vagas: +2000</div>
-                      </div>
-                   </div>
-                </div>
-             </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
+    
+    <InfiniteMarquee />
+    </>
   );
 };
 
@@ -613,10 +525,9 @@ export default function LandingPage() {
     <div className="min-h-screen bg-[#02040a] text-white font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden">
       <Navbar />
       <Hero />
-      <InfiniteMarquee />
       <VideoSection />
       <ClinicalCaseSection />
-      <FeaturesBento />
+      <FeaturesList />
       
       {/* PRICING SECTION */}
       <section id="planos" className="py-24 relative overflow-hidden bg-[#020617] border-t border-white/5">
