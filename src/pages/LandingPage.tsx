@@ -1,17 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
-  CheckCircle2, ShieldCheck, Brain, 
+  CheckCircle2, Brain, 
   Timer, ArrowRight, Zap, 
-  Lock, Syringe, Smartphone, LayoutDashboard,
-  Stethoscope, GraduationCap, ChevronRight, Star,
-  Menu, X, Check, Award
+  Syringe, LayoutDashboard,
+  Stethoscope, GraduationCap, Star,
+  Menu, X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 
 // Componentes de UI isolados para manter o código limpo
 const Navbar = () => {
@@ -98,6 +96,39 @@ const InfiniteMarquee = () => {
   );
 };
 
+const ParticlesBackground = () => {
+  const [particles, setParticles] = useState<{ id: number; top: string; left: string; delay: string; duration: string }[]>([]);
+
+  useEffect(() => {
+    // Generate particles only on client side
+    const newParticles = Array.from({ length: 30 }).map((_, i) => ({
+      id: i,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 5}s`,
+      duration: `${Math.random() * 10 + 10}s`, // 10s to 20s
+    }));
+    setParticles(newParticles);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-20 animate-drift"
+          style={{
+            top: p.top,
+            left: p.left,
+            animationDelay: p.delay,
+            animationDuration: p.duration,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
 const Hero = () => {
   return (
     <>
@@ -105,17 +136,17 @@ const Hero = () => {
       {/* Background Gradients matching high-end style */}
       <div className="absolute top-0 right-0 w-[70%] h-[120%] bg-gradient-to-l from-blue-900/30 via-purple-900/10 to-transparent pointer-events-none blur-3xl" />
       <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#02040a] to-transparent z-20 pointer-events-none" />
+      
+      {/* Partículas Leves */}
+      <ParticlesBackground />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             
             {/* TEXT COLUMN (Left) */}
             <div className="flex-1 text-left max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-blue-300 mb-8 backdrop-blur-sm hover:bg-white/10 transition-colors cursor-default">
-                    <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
-                    Nova Turma 2025 Aberta
-                </div>
+                {/* Badge Removido conforme solicitado */}
+                <div className="mb-6"></div>
 
                 {/* Title */}
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
@@ -160,9 +191,9 @@ const Hero = () => {
                 </div>
             </div>
 
-            {/* IMAGE COLUMN (Right) */}
+            {/* IMAGE COLUMN (Right) - Com animação de flutuação */}
             <div className="flex-1 relative w-full flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-200">
-                <div className="relative z-10 w-full max-w-[800px]">
+                <div className="relative z-10 w-full max-w-[800px] animate-float">
                     <img 
                         src="/images/mockup-hero.png" 
                         alt="Plataforma Enfermagem Pro em dispositivos" 

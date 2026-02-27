@@ -84,12 +84,24 @@ export default {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-50%)" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
+        drift: {
+          "0%": { transform: "translate(0, 0)", opacity: "0" },
+          "20%": { opacity: "0.5" },
+          "80%": { opacity: "0.5" },
+          "100%": { transform: "translate(50px, -50px)", opacity: "0" },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-subtle": "pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         marquee: "marquee 40s linear infinite",
+        float: "float 6s ease-in-out infinite",
+        drift: "drift 10s linear infinite",
       },
     },
   },
