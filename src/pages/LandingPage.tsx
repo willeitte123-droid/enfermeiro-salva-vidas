@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { 
   CheckCircle2, Brain, 
@@ -405,7 +405,7 @@ const VideoSection = () => {
   );
 };
 
-// Nova Seção Ecossistema (Infinite Marquee Cards)
+// Nova Seção Ecossistema (Infinite Marquee Cards com Scroll Interativo)
 const EcosystemSection = () => {
   const tools = [
     { title: "BANCA DE QUESTÕES", desc: "Mais de 2.000 questões comentadas com foco em raciocínio clínico.", icon: FileQuestion, image: "/images/ecosystem/banca-de-questoes.png" },
@@ -439,6 +439,79 @@ const EcosystemSection = () => {
     { title: "FAVORITOS", desc: "Salve conteúdos estratégicos para revisão rápida.", icon: Bookmark, image: "/images/ecosystem/favoritos.png" }
   ];
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  // Auto-scroll Effect
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let animationFrameId: number;
+    let accumulatedScroll = 0;
+    const speed = 0.5; // Velocidade do scroll (pixels por frame)
+
+    const scroll = () => {
+      if (!isPaused && !isDragging) {
+        accumulatedScroll += speed;
+        // Só move se acumulou 1 pixel inteiro para suavidade
+        if (accumulatedScroll >= 1) {
+            scrollContainer.scrollLeft += 1;
+            accumulatedScroll = 0;
+        }
+
+        // Reset infinito: quando chegar na metade (fim da primeira lista), volta pro início
+        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+           scrollContainer.scrollLeft = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(scroll);
+    };
+
+    animationFrameId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isPaused, isDragging]);
+
+  // Drag Handlers
+  const onMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setIsPaused(true);
+    setStartX(e.pageX - scrollRef.current!.offsetLeft);
+    setScrollLeft(scrollRef.current!.scrollLeft);
+  };
+
+  const onMouseLeave = () => {
+    setIsDragging(false);
+    setIsPaused(false);
+  };
+
+  const onMouseUp = () => {
+    setIsDragging(false);
+    setIsPaused(false);
+  };
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current!.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll-fast multiplier
+    scrollRef.current!.scrollLeft = scrollLeft - walk;
+  };
+
+  // Touch Handlers para Mobile
+  const onTouchStart = () => {
+      setIsPaused(true);
+      setIsDragging(true);
+  };
+
+  const onTouchEnd = () => {
+      setIsPaused(false);
+      setIsDragging(false);
+  };
+
   return (
     <section id="ecossistema" className="py-24 bg-[#02040a] relative overflow-hidden">
         {/* Ambient background light */}
@@ -456,45 +529,58 @@ const EcosystemSection = () => {
             </div>
         </div>
 
-        {/* Infinite Carousel */}
-        <div className="relative w-full overflow-hidden">
+        {/* Infinite Carousel Container */}
+        <div className="relative w-full">
             {/* Gradient Masks */}
             <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
             <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
-            {/* Moving Track */}
-            <div className="flex w-max animate-marquee-slow hover:[animation-play-state:paused] py-10">
-                {[...tools, ...tools].map((tool, index) => (
-                    <div 
-                        key={index} 
-                        className="relative mx-4 w-[280px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl overflow-hidden group cursor-default transition-transform hover:scale-105 duration-500 border border-white/10"
-                    >
-                        {/* Background Image with Overlay */}
-                        <div className="absolute inset-0 z-0">
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent z-10" />
-                            <img 
-                                src={tool.image} 
-                                alt={tool.title} 
-                                className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700"
-                            />
-                        </div>
-
-                        {/* Content */}
-                        <div className="relative z-20 h-full flex flex-col justify-end p-8">
-                            <div className="mb-4 w-12 h-12 rounded-xl bg-blue-600/20 backdrop-blur-md flex items-center justify-center border border-blue-500/30">
-                                <tool.icon className="w-6 h-6 text-blue-400" />
+            {/* Scrollable Track */}
+            <div 
+                ref={scrollRef}
+                className="flex overflow-x-auto no-scrollbar py-10 cursor-grab active:cursor-grabbing select-none"
+                onMouseDown={onMouseDown}
+                onMouseLeave={onMouseLeave}
+                onMouseUp={onMouseUp}
+                onMouseMove={onMouseMove}
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+                onMouseEnter={() => setIsPaused(true)} // Pausa ao passar o mouse
+            >
+                <div className="flex">
+                    {/* Renderizamos a lista DUAS vezes para o efeito infinito */}
+                    {[...tools, ...tools].map((tool, index) => (
+                        <div 
+                            key={index} 
+                            className="relative mx-4 w-[280px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl overflow-hidden group transition-transform hover:scale-105 duration-500 border border-white/10"
+                        >
+                            {/* Background Image with Overlay */}
+                            <div className="absolute inset-0 z-0">
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent z-10" />
+                                <img 
+                                    src={tool.image} 
+                                    alt={tool.title} 
+                                    className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700 pointer-events-none"
+                                />
                             </div>
-                            
-                            <h3 className="text-2xl font-bold text-white mb-3 uppercase tracking-wide">
-                                {tool.title}
-                            </h3>
-                            
-                            <p className="text-slate-300 text-sm leading-relaxed font-medium">
-                                {tool.desc}
-                            </p>
+
+                            {/* Content */}
+                            <div className="relative z-20 h-full flex flex-col justify-end p-8 pointer-events-none">
+                                <div className="mb-4 w-12 h-12 rounded-xl bg-blue-600/20 backdrop-blur-md flex items-center justify-center border border-blue-500/30">
+                                    <tool.icon className="w-6 h-6 text-blue-400" />
+                                </div>
+                                
+                                <h3 className="text-2xl font-bold text-white mb-3 uppercase tracking-wide">
+                                    {tool.title}
+                                </h3>
+                                
+                                <p className="text-slate-300 text-sm leading-relaxed font-medium">
+                                    {tool.desc}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </div>
     </section>
