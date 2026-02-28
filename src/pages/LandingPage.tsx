@@ -499,19 +499,24 @@ const AppShowcaseSection = () => {
                     </p>
                 </div>
 
-                <div className="flex flex-col items-center">
+                <div className="relative"> {/* Removed flex-col items-center */}
                     {screens.map((screen, index) => (
                         <div
                             key={index}
-                            className="sticky w-full max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
+                            className="sticky mx-auto max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
                             style={{
-                                top: `${100 + index * 10}px`, // 10px de incremento para o efeito de borda fina
+                                top: `${100 + index * 10}px`,
                                 zIndex: index + 1,
-                                marginBottom: '20px', // Espaço para garantir o fluxo de scroll
+                                marginBottom: '50px', // Increased bottom margin
                             }}
                         >
-                            {/* Borda superior iluminada para destacar o empilhamento */}
-                            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                            {/* Header fake to differentiate cards */}
+                            <div className="h-8 bg-[#0a0f1e] border-b border-white/5 flex items-center px-4 gap-2">
+                                <div className="w-3 h-3 rounded-full bg-red-500/20"></div>
+                                <div className="w-3 h-3 rounded-full bg-yellow-500/20"></div>
+                                <div className="w-3 h-3 rounded-full bg-green-500/20"></div>
+                                <div className="ml-4 text-xs text-white/20 font-mono">{screen.title}</div>
+                            </div>
                             
                              <img
                                 src={screen.image}
@@ -520,9 +525,6 @@ const AppShowcaseSection = () => {
                             />
                         </div>
                     ))}
-                    
-                    {/* Espaço extra no final para permitir o scroll do último card */}
-                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
@@ -683,7 +685,8 @@ const Hero = () => {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#02040a] text-white font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden">
+    // Removido overflow-x-hidden daqui e aplicado seletivamente
+    <div className="min-h-screen bg-[#02040a] text-white font-sans selection:bg-blue-600 selection:text-white">
       <Navbar />
       <Hero />
       <VideoSection />
