@@ -802,9 +802,9 @@ const RankingSection = () => {
             {/* Image */}
             <div className="flex-1 w-full max-w-[600px] relative flex justify-center">
                 {/* No container styling for frame, assuming image has device frame */}
-                <div className="relative z-10 transform transition-transform duration-700 hover:scale-105">
+                <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float">
                     <img 
-                        src="/images/ranking.png" 
+                        src="/images/ranking-mockup.png" 
                         alt="Ranking EnfermagemPro" 
                         className="w-full h-auto drop-shadow-2xl"
                     />
