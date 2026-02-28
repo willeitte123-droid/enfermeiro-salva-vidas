@@ -5,7 +5,8 @@ import {
   Timer, ArrowRight, Zap, 
   Syringe, LayoutDashboard,
   Stethoscope, GraduationCap, Star,
-  Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare
+  Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare,
+  Video, BookOpen, MonitorPlay, ShieldCheck, Bandage, ClipboardList, FileSearch, HandHeart, BookHeart, BookText, Calculator, FileText, NotebookText, Briefcase, Bookmark
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -39,6 +40,7 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
           <button onClick={() => scrollToSection("funcionalidades")} className="hover:text-white transition-colors">Funcionalidades</button>
+          <button onClick={() => scrollToSection("ecossistema")} className="hover:text-white transition-colors">Ecossistema</button>
           <button onClick={() => scrollToSection("showcase")} className="hover:text-white transition-colors">Plataforma</button>
           <button onClick={() => scrollToSection("depoimentos")} className="hover:text-white transition-colors">Depoimentos</button>
           <button onClick={() => scrollToSection("planos")} className="hover:text-white transition-colors">Planos</button>
@@ -62,6 +64,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-[#030014] border-b border-white/10 p-6 flex flex-col gap-6 animate-in slide-in-from-top-5 shadow-2xl">
           <button onClick={() => scrollToSection("funcionalidades")} className="text-slate-300 hover:text-white text-left text-lg">Funcionalidades</button>
+          <button onClick={() => scrollToSection("ecossistema")} className="text-slate-300 hover:text-white text-left text-lg">Ecossistema</button>
           <button onClick={() => scrollToSection("showcase")} className="text-slate-300 hover:text-white text-left text-lg">Plataforma</button>
           <button onClick={() => scrollToSection("planos")} className="text-slate-300 hover:text-white text-left text-lg">Planos</button>
           <Link to="/login" className="text-slate-300 hover:text-white text-lg">Login</Link>
@@ -401,6 +404,102 @@ const VideoSection = () => {
   );
 };
 
+// Nova Seção Ecossistema (Infinite Marquee Cards)
+const EcosystemSection = () => {
+  const tools = [
+    { title: "BANCA DE QUESTÕES", desc: "Mais de 2.000 questões comentadas com foco em raciocínio clínico.", icon: FileQuestion, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop" },
+    { title: "ÁREA DE SIMULADO", desc: "Treinos cronometrados com análise detalhada de desempenho.", icon: Timer, image: "https://images.unsplash.com/photo-1434494878567-0f2623a3c840?q=80&w=2070&auto=format&fit=crop" },
+    { title: "VÍDEO AULAS", desc: "Explicações objetivas para fortalecer sua base teórica.", icon: MonitorPlay, image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2070&auto=format&fit=crop" },
+    { title: "TRILHA DE ESTUDOS", desc: "Sequência organizada para eliminar dúvida sobre o que estudar.", icon: Map, image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2070&auto=format&fit=crop" },
+    { title: "ÁREA DO CONCURSEIRO", desc: "Organização estratégica por edital e foco no que realmente cai.", icon: GraduationCap, image: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=2089&auto=format&fit=crop" },
+    { title: "CASOS CLÍNICOS", desc: "Treine decisões reais em ambiente seguro de aprendizado.", icon: Stethoscope, image: "https://images.unsplash.com/photo-1559757175-5b2d0b94546e?q=80&w=2071&auto=format&fit=crop" },
+    { title: "BIBLIOTECA DIGITAL", desc: "Consulta rápida e estruturada para revisão técnica.", icon: Library, image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop" },
+    { title: "FLASHCARDS", desc: "Fixação ativa para acelerar memorização e retenção.", icon: Copy, image: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?q=80&w=2070&auto=format&fit=crop" },
+    { title: "ÁREA DE REVISÃO", desc: "Reforce exatamente os pontos com maior índice de erro.", icon: BookOpen, image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=2070&auto=format&fit=crop" },
+    { title: "ANATOMIA", desc: "Base técnica estruturada para domínio dos fundamentos.", icon: Activity, image: "https://images.unsplash.com/photo-1530210124550-912dc1381cb8?q=80&w=2070&auto=format&fit=crop" },
+    { title: "MEU DESEMPENHO", desc: "Acompanhe sua evolução com dados claros e mensuráveis.", icon: Trophy, image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" },
+    { title: "MEDICAMENTOS", desc: "Revisão prática de fármacos essenciais para o plantão.", icon: Syringe, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=2030&auto=format&fit=crop" },
+    { title: "EMERGÊNCIAS", desc: "Protocolos objetivos para decisões rápidas.", icon: Siren, image: "https://images.unsplash.com/photo-1599700403969-f77b3777d0c1?q=80&w=2070&auto=format&fit=crop" },
+    { title: "CURATIVOS", desc: "Tipos de lesões e condutas corretas.", icon: Bandage, image: "https://images.unsplash.com/photo-1628172942442-536968875692?q=80&w=2070&auto=format&fit=crop" },
+    { title: "PROCEDIMENTOS", desc: "Passo a passo técnico com foco em segurança.", icon: ClipboardList, image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2080&auto=format&fit=crop" },
+    { title: "SEMIOLOGIA", desc: "Avaliação clínica organizada e estruturada.", icon: FileSearch, image: "https://images.unsplash.com/photo-1576091160550-2187d80a02ff?q=80&w=2070&auto=format&fit=crop" },
+    { title: "SEMIOTÉCNICA", desc: "Técnicas fundamentais da enfermagem.", icon: HandHeart, image: "https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=2070&auto=format&fit=crop" },
+    { title: "GUIA DE ECG", desc: "Interpretação simplificada para decisões seguras.", icon: BookHeart, image: "https://images.unsplash.com/photo-1628348070889-cb656235b4eb?q=80&w=2070&auto=format&fit=crop" },
+    { title: "ANOTAÇÕES E EVOLUÇÃO", desc: "Estrutura correta de registros clínicos.", icon: BookText, image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1974&auto=format&fit=crop" },
+    { title: "TERMOS TÉCNICOS", desc: "Padronização da linguagem profissional.", icon: MessageSquare, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=2073&auto=format&fit=crop" },
+    { title: "GOTEJAMENTO", desc: "Cálculo rápido e preciso para administração segura.", icon: Droplet, image: "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=2070&auto=format&fit=crop" },
+    { title: "CÁLCULO DE DOSES", desc: "Ferramenta prática para reduzir risco de erro.", icon: FlaskConical, image: "https://images.unsplash.com/photo-1632053001859-992383c8465d?q=80&w=2070&auto=format&fit=crop" },
+    { title: "DUM E IMC", desc: "Cálculos essenciais para acompanhamento clínico.", icon: Calculator, image: "https://images.unsplash.com/photo-1571772996211-2f02c9727629?q=80&w=2070&auto=format&fit=crop" },
+    { title: "ESCALAS CLÍNICAS", desc: "Consultas rápidas para avaliação estruturada.", icon: Activity, image: "https://images.unsplash.com/photo-1504813184591-01572f98c85f?q=80&w=2071&auto=format&fit=crop" },
+    { title: "VALORES LABORATORIAIS", desc: "Referências organizadas para análise segura.", icon: FileText, image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070&auto=format&fit=crop" },
+    { title: "BLOCO DE NOTAS", desc: "Organize seus aprendizados e insights.", icon: NotebookText, image: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2068&auto=format&fit=crop" },
+    { title: "CONCURSOS", desc: "Acompanhe oportunidades e mantenha foco na aprovação.", icon: Briefcase, image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070&auto=format&fit=crop" },
+    { title: "RANKING", desc: "Compare evolução e mantenha constância.", icon: Star, image: "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?q=80&w=2070&auto=format&fit=crop" },
+    { title: "FAVORITOS", desc: "Salve conteúdos estratégicos para revisão rápida.", icon: Bookmark, image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=2028&auto=format&fit=crop" }
+  ];
+
+  return (
+    <section id="ecossistema" className="py-24 bg-[#02040a] relative overflow-hidden">
+        {/* Ambient background light */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-blue-900/10 blur-[150px] pointer-events-none rounded-full" />
+        
+        <div className="container mx-auto px-4 mb-20 relative z-10">
+            <div className="text-center max-w-4xl mx-auto">
+                <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white tracking-tight leading-tight">
+                    Tudo o que você precisa para <br className="hidden md:block"/>
+                    evoluir na enfermagem, em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">um único sistema</span>
+                </h2>
+                <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
+                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. Não é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
+                </p>
+            </div>
+        </div>
+
+        {/* Infinite Carousel */}
+        <div className="relative w-full overflow-hidden">
+            {/* Gradient Masks */}
+            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+
+            {/* Moving Track */}
+            <div className="flex w-max animate-marquee-slow hover:[animation-play-state:paused] py-10">
+                {[...tools, ...tools].map((tool, index) => (
+                    <div 
+                        key={index} 
+                        className="relative mx-4 w-[280px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl overflow-hidden group cursor-default transition-transform hover:scale-105 duration-500 border border-white/10"
+                    >
+                        {/* Background Image with Overlay */}
+                        <div className="absolute inset-0 z-0">
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent z-10" />
+                            <img 
+                                src={tool.image} 
+                                alt={tool.title} 
+                                className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700"
+                            />
+                        </div>
+
+                        {/* Content */}
+                        <div className="relative z-20 h-full flex flex-col justify-end p-8">
+                            <div className="mb-4 w-12 h-12 rounded-xl bg-blue-600/20 backdrop-blur-md flex items-center justify-center border border-blue-500/30">
+                                <tool.icon className="w-6 h-6 text-blue-400" />
+                            </div>
+                            
+                            <h3 className="text-2xl font-bold text-white mb-3 uppercase tracking-wide">
+                                {tool.title}
+                            </h3>
+                            
+                            <p className="text-slate-300 text-sm leading-relaxed font-medium">
+                                {tool.desc}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+  );
+};
+
 const FeaturesList = () => {
   const features = [
     {
@@ -499,17 +598,20 @@ const AppShowcaseSection = () => {
                     </p>
                 </div>
 
-                <div className="flex flex-col items-center">
+                <div className="relative"> {/* Removed flex-col items-center */}
                     {screens.map((screen, index) => (
                         <div
                             key={index}
-                            className="sticky w-full max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
+                            className="sticky mx-auto max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
                             style={{
-                                top: `${100 + index * 10}px`,
+                                top: `${100 + index * 10}px`, // 10px de incremento para o efeito de borda fina
                                 zIndex: index + 1,
-                                marginBottom: '50px',
+                                marginBottom: '20px', // Espaço para garantir o fluxo de scroll
                             }}
                         >
+                            {/* Borda superior iluminada para destacar o empilhamento */}
+                            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                            
                              <img
                                 src={screen.image}
                                 alt={screen.title}
@@ -687,6 +789,7 @@ export default function LandingPage() {
       <VideoSection />
       <ClinicalCaseSection />
       <FeaturesList />
+      <EcosystemSection />
       <AppShowcaseSection />
       <TestimonialsSection />
       
