@@ -503,17 +503,16 @@ const AppShowcaseSection = () => {
                     {screens.map((screen, index) => (
                         <div
                             key={index}
-                            // Usando aspect-ratio automático para manter a proporção da imagem original
                             className="sticky w-full max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
                             style={{
-                                // Base em 120px + incremento bem menor (10px) para criar o "deck" apertado
-                                // Isso deixa apenas uma borda superior visível do card anterior
-                                top: `${120 + index * 10}px`, 
+                                top: `${100 + index * 10}px`, // 10px de incremento para o efeito de borda fina
                                 zIndex: index + 1,
-                                // Importante: Sem margem inferior, o scroll empurra o próximo card para cima
-                                // do atual, cobrindo-o.
+                                marginBottom: '20px', // Espaço para garantir o fluxo de scroll
                             }}
                         >
+                            {/* Borda superior iluminada para destacar o empilhamento */}
+                            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                            
                              <img
                                 src={screen.image}
                                 alt={screen.title}
