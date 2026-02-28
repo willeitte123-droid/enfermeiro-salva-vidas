@@ -786,101 +786,20 @@ const PricingSection = () => {
              </p>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-center gap-8 max-w-5xl mx-auto">
-             
-             {/* PLANO ANUAL (Highlight) */}
-             <div className="relative w-full md:w-[420px] group">
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-                   <Badge className="bg-[#22c55e] text-black hover:bg-[#22c55e] border-none font-bold px-4 py-1 uppercase text-xs flex items-center gap-1 shadow-lg shadow-green-900/50">
-                      🔥 Mais Popular
-                   </Badge>
-                </div>
-                <div className="absolute inset-0 bg-[#22c55e]/20 blur-xl rounded-[2rem] group-hover:bg-[#22c55e]/30 transition-all duration-500" />
-                
-                <Card className="relative h-full bg-[#0a0f1c] border-2 border-[#22c55e] rounded-[2rem] p-8 flex flex-col items-center text-center shadow-2xl overflow-hidden">
-                   <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#22c55e]/10 to-transparent" />
-                   
-                   <CardHeader className="p-0 mb-6 relative z-10 w-full">
-                      <CardTitle className="text-3xl font-bold text-white mb-2">Plano Anual</CardTitle>
-                      <p className="text-slate-400">Acesso completo por 365 dias</p>
-                   </CardHeader>
-                   
-                   <CardContent className="p-0 w-full relative z-10 flex-1 flex flex-col items-center">
-                      <div className="mb-2">
-                         <span className="text-5xl font-black text-[#22c55e]">12x R$ 20,33</span>
-                         <span className="text-slate-400 text-lg">/mês</span>
-                      </div>
-                      <p className="text-white font-medium mb-6">ou R$ 197 à vista</p>
-                      
-                      <div className="bg-[#122b1e] border border-[#22c55e]/30 rounded-full px-4 py-1 mb-6">
-                         <span className="text-[#4ade80] text-xs font-bold flex items-center gap-1">
-                            ★ Melhor custo-benefício do ano
-                         </span>
-                      </div>
-                      
-                      <p className="text-slate-400 text-sm mb-8 px-4">
-                         Você economiza e garante o acesso completo por 12 meses.
-                      </p>
-                      
-                      <div className="w-full text-left space-y-4 mb-8 pl-4">
-                         {[
-                            "Acesso total à plataforma",
-                            "Milhares de questões comentadas",
-                            "Simulados estratégicos",
-                            "Atualizações incluídas",
-                            "Estude no seu ritmo",
-                            "Suporte exclusivo"
-                         ].map((item, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                               <CheckCircle2 className="w-5 h-5 text-[#22c55e] shrink-0" />
-                               <span className="text-slate-200 text-sm font-medium">{item}</span>
-                            </div>
-                         ))}
-                      </div>
-
-                      <Button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold h-12 rounded-xl text-lg shadow-lg shadow-green-900/20 transition-all hover:scale-[1.02]">
-                         Quero assinar (Anual)
-                      </Button>
-                   </CardContent>
-                </Card>
-             </div>
-
-             {/* PLANO MENSAL */}
-             <div className="w-full md:w-[380px] mt-8 md:mt-4">
-                <Card className="h-full bg-[#0f121e] border border-white/10 rounded-[2rem] p-8 flex flex-col items-center text-center shadow-xl hover:border-white/20 transition-all">
-                   <CardHeader className="p-0 mb-6 w-full">
-                      <CardTitle className="text-2xl font-bold text-white mb-2">Plano Mensal</CardTitle>
-                      <p className="text-slate-400">Acesso completo por 30 dias</p>
-                   </CardHeader>
-                   
-                   <CardContent className="p-0 w-full flex-1 flex flex-col items-center">
-                      <div className="mb-12">
-                         <span className="text-5xl font-black text-white">R$ 67</span>
-                         <span className="text-slate-400 text-lg">/mês</span>
-                      </div>
-                      
-                      <div className="w-full text-left space-y-4 mb-12 pl-2">
-                         {[
-                            "Acesso total à plataforma",
-                            "Questões comentadas",
-                            "Simulados",
-                            "Tudo da enfermagem"
-                         ].map((item, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                               <CheckCircle2 className="w-5 h-5 text-[#22c55e] shrink-0" />
-                               <span className="text-slate-300 text-sm font-medium">{item}</span>
-                            </div>
-                         ))}
-                      </div>
-
-                      <Button className="w-full bg-[#1e293b] hover:bg-[#334155] text-white font-bold h-12 rounded-xl text-lg border border-white/10 mt-auto">
-                         Quero assinar (Mensal)
-                      </Button>
-                   </CardContent>
-                </Card>
-             </div>
-
+          <div className="flex justify-center max-w-6xl mx-auto">
+             <img 
+               src="/images/planos-precos.png" 
+               alt="Tabela de Planos e Preços" 
+               className="w-full h-auto rounded-2xl shadow-2xl border border-white/10"
+             />
           </div>
+          
+          <div className="flex justify-center mt-12">
+             <Button size="lg" className="h-14 px-8 text-lg font-bold bg-[#22c55e] hover:bg-[#16a34a] text-black rounded-full shadow-[0_0_30px_-5px_rgba(34,197,94,0.5)] transition-all hover:scale-105">
+                Quero ser EnfermagemPro
+             </Button>
+          </div>
+
        </div>
     </section>
   );
