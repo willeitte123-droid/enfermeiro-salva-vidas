@@ -43,6 +43,7 @@ const Navbar = () => {
           <button onClick={() => scrollToSection("funcionalidades")} className="hover:text-white transition-colors">Funcionalidades</button>
           <button onClick={() => scrollToSection("ecossistema")} className="hover:text-white transition-colors">Ecossistema</button>
           <button onClick={() => scrollToSection("showcase")} className="hover:text-white transition-colors">Plataforma</button>
+          <button onClick={() => scrollToSection("ranking")} className="hover:text-white transition-colors">Ranking</button>
           <button onClick={() => scrollToSection("depoimentos")} className="hover:text-white transition-colors">Depoimentos</button>
           <button onClick={() => scrollToSection("planos")} className="hover:text-white transition-colors">Planos</button>
         </div>
@@ -67,6 +68,7 @@ const Navbar = () => {
           <button onClick={() => scrollToSection("funcionalidades")} className="text-slate-300 hover:text-white text-left text-lg">Funcionalidades</button>
           <button onClick={() => scrollToSection("ecossistema")} className="text-slate-300 hover:text-white text-left text-lg">Ecossistema</button>
           <button onClick={() => scrollToSection("showcase")} className="text-slate-300 hover:text-white text-left text-lg">Plataforma</button>
+          <button onClick={() => scrollToSection("ranking")} className="text-slate-300 hover:text-white text-left text-lg">Ranking</button>
           <button onClick={() => scrollToSection("planos")} className="text-slate-300 hover:text-white text-left text-lg">Planos</button>
           <Link to="/login" className="text-slate-300 hover:text-white text-lg">Login</Link>
           <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-full h-12 text-lg">Começar Agora</Button>
@@ -766,6 +768,59 @@ const AppShowcaseSection = () => {
     );
 };
 
+const RankingSection = () => {
+  return (
+    <section id="ranking" className="py-24 bg-[#050811] relative border-t border-white/5 overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] pointer-events-none rounded-full" />
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            
+            {/* Text Content */}
+            <div className="flex-1 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-[10px] font-bold uppercase tracking-wider text-yellow-500 mb-6">
+                  <Trophy className="h-3 w-3" /> Gamificação
+                </div>
+                
+                <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+                    Chegue no <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">Top 1 do Ranking</span>
+                </h2>
+                
+                <p className="text-slate-400 text-lg leading-relaxed mb-8">
+                    Estudar não precisa ser solitário. Na EnfermagemPro, você compete de forma saudável com outros estudantes. 
+                    <br/><br/>
+                    Acompanhe quem está acertando mais questões, quem fez mais simulados e veja seu nome subir no pódio. 
+                    A motivação extra que faltava para você manter a constância.
+                </p>
+
+                <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-full h-12 px-8 shadow-lg shadow-yellow-500/20">
+                    Quero entrar na disputa
+                </Button>
+            </div>
+
+            {/* Image */}
+            <div className="flex-1 w-full max-w-[600px] relative">
+                <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+                    <img 
+                        src="/images/ranking-showcase.png" 
+                        alt="Ranking EnfermagemPro" 
+                        className="w-full h-auto transform transition-transform duration-700 group-hover:scale-105"
+                    />
+                    {/* Glossy overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+                </div>
+                
+                {/* Decorative elements behind image */}
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-500/20 rounded-full blur-3xl animate-pulse-subtle" />
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl animate-pulse-subtle" />
+            </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const TestimonialsSection = () => {
   const testimonials = [
     "/images/testimonial-1.png",
@@ -1048,6 +1103,7 @@ export default function LandingPage() {
       <FeaturesList />
       <EcosystemSection />
       <AppShowcaseSection />
+      <RankingSection />
       <TestimonialsSection />
       <PricingSection />
       {/* FOOTER */}
