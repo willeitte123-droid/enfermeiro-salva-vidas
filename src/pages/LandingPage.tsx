@@ -473,7 +473,7 @@ const FeaturesList = () => {
   );
 };
 
-// Nova Seção AppShowcase com Efeito Sticky Stack e Imagens Clean (CORRIGIDO)
+// Nova Seção AppShowcase com Efeito Sticky Stack Ajustado
 const AppShowcaseSection = () => {
     // Imagens que serão empilhadas
     const screens = [
@@ -503,11 +503,15 @@ const AppShowcaseSection = () => {
                     {screens.map((screen, index) => (
                         <div
                             key={index}
-                            className="sticky w-full max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
+                            // Usando aspect-ratio automático para manter a proporção da imagem original
+                            className="sticky w-full max-w-5xl rounded-2xl shadow-[0_-15px_40px_-10px_rgba(0,0,0,0.9)] border border-white/10 bg-[#050811] overflow-hidden" 
                             style={{
-                                top: `${120 + index * 40}px`, // Stacking offset
-                                marginBottom: '20px', // Small space between fully scrolled cards
+                                // Base em 120px + incremento bem menor (25px) para criar o "deck" apertado
+                                // Isso deixa apenas uma borda superior visível do card anterior
+                                top: `${140 + index * 25}px`, 
                                 zIndex: index + 1,
+                                // Importante: Sem margem inferior, o scroll empurra o próximo card para cima
+                                // do atual, cobrindo-o.
                             }}
                         >
                              <img
@@ -518,8 +522,8 @@ const AppShowcaseSection = () => {
                         </div>
                     ))}
                     
-                    {/* Espaço extra no final para o último card não ficar preso */}
-                    <div className="h-[20vh]" />
+                    {/* Espaço extra no final para permitir o scroll do último card */}
+                    <div className="h-[40vh]" />
                 </div>
             </div>
         </section>
