@@ -778,7 +778,7 @@ const PricingSection = () => {
 
        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
-             <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
+             <h2 className="text-4xl md:text-5xl font-black text-[#60a5fa] mb-4">
                 Planos e preços
              </h2>
              <p className="text-slate-400 text-lg">
@@ -786,20 +786,91 @@ const PricingSection = () => {
              </p>
           </div>
 
-          <div className="flex justify-center max-w-6xl mx-auto">
-             <img 
-               src="/images/planos-precos.png" 
-               alt="Tabela de Planos e Preços" 
-               className="w-full h-auto rounded-2xl shadow-2xl border border-white/10"
-             />
-          </div>
-          
-          <div className="flex justify-center mt-12">
-             <Button size="lg" className="h-14 px-8 text-lg font-bold bg-[#22c55e] hover:bg-[#16a34a] text-black rounded-full shadow-[0_0_30px_-5px_rgba(34,197,94,0.5)] transition-all hover:scale-105">
-                Quero ser EnfermagemPro
-             </Button>
-          </div>
+          <div className="flex flex-col md:flex-row justify-center gap-8 max-w-5xl mx-auto">
+             
+             {/* PLANO ANUAL (Highlight) */}
+             <div className="relative w-full md:w-[400px] flex flex-col">
+                {/* Badge */}
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
+                   <div className="bg-[#22c55e] text-black text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-lg shadow-green-900/50">
+                     🔥 MAIS POPULAR
+                   </div>
+                </div>
+                
+                <div className="relative flex-1 bg-[#0f1218] border-2 border-[#22c55e] rounded-3xl p-8 flex flex-col items-center text-center shadow-[0_0_40px_-10px_rgba(34,197,94,0.3)]">
+                   <h3 className="text-2xl font-bold text-white mb-1">Plano Anual</h3>
+                   <p className="text-slate-400 text-sm mb-6">Acesso completo por 365 dias</p>
+                   
+                   <div className="mb-1">
+                     <span className="text-5xl font-black text-[#22c55e]">12x R$ 20,33</span>
+                     <span className="text-slate-400 text-lg"> /mês</span>
+                   </div>
+                   <p className="text-white font-medium text-base mb-6">ou R$ 197 à vista</p>
+                   
+                   <div className="bg-[#142920] border border-[#22c55e]/30 rounded-full px-4 py-1.5 mb-6">
+                     <span className="text-[#4ade80] text-xs font-bold flex items-center gap-1">
+                       ★ Melhor custo-benefício do ano
+                     </span>
+                   </div>
+                   
+                   <p className="text-slate-400 text-xs mb-8">
+                     Você economiza e garante o acesso completo por 12 meses.
+                   </p>
+                   
+                   <div className="w-full text-left space-y-4 mb-8">
+                     {[
+                        "Acesso total à plataforma",
+                        "Milhares de questões comentadas",
+                        "Simulados estratégicos",
+                        "Atualizações incluídas",
+                        "Estude no seu ritmo",
+                        "Suporte exclusivo"
+                     ].map((item, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                           <div className="mt-0.5"><CheckCircle2 className="w-4 h-4 text-[#22c55e]" /></div>
+                           <span className="text-slate-200 text-sm font-medium">{item}</span>
+                        </div>
+                     ))}
+                   </div>
 
+                   <Button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold h-12 rounded-xl text-base shadow-lg shadow-green-900/20 transition-all hover:scale-[1.02] mt-auto">
+                     Quero assinar (Anual)
+                   </Button>
+                </div>
+             </div>
+
+             {/* PLANO MENSAL */}
+             <div className="relative w-full md:w-[400px] flex flex-col md:mt-8">
+                 <div className="relative flex-1 bg-[#0f111a] border border-slate-800 rounded-3xl p-8 flex flex-col items-center text-center shadow-xl">
+                   <h3 className="text-2xl font-bold text-white mb-1">Plano Mensal</h3>
+                   <p className="text-slate-400 text-sm mb-8">Acesso completo por 30 dias</p>
+                   
+                   <div className="mb-12">
+                     <span className="text-5xl font-black text-white">R$ 67</span>
+                     <span className="text-slate-400 text-lg"> /mês</span>
+                   </div>
+                   
+                   <div className="w-full text-left space-y-4 mb-12">
+                     {[
+                        "Acesso total à plataforma",
+                        "Questões comentadas",
+                        "Simulados",
+                        "Tudo da enfermagem"
+                     ].map((item, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                           <div className="mt-0.5"><CheckCircle2 className="w-4 h-4 text-[#22c55e]" /></div>
+                           <span className="text-slate-300 text-sm font-medium">{item}</span>
+                        </div>
+                     ))}
+                   </div>
+
+                   <Button className="w-full bg-[#1e2332] hover:bg-[#2a3044] text-white font-bold h-12 rounded-xl text-base border border-slate-700 transition-all hover:scale-[1.02] mt-auto">
+                     Quero assinar (Mensal)
+                   </Button>
+                 </div>
+             </div>
+
+          </div>
        </div>
     </section>
   );
