@@ -499,25 +499,17 @@ const AppShowcaseSection = () => {
                     </p>
                 </div>
 
-                <div className="relative"> {/* Removed flex-col items-center */}
+                <div className="flex flex-col items-center">
                     {screens.map((screen, index) => (
                         <div
                             key={index}
-                            className="sticky mx-auto max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
+                            className="sticky w-full max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
                             style={{
                                 top: `${100 + index * 10}px`,
                                 zIndex: index + 1,
-                                marginBottom: '50px', // Increased bottom margin
+                                marginBottom: '50px',
                             }}
                         >
-                            {/* Header fake to differentiate cards */}
-                            <div className="h-8 bg-[#0a0f1e] border-b border-white/5 flex items-center px-4 gap-2">
-                                <div className="w-3 h-3 rounded-full bg-red-500/20"></div>
-                                <div className="w-3 h-3 rounded-full bg-yellow-500/20"></div>
-                                <div className="w-3 h-3 rounded-full bg-green-500/20"></div>
-                                <div className="ml-4 text-xs text-white/20 font-mono">{screen.title}</div>
-                            </div>
-                            
                              <img
                                 src={screen.image}
                                 alt={screen.title}
@@ -525,6 +517,9 @@ const AppShowcaseSection = () => {
                             />
                         </div>
                     ))}
+                    
+                    {/* Espaço extra no final para permitir o scroll do último card */}
+                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
