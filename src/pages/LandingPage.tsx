@@ -593,37 +593,73 @@ const FeaturesList = () => {
       id: "01",
       title: "TRILHA DE ESTUDOS ORGANIZADA",
       description: "Siga uma sequência lógica e estratégica de aprendizado.\nVocê nunca mais vai perder tempo decidindo o que estudar. O sistema mostra exatamente o próximo passo.",
-      icon: Map
+      icon: Map,
+      // Blue theme
+      iconColor: "text-blue-400",
+      iconBg: "bg-blue-500/10",
+      hoverBorder: "hover:border-blue-500/50",
+      hoverBg: "hover:bg-blue-500/5",
+      hoverShadow: "hover:shadow-blue-500/20"
     },
     {
       id: "02",
       title: "BANCO DE QUESTÕES COMENTADAS",
       description: "Mais de 2.000 questões comentadas com foco em raciocínio clínico e padrão de prova.\nVocê não apenas marca alternativa. Você entende o porquê e aprende como a banca pensa.",
-      icon: FileQuestion
+      icon: FileQuestion,
+      // Green theme
+      iconColor: "text-emerald-400",
+      iconBg: "bg-emerald-500/10",
+      hoverBorder: "hover:border-emerald-500/50",
+      hoverBg: "hover:bg-emerald-500/5",
+      hoverShadow: "hover:shadow-emerald-500/20"
     },
     {
       id: "03",
       title: "SIMULADOS COM ANÁLISE DE DESEMPENHO",
       description: "Simulados cronometrados com relatório detalhado de desempenho.\nDescubra onde está errando, acompanhe sua evolução e estude com base em dados reais.",
-      icon: Timer
+      icon: Timer,
+      // Purple theme
+      iconColor: "text-purple-400",
+      iconBg: "bg-purple-500/10",
+      hoverBorder: "hover:border-purple-500/50",
+      hoverBg: "hover:bg-purple-500/5",
+      hoverShadow: "hover:shadow-purple-500/20"
     },
     {
       id: "04",
       title: "CASOS CLÍNICOS INTERATIVOS",
       description: "Tome decisões como se estivesse no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
-      icon: Stethoscope
+      icon: Stethoscope,
+      // Cyan theme
+      iconColor: "text-cyan-400",
+      iconBg: "bg-cyan-500/10",
+      hoverBorder: "hover:border-cyan-500/50",
+      hoverBg: "hover:bg-cyan-500/5",
+      hoverShadow: "hover:shadow-cyan-500/20"
     },
     {
       id: "05",
       title: "FLASHCARDS E REVISÃO INTELIGENTE",
       description: "Fixação ativa e revisão direcionada para os pontos com maior índice de erro.\nRepetição organizada gera domínio e aumenta sua segurança nas decisões.",
-      icon: Copy
+      icon: Copy,
+      // Amber theme
+      iconColor: "text-amber-400",
+      iconBg: "bg-amber-500/10",
+      hoverBorder: "hover:border-amber-500/50",
+      hoverBg: "hover:bg-amber-500/5",
+      hoverShadow: "hover:shadow-amber-500/20"
     },
     {
       id: "06",
       title: "ÁREA DO CONCURSEIRO",
       description: "Organização por edital e foco no que realmente cai nas provas.\nEstude com estratégia, não no impulso.",
-      icon: GraduationCap
+      icon: GraduationCap,
+      // Rose theme
+      iconColor: "text-rose-400",
+      iconBg: "bg-rose-500/10",
+      hoverBorder: "hover:border-rose-500/50",
+      hoverBg: "hover:bg-rose-500/5",
+      hoverShadow: "hover:shadow-rose-500/20"
     }
   ];
 
@@ -638,17 +674,32 @@ const FeaturesList = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {features.map((feature) => (
-            <div key={feature.id} className="group relative bg-slate-900/50 border border-white/5 p-8 rounded-3xl hover:border-blue-500/30 transition-all duration-300">
-              <span className="absolute top-6 right-8 text-4xl md:text-5xl font-black text-white/5 group-hover:text-blue-500/10 transition-colors">
+            <div 
+                key={feature.id} 
+                className={cn(
+                    "group relative bg-slate-900/50 border border-white/5 p-8 rounded-3xl transition-all duration-500 cursor-default",
+                    "hover:-translate-y-2 hover:shadow-2xl", // Effect on hover
+                    feature.hoverBorder,
+                    feature.hoverBg,
+                    feature.hoverShadow
+                )}
+            >
+              <span className="absolute top-6 right-8 text-4xl md:text-5xl font-black text-white/5 group-hover:text-white/10 transition-colors duration-500">
                 {feature.id}
               </span>
 
-              <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 text-blue-400 group-hover:scale-110 transition-transform">
+              <div className={cn(
+                  "w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3",
+                  feature.iconBg,
+                  feature.iconColor
+              )}>
                 <feature.icon className="w-6 h-6" />
               </div>
 
-              <h3 className="text-xl font-bold text-white mb-4 tracking-wide">{feature.title}</h3>
-              <p className="text-slate-400 leading-relaxed whitespace-pre-line text-sm sm:text-base">
+              <h3 className={cn("text-xl font-bold text-white mb-4 tracking-wide group-hover:text-white transition-colors", )}>
+                  {feature.title}
+              </h3>
+              <p className="text-slate-400 leading-relaxed whitespace-pre-line text-sm sm:text-base group-hover:text-slate-300 transition-colors">
                 {feature.description}
               </p>
             </div>
