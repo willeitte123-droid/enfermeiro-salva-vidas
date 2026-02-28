@@ -6,7 +6,8 @@ import {
   Syringe, LayoutDashboard,
   Stethoscope, GraduationCap, Star,
   Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare,
-  Video, BookOpen, MonitorPlay, ShieldCheck, Bandage, ClipboardList, FileSearch, HandHeart, BookHeart, BookText, Calculator, FileText, NotebookText, Briefcase, Bookmark
+  Video, BookOpen, MonitorPlay, ShieldCheck, Bandage, ClipboardList, FileSearch, HandHeart, BookHeart, BookText, Calculator, FileText, NotebookText, Briefcase, Bookmark,
+  Siren, FlaskConical
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -606,7 +607,7 @@ const AppShowcaseSection = () => {
                             style={{
                                 top: `${100 + index * 10}px`, // 10px de incremento para o efeito de borda fina
                                 zIndex: index + 1,
-                                marginBottom: '20px', // Espaço para garantir o fluxo de scroll
+                                marginBottom: '50px', // Increased bottom margin
                             }}
                         >
                             {/* Borda superior iluminada para destacar o empilhamento */}
