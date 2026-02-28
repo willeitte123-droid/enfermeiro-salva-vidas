@@ -800,20 +800,18 @@ const RankingSection = () => {
             </div>
 
             {/* Image */}
-            <div className="flex-1 w-full max-w-[600px] relative">
-                <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+            <div className="flex-1 w-full max-w-[600px] relative flex justify-center">
+                {/* No container styling for frame, assuming image has device frame */}
+                <div className="relative z-10 transform transition-transform duration-700 hover:scale-105">
                     <img 
-                        src="/images/ranking-showcase.png" 
+                        src="/images/ranking.png" 
                         alt="Ranking EnfermagemPro" 
-                        className="w-full h-auto transform transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-auto drop-shadow-2xl"
                     />
-                    {/* Glossy overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
                 </div>
                 
                 {/* Decorative elements behind image */}
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-500/20 rounded-full blur-3xl animate-pulse-subtle" />
-                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl animate-pulse-subtle" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-yellow-500/20 rounded-full blur-[80px] -z-10" />
             </div>
         </div>
       </div>
