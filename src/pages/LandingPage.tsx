@@ -804,7 +804,7 @@ const RankingSection = () => {
                 {/* No container styling for frame, assuming image has device frame */}
                 <div className="relative z-10 transform transition-transform duration-700 hover:scale-105">
                     <img 
-                        src="/images/ranking.png" 
+                        src="/images/ecosystem/ranking.png" 
                         alt="Ranking EnfermagemPro" 
                         className="w-full h-auto drop-shadow-2xl"
                     />
