@@ -116,3 +116,13 @@ All colors MUST be HSL.
 .rotate-y-180 {
   transform: rotateY(180deg);
 }
+
+/* Utilities to hide scrollbar but allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
