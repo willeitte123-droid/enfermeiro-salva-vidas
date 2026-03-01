@@ -7,7 +7,7 @@ import {
   Stethoscope, GraduationCap, Star,
   Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare,
   Video, BookOpen, MonitorPlay, ShieldCheck, Bandage, ClipboardList, FileSearch, HandHeart, BookHeart, BookText, Calculator, FileText, NotebookText, Briefcase, Bookmark,
-  Siren, FlaskConical, Target
+  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -423,7 +423,7 @@ const EcosystemSection = () => {
     { title: "MEU DESEMPENHO", desc: "Acompanhe sua evolução com dados claros e mensuráveis.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
     { title: "MEDICAMENTOS", desc: "Revisão prática de fármacos essenciais para o plantão.", icon: Syringe, image: "/images/ecosystem/medicamentos.png" },
     { title: "EMERGÊNCIAS", desc: "Protocolos objetivos para decisões rápidas.", icon: Siren, image: "/images/ecosystem/emergencias.png" },
-    { title: "CURATIVOS", desc: "Tipos de lesões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
+    { title: "CURATIVOS", desc: "Tipos de lenés e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
     { title: "PROCEDIMENTOS", desc: "Passo a passo técnico com foco em segurança.", icon: ClipboardList, image: "/images/ecosystem/procedimentos.png" },
     { title: "SEMIOLOGIA", desc: "Avaliação clínica organizada e estruturada.", icon: FileSearch, image: "/images/ecosystem/semiologia.png" },
     { title: "SEMIOTÉCNICA", desc: "Técnicas fundamentais da enfermagem.", icon: HandHeart, image: "/images/ecosystem/semiotecnica.png" },
@@ -938,6 +938,104 @@ const TestimonialsSection = () => {
   );
 };
 
+const GuaranteeSection = () => {
+  return (
+    <section className="py-24 bg-[#030014] relative overflow-hidden">
+        {/* Glow effect */}
+        <div className="absolute top-1/2 left-[-10%] w-[500px] h-[500px] bg-blue-600/5 blur-[120px] pointer-events-none rounded-full" />
+        
+        <div className="container mx-auto px-4 relative z-10">
+            <div className="flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto">
+                
+                {/* Main Guarantee Card */}
+                <div className="flex-[1.5]">
+                    <div className="h-full rounded-[2.5rem] p-8 sm:p-12 bg-gradient-to-br from-slate-900/80 to-slate-950 border border-white/10 shadow-2xl relative overflow-hidden group">
+                        {/* Background subtle light */}
+                        <div className="absolute -top-24 -left-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]" />
+                        
+                        <div className="relative z-10">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-slate-300 mb-8">
+                                <Shield className="w-4 h-4 text-emerald-400" /> Garantia sem risco
+                            </div>
+                            
+                            <h2 className="text-4xl sm:text-6xl font-black text-white mb-6 tracking-tight flex flex-wrap items-center gap-4">
+                                <span className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-emerald-500 text-slate-950">
+                                    <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10" />
+                                </span>
+                                7 dias de garantia total
+                            </h2>
+                            
+                            <p className="text-slate-400 text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl">
+                                Se não gostar, devolvemos <span className="text-white font-bold">100% do seu dinheiro.</span> Sem burocracia. Sem perguntas.
+                            </p>
+                            
+                            <div className="space-y-5">
+                                {[
+                                    "Você acessa a plataforma com tranquilidade e decide com segurança.",
+                                    "Cancelamento simples dentro do prazo — sem “pegadinhas”.",
+                                    "Compra protegida: sua decisão é sem pressão."
+                                ].map((item, i) => (
+                                    <div key={i} className="flex items-center gap-4 group/item">
+                                        <div className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center group-hover/item:border-emerald-500/50 transition-colors">
+                                            <CheckCircle2 className="w-4 h-4 text-emerald-500/40 group-hover/item:text-emerald-500 transition-colors" />
+                                        </div>
+                                        <span className="text-slate-300 font-medium text-sm sm:text-base">{item}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right Cards Stack */}
+                <div className="flex-1 flex flex-col gap-6">
+                    {/* Safe Purchase */}
+                    <div className="p-8 rounded-[2rem] bg-slate-900/50 border border-white/5 shadow-xl">
+                        <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 shrink-0">
+                                <Lock className="w-5 h-5 text-amber-500" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-white mb-2">Compra segura</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    Seus dados e pagamento são protegidos com padrão de segurança bancário.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Instant Access */}
+                    <div className="p-8 rounded-[2rem] bg-slate-900/50 border border-white/5 shadow-xl">
+                        <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 shrink-0">
+                                <Lightning className="w-5 h-5 text-blue-500" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-white mb-2">Acesso imediato</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    Entrou, começou: acesso liberado assim que o pagamento confirmar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Final CTA Card */}
+                    <div className="p-8 rounded-[2rem] bg-slate-900/80 border border-white/10 shadow-2xl flex flex-col gap-4">
+                        <Button className="w-full h-16 rounded-2xl bg-gradient-to-r from-cyan-400 to-violet-500 hover:from-cyan-300 hover:to-violet-400 text-[#030014] font-black text-xl shadow-lg transition-transform hover:scale-[1.02] flex items-center justify-center gap-2">
+                            Ver planos agora <ChevronDown className="w-6 h-6" />
+                        </Button>
+                        <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Você está coberta pela garantia de 7 dias
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+  );
+};
+
 const PricingSection = () => {
   return (
     <section id="planos" className="py-24 relative overflow-hidden bg-[#020617]">
@@ -1168,6 +1266,7 @@ export default function LandingPage() {
       <ForWhomSection />
       <RankingSection />
       <TestimonialsSection />
+      <GuaranteeSection />
       <PricingSection />
       {/* FOOTER */}
       <footer className="bg-[#020617] py-12 border-t border-white/5">
