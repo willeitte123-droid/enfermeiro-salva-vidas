@@ -1168,6 +1168,79 @@ const PricingSection = () => {
   );
 };
 
+const CreatorSection = () => {
+    return (
+        <section className="py-24 bg-[#030014] relative overflow-hidden border-t border-white/5">
+            <div className="container mx-auto px-4 relative z-10">
+                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 max-w-6xl mx-auto">
+                    
+                    {/* Texto à Esquerda */}
+                    <div className="flex-1 text-left space-y-8 animate-in fade-in slide-in-from-left-8 duration-1000">
+                        <div>
+                            <p className="text-indigo-400 text-sm md:text-base font-medium tracking-[0.3em] uppercase mb-4">
+                                Quem está por trás da plataforma EnfermagemPRO
+                            </p>
+                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">
+                                William leite?
+                            </h2>
+                        </div>
+
+                        <div className="space-y-6 text-slate-400 text-base md:text-lg leading-relaxed">
+                            <p>
+                                <strong className="text-slate-200">Formado em Enfermagem e pós-graduado em Estomaterapia</strong>, William criou a <strong className="text-blue-500">EnfermagemPro</strong> com um propósito claro: tornar o estudo da Enfermagem mais acessível, prático e eficiente.
+                            </p>
+                            <p>
+                                A partir da sua vivência acadêmica e profissional, desenvolveu uma <strong className="text-slate-200">tecnologia exclusiva voltada para concursos públicos e formação profissional</strong>, ajudando formandos e recém-formados a conquistarem aprovação e evolução na carreira.
+                            </p>
+                            <p>
+                                Nos últimos anos, William tem se dedicado integralmente ao aperfeiçoamento da metodologia da EnfermagemPro, unindo <strong className="text-slate-200">conteúdo atualizado, prática direcionada e uma experiência de estudo simplificada.</strong>
+                            </p>
+                            <p>
+                                Hoje, <strong className="text-slate-200">milhares de alunos e assinantes em todo o Brasil</strong> já utilizam a plataforma e relatam avanços reais na formação acadêmica e no crescimento profissional.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Colagem de Fotos à Direita */}
+                    <div className="flex-1 w-full max-w-[550px] relative animate-in fade-in zoom-in duration-1000 delay-300">
+                        <div className="grid grid-cols-2 grid-rows-2 gap-4 rounded-[2.5rem] overflow-hidden aspect-square">
+                            {/* Foto Principal Esquerda */}
+                            <div className="row-span-2 relative overflow-hidden rounded-l-[2rem]">
+                                <img 
+                                    src="/images/william-portrait-1.jpg" 
+                                    alt="William Leite" 
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            
+                            {/* Bloco de Cor Azul Superior Direito */}
+                            <div className="bg-blue-600 rounded-tr-[2rem] flex items-center justify-center p-4">
+                                {/* Pode adicionar um ícone ou logo discreto aqui */}
+                                <Syringe className="text-white/20 w-16 h-16" />
+                            </div>
+
+                            {/* Foto Inferior Direita */}
+                            <div className="relative overflow-hidden rounded-br-[2rem]">
+                                <img 
+                                    src="/images/william-portrait-2.jpg" 
+                                    alt="William Leite - Perfil" 
+                                    className="w-full h-full object-cover"
+                                />
+                                {/* Bloco Ciano sobreposto (conforme imagem) */}
+                                <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-cyan-400/90 backdrop-blur-sm rounded-tr-3xl" />
+                            </div>
+                        </div>
+
+                        {/* Glow decorativo atrás da colagem */}
+                        <div className="absolute -inset-4 bg-gradient-to-tr from-blue-600/20 to-indigo-600/20 blur-2xl -z-10 rounded-[3rem]" />
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    );
+};
+
 const Hero = () => {
   return (
     <>
@@ -1281,6 +1354,7 @@ export default function LandingPage() {
       <TestimonialsSection />
       <GuaranteeSection />
       <PricingSection />
+      <CreatorSection />
       {/* FOOTER */}
       <footer className="bg-[#020617] py-12 border-t border-white/5">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
