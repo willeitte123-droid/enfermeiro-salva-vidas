@@ -810,8 +810,8 @@ const ForWhomSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {personas.map((persona) => (
-            <div key={persona.title} className="relative h-[500px] group">
-              <div className={cn("absolute bottom-0 left-0 right-0 h-[65%] rounded-[60px] p-8 pt-32 flex flex-col justify-start text-center", persona.blockColor)}>
+            <div key={persona.title} className="relative flex flex-col group pt-[130px]">
+              <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
                 <p className={cn("leading-relaxed", persona.textColor)}>{persona.description}</p>
               </div>
