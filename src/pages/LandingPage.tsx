@@ -1201,29 +1201,33 @@ const CreatorSection = () => {
                         </div>
                     </div>
 
-                    {/* Colagem de Fotos à Direita */}
+                    {/* Colagem de Fotos à Direita - UPDATED WITH IMAGES */}
                     <div className="flex-1 w-full max-w-[550px] relative animate-in fade-in zoom-in duration-1000 delay-300">
                         <div className="grid grid-cols-2 grid-rows-2 gap-4 rounded-[2.5rem] overflow-hidden aspect-square">
                             {/* Foto Principal Esquerda */}
                             <div className="row-span-2 relative overflow-hidden rounded-l-[2rem]">
                                 <img 
                                     src="/images/william-portrait-1.jpg" 
-                                    alt="William Leite" 
+                                    alt="William Leite - Retrato" 
                                     className="w-full h-full object-cover"
                                 />
                             </div>
                             
                             {/* Bloco de Cor Azul Superior Direito */}
                             <div className="bg-blue-600 rounded-tr-[2rem] flex items-center justify-center p-4">
-                                {/* Pode adicionar um ícone ou logo discreto aqui */}
-                                <Syringe className="text-white/20 w-16 h-16" />
+                                <img 
+                                    src="/images/william-portrait-2.jpg" 
+                                    alt="William Leite - Perfil" 
+                                    className="w-full h-full object-cover opacity-60 mix-blend-overlay"
+                                />
+                                <div className="absolute inset-0 bg-blue-600/40" />
                             </div>
 
                             {/* Foto Inferior Direita */}
                             <div className="relative overflow-hidden rounded-br-[2rem]">
                                 <img 
                                     src="/images/william-portrait-2.jpg" 
-                                    alt="William Leite - Perfil" 
+                                    alt="William Leite - Perfil Secundário" 
                                     className="w-full h-full object-cover"
                                 />
                                 {/* Bloco Ciano sobreposto (conforme imagem) */}
