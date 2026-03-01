@@ -910,6 +910,9 @@ const SubscribersSection = () => {
 
   return (
     <section className="py-24 bg-[#050811] relative overflow-hidden flex flex-col items-center">
+      {/* Background Central Glow - Mesma técnica do Ranking */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 blur-[120px] pointer-events-none rounded-full" />
+      
       <div className="container mx-auto px-4 flex flex-col items-center relative z-10">
         
         {/* Avatars Row - Arco de tamanhos conforme o exemplo */}
@@ -948,8 +951,9 @@ const SubscribersSection = () => {
         </div>
       </div>
 
-      {/* Background glow behind text */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 bg-blue-600/10 blur-[100px] pointer-events-none" />
+      {/* Decorative dots to match Ranking lights style */}
+      <div className="absolute top-10 right-20 w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+      <div className="absolute bottom-10 left-20 w-2 h-2 bg-indigo-400 rounded-full animate-pulse delay-700" />
     </section>
   );
 };
