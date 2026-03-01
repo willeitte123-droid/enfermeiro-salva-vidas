@@ -811,11 +811,11 @@ const ForWhomSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {personas.map((persona) => (
             <div key={persona.title} className="relative h-[500px] group">
-              <div className={cn("absolute bottom-0 left-0 right-0 h-[65%] rounded-[60px] p-8 flex flex-col justify-end text-center", persona.blockColor)}>
+              <div className={cn("absolute bottom-0 left-0 right-0 h-[65%] rounded-[60px] p-8 pt-32 flex flex-col justify-start text-center", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
                 <p className={cn("leading-relaxed", persona.textColor)}>{persona.description}</p>
               </div>
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[260px] h-[260px] transition-transform duration-500 group-hover:scale-110">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[260px] h-[260px] transition-transform duration-500 group-hover:scale-110 z-10">
                 <div className={cn("w-full h-full rounded-full overflow-hidden shadow-2xl", persona.circleColor)}>
                   <img 
                     src={persona.image} 
