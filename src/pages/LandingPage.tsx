@@ -94,19 +94,23 @@ const InfiniteMarquee = () => {
   ];
 
   return (
-    <div className="w-full border-y border-white/5 bg-[#050811] overflow-hidden py-6 relative z-20">
+    <div className="w-full border-y border-blue-500/20 bg-[#050811] overflow-hidden py-8 relative z-20 shadow-[0_0_50px_-10px_rgba(37,99,235,0.15)]">
+      {/* Top and Bottom Glow lines */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
+      
       {/* Gradient Masks */}
       <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
       <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
       
-      {/* Container que move - usamos translate-x-[-50%] e duplicamos a lista para o loop perfeito */}
+      {/* Container que move */}
       <div className="flex animate-marquee whitespace-nowrap items-center w-max">
         {[...words, ...words].map((word, i) => (
-          <div key={i} className="flex items-center mx-8">
-            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default">
+          <div key={i} className="flex items-center mx-10">
+            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
               {word}
             </span>
-            <div className="ml-16 w-2 h-2 rounded-full bg-blue-900/50" />
+            <div className="ml-20 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse" />
           </div>
         ))}
       </div>
@@ -639,7 +643,7 @@ const FeaturesList = () => {
     {
       id: "04",
       title: "CASOS CLÍNICOS INTERATIVOS",
-      description: "Tome decisões como se estivesse no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
+      description: "Tome decisões como se estiver no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
       icon: Stethoscope,
       // Cyan theme
       iconColor: "text-cyan-400",
