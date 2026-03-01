@@ -7,13 +7,14 @@ import {
   Stethoscope, GraduationCap, Star,
   Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare,
   Video, BookOpen, MonitorPlay, ShieldCheck, Bandage, ClipboardList, FileSearch, HandHeart, BookHeart, BookText, Calculator, FileText, NotebookText, Briefcase, Bookmark,
-  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown
+  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown, HelpCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 // Componentes de UI isolados para manter o código limpo
 const Navbar = () => {
@@ -443,15 +444,15 @@ const EcosystemSection = () => {
     { title: "GUIA DE ECG", desc: "Interpretação simplificada para decisões seguras.", icon: BookHeart, image: "/images/ecosystem/ecg.png" },
     { title: "ANOTAÇÕES E EVOLUÇÃO", desc: "Estrutura correta de registros clínicos.", icon: BookText, image: "/images/ecosystem/anotacao-e-evolucao.png" },
     { title: "TERMOS TÉCNICOS", desc: "Padronização da linguagem profissional.", icon: MessageSquare, image: "/images/ecosystem/termos-tecnicos.png" },
-    { title: "GOTEJAMENTO", desc: "CÁLCULO RÁPIDO E PRECISO PARA ADMINISTRAÇÃO SEGURA.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
-    { title: "CÁLCULO DE DOSES", desc: "FERRAMENTA PRÁTICA PARA REDUZIR RISCO DE ERRO.", icon: FlaskConical, image: "/images/ecosystem/calculo-de-doses.png" },
+    { title: "GOTEJAMENTO", desc: "Cálculo rápido e preciso para administração segura.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
+    { title: "CÁLCULO DE DOSES", desc: "Ferramenta prática para reduzir risco de erro.", icon: FlaskConical, image: "/images/ecosystem/calculo-de-doses.png" },
     { title: "DUM E IMC", desc: "CÁLCULOS ESSENCIAIS PARA ACOMPANHAMENTO CLÍNICO.", icon: Calculator, image: "/images/ecosystem/dum-e-imc.png" },
-    { title: "ESCALAS CLÍNICAS", desc: "CONSULTAS RÁPIDAS PARA AVALIAÇÃO ESTRUTURADA.", icon: Activity, image: "/images/ecosystem/escalas-clinicas.png" },
+    { title: "ESCALAS CLÍNICAS", desc: "Consultas rápidas para avaliação estruturada.", icon: Activity, image: "/images/ecosystem/escalas-clinicas.png" },
     { title: "VALORES LABORATORIAIS", desc: "REFERÊNCIAS ORGANIZADAS PARA ANÁLISE SEGURA.", icon: FileText, image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070&auto=format&fit=crop" },
     { title: "BLOCO DE NOTAS", desc: "ORGANIZE SEUS APRENDIZADOS E INSIGHTS.", icon: NotebookText, image: "/images/ecosystem/bloco-de-notas.png" },
     { title: "CONCURSOS", desc: "ACOMPANHE OPORTUNIDADES E MANTENHA FOCO NA APROVAÇÃO.", icon: Briefcase, image: "/images/ecosystem/area-do-concurseiro.png" },
     { title: "RANKING", desc: "COMPARE EVOLUÇÃO E MANTENHA CONSTÂNCIA.", icon: Star, image: "/images/ecosystem/ranking.png" },
-    { title: "FAVORITOS", desc: "SALVE CONTEÚDOS ESTRATÉGICOS PARA REVISÃO RÁPIDA.", icon: Bookmark, image: "/images/ecosystem/favoritos.png" }
+    { title: "FAVORITOS", desc: "Salve conteúdos estratégicos para revisão rápida.", icon: Bookmark, image: "/images/ecosystem/favoritos.png" }
   ];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -539,7 +540,7 @@ const EcosystemSection = () => {
                     evoluir na enfermagem, em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">um único sistema</span>
                 </h2>
                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
-                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. Não é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
+                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. No é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
                 </p>
             </div>
         </div>
@@ -1263,6 +1264,84 @@ const CreatorSection = () => {
     );
 };
 
+const FAQSection = () => {
+  const faqs = [
+    {
+      q: "A EnfermagemPro é indicada para quem?",
+      a: "Para estudantes de enfermagem que buscam uma base sólida, técnicos e enfermeiros que desejam aprovação em concursos públicos ou profissionais que buscam mais segurança e consulta rápida na prática clínica do dia a dia."
+    },
+    {
+      q: "A plataforma é voltada apenas para concursos?",
+      a: "Não. Embora tenhamos uma estratégia fortíssima para concursos, a EnfermagemPro também é uma ferramenta de suporte para o plantão, com guias de procedimentos, calculadoras de gotejamento, protocolos de emergência e escalas clínicas para consulta à beira-leito."
+    },
+    {
+      q: "Consigo baixar a plataforma e usar como aplicativo?",
+      a: "Sim! Nossa plataforma utiliza a tecnologia PWA (Progressive Web App). Você pode adicioná-la à tela inicial do seu celular (Android ou iPhone) e acessá-la como um aplicativo nativo, sem precisar baixar nada nas lojas e sem ocupar espaço no seu dispositivo."
+    },
+    {
+      q: "Como funcionam os simulados?",
+      a: "Você pode gerar simulados personalizados escolhendo a banca examinadora, a disciplina e o tempo de prova. Ao final, o sistema gera um relatório de desempenho mostrando seus pontos fortes e onde você precisa focar mais o estudo."
+    },
+    {
+      q: "As questões são comentadas?",
+      a: "Sim. A grande maioria das nossas mais de 2.000 questões possui comentários detalhados que explicam o porquê da alternativa correta e dão dicas extras sobre o assunto cobrado."
+    },
+    {
+      q: "Posso estudar pelo celular?",
+      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiência é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir."
+    },
+    {
+      q: "O acesso é imediato após a compra?",
+      a: "Sim. Para pagamentos via Pix ou Cartão de Crédito, o acesso é liberado instantaneamente. Você receberá os dados de login no e-mail cadastrado logo após a confirmação do pagamento."
+    },
+    {
+      q: "Posso cancelar se não gostar?",
+      a: "Sim, sem problemas. Você tem 7 dias de garantia incondicional. Se por qualquer motivo sentir que a plataforma não é para você, basta solicitar o reembolso dentro desse prazo e devolvemos 100% do seu investimento."
+    },
+    {
+      q: "Preciso ter muito tempo disponível para estudar?",
+      a: "Não. O método EnfermagemPro foi criado justamente para quem tem pouco tempo. Com flashcards de repetição espaçada e sessões rápidas de questões, você consegue ter uma evolução significativa estudando apenas 20 a 30 minutos por dia."
+    },
+    {
+      q: "O conteúdo é atualizado?",
+      a: "Constantemente. Nossa equipe monitora e atualiza o calendário vacinal do PNI, diretrizes da AHA para RCP, novas leis do exercício profissional, portarias do SUS e inclui semanalmente novas questões de concursos recentes."
+    }
+  ];
+
+  return (
+    <section id="faq" className="py-24 bg-[#02040a] relative border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold uppercase tracking-wider text-blue-400 mb-6">
+              <HelpCircle className="h-3 w-3" /> Central de Dúvidas
+           </div>
+           <h2 className="text-3xl md:text-5xl font-black text-white mb-6">Perguntas Frequentes</h2>
+           <p className="text-slate-400 text-lg">Tudo o que você precisa saber para começar agora mesmo.</p>
+        </div>
+
+        <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="w-full space-y-4">
+                {faqs.map((faq, index) => (
+                    <AccordionItem 
+                        key={index} 
+                        value={`item-${index}`}
+                        className="border border-white/10 rounded-2xl bg-white/5 overflow-hidden px-4 sm:px-6 transition-all data-[state=open]:bg-white/[0.08] data-[state=open]:border-blue-500/30"
+                    >
+                        <AccordionTrigger className="hover:no-underline py-5 text-left text-base sm:text-lg font-bold text-white group">
+                           <span className="group-hover:text-blue-400 transition-colors pr-4">{faq.q}</span>
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-6 text-slate-400 text-sm sm:text-base leading-relaxed animate-in fade-in slide-in-from-top-1 duration-300">
+                           {faq.a}
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Hero = () => {
   return (
     <>
@@ -1377,6 +1456,7 @@ export default function LandingPage() {
       <GuaranteeSection />
       <PricingSection />
       <CreatorSection />
+      <FAQSection />
       {/* FOOTER */}
       <footer className="bg-[#020617] py-12 border-t border-white/5">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
