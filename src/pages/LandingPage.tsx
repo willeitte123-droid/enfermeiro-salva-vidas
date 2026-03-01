@@ -425,7 +425,7 @@ const VideoSection = () => {
 const EcosystemSection = () => {
   const tools = [
     { title: "BANCA DE QUESTÕES", desc: "Mais de 2.000 questões comentadas com foco em raciocínio clínico.", icon: FileQuestion, image: "/images/ecosystem/banca-de-questoes.png" },
-    { title: "ÁREA DE SIMULADO", desc: "Treinos cronomaticamente controlados com análise detalhada de desempenho.", icon: Timer, image: "/images/ecosystem/simulados.png" },
+    { title: "ÁREA DE SIMULADO", desc: "Treinos cronometrados com análise detalhada de desempenho.", icon: Timer, image: "/images/ecosystem/simulados.png" },
     { title: "VÍDEO AULAS", desc: "Explicações objetivas para fortalecer sua base teórica.", icon: MonitorPlay, image: "/images/ecosystem/video-aulas.png" },
     { title: "TRILHA DE ESTUDOS", desc: "Sequência organizada para eliminar dúvida sobre o que estudar.", icon: Map, image: "/images/ecosystem/trilha-de-estudos.png" },
     { title: "ÁREA DO CONCURSEIRO", desc: "Organização estratégica por edital e foco no que realmente cai.", icon: GraduationCap, image: "/images/ecosystem/area-do-concurseiro.png" },
@@ -1410,9 +1410,9 @@ const Hero = () => {
 
                 {/* Title */}
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
-                    Você não está atrasada. <br/>
+                    Estude com foco. <br/>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
-                        Você só está estudando do jeito errado.
+                        Organização e Estratégia.
                     </span>
                 </h1>
 
