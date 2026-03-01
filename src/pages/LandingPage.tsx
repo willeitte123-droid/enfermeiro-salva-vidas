@@ -80,9 +80,17 @@ const Navbar = () => {
 
 const InfiniteMarquee = () => {
   const words = [
-    "CONCURSOS", "RESIDÊNCIA", "CÁLCULOS", "FARMACOLOGIA", "TERAPIA INTENSIVA",
-    "SAÚDE PÚBLICA", "URGÊNCIA", "SAE", "EVOLUÇÃO", "TÉCNICAS", "ANATOMIA", 
-    "MEDICAMENTOS", "SIMULADOS", "FLASHCARDS", "LEGISLAÇÃO SUS"
+    "+ 2.000 QUESTOES DE ENFERMAGEM",
+    "SIMULADOS POR BANCA",
+    "TRILHA DE ESTUDOS",
+    "REVISÕES INTELIGENTES",
+    "FLASHCARDS",
+    "ÁREA DO CONCURSEIRO",
+    "CASOS CLINICOS",
+    "FERRAMENTAS AVANÇADAS",
+    "URGÊNCIAS E EMERGÊNCIAS",
+    "VIDEO AULAS",
+    "PROTOCOLOS CLINICOS"
   ];
 
   return (
@@ -423,7 +431,7 @@ const EcosystemSection = () => {
     { title: "MEU DESEMPENHO", desc: "Acompanhe sua evolução com dados claros e mensuráveis.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
     { title: "MEDICAMENTOS", desc: "Revisão prática de fármacos essenciais para o plantão.", icon: Syringe, image: "/images/ecosystem/medicamentos.png" },
     { title: "EMERGÊNCIAS", desc: "Protocolos objetivos para decisões rápidas.", icon: Siren, image: "/images/ecosystem/emergencias.png" },
-    { title: "CURATIVOS", desc: "Tipos de lenés e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
+    { title: "CURATIVOS", desc: "Tipos de lesões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
     { title: "PROCEDIMENTOS", desc: "Passo a passo técnico com foco em segurança.", icon: ClipboardList, image: "/images/ecosystem/procedimentos.png" },
     { title: "SEMIOLOGIA", desc: "Avaliação clínica organizada e estruturada.", icon: FileSearch, image: "/images/ecosystem/semiologia.png" },
     { title: "SEMIOTÉCNICA", desc: "Técnicas fundamentais da enfermagem.", icon: HandHeart, image: "/images/ecosystem/semiotecnica.png" },
