@@ -99,7 +99,7 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-subtle": "pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        marquee: "marquee 15s linear infinite",
+        marquee: "marquee 22s linear infinite",
         "marquee-slow": "marquee 60s linear infinite",
         float: "float 6s ease-in-out infinite",
         drift: "drift 10s linear infinite",
