@@ -99,8 +99,9 @@ const InfiniteMarquee = () => {
       <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
       <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
       
-      <div className="flex animate-marquee whitespace-nowrap items-center">
-        {[...words, ...words, ...words].map((word, i) => (
+      {/* Container que move - usamos translate-x-[-50%] e duplicamos a lista para o loop perfeito */}
+      <div className="flex animate-marquee whitespace-nowrap items-center w-max">
+        {[...words, ...words].map((word, i) => (
           <div key={i} className="flex items-center mx-8">
             <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default">
               {word}
