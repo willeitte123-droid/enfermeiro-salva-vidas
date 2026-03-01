@@ -897,6 +897,63 @@ const RankingSection = () => {
   );
 };
 
+const SubscribersSection = () => {
+  const images = [
+    "/images/sub-1.jpg",
+    "/images/sub-2.jpg",
+    "/images/sub-3.jpg",
+    "/images/sub-9.jpg", // Central
+    "/images/sub-4.jpg",
+    "/images/sub-6.jpg",
+    "/images/sub-7.jpg",
+  ];
+
+  return (
+    <section className="py-24 bg-[#050811] relative overflow-hidden flex flex-col items-center">
+      <div className="container mx-auto px-4 flex flex-col items-center relative z-10">
+        
+        {/* Avatars Row - Arco de tamanhos conforme o exemplo */}
+        <div className="flex items-end justify-center gap-2 sm:gap-6 mb-12">
+          {images.map((src, i) => {
+             // Tamanhos baseados na posição para criar o arco
+             const isCenter = i === 3;
+             const isInner = i === 2 || i === 4;
+             const isOuter = i === 1 || i === 5;
+             const isEdge = i === 0 || i === 6;
+
+             let sizeClasses = "w-10 h-10 sm:w-16 sm:h-16 opacity-40"; // Edge
+             if (isCenter) sizeClasses = "w-24 h-24 sm:w-44 sm:h-44 z-20 shadow-[0_0_50px_rgba(59,130,246,0.3)] border-blue-500/50";
+             if (isInner) sizeClasses = "w-16 h-16 sm:w-32 sm:h-32 z-10 opacity-80";
+             if (isOuter) sizeClasses = "w-12 h-12 sm:w-24 sm:h-24 opacity-60";
+
+             return (
+               <div key={i} className={cn(
+                 "rounded-full overflow-hidden border-2 border-white/20 transition-all duration-500 hover:scale-110 hover:opacity-100 hover:z-30 hover:border-primary",
+                 sizeClasses
+               )}>
+                 <img src={src} alt="" className="w-full h-full object-cover" />
+               </div>
+             );
+          })}
+        </div>
+
+        {/* Text content - Tipografia idêntica ao exemplo */}
+        <div className="text-center space-y-4">
+          <h2 className="text-5xl sm:text-8xl font-black text-white tracking-tighter drop-shadow-2xl">
+            + 2.000 assinantes
+          </h2>
+          <p className="text-xl sm:text-3xl font-light text-slate-300">
+            Já estão dominando a Enfermagem.
+          </p>
+        </div>
+      </div>
+
+      {/* Background glow behind text */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 bg-blue-600/10 blur-[100px] pointer-events-none" />
+    </section>
+  );
+};
+
 const TestimonialsSection = () => {
   const testimonials = [
     "/images/testimonial-1.png",
@@ -1303,7 +1360,7 @@ const FAQSection = () => {
     },
     {
       q: "Posso estudar pelo celular?",
-      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiênia é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
+      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiência é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
       color: "border-cyan-500/30",
       bg: "data-[state=open]:bg-cyan-500/10",
       accent: "text-cyan-400"
@@ -1486,6 +1543,7 @@ export default function LandingPage() {
       <AppShowcaseSection />
       <ForWhomSection />
       <RankingSection />
+      <SubscribersSection />
       <TestimonialsSection />
       <GuaranteeSection />
       <PricingSection />
