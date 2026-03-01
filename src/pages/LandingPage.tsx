@@ -643,7 +643,7 @@ const FeaturesList = () => {
     {
       id: "04",
       title: "CASOS CLÍNICOS INTERATIVOS",
-      description: "Tome decisões como se estiver no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
+      description: "Tome decisões como se estivesse no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
       icon: Stethoscope,
       // Cyan theme
       iconColor: "text-cyan-400",
@@ -814,7 +814,7 @@ const ForWhomSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Feito para você, profissional de enfermagem
+            Feito para você dominar a Enfermagem
           </h2>
           <p className="text-lg text-slate-400">
             Seja você estudante, recém-formado ou experiente, o EnfermagemPro acelera sua jornada.
@@ -822,7 +822,7 @@ const ForWhomSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {personas.map((persona) => (
+          {features.map((persona) => (
             <div key={persona.title} className="relative flex flex-col group pt-[130px]">
               <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
