@@ -771,45 +771,30 @@ const AppShowcaseSection = () => {
 const ForWhomSection = () => {
   const personas = [
     {
-      icon: GraduationCap,
       title: "Para o Estudante",
       description: "Cansado de apostilas desorganizadas? Use nossa trilha de estudos para construir uma base sólida e se destacar nos estágios e provas.",
-      color: "blue",
-      image: "/images/estudante.png"
+      image: "/images/estudante.png",
+      circleColor: "bg-[#1e3a8a]", // Dark Blue
+      blockColor: "bg-[#16a34a]", // Green
+      textColor: "text-green-100"
     },
     {
-      icon: Target,
       title: "Para o Concurseiro",
       description: "Pare de estudar sem foco. Com nossa Área do Concurseiro e simulados estratégicos, você estuda o que realmente cai e acompanha sua evolução até a aprovação.",
-      color: "emerald",
-      image: "/images/concurseiro.png"
+      image: "/images/concurseiro.png",
+      circleColor: "bg-[#facc15]", // Yellow
+      blockColor: "bg-[#6d28d9]", // Purple
+      textColor: "text-purple-100"
     },
     {
-      icon: Stethoscope,
       title: "Para o Profissional",
       description: "Inseguro com um procedimento ou cálculo? Tenha acesso offline a calculadoras, escalas e protocolos para tomar decisões rápidas e seguras na beira do leito.",
-      color: "rose",
-      image: "/images/profissional.png"
+      image: "/images/profissional.png",
+      circleColor: "bg-[#6d28d9]", // Purple
+      blockColor: "bg-[#facc15]", // Yellow
+      textColor: "text-yellow-900"
     }
   ];
-
-  const colorClasses = {
-    blue: {
-      iconBg: "bg-blue-900/30",
-      iconColor: "text-blue-400",
-      gradientFrom: "from-blue-500/50",
-    },
-    emerald: {
-      iconBg: "bg-emerald-900/30",
-      iconColor: "text-emerald-400",
-      gradientFrom: "from-emerald-500/50",
-    },
-    rose: {
-      iconBg: "bg-rose-900/30",
-      iconColor: "text-rose-400",
-      gradientFrom: "from-rose-500/50",
-    }
-  };
 
   return (
     <section className="py-24 bg-[#0B0F19] relative">
@@ -824,42 +809,23 @@ const ForWhomSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {personas.map((persona) => {
-            const Icon = persona.icon;
-            const styles = colorClasses[persona.color as keyof typeof colorClasses];
-            return (
-              <div 
-                key={persona.title}
-                className="group relative bg-[#111523] border border-white/10 rounded-3xl transition-all duration-300 cursor-default overflow-hidden h-[500px] flex flex-col"
-              >
-                {/* Efeito de brilho no hover */}
-                <div className={cn(
-                  "absolute top-0 left-0 h-48 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-                  "bg-gradient-to-t via-transparent to-transparent",
-                  styles.gradientFrom
-                )} />
-                
-                <div className="relative z-10 p-8 shrink-0">
-                  <div className={cn(
-                    "w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110 border border-white/10",
-                    styles.iconBg
-                  )}>
-                    <Icon className={cn("w-7 h-7", styles.iconColor)} />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-4">{persona.title}</h3>
-                  <p className="text-slate-400 leading-relaxed text-sm">{persona.description}</p>
-                </div>
-
-                <div className="mt-auto flex-1 relative">
+          {personas.map((persona) => (
+            <div key={persona.title} className="relative h-[500px] group">
+              <div className={cn("absolute bottom-0 left-0 right-0 h-[65%] rounded-[60px] p-8 flex flex-col justify-end text-center", persona.blockColor)}>
+                <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
+                <p className={cn("leading-relaxed", persona.textColor)}>{persona.description}</p>
+              </div>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[260px] h-[260px] transition-transform duration-500 group-hover:scale-110">
+                <div className={cn("w-full h-full rounded-full overflow-hidden shadow-2xl", persona.circleColor)}>
                   <img 
                     src={persona.image} 
                     alt={persona.title} 
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 h-full w-auto max-w-none object-contain object-bottom transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>
