@@ -649,7 +649,7 @@ const FeaturesList = () => {
       // Cyan theme
       iconColor: "text-cyan-400",
       iconBg: "bg-cyan-500/10",
-      hoverBorder: "hover:border-cyan-500/50",
+      hoverBorder: "hover:border-cyan-400/50",
       hoverBg: "hover:bg-cyan-500/5",
       hoverShadow: "hover:shadow-cyan-500/20"
     },
@@ -1303,7 +1303,7 @@ const FAQSection = () => {
     },
     {
       q: "Posso estudar pelo celular?",
-      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiência é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
+      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiênia é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
       color: "border-cyan-500/30",
       bg: "data-[state=open]:bg-cyan-500/10",
       accent: "text-cyan-400"
@@ -1420,7 +1420,7 @@ const Hero = () => {
                 <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
                     O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
                     <br/><br/>
-                    <span className="text-slate-100 font-medium">Sem conteúdo solto. Sem bagunça. Sem sensação de estar sempre correndo atrás.</span>
+                    <span className="text-slate-100 font-medium">Domine a Enfermagem com o método completo que + de 2.000 profissionais estão usando para estudar com foco e resultado</span>
                 </p>
 
                 {/* CTA Area */}
