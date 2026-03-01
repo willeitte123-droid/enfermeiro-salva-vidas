@@ -124,6 +124,50 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
   </div>
 );
 
+const VideoSection = () => {
+  return (
+    <section className="py-24 bg-[#02040a] relative overflow-hidden" style={{ contentVisibility: 'auto' }}>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center max-w-4xl mx-auto mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
+            Veja como o EnfermagemPro <br className="hidden md:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+              organiza seus estudos na prática
+            </span>
+          </h2>
+          <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+            Nada de teoria solta. Aqui você vê exatamente como o sistema funciona por dentro e como ele elimina a insegurança nos estudos e no plantão.
+          </p>
+        </div>
+
+        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+          <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
+             <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+             </div>
+             
+             <div className="relative z-10 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-sm cursor-pointer shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]">
+                   <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
+                </div>
+             </div>
+             
+             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+                <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-4">
+                   <div className="h-full w-1/3 bg-blue-500 rounded-full" />
+                </div>
+                <div className="flex justify-between text-white/80 text-sm font-medium">
+                   <span>02:14</span>
+                   <span>05:30</span>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const ClinicalCaseSection = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   return (
@@ -297,23 +341,62 @@ export default function LandingPage() {
       <PricingSection />
       <CreatorSection />
       <FAQSection />
+      {/* FOOTER COM MOCKUP MODERNO */}
       <footer className="bg-black py-16 border-t border-white/5">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold">Contato</h3>
-            <div className="space-y-2 text-slate-300">
-              <p className="flex items-center justify-center md:justify-start gap-2"><MessageCircle size={18}/> (68) 98101-8368</p>
-              <p className="flex items-center justify-center md:justify-start gap-2"><Instagram size={18}/> @enfermagempro_</p>
-              <p className="flex items-center justify-center md:justify-start gap-2"><Mail size={18}/> suporte@enfermagempro.com</p>
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start text-center md:text-left">
+            
+            {/* Coluna 1: Contato */}
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold text-white mb-4">Contato</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-center md:justify-start gap-3 text-slate-300 hover:text-white transition-colors cursor-pointer">
+                  <MessageCircle className="w-5 h-5" />
+                  <span className="text-sm sm:text-base font-medium">(68) 98101-8368</span>
+                </div>
+                <div className="flex items-center justify-center md:justify-start gap-3 text-slate-300 hover:text-white transition-colors cursor-pointer">
+                  <Instagram className="w-5 h-5" />
+                  <span className="text-sm sm:text-base font-medium">@enfermagempro_</span>
+                </div>
+                <div className="flex items-center justify-center md:justify-start gap-3 text-slate-300 hover:text-white transition-colors cursor-pointer">
+                  <Mail className="w-5 h-5" />
+                  <span className="text-sm sm:text-base font-medium">suporte@enfermagempro.com</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-44 h-44 rounded-full border border-white/10 p-2"><img src="/images/footer-logo.png" className="w-full h-full object-contain rounded-full" /></div>
-            <p className="text-xs text-slate-500 uppercase tracking-widest">Copyright &copy; 2026 Todos os direitos reservados.</p>
-          </div>
-          <div className="space-y-4 md:text-right">
-            <h3 className="text-2xl font-bold">Políticas</h3>
-            <div className="flex flex-col gap-2"><Link to="/privacy" className="text-slate-300 hover:text-white">Privacidade</Link><Link to="/terms" className="text-slate-300 hover:text-white">Termos</Link></div>
+
+            {/* Coluna 2: Logo (Mockup Style) e Copyright */}
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-blue-500/20 blur-[80px] rounded-full group-hover:bg-blue-500/40 transition-all duration-700" />
+                <div className="relative z-10 w-44 h-44 sm:w-56 sm:h-56 rounded-full p-1 bg-gradient-to-b from-white/20 to-white/5 border border-white/10 shadow-2xl overflow-hidden flex items-center justify-center backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
+                  <div className="absolute inset-0 rounded-full border border-blue-500/10 m-3 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-full border border-white/5 m-6 pointer-events-none" />
+                  <img 
+                    src="/images/footer-logo.png" 
+                    alt="Logo Enfermagem Pro Circular" 
+                    className="w-[85%] h-[85%] object-contain rounded-full brightness-110 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                  />
+                </div>
+              </div>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-[0.3em] text-center mt-4 opacity-70">
+                Copyright &copy; 2026 Todos <br/> os direitos reservados.
+              </p>
+            </div>
+
+            {/* Coluna 3: Políticas */}
+            <div className="space-y-6 md:text-right">
+              <h3 className="text-2xl font-bold text-white mb-4">Políticas</h3>
+              <div className="flex flex-col gap-4">
+                <Link to="/privacy" className="text-slate-300 hover:text-white transition-colors text-sm sm:text-base font-medium">
+                  Políticas de Privacidade
+                </Link>
+                <Link to="/terms" className="text-slate-300 hover:text-white transition-colors text-sm sm:text-base font-medium">
+                  Termos de Uso
+                </Link>
+              </div>
+            </div>
+
           </div>
         </div>
       </footer>
