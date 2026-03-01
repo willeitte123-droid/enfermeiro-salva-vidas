@@ -774,19 +774,22 @@ const ForWhomSection = () => {
       icon: GraduationCap,
       title: "Para o Estudante",
       description: "Cansado de apostilas desorganizadas? Use nossa trilha de estudos para construir uma base sólida e se destacar nos estágios e provas.",
-      color: "blue"
+      color: "blue",
+      image: "/images/estudante.png"
     },
     {
       icon: Target,
       title: "Para o Concurseiro",
       description: "Pare de estudar sem foco. Com nossa Área do Concurseiro e simulados estratégicos, você estuda o que realmente cai e acompanha sua evolução até a aprovação.",
-      color: "emerald"
+      color: "emerald",
+      image: "/images/concurseiro.png"
     },
     {
       icon: Stethoscope,
       title: "Para o Profissional",
       description: "Inseguro com um procedimento ou cálculo? Tenha acesso offline a calculadoras, escalas e protocolos para tomar decisões rápidas e seguras na beira do leito.",
-      color: "rose"
+      color: "rose",
+      image: "/images/profissional.png"
     }
   ];
 
@@ -827,7 +830,7 @@ const ForWhomSection = () => {
             return (
               <div 
                 key={persona.title}
-                className="group relative bg-[#111523] border border-white/10 rounded-3xl p-8 transition-all duration-300 cursor-default overflow-hidden"
+                className="group relative bg-[#111523] border border-white/10 rounded-3xl transition-all duration-300 cursor-default overflow-hidden h-[500px] flex flex-col"
               >
                 {/* Efeito de brilho no hover */}
                 <div className={cn(
@@ -836,7 +839,7 @@ const ForWhomSection = () => {
                   styles.gradientFrom
                 )} />
                 
-                <div className="relative z-10">
+                <div className="relative z-10 p-8 shrink-0">
                   <div className={cn(
                     "w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110 border border-white/10",
                     styles.iconBg
@@ -844,7 +847,15 @@ const ForWhomSection = () => {
                     <Icon className={cn("w-7 h-7", styles.iconColor)} />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-4">{persona.title}</h3>
-                  <p className="text-slate-400 leading-relaxed">{persona.description}</p>
+                  <p className="text-slate-400 leading-relaxed text-sm">{persona.description}</p>
+                </div>
+
+                <div className="mt-auto flex-1 relative">
+                  <img 
+                    src={persona.image} 
+                    alt={persona.title} 
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 h-full w-auto max-w-none object-contain object-bottom transition-transform duration-500 group-hover:scale-105"
+                  />
                 </div>
               </div>
             );
