@@ -443,15 +443,15 @@ const EcosystemSection = () => {
     { title: "GUIA DE ECG", desc: "Interpretação simplificada para decisões seguras.", icon: BookHeart, image: "/images/ecosystem/ecg.png" },
     { title: "ANOTAÇÕES E EVOLUÇÃO", desc: "Estrutura correta de registros clínicos.", icon: BookText, image: "/images/ecosystem/anotacao-e-evolucao.png" },
     { title: "TERMOS TÉCNICOS", desc: "Padronização da linguagem profissional.", icon: MessageSquare, image: "/images/ecosystem/termos-tecnicos.png" },
-    { title: "GOTEJAMENTO", desc: "Cálculo rápido e preciso para administração segura.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
-    { title: "CÁLCULO DE DOSES", desc: "Ferramenta prática para reduzir risco de erro.", icon: FlaskConical, image: "/images/ecosystem/calculo-de-doses.png" },
-    { title: "DUM E IMC", desc: "Cálculos essenciais para acompanhamento clínico.", icon: Calculator, image: "/images/ecosystem/dum-e-imc.png" },
-    { title: "ESCALAS CLÍNICAS", desc: "Consultas rápidas para avaliação estruturada.", icon: Activity, image: "/images/ecosystem/escalas-clinicas.png" },
-    { title: "VALORES LABORATORIAIS", desc: "Referências organizadas para análise segura.", icon: FileText, image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070&auto=format&fit=crop" },
-    { title: "BLOCO DE NOTAS", desc: "Organize seus aprendizados e insights.", icon: NotebookText, image: "/images/ecosystem/bloco-de-notas.png" },
-    { title: "CONCURSOS", desc: "Acompanhe oportunidades e mantenha foco na aprovação.", icon: Briefcase, image: "/images/ecosystem/area-do-concurseiro.png" },
-    { title: "RANKING", desc: "Compare evolução e mantenha constância.", icon: Star, image: "/images/ecosystem/ranking.png" },
-    { title: "FAVORITOS", desc: "Salve conteúdos estratégicos para revisão rápida.", icon: Bookmark, image: "/images/ecosystem/favoritos.png" }
+    { title: "GOTEJAMENTO", desc: "CÁLCULO RÁPIDO E PRECISO PARA ADMINISTRAÇÃO SEGURA.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
+    { title: "CÁLCULO DE DOSES", desc: "FERRAMENTA PRÁTICA PARA REDUZIR RISCO DE ERRO.", icon: FlaskConical, image: "/images/ecosystem/calculo-de-doses.png" },
+    { title: "DUM E IMC", desc: "CÁLCULOS ESSENCIAIS PARA ACOMPANHAMENTO CLÍNICO.", icon: Calculator, image: "/images/ecosystem/dum-e-imc.png" },
+    { title: "ESCALAS CLÍNICAS", desc: "CONSULTAS RÁPIDAS PARA AVALIAÇÃO ESTRUTURADA.", icon: Activity, image: "/images/ecosystem/escalas-clinicas.png" },
+    { title: "VALORES LABORATORIAIS", desc: "REFERÊNCIAS ORGANIZADAS PARA ANÁLISE SEGURA.", icon: FileText, image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070&auto=format&fit=crop" },
+    { title: "BLOCO DE NOTAS", desc: "ORGANIZE SEUS APRENDIZADOS E INSIGHTS.", icon: NotebookText, image: "/images/ecosystem/bloco-de-notas.png" },
+    { title: "CONCURSOS", desc: "ACOMPANHE OPORTUNIDADES E MANTENHA FOCO NA APROVAÇÃO.", icon: Briefcase, image: "/images/ecosystem/area-do-concurseiro.png" },
+    { title: "RANKING", desc: "COMPARE EVOLUÇÃO E MANTENHA CONSTÂNCIA.", icon: Star, image: "/images/ecosystem/ranking.png" },
+    { title: "FAVORITOS", desc: "SALVE CONTEÚDOS ESTRATÉGICOS PARA REVISÃO RÁPIDA.", icon: Bookmark, image: "/images/ecosystem/favoritos.png" }
   ];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -1162,6 +1162,24 @@ const PricingSection = () => {
                 </Card>
              </div>
 
+          </div>
+
+          {/* Payment Info Footer (New) */}
+          <div className="mt-16 flex flex-wrap justify-center items-center gap-x-6 gap-y-4 text-slate-400 text-sm md:text-base font-medium animate-in fade-in duration-1000">
+            <div className="flex items-center gap-2">
+              <span className="text-amber-500">🔒</span>
+              <span>Pagamento seguro</span>
+            </div>
+            <div className="hidden sm:block w-1 h-1 rounded-full bg-slate-700" />
+            <div className="flex items-center gap-2">
+              <span className="text-orange-400">💳</span>
+              <span>Cartão ou Pix</span>
+            </div>
+            <div className="hidden sm:block w-1 h-1 rounded-full bg-slate-700" />
+            <div className="flex items-center gap-2">
+              <span className="text-blue-400">📱</span>
+              <span>Acesso imediato</span>
+            </div>
           </div>
        </div>
     </section>
