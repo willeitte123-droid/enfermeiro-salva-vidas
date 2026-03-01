@@ -425,7 +425,7 @@ const VideoSection = () => {
 const EcosystemSection = () => {
   const tools = [
     { title: "BANCA DE QUESTÕES", desc: "Mais de 2.000 questões comentadas com foco em raciocínio clínico.", icon: FileQuestion, image: "/images/ecosystem/banca-de-questoes.png" },
-    { title: "ÁREA DE SIMULADO", desc: "Treinos cronometrados com análise detalhada de desempenho.", icon: Timer, image: "/images/ecosystem/simulados.png" },
+    { title: "ÁREA DE SIMULADO", desc: "Treinos cronomaticamente controlados com análise detalhada de desempenho.", icon: Timer, image: "/images/ecosystem/simulados.png" },
     { title: "VÍDEO AULAS", desc: "Explicações objetivas para fortalecer sua base teórica.", icon: MonitorPlay, image: "/images/ecosystem/video-aulas.png" },
     { title: "TRILHA DE ESTUDOS", desc: "Sequência organizada para eliminar dúvida sobre o que estudar.", icon: Map, image: "/images/ecosystem/trilha-de-estudos.png" },
     { title: "ÁREA DO CONCURSEIRO", desc: "Organização estratégica por edital e foco no que realmente cai.", icon: GraduationCap, image: "/images/ecosystem/area-do-concurseiro.png" },
@@ -1515,17 +1515,27 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Coluna 2: Logo e Copyright */}
-            <div className="flex flex-col items-center gap-6">
+            {/* Coluna 2: Logo (Mockup Style) e Copyright */}
+            <div className="flex flex-col items-center gap-4">
               <div className="relative group">
-                <div className="absolute inset-0 bg-blue-600/20 blur-2xl rounded-full group-hover:bg-blue-600/30 transition-all duration-500" />
-                <img 
-                  src="/images/footer-logo.png" 
-                  alt="Logo Enfermagem Pro Circular" 
-                  className="w-40 h-40 sm:w-48 sm:h-48 object-contain relative z-10"
-                />
+                {/* External Glow Background */}
+                <div className="absolute inset-0 bg-blue-500/20 blur-[80px] rounded-full group-hover:bg-blue-500/40 transition-all duration-700" />
+                
+                {/* The "Mockup" Container for the Logo */}
+                <div className="relative z-10 w-44 h-44 sm:w-56 sm:h-56 rounded-full p-1 bg-gradient-to-b from-white/20 to-white/5 border border-white/10 shadow-2xl overflow-hidden flex items-center justify-center backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
+                  {/* Decorative internal rings */}
+                  <div className="absolute inset-0 rounded-full border border-blue-500/10 m-3 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-full border border-white/5 m-6 pointer-events-none" />
+                  
+                  {/* Logo Image */}
+                  <img 
+                    src="/images/footer-logo.png" 
+                    alt="Logo Enfermagem Pro Circular" 
+                    className="w-[85%] h-[85%] object-contain rounded-full brightness-110 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                  />
+                </div>
               </div>
-              <p className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest text-center mt-2">
+              <p className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-[0.3em] text-center mt-4 opacity-70">
                 Copyright &copy; 2026 Todos <br/> os direitos reservados.
               </p>
             </div>
