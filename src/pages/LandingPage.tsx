@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { 
@@ -548,8 +550,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -823,7 +825,7 @@ const ForWhomSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {personas.map((persona) => (
+          {persona.map((persona) => (
             <div key={persona.title} className="relative flex flex-col group pt-[130px]">
               <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
@@ -909,9 +911,9 @@ const SubscribersSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-[#050811] relative overflow-hidden flex flex-col items-center">
-      {/* Background Central Glow - Mesma técnica do Ranking */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 blur-[120px] pointer-events-none rounded-full" />
+    <section className="py-24 bg-[#050811] relative overflow-hidden border-t border-white/5 flex flex-col items-center">
+      {/* Background Central Glow - Amarelo igual ao Ranking */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] pointer-events-none rounded-full" />
       
       <div className="container mx-auto px-4 flex flex-col items-center relative z-10">
         
@@ -925,13 +927,13 @@ const SubscribersSection = () => {
              const isEdge = i === 0 || i === 6;
 
              let sizeClasses = "w-10 h-10 sm:w-16 sm:h-16 opacity-40"; // Edge
-             if (isCenter) sizeClasses = "w-24 h-24 sm:w-44 sm:h-44 z-20 shadow-[0_0_50px_rgba(59,130,246,0.3)] border-blue-500/50";
+             if (isCenter) sizeClasses = "w-24 h-24 sm:w-44 sm:h-44 z-20 shadow-[0_0_50px_rgba(234,179,8,0.3)] border-yellow-500/50";
              if (isInner) sizeClasses = "w-16 h-16 sm:w-32 sm:h-32 z-10 opacity-80";
              if (isOuter) sizeClasses = "w-12 h-12 sm:w-24 sm:h-24 opacity-60";
 
              return (
                <div key={i} className={cn(
-                 "rounded-full overflow-hidden border-2 border-white/20 transition-all duration-500 hover:scale-110 hover:opacity-100 hover:z-30 hover:border-primary",
+                 "rounded-full overflow-hidden border-2 border-white/20 transition-all duration-500 hover:scale-110 hover:opacity-100 hover:z-30 hover:border-yellow-500",
                  sizeClasses
                )}>
                  <img src={src} alt="" className="w-full h-full object-cover" />
@@ -940,10 +942,10 @@ const SubscribersSection = () => {
           })}
         </div>
 
-        {/* Text content - Tipografia idêntica ao exemplo */}
+        {/* Text content - Gradiente amarelado igual ao Ranking */}
         <div className="text-center space-y-4">
           <h2 className="text-5xl sm:text-8xl font-black text-white tracking-tighter drop-shadow-2xl">
-            + 2.000 assinantes
+            + <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">2.000 assinantes</span>
           </h2>
           <p className="text-xl sm:text-3xl font-light text-slate-300">
             Já estão dominando a Enfermagem.
@@ -952,8 +954,8 @@ const SubscribersSection = () => {
       </div>
 
       {/* Decorative dots to match Ranking lights style */}
-      <div className="absolute top-10 right-20 w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-      <div className="absolute bottom-10 left-20 w-2 h-2 bg-indigo-400 rounded-full animate-pulse delay-700" />
+      <div className="absolute top-10 right-20 w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+      <div className="absolute bottom-10 left-20 w-2 h-2 bg-orange-400 rounded-full animate-pulse delay-700" />
     </section>
   );
 };
@@ -1217,7 +1219,7 @@ const PricingSection = () => {
                          ))}
                       </div>
 
-                      <Button className="w-full bg-[#1e293b] hover:bg-[#334155] text-white font-bold h-12 rounded-xl text-lg border border-white/10 mt-auto transition-all hover:scale-[1.02]">
+                      <Button className="w-full bg-[#1e293b] hover:bg-[#334155] text-white font-bold h-12 rounded-xl text-lg border border-white/10 mt-auto transition-all hover:scale-105">
                          Quero assinar (Mensal)
                       </Button>
                    </CardContent>
