@@ -792,22 +792,19 @@ const ForWhomSection = () => {
 
   const colorClasses = {
     blue: {
-      iconBg: "bg-blue-500/10",
+      iconBg: "bg-blue-900/30",
       iconColor: "text-blue-400",
-      hoverBorder: "hover:border-blue-500/50",
-      hoverShadow: "hover:shadow-blue-500/20"
+      gradientFrom: "from-blue-500/50",
     },
     emerald: {
-      iconBg: "bg-emerald-500/10",
+      iconBg: "bg-emerald-900/30",
       iconColor: "text-emerald-400",
-      hoverBorder: "hover:border-emerald-500/50",
-      hoverShadow: "hover:shadow-emerald-500/20"
+      gradientFrom: "from-emerald-500/50",
     },
     rose: {
-      iconBg: "bg-rose-500/10",
+      iconBg: "bg-rose-900/30",
       iconColor: "text-rose-400",
-      hoverBorder: "hover:border-rose-500/50",
-      hoverShadow: "hover:shadow-rose-500/20"
+      gradientFrom: "from-rose-500/50",
     }
   };
 
@@ -830,21 +827,25 @@ const ForWhomSection = () => {
             return (
               <div 
                 key={persona.title}
-                className={cn(
-                  "group relative bg-slate-900/50 border border-white/10 p-8 rounded-3xl transition-all duration-300 cursor-default",
-                  "hover:-translate-y-2 hover:shadow-2xl",
-                  styles.hoverBorder,
-                  styles.hoverShadow
-                )}
+                className="group relative bg-[#111523] border border-white/10 rounded-3xl p-8 transition-all duration-300 cursor-default overflow-hidden"
               >
+                {/* Efeito de brilho no hover */}
                 <div className={cn(
-                  "w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110 border border-white/10",
-                  styles.iconBg
-                )}>
-                  <Icon className={cn("w-7 h-7", styles.iconColor)} />
+                  "absolute top-0 left-0 h-48 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-500",
+                  "bg-gradient-to-t via-transparent to-transparent",
+                  styles.gradientFrom
+                )} />
+                
+                <div className="relative z-10">
+                  <div className={cn(
+                    "w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110 border border-white/10",
+                    styles.iconBg
+                  )}>
+                    <Icon className={cn("w-7 h-7", styles.iconColor)} />
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-4">{persona.title}</h3>
+                  <p className="text-slate-400 leading-relaxed">{persona.description}</p>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">{persona.title}</h3>
-                <p className="text-slate-400 leading-relaxed">{persona.description}</p>
               </div>
             );
           })}
