@@ -7,7 +7,7 @@ import {
   Stethoscope, GraduationCap, Star,
   Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare,
   Video, BookOpen, MonitorPlay, ShieldCheck, Bandage, ClipboardList, FileSearch, HandHeart, BookHeart, BookText, Calculator, FileText, NotebookText, Briefcase, Bookmark,
-  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown, HelpCircle
+  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown, HelpCircle, Instagram, Mail, MessageCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -1492,24 +1492,58 @@ export default function LandingPage() {
       <CreatorSection />
       <FAQSection />
       {/* FOOTER */}
-      <footer className="bg-[#020617] py-12 border-t border-white/5">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-               <Syringe className="text-white w-5 h-5" />
-             </div>
-             <span className="font-bold text-lg text-white">EnfermagemPro</span>
-          </div>
-          
-          <div className="flex gap-8 text-sm text-slate-400">
-            <Link to="/terms" className="hover:text-white transition-colors">Termos de Uso</Link>
-            <Link to="/privacy" className="hover:text-white transition-colors">Privacidade</Link>
-            <a href="#" className="hover:text-white transition-colors">Contato</a>
-          </div>
+      <footer className="bg-black py-16 border-t border-white/5">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start text-center md:text-left">
+            
+            {/* Coluna 1: Contato */}
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold text-white mb-4">Contato</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-center md:justify-start gap-3 text-slate-300 hover:text-white transition-colors cursor-pointer">
+                  <MessageCircle className="w-5 h-5" />
+                  <span className="text-sm sm:text-base font-medium">(68) 98101-8368</span>
+                </div>
+                <div className="flex items-center justify-center md:justify-start gap-3 text-slate-300 hover:text-white transition-colors cursor-pointer">
+                  <Instagram className="w-5 h-5" />
+                  <span className="text-sm sm:text-base font-medium">@enfermagempro_</span>
+                </div>
+                <div className="flex items-center justify-center md:justify-start gap-3 text-slate-300 hover:text-white transition-colors cursor-pointer">
+                  <Mail className="w-5 h-5" />
+                  <span className="text-sm sm:text-base font-medium">suporte@enfermagempro.com</span>
+                </div>
+              </div>
+            </div>
 
-          <p className="text-sm text-slate-600">
-            &copy; 2025 Enfermagem Pro. Todos os direitos reservados.
-          </p>
+            {/* Coluna 2: Logo e Copyright */}
+            <div className="flex flex-col items-center gap-6">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-blue-600/20 blur-2xl rounded-full group-hover:bg-blue-600/30 transition-all duration-500" />
+                <img 
+                  src="/images/footer-logo.png" 
+                  alt="Logo Enfermagem Pro Circular" 
+                  className="w-40 h-40 sm:w-48 sm:h-48 object-contain relative z-10"
+                />
+              </div>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest text-center mt-2">
+                Copyright &copy; 2026 Todos <br/> os direitos reservados.
+              </p>
+            </div>
+
+            {/* Coluna 3: Políticas */}
+            <div className="space-y-6 md:text-right">
+              <h3 className="text-2xl font-bold text-white mb-4">Políticas</h3>
+              <div className="flex flex-col gap-4">
+                <Link to="/privacy" className="text-slate-300 hover:text-white transition-colors text-sm sm:text-base font-medium">
+                  Políticas de Privacidade
+                </Link>
+                <Link to="/terms" className="text-slate-300 hover:text-white transition-colors text-sm sm:text-base font-medium">
+                  Termos de Uso
+                </Link>
+              </div>
+            </div>
+
+          </div>
         </div>
       </footer>
     </div>
