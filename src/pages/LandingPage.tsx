@@ -788,7 +788,7 @@ const ForWhomSection = () => {
     },
     {
       title: "Para o Profissional",
-      description: "Inseguro com um procedimento ou cálculo? Tenha acesso offline a calculadoras, escalas e protocolos para tomar decisões rápidas e seguras na beira do leito.",
+      description: "Transforme a insegurança do plantão em confiança absoluta. Tenha na palma da mão tudo o que você precisa para se preparar para qualquer intercorrência: acesso rápido a guias de procedimentos, calculadoras, escalas e protocolos para tomar decisões rápidas e seguras na beira do leito.",
       image: "/images/profissional.png",
       circleColor: "bg-[#6d28d9]", // Purple
       blockColor: "bg-[#facc15]", // Yellow
