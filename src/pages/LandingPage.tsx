@@ -234,6 +234,15 @@ const Hero = () => {
                 {/* CTA Area */}
                 <div className="flex flex-col sm:flex-row items-center gap-6">
                     <GlowButton text="Quero estudar com organização" href="#planos" className="w-full sm:w-auto" />
+                    
+                    {/* Price Info */}
+                    <div className="flex flex-col items-start min-w-fit">
+                         <span className="text-xs text-slate-400 line-through font-medium">DE R$ 97,00</span>
+                         <div className="flex items-baseline gap-1">
+                            <span className="text-sm text-slate-300">POR</span>
+                            <span className="text-xl font-bold text-white">R$ 29,90</span>
+                         </div>
+                    </div>
                 </div>
                 
                 {/* Progress Bar */}
@@ -938,7 +947,7 @@ const ForWhomSection = () => {
 const RankingSection = () => {
   return (
     <section id="ranking" className="py-24 bg-[#050811] relative border-t border-white/5 overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] pointer-events-none rounded-full" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/05 blur-[120px] pointer-events-none rounded-full" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -967,10 +976,10 @@ const RankingSection = () => {
                     <img 
                         src="/images/ranking-mockup.png" 
                         alt="Ranking EnfermagemPro" 
-                        className="w-full h-auto drop-shadow-2xl"
+                        className="w-full h-auto drop-shadow-xl"
                     />
                 </div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-yellow-500/20 rounded-full blur-[80px] -z-10" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-yellow-500/10 rounded-full blur-[100px] -z-10" />
             </div>
         </div>
       </div>
