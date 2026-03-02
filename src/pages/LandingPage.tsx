@@ -1,4 +1,3 @@
-strokeWidth) que quebrava a renderização do React. Restaurando a versão Premium da seção de Assinantes (com arco de avatares) e mantendo a seção do Criador otimizada.">
 "use client";
 
 import { useState, useEffect, useRef } from "react";
