@@ -183,7 +183,8 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
           <div className="h-6 sm:h-8 w-full overflow-hidden relative opacity-70">
              {hr > 0 && (
                <svg viewBox="0 0 100 20" className="w-full h-full stroke-green-500 fill-none stroke-[2px]">
-                 <path d="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L50,10 L52,5 L54,15 L56,0 L58,20 L60,10 L100,10; M-20,10 L-10,10 L-8,5 L-6,15 L-4,0 L-2,20 L0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L80,10" />
+                 <path d="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L50,10 L52,5 L54,15 L56,0 L58,20 L60,10 L100,10">
+                    <animate attributeName="d" dur="1s" repeatCount="indefinite" values="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L50,10 L52,5 L54,15 L56,0 L58,20 L60,10 L100,10; M-20,10 L-10,10 L-8,5 L-6,15 L-4,0 L-2,20 L0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L80,10" />
                  </path>
                </svg>
              )}
@@ -549,8 +550,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -807,7 +808,7 @@ const ForWhomSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {persona.map((persona) => (
+          {personas.map((persona) => (
             <div key={persona.title} className="relative flex flex-col group pt-[130px]">
               <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center shadow-2xl", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
@@ -1425,7 +1426,7 @@ const Hero = () => {
 
                 {/* Subtitle */}
                 <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
-                    O EnfermagemPro é o sistema que organizes seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
+                    O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
                     <br/><br/>
                     <span className="text-slate-100 font-medium">Domine a Enfermagem com o método completo que + de 2.000 profissionais estão usando para estudar com foco e resultado</span>
                 </p>
