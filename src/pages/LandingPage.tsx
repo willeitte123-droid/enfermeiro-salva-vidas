@@ -882,7 +882,7 @@ const AppShowcaseSection = () => {
                        E muuuuito mais..
                     </h3>
                     <div className="flex justify-center">
-                        <GlowButton text="QUERO O ACESSO COMPLETO" href="#planos" className="w-full max-w-md shadow-[0_0_50px_rgba(37,99,235,0.3)]" />
+                        <GlowButton text="QUERO O ACESSO COMPLETO" href="#planos" className="w-full max-md shadow-[0_0_50px_rgba(37,99,235,0.3)]" />
                     </div>
                 </div>
             </div>
@@ -916,13 +916,13 @@ const ForWhomSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-[#0B0F19] relative">
+    <section className="py-24 bg-white relative">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">
             Feito para você dominar a <span className="text-blue-500">Enfermagem</span>
           </h2>
-          <p className="text-lg text-slate-400">
+          <p className="text-lg text-slate-600">
             Seja você estudante, recém-formado ou experiente, o EnfermagemPro acelera sua jornada.
           </p>
         </div>
@@ -935,7 +935,7 @@ const ForWhomSection = () => {
                 <p className={cn("leading-relaxed", persona.textColor)}>{persona.description}</p>
               </div>
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[260px] h-[260px] transition-transform duration-500 group-hover:scale-110 z-10">
-                <div className="w-full h-full rounded-full overflow-hidden border-[8px] border-[#0B0F19] shadow-2xl bg-slate-800">
+                <div className="w-full h-full rounded-full overflow-hidden border-[8px] border-white shadow-2xl bg-slate-800">
                   <img 
                     src={persona.image} 
                     alt={persona.title} 
