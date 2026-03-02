@@ -446,7 +446,7 @@ const EcosystemSection = () => {
     { title: "GUIA DE ECG", desc: "Interpretação simplificada para decisões seguras.", icon: BookHeart, image: "/images/ecosystem/ecg.png" },
     { title: "ANOTAÇÕES E EVOLUÇÃO", desc: "Estrutura correta de registros clínicos.", icon: BookText, image: "/images/ecosystem/anotacao-e-evolucao.png" },
     { title: "TERMOS TÉCNICOS", desc: "Padronização da linguagem profissional.", icon: MessageSquare, image: "/images/ecosystem/termos-tecnicos.png" },
-    { title: "GOTEJAMENTO", desc: "Cálculo rápido e preciso para administração segura.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
+    { title: "GOTEJAMENTO", desc: "CÁLCULO RÁPIDO E PRECISO PARA ADMINISTRAÇÃO SEGURA.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
     { title: "CÁLCULO DE DOSES", desc: "Ferramenta prática para reduzir risco de erro.", icon: FlaskConical, image: "/images/ecosystem/calculo-de-doses.png" },
     { title: "DUM E IMC", desc: "CÁLCULOS ESSENCIAIS PARA ACOMPANHAMENTO CLÍNICO.", icon: Calculator, image: "/images/ecosystem/dum-e-imc.png" },
     { title: "ESCALAS CLÍNICAS", desc: "Consultas rápidas para avaliação estruturada.", icon: Activity, image: "/images/ecosystem/escalas-clinicas.png" },
@@ -574,11 +574,11 @@ const EcosystemSection = () => {
                         >
                             {/* Background Image with Overlay */}
                             <div className="absolute inset-0 z-0">
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent z-10" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] to-transparent z-10" />
                                 <img 
                                     src={tool.image} 
                                     alt={tool.title} 
-                                    className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700 pointer-events-none"
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"
                                 />
                             </div>
 
@@ -677,26 +677,33 @@ const FeaturesList = () => {
             <div 
                 key={feature.id} 
                 className={cn(
-                    "group relative p-8 rounded-[60px] transition-all duration-500 cursor-default shadow-xl hover:-translate-y-2 hover:shadow-2xl",
+                    "group relative p-8 rounded-[60px] transition-all duration-500 cursor-default shadow-xl hover:-translate-y-2 hover:shadow-2xl overflow-hidden",
+                    "border-[6px] border-slate-900/30", // Chassis/Mockup effect border
                     feature.blockColor
                 )}
             >
+              {/* Glossy / Glass effect layer */}
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none opacity-50" />
+              
+              {/* Inner depth shadow */}
+              <div className="absolute inset-0 shadow-[inset_0_2px_10px_rgba(255,255,255,0.2),inset_0_-2px_10px_rgba(0,0,0,0.2)] rounded-[54px] pointer-events-none" />
+
               <span className="absolute top-6 right-8 text-4xl md:text-5xl font-black text-white/10 group-hover:text-white/20 transition-colors duration-500">
                 {feature.id}
               </span>
 
               <div className={cn(
-                  "w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3",
+                  "w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 relative z-10",
                   feature.iconBg,
-                  "text-white"
+                  "text-white shadow-lg"
               )}>
                 <feature.icon className="w-6 h-6" />
               </div>
 
-              <h3 className="text-xl font-bold text-white mb-4 tracking-wide">
+              <h3 className="text-xl font-bold text-white mb-4 tracking-wide relative z-10 drop-shadow-md">
                   {feature.title}
               </h3>
-              <p className={cn("leading-relaxed whitespace-pre-line text-sm sm:text-base font-medium", feature.textColor)}>
+              <p className={cn("leading-relaxed whitespace-pre-line text-sm sm:text-base font-medium relative z-10 drop-shadow-sm", feature.textColor)}>
                 {feature.description}
               </p>
             </div>
@@ -1342,7 +1349,7 @@ const FAQSection = () => {
     },
     {
       q: "Posso estudar pelo celular?",
-      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiênia é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
+      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiência é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
       color: "border-cyan-500/30",
       bg: "data-[state=open]:bg-cyan-500/10",
       accent: "text-cyan-400"
