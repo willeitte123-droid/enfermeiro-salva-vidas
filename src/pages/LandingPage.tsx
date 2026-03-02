@@ -862,10 +862,10 @@ const RankingSection = () => {
                 </Button>
             </div>
 
-            {/* Image */}
-            <div className="flex-1 w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[420px] mx-auto relative flex justify-center">
-                {/* No container styling for frame, assuming image has device frame */}
-                <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float px-4 sm:px-0 w-full">
+            {/* Image - Adjusted sizing for better containment */}
+            <div className="flex-1 w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[380px] mx-auto relative flex justify-center">
+                {/* Image within frame - focused on perfect alignment */}
+                <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float px-2 w-full">
                     <img 
                         src="/images/ranking-mockup.png" 
                         alt="Ranking EnfermagemPro" 
@@ -895,13 +895,13 @@ const SubscribersSection = () => {
 
   return (
     <section className="py-24 bg-[#050811] relative overflow-hidden flex flex-col items-center">
-      {/* Background Central Glow - Mesma cor de Ranking */}
+      {/* Background Central Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] pointer-events-none rounded-full" />
       
       <div className="container mx-auto px-4 flex flex-col items-center relative z-10">
         
-        {/* Avatars Row - Arco de tamanhos conforme o exemplo */}
-        <div className="flex items-end justify-center gap-2 sm:gap-6 mb-12">
+        {/* Avatars Row - Re-scaled for better proportions */}
+        <div className="flex items-end justify-center gap-2 sm:gap-4 md:gap-6 mb-16 h-48 sm:h-64">
           {images.map((src, i) => {
              // Tamanhos baseados na posição para criar o arco
              const isCenter = i === 3;
@@ -909,14 +909,14 @@ const SubscribersSection = () => {
              const isOuter = i === 1 || i === 5;
              const isEdge = i === 0 || i === 6;
 
-             let sizeClasses = "w-10 h-10 sm:w-16 sm:h-16 opacity-40"; // Edge
-             if (isCenter) sizeClasses = "w-24 h-24 sm:w-44 sm:h-44 z-20 shadow-[0_0_50px_rgba(234,179,8,0.3)] border-yellow-500/50";
-             if (isInner) sizeClasses = "w-16 h-16 sm:w-32 sm:h-32 z-10 opacity-80";
-             if (isOuter) sizeClasses = "w-12 h-12 sm:w-24 sm:h-24 opacity-60";
+             let sizeClasses = "w-10 h-10 sm:w-14 md:w-16 opacity-30"; // Edge
+             if (isCenter) sizeClasses = "w-28 h-28 sm:w-44 md:w-56 z-20 shadow-[0_0_60px_rgba(234,179,8,0.4)] border-yellow-400 ring-4 ring-yellow-500/20 scale-110";
+             if (isInner) sizeClasses = "w-16 h-16 sm:w-28 md:w-36 z-10 opacity-70";
+             if (isOuter) sizeClasses = "w-12 h-12 sm:w-20 md:w-28 opacity-50";
 
              return (
                <div key={i} className={cn(
-                 "rounded-full overflow-hidden border-2 border-white/20 transition-all duration-500 hover:scale-110 hover:opacity-100 hover:z-30 hover:border-yellow-500",
+                 "rounded-full overflow-hidden border-2 border-white/20 transition-all duration-500 hover:scale-110 hover:opacity-100 hover:z-30 hover:border-yellow-500 flex-shrink-0 bg-slate-800",
                  sizeClasses
                )}>
                  <img src={src} alt="" className="w-full h-full object-cover" />
@@ -925,20 +925,28 @@ const SubscribersSection = () => {
           })}
         </div>
 
-        {/* Text content - Gradiente amarelado igual ao Ranking */}
-        <div className="text-center space-y-4">
-          <h2 className="text-5xl sm:text-8xl font-black text-white tracking-tighter drop-shadow-2xl">
-            + <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">2.000 assinantes</span>
+        {/* Text content - Enhanced Title Proportions */}
+        <div className="text-center space-y-6 max-w-4xl mx-auto">
+          <h2 className="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter leading-tight drop-shadow-2xl">
+            <span className="inline-block mr-2 sm:mr-4 opacity-70">+</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-orange-600 animate-in fade-in duration-1000">
+                2.000 assinantes
+            </span>
           </h2>
-          <p className="text-xl sm:text-3xl font-light text-slate-300">
-            Já estão dominando a Enfermagem.
-          </p>
+          <div className="space-y-2">
+            <p className="text-xl sm:text-2xl md:text-4xl font-light text-slate-300 tracking-tight">
+                Já estão dominando a Enfermagem.
+            </p>
+            <div className="flex items-center justify-center gap-2 mt-4 text-yellow-500/60 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs">
+                <CheckCircle2 className="w-4 h-4" /> Comunidade Profissional Ativa
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Decorative dots to match Ranking lights style */}
-      <div className="absolute top-10 right-20 w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
-      <div className="absolute bottom-10 left-20 w-2 h-2 bg-orange-400 rounded-full animate-pulse delay-700" />
+      {/* Decorative light streaks */}
+      <div className="absolute top-1/4 left-10 w-px h-32 bg-gradient-to-b from-transparent via-yellow-500/20 to-transparent" />
+      <div className="absolute bottom-1/4 right-10 w-px h-32 bg-gradient-to-b from-transparent via-orange-500/20 to-transparent" />
     </section>
   );
 };
