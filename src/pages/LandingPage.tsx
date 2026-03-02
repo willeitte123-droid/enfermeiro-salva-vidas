@@ -248,7 +248,7 @@ const Hero = () => {
                 {/* Progress Bar */}
                 <div className="mt-8 max-w-sm">
                    <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden backdrop-blur-sm">
-                      <div className="bg-gradient-to-r from-blue-50 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
+                      <div className="bg-gradient-to-r from-blue-500 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
                    </div>
                    <p className="text-xs text-slate-400 mt-2 font-medium flex justify-between">
                       <span>85% das vagas preenchidas</span>
