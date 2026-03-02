@@ -186,6 +186,101 @@ const ParticlesBackground = () => {
   );
 };
 
+const Hero = () => {
+  return (
+    <>
+    <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
+      {/* Background Image Layer - Updated opacity and overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/images/background-hero.png" 
+          alt="Enfermagem Background" 
+          className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
+        />
+        {/* Dark overlay with gradient to ensure text readability while keeping image visible */}
+        <div className="absolute inset-0 bg-[#02040a]/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#02040a]/80 via-transparent to-[#02040a]" />
+      </div>
+
+      {/* Vibrant Gradient Blobs (Glow effects) */}
+      <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen z-0 animate-pulse-subtle" />
+      <div className="absolute bottom-[10%] right-[-5%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen z-0" />
+      <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen z-0" />
+      
+      {/* Partículas Leves */}
+      <ParticlesBackground />
+
+      <div className="container mx-auto px-4 md:px-6 relative z-20">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            
+            {/* TEXT COLUMN (Left) */}
+            <div className="flex-1 text-left max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                {/* Badge Removido */}
+                <div className="mb-6"></div>
+
+                {/* Title */}
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
+                    Estude com foco. <br/>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
+                        Organização e Estratégia.
+                    </span>
+                </h1>
+
+                {/* Subtitle */}
+                <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
+                    O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
+                    <br/><br/>
+                    <span className="text-slate-100 font-medium">Domine a Enfermagem com o método completo que + de 2.000 profissionais estão usando para estudar com foco e resultado</span>
+                </p>
+
+                {/* CTA Area */}
+                <div className="flex flex-col sm:flex-row items-center gap-6">
+                    <GlowButton text="Quero estudar com organização" href="#planos" className="w-full sm:w-auto" />
+                    
+                    {/* Price Info */}
+                    <div className="flex flex-col items-start min-w-fit">
+                         <span className="text-xs text-slate-400 line-through font-medium">DE R$ 97,00</span>
+                         <div className="flex items-baseline gap-1">
+                            <span className="text-sm text-slate-300">POR</span>
+                            <span className="text-xl font-bold text-white">R$ 29,90</span>
+                         </div>
+                    </div>
+                </div>
+                
+                {/* Progress Bar */}
+                <div className="mt-8 max-w-sm">
+                   <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden backdrop-blur-sm">
+                      <div className="bg-gradient-to-r from-blue-500 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
+                   </div>
+                   <p className="text-xs text-slate-400 mt-2 font-medium flex justify-between">
+                      <span>85% das vagas preenchidas</span>
+                      <span className="text-white">Corra!</span>
+                   </p>
+                </div>
+            </div>
+
+            {/* IMAGE COLUMN (Right) - Com animação de flutuação */}
+            <div className="flex-1 relative w-full flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-200">
+                <div className="relative z-10 w-full max-w-[800px] animate-float">
+                    <img 
+                        src="/images/mockup-hero.png" 
+                        alt="Plataforma Enfermagem Pro em dispositivos" 
+                        className="w-full h-auto drop-shadow-2xl"
+                    />
+                </div>
+                
+                {/* Ambient Glow behind mockup */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-600/20 blur-[100px] -z-10 rounded-full mix-blend-screen" />
+            </div>
+        </div>
+      </div>
+    </section>
+    
+    <InfiniteMarquee />
+    </>
+  );
+};
+
 const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: string; spo2: number; resp: number; temp: number }) => {
   return (
     <div className="bg-black/90 border-4 border-slate-800 rounded-xl p-3 sm:p-6 shadow-2xl relative overflow-hidden font-mono mb-4 w-full">
@@ -899,42 +994,93 @@ const RankingSection = () => {
   );
 };
 
-// --- SESSÃO DE ASSINANTES (ESTILO DIVSTUDIO FIEL) ---
+// --- SESSÃO DE ASSINANTES (REFEITA NO ESTILO DIVSTUDIO COM AS IMAGENS ENVIADAS) ---
 const SubscribersSection = () => {
   const images = [
-    "/images/user-1.jpg", // 0c5c...
-    "/images/user-2.jpg", // 3e85...
-    "/images/user-3.jpg", // 4ae9...
-    "/images/user-4.png", // 26a7...
+    "/images/user-1.jpg", 
+    "/images/user-2.jpg", 
+    "/images/user-3.jpg", 
+    "/images/user-4.png", 
+    "/images/user-5.jpg", 
+    "/images/user-6.jpg", 
   ];
 
   return (
     <section className="py-24 bg-black border-y border-white/5 relative overflow-hidden">
       
-      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-8 relative z-10">
+      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-12 relative z-10">
         
-        {/* Avatars Container - Left Side */}
-        <div className="flex -space-x-6 md:-space-x-8 items-center justify-center">
-           {images.map((src, i) => (
-             <div 
-               key={i} 
-               className={cn(
-                 "relative rounded-full border-4 border-black overflow-hidden shadow-2xl transition-transform hover:scale-105 hover:z-20",
-                 "w-20 h-20 md:w-28 md:h-28" // Tamanho grande para replicar o estilo
-               )}
-               style={{ zIndex: 10 - i }} 
-             >
-               <img src={src} alt={`Usuário ${i+1}`} className="w-full h-full object-cover" />
-             </div>
-           ))}
+        {/* Avatars Container - Estilo DivStudio (Horizontal Stack) */}
+        <div className="relative flex items-center justify-center w-full md:w-auto h-24 md:h-32 mb-8 md:mb-0">
+           {images.slice(0, 5).map((src, index) => {
+              // Lógica de posicionamento: O do meio (index 2) é o maior e está na frente.
+              const isCenter = index === 2;
+              const distance = Math.abs(index - 2); 
+              
+              const zIndex = 50 - (distance * 10);
+              const scale = isCenter ? 1.3 : 1 - (distance * 0.15);
+              const opacity = 1 - (distance * 0.15);
+              
+              // Ajustado para responsividade
+              const translateXMobile = (index - 2) * 35; // px
+              const translateXDesktop = (index - 2) * 55; // px
+
+              return (
+                <div 
+                  key={index}
+                  className="absolute transition-all duration-500 ease-out hover:scale-[1.4] hover:z-[60] hover:opacity-100 cursor-pointer"
+                  style={{
+                    zIndex: zIndex,
+                    transform: `translateX(calc(50% + ${translateXDesktop}px - 50%)) scale(${scale})`, // Centralização via calc
+                    opacity: opacity,
+                    // Media Query manual via style (ou use CSS classes)
+                    ['@media (max-width: 768px)' as any]: {
+                       transform: `translateX(calc(50% + ${translateXMobile}px - 50%)) scale(${scale})`
+                    }
+                  }}
+                >
+                  <div className={cn(
+                    "w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] border-[#000] overflow-hidden shadow-2xl bg-slate-800 transition-all",
+                    isCenter && "border-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.6)] ring-2 ring-blue-500/30"
+                  )}>
+                    <img 
+                      src={src} 
+                      alt={`Usuário ${index+1}`} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              );
+           })}
+           {/* Adiciona estilo inline para garantir o comportamento no mobile */}
+           <style>{`
+             @media (max-width: 768px) {
+               .absolute { transform: translateX(calc(50% + ${(index: number) => (index - 2) * 35}px - 50%)) scale(${(index: number) => index === 2 ? 1.3 : 1 - Math.abs(index - 2) * 0.15}); }
+             }
+           `}</style>
         </div>
         
         {/* Text - Right Side */}
-        <div className="text-center md:text-left">
-           <h2 className="text-2xl md:text-3xl font-medium text-white leading-tight">
-             + de <span className="font-bold">2.000 Usuários</span> estão <br className="hidden md:block"/>
-             usando o <span className="font-bold">EnfermagemPro</span>
+        <div className="text-center md:text-left max-w-lg">
+           <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-2">
+             Junte-se a + de <br/>
+             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 font-black">
+                2.000 assinantes
+             </span>
            </h2>
+           <p className="text-lg text-slate-400 font-light">
+              Que já estão dominando a Enfermagem com o método mais completo do mercado.
+           </p>
+           
+           <div className="flex items-center justify-center md:justify-start gap-2 mt-4">
+              <div className="flex -space-x-1">
+                 {[1,2,3,4,5].map(i => (
+                    <Star key={i} className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+                 ))}
+              </div>
+              <span className="text-sm font-bold text-white ml-2">4.9/5</span>
+              <span className="text-xs text-slate-500 font-medium">(180+ avaliações)</span>
+           </div>
         </div>
 
       </div>
@@ -1211,6 +1357,118 @@ const CreatorSection = () => {
             </div>
         </section>
     );
+};
+
+const FAQSection = () => {
+  const faqs = [
+    {
+      q: "A EnfermagemPro é indicada para quem?",
+      a: "Para estudantes de enfermagem que buscam uma base sólida, técnicos e enfermeiros que desejam aprovação em concursos públicos ou profissionais que buscam mais segurança e consulta rápida na prática clínica do dia a dia.",
+      color: "border-blue-500/30",
+      bg: "data-[state=open]:bg-blue-500/10",
+      accent: "text-blue-400"
+    },
+    {
+      q: "A plataforma é voltada apenas para concursos?",
+      a: "Não. Embora tenhamos uma estratégia fortíssima para concursos, a EnfermagemPro também é uma ferramenta de suporte para o plantão, com guias de procedimentos, calculadoras de gotejamento, protocolos de emergência e escalas clínicas para consulta à beira-leito.",
+      color: "border-emerald-500/30",
+      bg: "data-[state=open]:bg-emerald-500/10",
+      accent: "text-emerald-400"
+    },
+    {
+      q: "Consigo baixar a plataforma e usar como aplicativo?",
+      a: "Sim! Nossa plataforma utiliza a tecnologia PWA (Progressive Web App). Você pode adicioná-la à tela inicial do seu celular (Android ou iPhone) e acessá-la como um aplicativo nativo, sem precisar baixar nada nas lojas e sem ocupar espaço no seu dispositivo.",
+      color: "border-violet-500/30",
+      bg: "data-[state=open]:bg-violet-500/10",
+      accent: "text-violet-400"
+    },
+    {
+      q: "Como funcionam os simulados?",
+      a: "Você pode gerar simulados personalizados escolhendo a banca examinadora, a disciplina e o tempo de prova. Ao final, o sistema gera um relatório de desempenho mostrando seus pontos fortes e onde você precisa focar mais o estudo.",
+      color: "border-orange-500/30",
+      bg: "data-[state=open]:bg-orange-500/10",
+      accent: "text-orange-400"
+    },
+    {
+      q: "As questões são comentadas?",
+      a: "Sim. A grande maioria das nossas mais de 2.000 questões possui comentários detalhados que explicam o porquê da alternativa correta e dão dicas extras sobre o assunto cobrado.",
+      color: "border-rose-500/30",
+      bg: "data-[state=open]:bg-rose-500/10",
+      accent: "text-rose-400"
+    },
+    {
+      q: "Posso estudar pelo celular?",
+      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiênia é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
+      color: "border-cyan-500/30",
+      bg: "data-[state=open]:bg-cyan-500/10",
+      accent: "text-cyan-400"
+    },
+    {
+      q: "O acesso é imediato após a compra?",
+      a: "Sim. Para pagamentos via Pix ou Cartão de Crédito, o acesso é liberado instantaneamente. Você receberá os dados de login no e-mail cadastrado logo após a confirmação do pagamento.",
+      color: "border-amber-500/30",
+      bg: "data-[state=open]:bg-amber-500/10",
+      accent: "text-amber-400"
+    },
+    {
+      q: "Posso cancelar se não gostar?",
+      a: "Sim, sem problemas. Você tem 7 dias de garantia incondicional. Se por qualquer motivo sentir que a plataforma não é para você, basta solicitar o reembolso dentro desse prazo e devolvemos 100% do seu investimento.",
+      color: "border-indigo-500/30",
+      bg: "data-[state=open]:bg-indigo-500/10",
+      accent: "text-indigo-400"
+    },
+    {
+      q: "Preciso ter muito tempo disponível para estudar?",
+      a: "Não. O método EnfermagemPro foi criado justamente para quem tem pouco tempo. Com flashcards de repetição espaçada e sessões rápidas de questões, você consegue ter uma evolução significativa estudando apenas 20 a 30 minutos por dia.",
+      color: "border-pink-500/30",
+      bg: "data-[state=open]:bg-pink-500/10",
+      accent: "text-pink-400"
+    },
+    {
+      q: "O conteúdo é atualizado?",
+      a: "Constantemente. Nossa equipe monitora e atualiza o calendário vacinal do PNI, diretrizes da AHA para RCP, novas leis do exercício profissional, portarias do SUS e inclui semanalmente novas questões de concursos recentes.",
+      color: "border-teal-500/30",
+      bg: "data-[state=open]:bg-teal-500/10",
+      accent: "text-teal-400"
+    }
+  ];
+
+  return (
+    <section id="faq" className="py-24 bg-[#02040a] relative border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold uppercase tracking-wider text-blue-400 mb-6">
+              <HelpCircle className="h-3 w-3" /> Central de Dúvidas
+           </div>
+           <h2 className="text-3xl md:text-5xl font-black text-white mb-6">Perguntas Frequentes</h2>
+           <p className="text-slate-400 text-lg">Tudo o que você precisa saber para começar agora mesmo.</p>
+        </div>
+
+        <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="w-full space-y-4">
+                {faqs.map((faq, index) => (
+                    <AccordionItem 
+                        key={index} 
+                        value={`item-${index}`}
+                        className={cn(
+                          "border rounded-2xl bg-white/5 overflow-hidden px-4 sm:px-6 transition-all duration-300",
+                          faq.color,
+                          faq.bg
+                        )}
+                    >
+                        <AccordionTrigger className="hover:no-underline py-5 text-left text-base sm:text-lg font-bold text-white group">
+                           <span className={cn("group-hover:opacity-80 transition-all pr-4", faq.accent)}>{faq.q}</span>
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-6 text-slate-400 text-sm sm:text-base leading-relaxed animate-in fade-in slide-in-from-top-1 duration-300">
+                           {faq.a}
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default function LandingPage() {
