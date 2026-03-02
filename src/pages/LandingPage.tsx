@@ -184,7 +184,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
              {hr > 0 && (
                <svg viewBox="0 0 100 20" className="w-full h-full stroke-green-500 fill-none stroke-[2px]">
                  <path d="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L50,10 L52,5 L54,15 L56,0 L58,20 L60,10 L100,10">
-                   <animate attributeName="d" dur="1s" repeatCount="indefinite" values="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L50,10 L52,5 L54,15 L56,0 L58,20 L60,10 L100,10; M-20,10 L-10,10 L-8,5 L-6,15 L-4,0 L-2,20 L0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L80,10" />
+                   <animate attributeName="d" dur="1s" repeatCount="indefinite" values="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L80,10" />
                  </path>
                </svg>
              )}
@@ -1026,16 +1026,32 @@ const GuaranteeSection = () => {
                                 <Shield className="w-4 h-4 text-emerald-400" /> Garantia sem risco
                             </div>
                             
-                            <h2 className="text-4xl sm:text-6xl font-black text-white mb-6 tracking-tight flex flex-wrap items-center gap-4">
-                                <span className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-emerald-500 text-slate-950">
-                                    <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10" />
-                                </span>
-                                7 dias de garantia total
-                            </h2>
-                            
-                            <p className="text-slate-400 text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl">
-                                Se não gostar, devolvemos <span className="text-white font-bold">100% do seu dinheiro.</span> Sem burocracia. Sem perguntas.
-                            </p>
+                            <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
+                                {/* Seal Mockup */}
+                                <div className="relative w-48 h-48 sm:w-64 sm:h-64 shrink-0">
+                                    {/* Inner static seal */}
+                                    <img 
+                                        src="/images/no-code-pages-garantiav1.webp" 
+                                        alt="7 dias de garantia" 
+                                        className="absolute inset-0 w-full h-full object-contain z-10"
+                                    />
+                                    {/* Outer rotating border - larger than inner */}
+                                    <img 
+                                        src="/images/no-code-pages-garantiav2.png.webp" 
+                                        alt="" 
+                                        className="absolute inset-[-15%] w-[130%] h-[130%] object-contain z-20 animate-spin-slow"
+                                    />
+                                </div>
+
+                                <div className="text-center md:text-left">
+                                    <h2 className="text-4xl sm:text-6xl font-black text-white mb-4 tracking-tight leading-tight">
+                                        7 dias de garantia total
+                                    </h2>
+                                    <p className="text-slate-400 text-lg sm:text-xl leading-relaxed">
+                                        Se não gostar, devolvemos <span className="text-white font-bold">100% do seu dinheiro.</span> Sem burocracia. Sem perguntas.
+                                    </p>
+                                </div>
+                            </div>
                             
                             <div className="space-y-5">
                                 {[

@@ -103,6 +103,7 @@ export default {
         "marquee-slow": "marquee 60s linear infinite",
         float: "float 6s ease-in-out infinite",
         drift: "drift 10s linear infinite",
+        "spin-slow": "spin 12s linear infinite",
       },
     },
   },
