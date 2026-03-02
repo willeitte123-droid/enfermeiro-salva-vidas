@@ -229,7 +229,7 @@ const Hero = () => {
                 {/* Title */}
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
                     Estude com foco. <br/>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-600">
                         Organização e Resultado.
                     </span>
                 </h1>
@@ -882,7 +882,7 @@ const AppShowcaseSection = () => {
                        E muuuuito mais..
                     </h3>
                     <div className="flex justify-center">
-                        <GlowButton text="QUERO O ACESSO COMPLETO" href="#planos" className="w-full max-md shadow-[0_0_50px_rgba(37,99,235,0.3)]" />
+                        <GlowButton text="QUERO O ACESSO COMPLETO" href="#planos" className="w-full max-w-md shadow-[0_0_50px_rgba(37,99,235,0.3)]" />
                     </div>
                 </div>
             </div>
