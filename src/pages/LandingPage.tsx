@@ -50,7 +50,7 @@ const GlowButton = ({ text, href = "#planos", className }: { text: string, href?
   );
 };
 
-// Componentes de UI isolados para manter o código limpo
+// Componente Navbar
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -661,7 +661,7 @@ const EcosystemSection = () => {
                     evoluir na enfermagem, em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">um único sistema</span>
                 </h2>
                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
-                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. Não é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
+                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. No é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
                 </p>
             </div>
         </div>
@@ -756,7 +756,7 @@ const FeaturesList = () => {
     {
       id: "04",
       title: "CASOS CLÍNICOS INTERATIVOS",
-      description: "Tome decisões como se estiver no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
+      description: "Tome decisões como se estivesse no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
       icon: Stethoscope,
       blockColor: "bg-cyan-600",
       textColor: "text-cyan-50",
@@ -1468,76 +1468,6 @@ const FAQSection = () => {
         </div>
       </div>
     </section>
-  );
-};
-
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
-    }
-  };
-
-  return (
-    <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#030014]/80 backdrop-blur-xl supports-[backdrop-filter]:bg-[#030014]/50 transition-all duration-300">
-      <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-             <Syringe className="text-white w-6 h-6" />
-          </div>
-          <span className="font-bold text-2xl tracking-tight text-white">
-            Enfermagem<span className="text-blue-500">Pro</span>
-          </span>
-        </div>
-
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-          <button onClick={() => scrollToSection("funcionalidades")} className="hover:text-white transition-colors">Funcionalidades</button>
-          <button onClick={() => scrollToSection("ecossistema")} className="hover:text-white transition-colors">Ecossistema</button>
-          <button onClick={() => scrollToSection("showcase")} className="hover:text-white transition-colors">Plataforma</button>
-          <button onClick={() => scrollToSection("ranking")} className="hover:text-white transition-colors">Ranking</button>
-          <button onClick={() => scrollToSection("depoimentos")} className="hover:text-white transition-colors">Depoimentos</button>
-          <button onClick={() => scrollToSection("planos")} className="hover:text-white transition-colors">Planos</button>
-        </div>
-
-        <div className="hidden md:flex items-center gap-4">
-          <Link to="/login" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">
-            Login
-          </Link>
-          <Button 
-            onClick={() => scrollToSection("planos")}
-            className="bg-white text-black hover:bg-slate-200 rounded-full px-6 font-bold text-sm h-10 transition-transform hover:scale-105 uppercase tracking-wide"
-          >
-            ASSINE JÁ
-          </Button>
-        </div>
-
-        <button className="md:hidden text-white p-2" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X /> : <Menu />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden absolute top-20 left-0 w-full bg-[#030014] border-b border-white/10 p-6 flex flex-col gap-6 animate-in slide-in-from-top-5 shadow-2xl">
-          <button onClick={() => scrollToSection("funcionalidades")} className="text-slate-300 hover:text-white text-left text-lg">Funcionalidades</button>
-          <button onClick={() => scrollToSection("ecossistema")} className="text-slate-300 hover:text-white text-left text-lg">Ecossistema</button>
-          <button onClick={() => scrollToSection("showcase")} className="text-slate-300 hover:text-white text-left text-lg">Plataforma</button>
-          <button onClick={() => scrollToSection("ranking")} className="text-slate-300 hover:text-white text-left text-lg">Ranking</button>
-          <button onClick={() => scrollToSection("planos")} className="text-slate-300 hover:text-white text-left text-lg">Planos</button>
-          <Link to="/login" className="text-slate-300 hover:text-white text-lg">Login</Link>
-          <Button 
-            onClick={() => scrollToSection("planos")}
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-full h-12 text-lg font-black uppercase tracking-wider"
-          >
-            ASSINE JÁ
-          </Button>
-        </div>
-      )}
-    </nav>
   );
 };
 
