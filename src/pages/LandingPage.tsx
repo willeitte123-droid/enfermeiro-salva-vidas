@@ -234,15 +234,6 @@ const Hero = () => {
                 {/* CTA Area */}
                 <div className="flex flex-col sm:flex-row items-center gap-6">
                     <GlowButton text="Quero estudar com organização" href="#planos" className="w-full sm:w-auto" />
-                    
-                    {/* Price Info */}
-                    <div className="flex flex-col items-start min-w-fit">
-                         <span className="text-xs text-slate-400 line-through font-medium">DE R$ 97,00</span>
-                         <div className="flex items-baseline gap-1">
-                            <span className="text-sm text-slate-300">POR</span>
-                            <span className="text-xl font-bold text-white">R$ 29,90</span>
-                         </div>
-                    </div>
                 </div>
                 
                 {/* Progress Bar */}
