@@ -334,7 +334,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
-            <Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
+            <Submarine className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
             <span className={cn("text-3xl sm:text-5xl font-black leading-none", spo2 < 90 ? "text-yellow-400 animate-pulse" : "text-blue-400")}>
@@ -973,7 +973,7 @@ const UnifiedSocialSection = () => {
         {/* Luzes de Fundo que conectam as duas partes */}
         <div className="absolute top-1/4 left-0 w-full h-full bg-gradient-to-b from-transparent via-blue-900/10 to-transparent pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[800px] bg-indigo-900/10 blur-[180px] pointer-events-none rounded-full" />
-        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-yellow-500/5 blur-[120px] pointer-events-none rounded-full" />
+        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-yellow-50/5 blur-[120px] pointer-events-none rounded-full" />
 
         {/* PARTE 1: RANKING */}
         <section id="ranking" className="py-24 relative z-10">
@@ -1300,7 +1300,7 @@ const CreatorSection = () => {
                     
                     <div className="flex-1 text-left space-y-8 animate-in fade-in slide-in-from-left-8 duration-1000">
                         <div>
-                            <p className="text-indigo-400 text-sm md:text-base font-medium tracking-[0.3em] uppercase mb-4">
+                            <p className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-600 text-sm md:text-base font-bold tracking-[0.3em] uppercase mb-4">
                                 Quem está por trás da plataforma EnfermagemPRO
                             </p>
                             <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">
