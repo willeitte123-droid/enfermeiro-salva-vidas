@@ -685,11 +685,11 @@ const EcosystemSection = () => {
                         >
                             {/* Background Image with Overlay */}
                             <div className="absolute inset-0 z-0">
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent z-10" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/40 to-transparent z-10" />
                                 <img 
                                     src={tool.image} 
                                     alt={tool.title} 
-                                    className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700 pointer-events-none"
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"
                                 />
                             </div>
 
