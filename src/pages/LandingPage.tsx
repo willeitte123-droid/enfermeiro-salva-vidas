@@ -517,23 +517,18 @@ const VideoSection = () => {
           </p>
         </div>
 
-        {/* Video Container */}
         <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-          {/* Mock Video UI */}
           <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
-             {/* Thumbnail background */}
              <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
              </div>
              
-             {/* Play Button */}
              <div className="relative z-10 group-hover:scale-110 transition-transform duration-300">
                 <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-sm cursor-pointer shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]">
                    <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
                 </div>
              </div>
              
-             {/* Video UI Overlay */}
              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
                 <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-4">
                    <div className="h-full w-1/3 bg-blue-500 rounded-full" />
@@ -994,95 +989,95 @@ const RankingSection = () => {
   );
 };
 
-// --- SESSÃO DE ASSINANTES (REFEITA NO ESTILO DIVSTUDIO COM AS IMAGENS ENVIADAS) ---
+// --- SESSÃO DE ASSINANTES (ESTILO DIVSTUDIO COM LAYOUT 50/50 E FOTOS IGUAIS) ---
 const SubscribersSection = () => {
   const images = [
-    "/images/user-1.jpg", 
-    "/images/user-2.jpg", 
-    "/images/user-3.jpg", 
-    "/images/user-4.png", 
-    "/images/user-5.jpg", 
-    "/images/user-6.jpg", 
+    "/images/sub-1.jpg", 
+    "/images/sub-2.jpg", 
+    "/images/sub-5.jpg", // Central (sub-5)
+    "/images/sub-3.jpg", 
+    "/images/sub-4.png", 
   ];
 
   return (
-    <section className="py-24 bg-black border-y border-white/5 relative overflow-hidden">
-      
-      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-12 relative z-10">
-        
-        {/* Avatars Container - Estilo DivStudio (Horizontal Stack) */}
-        <div className="relative flex items-center justify-center w-full md:w-auto h-24 md:h-32 mb-8 md:mb-0">
-           {images.slice(0, 5).map((src, index) => {
-              // Lógica de posicionamento: O do meio (index 2) é o maior e está na frente.
-              const isCenter = index === 2;
-              const distance = Math.abs(index - 2); 
-              
-              const zIndex = 50 - (distance * 10);
-              const scale = isCenter ? 1.3 : 1 - (distance * 0.15);
-              const opacity = 1 - (distance * 0.15);
-              
-              // Ajustado para responsividade
-              const translateXMobile = (index - 2) * 35; // px
-              const translateXDesktop = (index - 2) * 55; // px
+    <section className="py-20 bg-black relative overflow-hidden border-y border-white/5">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-0">
+          
+          {/* Lado Esquerdo: Imagens (50%) */}
+          <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-16 relative h-[140px] md:h-[180px] items-center">
+             {/* Container relativo para posicionamento absoluto das imagens */}
+             <div className="relative flex items-center justify-center">
+                {images.map((src, index) => {
+                   // Lógica de posicionamento: O do meio (index 2) é o maior e está na frente.
+                   const isCenter = index === 2;
+                   const distance = Math.abs(index - 2); 
+                   
+                   // Ajustes visuais conforme modelo
+                   const zIndex = 50 - (distance * 10);
+                   const scale = isCenter ? 1.4 : 1 - (distance * 0.15); // Aumentei o scale do central
+                   const opacity = 1 - (distance * 0.2); // Um pouco mais transparente nas pontas
+                   
+                   // Translação mais apertada para sobreposição
+                   const translateX = (index - 2) * 45; // Pixels de deslocamento
 
-              return (
-                <div 
-                  key={index}
-                  className="absolute transition-all duration-500 ease-out hover:scale-[1.4] hover:z-[60] hover:opacity-100 cursor-pointer"
-                  style={{
-                    zIndex: zIndex,
-                    transform: `translateX(calc(50% + ${translateXDesktop}px - 50%)) scale(${scale})`, // Centralização via calc
-                    opacity: opacity,
-                    // Media Query manual via style (ou use CSS classes)
-                    ['@media (max-width: 768px)' as any]: {
-                       transform: `translateX(calc(50% + ${translateXMobile}px - 50%)) scale(${scale})`
-                    }
-                  }}
-                >
-                  <div className={cn(
-                    "w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] border-[#000] overflow-hidden shadow-2xl bg-slate-800 transition-all",
-                    isCenter && "border-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.6)] ring-2 ring-blue-500/30"
-                  )}>
-                    <img 
-                      src={src} 
-                      alt={`Usuário ${index+1}`} 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                   // Borda especial para o central (azul brilhante)
+                   const borderClass = isCenter 
+                      ? "border-blue-500 ring-4 ring-blue-500/20 shadow-[0_0_40px_rgba(59,130,246,0.6)]" 
+                      : "border-black/50 opacity-80";
+
+                   return (
+                     <div 
+                       key={index}
+                       className="absolute transition-all duration-500 ease-out hover:scale-[1.5] hover:z-[60] hover:opacity-100 cursor-pointer"
+                       style={{
+                         zIndex: zIndex,
+                         // Transformação baseada no deslocamento X e escala
+                         transform: `translateX(${translateX}px) scale(${scale})`,
+                       }}
+                     >
+                       <div className={cn(
+                         "w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] overflow-hidden shadow-2xl bg-slate-800 transition-all",
+                         borderClass
+                       )}>
+                         <img 
+                           src={src} 
+                           alt={`Assinante ${index+1}`} 
+                           className="w-full h-full object-cover"
+                         />
+                       </div>
+                     </div>
+                   );
+                })}
+             </div>
+          </div>
+          
+          {/* Lado Direito: Texto (50%) */}
+          <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-8">
+             <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4">
+               Junte-se a + de <br/>
+               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+                  2.000 assinantes
+               </span>
+             </h2>
+             <p className="text-lg text-slate-400 font-light leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
+                Que já estão dominando a Enfermagem com o método mais completo do mercado.
+             </p>
+             
+             <div className="flex items-center justify-center md:justify-start gap-3">
+                <div className="flex -space-x-1">
+                   {[1,2,3,4,5].map(i => (
+                      <Star key={i} className="w-6 h-6 text-yellow-500 fill-yellow-500" />
+                   ))}
                 </div>
-              );
-           })}
-           {/* Adiciona estilo inline para garantir o comportamento no mobile */}
-           <style>{`
-             @media (max-width: 768px) {
-               .absolute { transform: translateX(calc(50% + ${(index: number) => (index - 2) * 35}px - 50%)) scale(${(index: number) => index === 2 ? 1.3 : 1 - Math.abs(index - 2) * 0.15}); }
-             }
-           `}</style>
-        </div>
-        
-        {/* Text - Right Side */}
-        <div className="text-center md:text-left max-w-lg">
-           <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-2">
-             Junte-se a + de <br/>
-             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 font-black">
-                2.000 assinantes
-             </span>
-           </h2>
-           <p className="text-lg text-slate-400 font-light">
-              Que já estão dominando a Enfermagem com o método mais completo do mercado.
-           </p>
-           
-           <div className="flex items-center justify-center md:justify-start gap-2 mt-4">
-              <div className="flex -space-x-1">
-                 {[1,2,3,4,5].map(i => (
-                    <Star key={i} className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                 ))}
-              </div>
-              <span className="text-sm font-bold text-white ml-2">4.9/5</span>
-              <span className="text-xs text-slate-500 font-medium">(180+ avaliações)</span>
-           </div>
-        </div>
+                <div className="flex flex-col text-left">
+                   <span className="text-base font-bold text-white leading-none">4.9/5</span>
+                   <span className="text-xs text-slate-500 font-medium">(180+ avaliações)</span>
+                </div>
+             </div>
+          </div>
 
+        </div>
       </div>
     </section>
   );
