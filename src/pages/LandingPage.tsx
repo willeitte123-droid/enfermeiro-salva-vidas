@@ -661,7 +661,7 @@ const EcosystemSection = () => {
                     evoluir na enfermagem, em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">um único sistema</span>
                 </h2>
                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
-                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. Não é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
+                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. No é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
                 </p>
             </div>
         </div>
@@ -669,8 +669,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -928,7 +928,7 @@ const ForWhomSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {personas.map((persona) => (
+          {persona.map((persona) => (
             <div key={persona.title} className="relative flex flex-col group pt-[130px]">
               <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center shadow-2xl", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
@@ -951,51 +951,8 @@ const ForWhomSection = () => {
   );
 };
 
-const RankingSection = () => {
-  return (
-    <section id="ranking" className="py-24 bg-[#050811] relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] pointer-events-none rounded-full" />
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            
-            <div className="flex-1 text-center lg:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-[10px] font-bold uppercase tracking-wider text-yellow-500 mb-6">
-                  <Trophy className="h-3 w-3" /> Gamificação
-                </div>
-                
-                <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
-                    Chegue no <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">Top 1 do Ranking</span>
-                </h2>
-                
-                <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                    Estudar não precisa ser solitário. Na EnfermagemPro, você compete de forma saudável com outros estudantes. 
-                    <br/><br/>
-                    Acompanhe quem está acertando mais questões, quem fez mais simulados e veja seu nome subir no pódio. 
-                    A motivação extra que faltava para você manter a constância.
-                </p>
-
-                <GlowButton text="Quero entrar na disputa" href="#planos" className="w-full sm:w-auto" />
-            </div>
-
-            <div className="flex-1 w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[380px] mx-auto relative flex justify-center">
-                <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float px-2 w-full">
-                    <img 
-                        src="/images/ranking-mockup.png" 
-                        alt="Ranking EnfermagemPro" 
-                        className="w-full h-auto drop-shadow-xl"
-                    />
-                </div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-yellow-500/20 rounded-full blur-[80px] -z-10" />
-            </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// --- SESSÃO DE ASSINANTES ---
-const SubscribersSection = () => {
+// --- SEÇÃO UNIFICADA: RANKING + ASSINANTES ---
+const UnifiedSocialSection = () => {
   const [activeJumpIndex, setActiveJumpIndex] = useState<number | null>(null);
 
   const images = [
@@ -1008,95 +965,109 @@ const SubscribersSection = () => {
 
   const handleImageClick = (index: number) => {
     setActiveJumpIndex(index);
-    // Remove o efeito após a animação
     setTimeout(() => setActiveJumpIndex(null), 600);
   };
 
   return (
-    <section className="py-24 bg-[#050811] relative overflow-hidden">
-      {/* Background Lighting to match Ranking Section */}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-blue-500/5 to-transparent pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-indigo-900/10 blur-[150px] pointer-events-none rounded-full" />
+    <div className="bg-[#050811] relative overflow-hidden">
+        {/* Luzes de Fundo que conectam as duas partes */}
+        <div className="absolute top-1/4 left-0 w-full h-full bg-gradient-to-b from-transparent via-blue-900/10 to-transparent pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[800px] bg-indigo-900/10 blur-[180px] pointer-events-none rounded-full" />
+        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-yellow-500/5 blur-[120px] pointer-events-none rounded-full" />
 
-      <div className="container mx-auto px-4 max-w-6xl relative z-10">
-        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-0">
-          
-          {/* Lado Esquerdo: Imagens (50%) */}
-          <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-16 lg:pr-24 relative h-[140px] md:h-[180px] items-center">
-             <div className="relative flex items-center justify-center">
-                {images.map((src, index) => {
-                   const isCenter = index === 2;
-                   const distance = Math.abs(index - 2); 
-                   const isJumping = activeJumpIndex === index;
-                   
-                   const zIndex = 50 - (distance * 10);
-                   const scale = isCenter ? 1.4 : 1 - (distance * 0.15);
-                   
-                   // Deslocamento X empurrando para a esquerda para dar mais espaço ao texto na direita
-                   const translateX = (index - 2) * 52 - 20; 
-
-                   const borderClass = isCenter 
-                      ? "border-blue-500 ring-4 ring-blue-500/30 shadow-[0_0_50px_rgba(59,130,246,0.6)]" 
-                      : "border-white/10 opacity-80";
-
-                   return (
-                     <div 
-                       key={index}
-                       onClick={() => handleImageClick(index)}
-                       className={cn(
-                         "absolute transition-all duration-500 ease-out cursor-pointer",
-                         isJumping ? "z-[70]" : ""
-                       )}
-                       style={{
-                         zIndex: isJumping ? 70 : zIndex,
-                         transform: `translateX(${translateX}px) scale(${isJumping ? scale * 1.3 : scale}) translateY(${isJumping ? '-20px' : '0'})`,
-                       }}
-                     >
-                       <div className={cn(
-                         "w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] overflow-hidden shadow-2xl bg-slate-800 transition-all",
-                         borderClass,
-                         isJumping && "ring-white ring-offset-2 ring-offset-black"
-                       )}>
-                         <img 
-                           src={src} 
-                           alt={`Assinante ${index+1}`} 
-                           className="w-full h-full object-cover select-none"
-                         />
-                       </div>
-                     </div>
-                   );
-                })}
-             </div>
-          </div>
-          
-          {/* Lado Direito: Texto (50%) */}
-          <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-8">
-             <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4 drop-shadow-lg">
-               Junte-se a + de <br/>
-               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-                  2.000 assinantes
-               </span>
-             </h2>
-             <p className="text-lg text-slate-400 font-light leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
-                Que já estão dominando a Enfermagem com o método mais completo do mercado.
-             </p>
-             
-             <div className="flex items-center justify-center md:justify-start gap-3">
-                <div className="flex -space-x-1">
-                   {[1,2,3,4,5].map(i => (
-                      <Star key={i} className="w-6 h-6 text-yellow-500 fill-yellow-500" />
-                   ))}
+        {/* PARTE 1: RANKING */}
+        <section id="ranking" className="py-24 relative z-10">
+            <div className="container mx-auto px-4">
+                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                    <div className="flex-1 text-center lg:text-left">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-[10px] font-bold uppercase tracking-wider text-yellow-500 mb-6">
+                        <Trophy className="h-3 w-3" /> Gamificação
+                        </div>
+                        <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+                            Chegue no <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">Top 1 do Ranking</span>
+                        </h2>
+                        <p className="text-slate-400 text-lg leading-relaxed mb-8">
+                            Estudar não precisa ser solitário. Na EnfermagemPro, você compete de forma saudável com outros estudantes. 
+                            <br/><br/>
+                            Acompanhe quem está acertando mais questões, quem fez mais simulados e veja seu nome subir no pódio. 
+                            A motivação extra que faltava para você manter a constância.
+                        </p>
+                        <GlowButton text="Quero entrar na disputa" href="#planos" className="w-full sm:w-auto" />
+                    </div>
+                    <div className="flex-1 w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[380px] mx-auto relative flex justify-center">
+                        <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float px-2 w-full">
+                            <img 
+                                src="/images/ranking-mockup.png" 
+                                alt="Ranking EnfermagemPro" 
+                                className="w-full h-auto drop-shadow-2xl"
+                            />
+                        </div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] bg-yellow-500/15 rounded-full blur-[90px] -z-10" />
+                    </div>
                 </div>
-                <div className="flex flex-col text-left">
-                   <span className="text-base font-bold text-white leading-none">4.9/5</span>
-                   <span className="text-xs text-slate-500 font-medium">(180+ avaliações)</span>
-                </div>
-             </div>
-          </div>
+            </div>
+        </section>
 
-        </div>
-      </div>
-    </section>
+        {/* PARTE 2: ASSINANTES (Sem divisória) */}
+        <section className="pb-32 pt-10 relative z-10">
+            <div className="container mx-auto px-4 max-w-6xl">
+                <div className="flex flex-col md:flex-row items-center gap-12 md:gap-0">
+                <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-16 lg:pr-24 relative h-[140px] md:h-[180px] items-center">
+                    <div className="relative flex items-center justify-center">
+                        {images.map((src, index) => {
+                            const isCenter = index === 2;
+                            const distance = Math.abs(index - 2); 
+                            const isJumping = activeJumpIndex === index;
+                            const zIndex = 50 - (distance * 10);
+                            const scale = isCenter ? 1.4 : 1 - (distance * 0.15);
+                            const translateX = (index - 2) * 52 - 20; 
+                            const borderClass = isCenter 
+                                ? "border-blue-500 ring-4 ring-blue-500/30 shadow-[0_0_50px_rgba(59,130,246,0.6)]" 
+                                : "border-white/10 opacity-80";
+
+                            return (
+                                <div 
+                                    key={index}
+                                    onClick={() => handleImageClick(index)}
+                                    className={cn("absolute transition-all duration-500 ease-out cursor-pointer", isJumping ? "z-[70]" : "")}
+                                    style={{
+                                        zIndex: isJumping ? 70 : zIndex,
+                                        transform: `translateX(${translateX}px) scale(${isJumping ? scale * 1.3 : scale}) translateY(${isJumping ? '-20px' : '0'})`,
+                                    }}
+                                >
+                                    <div className={cn("w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] overflow-hidden shadow-2xl bg-slate-800 transition-all", borderClass, isJumping && "ring-white ring-offset-2 ring-offset-black")}>
+                                        <img src={src} alt={`Assinante ${index+1}`} className="w-full h-full object-cover select-none" />
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+                
+                <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-8">
+                    <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4">
+                    Junte-se a + de <br/>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+                        2.000 assinantes
+                    </span>
+                    </h2>
+                    <p className="text-lg text-slate-400 font-light leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
+                        Que já estão dominando a Enfermagem com o método mais completo do mercado.
+                    </p>
+                    <div className="flex items-center justify-center md:justify-start gap-3">
+                        <div className="flex -space-x-1">
+                        {[1,2,3,4,5].map(i => <Star key={i} className="w-6 h-6 text-yellow-500 fill-yellow-500" />)}
+                        </div>
+                        <div className="flex flex-col text-left">
+                        <span className="text-base font-bold text-white leading-none">4.9/5</span>
+                        <span className="text-xs text-slate-500 font-medium">(180+ avaliações)</span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+    </div>
   );
 };
 
@@ -1256,7 +1227,7 @@ const PricingSection = () => {
                          ))}
                       </div>
 
-                      <GlowButton text="Quero assinar (Anual)" href="https://pay.kiwify.com.br/anual" className="w-full" />
+                      <GlowButton text="Quero assinar (Anual)" href="https://pay.kiwify.com.br/QET29lf" className="w-full" />
                    </CardContent>
                 </Card>
              </div>
@@ -1494,8 +1465,7 @@ export default function LandingPage() {
       <EcosystemSection />
       <AppShowcaseSection />
       <ForWhomSection />
-      <RankingSection />
-      <SubscribersSection />
+      <UnifiedSocialSection />
       <TestimonialsSection />
       <GuaranteeSection />
       <PricingSection />
