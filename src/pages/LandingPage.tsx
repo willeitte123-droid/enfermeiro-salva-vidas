@@ -904,7 +904,7 @@ const ForWhomSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Feito para você dominar a Enfermagem
+            Feito para você dominar a <span className="text-blue-500">Enfermagem</span>
           </h2>
           <p className="text-lg text-slate-400">
             Seja você estudante, recém-formado ou experiente, o EnfermagemPro acelera sua jornada.
@@ -1420,7 +1420,7 @@ const FAQSection = () => {
   return (
     <section id="faq" className="py-24 bg-[#02040a] relative border-t border-white/5 overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-4xl mx-auto mb-16">
            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold uppercase tracking-wider text-blue-400 mb-6">
               <HelpCircle className="h-3 w-3" /> Central de Dúvidas
            </div>
