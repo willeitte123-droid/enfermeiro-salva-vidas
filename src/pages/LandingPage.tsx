@@ -334,7 +334,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
-            <Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
+            <HypnoticDroplet className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
             <span className={cn("text-3xl sm:text-5xl font-black leading-none", spo2 < 90 ? "text-yellow-400 animate-pulse" : "text-blue-400")}>
@@ -661,7 +661,7 @@ const EcosystemSection = () => {
                     evoluir na enfermagem, em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">um único sistema</span>
                 </h2>
                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
-                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. No é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
+                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. Não é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
                 </p>
             </div>
         </div>
@@ -669,8 +669,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -1260,9 +1260,11 @@ const PricingSection = () => {
                          ))}
                       </div>
 
-                      <Button className="w-full bg-[#1e293b] hover:bg-[#334155] text-white font-bold h-12 rounded-xl text-lg border border-white/10 mt-auto transition-all hover:scale-105">
-                         Quero assinar (Mensal)
-                      </Button>
+                      <a href="https://pay.kiwify.com.br/hZ965T8" className="w-full">
+                        <Button className="w-full bg-[#1e293b] hover:bg-[#334155] text-white font-bold h-12 rounded-xl text-lg border border-white/10 mt-auto transition-all hover:scale-105">
+                           Quero assinar (Mensal)
+                        </Button>
+                      </a>
                    </CardContent>
                 </Card>
              </div>
