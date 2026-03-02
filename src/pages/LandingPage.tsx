@@ -222,7 +222,7 @@ const Hero = () => {
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
                     Estude com foco. <br/>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
-                        Resultado e Estratégia.
+                        Organização e Resultado.
                     </span>
                 </h1>
 
