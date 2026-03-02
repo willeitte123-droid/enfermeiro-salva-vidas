@@ -213,7 +213,7 @@ const Hero = () => {
       {/* Vibrant Gradient Blobs (Glow effects) */}
       <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen z-0 animate-pulse-subtle" />
       <div className="absolute bottom-[10%] right-[-5%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen z-0" />
-      <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen z-0" />
+      <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-cyan-50/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen z-0" />
       
       {/* Partículas Leves */}
       <ParticlesBackground />
@@ -953,8 +953,8 @@ const ForWhomSection = () => {
 
 const RankingSection = () => {
   return (
-    <section id="ranking" className="py-24 bg-[#050811] relative border-t border-white/5 overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/20 blur-[120px] pointer-events-none rounded-full" />
+    <section id="ranking" className="py-24 bg-[#050811] relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] pointer-events-none rounded-full" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -1013,8 +1013,12 @@ const SubscribersSection = () => {
   };
 
   return (
-    <section className="py-20 bg-black relative overflow-hidden border-y border-white/5">
-      <div className="container mx-auto px-4 max-w-6xl">
+    <section className="py-24 bg-[#050811] relative overflow-hidden">
+      {/* Background Lighting to match Ranking Section */}
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-blue-500/5 to-transparent pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-indigo-900/10 blur-[150px] pointer-events-none rounded-full" />
+
+      <div className="container mx-auto px-4 max-w-6xl relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-12 md:gap-0">
           
           {/* Lado Esquerdo: Imagens (50%) */}
@@ -1032,8 +1036,8 @@ const SubscribersSection = () => {
                    const translateX = (index - 2) * 52 - 20; 
 
                    const borderClass = isCenter 
-                      ? "border-blue-500 ring-4 ring-blue-500/20 shadow-[0_0_40px_rgba(59,130,246,0.6)]" 
-                      : "border-black/50 opacity-80";
+                      ? "border-blue-500 ring-4 ring-blue-500/30 shadow-[0_0_50px_rgba(59,130,246,0.6)]" 
+                      : "border-white/10 opacity-80";
 
                    return (
                      <div 
@@ -1067,7 +1071,7 @@ const SubscribersSection = () => {
           
           {/* Lado Direito: Texto (50%) */}
           <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-8">
-             <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4">
+             <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4 drop-shadow-lg">
                Junte-se a + de <br/>
                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
                   2.000 assinantes
