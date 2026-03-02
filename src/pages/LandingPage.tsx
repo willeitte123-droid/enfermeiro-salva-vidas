@@ -210,7 +210,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
-            <Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
+            <協助 Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
             <span className={cn("text-3xl sm:text-5xl font-black leading-none", spo2 < 90 ? "text-yellow-400 animate-pulse" : "text-blue-400")}>
@@ -550,8 +550,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -887,66 +887,38 @@ const SubscribersSection = () => {
     "/images/sub-1.jpg",
     "/images/sub-2.jpg",
     "/images/sub-3.jpg",
-    "/images/sub-9.jpg", // Central
-    "/images/sub-4.jpg",
-    "/images/sub-6.jpg",
-    "/images/sub-7.jpg",
+    "/images/sub-4.jpg"
   ];
 
   return (
-    <section className="py-24 bg-[#050811] relative overflow-hidden flex flex-col items-center">
-      {/* Background Central Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] pointer-events-none rounded-full" />
-      
-      <div className="container mx-auto px-4 flex flex-col items-center relative z-10">
-        
-        {/* Avatars Row - Re-scaled for better proportions */}
-        <div className="flex items-end justify-center gap-2 sm:gap-4 md:gap-6 mb-16 h-48 sm:h-64">
-          {images.map((src, i) => {
-             // Tamanhos baseados na posição para criar o arco
-             const isCenter = i === 3;
-             const isInner = i === 2 || i === 4;
-             const isOuter = i === 1 || i === 5;
-             const isEdge = i === 0 || i === 6;
-
-             let sizeClasses = "w-10 h-10 sm:w-14 md:w-16 opacity-30"; // Edge
-             if (isCenter) sizeClasses = "w-28 h-28 sm:w-44 md:w-56 z-20 shadow-[0_0_60px_rgba(234,179,8,0.4)] border-yellow-400 ring-4 ring-yellow-500/20 scale-110";
-             if (isInner) sizeClasses = "w-16 h-16 sm:w-28 md:w-36 z-10 opacity-70";
-             if (isOuter) sizeClasses = "w-12 h-12 sm:w-20 md:w-28 opacity-50";
-
-             return (
-               <div key={i} className={cn(
-                 "rounded-full overflow-hidden border-2 border-white/20 transition-all duration-500 hover:scale-110 hover:opacity-100 hover:z-30 hover:border-yellow-500 flex-shrink-0 bg-slate-800",
-                 sizeClasses
-               )}>
-                 <img src={src} alt="" className="w-full h-full object-cover" />
-               </div>
-             );
-          })}
-        </div>
-
-        {/* Text content - Enhanced Title Proportions */}
-        <div className="text-center space-y-6 max-w-4xl mx-auto">
-          <h2 className="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter leading-tight drop-shadow-2xl">
-            <span className="inline-block mr-2 sm:mr-4 opacity-70">+</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-orange-600 animate-in fade-in duration-1000">
-                2.000 assinantes
-            </span>
-          </h2>
-          <div className="space-y-2">
-            <p className="text-xl sm:text-2xl md:text-4xl font-light text-slate-300 tracking-tight">
-                Já estão dominando a Enfermagem.
-            </p>
-            <div className="flex items-center justify-center gap-2 mt-4 text-yellow-500/60 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs">
-                <CheckCircle2 className="w-4 h-4" /> Comunidade Profissional Ativa
+    <section className="py-12 bg-black border-y border-white/5 relative overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+            
+            {/* Overlapping Avatars Group */}
+            <div className="flex items-center">
+               {images.map((src, i) => (
+                 <div 
+                    key={i} 
+                    className={cn(
+                        "w-20 h-20 sm:w-28 sm:h-28 rounded-full border-[3px] border-black bg-slate-800 shadow-xl overflow-hidden transition-transform hover:scale-110 hover:z-30 duration-300",
+                        i > 0 && "-ml-6 sm:-ml-10"
+                    )}
+                    style={{ zIndex: 10 + i }}
+                 >
+                    <img src={src} alt={`Usuário ${i + 1}`} className="w-full h-full object-cover" />
+                 </div>
+               ))}
             </div>
-          </div>
+
+            {/* Impact Text */}
+            <div className="text-center md:text-left max-w-md">
+                <h3 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+                    + de 2.000 Usuários estão usando o <span className="text-blue-500">Enfermagem Pro</span>
+                </h3>
+            </div>
         </div>
       </div>
-
-      {/* Decorative light streaks */}
-      <div className="absolute top-1/4 left-10 w-px h-32 bg-gradient-to-b from-transparent via-yellow-500/20 to-transparent" />
-      <div className="absolute bottom-1/4 right-10 w-px h-32 bg-gradient-to-b from-transparent via-orange-500/20 to-transparent" />
     </section>
   );
 };
