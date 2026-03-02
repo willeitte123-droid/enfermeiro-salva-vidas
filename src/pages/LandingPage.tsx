@@ -18,6 +18,38 @@ import { cn } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
+// Componente Reutilizável de Botão Glow
+const GlowButton = ({ text, href = "#planos", className }: { text: string, href?: string, className?: string }) => {
+  return (
+    <div className={cn("glowbox glowbox-active group relative transition-transform hover:scale-105 active:scale-95", className)}>
+      <div className="glowbox-animations">
+        <div className="glowbox-glow"></div>
+        <div className="glowbox-stars-masker">
+          <div className="glowbox-stars"></div>
+        </div>
+      </div>
+
+      <div className="glowbox-borders-masker">
+        <div className="glowbox-borders"></div>
+      </div>
+
+      <a href={href} className="block relative z-10">
+        <div className="btn-cta-box">
+          <div className="btn-cta uppercase tracking-widest">{text}</div>
+          <svg className="arrow-icon-custom" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h12M13 6l6 6-6 6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round" />
+          </svg>
+        </div>
+      </a>
+    </div>
+  );
+};
+
 // Componentes de UI isolados para manter o código limpo
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -857,9 +889,7 @@ const RankingSection = () => {
                     A motivação extra que faltava para você manter a constância.
                 </p>
 
-                <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-full h-12 px-8 shadow-lg shadow-yellow-500/20">
-                    Quero entrar na disputa
-                </Button>
+                <GlowButton text="Quero entrar na disputa" href="#planos" className="w-full sm:w-auto" />
             </div>
 
             {/* Image - Adjusted sizing for better containment */}
@@ -998,9 +1028,7 @@ const TestimonialsSection = () => {
       </div>
 
       <div className="text-center mt-12 relative z-10">
-         <Button size="lg" className="h-14 px-8 text-lg font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-[0_0_30px_-5px_rgba(37,99,235,0.5)] transition-all hover:scale-105">
-            Quero estudar com método
-         </Button>
+         <GlowButton text="Quero estudar com método" href="#planos" className="w-full sm:w-auto" />
       </div>
     </section>
   );
@@ -1039,33 +1067,7 @@ const GuaranteeSection = () => {
                 </p>
             </div>
 
-            {/* NEW GLOWBOX BUTTON */}
-            <div className="glowbox glowbox-active group relative transition-transform hover:scale-105 active:scale-95">
-              <div className="glowbox-animations">
-                <div className="glowbox-glow"></div>
-                <div className="glowbox-stars-masker">
-                  <div className="glowbox-stars"></div>
-                </div>
-              </div>
-
-              <div className="glowbox-borders-masker">
-                <div className="glowbox-borders"></div>
-              </div>
-
-              <a href="#planos">
-                <div className="btn-cta-box">
-                  <div className="btn-cta uppercase tracking-widest">Quero testar sem riscos</div>
-                  <svg className="arrow-icon-custom" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 12h12M13 6l6 6-6 6"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round" />
-                  </svg>
-                </div>
-              </a>
-            </div>
+            <GlowButton text="Quero testar sem riscos" href="#planos" />
 
             <div className="mt-8 flex items-center justify-center gap-2 text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">
                 <Shield className="w-4 h-4 text-emerald-500/50" /> Sua compra está 100% protegida
@@ -1145,10 +1147,7 @@ const PricingSection = () => {
                          ))}
                       </div>
 
-                      <Button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold h-12 rounded-xl text-lg shadow-lg shadow-green-900/20 transition-all hover:scale-[1.02] mt-auto relative overflow-hidden group/btn">
-                         <span className="relative z-10">Quero assinar (Anual)</span>
-                         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
-                      </Button>
+                      <GlowButton text="Quero assinar (Anual)" href="https://pay.kiwify.com.br/anual" className="w-full" />
                    </CardContent>
                 </Card>
              </div>
@@ -1214,52 +1213,77 @@ const PricingSection = () => {
 
 const CreatorSection = () => {
     return (
-        <section className="py-24 bg-[#030014] relative overflow-hidden border-t border-white/5">
+        <section className="py-32 bg-[#02040a] relative overflow-hidden">
             <div className="container mx-auto px-4 relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 max-w-6xl mx-auto">
+                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 max-w-7xl mx-auto">
                     
-                    {/* Texto à Esquerda */}
+                    {/* Texto à Esquerda - Melhor estruturado */}
                     <div className="flex-1 text-left space-y-8 animate-in fade-in slide-in-from-left-8 duration-1000">
                         <div>
-                            <p className="text-indigo-400 text-sm md:text-base font-medium tracking-[0.3em] uppercase mb-4">
-                                Quem está por trás da plataforma EnfermagemPRO
-                            </p>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">
-                                William leite?
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold uppercase tracking-wider text-blue-400 mb-6">
+                                <User className="h-3 w-3" /> Fundador
+                            </div>
+                            <h2 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
+                                Quem é <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">William Leite?</span>
                             </h2>
                         </div>
 
-                        <div className="space-y-6 text-slate-400 text-base md:text-lg leading-relaxed">
-                            <p>
-                                <strong className="text-slate-200">Formado em Enfermagem e pós-graduado em Estomaterapia</strong>, William criou a <strong className="text-blue-500">EnfermagemPro</strong> com um propósito claro: tornar o estudo da Enfermagem mais acessível, prático e eficiente.
+                        <div className="space-y-6 text-slate-400 text-lg leading-relaxed font-light">
+                            <p className="border-l-4 border-blue-600 pl-6">
+                                <strong className="text-white block mb-2 text-xl">Enfermeiro e Especialista em Ensino</strong>
+                                Formado em Enfermagem e pós-graduado em Estomaterapia, William transformou sua própria jornada de estudos em um método replicável.
                             </p>
+                            
                             <p>
-                                A partir da sua vivência acadêmica e profissional, desenvolveu uma <strong className="text-slate-200">tecnologia exclusiva voltada para concursos públicos e formação profissional</strong>, ajudando formandos e recém-formados a conquistarem aprovação e evolução na carreira.
+                                Percebendo a dificuldade de alunos e recém-formados em encontrar material <strong className="text-white">organizado e focado na prática</strong>, ele fundou a EnfermagemPro para preencher essa lacuna no mercado educacional.
                             </p>
-                            <p>
-                                Nos últimos anos, William tem se dedicado integralmente ao aperfeiçoamento da metodologia da EnfermagemPro, unindo <strong className="text-slate-200">conteúdo atualizado, prática direcionada e uma experiência de estudo simplificada.</strong>
-                            </p>
-                            <p>
-                                Hoje, <strong className="text-slate-200">milhares de alunos e assinantes em todo o Brasil</strong> já utilizam a plataforma e relatam avanços reais na formação acadêmica e no crescimento profissional.
-                            </p>
+                            
+                            <div className="grid grid-cols-2 gap-6 mt-8 pt-8 border-t border-white/5">
+                                <div>
+                                    <h4 className="text-3xl font-black text-white mb-1">+ 10 Anos</h4>
+                                    <p className="text-sm uppercase tracking-wider text-slate-500 font-bold">De Experiência</p>
+                                </div>
+                                <div>
+                                    <h4 className="text-3xl font-black text-white mb-1">Milhares</h4>
+                                    <p className="text-sm uppercase tracking-wider text-slate-500 font-bold">De Alunos Aprovados</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Foto à Direita com Efeito de Fundo Harmonizado e Máscara de Transparência */}
-                    <div className="flex-1 w-full max-w-[550px] relative animate-in fade-in zoom-in duration-1000 delay-300 flex justify-center">
-                        {/* Background Effects */}
-                        <div className="absolute inset-0 bg-blue-600/10 blur-[100px] rounded-full -z-10" />
+                    {/* Foto à Direita - Redesenhada e Ampliada */}
+                    <div className="flex-1 w-full relative flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-200">
+                        {/* Abstract Background Frame */}
+                        <div className="absolute top-10 right-0 w-[500px] h-[600px] bg-gradient-to-b from-blue-900/20 to-transparent rounded-[3rem] -rotate-6 border border-white/5 backdrop-blur-sm -z-10" />
                         
-                        {/* Geometric decoration behind */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] bg-gradient-to-tr from-blue-600/5 to-indigo-600/5 border border-white/5 rounded-full -z-10 backdrop-blur-sm" />
+                        {/* Glow Behind */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/20 blur-[120px] rounded-full -z-20 mix-blend-screen" />
                         
-                        {/* Main Image with fading mask to hide bottom cuts */}
-                        <div className="relative z-10 w-full overflow-hidden" style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}>
+                        {/* Main Image Container - Maximized */}
+                        <div className="relative z-10 w-full max-w-[650px]">
+                            {/* Mask image for bottom fade */}
                             <img 
                                 src="/images/william-leite-full.png" 
                                 alt="William Leite - Fundador EnfermagemPro" 
-                                className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform translate-y-4"
+                                className="w-full h-auto object-cover drop-shadow-2xl relative z-10"
+                                style={{ 
+                                    maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)', 
+                                    WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' 
+                                }}
                             />
+                            
+                            {/* Floating Card Element */}
+                            <div className="absolute bottom-20 -left-10 bg-[#0A0F1C]/90 backdrop-blur-md border border-white/10 p-4 rounded-2xl shadow-2xl animate-float hidden md:block z-20">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                                        <CheckCircle2 className="w-6 h-6 text-green-500" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-slate-400 font-bold uppercase">Missão</p>
+                                        <p className="text-white font-bold">Aprovar você.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1346,7 +1370,7 @@ const FAQSection = () => {
   return (
     <section id="faq" className="py-24 bg-[#02040a] relative border-t border-white/5 overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-4xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16">
            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold uppercase tracking-wider text-blue-400 mb-6">
               <HelpCircle className="h-3 w-3" /> Central de Dúvidas
            </div>
@@ -1430,9 +1454,7 @@ const Hero = () => {
 
                 {/* CTA Area */}
                 <div className="flex flex-col sm:flex-row items-center gap-6">
-                    <Button size="lg" className="h-14 px-8 text-base md:text-lg font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-[0_0_40px_-10px_rgba(37,99,235,0.6)] hover:shadow-[0_0_60px_-10px_rgba(37,99,235,0.8)] transition-all hover:scale-105 w-full sm:w-auto">
-                        Quero estudar com organização de verdade
-                    </Button>
+                    <GlowButton text="Quero estudar com organização" href="#planos" className="w-full sm:w-auto" />
                     
                     {/* Price Info */}
                     <div className="flex flex-col items-start min-w-fit">
