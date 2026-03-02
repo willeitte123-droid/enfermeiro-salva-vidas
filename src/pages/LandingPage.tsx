@@ -229,8 +229,6 @@ const Hero = () => {
                 {/* Subtitle */}
                 <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
                     O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
-                    <br/><br/>
-                    <span className="text-slate-100 font-medium">Destrave seu nível Pro</span>
                 </p>
 
                 {/* CTA Area */}
