@@ -914,81 +914,53 @@ const RankingSection = () => {
 
 const SubscribersSection = () => {
   const images = [
-    { src: "/images/sub-9.jpg", alt: "User" },
-    { src: "/0c5c33cb124e21371a3ff40662c9eb6e.jpg", alt: "User" },
-    { src: "/1c983209bd2a44d3b605a9730616587b.jpg", alt: "User" },
-    { src: "/3e8576952e6c2d59022b5e6fb1b843b4.jpg", alt: "User" },
-    { src: "/4ae9a4eecea85a02ce979cb92d95c3a5.jpg", alt: "User" },
-    { src: "/cacb9c3b9f2c36384fd936419175c6c2.jpg", alt: "User" },
-    { src: "/f063acfc298efd50d02f2fdb602f801f.jpg", alt: "User" },
-    { src: "/woman-3439789_640.jpg", alt: "User" },
+    { src: "/images/4ae9a4eecea85a02ce979cb92d95c3a5.jpg", alt: "User" },
+    { src: "/images/1c983209bd2a44d3b605a9730616587b.jpg", alt: "User" },
+    { src: "/images/3e8576952e6c2d59022b5e6fb1b843b4.jpg", alt: "User" },
+    { src: "/images/woman-3439789_640.jpg", alt: "User" },
+    { src: "/images/0c5c33cb124e21371a3ff40662c9eb6e.jpg", alt: "User" },
   ];
 
   return (
-    <section className="py-24 bg-[#050811] relative overflow-hidden flex flex-col items-center">
-      {/* Background Central Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] pointer-events-none rounded-full" />
-      
-      <div className="container mx-auto px-4 flex flex-col items-center relative z-10">
-        
-        {/* Avatars Container - Replicating reference image layout */}
-        <div className="relative w-full max-w-[600px] h-[200px] mb-12 flex justify-center items-end">
-           {/* Center */}
-           <div className="absolute left-1/2 -translate-x-1/2 bottom-0 z-50 transition-transform duration-500 hover:scale-105">
-               <div className="w-24 h-24 rounded-full border-4 border-black overflow-hidden shadow-2xl relative">
-                  <img src={images[0].src} alt="" className="w-full h-full object-cover" />
-               </div>
-               {/* 2000+ Badge */}
-               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-black font-black text-xs px-2 py-0.5 rounded-full whitespace-nowrap shadow-lg z-50 border border-yellow-200">
-                  + 2.000
-               </div>
-           </div>
-
-           {/* Left Side */}
-           <div className="absolute left-[calc(50%-80px)] bottom-2 z-40 w-16 h-16 rounded-full border-4 border-black overflow-hidden shadow-xl bg-slate-800">
-              <img src={images[1].src} alt="" className="w-full h-full object-cover opacity-90" />
-           </div>
-           <div className="absolute left-[calc(50%-140px)] bottom-6 z-30 w-14 h-14 rounded-full border-4 border-black overflow-hidden shadow-lg bg-slate-800">
-              <img src={images[2].src} alt="" className="w-full h-full object-cover opacity-80" />
-           </div>
-           <div className="absolute left-[calc(50%-190px)] bottom-12 z-20 w-12 h-12 rounded-full border-4 border-black overflow-hidden shadow-md bg-slate-800 hidden sm:block">
-              <img src={images[3].src} alt="" className="w-full h-full object-cover opacity-70" />
-           </div>
-
-           {/* Right Side */}
-           <div className="absolute left-[calc(50%+16px)] bottom-2 z-40 w-16 h-16 rounded-full border-4 border-black overflow-hidden shadow-xl bg-slate-800">
-              <img src={images[4].src} alt="" className="w-full h-full object-cover opacity-90" />
-           </div>
-           <div className="absolute left-[calc(50%+84px)] bottom-6 z-30 w-14 h-14 rounded-full border-4 border-black overflow-hidden shadow-lg bg-slate-800">
-              <img src={images[5].src} alt="" className="w-full h-full object-cover opacity-80" />
-           </div>
-           <div className="absolute left-[calc(50%+142px)] bottom-12 z-20 w-12 h-12 rounded-full border-4 border-black overflow-hidden shadow-md bg-slate-800 hidden sm:block">
-              <img src={images[6].src} alt="" className="w-full h-full object-cover opacity-70" />
-           </div>
-        </div>
-
-        {/* Text content - Enhanced Title Proportions */}
-        <div className="text-center space-y-4 max-w-4xl mx-auto">
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tighter leading-tight drop-shadow-2xl">
-            Junte-se a mais de <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-orange-600 animate-in fade-in duration-1000">
-                2.000 assinantes
-            </span>
-          </h2>
-          <div className="space-y-2">
-            <p className="text-lg sm:text-xl font-light text-slate-300 tracking-tight">
-                Que já estão dominando a Enfermagem.
-            </p>
-            <div className="flex items-center justify-center gap-2 mt-4 text-yellow-500/60 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs">
-                <CheckCircle2 className="w-4 h-4" /> Comunidade Profissional Ativa
-            </div>
+    <section className="py-16 md:py-24 bg-black border-y border-white/10 overflow-hidden">
+      <div className="container mx-auto px-4">
+        {/* Container Centralizado */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+          
+          {/* Avatar Group - Com sobreposição correta */}
+          <div className="flex items-center justify-center pl-4 md:pl-0">
+             {images.slice(0, 5).map((img, i) => (
+                <div 
+                  key={i} 
+                  className={cn(
+                    "relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-[3px] border-black overflow-hidden shadow-2xl transition-transform hover:scale-105 hover:z-20",
+                    i !== 0 ? "-ml-5" : "" // Margem negativa para sobreposição
+                  )}
+                  style={{ zIndex: 10 - i }} // Garante que o primeiro fique por cima ou use a ordem natural
+                >
+                  <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+                </div>
+             ))}
+             
+             {/* Badge Amarelo Opcional (se quiser igual à referência) */}
+             {/* <div className="relative z-20 -ml-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full border-2 border-black shadow-lg">
+                + 2.000
+             </div> */}
           </div>
+          
+          {/* Texto - Alinhado à direita no desktop, centro no mobile */}
+          <div className="text-center md:text-left max-w-lg">
+             <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+               + de 2.000 Usuários estão <br className="hidden md:block"/>
+               usando o <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">EnfermagemPro</span>
+             </h2>
+             <div className="flex items-center justify-center md:justify-start gap-2 mt-3 text-yellow-500/80 font-bold uppercase tracking-wider text-[10px] sm:text-xs">
+                <CheckCircle2 className="w-4 h-4" /> Comunidade Profissional Ativa
+             </div>
+          </div>
+
         </div>
       </div>
-
-      {/* Decorative light streaks */}
-      <div className="absolute top-1/4 left-10 w-px h-32 bg-gradient-to-b from-transparent via-yellow-500/20 to-transparent" />
-      <div className="absolute bottom-1/4 right-10 w-px h-32 bg-gradient-to-b from-transparent via-orange-500/20 to-transparent" />
     </section>
   );
 };
@@ -1279,213 +1251,6 @@ const CreatorSection = () => {
             </div>
         </section>
     );
-};
-
-const FAQSection = () => {
-  const faqs = [
-    {
-      q: "A EnfermagemPro é indicada para quem?",
-      a: "Para estudantes de enfermagem que buscam uma base sólida, técnicos e enfermeiros que desejam aprovação em concursos públicos ou profissionais que buscam mais segurança e consulta rápida na prática clínica do dia a dia.",
-      color: "border-blue-500/30",
-      bg: "data-[state=open]:bg-blue-500/10",
-      accent: "text-blue-400"
-    },
-    {
-      q: "A plataforma é voltada apenas para concursos?",
-      a: "Não. Embora tenhamos uma estratégia fortíssima para concursos, a EnfermagemPro também é uma ferramenta de suporte para o plantão, com guias de procedimentos, calculadoras de gotejamento, protocolos de emergência e escalas clínicas para consulta à beira-leito.",
-      color: "border-emerald-500/30",
-      bg: "data-[state=open]:bg-emerald-500/10",
-      accent: "text-emerald-400"
-    },
-    {
-      q: "Consigo baixar a plataforma e usar como aplicativo?",
-      a: "Sim! Nossa plataforma utiliza a tecnologia PWA (Progressive Web App). Você pode adicioná-la à tela inicial do seu celular (Android ou iPhone) e acessá-la como um aplicativo nativo, sem precisar baixar nada nas lojas e sem ocupar espaço no seu dispositivo.",
-      color: "border-violet-500/30",
-      bg: "data-[state=open]:bg-violet-500/10",
-      accent: "text-violet-400"
-    },
-    {
-      q: "Como funcionam os simulados?",
-      a: "Você pode gerar simulados personalizados escolhendo a banca examinadora, a disciplina e o tempo de prova. Ao final, o sistema gera um relatório de desempenho mostrando seus pontos fortes e onde você precisa focar mais o estudo.",
-      color: "border-orange-500/30",
-      bg: "data-[state=open]:bg-orange-500/10",
-      accent: "text-orange-400"
-    },
-    {
-      q: "As questões são comentadas?",
-      a: "Sim. A grande maioria das nossas mais de 2.000 questões possui comentários detalhados que explicam o porquê da alternativa correta e dão dicas extras sobre o assunto cobrado.",
-      color: "border-rose-500/30",
-      bg: "data-[state=open]:bg-rose-500/10",
-      accent: "text-rose-400"
-    },
-    {
-      q: "Posso estudar pelo celular?",
-      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiênia é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
-      color: "border-cyan-500/30",
-      bg: "data-[state=open]:bg-cyan-500/10",
-      accent: "text-cyan-400"
-    },
-    {
-      q: "O acesso é imediato após a compra?",
-      a: "Sim. Para pagamentos via Pix ou Cartão de Crédito, o acesso é liberado instantaneamente. Você receberá os dados de login no e-mail cadastrado logo após a confirmação do pagamento.",
-      color: "border-amber-500/30",
-      bg: "data-[state=open]:bg-amber-500/10",
-      accent: "text-amber-400"
-    },
-    {
-      q: "Posso cancelar se não gostar?",
-      a: "Sim, sem problemas. Você tem 7 dias de garantia incondicional. Se por qualquer motivo sentir que a plataforma não é para você, basta solicitar o reembolso dentro desse prazo e devolvemos 100% do seu investimento.",
-      color: "border-indigo-500/30",
-      bg: "data-[state=open]:bg-indigo-500/10",
-      accent: "text-indigo-400"
-    },
-    {
-      q: "Preciso ter muito tempo disponível para estudar?",
-      a: "Não. O método EnfermagemPro foi criado justamente para quem tem pouco tempo. Com flashcards de repetição espaçada e sessões rápidas de questões, você consegue ter uma evolução significativa estudando apenas 20 a 30 minutos por dia.",
-      color: "border-pink-500/30",
-      bg: "data-[state=open]:bg-pink-500/10",
-      accent: "text-pink-400"
-    },
-    {
-      q: "O conteúdo é atualizado?",
-      a: "Constantemente. Nossa equipe monitora e atualiza o calendário vacinal do PNI, diretrizes da AHA para RCP, novas leis do exercício profissional, portarias do SUS e inclui semanalmente novas questões de concursos recentes.",
-      color: "border-teal-500/30",
-      bg: "data-[state=open]:bg-teal-500/10",
-      accent: "text-teal-400"
-    }
-  ];
-
-  return (
-    <section id="faq" className="py-24 bg-[#02040a] relative border-t border-white/5 overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold uppercase tracking-wider text-blue-400 mb-6">
-              <HelpCircle className="h-3 w-3" /> Central de Dúvidas
-           </div>
-           <h2 className="text-3xl md:text-5xl font-black text-white mb-6">Perguntas Frequentes</h2>
-           <p className="text-slate-400 text-lg">Tudo o que você precisa saber para começar agora mesmo.</p>
-        </div>
-
-        <div className="max-w-3xl mx-auto">
-            <Accordion type="single" collapsible className="w-full space-y-4">
-                {faqs.map((faq, index) => (
-                    <AccordionItem 
-                        key={index} 
-                        value={`item-${index}`}
-                        className={cn(
-                          "border rounded-2xl bg-white/5 overflow-hidden px-4 sm:px-6 transition-all duration-300",
-                          faq.color,
-                          faq.bg
-                        )}
-                    >
-                        <AccordionTrigger className="hover:no-underline py-5 text-left text-base sm:text-lg font-bold text-white group">
-                           <span className={cn("group-hover:opacity-80 transition-all pr-4", faq.accent)}>{faq.q}</span>
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-6 text-slate-400 text-sm sm:text-base leading-relaxed animate-in fade-in slide-in-from-top-1 duration-300">
-                           {faq.a}
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Hero = () => {
-  return (
-    <>
-    <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
-      {/* Background Image Layer - Updated opacity and overlay */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="/images/background-hero.png" 
-          alt="Enfermagem Background" 
-          className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
-        />
-        {/* Dark overlay with gradient to ensure text readability while keeping image visible */}
-        <div className="absolute inset-0 bg-[#02040a]/70" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#02040a]/80 via-transparent to-[#02040a]" />
-      </div>
-
-      {/* Vibrant Gradient Blobs (Glow effects) */}
-      <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen z-0 animate-pulse-subtle" />
-      <div className="absolute bottom-[10%] right-[-5%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen z-0" />
-      <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen z-0" />
-      
-      {/* Partículas Leves */}
-      <ParticlesBackground />
-
-      <div className="container mx-auto px-4 md:px-6 relative z-20">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            
-            {/* TEXT COLUMN (Left) */}
-            <div className="flex-1 text-left max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {/* Badge Removido */}
-                <div className="mb-6"></div>
-
-                {/* Title */}
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
-                    Estude com foco. <br/>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
-                        Organização e Estratégia.
-                    </span>
-                </h1>
-
-                {/* Subtitle */}
-                <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
-                    O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
-                    <br/><br/>
-                    <span className="text-slate-100 font-medium">Domine a Enfermagem com o método completo que + de 2.000 profissionais estão usando para estudar com foco e resultado</span>
-                </p>
-
-                {/* CTA Area */}
-                <div className="flex flex-col sm:flex-row items-center gap-6">
-                    <GlowButton text="Quero estudar com organização" href="#planos" className="w-full sm:w-auto" />
-                    
-                    {/* Price Info */}
-                    <div className="flex flex-col items-start min-w-fit">
-                         <span className="text-xs text-slate-400 line-through font-medium">DE R$ 97,00</span>
-                         <div className="flex items-baseline gap-1">
-                            <span className="text-sm text-slate-300">POR</span>
-                            <span className="text-xl font-bold text-white">R$ 29,90</span>
-                         </div>
-                    </div>
-                </div>
-                
-                {/* Progress Bar */}
-                <div className="mt-8 max-w-sm">
-                   <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden backdrop-blur-sm">
-                      <div className="bg-gradient-to-r from-blue-500 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-                   </div>
-                   <p className="text-xs text-slate-400 mt-2 font-medium flex justify-between">
-                      <span>85% das vagas preenchidas</span>
-                      <span className="text-white">Corra!</span>
-                   </p>
-                </div>
-            </div>
-
-            {/* IMAGE COLUMN (Right) - Com animação de flutuação */}
-            <div className="flex-1 relative w-full flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-200">
-                <div className="relative z-10 w-full max-w-[800px] animate-float">
-                    <img 
-                        src="/images/mockup-hero.png" 
-                        alt="Plataforma Enfermagem Pro em dispositivos" 
-                        className="w-full h-auto drop-shadow-2xl"
-                    />
-                </div>
-                
-                {/* Ambient Glow behind mockup */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-600/20 blur-[100px] -z-10 rounded-full mix-blend-screen" />
-            </div>
-        </div>
-      </div>
-    </section>
-    
-    <InfiniteMarquee />
-    </>
-  );
 };
 
 export default function LandingPage() {
