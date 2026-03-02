@@ -314,7 +314,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
             <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
-            <span className="text-2xl sm:text-4xl font-black leading-none text-red-500">
+            <span className="text-2xl sm:text-4xl font-black text-red-500">
               {bp}
             </span>
             <span className="text-[10px] sm:text-xs text-red-500/70 mb-1">mmHg</span>
@@ -999,10 +999,10 @@ const SubscribersSection = () => {
   return (
     <section className="py-20 bg-black relative overflow-hidden border-y border-white/5">
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="flex flex-col md:flex-row items-center gap-16 md:gap-0">
+        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-0">
           
-          {/* Lado Esquerdo: Imagens (50%) - AJUSTADO O ESPAÇAMENTO */}
-          <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-10 relative h-[140px] md:h-[180px] items-center">
+          {/* Lado Esquerdo: Imagens (50%) - AJUSTADO O ESPAÇAMENTO PARA NÃO SOBREPOR O TEXTO */}
+          <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-16 lg:pr-24 relative h-[140px] md:h-[180px] items-center">
              <div className="relative flex items-center justify-center">
                 {images.map((src, index) => {
                    const isCenter = index === 2;
@@ -1012,7 +1012,8 @@ const SubscribersSection = () => {
                    const zIndex = 50 - (distance * 10);
                    const scale = isCenter ? 1.4 : 1 - (distance * 0.15);
                    
-                   const translateX = (index - 2) * 52; 
+                   // Deslocamento X empurrando para a esquerda para dar mais espaço ao texto na direita
+                   const translateX = (index - 2) * 52 - 20; 
 
                    const borderClass = isCenter 
                       ? "border-blue-500 ring-4 ring-blue-500/20 shadow-[0_0_40px_rgba(59,130,246,0.6)]" 
@@ -1049,7 +1050,7 @@ const SubscribersSection = () => {
           </div>
           
           {/* Lado Direito: Texto (50%) - AJUSTADO O ESPAÇAMENTO */}
-          <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-10">
+          <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-8">
              <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4">
                Junte-se a + de <br/>
                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
