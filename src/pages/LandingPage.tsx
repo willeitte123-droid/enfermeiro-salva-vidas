@@ -1,4 +1,3 @@
-'Resultado'.">
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -1006,26 +1005,56 @@ const SubscribersSection = () => {
         <div className="flex flex-col md:flex-row items-center gap-12 md:gap-0">
           
           {/* Lado Esquerdo: Imagens (50%) */}
-          <div className="w-full md:w-1/2 flex justify-center md:justify-center relative">
-             <div className="flex -space-x-4 md:-space-x-6 items-center justify-center">
-                {images.map((src, index) => (
-                   <div 
-                     key={index}
-                     className="relative w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-black overflow-hidden shadow-2xl z-10 transition-transform hover:scale-110 hover:z-20"
-                   >
-                     <img 
-                       src={src} 
-                       alt={`Assinante ${index+1}`} 
-                       className="w-full h-full object-cover"
-                     />
-                   </div>
-                ))}
+          <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-16 relative h-[140px] md:h-[180px] items-center">
+             {/* Container relativo para posicionamento absoluto das imagens */}
+             <div className="relative flex items-center justify-center">
+                {images.map((src, index) => {
+                   // Lógica de posicionamento: O do meio (index 2) é o maior e está na frente.
+                   const isCenter = index === 2;
+                   const distance = Math.abs(index - 2); 
+                   
+                   // Ajustes visuais conforme modelo
+                   const zIndex = 50 - (distance * 10);
+                   const scale = isCenter ? 1.4 : 1 - (distance * 0.15); // Aumentei o scale do central
+                   const opacity = 1 - (distance * 0.2); // Um pouco mais transparente nas pontas
+                   
+                   // Translação mais apertada para sobreposição
+                   const translateX = (index - 2) * 45; // Pixels de deslocamento
+
+                   // Borda especial para o central (azul brilhante)
+                   const borderClass = isCenter 
+                      ? "border-blue-500 ring-4 ring-blue-500/20 shadow-[0_0_40px_rgba(59,130,246,0.6)]" 
+                      : "border-black/50 opacity-80";
+
+                   return (
+                     <div 
+                       key={index}
+                       className="absolute transition-all duration-500 ease-out hover:scale-[1.5] hover:z-[60] hover:opacity-100 cursor-pointer"
+                       style={{
+                         zIndex: zIndex,
+                         // Transformação baseada no deslocamento X e escala
+                         transform: `translateX(${translateX}px) scale(${scale})`,
+                       }}
+                     >
+                       <div className={cn(
+                         "w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] overflow-hidden shadow-2xl bg-slate-800 transition-all",
+                         borderClass
+                       )}>
+                         <img 
+                           src={src} 
+                           alt={`Assinante ${index+1}`} 
+                           className="w-full h-full object-cover"
+                         />
+                       </div>
+                     </div>
+                   );
+                })}
              </div>
           </div>
           
           {/* Lado Direito: Texto (50%) */}
           <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-8">
-             <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-4">
+             <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4">
                Junte-se a + de <br/>
                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
                   2.000 assinantes
