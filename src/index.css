@@ -126,3 +126,189 @@ All colors MUST be HSL.
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* --- CUSTOM GLOWBOX BUTTON STYLES --- */
+.glowbox {
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 999px;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  --animation-speed: 2s;
+  background-color: #090909;
+}
+
+.glowbox-active .glowbox-animations,
+.glowbox-active .glowbox-borders-masker {
+  opacity: 1;
+}
+
+.glowbox-animations,
+.glowbox-borders {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  z-index: 1;
+}
+
+.glowbox-animations:before,
+.glowbox-borders:before {
+  content: "";
+  float: left;
+  padding-top: 100%;
+}
+
+.glowbox-animations:after,
+.glowbox-borders:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+.glowbox-animations {
+  opacity: 0;
+  pointer-events: none;
+  transition: 1s ease opacity;
+}
+
+.glowbox-animations * {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.glowbox-borders,
+.glowbox-glow,
+.glowbox-stars {
+  animation: borderTurn var(--animation-speed) infinite linear;
+  background-image: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(58, 169, 255, 1) 0deg,
+    rgba(0, 0, 0, 0) 60deg,
+    rgba(0, 0, 0, 0) 300deg,
+    rgba(58, 169, 255, 1) 360deg
+  );
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.glowbox-stars-masker {
+  -webkit-mask: url("data:image/svg+xml,%3Csvg width='28' height='24' viewBox='0 0 28 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.0534 15.732C13.8444 15.283 14.2848 14.8489 14.7326 15.051C14.8296 15.0959 14.9043 15.1707 14.949 15.268C15.1506 15.717 14.7177 16.1511 14.2698 15.949C14.1728 15.9041 14.0982 15.8293 14.0534 15.732Z' fill='black'/%3E%3C/svg%3E");
+  mask-repeat: repeat;
+  -webkit-mask-repeat: repeat;
+}
+
+.glowbox-glow {
+  filter: blur(8px);
+  opacity: 0.14;
+}
+
+.glowbox-borders {
+  animation-name: borderTurnWithTranslate;
+}
+
+.glowbox-borders-masker {
+  border-radius: 999px;
+  height: 100%;
+  inset: 0;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  padding: 1px;
+  pointer-events: none;
+  position: absolute;
+  transition: 1s ease opacity;
+  width: 100%;
+  z-index: 1;
+}
+
+@keyframes borderTurn {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes borderTurnWithTranslate {
+  from { transform: translate(-50%, -50%) rotate(0); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.btn-cta-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 20px 10px 10px;
+  background: linear-gradient(
+    225deg,
+    rgba(58, 169, 255, 0.12) 5%,
+    rgba(9, 9, 9, 0.9) 60%,
+    rgba(9, 9, 9, 1) 100%
+  );
+  border: 1px solid rgba(58, 169, 255, 0.35);
+  border-radius: 100px;
+  box-shadow: 23.9px 19.78px 82.49px #00000094;
+}
+
+.btn-cta {
+  position: relative;
+  z-index: 2;
+  padding: 14px 16px;
+  background: linear-gradient(
+    271.55deg,
+    rgba(58, 169, 255, 0.6) 5.88%,
+    rgba(250, 250, 250, 0.05) 50.22%,
+    rgba(9, 9, 9, 0.9) 95.32%
+  );
+  border: 1px solid rgba(58, 169, 255, 0.55);
+  border-radius: 100px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.8px;
+  color: #f5f7fa;
+  box-shadow:
+    -4.15px 10.39px 70.01px #000000e3,
+    inset 0 0 18px rgba(58, 169, 255, 0.25);
+  overflow: hidden;
+}
+
+.btn-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #3aa9ff, #090909);
+  border-radius: 100px;
+  transform: scale(1.1);
+  opacity: 0.8;
+  transition: 0.3s ease;
+  z-index: -1;
+}
+
+.btn-cta:hover::before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.arrow-icon-custom {
+  width: 32px;
+  height: 32px;
+  color: #f5f7fa;
+  filter: drop-shadow(0 0 10px #3aa9ff);
+  transition: all 0.5s ease;
+}
+
+.btn-cta-box:hover .arrow-icon-custom {
+  transform: translateX(5px);
+  opacity: 1;
+}
