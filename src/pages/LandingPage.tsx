@@ -914,13 +914,14 @@ const RankingSection = () => {
 
 const SubscribersSection = () => {
   const images = [
-    "/images/sub-1.jpg",
-    "/images/sub-2.jpg",
-    "/images/sub-3.jpg",
-    "/images/sub-9.jpg", // Central
-    "/images/sub-4.jpg",
-    "/images/sub-6.jpg",
-    "/images/sub-7.jpg",
+    { src: "/images/sub-9.jpg", alt: "User" },
+    { src: "/0c5c33cb124e21371a3ff40662c9eb6e.jpg", alt: "User" },
+    { src: "/1c983209bd2a44d3b605a9730616587b.jpg", alt: "User" },
+    { src: "/3e8576952e6c2d59022b5e6fb1b843b4.jpg", alt: "User" },
+    { src: "/4ae9a4eecea85a02ce979cb92d95c3a5.jpg", alt: "User" },
+    { src: "/cacb9c3b9f2c36384fd936419175c6c2.jpg", alt: "User" },
+    { src: "/f063acfc298efd50d02f2fdb602f801f.jpg", alt: "User" },
+    { src: "/woman-3439789_640.jpg", alt: "User" },
   ];
 
   return (
@@ -930,42 +931,53 @@ const SubscribersSection = () => {
       
       <div className="container mx-auto px-4 flex flex-col items-center relative z-10">
         
-        {/* Avatars Row - Re-scaled for better proportions */}
-        <div className="flex items-end justify-center gap-2 sm:gap-4 md:gap-6 mb-16 h-48 sm:h-64">
-          {images.map((src, i) => {
-             // Tamanhos baseados na posição para criar o arco
-             const isCenter = i === 3;
-             const isInner = i === 2 || i === 4;
-             const isOuter = i === 1 || i === 5;
-             const isEdge = i === 0 || i === 6;
-
-             let sizeClasses = "w-10 h-10 sm:w-14 md:w-16 opacity-30"; // Edge
-             if (isCenter) sizeClasses = "w-28 h-28 sm:w-44 md:w-56 z-20 shadow-[0_0_60px_rgba(234,179,8,0.4)] border-yellow-400 ring-4 ring-yellow-500/20 scale-110";
-             if (isInner) sizeClasses = "w-16 h-16 sm:w-28 md:w-36 z-10 opacity-70";
-             if (isOuter) sizeClasses = "w-12 h-12 sm:w-20 md:w-28 opacity-50";
-
-             return (
-               <div key={i} className={cn(
-                 "rounded-full overflow-hidden border-2 border-white/20 transition-all duration-500 hover:scale-110 hover:opacity-100 hover:z-30 hover:border-yellow-500 flex-shrink-0 bg-slate-800",
-                 sizeClasses
-               )}>
-                 <img src={src} alt="" className="w-full h-full object-cover" />
+        {/* Avatars Container - Replicating reference image layout */}
+        <div className="relative w-full max-w-[600px] h-[200px] mb-12 flex justify-center items-end">
+           {/* Center */}
+           <div className="absolute left-1/2 -translate-x-1/2 bottom-0 z-50 transition-transform duration-500 hover:scale-105">
+               <div className="w-24 h-24 rounded-full border-4 border-black overflow-hidden shadow-2xl relative">
+                  <img src={images[0].src} alt="" className="w-full h-full object-cover" />
                </div>
-             );
-          })}
+               {/* 2000+ Badge */}
+               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-black font-black text-xs px-2 py-0.5 rounded-full whitespace-nowrap shadow-lg z-50 border border-yellow-200">
+                  + 2.000
+               </div>
+           </div>
+
+           {/* Left Side */}
+           <div className="absolute left-[calc(50%-80px)] bottom-2 z-40 w-16 h-16 rounded-full border-4 border-black overflow-hidden shadow-xl bg-slate-800">
+              <img src={images[1].src} alt="" className="w-full h-full object-cover opacity-90" />
+           </div>
+           <div className="absolute left-[calc(50%-140px)] bottom-6 z-30 w-14 h-14 rounded-full border-4 border-black overflow-hidden shadow-lg bg-slate-800">
+              <img src={images[2].src} alt="" className="w-full h-full object-cover opacity-80" />
+           </div>
+           <div className="absolute left-[calc(50%-190px)] bottom-12 z-20 w-12 h-12 rounded-full border-4 border-black overflow-hidden shadow-md bg-slate-800 hidden sm:block">
+              <img src={images[3].src} alt="" className="w-full h-full object-cover opacity-70" />
+           </div>
+
+           {/* Right Side */}
+           <div className="absolute left-[calc(50%+16px)] bottom-2 z-40 w-16 h-16 rounded-full border-4 border-black overflow-hidden shadow-xl bg-slate-800">
+              <img src={images[4].src} alt="" className="w-full h-full object-cover opacity-90" />
+           </div>
+           <div className="absolute left-[calc(50%+84px)] bottom-6 z-30 w-14 h-14 rounded-full border-4 border-black overflow-hidden shadow-lg bg-slate-800">
+              <img src={images[5].src} alt="" className="w-full h-full object-cover opacity-80" />
+           </div>
+           <div className="absolute left-[calc(50%+142px)] bottom-12 z-20 w-12 h-12 rounded-full border-4 border-black overflow-hidden shadow-md bg-slate-800 hidden sm:block">
+              <img src={images[6].src} alt="" className="w-full h-full object-cover opacity-70" />
+           </div>
         </div>
 
         {/* Text content - Enhanced Title Proportions */}
-        <div className="text-center space-y-6 max-w-4xl mx-auto">
-          <h2 className="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter leading-tight drop-shadow-2xl">
-            <span className="inline-block mr-2 sm:mr-4 opacity-70">+</span>
+        <div className="text-center space-y-4 max-w-4xl mx-auto">
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tighter leading-tight drop-shadow-2xl">
+            Junte-se a mais de <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-orange-600 animate-in fade-in duration-1000">
                 2.000 assinantes
             </span>
           </h2>
           <div className="space-y-2">
-            <p className="text-xl sm:text-2xl md:text-4xl font-light text-slate-300 tracking-tight">
-                Já estão dominando a Enfermagem.
+            <p className="text-lg sm:text-xl font-light text-slate-300 tracking-tight">
+                Que já estão dominando a Enfermagem.
             </p>
             <div className="flex items-center justify-center gap-2 mt-4 text-yellow-500/60 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs">
                 <CheckCircle2 className="w-4 h-4" /> Comunidade Profissional Ativa
