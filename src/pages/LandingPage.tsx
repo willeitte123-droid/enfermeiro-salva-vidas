@@ -506,7 +506,7 @@ const VideoSection = () => {
           </p>
         </div>
 
-        <div className="max-w-5_xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
           <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
              <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
@@ -550,7 +550,7 @@ const EcosystemSection = () => {
     { title: "MEU DESEMPENHO", desc: "Acompanhe sua evolução com dados claros e mensuráveis.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
     { title: "MEDICAMENTOS", desc: "Revisão prática de fármacos essenciais para o plantão.", icon: Syringe, image: "/images/ecosystem/medicamentos.png" },
     { title: "EMERGÊNCIAS", desc: "Protocolos objetivos para decisões rápidas.", icon: Siren, image: "/images/ecosystem/emergencias.png" },
-    { title: "CURATIVOS", desc: "Tipos de lesões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
+    { title: "CURATIVOS", desc: "Tipos de leões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
     { title: "PROCEDIMENTOS", desc: "Passo a passo técnico com foco em segurança.", icon: ClipboardList, image: "/images/ecosystem/procedimentos.png" },
     { title: "SEMIOLOGIA", desc: "Avaliação clínica organizada e estruturada.", icon: FileSearch, image: "/images/ecosystem/semiologia.png" },
     { title: "SEMIOTÉCNICA", desc: "Técnicas fundamentais da enfermagem.", icon: HandHeart, image: "/images/ecosystem/semiotecnica.png" },
@@ -981,11 +981,11 @@ const RankingSection = () => {
 // --- SESSÃO DE ASSINANTES (REFEITA: IGUAL AO MODELO 50/50 COM FOTOS IGUAIS) ---
 const SubscribersSection = () => {
   const images = [
-    "/images/sub-1.jpg", 
-    "/images/sub-2.jpg", 
-    "/images/sub-5.jpg", // Central (sub-5)
-    "/images/sub-3.jpg", 
-    "/images/sub-4.png", 
+    "/images/user-1.jpg", 
+    "/images/user-2.jpg", 
+    "/images/user-3.jpg", 
+    "/images/user-5.jpg", 
+    "/images/user-6.jpg", 
   ];
 
   return (
@@ -1008,7 +1008,7 @@ const SubscribersSection = () => {
                    const opacity = 1 - (distance * 0.2); // Um pouco mais transparente nas pontas
                    
                    // Translação mais apertada para sobreposição
-                   const translateX = (index - 2) * 45; // Pixels de deslocamento
+                   const translateX = (index - 2) * 55; // Pixels de deslocamento horizontal aumentado para melhor visualização
 
                    // Borda especial para o central (azul brilhante)
                    const borderClass = isCenter 
