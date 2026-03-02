@@ -157,13 +157,12 @@ const ParticlesBackground = () => {
   const [particles, setParticles] = useState<{ id: number; top: string; left: string; delay: string; duration: string }[]>([]);
 
   useEffect(() => {
-    // Generate particles only on client side
     const newParticles = Array.from({ length: 30 }).map((_, i) => ({
       id: i,
       top: `${Math.random() * 100}%`,
       left: `${Math.random() * 100}%`,
       delay: `${Math.random() * 5}s`,
-      duration: `${Math.random() * 10 + 10}s`, // 10s to 20s
+      duration: `${Math.random() * 10 + 10}s`,
     }));
     setParticles(newParticles);
   }, []);
@@ -189,17 +188,12 @@ const ParticlesBackground = () => {
 const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: string; spo2: number; resp: number; temp: number }) => {
   return (
     <div className="bg-black/90 border-4 border-slate-800 rounded-xl p-3 sm:p-6 shadow-2xl relative overflow-hidden font-mono mb-4 w-full">
-      {/* Reflexo de tela */}
       <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none" />
-      
-      {/* Grid de fundo */}
       <div className="absolute inset-0 opacity-10" 
            style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8 relative z-10">
-        
-        {/* ECG / FC */}
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-green-500">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">ECG</span>
@@ -211,7 +205,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
             </span>
             <span className="text-[10px] sm:text-xs text-green-500/70 mb-1">bpm</span>
           </div>
-          {/* Linha de ECG simulada */}
           <div className="h-6 sm:h-8 w-full overflow-hidden relative opacity-70">
              {hr > 0 && (
                <svg viewBox="0 0 100 20" className="w-full h-full stroke-green-500 fill-none stroke-[2px]">
@@ -223,7 +216,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
           </div>
         </div>
 
-        {/* PA (PNI) */}
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-red-500">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">PNI</span>
@@ -238,7 +230,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
           <span className="text-[9px] sm:text-xs text-red-500/50 block mt-0.5 sm:mt-1">PAM: {(parseInt(bp.split('/')[0]) + 2 * parseInt(bp.split('/')[1])) / 3 | 0}</span>
         </div>
 
-        {/* SpO2 */}
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
@@ -260,7 +251,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
           </div>
         </div>
 
-        {/* FR / Temp */}
         <div className="flex flex-col justify-between h-full gap-2">
           <div className="flex items-end justify-between">
             <div className="text-yellow-400 text-[10px] sm:text-xs font-bold uppercase">RESP</div>
@@ -290,7 +280,6 @@ const ClinicalCaseSection = () => {
 
   return (
     <section className="py-24 bg-[#050811] relative overflow-hidden">
-      {/* Lights Background */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-indigo-900/10 blur-[100px] pointer-events-none" />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -304,7 +293,6 @@ const ClinicalCaseSection = () => {
         </div>
 
         <div className="max-w-4xl mx-auto">
-            {/* Monitor Section */}
             <VitalsMonitorDemo 
                hr={selectedOption === 'A' || selectedOption === 'B' ? 0 : 45} 
                bp={selectedOption === 'A' || selectedOption === 'B' ? "0/0" : "220/110"} 
@@ -313,7 +301,6 @@ const ClinicalCaseSection = () => {
                temp={37.0} 
             />
 
-            {/* Case Content Card */}
             <Card className={cn(
                "border-2 shadow-2xl transition-all duration-500", 
                selectedOption === null ? "border-yellow-500/30 bg-yellow-950/10" :
@@ -356,7 +343,6 @@ const ClinicalCaseSection = () => {
                     </div>
                  )}
 
-                 {/* Options */}
                  {selectedOption === null ? (
                     <div className="space-y-3 pt-4">
                         <p className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">Qual sua conduta?</p>
@@ -422,23 +408,18 @@ const VideoSection = () => {
           </p>
         </div>
 
-        {/* Video Container */}
         <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-          {/* Mock Video UI */}
           <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
-             {/* Thumbnail background */}
              <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
              </div>
              
-             {/* Play Button */}
              <div className="relative z-10 group-hover:scale-110 transition-transform duration-300">
                 <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-sm cursor-pointer shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]">
                    <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
                 </div>
              </div>
              
-             {/* Video UI Overlay */}
              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
                 <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-4">
                    <div className="h-full w-1/3 bg-blue-500 rounded-full" />
@@ -455,7 +436,7 @@ const VideoSection = () => {
   );
 };
 
-// Nova Seção Ecossistema (Infinite Marquee Cards com Scroll Interativo)
+// Nova Seção Ecossistema
 const EcosystemSection = () => {
   const tools = [
     { title: "BANCA DE QUESTÕES", desc: "Mais de 2.000 questões comentadas com foco em raciocínio clínico.", icon: FileQuestion, image: "/images/ecosystem/banca-de-questoes.png" },
@@ -495,25 +476,22 @@ const EcosystemSection = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Auto-scroll Effect
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
     let animationFrameId: number;
     let accumulatedScroll = 0;
-    const speed = 0.5; // Velocidade do scroll (pixels por frame)
+    const speed = 0.5;
 
     const scroll = () => {
       if (!isPaused && !isDragging) {
         accumulatedScroll += speed;
-        // Só move se acumulou 1 pixel inteiro para suavidade
         if (accumulatedScroll >= 1) {
             scrollContainer.scrollLeft += 1;
             accumulatedScroll = 0;
         }
 
-        // Reset infinito: quando chegar na metade (fim da primeira lista), volta pro início
         if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
            scrollContainer.scrollLeft = 0;
         }
@@ -525,7 +503,6 @@ const EcosystemSection = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isPaused, isDragging]);
 
-  // Drag Handlers
   const onMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setIsPaused(true);
@@ -547,11 +524,10 @@ const EcosystemSection = () => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current!.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll-fast multiplier
+    const walk = (x - startX) * 2;
     scrollRef.current!.scrollLeft = scrollLeft - walk;
   };
 
-  // Touch Handlers para Mobile
   const onTouchStart = () => {
       setIsPaused(true);
       setIsDragging(true);
@@ -564,7 +540,6 @@ const EcosystemSection = () => {
 
   return (
     <section id="ecossistema" className="py-24 bg-[#02040a] relative overflow-hidden">
-        {/* Ambient background light */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-blue-900/10 blur-[150px] pointer-events-none rounded-full" />
         
         <div className="container mx-auto px-4 mb-20 relative z-10">
@@ -579,13 +554,10 @@ const EcosystemSection = () => {
             </div>
         </div>
 
-        {/* Infinite Carousel Container */}
         <div className="relative w-full">
-            {/* Gradient Masks */}
             <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
             <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
-            {/* Scrollable Track */}
             <div 
                 ref={scrollRef}
                 className="flex overflow-x-auto no-scrollbar py-10 cursor-grab active:cursor-grabbing select-none"
@@ -595,16 +567,14 @@ const EcosystemSection = () => {
                 onMouseMove={onMouseMove}
                 onTouchStart={onTouchStart}
                 onTouchEnd={onTouchEnd}
-                onMouseEnter={() => setIsPaused(true)} // Pausa ao passar o mouse
+                onMouseEnter={() => setIsPaused(true)}
             >
                 <div className="flex">
-                    {/* Renderizamos a lista DUAS vezes para o efeito infinito */}
                     {[...tools, ...tools].map((tool, index) => (
                         <div 
                             key={index} 
                             className="relative mx-4 w-[280px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl overflow-hidden group transition-transform hover:scale-105 duration-500 border border-white/10"
                         >
-                            {/* Background Image with Overlay */}
                             <div className="absolute inset-0 z-0">
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent z-10" />
                                 <img 
@@ -614,7 +584,6 @@ const EcosystemSection = () => {
                                 />
                             </div>
 
-                            {/* Content */}
                             <div className="relative z-20 h-full flex flex-col justify-end p-8 pointer-events-none">
                                 <div className="mb-4 w-12 h-12 rounded-xl bg-blue-600/20 backdrop-blur-md flex items-center justify-center border border-blue-500/30">
                                     <tool.icon className="w-6 h-6 text-blue-400" />
@@ -710,14 +679,11 @@ const FeaturesList = () => {
                 key={feature.id} 
                 className={cn(
                     "group relative p-8 rounded-[60px] transition-all duration-500 cursor-default shadow-xl hover:-translate-y-2 hover:shadow-2xl overflow-hidden",
-                    "border-[6px] border-slate-900/30", // Chassis/Mockup effect border
+                    "border-[6px] border-slate-900/30",
                     feature.blockColor
                 )}
             >
-              {/* Glossy / Glass effect layer */}
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none opacity-50" />
-              
-              {/* Inner depth shadow */}
               <div className="absolute inset-0 shadow-[inset_0_2px_10px_rgba(255,255,255,0.2),inset_0_-2px_10px_rgba(0,0,0,0.2)] rounded-[54px] pointer-events-none" />
 
               <span className="absolute top-6 right-8 text-4xl md:text-5xl font-black text-white/10 group-hover:text-white/20 transition-colors duration-500">
@@ -746,9 +712,7 @@ const FeaturesList = () => {
   );
 };
 
-// Nova Seção AppShowcase com Efeito Sticky Stack Ajustado
 const AppShowcaseSection = () => {
-    // Imagens que serão empilhadas
     const screens = [
         { title: "Banca de Questões", image: "/images/showcase-1.png" },
         { title: "Arena de Simulado", image: "/images/showcase-2.png" },
@@ -772,18 +736,17 @@ const AppShowcaseSection = () => {
                     </p>
                 </div>
 
-                <div className="relative"> {/* Removed flex-col items-center */}
+                <div className="relative"> 
                     {screens.map((screen, index) => (
                         <div
                             key={index}
                             className="sticky mx-auto max-w-5xl rounded-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10 bg-[#050811] overflow-hidden" 
                             style={{
-                                top: `${100 + index * 10}px`, // 10px de incremento para o efeito de borda fina
+                                top: `${100 + index * 10}px`,
                                 zIndex: index + 1,
-                                marginBottom: '50px', // Increased bottom margin
+                                marginBottom: '50px',
                             }}
                         >
-                            {/* Borda superior iluminada para destacar o empilhamento */}
                             <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                             
                              <img
@@ -794,7 +757,6 @@ const AppShowcaseSection = () => {
                         </div>
                     ))}
                     
-                    {/* Espaço extra no final para permitir o scroll do último card */}
                     <div className="h-[20vh]" />
                 </div>
             </div>
@@ -808,21 +770,21 @@ const ForWhomSection = () => {
       title: "Para o Estudante",
       description: "Cansado de apostilas desorganizadas? Use nossa trilha de estudos para construir uma base sólida e se destacar nos estágios e provas.",
       image: "/images/estudante.png",
-      blockColor: "bg-[#16a34a]", // Green
+      blockColor: "bg-[#16a34a]", 
       textColor: "text-white"
     },
     {
       title: "Para o Concurseiro",
       description: "Pare de estudar sem foco. Com nossa Área do Concurseiro e simulados estratégicos, você estuda o que realmente cai e acompanha sua evolução até a aprovação.",
       image: "/images/concurseiro.png",
-      blockColor: "bg-[#7c3aed]", // Purple
+      blockColor: "bg-[#7c3aed]", 
       textColor: "text-white"
     },
     {
       title: "Para o Profissional",
-      description: "Transforme a insegurança do plantão em confiança absoluta. Tenha na palma da mão tudo o que você precisa para se preparar para qualquer intercorrência: acesso rápido a guias de procedimentos, calculadoras, escalas e protocolos para tomar decisões rápidas e seguras na beira do leito.",
+      description: "Transforme a insegurança do plantão em confiança absoluta. Tenha na palma da mão tudo o que você precisa para se preparar para qualquer intercorrência.",
       image: "/images/profissional.png",
-      blockColor: "bg-[#facc15]", // Yellow
+      blockColor: "bg-[#facc15]", 
       textColor: "text-white"
     }
   ];
@@ -866,13 +828,11 @@ const ForWhomSection = () => {
 const RankingSection = () => {
   return (
     <section id="ranking" className="py-24 bg-[#050811] relative border-t border-white/5 overflow-hidden">
-      {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] pointer-events-none rounded-full" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             
-            {/* Text Content */}
             <div className="flex-1 text-center lg:text-left">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-[10px] font-bold uppercase tracking-wider text-yellow-500 mb-6">
                   <Trophy className="h-3 w-3" /> Gamificação
@@ -892,9 +852,7 @@ const RankingSection = () => {
                 <GlowButton text="Quero entrar na disputa" href="#planos" className="w-full sm:w-auto" />
             </div>
 
-            {/* Image - Adjusted sizing for better containment */}
             <div className="flex-1 w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[380px] mx-auto relative flex justify-center">
-                {/* Image within frame - focused on perfect alignment */}
                 <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float px-2 w-full">
                     <img 
                         src="/images/ranking-mockup.png" 
@@ -902,8 +860,6 @@ const RankingSection = () => {
                         className="w-full h-auto drop-shadow-2xl"
                     />
                 </div>
-                
-                {/* Decorative elements behind image */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-yellow-500/20 rounded-full blur-[80px] -z-10" />
             </div>
         </div>
@@ -912,54 +868,95 @@ const RankingSection = () => {
   );
 };
 
+// --- SESSÃO DE ASSINANTES (REFEITA NO ESTILO DIVSTUDIO) ---
 const SubscribersSection = () => {
-  const images = [
-    { src: "/images/4ae9a4eecea85a02ce979cb92d95c3a5.jpg", alt: "User" },
-    { src: "/images/1c983209bd2a44d3b605a9730616587b.jpg", alt: "User" },
-    { src: "/images/3e8576952e6c2d59022b5e6fb1b843b4.jpg", alt: "User" },
-    { src: "/images/woman-3439789_640.jpg", alt: "User" },
-    { src: "/images/0c5c33cb124e21371a3ff40662c9eb6e.jpg", alt: "User" },
+  const avatars = [
+    { src: "/0c5c33cb124e21371a3ff40662c9eb6e.jpg", alt: "User 1" },
+    { src: "/1c983209bd2a44d3b605a9730616587b.jpg", alt: "User 2" },
+    { src: "/3e8576952e6c2d59022b5e6fb1b843b4.jpg", alt: "User 3" },
+    { src: "/4ae9a4eecea85a02ce979cb92d95c3a5.jpg", alt: "User 4" },
+    { src: "/cacb9c3b9f2c36384fd936419175c6c2.jpg", alt: "User 5" },
+    { src: "/f063acfc298efd50d02f2fdb602f801f.jpg", alt: "User 6" },
+    { src: "/woman-3439789_640.jpg", alt: "User 7" },
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-black border-y border-white/10 overflow-hidden">
-      <div className="container mx-auto px-4">
-        {/* Container Centralizado */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
-          
-          {/* Avatar Group - Com sobreposição correta */}
-          <div className="flex items-center justify-center pl-4 md:pl-0">
-             {images.slice(0, 5).map((img, i) => (
-                <div 
-                  key={i} 
-                  className={cn(
-                    "relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-[3px] border-black overflow-hidden shadow-2xl transition-transform hover:scale-105 hover:z-20",
-                    i !== 0 ? "-ml-5" : "" // Margem negativa para sobreposição
-                  )}
-                  style={{ zIndex: 10 - i }} // Garante que o primeiro fique por cima ou use a ordem natural
-                >
-                  <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
-                </div>
-             ))}
-             
-             {/* Badge Amarelo Opcional (se quiser igual à referência) */}
-             {/* <div className="relative z-20 -ml-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full border-2 border-black shadow-lg">
-                + 2.000
-             </div> */}
-          </div>
-          
-          {/* Texto - Alinhado à direita no desktop, centro no mobile */}
-          <div className="text-center md:text-left max-w-lg">
-             <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
-               + de 2.000 Usuários estão <br className="hidden md:block"/>
-               usando o <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">EnfermagemPro</span>
-             </h2>
-             <div className="flex items-center justify-center md:justify-start gap-2 mt-3 text-yellow-500/80 font-bold uppercase tracking-wider text-[10px] sm:text-xs">
-                <CheckCircle2 className="w-4 h-4" /> Comunidade Profissional Ativa
-             </div>
-          </div>
+    <section className="py-24 bg-[#050811] relative overflow-hidden flex flex-col items-center border-t border-white/5">
+      {/* Background Central Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-blue-900/10 blur-[150px] pointer-events-none rounded-full" />
+      
+      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-12 relative z-10 max-w-6xl">
+        
+        {/* Avatars Container - DivStudio Style (Horizontal Stack) */}
+        <div className="relative flex items-center justify-center w-full md:w-auto h-24 md:h-32">
+           {avatars.map((avatar, index) => {
+              // Lógica de posicionamento: O do meio (index 3) é o maior e está na frente.
+              // Os outros vão ficando menores e mais atrás à medida que se afastam do centro.
+              const isCenter = index === 3;
+              const distance = Math.abs(index - 3); // 0 (centro), 1, 2, 3...
+              
+              // Z-Index: Quanto menor a distância, maior o z-index.
+              const zIndex = 50 - (distance * 10);
+              
+              // Scale: Quanto maior a distância, menor a escala.
+              const scale = isCenter ? 1.2 : 1 - (distance * 0.15);
+              
+              // Opacity: Quanto maior a distância, menor a opacidade.
+              const opacity = 1 - (distance * 0.15);
+              
+              // TranslateX: Afasta do centro.
+              // Baseado no index: < 3 (esquerda), > 3 (direita)
+              // Ajustado para responsividade (menor espaçamento no mobile)
+              const translateXMobile = (index - 3) * 35; // px
+              const translateXDesktop = (index - 3) * 55; // px
 
+              return (
+                <div 
+                  key={index}
+                  className="absolute transition-all duration-500 ease-out hover:scale-[1.3] hover:z-[60] hover:opacity-100 cursor-pointer"
+                  style={{
+                    zIndex: zIndex,
+                    transform: `translateX(${window.innerWidth < 768 ? translateXMobile : translateXDesktop}px) scale(${scale})`,
+                    opacity: opacity
+                  }}
+                >
+                  <div className={cn(
+                    "w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] border-[#050811] overflow-hidden shadow-2xl bg-slate-800",
+                    isCenter && "border-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+                  )}>
+                    <img 
+                      src={avatar.src} 
+                      alt={avatar.alt} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              );
+           })}
         </div>
+
+        {/* Text Content - Right side on Desktop, Below on Mobile */}
+        <div className="text-center md:text-left space-y-4 max-w-lg">
+          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-tight">
+            Junte-se a + de <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+                2.000 assinantes
+            </span>
+          </h2>
+          <p className="text-lg font-light text-slate-400">
+             Que já estão dominando a Enfermagem com o método mais completo do mercado.
+          </p>
+          <div className="flex items-center justify-center md:justify-start gap-2 pt-2">
+             <div className="flex -space-x-2">
+                {[1,2,3,4,5].map(i => (
+                   <Star key={i} className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+                ))}
+             </div>
+             <span className="text-sm font-bold text-white ml-2">4.9/5</span>
+             <span className="text-sm text-slate-500">(180+ avaliações)</span>
+          </div>
+        </div>
+
       </div>
     </section>
   );
@@ -991,14 +988,11 @@ const TestimonialsSection = () => {
          </div>
       </div>
 
-      {/* Infinite Carousel */}
       <div className="relative w-full overflow-hidden">
-          {/* Gradient Masks for fade effect */}
           <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#020617] to-transparent z-20 pointer-events-none" />
           <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#020617] to-transparent z-20 pointer-events-none" />
 
           <div className="flex w-max animate-marquee-slow hover:[animation-play-state:paused]">
-             {/* Duplicate the array to create seamless loop */}
              {[...testimonials, ...testimonials].map((src, index) => (
                 <div key={index} className="mx-4 w-[280px] sm:w-[350px] flex-shrink-0">
                    <img 
@@ -1021,20 +1015,16 @@ const TestimonialsSection = () => {
 const GuaranteeSection = () => {
   return (
     <section className="py-24 bg-[#030014] relative overflow-hidden border-t border-white/5">
-        {/* Glow effect */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 blur-[120px] pointer-events-none rounded-full" />
         
         <div className="container mx-auto px-4 relative z-10 text-center flex flex-col items-center">
             
-            {/* Animated Seal Mockup - Perfeitamente alinhado */}
             <div className="relative w-64 h-64 sm:w-80 sm:h-80 mb-12 flex items-center justify-center">
-                {/* Inner static seal (garantiav1) - Centralizado */}
                 <img 
                     src="/images/no-code-pages-garantiav1.webp" 
                     alt="7 dias de garantia" 
                     className="absolute w-[68%] h-[68%] object-contain z-10"
                 />
-                {/* Outer rotating border (garantiav2) - Em volta */}
                 <img 
                     src="/images/no-code-pages-garantiav2.png.webp" 
                     alt="" 
@@ -1051,7 +1041,6 @@ const GuaranteeSection = () => {
                 </p>
             </div>
 
-            {/* NEW GLOWBOX BUTTON */}
             <GlowButton text="Quero testar sem riscos" href="#planos" />
 
             <div className="mt-8 flex items-center justify-center gap-2 text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">
@@ -1065,7 +1054,6 @@ const GuaranteeSection = () => {
 const PricingSection = () => {
   return (
     <section id="planos" className="py-24 relative overflow-hidden bg-[#020617]">
-       {/* Background glow effects */}
        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-blue-900/5 blur-[120px] pointer-events-none rounded-full" />
 
        <div className="container mx-auto px-4 relative z-10">
@@ -1080,15 +1068,13 @@ const PricingSection = () => {
 
           <div className="flex flex-col md:flex-row justify-center gap-8 max-w-5xl mx-auto">
              
-             {/* PLANO ANUAL (Highlight) - Enhanced Glow & Scale */}
+             {/* PLANO ANUAL */}
              <div className="relative w-full md:w-[420px] group transform transition-all duration-500 hover:scale-[1.02] z-20">
-                {/* Badge */}
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
                    <Badge className="bg-[#22c55e] text-black hover:bg-[#22c55e] border-none font-bold px-4 py-1 uppercase text-xs flex items-center gap-1 shadow-lg shadow-green-900/50 animate-pulse-subtle">
                       🔥 Mais Popular
                    </Badge>
                 </div>
-                {/* Intense Glow */}
                 <div className="absolute inset-0 bg-[#22c55e]/20 blur-2xl rounded-[2rem] group-hover:bg-[#22c55e]/40 transition-all duration-500" />
                 
                 <Card className="relative h-full bg-[#0a0f1c] border-2 border-[#22c55e] rounded-[2rem] p-8 flex flex-col items-center text-center shadow-[0_0_50px_-10px_rgba(34,197,94,0.4)] group-hover:shadow-[0_0_80px_-10px_rgba(34,197,94,0.6)] overflow-hidden transition-all duration-500">
@@ -1137,7 +1123,7 @@ const PricingSection = () => {
                 </Card>
              </div>
 
-             {/* PLANO MENSAL - Subtler hover */}
+             {/* PLANO MENSAL */}
              <div className="w-full md:w-[380px] mt-8 md:mt-4 group hover:-translate-y-1 transition-all duration-300">
                 <Card className="h-full bg-[#0f121e] border border-white/10 hover:border-white/30 rounded-[2rem] p-8 flex flex-col items-center text-center shadow-xl transition-all relative overflow-hidden">
                    <CardHeader className="p-0 mb-6 w-full">
@@ -1174,7 +1160,6 @@ const PricingSection = () => {
 
           </div>
 
-          {/* Payment Info Footer (New) */}
           <div className="mt-16 flex flex-wrap justify-center items-center gap-x-6 gap-y-4 text-slate-400 text-sm md:text-base font-medium animate-in fade-in duration-1000">
             <div className="flex items-center gap-2">
               <span className="text-amber-500">🔒</span>
@@ -1202,7 +1187,6 @@ const CreatorSection = () => {
             <div className="container mx-auto px-4 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 max-w-6xl mx-auto">
                     
-                    {/* Texto à Esquerda - Melhor estruturado */}
                     <div className="flex-1 text-left space-y-8 animate-in fade-in slide-in-from-left-8 duration-1000">
                         <div>
                             <p className="text-indigo-400 text-sm md:text-base font-medium tracking-[0.3em] uppercase mb-4">
@@ -1229,15 +1213,11 @@ const CreatorSection = () => {
                         </div>
                     </div>
 
-                    {/* Foto à Direita com Efeito de Fundo Harmonizado e Máscara de Transparência */}
                     <div className="flex-1 w-full max-w-[550px] relative animate-in fade-in zoom-in duration-1000 delay-300 flex justify-center">
-                        {/* Background Effects */}
                         <div className="absolute inset-0 bg-blue-600/10 blur-[100px] rounded-full -z-10" />
                         
-                        {/* Geometric decoration behind */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] bg-gradient-to-tr from-blue-600/5 to-indigo-600/5 border border-white/5 rounded-full -z-10 backdrop-blur-sm" />
                         
-                        {/* Main Image with fading mask to hide bottom cuts */}
                         <div className="relative z-10 w-full overflow-hidden" style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}>
                             <img 
                                 src="/images/william-leite-full.png" 
@@ -1251,6 +1231,213 @@ const CreatorSection = () => {
             </div>
         </section>
     );
+};
+
+const FAQSection = () => {
+  const faqs = [
+    {
+      q: "A EnfermagemPro é indicada para quem?",
+      a: "Para estudantes de enfermagem que buscam uma base sólida, técnicos e enfermeiros que desejam aprovação em concursos públicos ou profissionais que buscam mais segurança e consulta rápida na prática clínica do dia a dia.",
+      color: "border-blue-500/30",
+      bg: "data-[state=open]:bg-blue-500/10",
+      accent: "text-blue-400"
+    },
+    {
+      q: "A plataforma é voltada apenas para concursos?",
+      a: "Não. Embora tenhamos uma estratégia fortíssima para concursos, a EnfermagemPro também é uma ferramenta de suporte para o plantão, com guias de procedimentos, calculadoras de gotejamento, protocolos de emergência e escalas clínicas para consulta à beira-leito.",
+      color: "border-emerald-500/30",
+      bg: "data-[state=open]:bg-emerald-500/10",
+      accent: "text-emerald-400"
+    },
+    {
+      q: "Consigo baixar a plataforma e usar como aplicativo?",
+      a: "Sim! Nossa plataforma utiliza a tecnologia PWA (Progressive Web App). Você pode adicioná-la à tela inicial do seu celular (Android ou iPhone) e acessá-la como um aplicativo nativo, sem precisar baixar nada nas lojas e sem ocupar espaço no seu dispositivo.",
+      color: "border-violet-500/30",
+      bg: "data-[state=open]:bg-violet-500/10",
+      accent: "text-violet-400"
+    },
+    {
+      q: "Como funcionam os simulados?",
+      a: "Você pode gerar simulados personalizados escolhendo a banca examinadora, a disciplina e o tempo de prova. Ao final, o sistema gera um relatório de desempenho mostrando seus pontos fortes e onde você precisa focar mais o estudo.",
+      color: "border-orange-500/30",
+      bg: "data-[state=open]:bg-orange-500/10",
+      accent: "text-orange-400"
+    },
+    {
+      q: "As questões são comentadas?",
+      a: "Sim. A grande maioria das nossas mais de 2.000 questões possui comentários detalhados que explicam o porquê da alternativa correta e dão dicas extras sobre o assunto cobrado.",
+      color: "border-rose-500/30",
+      bg: "data-[state=open]:bg-rose-500/10",
+      accent: "text-rose-400"
+    },
+    {
+      q: "Posso estudar pelo celular?",
+      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiênia é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
+      color: "border-cyan-500/30",
+      bg: "data-[state=open]:bg-cyan-500/10",
+      accent: "text-cyan-400"
+    },
+    {
+      q: "O acesso é imediato após a compra?",
+      a: "Sim. Para pagamentos via Pix ou Cartão de Crédito, o acesso é liberado instantaneamente. Você receberá os dados de login no e-mail cadastrado logo após a confirmação do pagamento.",
+      color: "border-amber-500/30",
+      bg: "data-[state=open]:bg-amber-500/10",
+      accent: "text-amber-400"
+    },
+    {
+      q: "Posso cancelar se não gostar?",
+      a: "Sim, sem problemas. Você tem 7 dias de garantia incondicional. Se por qualquer motivo sentir que a plataforma não é para você, basta solicitar o reembolso dentro desse prazo e devolvemos 100% do seu investimento.",
+      color: "border-indigo-500/30",
+      bg: "data-[state=open]:bg-indigo-500/10",
+      accent: "text-indigo-400"
+    },
+    {
+      q: "Preciso ter muito tempo disponível para estudar?",
+      a: "Não. O método EnfermagemPro foi criado justamente para quem tem pouco tempo. Com flashcards de repetição espaçada e sessões rápidas de questões, você consegue ter uma evolução significativa estudando apenas 20 a 30 minutos por dia.",
+      color: "border-pink-500/30",
+      bg: "data-[state=open]:bg-pink-500/10",
+      accent: "text-pink-400"
+    },
+    {
+      q: "O conteúdo é atualizado?",
+      a: "Constantemente. Nossa equipe monitora e atualiza o calendário vacinal do PNI, diretrizes da AHA para RCP, novas leis do exercício profissional, portarias do SUS e inclui semanalmente novas questões de concursos recentes.",
+      color: "border-teal-500/30",
+      bg: "data-[state=open]:bg-teal-500/10",
+      accent: "text-teal-400"
+    }
+  ];
+
+  return (
+    <section id="faq" className="py-24 bg-[#02040a] relative border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold uppercase tracking-wider text-blue-400 mb-6">
+              <HelpCircle className="h-3 w-3" /> Central de Dúvidas
+           </div>
+           <h2 className="text-3xl md:text-5xl font-black text-white mb-6">Perguntas Frequentes</h2>
+           <p className="text-slate-400 text-lg">Tudo o que você precisa saber para começar agora mesmo.</p>
+        </div>
+
+        <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="w-full space-y-4">
+                {faqs.map((faq, index) => (
+                    <AccordionItem 
+                        key={index} 
+                        value={`item-${index}`}
+                        className={cn(
+                          "border rounded-2xl bg-white/5 overflow-hidden px-4 sm:px-6 transition-all duration-300",
+                          faq.color,
+                          faq.bg
+                        )}
+                    >
+                        <AccordionTrigger className="hover:no-underline py-5 text-left text-base sm:text-lg font-bold text-white group">
+                           <span className={cn("group-hover:opacity-80 transition-all pr-4", faq.accent)}>{faq.q}</span>
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-6 text-slate-400 text-sm sm:text-base leading-relaxed animate-in fade-in slide-in-from-top-1 duration-300">
+                           {faq.a}
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Hero = () => {
+  return (
+    <>
+    <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
+      {/* Background Image Layer - Updated opacity and overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/images/background-hero.png" 
+          alt="Enfermagem Background" 
+          className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
+        />
+        {/* Dark overlay with gradient to ensure text readability while keeping image visible */}
+        <div className="absolute inset-0 bg-[#02040a]/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#02040a]/80 via-transparent to-[#02040a]" />
+      </div>
+
+      {/* Vibrant Gradient Blobs (Glow effects) */}
+      <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen z-0 animate-pulse-subtle" />
+      <div className="absolute bottom-[10%] right-[-5%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen z-0" />
+      <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen z-0" />
+      
+      {/* Partículas Leves */}
+      <ParticlesBackground />
+
+      <div className="container mx-auto px-4 md:px-6 relative z-20">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            
+            {/* TEXT COLUMN (Left) */}
+            <div className="flex-1 text-left max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                {/* Badge Removido */}
+                <div className="mb-6"></div>
+
+                {/* Title */}
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
+                    Estude com foco. <br/>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
+                        Organização e Estratégia.
+                    </span>
+                </h1>
+
+                {/* Subtitle */}
+                <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
+                    O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
+                    <br/><br/>
+                    <span className="text-slate-100 font-medium">Domine a Enfermagem com o método completo que + de 2.000 profissionais estão usando para estudar com foco e resultado</span>
+                </p>
+
+                {/* CTA Area */}
+                <div className="flex flex-col sm:flex-row items-center gap-6">
+                    <GlowButton text="Quero estudar com organização" href="#planos" className="w-full sm:w-auto" />
+                    
+                    {/* Price Info */}
+                    <div className="flex flex-col items-start min-w-fit">
+                         <span className="text-xs text-slate-400 line-through font-medium">DE R$ 97,00</span>
+                         <div className="flex items-baseline gap-1">
+                            <span className="text-sm text-slate-300">POR</span>
+                            <span className="text-xl font-bold text-white">R$ 29,90</span>
+                         </div>
+                    </div>
+                </div>
+                
+                {/* Progress Bar */}
+                <div className="mt-8 max-w-sm">
+                   <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden backdrop-blur-sm">
+                      <div className="bg-gradient-to-r from-blue-500 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
+                   </div>
+                   <p className="text-xs text-slate-400 mt-2 font-medium flex justify-between">
+                      <span>85% das vagas preenchidas</span>
+                      <span className="text-white">Corra!</span>
+                   </p>
+                </div>
+            </div>
+
+            {/* IMAGE COLUMN (Right) - Com animação de flutuação */}
+            <div className="flex-1 relative w-full flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-200">
+                <div className="relative z-10 w-full max-w-[800px] animate-float">
+                    <img 
+                        src="/images/mockup-hero.png" 
+                        alt="Plataforma Enfermagem Pro em dispositivos" 
+                        className="w-full h-auto drop-shadow-2xl"
+                    />
+                </div>
+                
+                {/* Ambient Glow behind mockup */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-600/20 blur-[100px] -z-10 rounded-full mix-blend-screen" />
+            </div>
+        </div>
+      </div>
+    </section>
+    
+    <InfiniteMarquee />
+    </>
+  );
 };
 
 export default function LandingPage() {
