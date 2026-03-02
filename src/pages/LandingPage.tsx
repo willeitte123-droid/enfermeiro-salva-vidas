@@ -446,7 +446,7 @@ const EcosystemSection = () => {
     { title: "GUIA DE ECG", desc: "Interpretação simplificada para decisões seguras.", icon: BookHeart, image: "/images/ecosystem/ecg.png" },
     { title: "ANOTAÇÕES E EVOLUÇÃO", desc: "Estrutura correta de registros clínicos.", icon: BookText, image: "/images/ecosystem/anotacao-e-evolucao.png" },
     { title: "TERMOS TÉCNICOS", desc: "Padronização da linguagem profissional.", icon: MessageSquare, image: "/images/ecosystem/termos-tecnicos.png" },
-    { title: "GOTEJAMENTO", desc: "Cálculo rápido e preciso para administração segura.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
+    { title: "GOTEJAMENTO", desc: "CÁLCULO RÁPIDO E PRECISO PARA ADMINISTRAÇÃO SEGURA.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
     { title: "CÁLCULO DE DOSES", desc: "Ferramenta prática para reduzir risco de erro.", icon: FlaskConical, image: "/images/ecosystem/calculo-de-doses.png" },
     { title: "DUM E IMC", desc: "CÁLCULOS ESSENCIAIS PARA ACOMPANHAMENTO CLÍNICO.", icon: Calculator, image: "/images/ecosystem/dum-e-imc.png" },
     { title: "ESCALAS CLÍNICAS", desc: "Consultas rápidas para avaliação estruturada.", icon: Activity, image: "/images/ecosystem/escalas-clinicas.png" },
@@ -574,11 +574,11 @@ const EcosystemSection = () => {
                         >
                             {/* Background Image with Overlay */}
                             <div className="absolute inset-0 z-0">
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] to-transparent z-10" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent z-10" />
                                 <img 
                                     src={tool.image} 
                                     alt={tool.title} 
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"
+                                    className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700 pointer-events-none"
                                 />
                             </div>
 
@@ -863,8 +863,8 @@ const RankingSection = () => {
             </div>
 
             {/* Image */}
-            <div className="flex-1 w-full max-w-[450px] lg:max-w-[500px] mx-auto relative flex justify-center lg:justify-end">
-                {/* Image within frame - adjusted max-w and added padding for better container fitting */}
+            <div className="flex-1 w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[420px] mx-auto relative flex justify-center">
+                {/* No container styling for frame, assuming image has device frame */}
                 <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float px-4 sm:px-0 w-full">
                     <img 
                         src="/images/ranking-mockup.png" 
