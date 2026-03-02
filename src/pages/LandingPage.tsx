@@ -875,6 +875,16 @@ const AppShowcaseSection = () => {
                         </div>
                     ))}
                     
+                    {/* Final CTA Area in Showcase */}
+                    <div className="relative z-[100] mt-24 text-center space-y-8 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+                        <h3 className="text-4xl md:text-6xl font-black text-white italic tracking-tighter drop-shadow-2xl">
+                           E muuuuito mais..
+                        </h3>
+                        <div className="flex justify-center">
+                            <GlowButton text="QUERO O ACESSO COMPLETO" href="#planos" className="w-full max-w-md" />
+                        </div>
+                    </div>
+
                     <div className="h-[20vh]" />
                 </div>
             </div>
@@ -986,7 +996,7 @@ const RankingSection = () => {
   );
 };
 
-// --- SESSÃO DE ASSINANTES (REFEITA: IGUAL AO MODELO 50/50 COM FOTOS IGUAIS) ---
+// --- SESSÃO DE ASSINANTES ---
 const SubscribersSection = () => {
   const [activeJumpIndex, setActiveJumpIndex] = useState<number | null>(null);
 
@@ -1009,7 +1019,7 @@ const SubscribersSection = () => {
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="flex flex-col md:flex-row items-center gap-12 md:gap-0">
           
-          {/* Lado Esquerdo: Imagens (50%) - AJUSTADO O ESPAÇAMENTO PARA NÃO SOBREPOR O TEXTO */}
+          {/* Lado Esquerdo: Imagens (50%) */}
           <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-16 lg:pr-24 relative h-[140px] md:h-[180px] items-center">
              <div className="relative flex items-center justify-center">
                 {images.map((src, index) => {
@@ -1057,7 +1067,7 @@ const SubscribersSection = () => {
              </div>
           </div>
           
-          {/* Lado Direito: Texto (50%) - AJUSTADO O ESPAÇAMENTO */}
+          {/* Lado Direito: Texto (50%) */}
           <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-8">
              <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4">
                Junte-se a + de <br/>
@@ -1120,7 +1130,7 @@ const TestimonialsSection = () => {
 
           <div className="flex w-max animate-marquee-slow hover:[animation-play-state:paused]">
              {[...testimonials, ...testimonials].map((src, index) => (
-                <div key={index} className="mx-4 w-[280px] sm:w-[350px] flex-shrink-0">
+                <div key={index} className="mx-4 w-[280px] sm:text-[350px] flex-shrink-0">
                    <img 
                       src={src} 
                       alt={`Depoimento ${index + 1}`} 
