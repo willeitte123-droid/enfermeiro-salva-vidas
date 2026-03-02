@@ -248,7 +248,7 @@ const Hero = () => {
                 {/* Progress Bar */}
                 <div className="mt-8 max-w-sm">
                    <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden backdrop-blur-sm">
-                      <div className="bg-gradient-to-r from-blue-500 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
+                      <div className="bg-gradient-to-r from-blue-50 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
                    </div>
                    <p className="text-xs text-slate-400 mt-2 font-medium flex justify-between">
                       <span>85% das vagas preenchidas</span>
@@ -947,7 +947,7 @@ const ForWhomSection = () => {
 const RankingSection = () => {
   return (
     <section id="ranking" className="py-24 bg-[#050811] relative border-t border-white/5 overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/05 blur-[120px] pointer-events-none rounded-full" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/20 blur-[120px] pointer-events-none rounded-full" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -979,7 +979,7 @@ const RankingSection = () => {
                         className="w-full h-auto drop-shadow-xl"
                     />
                 </div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-yellow-500/10 rounded-full blur-[100px] -z-10" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-yellow-500/20 rounded-full blur-[80px] -z-10" />
             </div>
         </div>
       </div>
@@ -1324,7 +1324,7 @@ const CreatorSection = () => {
                                 A partir da sua vivência acadêmica e profissional, desenvolveu uma <strong className="text-slate-200">tecnologia exclusiva voltada para concursos públicos e formação profissional</strong>, ajudando formandos e recém-formados a conquistarem aprovação e evolução na carreira.
                             </p>
                             <p>
-                                Nos últimos anos, William tem se dedicado integralmente ao aperfeiçoamento da metodologia da EnfermagemPro, unindo <strong className="text-slate-200">conteúdo atualizado, prática direcionada e uma experiência de estudo simplificada.</strong>
+                                Nos últimos anos, William tem se dedicado integralmente ao aperfeiçoamento da metodologia da EnfermagemPro, unindo <strong className="text-slate-200">conteúdo atualizado, prática direcionada e uma experiênia de estudo simplificada.</strong>
                             </p>
                             <p>
                                 Hoje, <strong className="text-slate-200">milhares de alunos e assinantes em todo o Brasil</strong> já utilizam a plataforma e relatam avanços reais na formação acadêmica e no crescimento profissional.
