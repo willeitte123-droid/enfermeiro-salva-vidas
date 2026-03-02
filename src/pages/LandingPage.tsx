@@ -446,7 +446,7 @@ const EcosystemSection = () => {
     { title: "GUIA DE ECG", desc: "Interpretação simplificada para decisões seguras.", icon: BookHeart, image: "/images/ecosystem/ecg.png" },
     { title: "ANOTAÇÕES E EVOLUÇÃO", desc: "Estrutura correta de registros clínicos.", icon: BookText, image: "/images/ecosystem/anotacao-e-evolucao.png" },
     { title: "TERMOS TÉCNICOS", desc: "Padronização da linguagem profissional.", icon: MessageSquare, image: "/images/ecosystem/termos-tecnicos.png" },
-    { title: "GOTEJAMENTO", desc: "CÁLCULO RÁPIDO E PRECISO PARA ADMINISTRAÇÃO SEGURA.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
+    { title: "GOTEJAMENTO", desc: "Cálculo rápido e preciso para administração segura.", icon: Droplet, image: "/images/ecosystem/gotejamento.png" },
     { title: "CÁLCULO DE DOSES", desc: "Ferramenta prática para reduzir risco de erro.", icon: FlaskConical, image: "/images/ecosystem/calculo-de-doses.png" },
     { title: "DUM E IMC", desc: "CÁLCULOS ESSENCIAIS PARA ACOMPANHAMENTO CLÍNICO.", icon: Calculator, image: "/images/ecosystem/dum-e-imc.png" },
     { title: "ESCALAS CLÍNICAS", desc: "Consultas rápidas para avaliação estruturada.", icon: Activity, image: "/images/ecosystem/escalas-clinicas.png" },
@@ -863,9 +863,9 @@ const RankingSection = () => {
             </div>
 
             {/* Image */}
-            <div className="flex-1 w-full max-w-[600px] relative flex justify-center">
-                {/* No container styling for frame, assuming image has device frame */}
-                <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float">
+            <div className="flex-1 w-full max-w-[450px] lg:max-w-[500px] mx-auto relative flex justify-center lg:justify-end">
+                {/* Image within frame - adjusted max-w and added padding for better container fitting */}
+                <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float px-4 sm:px-0 w-full">
                     <img 
                         src="/images/ranking-mockup.png" 
                         alt="Ranking EnfermagemPro" 
@@ -1349,7 +1349,7 @@ const FAQSection = () => {
     },
     {
       q: "Posso estudar pelo celular?",
-      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiência é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
+      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiênia é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
       color: "border-cyan-500/30",
       bg: "data-[state=open]:bg-cyan-500/10",
       accent: "text-cyan-400"
