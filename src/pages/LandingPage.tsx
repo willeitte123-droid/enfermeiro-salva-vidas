@@ -139,7 +139,7 @@ const InfiniteMarquee = () => {
       <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
       
       {/* Container que move */}
-      <div className="flex animate-marquee whitespace-nowrap items-center w-max">
+      <div className="flex animate-marquee whitespace-nowrap items-center w-max will-change-transform">
         {[...words, ...words].map((word, i) => (
           <div key={i} className="flex items-center mx-10">
             <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
@@ -506,7 +506,7 @@ const VideoSection = () => {
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+        <div className="max-w-5_xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
           <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
              <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
