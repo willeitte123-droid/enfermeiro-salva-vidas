@@ -550,7 +550,7 @@ const EcosystemSection = () => {
     { title: "MEU DESEMPENHO", desc: "Acompanhe sua evolução com dados claros e mensuráveis.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
     { title: "MEDICAMENTOS", desc: "Revisão prática de fármacos essenciais para o plantão.", icon: Syringe, image: "/images/ecosystem/medicamentos.png" },
     { title: "EMERGÊNCIAS", desc: "Protocolos objetivos para decisões rápidas.", icon: Siren, image: "/images/ecosystem/emergencias.png" },
-    { title: "CURATIVOS", desc: "Tipos de leões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
+    { title: "CURATIVOS", desc: "Tipos de lesões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
     { title: "PROCEDIMENTOS", desc: "Passo a passo técnico com foco em segurança.", icon: ClipboardList, image: "/images/ecosystem/procedimentos.png" },
     { title: "SEMIOLOGIA", desc: "Avaliação clínica organizada e estruturada.", icon: FileSearch, image: "/images/ecosystem/semiologia.png" },
     { title: "SEMIOTÉCNICA", desc: "Técnicas fundamentais da enfermagem.", icon: HandHeart, image: "/images/ecosystem/semiotecnica.png" },
@@ -661,8 +661,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -983,18 +983,18 @@ const SubscribersSection = () => {
   const images = [
     "/images/user-1.jpg", 
     "/images/user-2.jpg", 
+    "/images/user-5.jpg", // Central (sub-5)
     "/images/user-3.jpg", 
-    "/images/user-5.jpg", 
     "/images/user-6.jpg", 
   ];
 
   return (
-    <section className="py-20 bg-black relative overflow-hidden border-y border-white/5">
+    <section className="py-24 bg-black relative overflow-hidden border-y border-white/5">
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-0">
+        <div className="flex flex-col md:flex-row items-center gap-16 md:gap-24">
           
           {/* Lado Esquerdo: Imagens (50%) */}
-          <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-16 relative h-[140px] md:h-[180px] items-center">
+          <div className="w-full md:w-1/2 flex justify-center relative h-[160px] md:h-[200px] items-center">
              {/* Container relativo para posicionamento absoluto das imagens */}
              <div className="relative flex items-center justify-center">
                 {images.map((src, index) => {
@@ -1004,11 +1004,11 @@ const SubscribersSection = () => {
                    
                    // Ajustes visuais conforme modelo
                    const zIndex = 50 - (distance * 10);
-                   const scale = isCenter ? 1.4 : 1 - (distance * 0.15); // Aumentei o scale do central
-                   const opacity = 1 - (distance * 0.2); // Um pouco mais transparente nas pontas
+                   const scale = isCenter ? 1.4 : 1 - (distance * 0.15);
+                   const opacity = 1 - (distance * 0.2);
                    
                    // Translação mais apertada para sobreposição
-                   const translateX = (index - 2) * 55; // Pixels de deslocamento horizontal aumentado para melhor visualização
+                   const translateX = (index - 2) * 55;
 
                    // Borda especial para o central (azul brilhante)
                    const borderClass = isCenter 
@@ -1042,18 +1042,18 @@ const SubscribersSection = () => {
           </div>
           
           {/* Lado Direito: Texto (50%) */}
-          <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-8">
-             <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4">
+          <div className="w-full md:w-1/2 text-center md:text-left">
+             <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-6">
                Junte-se a + de <br/>
                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
                   2.000 assinantes
                </span>
              </h2>
-             <p className="text-lg text-slate-400 font-light leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
+             <p className="text-lg text-slate-400 font-light leading-relaxed mb-8 max-w-md mx-auto md:mx-0">
                 Que já estão dominando a Enfermagem com o método mais completo do mercado.
              </p>
              
-             <div className="flex items-center justify-center md:justify-start gap-3">
+             <div className="flex items-center justify-center md:justify-start gap-4">
                 <div className="flex -space-x-1">
                    {[1,2,3,4,5].map(i => (
                       <Star key={i} className="w-6 h-6 text-yellow-500 fill-yellow-500" />
