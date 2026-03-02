@@ -1217,7 +1217,7 @@ const CreatorSection = () => {
                         </div>
                     </div>
 
-                    {/* Foto à Direita com Efeito de Fundo Harmonizado */}
+                    {/* Foto à Direita com Efeito de Fundo Harmonizado e Máscara de Transparência */}
                     <div className="flex-1 w-full max-w-[500px] relative animate-in fade-in zoom-in duration-1000 delay-300 flex justify-center">
                         {/* Background Effects */}
                         <div className="absolute inset-0 bg-blue-600/10 blur-[100px] rounded-full -z-10" />
@@ -1225,12 +1225,14 @@ const CreatorSection = () => {
                         {/* Geometric decoration behind */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] bg-gradient-to-tr from-blue-600/5 to-indigo-600/5 border border-white/5 rounded-full -z-10 backdrop-blur-sm" />
                         
-                        {/* Main Image */}
-                        <img 
-                            src="/images/william-leite-full.png" 
-                            alt="William Leite - Fundador EnfermagemPro" 
-                            className="w-full h-auto relative z-10 drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-                        />
+                        {/* Main Image with fading mask to hide bottom cuts */}
+                        <div className="relative z-10 w-full overflow-hidden" style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}>
+                            <img 
+                                src="/images/william-leite-full.png" 
+                                alt="William Leite - Fundador EnfermagemPro" 
+                                className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform translate-y-4"
+                            />
+                        </div>
                     </div>
 
                 </div>
