@@ -669,8 +669,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -928,7 +928,7 @@ const ForWhomSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {persona.map((persona) => (
+          {personas.map((persona) => (
             <div key={persona.title} className="relative flex flex-col group pt-[130px]">
               <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center shadow-2xl", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
