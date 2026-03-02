@@ -183,8 +183,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
           <div className="h-6 sm:h-8 w-full overflow-hidden relative opacity-70">
              {hr > 0 && (
                <svg viewBox="0 0 100 20" className="w-full h-full stroke-green-500 fill-none stroke-[2px]">
-                 <path d="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L50,10 L52,5 L54,15 L56,0 L58,20 L60,10 L100,10">
-                   <animate attributeName="d" dur="1s" repeatCount="indefinite" values="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L80,10" />
+                 <path d="M0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L50,10 L52,5 L54,15 L56,0 L58,20 L60,10 L100,10; M-20,10 L-10,10 L-8,5 L-6,15 L-4,0 L-2,20 L0,10 L10,10 L12,5 L14,15 L16,0 L18,20 L20,10 L30,10 L32,5 L34,15 L36,0 L38,20 L40,10 L80,10" />
                  </path>
                </svg>
              )}
@@ -808,7 +807,7 @@ const ForWhomSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {personas.map((persona) => (
+          {persona.map((persona) => (
             <div key={persona.title} className="relative flex flex-col group pt-[130px]">
               <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center shadow-2xl", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
@@ -1008,112 +1007,50 @@ const TestimonialsSection = () => {
 
 const GuaranteeSection = () => {
   return (
-    <section className="py-24 bg-[#030014] relative overflow-hidden">
+    <section className="py-24 bg-[#030014] relative overflow-hidden border-t border-white/5">
         {/* Glow effect */}
-        <div className="absolute top-1/2 left-[-10%] w-[500px] h-[500px] bg-blue-600/5 blur-[120px] pointer-events-none rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 blur-[120px] pointer-events-none rounded-full" />
         
-        <div className="container mx-auto px-4 relative z-10">
-            <div className="flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto">
-                
-                {/* Main Guarantee Card */}
-                <div className="flex-[1.5]">
-                    <div className="h-full rounded-[2.5rem] p-8 sm:p-12 bg-gradient-to-br from-slate-900/80 to-slate-950 border border-white/10 shadow-2xl relative overflow-hidden group">
-                        {/* Background subtle light */}
-                        <div className="absolute -top-24 -left-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]" />
-                        
-                        <div className="relative z-10">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-slate-300 mb-8">
-                                <Shield className="w-4 h-4 text-emerald-400" /> Garantia sem risco
-                            </div>
-                            
-                            <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
-                                {/* Seal Mockup */}
-                                <div className="relative w-48 h-48 sm:w-64 sm:h-64 shrink-0">
-                                    {/* Inner static seal */}
-                                    <img 
-                                        src="/images/no-code-pages-garantiav1.webp" 
-                                        alt="7 dias de garantia" 
-                                        className="absolute inset-0 w-full h-full object-contain z-10"
-                                    />
-                                    {/* Outer rotating border - larger than inner */}
-                                    <img 
-                                        src="/images/no-code-pages-garantiav2.png.webp" 
-                                        alt="" 
-                                        className="absolute inset-[-15%] w-[130%] h-[130%] object-contain z-20 animate-spin-slow"
-                                    />
-                                </div>
+        <div className="container mx-auto px-4 relative z-10 text-center flex flex-col items-center">
+            
+            {/* Animated Seal Mockup - Perfeitamente alinhado */}
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 mb-12 flex items-center justify-center">
+                {/* Inner static seal (garantiav1) - Centralizado */}
+                <img 
+                    src="/images/no-code-pages-garantiav1.webp" 
+                    alt="7 dias de garantia" 
+                    className="absolute w-[68%] h-[68%] object-contain z-10"
+                />
+                {/* Outer rotating border (garantiav2) - Em volta */}
+                <img 
+                    src="/images/no-code-pages-garantiav2.png.webp" 
+                    alt="" 
+                    className="absolute w-full h-full object-contain z-20 animate-spin-slow"
+                />
+            </div>
 
-                                <div className="text-center md:text-left">
-                                    <h2 className="text-4xl sm:text-6xl font-black text-white mb-4 tracking-tight leading-tight">
-                                        7 dias de garantia total
-                                    </h2>
-                                    <p className="text-slate-400 text-lg sm:text-xl leading-relaxed">
-                                        Se não gostar, devolvemos <span className="text-white font-bold">100% do seu dinheiro.</span> Sem burocracia. Sem perguntas.
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <div className="space-y-5">
-                                {[
-                                    "Você acessa a plataforma com tranquilidade e decide com segurança.",
-                                    "Cancelamento simples dentro do prazo — sem “pegadinhas”.",
-                                    "Compra protegida: sua decisão é sem pressão."
-                                ].map((item, i) => (
-                                    <div key={i} className="flex items-center gap-4 group/item">
-                                        <div className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center group-hover/item:border-emerald-500/50 transition-colors">
-                                            <CheckCircle2 className="w-4 h-4 text-emerald-500/40 group-hover/item:text-emerald-500 transition-colors" />
-                                        </div>
-                                        <span className="text-slate-300 font-medium text-sm sm:text-base">{item}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+            <div className="max-w-3xl space-y-6 mb-12">
+                <h2 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight">
+                    7 dias de garantia total
+                </h2>
+                <p className="text-slate-400 text-lg sm:text-2xl leading-relaxed max-w-2xl mx-auto">
+                    Se não gostar, devolvemos <span className="text-white font-bold">100% do seu dinheiro.</span> Sem burocracia. Sem perguntas.
+                </p>
+            </div>
+
+            {/* New CTA Button Styled like the image */}
+            <div className="group relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                <Button className="relative h-14 sm:h-16 px-10 sm:px-14 rounded-full bg-slate-950 border border-white/10 hover:border-white/20 text-white font-bold text-sm sm:text-base flex items-center gap-3 transition-all hover:scale-105 active:scale-95">
+                    <span className="uppercase tracking-widest">Quero testar sem riscos</span>
+                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </div>
-                </div>
+                </Button>
+            </div>
 
-                {/* Right Cards Stack */}
-                <div className="flex-1 flex flex-col gap-6">
-                    {/* Safe Purchase */}
-                    <div className="p-8 rounded-[2rem] bg-slate-900/50 border border-white/5 shadow-xl">
-                        <div className="flex items-start gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 shrink-0">
-                                <Lock className="w-5 h-5 text-amber-500" />
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-bold text-white mb-2">Compra segura</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">
-                                    Seus dados e pagamento são protegidos com padrão de segurança bancário.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Instant Access */}
-                    <div className="p-8 rounded-[2rem] bg-slate-900/50 border border-white/5 shadow-xl">
-                        <div className="flex items-start gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 shrink-0">
-                                <Lightning className="w-5 h-5 text-blue-500" />
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-bold text-white mb-2">Acesso imediato</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">
-                                    Entrou, começou: acesso liberado assim que o pagamento confirmar.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Final CTA Card */}
-                    <div className="p-8 rounded-[2rem] bg-slate-900/80 border border-white/10 shadow-2xl flex flex-col gap-4">
-                        <Button className="w-full h-16 rounded-2xl bg-gradient-to-r from-cyan-400 to-violet-500 hover:from-cyan-300 hover:to-violet-400 text-[#030014] font-black text-xl shadow-lg transition-transform hover:scale-[1.02] flex items-center justify-center gap-2">
-                            Ver planos agora <ChevronDown className="w-6 h-6" />
-                        </Button>
-                        <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Você está coberta pela garantia de 7 dias
-                        </div>
-                    </div>
-                </div>
-
+            <div className="mt-8 flex items-center justify-center gap-2 text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">
+                <Shield className="w-4 h-4 text-emerald-500/50" /> Sua compra está 100% protegida
             </div>
         </div>
     </section>
@@ -1488,7 +1425,7 @@ const Hero = () => {
 
                 {/* Subtitle */}
                 <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
-                    O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
+                    O EnfermagemPro é o sistema que organizes seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
                     <br/><br/>
                     <span className="text-slate-100 font-medium">Domine a Enfermagem com o método completo que + de 2.000 profissionais estão usando para estudar com foco e resultado</span>
                 </p>
