@@ -550,8 +550,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -574,11 +574,11 @@ const EcosystemSection = () => {
                         >
                             {/* Background Image with Overlay */}
                             <div className="absolute inset-0 z-0">
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/80 to-transparent z-10" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] to-transparent z-10" />
                                 <img 
                                     src={tool.image} 
                                     alt={tool.title} 
-                                    className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700 pointer-events-none"
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"
                                 />
                             </div>
 
@@ -1216,7 +1216,7 @@ const PricingSection = () => {
                          ))}
                       </div>
 
-                      <Button className="w-full bg-[#1e293b] hover:bg-[#334155] text-white font-bold h-12 rounded-xl text-lg border border-white/10 mt-auto transition-all hover:scale-[1.02]">
+                      <Button className="w-full bg-[#1e293b] hover:bg-[#334155] text-white font-bold h-12 rounded-xl text-lg border border-white/10 mt-auto transition-all hover:scale-105">
                          Quero assinar (Mensal)
                       </Button>
                    </CardContent>
@@ -1363,7 +1363,7 @@ const FAQSection = () => {
     },
     {
       q: "Posso estudar pelo celular?",
-      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiência é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
+      a: "Com certeza. Todo o ecossistema foi projetado para ser 100% responsivo. A experiênia é fluida tanto no computador quanto no tablet ou smartphone, permitindo que você estude no ônibus, no intervalo do plantão ou onde preferir.",
       color: "border-cyan-500/30",
       bg: "data-[state=open]:bg-cyan-500/10",
       accent: "text-cyan-400"
