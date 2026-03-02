@@ -550,8 +550,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -622,7 +622,7 @@ const FeaturesList = () => {
     {
       id: "02",
       title: "BANCO DE QUESTÕES COMENTADAS",
-      description: "Mais de 2.000 questões comentadas com foco em raciocínio clínico e padrão de prova.\nVocê não apenas marca alternativa. Você entende o porquê e aprende como a banca pensa.",
+      description: "Mais de 2.000 questões comentadas with foco em raciocínio clínico e padrão de prova.\nVocê não apenas marca alternativa. Você entende o porquê e aprende como a banca pensa.",
       icon: FileQuestion,
       // Green theme
       iconColor: "text-emerald-400",
@@ -790,25 +790,22 @@ const ForWhomSection = () => {
       title: "Para o Estudante",
       description: "Cansado de apostilas desorganizadas? Use nossa trilha de estudos para construir uma base sólida e se destacar nos estágios e provas.",
       image: "/images/estudante.png",
-      circleColor: "bg-[#1e3a8a]", // Dark Blue
       blockColor: "bg-[#16a34a]", // Green
-      textColor: "text-green-100"
+      textColor: "text-white"
     },
     {
       title: "Para o Concurseiro",
       description: "Pare de estudar sem foco. Com nossa Área do Concurseiro e simulados estratégicos, você estuda o que realmente cai e acompanha sua evolução até a aprovação.",
       image: "/images/concurseiro.png",
-      circleColor: "bg-[#facc15]", // Yellow
-      blockColor: "bg-[#6d28d9]", // Purple
-      textColor: "text-purple-100"
+      blockColor: "bg-[#7c3aed]", // Purple
+      textColor: "text-white"
     },
     {
       title: "Para o Profissional",
       description: "Transforme a insegurança do plantão em confiança absoluta. Tenha na palma da mão tudo o que você precisa para se preparar para qualquer intercorrência: acesso rápido a guias de procedimentos, calculadoras, escalas e protocolos para tomar decisões rápidas e seguras na beira do leito.",
       image: "/images/profissional.png",
-      circleColor: "bg-[#6d28d9]", // Purple
       blockColor: "bg-[#facc15]", // Yellow
-      textColor: "text-yellow-900"
+      textColor: "text-white"
     }
   ];
 
@@ -827,12 +824,12 @@ const ForWhomSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {personas.map((persona) => (
             <div key={persona.title} className="relative flex flex-col group pt-[130px]">
-              <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center", persona.blockColor)}>
+              <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center shadow-2xl", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
                 <p className={cn("leading-relaxed", persona.textColor)}>{persona.description}</p>
               </div>
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[260px] h-[260px] transition-transform duration-500 group-hover:scale-110 z-10">
-                <div className={cn("w-full h-full rounded-full overflow-hidden shadow-2xl", persona.circleColor)}>
+                <div className="w-full h-full rounded-full overflow-hidden border-[8px] border-[#0B0F19] shadow-2xl bg-slate-800">
                   <img 
                     src={persona.image} 
                     alt={persona.title} 
@@ -1219,7 +1216,7 @@ const PricingSection = () => {
                          ))}
                       </div>
 
-                      <Button className="w-full bg-[#1e293b] hover:bg-[#334155] text-white font-bold h-12 rounded-xl text-lg border border-white/10 mt-auto transition-all hover:scale-105">
+                      <Button className="w-full bg-[#1e293b] hover:bg-[#334155] text-white font-bold h-12 rounded-xl text-lg border border-white/10 mt-auto transition-all hover:scale-[1.02]">
                          Quero assinar (Mensal)
                       </Button>
                    </CardContent>
