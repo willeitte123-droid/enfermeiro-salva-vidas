@@ -506,7 +506,7 @@ const VideoSection = () => {
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+        <div className="max-w-5_xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
           <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
              <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
@@ -661,8 +661,8 @@ const EcosystemSection = () => {
         {/* Infinite Carousel Container */}
         <div className="relative w-full">
             {/* Gradient Masks */}
-            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-24 sm:w-48 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-24 sm:w-48 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
             {/* Scrollable Track */}
             <div 
@@ -980,37 +980,40 @@ const RankingSection = () => {
 
 // --- SESSÃO DE ASSINANTES (REFEITA: IGUAL AO MODELO 50/50 COM FOTOS IGUAIS) ---
 const SubscribersSection = () => {
+  const [activeJumpIndex, setActiveJumpIndex] = useState<number | null>(null);
+
   const images = [
     "/images/user-1.jpg", 
     "/images/user-2.jpg", 
-    "/images/user-5.jpg", // Central (sub-5)
     "/images/user-3.jpg", 
+    "/images/user-5.jpg", 
     "/images/user-6.jpg", 
   ];
 
+  const handleImageClick = (index: number) => {
+    setActiveJumpIndex(index);
+    // Remove o efeito após a animação
+    setTimeout(() => setActiveJumpIndex(null), 600);
+  };
+
   return (
-    <section className="py-24 bg-black relative overflow-hidden border-y border-white/5">
+    <section className="py-20 bg-black relative overflow-hidden border-y border-white/5">
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="flex flex-col md:flex-row items-center gap-16 md:gap-24">
+        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-0">
           
-          {/* Lado Esquerdo: Imagens (50%) */}
-          <div className="w-full md:w-1/2 flex justify-center relative h-[160px] md:h-[200px] items-center">
-             {/* Container relativo para posicionamento absoluto das imagens */}
+          {/* Lado Esquerdo: Imagens (50%) - APROXIMADO DO TEXTO */}
+          <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-4 relative h-[140px] md:h-[180px] items-center">
              <div className="relative flex items-center justify-center">
                 {images.map((src, index) => {
-                   // Lógica de posicionamento: O do meio (index 2) é o maior e está na frente.
                    const isCenter = index === 2;
                    const distance = Math.abs(index - 2); 
+                   const isJumping = activeJumpIndex === index;
                    
-                   // Ajustes visuais conforme modelo
                    const zIndex = 50 - (distance * 10);
                    const scale = isCenter ? 1.4 : 1 - (distance * 0.15);
-                   const opacity = 1 - (distance * 0.2);
                    
-                   // Translação mais apertada para sobreposição
-                   const translateX = (index - 2) * 55;
+                   const translateX = (index - 2) * 52; 
 
-                   // Borda especial para o central (azul brilhante)
                    const borderClass = isCenter 
                       ? "border-blue-500 ring-4 ring-blue-500/20 shadow-[0_0_40px_rgba(59,130,246,0.6)]" 
                       : "border-black/50 opacity-80";
@@ -1018,21 +1021,25 @@ const SubscribersSection = () => {
                    return (
                      <div 
                        key={index}
-                       className="absolute transition-all duration-500 ease-out hover:scale-[1.5] hover:z-[60] hover:opacity-100 cursor-pointer"
+                       onClick={() => handleImageClick(index)}
+                       className={cn(
+                         "absolute transition-all duration-500 ease-out cursor-pointer",
+                         isJumping ? "z-[70]" : ""
+                       )}
                        style={{
-                         zIndex: zIndex,
-                         // Transformação baseada no deslocamento X e escala
-                         transform: `translateX(${translateX}px) scale(${scale})`,
+                         zIndex: isJumping ? 70 : zIndex,
+                         transform: `translateX(${translateX}px) scale(${isJumping ? scale * 1.3 : scale}) translateY(${isJumping ? '-20px' : '0'})`,
                        }}
                      >
                        <div className={cn(
                          "w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] overflow-hidden shadow-2xl bg-slate-800 transition-all",
-                         borderClass
+                         borderClass,
+                         isJumping && "ring-white ring-offset-2 ring-offset-black"
                        )}>
                          <img 
                            src={src} 
                            alt={`Assinante ${index+1}`} 
-                           className="w-full h-full object-cover"
+                           className="w-full h-full object-cover select-none"
                          />
                        </div>
                      </div>
@@ -1041,19 +1048,19 @@ const SubscribersSection = () => {
              </div>
           </div>
           
-          {/* Lado Direito: Texto (50%) */}
-          <div className="w-full md:w-1/2 text-center md:text-left">
-             <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-6">
+          {/* Lado Direito: Texto (50%) - APROXIMADO DAS IMAGENS */}
+          <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-2">
+             <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4">
                Junte-se a + de <br/>
                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
                   2.000 assinantes
                </span>
              </h2>
-             <p className="text-lg text-slate-400 font-light leading-relaxed mb-8 max-w-md mx-auto md:mx-0">
+             <p className="text-lg text-slate-400 font-light leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
                 Que já estão dominando a Enfermagem com o método mais completo do mercado.
              </p>
              
-             <div className="flex items-center justify-center md:justify-start gap-4">
+             <div className="flex items-center justify-center md:justify-start gap-3">
                 <div className="flex -space-x-1">
                    {[1,2,3,4,5].map(i => (
                       <Star key={i} className="w-6 h-6 text-yellow-500 fill-yellow-500" />
