@@ -550,7 +550,7 @@ const EcosystemSection = () => {
     { title: "MEU DESEMPENHO", desc: "Acompanhe sua evolução com dados claros e mensuráveis.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
     { title: "MEDICAMENTOS", desc: "Revisão prática de fármacos essenciais para o plantão.", icon: Syringe, image: "/images/ecosystem/medicamentos.png" },
     { title: "EMERGÊNCIAS", desc: "Protocolos objetivos para decisões rápidas.", icon: Siren, image: "/images/ecosystem/emergencias.png" },
-    { title: "CURATIVOS", desc: "Tipos de lesões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
+    { title: "CURATIVOS", desc: "Tipos de leões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
     { title: "PROCEDIMENTOS", desc: "Passo a passo técnico com foco em segurança.", icon: ClipboardList, image: "/images/ecosystem/procedimentos.png" },
     { title: "SEMIOLOGIA", desc: "Avaliação clínica organizada e estruturada.", icon: FileSearch, image: "/images/ecosystem/semiologia.png" },
     { title: "SEMIOTÉCNICA", desc: "Técnicas fundamentais da enfermagem.", icon: HandHeart, image: "/images/ecosystem/semiotecnica.png" },
@@ -999,10 +999,10 @@ const SubscribersSection = () => {
   return (
     <section className="py-20 bg-black relative overflow-hidden border-y border-white/5">
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-0">
+        <div className="flex flex-col md:flex-row items-center gap-16 md:gap-0">
           
-          {/* Lado Esquerdo: Imagens (50%) - APROXIMADO DO TEXTO */}
-          <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-4 relative h-[140px] md:h-[180px] items-center">
+          {/* Lado Esquerdo: Imagens (50%) - AJUSTADO O ESPAÇAMENTO */}
+          <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-10 relative h-[140px] md:h-[180px] items-center">
              <div className="relative flex items-center justify-center">
                 {images.map((src, index) => {
                    const isCenter = index === 2;
@@ -1048,8 +1048,8 @@ const SubscribersSection = () => {
              </div>
           </div>
           
-          {/* Lado Direito: Texto (50%) - APROXIMADO DAS IMAGENS */}
-          <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-2">
+          {/* Lado Direito: Texto (50%) - AJUSTADO O ESPAÇAMENTO */}
+          <div className="w-full md:w-1/2 text-center md:text-left pl-0 md:pl-10">
              <h2 className="text-4xl md:text-5xl font-black text-white leading-[1.1] mb-4">
                Junte-se a + de <br/>
                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
