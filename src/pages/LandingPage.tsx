@@ -661,7 +661,7 @@ const EcosystemSection = () => {
                     evoluir na enfermagem, em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">um único sistema</span>
                 </h2>
                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
-                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. No é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
+                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. Não é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
                 </p>
             </div>
         </div>
@@ -842,7 +842,7 @@ const AppShowcaseSection = () => {
     ];
 
     return (
-        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-20 pb-40">
+        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-20 pb-24 sm:pb-32">
             <div className="max-w-6xl mx-auto px-4 relative z-10">
                 
                 <div className="text-center mb-24 max-w-3xl mx-auto">
@@ -854,7 +854,7 @@ const AppShowcaseSection = () => {
                     </p>
                 </div>
 
-                <div className="relative"> 
+                <div className="relative mb-24 sm:mb-32"> 
                     {screens.map((screen, index) => (
                         <div
                             key={index}
@@ -874,18 +874,16 @@ const AppShowcaseSection = () => {
                             />
                         </div>
                     ))}
-                    
-                    {/* Final CTA Area in Showcase */}
-                    <div className="relative z-[100] mt-24 text-center space-y-8 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-                        <h3 className="text-4xl md:text-6xl font-black text-white italic tracking-tighter drop-shadow-2xl">
-                           E muuuuito mais..
-                        </h3>
-                        <div className="flex justify-center">
-                            <GlowButton text="QUERO O ACESSO COMPLETO" href="#planos" className="w-full max-w-md" />
-                        </div>
-                    </div>
+                </div>
 
-                    <div className="h-[20vh]" />
+                {/* Final Content Block - STATIC POSITIONED AFTER STICKY IMAGES */}
+                <div className="relative z-50 text-center space-y-10 py-12 sm:py-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+                    <h3 className="text-4xl md:text-7xl font-black text-white italic tracking-tighter drop-shadow-2xl">
+                       E muuuuito mais..
+                    </h3>
+                    <div className="flex justify-center">
+                        <GlowButton text="QUERO O ACESSO COMPLETO" href="#planos" className="w-full max-w-md shadow-[0_0_50px_rgba(37,99,235,0.3)]" />
+                    </div>
                 </div>
             </div>
         </section>
@@ -1130,7 +1128,7 @@ const TestimonialsSection = () => {
 
           <div className="flex w-max animate-marquee-slow hover:[animation-play-state:paused]">
              {[...testimonials, ...testimonials].map((src, index) => (
-                <div key={index} className="mx-4 w-[280px] sm:text-[350px] flex-shrink-0">
+                <div key={index} className="mx-4 w-[280px] sm:w-[350px] flex-shrink-0">
                    <img 
                       src={src} 
                       alt={`Depoimento ${index + 1}`} 
