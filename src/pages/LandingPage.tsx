@@ -783,11 +783,11 @@ const FeaturesList = () => {
   ];
 
   return (
-    <section id="funcionalidades" className="py-24 bg-[#0B0F19] relative">
+    <section id="funcionalidades" className="py-24 bg-white relative">
       <div className="container mx-auto px-4">
         <div className="mb-16">
-           <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">Funcionalidades</h2>
-           <p className="text-lg text-slate-400">que organizam seus estudos e aumentam sua segurança</p>
+           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-2">Funcionalidades</h2>
+           <p className="text-lg text-slate-600">que organizam seus estudos e aumentam sua segurança</p>
            <div className="h-1 w-20 bg-blue-600 mt-4 rounded-full"></div>
         </div>
 
