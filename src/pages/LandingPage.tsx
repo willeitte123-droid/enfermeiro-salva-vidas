@@ -66,28 +66,11 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#030014]/80 backdrop-blur-xl supports-[backdrop-filter]:bg-[#030014]/50 transition-all duration-300">
       <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          {/* Novo Logotipo com Mockup Luminoso */}
-          <div className="relative group flex items-center justify-center">
-             {/* Glow Pulsante de Fundo */}
-             <div className="absolute -inset-2 bg-blue-500/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse"></div>
-             
-             {/* Anel Externo Luminoso */}
-             <div className="absolute -inset-0.5 bg-gradient-to-tr from-blue-600 via-cyan-400 to-indigo-500 rounded-full blur-[2px] opacity-40 group-hover:opacity-100 transition duration-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
-             
-             {/* Container Principal do Mockup */}
-             <div className="relative w-11 h-11 sm:w-12 sm:h-12 bg-slate-900 rounded-full flex items-center justify-center overflow-hidden border border-white/20 shadow-2xl transition-all duration-500 group-hover:scale-110 ring-1 ring-white/10 group-hover:ring-blue-400/50">
-                {/* Reflexo Metálico */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 z-10 pointer-events-none"></div>
-                
-                <img 
-                    src="/images/logo-navbar-new.png" 
-                    alt="Logo Enfermagem Pro" 
-                    className="w-[85%] h-[85%] object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]"
-                />
-             </div>
+        <div className="flex items-center gap-2.5">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+             <Syringe className="text-white w-6 h-6" />
           </div>
-          <span className="font-bold text-xl sm:text-2xl tracking-tight text-white">
+          <span className="font-bold text-2xl tracking-tight text-white">
             Enfermagem<span className="text-blue-500">Pro</span>
           </span>
         </div>
@@ -948,7 +931,7 @@ const AppShowcaseSection = () => {
 
                 {/* Final Content Block - STATIC POSITIONED AFTER STICKY IMAGES */}
                 <div className="relative z-50 text-center space-y-10 py-12 sm:py-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-                    <h3 className="text-4xl md:text-7xl font-black text-white italic tracking-tighter drop-shadow-2xl">
+                    <h3 className="text-3xl md:text-5xl font-black text-white italic tracking-tighter drop-shadow-2xl">
                        E muuuuito mais..
                     </h3>
                     <div className="flex justify-center">
@@ -1566,13 +1549,13 @@ export default function LandingPage() {
             <div className="flex flex-col items-center gap-4">
               <div className="relative group">
                 <div className="absolute inset-0 bg-blue-500/20 blur-[80px] rounded-full group-hover:bg-blue-500/40 transition-all duration-700" />
-                <div className="relative z-10 w-44 h-44 sm:w-56 sm:h-56 rounded-xl p-1 bg-gradient-to-b from-white/20 to-white/5 border border-white/10 shadow-2xl overflow-hidden flex items-center justify-center backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
-                  <div className="absolute inset-0 rounded-xl border border-blue-500/10 m-3 pointer-events-none" />
-                  <div className="absolute inset-0 rounded-xl border border-white/5 m-6 pointer-events-none" />
+                <div className="relative z-10 w-44 h-44 sm:w-56 sm:h-56 rounded-full p-1 bg-gradient-to-b from-white/20 to-white/5 border border-white/10 shadow-2xl overflow-hidden flex items-center justify-center backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
+                  <div className="absolute inset-0 rounded-full border border-blue-500/10 m-3 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-full border border-white/5 m-6 pointer-events-none" />
                   <img 
                     src="/images/footer-logo.png" 
-                    alt="Logo Enfermagem Pro 3D" 
-                    className="w-[85%] h-[85%] object-contain brightness-110 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                    alt="Logo Enfermagem Pro Circular" 
+                    className="w-[85%] h-[85%] object-contain rounded-full brightness-110 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]"
                   />
                 </div>
               </div>

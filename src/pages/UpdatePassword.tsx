@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Stethoscope, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 
@@ -66,17 +66,12 @@ const UpdatePassword = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
-      <Card className="w-full max-w-md border-border/50 shadow-xl">
+      <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto h-20 w-20 rounded-full bg-slate-900 border border-white/10 shadow-2xl flex items-center justify-center mb-4 overflow-hidden group">
-            <div className="absolute inset-0 bg-blue-500/10 blur-xl group-hover:bg-blue-500/20 transition-all duration-500"></div>
-            <img 
-              src="/images/logo-navbar-new.png" 
-              alt="Logo Enfermagem Pro" 
-              className="w-full h-full object-cover relative z-10"
-            />
+          <div className="mx-auto h-12 w-12 rounded-lg bg-primary flex items-center justify-center mb-4">
+            <Stethoscope className="h-6 w-6 text-primary-foreground" />
           </div>
-          <CardTitle className="text-2xl font-bold">Crie sua nova senha</CardTitle>
+          <CardTitle className="text-2xl">Crie sua nova senha</CardTitle>
           <CardDescription>
             Digite e confirme sua nova senha abaixo.
           </CardDescription>
@@ -110,7 +105,7 @@ const UpdatePassword = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full font-bold shadow-lg shadow-primary/20" disabled={isLoading}>
+              <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? <Loader2 className="animate-spin" /> : "Salvar Nova Senha"}
               </Button>
             </form>

@@ -160,24 +160,24 @@ const Login = () => {
 
         {/* Content */}
         <div className="relative z-10 max-w-2xl text-center flex flex-col items-center">
-          <div className="mb-6 p-1 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl animate-in fade-in zoom-in duration-700">
+          <div className="mb-6 p-4 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl animate-in fade-in zoom-in duration-700">
             {isThemeLoading ? (
-              <Skeleton className="h-24 w-24 rounded-xl bg-white/20" />
+              <Skeleton className="h-20 w-20 rounded-xl bg-white/20" />
             ) : (
               <img 
-                src="/images/login-logo-3d-v2.png" 
+                src={themeSettings.logo_url || "/logo.svg"} 
                 alt="Logo Enfermagem Pro" 
-                className="h-24 w-24 object-contain drop-shadow-2xl" 
+                className="h-20 w-20 object-contain drop-shadow-md" 
               />
             )}
           </div>
           
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
-            Enfermagem <span className="text-blue-500">Pro</span>
+            Enfermagem Pro
           </h1>
           
           <p className="text-lg sm:text-xl font-medium text-blue-100 mb-6 leading-relaxed">
-            Estude com foco. Organização e resultado.
+            Domine a arte e a ciência do cuidar.
           </p>
         </div>
       </div>
