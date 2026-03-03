@@ -9,7 +9,7 @@ import {
   Stethoscope, GraduationCap, Star,
   Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare,
   Video, BookOpen, MonitorPlay, ShieldCheck, Bandage, ClipboardList, FileSearch, HandHeart, BookHeart, BookText, Calculator, FileText, NotebookText, Briefcase, Bookmark,
-  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown, HelpCircle, Instagram, Mail, MessageCircle, AlertCircle, Percent
+  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown, HelpCircle, Instagram, Mail, MessageCircle, AlertCircle, Percent, CircleDashed
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -232,8 +232,16 @@ const Hero = () => {
             
             {/* TEXT COLUMN (Left) */}
             <div className="flex-1 text-left max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {/* Badge Removido */}
-                <div className="mb-6"></div>
+                {/* Logo Branding - NEW (RESTAURADO) */}
+                <div className="mb-8 flex items-center gap-3">
+                   <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 border border-white/10">
+                      <Syringe className="text-white w-7 h-7" />
+                   </div>
+                   <div className="flex flex-col">
+                      <span className="text-2xl font-black text-white leading-none">Enfermagem<span className="text-blue-500">Pro</span></span>
+                      <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-blue-400 mt-1">Plataforma de Elite</span>
+                   </div>
+                </div>
 
                 {/* Title */}
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
@@ -343,7 +351,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
-            <Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
+            <CircleDashed className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
             <span className={cn("text-3xl sm:text-5xl font-black leading-none", spo2 < 90 ? "text-yellow-400 animate-pulse" : "text-blue-400")}>
@@ -939,7 +947,7 @@ const AppShowcaseSection = () => {
 
                 {/* Final Content Block - STATIC POSITIONED AFTER STICKY IMAGES */}
                 <div className="relative z-50 text-center space-y-10 py-12 sm:py-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-                    <h3 className="text-4xl md:text-7xl font-black text-white italic tracking-tighter drop-shadow-2xl">
+                    <h3 className="text-xl md:text-2xl font-black text-white italic tracking-tighter drop-shadow-2xl uppercase">
                        E muuuuito mais..
                     </h3>
                     <div className="flex justify-center">
