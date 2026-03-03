@@ -165,7 +165,7 @@ const Login = () => {
               <Skeleton className="h-24 w-24 rounded-xl bg-white/20" />
             ) : (
               <img 
-                src="/images/login-logo-3d.png" 
+                src="/images/login-logo-3d-v2.png" 
                 alt="Logo Enfermagem Pro" 
                 className="h-24 w-24 object-contain drop-shadow-2xl" 
               />
