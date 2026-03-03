@@ -69,14 +69,16 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
         !isMobile && (isExpanded ? "w-64" : "w-20")
       )}
     >
-      {/* Ajuste de padding (px-4 em vez de px-6) para garantir espaço para o título */}
       <div className="flex h-16 items-center border-b border-sidebar-border px-4 justify-between relative overflow-hidden shrink-0">
         <div className={cn("flex items-center gap-3 transition-all duration-300 w-full", isCollapsed && "justify-center")}>
-          {themeSettings.logo_url ? (
-            <img src={themeSettings.logo_url} alt="Logo" className={cn("h-8 transition-all object-contain", isCollapsed ? "w-8" : "w-auto")} />
-          ) : (
-            <Stethoscope className="h-7 w-7 text-primary flex-shrink-0" />
-          )}
+          <div className="relative shrink-0">
+            <div className="absolute -inset-1 bg-blue-500/20 rounded-full blur-sm opacity-50 transition-opacity"></div>
+            <img 
+              src="/images/logo-navbar-new.png" 
+              alt="Logo" 
+              className={cn("relative h-9 w-9 object-contain transition-all duration-300 rounded-full border border-white/10 shadow-lg", isCollapsed ? "h-8 w-8" : "h-9 w-9")} 
+            />
+          </div>
           
           <h1 className={cn("text-lg font-bold text-sidebar-foreground whitespace-nowrap overflow-hidden transition-all duration-300 flex items-center", isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100 ml-1")}>
             Enfermagem <span className="text-primary font-black ml-1">Pro</span>
