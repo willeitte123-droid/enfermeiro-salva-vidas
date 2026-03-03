@@ -70,7 +70,7 @@ const Navbar = () => {
           {/* Novo Logotipo com Mockup Luminoso */}
           <div className="relative group flex items-center justify-center">
              {/* Glow Pulsante de Fundo */}
-             <div className="absolute -inset-2 bg-blue-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse"></div>
+             <div className="absolute -inset-2 bg-blue-500/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse"></div>
              
              {/* Anel Externo Luminoso */}
              <div className="absolute -inset-0.5 bg-gradient-to-tr from-blue-600 via-cyan-400 to-indigo-500 rounded-full blur-[2px] opacity-40 group-hover:opacity-100 transition duration-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
@@ -948,7 +948,7 @@ const AppShowcaseSection = () => {
 
                 {/* Final Content Block - STATIC POSITIONED AFTER STICKY IMAGES */}
                 <div className="relative z-50 text-center space-y-10 py-12 sm:py-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-                    <h3 className="text-4xl md:text-5xl font-black text-white italic tracking-tighter drop-shadow-2xl">
+                    <h3 className="text-4xl md:text-7xl font-black text-white italic tracking-tighter drop-shadow-2xl">
                        E muuuuito mais..
                     </h3>
                     <div className="flex justify-center">

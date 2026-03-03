@@ -71,8 +71,9 @@ const Sidebar = ({ isAdmin, user, isMobile = false }: SidebarProps) => {
     >
       <div className="flex h-16 items-center border-b border-sidebar-border px-4 justify-between relative overflow-hidden shrink-0">
         <div className={cn("flex items-center gap-3 transition-all duration-300 w-full", isCollapsed && "justify-center")}>
-          <div className="relative shrink-0">
-            <div className="absolute -inset-1 bg-blue-500/20 rounded-full blur-sm opacity-50 transition-opacity"></div>
+          <div className="relative shrink-0 flex items-center justify-center">
+            {/* Glow sutil para a sidebar */}
+            <div className="absolute -inset-1 bg-blue-500/20 rounded-full blur-sm opacity-50"></div>
             <img 
               src="/images/logo-navbar-new.png" 
               alt="Logo" 
