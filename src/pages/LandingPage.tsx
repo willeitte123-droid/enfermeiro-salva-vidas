@@ -515,8 +515,24 @@ const VideoSection = () => {
         </div>
 
         {/* PREMIUM VIDEO MOCKUP CONTAINER */}
-        <div className="max-w-5xl mx-auto relative group">
+        <div className="max-w-5xl mx-auto relative">
           
+          {/* Floating Info Box (Design matching requested reference) */}
+          <div className="absolute top-1/2 -right-4 sm:-right-10 translate-x-1/2 -translate-y-1/2 z-40 hidden lg:block animate-in slide-in-from-right-10 duration-1000">
+             <div className="bg-white rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.3)] w-72 border border-slate-100 relative">
+                {/* Pointer/Tail pointing to video */}
+                <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white rotate-45 border-l border-b border-slate-100" />
+                
+                <div className="flex items-center gap-3 mb-4">
+                   <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30">!</div>
+                   <h4 className="text-slate-900 font-black text-xl leading-tight">Assista ao vídeo!</h4>
+                </div>
+                <p className="text-slate-500 text-sm leading-relaxed font-medium">
+                   Entenda como o EnfermagemPro vai organizar sua rotina e acelerar seus resultados.
+                </p>
+             </div>
+          </div>
+
           {/* MAIN WHITE FRAME MOCKUP */}
           <div className="bg-white p-2 sm:p-5 rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] border-4 border-white/20 relative z-30">
             
