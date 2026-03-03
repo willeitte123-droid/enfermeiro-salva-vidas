@@ -66,19 +66,11 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#030014]/80 backdrop-blur-xl supports-[backdrop-filter]:bg-[#030014]/50 transition-all duration-300">
       <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          {/* Novo Logotipo com Efeito Mockup */}
-          <div className="relative group">
-             <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-             <div className="relative w-11 h-11 sm:w-12 sm:h-12 bg-slate-900 rounded-full flex items-center justify-center overflow-hidden border border-white/20 shadow-2xl transition-transform duration-500 group-hover:scale-110">
-                <img 
-                    src="/images/logo-navbar-new.png" 
-                    alt="Logo Enfermagem Pro" 
-                    className="w-full h-full object-cover"
-                />
-             </div>
+        <div className="flex items-center gap-2.5">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+             <Syringe className="text-white w-6 h-6" />
           </div>
-          <span className="font-bold text-xl sm:text-2xl tracking-tight text-white">
+          <span className="font-bold text-2xl tracking-tight text-white">
             Enfermagem<span className="text-blue-500">Pro</span>
           </span>
         </div>
@@ -817,7 +809,7 @@ const FeaturesList = () => {
     {
       id: "04",
       title: "CASOS CLÍNICOS INTERATIVOS",
-      description: "Tome decisões como se estivesse no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
+      description: "Tome decisões como se estiver no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
       icon: Stethoscope,
       blockColor: "bg-cyan-600",
       textColor: "text-cyan-50",
@@ -939,7 +931,7 @@ const AppShowcaseSection = () => {
 
                 {/* Final Content Block - STATIC POSITIONED AFTER STICKY IMAGES */}
                 <div className="relative z-50 text-center space-y-10 py-12 sm:py-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-                    <h3 className="text-4xl md:text-7xl font-black text-white italic tracking-tighter drop-shadow-2xl">
+                    <h3 className="text-2xl md:text-4xl font-black text-white italic tracking-tighter drop-shadow-2xl uppercase">
                        E muuuuito mais..
                     </h3>
                     <div className="flex justify-center">
