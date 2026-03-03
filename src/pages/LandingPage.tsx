@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import YouTube from 'react-youtube';
 
 // Componente Reutilizável de Botão Glow
 const GlowButton = ({ text, href = "#planos", className }: { text: string, href?: string, className?: string }) => {
@@ -514,27 +515,24 @@ const VideoSection = () => {
           </p>
         </div>
 
-        <div className="max-w-5_xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-          <div className="aspect-video bg-slate-900 relative flex items-center justify-center overflow-hidden">
-             <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-             </div>
-             
-             <div className="relative z-10 group-hover:scale-110 transition-transform duration-300">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-sm cursor-pointer shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]">
-                   <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
-                </div>
-             </div>
-             
-             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-4">
-                   <div className="h-full w-1/3 bg-blue-500 rounded-full" />
-                </div>
-                <div className="flex justify-between text-white/80 text-sm font-medium">
-                   <span>02:14</span>
-                   <span>05:30</span>
-                </div>
-             </div>
+        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group bg-slate-900">
+          <div className="aspect-video">
+            <YouTube 
+              videoId="1LzPWeV6coU"
+              opts={{
+                height: '100%',
+                width: '100%',
+                playerVars: {
+                  autoplay: 0,
+                  modestbranding: 1,
+                  rel: 0,
+                  controls: 1,
+                  playsinline: 1
+                },
+              }}
+              className="w-full h-full"
+              iframeClassName="w-full h-full"
+            />
           </div>
         </div>
       </div>
@@ -555,7 +553,7 @@ const EcosystemSection = () => {
     { title: "FLASHCARDS", desc: "Fixação ativa para acelerar memorização e retenção.", icon: Copy, image: "/images/ecosystem/flashcards.png" },
     { title: "ÁREA DE REVISÃO", desc: "Reforce exatamente os pontos com maior índice de erro.", icon: BookOpen, image: "/images/ecosystem/area-de-revisao.png" },
     { title: "ANATOMIA", desc: "Base técnica estruturada para domínio dos fundamentos.", icon: Activity, image: "/images/ecosystem/anatomia.png" },
-    { title: "MEU DESEMPENHO", desc: "ACOMPANHE SUA EVOLUÇÃO COM DADOS CLAROS E MENSURÁVEIS.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
+    { title: "MEU DESEMPENHO", desc: "Acompanhe sua evolução com dadas claros e mensuráveis.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
     { title: "MEDICAMENTOS", desc: "Revisão prática de fármacos essenciais para o plantão.", icon: Syringe, image: "/images/ecosystem/medicamentos.png" },
     { title: "EMERGÊNCIAS", desc: "Protocolos objetivos para decisões rápidas.", icon: Siren, image: "/images/ecosystem/emergencias.png" },
     { title: "CURATIVOS", desc: "Tipos de leões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
@@ -973,7 +971,7 @@ const UnifiedSocialSection = () => {
         {/* Luzes de Fundo que conectam as duas partes */}
         <div className="absolute top-1/4 left-0 w-full h-full bg-gradient-to-b from-transparent via-blue-900/10 to-transparent pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[800px] bg-indigo-900/10 blur-[180px] pointer-events-none rounded-full" />
-        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-yellow-50/5 blur-[120px] pointer-events-none rounded-full" />
+        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-yellow-500/5 blur-[120px] pointer-events-none rounded-full" />
 
         {/* PARTE 1: RANKING */}
         <section id="ranking" className="py-24 relative z-10">
