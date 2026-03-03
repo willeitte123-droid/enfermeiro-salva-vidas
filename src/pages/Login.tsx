@@ -160,14 +160,14 @@ const Login = () => {
 
         {/* Content */}
         <div className="relative z-10 max-w-2xl text-center flex flex-col items-center">
-          <div className="mb-6 p-4 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl animate-in fade-in zoom-in duration-700">
+          <div className="mb-6 p-1 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl animate-in fade-in zoom-in duration-700">
             {isThemeLoading ? (
-              <Skeleton className="h-20 w-20 rounded-xl bg-white/20" />
+              <Skeleton className="h-24 w-24 rounded-xl bg-white/20" />
             ) : (
               <img 
-                src={themeSettings.logo_url || "/logo.svg"} 
+                src="/images/login-logo-3d.png" 
                 alt="Logo Enfermagem Pro" 
-                className="h-20 w-20 object-contain drop-shadow-md" 
+                className="h-24 w-24 object-contain drop-shadow-2xl" 
               />
             )}
           </div>
