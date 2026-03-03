@@ -21,22 +21,15 @@ createRoot(document.getElementById("root")!).render(
   </QueryClientProvider>
 );
 
-// Registro do Service Worker para PWA
-if ('serviceWorker' in navigator) {
-  // Registra imediatamente se a página já estiver carregada, ou aguarda o load
-  const registerSW = () => {
+// Registro do Service Worker apenas em PRODUÇÃO
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then(registration => {
-        console.log('SW registrado: ', registration.scope);
+        console.log('SW registrado em produção: ', registration.scope);
       })
       .catch(err => {
         console.log('Falha no registro do SW: ', err);
       });
-  };
-
-  if (document.readyState === 'complete') {
-    registerSW();
-  } else {
-    window.addEventListener('load', registerSW);
-  }
+  });
 }
