@@ -21,15 +21,26 @@ createRoot(document.getElementById("root")!).render(
   </QueryClientProvider>
 );
 
-// Registro do Service Worker apenas em PRODUÇÃO
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log('SW registrado em produção: ', registration.scope);
-      })
-      .catch(err => {
-        console.log('Falha no registro do SW: ', err);
-      });
-  });
+// Lógica de Service Worker
+if ('serviceWorker' in navigator) {
+  if (import.meta.env.PROD) {
+    // Registro apenas em PRODUÇÃO
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('SW registrado em produção: ', registration.scope);
+        })
+        .catch(err => {
+          console.log('Falha no registro do SW: ', err);
+        });
+    });
+  } else {
+    // Em DESENVOLVIMENTO: Desregistra qualquer worker ativo para evitar erros 503
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (const registration of registrations) {
+        registration.unregister();
+        console.log('SW antigo removido para evitar conflitos em dev.');
+      }
+    });
+  }
 }
