@@ -711,7 +711,7 @@ const EcosystemSection = () => {
             <div className="text-center max-w-4xl mx-auto">
                 <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white tracking-tight leading-tight">
                     Tudo o que você precisa para <br className="hidden md:block"/>
-                    evoluir na enfermagem, em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">um único sistema</span>
+                    evoluir na enfermagem, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">em um único sistema</span>
                 </h2>
                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
                     O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. Não é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
