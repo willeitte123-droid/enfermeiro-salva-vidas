@@ -515,27 +515,8 @@ const VideoSection = () => {
         </div>
 
         {/* PREMIUM VIDEO MOCKUP CONTAINER */}
-        <div className="max-w-5xl mx-auto relative group">
+        <div className="max-w-5xl mx-auto relative">
           
-          {/* Floating Element: Top Right Percent Badge */}
-          <div className="absolute -top-8 -right-8 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-violet-600 to-purple-800 rounded-full flex items-center justify-center shadow-2xl z-40 animate-bounce transition-transform hover:scale-110">
-             <Percent className="text-white w-8 h-8 sm:w-10 sm:h-10" strokeWidth={3} />
-          </div>
-
-          {/* Floating Element: Info Box Side */}
-          <div className="absolute top-1/2 -right-4 sm:-right-10 translate-x-1/2 -translate-y-1/2 z-40 hidden lg:block animate-in slide-in-from-right-10 duration-1000">
-             <div className="bg-white rounded-3xl p-6 shadow-2xl w-64 border border-slate-200 relative">
-                <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rotate-45 border-l border-b border-slate-200" />
-                <div className="flex items-center gap-2 mb-2">
-                   <div className="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold">!</div>
-                   <h4 className="text-slate-900 font-black text-lg">Assista ao vídeo!</h4>
-                </div>
-                <p className="text-slate-500 text-sm leading-relaxed font-medium">
-                   Entenda como o EnfermagemPro vai organizar sua rotina e acelerar seus resultados.
-                </p>
-             </div>
-          </div>
-
           {/* MAIN WHITE FRAME MOCKUP */}
           <div className="bg-white p-2 sm:p-5 rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] border-4 border-white/20 relative z-30">
             
@@ -545,25 +526,10 @@ const VideoSection = () => {
                   className="absolute inset-0 z-20 cursor-pointer"
                   onClick={() => setIsPlaying(true)}
                 >
-                  {/* Poster/Thumb with Overlay Elements */}
-                  <img src="/images/video-thumb-main.png" alt="Plataforma Preview" className="w-full h-full object-cover" />
+                  {/* Poster/Thumb Restaurada */}
+                  <img src="/images/background-hero.png" alt="Plataforma Preview" className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
                   
-                  {/* Dark gradient for the bottom "Mais Vídeos" area */}
-                  <div className="absolute inset-0 bg-black/30 z-10 transition-colors group-hover:bg-black/20" />
-                  
-                  {/* "Mais Vídeos" Sidebar-style Overlay */}
-                  <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black/90 to-transparent z-20 px-4 sm:px-8 pb-4 flex flex-col justify-end">
-                      <h4 className="text-white font-bold text-sm sm:text-lg mb-3 flex items-center gap-2">
-                         Mais vídeos <ChevronDown className="w-4 h-4" />
-                      </h4>
-                      <div className="flex gap-2 sm:gap-4 overflow-x-auto no-scrollbar pb-2">
-                          {[1,2,3,4].map(i => (
-                            <div key={i} className="w-24 sm:w-40 aspect-video rounded-lg overflow-hidden border border-white/20 shrink-0 shadow-lg group/thumb transition-all hover:scale-105">
-                               <img src={`/images/ecosystem-thumb-${i}.png`} className="w-full h-full object-cover opacity-80 group-hover/thumb:opacity-100" />
-                            </div>
-                          ))}
-                      </div>
-                  </div>
+                  <div className="absolute inset-0 bg-blue-600/10 z-10" />
 
                   {/* Play Button Overlay */}
                   <div className="absolute inset-0 z-30 flex items-center justify-center">
@@ -606,10 +572,6 @@ const VideoSection = () => {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-blue-600/10 blur-[100px] -z-10 rounded-full" />
         </div>
         
-        {/* Footer text below mockup */}
-        <div className="mt-20 text-center relative z-10">
-           <img src="/images/logo-estudei-footer.png" alt="EnfermagemPro" className="h-8 mx-auto opacity-50 brightness-0 invert" />
-        </div>
       </div>
     </section>
   );
