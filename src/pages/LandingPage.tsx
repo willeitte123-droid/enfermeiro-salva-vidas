@@ -9,7 +9,7 @@ import {
   Stethoscope, GraduationCap, Star,
   Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare,
   Video, BookOpen, MonitorPlay, ShieldCheck, Bandage, ClipboardList, FileSearch, HandHeart, BookHeart, BookText, Calculator, FileText, NotebookText, Briefcase, Bookmark,
-  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown, HelpCircle, Instagram, Mail, MessageCircle
+  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown, HelpCircle, Instagram, Mail, MessageCircle, AlertCircle, Percent
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -512,67 +512,103 @@ const VideoSection = () => {
               organiza seus estudos na prática
             </span>
           </h2>
-          <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
-            Nada de teoria solta. Aqui você vê exatamente como o sistema funciona por dentro e como ele organiza seus estudos na prática.
-          </p>
         </div>
 
-        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-[0_0_80px_-20px_rgba(37,99,235,0.4)] border border-white/10 group bg-slate-900">
-          <div className="aspect-video relative">
-            {!isPlaying ? (
-              <div 
-                className="absolute inset-0 z-20 cursor-pointer group/cover"
-                onClick={() => setIsPlaying(true)}
-              >
-                {/* Custom Video Cover */}
-                <div className="absolute inset-0 bg-[#02040a]/60 z-10 transition-colors group-hover/cover:bg-[#02040a]/40" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/40 via-transparent to-indigo-900/40 z-10" />
-                
-                {/* Animated Glow behind Play Button */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-blue-500/20 blur-[60px] rounded-full group-hover/cover:bg-blue-500/30 transition-all duration-500" />
-
-                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center">
-                  <div className="mb-6 w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_0_40px_-10px_rgba(37,99,235,0.8)] transition-transform duration-300 group-hover/cover:scale-110">
-                    <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
-                  </div>
-                  
-                  <h3 className="text-xl sm:text-3xl font-black text-white max-w-2xl leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] uppercase tracking-tight italic">
-                    Assista o vídeo e descubra como <br className="hidden sm:block" />
-                    <span className="text-blue-400">estudar com organização e resultado</span>
-                  </h3>
-
-                  <div className="mt-8 flex items-center gap-2 text-xs sm:text-sm font-bold text-white/60 uppercase tracking-widest bg-white/5 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
-                     <MonitorPlay className="w-4 h-4" /> Demonstração da Plataforma
-                  </div>
-                </div>
-
-                {/* Decorative medical symbols in the background of the cover */}
-                <div className="absolute bottom-6 left-8 opacity-10 group-hover/cover:opacity-20 transition-opacity">
-                    <HeartPulse className="w-32 h-32 text-white" />
-                </div>
-                <div className="absolute top-6 right-8 opacity-10 group-hover/cover:opacity-20 transition-opacity">
-                    <Brain className="w-24 h-24 text-white rotate-12" />
-                </div>
-              </div>
-            ) : (
-              <YouTube 
-                videoId="1LzPWeV6coU"
-                opts={{
-                  height: '100%',
-                  width: '100%',
-                  playerVars: {
-                    autoplay: 1,
-                    modestbranding: 1,
-                    rel: 0,
-                    controls: 1,
-                    playsinline: 1
-                  },
-                }}
-                className="w-full h-full"
-                iframeClassName="w-full h-full"
-              />
-            )}
+        {/* PREMIUM VIDEO MOCKUP CONTAINER */}
+        <div className="max-w-5xl mx-auto relative group">
+          
+          {/* Floating Element: Top Right Percent Badge */}
+          <div className="absolute -top-8 -right-8 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-violet-600 to-purple-800 rounded-full flex items-center justify-center shadow-2xl z-40 animate-bounce transition-transform hover:scale-110">
+             <Percent className="text-white w-8 h-8 sm:w-10 sm:h-10" strokeWidth={3} />
           </div>
+
+          {/* Floating Element: Info Box Side */}
+          <div className="absolute top-1/2 -right-4 sm:-right-10 translate-x-1/2 -translate-y-1/2 z-40 hidden lg:block animate-in slide-in-from-right-10 duration-1000">
+             <div className="bg-white rounded-3xl p-6 shadow-2xl w-64 border border-slate-200 relative">
+                <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rotate-45 border-l border-b border-slate-200" />
+                <div className="flex items-center gap-2 mb-2">
+                   <div className="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold">!</div>
+                   <h4 className="text-slate-900 font-black text-lg">Assista ao vídeo!</h4>
+                </div>
+                <p className="text-slate-500 text-sm leading-relaxed font-medium">
+                   Entenda como o EnfermagemPro vai organizar sua rotina e acelerar seus resultados.
+                </p>
+             </div>
+          </div>
+
+          {/* MAIN WHITE FRAME MOCKUP */}
+          <div className="bg-white p-2 sm:p-5 rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] border-4 border-white/20 relative z-30">
+            
+            <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-950 group/video shadow-inner">
+              {!isPlaying ? (
+                <div 
+                  className="absolute inset-0 z-20 cursor-pointer"
+                  onClick={() => setIsPlaying(true)}
+                >
+                  {/* Poster/Thumb with Overlay Elements */}
+                  <img src="/images/video-thumb-main.png" alt="Plataforma Preview" className="w-full h-full object-cover" />
+                  
+                  {/* Dark gradient for the bottom "Mais Vídeos" area */}
+                  <div className="absolute inset-0 bg-black/30 z-10 transition-colors group-hover:bg-black/20" />
+                  
+                  {/* "Mais Vídeos" Sidebar-style Overlay */}
+                  <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black/90 to-transparent z-20 px-4 sm:px-8 pb-4 flex flex-col justify-end">
+                      <h4 className="text-white font-bold text-sm sm:text-lg mb-3 flex items-center gap-2">
+                         Mais vídeos <ChevronDown className="w-4 h-4" />
+                      </h4>
+                      <div className="flex gap-2 sm:gap-4 overflow-x-auto no-scrollbar pb-2">
+                          {[1,2,3,4].map(i => (
+                            <div key={i} className="w-24 sm:w-40 aspect-video rounded-lg overflow-hidden border border-white/20 shrink-0 shadow-lg group/thumb transition-all hover:scale-105">
+                               <img src={`/images/ecosystem-thumb-${i}.png`} className="w-full h-full object-cover opacity-80 group-hover/thumb:opacity-100" />
+                            </div>
+                          ))}
+                      </div>
+                  </div>
+
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 z-30 flex items-center justify-center">
+                    <div className="w-20 h-20 sm:w-28 sm:h-28 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_0_50px_rgba(37,99,235,0.6)] transition-all duration-300 group-hover:scale-110 scale-95 group-hover:shadow-[0_0_80px_rgba(37,99,235,0.8)]">
+                      <Play className="w-8 h-8 sm:w-12 sm:h-12 text-white fill-current ml-2" />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <YouTube 
+                  videoId="1LzPWeV6coU"
+                  opts={{
+                    height: '100%',
+                    width: '100%',
+                    playerVars: {
+                      autoplay: 1,
+                      modestbranding: 1,
+                      rel: 0,
+                      controls: 1,
+                      playsinline: 1
+                    },
+                  }}
+                  className="w-full h-full"
+                  iframeClassName="w-full h-full"
+                />
+              )}
+            </div>
+
+            {/* Bottom Centered "Quero Assinar" Button (Overlapping frame) */}
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-[280px] sm:max-w-[320px]">
+               <a href="#planos" className="block w-full">
+                  <Button className="w-full bg-[#5b36bd] hover:bg-[#4c2ba3] text-white font-black h-12 sm:h-14 rounded-2xl text-lg sm:text-xl uppercase tracking-tighter shadow-[0_15px_30px_-5px_rgba(91,54,189,0.5)] border-t border-white/20 transition-transform hover:scale-105 active:scale-95">
+                     Quero Assinar
+                  </Button>
+               </a>
+            </div>
+          </div>
+
+          {/* Background Ambient Glows */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-blue-600/10 blur-[100px] -z-10 rounded-full" />
+        </div>
+        
+        {/* Footer text below mockup */}
+        <div className="mt-20 text-center relative z-10">
+           <img src="/images/logo-estudei-footer.png" alt="EnfermagemPro" className="h-8 mx-auto opacity-50 brightness-0 invert" />
         </div>
       </div>
     </section>
