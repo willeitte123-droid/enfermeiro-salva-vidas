@@ -500,6 +500,8 @@ const ClinicalCaseSection = () => {
 };
 
 const VideoSection = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   return (
     <section className="py-24 bg-[#02040a] relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
@@ -515,24 +517,61 @@ const VideoSection = () => {
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group bg-slate-900">
-          <div className="aspect-video">
-            <YouTube 
-              videoId="1LzPWeV6coU"
-              opts={{
-                height: '100%',
-                width: '100%',
-                playerVars: {
-                  autoplay: 0,
-                  modestbranding: 1,
-                  rel: 0,
-                  controls: 1,
-                  playsinline: 1
-                },
-              }}
-              className="w-full h-full"
-              iframeClassName="w-full h-full"
-            />
+        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-[0_0_80px_-20px_rgba(37,99,235,0.4)] border border-white/10 group bg-slate-900">
+          <div className="aspect-video relative">
+            {!isPlaying ? (
+              <div 
+                className="absolute inset-0 z-20 cursor-pointer group/cover"
+                onClick={() => setIsPlaying(true)}
+              >
+                {/* Custom Video Cover */}
+                <div className="absolute inset-0 bg-[#02040a]/60 z-10 transition-colors group-hover/cover:bg-[#02040a]/40" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/40 via-transparent to-indigo-900/40 z-10" />
+                
+                {/* Animated Glow behind Play Button */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-blue-500/20 blur-[60px] rounded-full group-hover/cover:bg-blue-500/30 transition-all duration-500" />
+
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center">
+                  <div className="mb-6 w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_0_40px_-10px_rgba(37,99,235,0.8)] transition-transform duration-300 group-hover/cover:scale-110">
+                    <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-current ml-1" />
+                  </div>
+                  
+                  <h3 className="text-xl sm:text-3xl font-black text-white max-w-2xl leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] uppercase tracking-tight italic">
+                    Assista o vídeo e descubra como <br className="hidden sm:block" />
+                    <span className="text-blue-400">estudar com organização e resultado</span>
+                  </h3>
+
+                  <div className="mt-8 flex items-center gap-2 text-xs sm:text-sm font-bold text-white/60 uppercase tracking-widest bg-white/5 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+                     <MonitorPlay className="w-4 h-4" /> Demonstração da Plataforma
+                  </div>
+                </div>
+
+                {/* Decorative medical symbols in the background of the cover */}
+                <div className="absolute bottom-6 left-8 opacity-10 group-hover/cover:opacity-20 transition-opacity">
+                    <HeartPulse className="w-32 h-32 text-white" />
+                </div>
+                <div className="absolute top-6 right-8 opacity-10 group-hover/cover:opacity-20 transition-opacity">
+                    <Brain className="w-24 h-24 text-white rotate-12" />
+                </div>
+              </div>
+            ) : (
+              <YouTube 
+                videoId="1LzPWeV6coU"
+                opts={{
+                  height: '100%',
+                  width: '100%',
+                  playerVars: {
+                    autoplay: 1,
+                    modestbranding: 1,
+                    rel: 0,
+                    controls: 1,
+                    playsinline: 1
+                  },
+                }}
+                className="w-full h-full"
+                iframeClassName="w-full h-full"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -553,7 +592,7 @@ const EcosystemSection = () => {
     { title: "FLASHCARDS", desc: "Fixação ativa para acelerar memorização e retenção.", icon: Copy, image: "/images/ecosystem/flashcards.png" },
     { title: "ÁREA DE REVISÃO", desc: "Reforce exatamente os pontos com maior índice de erro.", icon: BookOpen, image: "/images/ecosystem/area-de-revisao.png" },
     { title: "ANATOMIA", desc: "Base técnica estruturada para domínio dos fundamentos.", icon: Activity, image: "/images/ecosystem/anatomia.png" },
-    { title: "MEU DESEMPENHO", desc: "Acompanhe sua evolução com dadas claros e mensuráveis.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
+    { title: "MEU DESEMPENHO", desc: "ACOMPANHE SUA EVOLUÇÃO COM DADOS CLAROS E MENSURÁVEIS.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
     { title: "MEDICAMENTOS", desc: "Revisão prática de fármacos essenciais para o plantão.", icon: Syringe, image: "/images/ecosystem/medicamentos.png" },
     { title: "EMERGÊNCIAS", desc: "Protocolos objetivos para decisões rápidas.", icon: Siren, image: "/images/ecosystem/emergencias.png" },
     { title: "CURATIVOS", desc: "Tipos de leões e condutas corretas.", icon: Bandage, image: "/images/ecosystem/curativos.png" },
@@ -971,7 +1010,7 @@ const UnifiedSocialSection = () => {
         {/* Luzes de Fundo que conectam as duas partes */}
         <div className="absolute top-1/4 left-0 w-full h-full bg-gradient-to-b from-transparent via-blue-900/10 to-transparent pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[800px] bg-indigo-900/10 blur-[180px] pointer-events-none rounded-full" />
-        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-yellow-500/5 blur-[120px] pointer-events-none rounded-full" />
+        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-yellow-50/5 blur-[120px] pointer-events-none rounded-full" />
 
         {/* PARTE 1: RANKING */}
         <section id="ranking" className="py-24 relative z-10">
