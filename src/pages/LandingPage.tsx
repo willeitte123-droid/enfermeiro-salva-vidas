@@ -931,7 +931,7 @@ const AppShowcaseSection = () => {
 
                 {/* Final Content Block - STATIC POSITIONED AFTER STICKY IMAGES */}
                 <div className="relative z-50 text-center space-y-10 py-12 sm:py-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-                    <h3 className="text-4xl md:text-7xl font-black text-white italic tracking-tighter drop-shadow-2xl">
+                    <h3 className="text-3xl md:text-5xl font-black text-white italic tracking-tighter drop-shadow-2xl">
                        E muuuuito mais..
                     </h3>
                     <div className="flex justify-center">
