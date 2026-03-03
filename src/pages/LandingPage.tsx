@@ -515,7 +515,7 @@ const VideoSection = () => {
         </div>
 
         {/* PREMIUM VIDEO MOCKUP CONTAINER */}
-        <div className="max-w-5xl mx-auto relative">
+        <div className="max-w-5xl mx-auto relative group">
           
           {/* MAIN WHITE FRAME MOCKUP */}
           <div className="bg-white p-2 sm:p-5 rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] border-4 border-white/20 relative z-30">
@@ -561,7 +561,7 @@ const VideoSection = () => {
             {/* Bottom Centered "Quero Assinar" Button (Overlapping frame) */}
             <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-[280px] sm:max-w-[320px]">
                <a href="#planos" className="block w-full">
-                  <Button className="w-full bg-[#5b36bd] hover:bg-[#4c2ba3] text-white font-black h-12 sm:h-14 rounded-2xl text-lg sm:text-xl uppercase tracking-tighter shadow-[0_15px_30px_-5px_rgba(91,54,189,0.5)] border-t border-white/20 transition-transform hover:scale-105 active:scale-95">
+                  <Button className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black h-12 sm:h-14 rounded-2xl text-lg sm:text-xl uppercase tracking-tighter shadow-[0_15px_35px_rgba(37,99,235,0.6)] border-t border-white/20 transition-all hover:scale-105 active:scale-95 hover:shadow-[0_20px_45px_rgba(37,99,235,0.8)]">
                      Quero Assinar
                   </Button>
                </a>
@@ -954,7 +954,7 @@ const ForWhomSection = () => {
     <section className="py-24 bg-white relative">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">
             Feito para você dominar a <span className="text-blue-500">Enfermagem</span>
           </h2>
           <p className="text-lg text-slate-600">
