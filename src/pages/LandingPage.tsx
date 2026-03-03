@@ -1566,13 +1566,13 @@ export default function LandingPage() {
             <div className="flex flex-col items-center gap-4">
               <div className="relative group">
                 <div className="absolute inset-0 bg-blue-500/20 blur-[80px] rounded-full group-hover:bg-blue-500/40 transition-all duration-700" />
-                <div className="relative z-10 w-44 h-44 sm:w-56 sm:h-56 rounded-full p-1 bg-gradient-to-b from-white/20 to-white/5 border border-white/10 shadow-2xl overflow-hidden flex items-center justify-center backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
-                  <div className="absolute inset-0 rounded-full border border-blue-500/10 m-3 pointer-events-none" />
-                  <div className="absolute inset-0 rounded-full border border-white/5 m-6 pointer-events-none" />
+                <div className="relative z-10 w-44 h-44 sm:w-56 sm:h-56 rounded-xl p-1 bg-gradient-to-b from-white/20 to-white/5 border border-white/10 shadow-2xl overflow-hidden flex items-center justify-center backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
+                  <div className="absolute inset-0 rounded-xl border border-blue-500/10 m-3 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-xl border border-white/5 m-6 pointer-events-none" />
                   <img 
                     src="/images/footer-logo.png" 
-                    alt="Logo Enfermagem Pro Circular" 
-                    className="w-[85%] h-[85%] object-contain rounded-full brightness-110 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                    alt="Logo Enfermagem Pro 3D" 
+                    className="w-[85%] h-[85%] object-contain brightness-110 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]"
                   />
                 </div>
               </div>
