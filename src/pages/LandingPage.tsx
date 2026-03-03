@@ -9,7 +9,7 @@ import {
   Stethoscope, GraduationCap, Star,
   Menu, X, Play, HeartPulse, Activity, Droplet, AlertTriangle, Skull, Trophy, Map, Library, FileQuestion, Copy, MessageSquare,
   Video, BookOpen, MonitorPlay, ShieldCheck, Bandage, ClipboardList, FileSearch, HandHeart, BookHeart, BookText, Calculator, FileText, NotebookText, Briefcase, Bookmark,
-  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown, HelpCircle, Instagram, Mail, MessageCircle, AlertCircle, Percent, CircleDashed
+  Siren, FlaskConical, Target, Shield, Lock, Zap as Lightning, ChevronDown, HelpCircle, Instagram, Mail, MessageCircle, AlertCircle, Percent
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -66,11 +66,19 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#030014]/80 backdrop-blur-xl supports-[backdrop-filter]:bg-[#030014]/50 transition-all duration-300">
       <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-             <Syringe className="text-white w-6 h-6" />
+        <div className="flex items-center gap-4">
+          {/* Novo Logotipo com Efeito Mockup */}
+          <div className="relative group">
+             <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+             <div className="relative w-11 h-11 sm:w-12 sm:h-12 bg-slate-900 rounded-full flex items-center justify-center overflow-hidden border border-white/20 shadow-2xl transition-transform duration-500 group-hover:scale-110">
+                <img 
+                    src="/images/logo-navbar-new.png" 
+                    alt="Logo Enfermagem Pro" 
+                    className="w-full h-full object-cover"
+                />
+             </div>
           </div>
-          <span className="font-bold text-2xl tracking-tight text-white">
+          <span className="font-bold text-xl sm:text-2xl tracking-tight text-white">
             Enfermagem<span className="text-blue-500">Pro</span>
           </span>
         </div>
@@ -224,16 +232,8 @@ const Hero = () => {
             
             {/* TEXT COLUMN (Left) */}
             <div className="flex-1 text-left max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {/* Logo Branding - NEW (RESTAURADO) */}
-                <div className="mb-8 flex items-center gap-3">
-                   <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 border border-white/10">
-                      <Syringe className="text-white w-7 h-7" />
-                   </div>
-                   <div className="flex flex-col">
-                      <span className="text-2xl font-black text-white leading-none">Enfermagem<span className="text-blue-500">Pro</span></span>
-                      <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-blue-400 mt-1">Plataforma de Elite</span>
-                   </div>
-                </div>
+                {/* Badge Removido */}
+                <div className="mb-6"></div>
 
                 {/* Title */}
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
@@ -343,7 +343,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
-            <CircleDashed className="h-3 w-3 sm:h-4 sm:w-4" />
+            <Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
             <span className={cn("text-3xl sm:text-5xl font-black leading-none", spo2 < 90 ? "text-yellow-400 animate-pulse" : "text-blue-400")}>
@@ -613,7 +613,7 @@ const EcosystemSection = () => {
     { title: "ÁREA DO CONCURSEIRO", desc: "Organização estratégica por edital e foco no que realmente cai.", icon: GraduationCap, image: "/images/ecosystem/area-do-concurseiro.png" },
     { title: "CASOS CLÍNICOS", desc: "Treine decisões reais em ambiente seguro de aprendizado.", icon: Stethoscope, image: "/images/ecosystem/casos-clinicos.png" },
     { title: "BIBLIOTECA DIGITAL", desc: "Consulta rápida e estruturada para revisão técnica.", icon: Library, image: "/images/ecosystem/biblioteca.png" },
-    { title: "FLASHCARDS", desc: "Fixação ativa para acelerar memorização e retention.", icon: Copy, image: "/images/ecosystem/flashcards.png" },
+    { title: "FLASHCARDS", desc: "Fixação ativa para acelerar memorização e retenção.", icon: Copy, image: "/images/ecosystem/flashcards.png" },
     { title: "ÁREA DE REVISÃO", desc: "Reforce exatamente os pontos com maior índice de erro.", icon: BookOpen, image: "/images/ecosystem/area-de-revisao.png" },
     { title: "ANATOMIA", desc: "Base técnica estruturada para domínio dos fundamentos.", icon: Activity, image: "/images/ecosystem/anatomia.png" },
     { title: "MEU DESEMPENHO", desc: "ACOMPANHE SUA EVOLUÇÃO COM DADOS CLAROS E MENSURÁVEIS.", icon: Trophy, image: "/images/ecosystem/area-de-desempenho.png" },
@@ -939,7 +939,7 @@ const AppShowcaseSection = () => {
 
                 {/* Final Content Block - STATIC POSITIONED AFTER STICKY IMAGES */}
                 <div className="relative z-50 text-center space-y-10 py-12 sm:py-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-                    <h3 className="text-xl md:text-2xl font-black text-white italic tracking-tighter drop-shadow-2xl uppercase">
+                    <h3 className="text-4xl md:text-7xl font-black text-white italic tracking-tighter drop-shadow-2xl">
                        E muuuuito mais..
                     </h3>
                     <div className="flex justify-center">
