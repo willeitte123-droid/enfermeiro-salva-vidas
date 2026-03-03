@@ -172,8 +172,8 @@ const Login = () => {
             )}
           </div>
           
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
-            Enfermagem Pro
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-3 text-white">
+            Enfermagem <span className="text-blue-500">Pro</span>
           </h1>
           
           <p className="text-lg sm:text-xl font-medium text-blue-100 mb-6 leading-relaxed">
