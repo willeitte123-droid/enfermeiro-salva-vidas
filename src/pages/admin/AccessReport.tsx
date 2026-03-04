@@ -6,8 +6,8 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   AreaChart, Area, PieChart, Pie, Cell, Tooltip as RechartsTooltip
 } from "recharts";
-import { Loader2, Users, MousePointer, Clock, Map, TrendingUp, Calendar, AlertTriangle, Wrench, RefreshCw, CheckCircle2, Radio } from "lucide-react";
-import { format, subDays, startOfDay, endOfDay, parseISO, getHours } from "date-fns";
+import { Loader2, Users, MousePointer, Clock, Map, TrendingUp, Calendar, AlertTriangle, Wrench, RefreshCw, Radio } from "lucide-react";
+import { format, subDays, parseISO, getHours } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -18,33 +18,13 @@ import { Badge } from "@/components/ui/badge";
 const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4', '#6366f1', '#14b8a6', '#f97316', '#d946ef', '#84cc16'];
 
 const fetchAccessData = async () => {
-  const today = new Date();
-  const startDate = subDays(today, 30).toISOString(); // Últimos 30 dias
-
-  // 0. Buscar IDs dos Administradores para excluir das métricas
-  const { data: adminProfiles, error: adminError } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('role', 'admin');
-
-  if (adminError) console.error("Erro ao identificar admins:", adminError);
-
-  const adminIds = adminProfiles?.map(p => p.id) || [];
-  // Formata para o filtro do Supabase: (id1,id2,id3)
-  const adminIdsString = adminIds.length > 0 ? `(${adminIds.join(',')})` : null;
+  const startDate = subDays(new Date(), 30).toISOString();
 
   // 1. Logs de Acesso (Page Views)
-  let logsQuery = supabase
+  const { data: logs, error: logsError } = await supabase
     .from('access_logs')
     .select('created_at, path, user_id')
     .gte('created_at', startDate);
-
-  // Filtra admins se houver algum
-  if (adminIdsString) {
-    logsQuery = logsQuery.not('user_id', 'in', adminIdsString);
-  }
-
-  const { data: logs, error: logsError } = await logsQuery;
 
   if (logsError) {
     if (logsError.code === '42P01') throw new Error("TABELAS_INEXISTENTES");
@@ -52,21 +32,12 @@ const fetchAccessData = async () => {
   }
 
   // 2. Tempo Diário
-  let timeQuery = supabase
+  const { data: dailyTime, error: timeError } = await supabase
     .from('daily_activity_time')
     .select('activity_date, seconds, user_id')
-    .gte('activity_date', startDate);
+    .gte('activity_date', format(subDays(new Date(), 30), 'yyyy-MM-dd'));
 
-  // Filtra admins se houver algum
-  if (adminIdsString) {
-    timeQuery = timeQuery.not('user_id', 'in', adminIdsString);
-  }
-
-  const { data: dailyTime, error: timeError } = await timeQuery;
-
-  const safeDailyTime = timeError ? [] : dailyTime;
-
-  return { logs, dailyTime: safeDailyTime };
+  return { logs: logs || [], dailyTime: dailyTime || [] };
 };
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -95,48 +66,22 @@ const AccessReport = () => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['accessReport'],
     queryFn: fetchAccessData,
-    staleTime: Infinity, // Mantemos os dados "frescos" indefinidamente, pois o Realtime fará o update
+    refetchInterval: 30000, // Polling a cada 30s como fallback
   });
 
-  // --- CONFIGURAÇÃO REALTIME ---
   useEffect(() => {
-    const channel = supabase
-      .channel('analytics-realtime')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'access_logs',
-        },
-        () => {
-          // Atualiza quando houver nova visualização de página
-          queryClient.invalidateQueries({ queryKey: ['accessReport'] });
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: '*', // INSERT ou UPDATE
-          schema: 'public',
-          table: 'daily_activity_time',
-        },
-        () => {
-          // Atualiza quando o tempo de uso mudar
-          queryClient.invalidateQueries({ queryKey: ['accessReport'] });
-        }
-      )
+    const channel = supabase.channel('analytics-realtime')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'access_logs' }, () => {
+        queryClient.invalidateQueries({ queryKey: ['accessReport'] });
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'daily_activity_time' }, () => {
+        queryClient.invalidateQueries({ queryKey: ['accessReport'] });
+      })
       .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          setIsRealtimeConnected(true);
-        } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
-          setIsRealtimeConnected(false);
-        }
+        setIsRealtimeConnected(status === 'SUBSCRIBED');
       });
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    return () => { supabase.removeChannel(channel); };
   }, [queryClient]);
 
   const handleInstallAnalytics = async () => {
@@ -144,19 +89,11 @@ const AccessReport = () => {
     const toastId = toast.loading("Configurando tabelas de Analytics...");
     try {
       const { data, error } = await supabase.functions.invoke('install-schema');
-      
       if (error) throw new Error(error.message);
-      if (data && data.error) throw new Error(data.error);
-      
-      toast.success("Tabelas instaladas com sucesso!", { id: toastId });
-      
-      setTimeout(() => {
-         refetch();
-         window.location.reload(); 
-      }, 1500);
-
+      toast.success("Tabelas instaladas!");
+      setTimeout(() => window.location.reload(), 1500);
     } catch (err: any) {
-      toast.error("Erro na instalação: " + err.message, { id: toastId });
+      toast.error("Erro: " + err.message);
     } finally {
       setIsInstalling(false);
     }
@@ -167,120 +104,63 @@ const AccessReport = () => {
     const { logs, dailyTime } = data;
     const todayStr = format(new Date(), 'yyyy-MM-dd');
 
-    // --- HOJE ---
-    const logsToday = logs?.filter(l => l.created_at.startsWith(todayStr)) || [];
+    // HOJE
+    const logsToday = logs.filter(l => l.created_at.startsWith(todayStr));
     const activeUsersToday = new Set(logsToday.map(l => l.user_id)).size;
     const totalViewsToday = logsToday.length;
     
-    // Tempo médio hoje (Calculado com base nos usuários que têm registro de tempo)
-    const timeToday = dailyTime?.filter(t => t.activity_date === todayStr) || [];
-    // Usuários únicos que geraram tempo hoje (mais preciso que usar activeUsersToday de pageviews)
-    const activeTimeUsersCount = new Set(timeToday.map(t => t.user_id)).size;
+    const timeToday = dailyTime.filter(t => t.activity_date === todayStr);
     const totalSecondsToday = timeToday.reduce((acc, curr) => acc + curr.seconds, 0);
-    
-    // Usa o contador de usuários de tempo se houver, senão usa o de pageviews como fallback
-    const divisor = activeTimeUsersCount > 0 ? activeTimeUsersCount : activeUsersToday;
-    const avgTimeToday = divisor > 0 ? Math.round(totalSecondsToday / divisor / 60) : 0; 
+    const avgTimeToday = activeUsersToday > 0 ? Math.round(totalSecondsToday / activeUsersToday / 60) : 0; 
 
-    // --- GRÁFICO DIÁRIO (Últimos 7 dias) ---
+    // TENDÊNCIA
     const dailyTrend = [];
     for (let i = 6; i >= 0; i--) {
       const date = subDays(new Date(), i);
       const dateKey = format(date, 'yyyy-MM-dd');
-      const displayDate = format(date, 'dd/MM');
-      
-      const dayLogs = logs?.filter(l => l.created_at.startsWith(dateKey)) || [];
+      const dayLogs = logs.filter(l => l.created_at.startsWith(dateKey));
       const dayUsers = new Set(dayLogs.map(l => l.user_id)).size;
-      
-      const dayTimeRecords = dailyTime?.filter(t => t.activity_date === dateKey) || [];
-      const dayTimeUsers = new Set(dayTimeRecords.map(t => t.user_id)).size;
-      const dayTimeSeconds = dayTimeRecords.reduce((acc, c) => acc + c.seconds, 0) || 0;
-      
-      const dayDivisor = dayTimeUsers > 0 ? dayTimeUsers : dayUsers;
-      const avgMin = dayDivisor > 0 ? Math.round(dayTimeSeconds / dayDivisor / 60) : 0;
-
+      const dayTime = dailyTime.filter(t => t.activity_date === dateKey).reduce((acc, c) => acc + c.seconds, 0);
       dailyTrend.push({
-        date: displayDate,
+        date: format(date, 'dd/MM'),
         Usuários: dayUsers,
         Visualizações: dayLogs.length,
-        'Tempo Médio (min)': avgMin
+        'Tempo Médio (min)': dayUsers > 0 ? Math.round(dayTime / dayUsers / 60) : 0
       });
     }
 
-    // --- HORÁRIOS DE PICO ---
+    // PICOS
     const hourlyMap = new Array(24).fill(0);
-    logs?.forEach(l => {
+    logs.forEach(l => {
       const hour = getHours(parseISO(l.created_at));
       hourlyMap[hour]++;
     });
-    const hourlyData = hourlyMap.map((count, i) => ({
-      hour: `${i}h`,
-      Acessos: count
-    }));
+    const hourlyData = hourlyMap.map((count, i) => ({ hour: `${i}h`, Acessos: count }));
 
-    // --- MÓDULOS MAIS ACESSADOS ---
+    // MÓDULOS
     const pathMap: Record<string, number> = {};
-    logs?.forEach(l => {
-      let path = l.path;
-      
-      // Não contabiliza acessos ao Dashboard ('/')
-      if (path === '/') {
-        return;
-      }
-      
-      // Normalização para evitar duplicidade com query params ou trailing slash
-      path = path.split('?')[0].replace(/\/$/, '');
+    logs.forEach(l => {
+      if (l.path === '/') return;
+      let name = l.path.split('?')[0].replace(/\/$/, '');
+      if (name.startsWith('/questions')) name = 'Questões';
+      else if (name.startsWith('/simulado')) name = 'Simulado';
+      else if (name.startsWith('/medications')) name = 'Medicamentos';
+      else if (name.startsWith('/emergency')) name = 'Emergências';
+      else if (name.startsWith('/concursos')) name = 'Concursos';
+      else if (name.startsWith('/library')) name = 'Biblioteca';
+      else if (name.startsWith('/video-library')) name = 'Vídeos'; 
+      else if (name.startsWith('/study-tracks')) name = 'Trilhas';
+      else if (name.startsWith('/flashcards')) name = 'Flashcards';
+      else if (name.startsWith('/review-area')) name = 'Revisão';
+      else if (name.startsWith('/anatomy')) name = 'Anatomia';
+      else if (name.startsWith('/semiology')) name = 'Semiologia';
+      else if (name.startsWith('/ecg')) name = 'Guia ECG';
+      else if (name.startsWith('/calculator')) name = 'Calculadoras';
+      else if (name.startsWith('/favorites')) name = 'Favoritos';
+      else if (name.startsWith('/ranking')) name = 'Ranking';
+      else name = 'Outros';
 
-      // Mapeamento Detalhado
-      if (path.startsWith('/questions')) path = 'Questões';
-      else if (path.startsWith('/simulado')) path = 'Simulado';
-      else if (path.startsWith('/medications')) path = 'Medicamentos';
-      else if (path.startsWith('/emergency')) path = 'Emergências';
-      else if (path.startsWith('/concursos')) path = 'Concursos';
-      else if (path.startsWith('/library')) path = 'Biblioteca';
-      else if (path.startsWith('/video-library')) path = 'Vídeos'; 
-      else if (path.startsWith('/study-tracks')) path = 'Trilha de Estudos';
-      else if (path.startsWith('/concurseiro')) path = 'Área do Concurseiro';
-      else if (path.startsWith('/clinical-cases')) path = 'Casos Clínicos';
-      else if (path.startsWith('/flashcards')) path = 'Flashcards';
-      else if (path.startsWith('/review-area')) path = 'Área de Revisão';
-      else if (path.startsWith('/anatomy')) path = 'Anatomia';
-      else if (path.startsWith('/semiology')) path = 'Semiologia';
-      else if (path.startsWith('/semiotechnique')) path = 'Semiotécnica';
-      else if (path.startsWith('/ecg')) path = 'Guia de ECG';
-      else if (path.startsWith('/nursing-notes')) path = 'Anotações de Enfermagem';
-      else if (path.startsWith('/technical-terms')) path = 'Termos Técnicos';
-      else if (path.startsWith('/calculator')) path = 'Calculadora Gotejamento';
-      else if (path.startsWith('/favorites')) path = 'Favoritos';
-      else if (path.startsWith('/ranking')) path = 'Ranking';
-      else if (path.startsWith('/wound-care')) path = 'Curativos';
-      else if (path.startsWith('/procedures')) path = 'Procedimentos';
-      
-      // Ferramentas Específicas
-      else if (path.startsWith('/tools/dose-calculator')) path = 'Calc. Doses';
-      else if (path.startsWith('/tools/lab-values')) path = 'Valores Lab.';
-      else if (path.startsWith('/tools/bloco-de-notas')) path = 'Bloco de Notas';
-      else if (path.startsWith('/tools/integrated-calculators')) path = 'Calc. Integradas';
-      else if (path.startsWith('/tools/performance')) path = 'Desempenho';
-      
-      else if (path.startsWith('/scales')) path = 'Escalas';
-      
-      // Perfis e Auth
-      else if (path.startsWith('/user')) path = 'Perfil Público';
-      else if (path.startsWith('/profile')) path = 'Meu Perfil';
-      else if (path.startsWith('/update-password')) path = 'Recuperar Senha';
-      else if (path.startsWith('/login')) path = 'Login';
-      else if (path.startsWith('/register')) path = 'Cadastro';
-      else if (path.startsWith('/oferta')) path = 'Landing Page';
-      
-      // Fallback para qualquer outra rota não mapeada explicitamente
-      else {
-          // Agrupa qualquer outra coisa como "Outros" para evitar nomes estranhos (como "Curso")
-          // que possam ter sido logados por erro ou testes antigos.
-          path = 'Outros / Desconhecido';
-      }
-
-      pathMap[path] = (pathMap[path] || 0) + 1;
+      pathMap[name] = (pathMap[name] || 0) + 1;
     });
 
     const modulesData = Object.entries(pathMap)
@@ -288,45 +168,21 @@ const AccessReport = () => {
       .sort((a, b) => b.value - a.value)
       .slice(0, 15); 
 
-    return {
-      activeUsersToday,
-      totalViewsToday,
-      avgTimeToday,
-      dailyTrend,
-      hourlyData,
-      modulesData
-    };
+    return { activeUsersToday, totalViewsToday, avgTimeToday, dailyTrend, hourlyData, modulesData };
   }, [data]);
 
   if (isLoading) return <div className="flex justify-center items-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
   if (error) {
-    const isTableMissing = error.message === "TABELAS_INEXISTENTES" || (error as any).code === '42P01';
-
     return (
-      <div className="flex flex-col gap-6 p-4">
-        <Alert variant="destructive" className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900">
-          <AlertTriangle className="h-5 w-5" />
-          <AlertTitle className="text-lg font-bold">Configuração Necessária</AlertTitle>
-          <AlertDescription className="mt-2">
-            <p className="mb-4 text-sm">
-              {isTableMissing 
-                ? "As tabelas de relatório de acesso ainda não foram criadas no banco de dados." 
-                : `Erro ao carregar dados: ${(error as Error).message}`}
-            </p>
-            <div className="flex gap-3">
-                <Button 
-                  onClick={handleInstallAnalytics} 
-                  disabled={isInstalling}
-                  className="bg-red-600 hover:bg-red-700 text-white border-none shadow-sm"
-                >
-                  {isInstalling ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wrench className="mr-2 h-4 w-4" />}
-                  {isInstalling ? "Configurando..." : "Configurar Agora"}
-                </Button>
-            </div>
-          </AlertDescription>
-        </Alert>
-      </div>
+      <Alert variant="destructive">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertTitle>Configuração Pendente</AlertTitle>
+        <AlertDescription className="mt-2">
+          As tabelas de analytics precisam ser instaladas.
+          <Button onClick={handleInstallAnalytics} disabled={isInstalling} className="mt-4 block"><Wrench className="mr-2 h-4 w-4" /> Instalar Agora</Button>
+        </AlertDescription>
+      </Alert>
     );
   }
 
@@ -334,187 +190,54 @@ const AccessReport = () => {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      
-      {/* 1. KPIs de Hoje e Status Realtime */}
-      <div className="flex justify-end items-center -mb-2">
-         {isRealtimeConnected ? (
-            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 flex items-center gap-1.5 px-2">
-               <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-               </span>
-               Ao Vivo (Excl. Admins)
-            </Badge>
-         ) : (
-            <Badge variant="outline" className="bg-muted text-muted-foreground flex items-center gap-1.5 px-2">
-               <Radio className="w-3 h-3" /> Offline
-            </Badge>
-         )}
-      </div>
+      <div className="flex justify-end">{isRealtimeConnected ? <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Realtime Ativo</Badge> : <Badge variant="outline">Offline</Badge>}</div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white border-none shadow-lg">
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-blue-100 text-sm font-medium uppercase tracking-wider mb-1">Usuários Ativos (Hoje)</p>
-              <h3 className="text-4xl font-black">{stats.activeUsersToday}</h3>
-            </div>
-            <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-              <Users className="h-8 w-8 text-white" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white border-none shadow-lg">
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-emerald-100 text-sm font-medium uppercase tracking-wider mb-1">Acessos Totais</p>
-              <h3 className="text-4xl font-black">{stats.totalViewsToday}</h3>
-              <p className="text-xs text-emerald-100 mt-1">visualizações de página</p>
-            </div>
-            <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-              <MousePointer className="h-8 w-8 text-white" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white border-none shadow-lg">
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-purple-100 text-sm font-medium uppercase tracking-wider mb-1">Tempo Médio</p>
-              <h3 className="text-4xl font-black">{stats.avgTimeToday}<span className="text-xl font-normal ml-1">min</span></h3>
-              <p className="text-xs text-purple-100 mt-1">por usuário hoje</p>
-            </div>
-            <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-              <Clock className="h-8 w-8 text-white" />
-            </div>
-          </CardContent>
-        </Card>
+        <Card className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg"><CardContent className="p-6">
+          <p className="text-blue-100 text-sm font-medium uppercase mb-1">Usuários Ativos (Hoje)</p>
+          <h3 className="text-4xl font-black">{stats.activeUsersToday}</h3>
+        </CardContent></Card>
+        <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg"><CardContent className="p-6">
+          <p className="text-emerald-100 text-sm font-medium uppercase mb-1">Visualizações (Hoje)</p>
+          <h3 className="text-4xl font-black">{stats.totalViewsToday}</h3>
+        </CardContent></Card>
+        <Card className="bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg"><CardContent className="p-6">
+          <p className="text-purple-100 text-sm font-medium uppercase mb-1">Tempo Médio (Hoje)</p>
+          <h3 className="text-4xl font-black">{stats.avgTimeToday}min</h3>
+        </CardContent></Card>
       </div>
 
-      {/* 2. Gráficos Principais */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* Tendência Diária */}
-        <Card className="shadow-md">
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-primary" /> Atividade (Últimos 7 Dias)
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={stats.dailyTrend}>
-                <defs>
-                  <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
-                <XAxis dataKey="date" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip content={<CustomTooltip />} />
-                <Area type="monotone" dataKey="Usuários" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorUsers)" />
-                <Area type="monotone" dataKey="Visualizações" stroke="#10b981" strokeWidth={2} fill="transparent" strokeDasharray="5 5" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Horários de Pico */}
-        <Card className="shadow-md">
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <Clock className="h-5 w-5 text-orange-500" /> Mapa de Calor (Horário)
-            </CardTitle>
-            <CardDescription>Acumulado dos últimos 30 dias</CardDescription>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={stats.hourlyData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
-                <XAxis dataKey="hour" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} interval={2} />
-                <YAxis hide />
-                <Tooltip content={<CustomTooltip />} cursor={{fill: 'transparent'}} />
-                <Bar dataKey="Acessos" radius={[4, 4, 0, 0]}>
-                  {stats.hourlyData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.Acessos > 50 ? '#f59e0b' : '#3b82f6'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
+        <Card><CardHeader><CardTitle className="text-base">Atividade (7 Dias)</CardTitle></CardHeader><CardContent className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%"><AreaChart data={stats.dailyTrend}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
+            <XAxis dataKey="date" fontSize={12} tickLine={false} axisLine={false} />
+            <YAxis fontSize={12} tickLine={false} axisLine={false} />
+            <Tooltip content={<CustomTooltip />} />
+            <Area type="monotone" dataKey="Usuários" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.1} strokeWidth={3} />
+            <Area type="monotone" dataKey="Visualizações" stroke="#10b981" fill="transparent" strokeWidth={2} strokeDasharray="5 5" />
+          </AreaChart></ResponsiveContainer>
+        </CardContent></Card>
+        <Card><CardHeader><CardTitle className="text-base">Mapa de Calor (Horário)</CardTitle></CardHeader><CardContent className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%"><BarChart data={stats.hourlyData}>
+            <XAxis dataKey="hour" fontSize={10} interval={2} />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar dataKey="Acessos" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+          </BarChart></ResponsiveContainer>
+        </CardContent></Card>
       </div>
 
-      {/* 3. Módulos Mais Acessados */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-1 shadow-md">
-           <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                 <Map className="h-5 w-5 text-purple-500" /> Distribuição de Tráfego
-              </CardTitle>
-           </CardHeader>
-           <CardContent className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                 <PieChart>
-                    <Pie
-                      data={stats.modulesData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {stats.modulesData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip content={<CustomTooltip />} />
-                 </PieChart>
-              </ResponsiveContainer>
-           </CardContent>
-        </Card>
-
-        <Card className="lg:col-span-2 shadow-md">
-           <CardHeader>
-              <CardTitle className="text-base">Ranking de Módulos</CardTitle>
-              <CardDescription>Páginas mais visitadas nos últimos 30 dias</CardDescription>
-           </CardHeader>
-           <CardContent className="p-0">
-              <ScrollArea className="h-[300px]">
-                 <div className="p-6 pt-0">
-                    {stats.modulesData.map((item, index) => (
-                       <div key={index} className="flex items-center gap-4 py-3 border-b last:border-0 hover:bg-muted/30 transition-colors px-2 rounded-lg">
-                          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-muted-foreground text-xs">
-                             {index + 1}
-                          </div>
-                          <div className="flex-1">
-                             <div className="flex justify-between mb-1">
-                                <span className="font-semibold text-sm truncate max-w-[250px]" title={item.name}>{item.name}</span>
-                                <span className="font-bold text-primary">{item.value}</span>
-                             </div>
-                             <div className="w-full bg-muted rounded-full h-1.5">
-                                <div 
-                                   className="h-full rounded-full" 
-                                   style={{ 
-                                      width: `${(item.value / stats.modulesData[0].value) * 100}%`,
-                                      backgroundColor: COLORS[index % COLORS.length] 
-                                   }} 
-                                />
-                             </div>
-                          </div>
-                       </div>
-                    ))}
-                 </div>
-              </ScrollArea>
-           </CardContent>
-        </Card>
-      </div>
-
+      <Card><CardHeader><CardTitle className="text-base">Ranking de Módulos</CardTitle></CardHeader><CardContent className="p-0">
+        <ScrollArea className="h-[300px] p-6">{stats.modulesData.map((item, index) => (
+          <div key={index} className="flex items-center gap-4 py-3 border-b last:border-0 hover:bg-muted/30 px-2 rounded-lg">
+            <span className="w-8 font-bold text-muted-foreground text-xs">{index + 1}</span>
+            <div className="flex-1">
+              <div className="flex justify-between mb-1"><span className="font-semibold text-sm">{item.name}</span><span className="font-bold text-primary">{item.value}</span></div>
+              <div className="w-full bg-muted rounded-full h-1.5"><div className="h-full bg-primary rounded-full" style={{ width: `${(item.value / stats.modulesData[0].value) * 100}%` }} /></div>
+            </div>
+          </div>
+        ))}</ScrollArea>
+      </CardContent></Card>
     </div>
   );
 };

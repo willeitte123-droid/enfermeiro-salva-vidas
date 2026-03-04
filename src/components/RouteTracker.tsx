@@ -13,21 +13,17 @@ export const RouteTracker = () => {
     const logAccess = async () => {
       if (!session?.user) return;
       
-      // Bloqueio Total para Admins: Não rastrear navegação de administradores
-      if (profile?.role === 'admin') return;
-
+      // Removido o bloqueio para administradores para permitir visualização de dados durante testes
       try {
         await supabase.from('access_logs').insert({
           user_id: session.user.id,
           path: location.pathname
         });
       } catch (error) {
-        // Silenciosamente falha para não atrapalhar o usuário
         console.error("Erro ao logar acesso:", error);
       }
     };
 
-    // Só executa se o perfil já estiver carregado e não for admin
     if (profile) {
       logAccess();
     }
