@@ -890,13 +890,13 @@ const FeaturesList = () => {
 
 const AppShowcaseSection = () => {
     const screens = [
-        { title: "Banca de Questões", image: "/images/showcase-1.png" },
-        { title: "Arena de Simulado", image: "/images/showcase-2.png" },
-        { title: "Trilha de Estudos", image: "/images/showcase-3.png" },
-        { title: "Área de Revisão", image: "/images/showcase-4.png" },
-        { title: "Área do Concurseiro", image: "/images/showcase-5.png" },
-        { title: "Flashcards", image: "/images/showcase-6.png" },
-        { title: "Análise de Desempenho", image: "/images/showcase-7.png" }
+        { title: "Banca de Questões", image: "/images/showcase-1.webp" },
+        { title: "Arena de Simulado", image: "/images/showcase-2.webp" },
+        { title: "Trilha de Estudos", image: "/images/showcase-3.webp" },
+        { title: "Área de Revisão", image: "/images/showcase-4.webp" },
+        { title: "Área do Concurseiro", image: "/images/showcase-5.webp" },
+        { title: "Flashcards", image: "/images/showcase-6.webp" },
+        { title: "Análise de Desempenho", image: "/images/showcase-7.webp" }
     ];
 
     return (
@@ -940,7 +940,7 @@ const AppShowcaseSection = () => {
                        E muuuuito mais..
                     </h3>
                     <div className="flex justify-center">
-                        <GlowButton text="QUERO O ACESSO COMPLETO" href="#planos" className="w-full max-md shadow-[0_0_50px_rgba(37,99,235,0.3)]" />
+                        <GlowButton text="QUERO O ACESSO COMPLETO" href="#planos" className="w-full max-w-md shadow-[0_0_50px_rgba(37,99,235,0.3)]" />
                     </div>
                 </div>
             </div>
