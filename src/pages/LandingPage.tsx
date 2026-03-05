@@ -266,7 +266,7 @@ const Hero = () => {
             <div className="flex-1 relative w-full flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-200">
                 <div className="relative z-10 w-full max-w-[800px] animate-float">
                     <img 
-                        src="/images/mockup-hero.png" 
+                        src="/images/mockup-hero.webp" 
                         alt="Plataforma Enfermagem Pro em dispositivos" 
                         className="w-full h-auto drop-shadow-2xl"
                     />
