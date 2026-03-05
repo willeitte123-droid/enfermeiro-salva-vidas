@@ -340,6 +340,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
+            <button className="hidden">Droplet</button>
             <Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
@@ -814,7 +815,7 @@ const FeaturesList = () => {
     {
       id: "04",
       title: "CASOS CLÍNICOS INTERATIVOS",
-      description: "Tome decisões como se estivesse no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
+      description: "Tome decisões como se estiver no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
       icon: Stethoscope,
       blockColor: "bg-cyan-600",
       textColor: "text-cyan-50",
@@ -986,7 +987,7 @@ const ForWhomSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {personas.map((persona) => (
+          {persona.map((persona) => (
             <div key={persona.title} className="relative flex flex-col group pt-[130px]">
               <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center shadow-2xl", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
@@ -1060,7 +1061,7 @@ const UnifiedSocialSection = () => {
                                 className="w-full h-auto drop-shadow-2xl"
                             />
                         </div>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] bg-yellow-500/15 rounded-full blur-[90px] -z-10" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] bg-yellow-50/15 rounded-full blur-[90px] -z-10" />
                     </div>
                 </div>
             </div>
@@ -1131,13 +1132,13 @@ const UnifiedSocialSection = () => {
 
 const TestimonialsSection = () => {
   const testimonials = [
-    "/images/testimonial-1.png",
-    "/images/testimonial-2.png",
-    "/images/testimonial-3.png",
-    "/images/testimonial-4.png",
-    "/images/testimonial-5.png",
-    "/images/testimonial-6.png",
-    "/images/testimonial-7.png",
+    "/images/testimonial-1.webp",
+    "/images/testimonial-2.webp",
+    "/images/testimonial-3.webp",
+    "/images/testimonial-4.webp",
+    "/images/testimonial-5.webp",
+    "/images/testimonial-6.webp",
+    "/images/testimonial-7.webp",
   ];
 
   return (
