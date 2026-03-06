@@ -74,6 +74,8 @@ const Navbar = () => {
                     src="/images/logo-navbar-new.png" 
                     alt="Logo Enfermagem Pro" 
                     fetchPriority="high"
+                    width="48"
+                    height="48"
                     className="w-full h-full object-cover"
                 />
              </div>
@@ -209,7 +211,8 @@ const Hero = () => {
           src="/images/background-hero.webp" 
           alt="Enfermagem Background" 
           fetchPriority="high"
-          decoding="async"
+          width="1920"
+          height="1080"
           className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
         />
         <div className="absolute inset-0 bg-[#02040a]/70" />
@@ -257,7 +260,8 @@ const Hero = () => {
                         src="/images/mockup-hero.webp" 
                         alt="Plataforma Enfermagem Pro em dispositivos" 
                         fetchPriority="high"
-                        decoding="async"
+                        width="800"
+                        height="640"
                         className="w-full h-auto drop-shadow-2xl"
                     />
                 </div>
@@ -519,6 +523,8 @@ const VideoSection = () => {
                   <img 
                     src="/images/background-hero.webp" 
                     alt="Plataforma Preview" 
+                    width="1024"
+                    height="576"
                     loading="lazy" 
                     decoding="async" 
                     className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" 
@@ -1094,7 +1100,7 @@ const UnifiedSocialSection = () => {
 
 const TestimonialsSection = () => {
   const testimonials = [
-    "/images/testimonial-1.webp",
+    "/images/testimonial-8.webp", // Replaced broken testimonial-1 with testimonial-8
     "/images/testimonial-2.webp",
     "/images/testimonial-3.webp",
     "/images/testimonial-4.webp",
