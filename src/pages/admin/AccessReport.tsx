@@ -63,14 +63,15 @@ const AccessReport = () => {
   const [isInstalling, setIsInstalling] = useState(false);
   const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
 
-  // Busca inicial e polling de fallback
-  const { data, isLoading, error, refetch } = useQuery({
+  // Busca inicial e polling muito rápido de fallback (5 segundos)
+  const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: ['accessReport'],
     queryFn: fetchAccessData,
-    refetchInterval: 30000, // Polling a cada 30s como fallback
+    refetchInterval: 5000, // Atualiza sozinho a cada 5 segundos
+    refetchOnWindowFocus: true,
   });
 
-  // Configuração do Realtime
+  // Configuração do Realtime via WebSockets
   useEffect(() => {
     const channel = supabase.channel('analytics-realtime')
       .on(
@@ -213,47 +214,57 @@ const AccessReport = () => {
     <div className="space-y-6 animate-in fade-in duration-500">
       
       {/* Realtime Status Indicator */}
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center bg-card p-3 rounded-xl border shadow-sm">
+        <div className="flex items-center gap-3">
+          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
+             <RefreshCw className={`h-4 w-4 mr-2 ${isFetching ? 'animate-spin' : ''}`} />
+             Atualizar Agora
+          </Button>
+          <span className="text-xs text-muted-foreground">Atualizando automaticamente a cada 5s</span>
+        </div>
         {isRealtimeConnected ? (
           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 gap-1.5 py-1 px-3 shadow-sm animate-pulse-subtle">
-            <Radio className="h-3 w-3" /> Realtime Ativo
+            <Radio className="h-3 w-3" /> Conexão Realtime: ON
           </Badge>
         ) : (
           <Badge variant="outline" className="text-muted-foreground gap-1.5 py-1 px-3">
-            <RefreshCw className="h-3 w-3 animate-spin" /> Conectando...
+            <Loader2 className="h-3 w-3 animate-spin" /> Conectando...
           </Badge>
         )}
       </div>
 
       {/* KPIs de Hoje */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg border-none">
-          <CardContent className="p-6">
+        <Card className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg border-none relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform"><Users className="w-24 h-24" /></div>
+          <CardContent className="p-6 relative z-10">
             <p className="text-blue-100 text-sm font-medium uppercase mb-1 flex items-center gap-2">
-              <Users className="h-4 w-4" /> Usuários Ativos (Hoje)
+              Usuários Ativos (Hoje)
             </p>
             <h3 className="text-4xl font-black">{stats.activeUsersToday}</h3>
-            <p className="text-xs text-blue-200 mt-2 font-medium">Últimas 24 horas</p>
+            <p className="text-xs text-blue-200 mt-2 font-medium">Logados nas últimas 24 horas</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg border-none">
-          <CardContent className="p-6">
+        <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg border-none relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform"><MousePointer className="w-24 h-24" /></div>
+          <CardContent className="p-6 relative z-10">
             <p className="text-emerald-100 text-sm font-medium uppercase mb-1 flex items-center gap-2">
-              <MousePointer className="h-4 w-4" /> Visualizações (Hoje)
+              Visualizações (Hoje)
             </p>
             <h3 className="text-4xl font-black">{stats.totalViewsToday}</h3>
-            <p className="text-xs text-emerald-100 mt-2 font-medium">Total de cliques</p>
+            <p className="text-xs text-emerald-100 mt-2 font-medium">Total de cliques e navegações</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg border-none">
-          <CardContent className="p-6">
+        <Card className="bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg border-none relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform"><Clock className="w-24 h-24" /></div>
+          <CardContent className="p-6 relative z-10">
             <p className="text-purple-100 text-sm font-medium uppercase mb-1 flex items-center gap-2">
-              <Clock className="h-4 w-4" /> Tempo Médio (Hoje)
+              Tempo Médio (Hoje)
             </p>
             <h3 className="text-4xl font-black">{stats.avgTimeToday}min</h3>
-            <p className="text-xs text-purple-100 mt-2 font-medium">Por usuário ativo</p>
+            <p className="text-xs text-purple-100 mt-2 font-medium">De atividade por usuário</p>
           </CardContent>
         </Card>
       </div>
