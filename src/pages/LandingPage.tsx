@@ -74,6 +74,7 @@ const Navbar = () => {
                 <img 
                     src="/images/logo-navbar-new.png" 
                     alt="Logo Enfermagem Pro" 
+                    fetchPriority="high"
                     className="w-full h-full object-cover"
                 />
              </div>
@@ -104,7 +105,7 @@ const Navbar = () => {
           </Button>
         </div>
 
-        <button className="md:hidden text-white p-2" onClick={() => setIsOpen(!isOpen)}>
+        <button className="md:hidden text-white p-2" onClick={() => setIsOpen(!isOpen)} aria-label="Menu">
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -212,6 +213,8 @@ const Hero = () => {
         <img 
           src="/images/background-hero.webp" 
           alt="Enfermagem Background" 
+          fetchPriority="high"
+          decoding="async"
           className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
         />
         {/* Dark overlay with gradient to ensure text readability while keeping image visible */}
@@ -268,6 +271,8 @@ const Hero = () => {
                     <img 
                         src="/images/mockup-hero.webp" 
                         alt="Plataforma Enfermagem Pro em dispositivos" 
+                        fetchPriority="high"
+                        decoding="async"
                         className="w-full h-auto drop-shadow-2xl"
                     />
                 </div>
@@ -551,7 +556,7 @@ const VideoSection = () => {
                   onClick={() => setIsPlaying(true)}
                 >
                   {/* Poster/Thumb Restaurada */}
-                  <img src="/images/background-hero.webp" alt="Plataforma Preview" className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
+                  <img src="/images/background-hero.webp" alt="Plataforma Preview" loading="lazy" decoding="async" className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
                   
                   <div className="absolute inset-0 bg-blue-600/10 z-10" />
 
@@ -756,6 +761,8 @@ const EcosystemSection = () => {
                                 <img 
                                     src={tool.image} 
                                     alt={tool.title} 
+                                    loading="lazy"
+                                    decoding="async"
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"
                                 />
                             </div>
@@ -929,6 +936,8 @@ const AppShowcaseSection = () => {
                              <img
                                 src={screen.image}
                                 alt={screen.title}
+                                loading="lazy"
+                                decoding="async"
                                 className="w-full h-auto block"
                             />
                         </div>
@@ -998,6 +1007,8 @@ const ForWhomSection = () => {
                   <img 
                     src={persona.image} 
                     alt={persona.title} 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
@@ -1057,7 +1068,9 @@ const UnifiedSocialSection = () => {
                         <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 animate-float px-2 w-full">
                             <img 
                                 src="/images/ranking-mockup.png" 
-                                alt="Ranking EnfermagemPro" 
+                                alt="Ranking EnfermagemPro"
+                                loading="lazy"
+                                decoding="async" 
                                 className="w-full h-auto drop-shadow-2xl"
                             />
                         </div>
@@ -1095,7 +1108,7 @@ const UnifiedSocialSection = () => {
                                     }}
                                 >
                                     <div className={cn("w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] overflow-hidden shadow-2xl bg-slate-800 transition-all", borderClass, isJumping && "ring-white ring-offset-2 ring-offset-black")}>
-                                        <img src={src} alt={`Assinante ${index+1}`} className="w-full h-full object-cover select-none" />
+                                        <img src={src} alt={`Assinante ${index+1}`} loading="lazy" decoding="async" className="w-full h-full object-cover select-none" />
                                     </div>
                                 </div>
                             );
@@ -1166,6 +1179,8 @@ const TestimonialsSection = () => {
                    <img 
                       src={src} 
                       alt={`Depoimento ${index + 1}`} 
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-auto rounded-2xl shadow-xl border border-white/10 hover:border-blue-500/30 transition-all duration-300"
                    />
                 </div>
@@ -1191,11 +1206,15 @@ const GuaranteeSection = () => {
                 <img 
                     src="/images/no-code-pages-garantiav1.webp" 
                     alt="7 dias de garantia" 
+                    loading="lazy"
+                    decoding="async"
                     className="absolute w-[68%] h-[68%] object-contain z-10"
                 />
                 <img 
                     src="/images/no-code-pages-garantiav2.png.webp" 
                     alt="" 
+                    loading="lazy"
+                    decoding="async"
                     className="absolute w-full h-full object-contain z-20 animate-spin-slow"
                 />
             </div>
@@ -1392,6 +1411,8 @@ const CreatorSection = () => {
                             <img 
                                 src="/images/william-leite-full.webp" 
                                 alt="William Leite - Fundador EnfermagemPro" 
+                                loading="lazy"
+                                decoding="async"
                                 className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform translate-y-4"
                             />
                         </div>
@@ -1561,6 +1582,8 @@ export default function LandingPage() {
                   <img 
                     src="/images/footer-logo.png" 
                     alt="Logo Enfermagem Pro Circular" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-[85%] h-[85%] object-contain rounded-full brightness-110 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]"
                   />
                 </div>
