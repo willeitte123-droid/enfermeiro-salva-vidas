@@ -720,7 +720,7 @@ const EcosystemSection = () => {
                     evoluir na enfermagem, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">em um único sistema</span>
                 </h2>
                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
-                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. Não é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
+                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. No é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
                 </p>
             </div>
         </div>
@@ -954,21 +954,21 @@ const ForWhomSection = () => {
     {
       title: "Para o Estudante",
       description: "Cansado de apostilas desorganizadas? Use nossa trilha de estudos para construir uma base sólida e se destacar nos estágios e provas.",
-      image: "/images/estudante.png",
+      image: "/images/estudante.webp",
       blockColor: "bg-[#16a34a]", 
       textColor: "text-white"
     },
     {
       title: "Para o Concurseiro",
       description: "Pare de estudar sem foco. Com nossa Área do Concurseiro e simulados estratégicos, você estuda o que realmente cai e acompanha sua evolução até a aprovação.",
-      image: "/images/concurseiro.png",
+      image: "/images/concurseiro.webp",
       blockColor: "bg-[#7c3aed]", 
       textColor: "text-white"
     },
     {
       title: "Para o Profissional",
       description: "Transforme a insegurança do plantão em confiança absoluta. Tenha na palma da mão tudo o que você precisa para se preparar para qualquer intercorrência.",
-      image: "/images/profissional.png",
+      image: "/images/profissional.webp",
       blockColor: "bg-[#facc15]", 
       textColor: "text-white"
     }
@@ -1061,7 +1061,7 @@ const UnifiedSocialSection = () => {
                                 className="w-full h-auto drop-shadow-2xl"
                             />
                         </div>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] bg-yellow-50/15 rounded-full blur-[90px] -z-10" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] bg-yellow-500/15 rounded-full blur-[90px] -z-10" />
                     </div>
                 </div>
             </div>
