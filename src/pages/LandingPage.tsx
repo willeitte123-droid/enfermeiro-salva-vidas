@@ -74,8 +74,6 @@ const Navbar = () => {
                     src="/images/logo-navbar-new.png" 
                     alt="Logo Enfermagem Pro" 
                     fetchPriority="high"
-                    width="48"
-                    height="48"
                     className="w-full h-full object-cover"
                 />
              </div>
@@ -211,8 +209,7 @@ const Hero = () => {
           src="/images/background-hero.webp" 
           alt="Enfermagem Background" 
           fetchPriority="high"
-          width="1920"
-          height="1080"
+          decoding="async"
           className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
         />
         <div className="absolute inset-0 bg-[#02040a]/70" />
@@ -260,8 +257,7 @@ const Hero = () => {
                         src="/images/mockup-hero.webp" 
                         alt="Plataforma Enfermagem Pro em dispositivos" 
                         fetchPriority="high"
-                        width="800"
-                        height="640"
+                        decoding="async"
                         className="w-full h-auto drop-shadow-2xl"
                     />
                 </div>
@@ -323,6 +319,7 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
+            <button className="hidden">Droplet</button>
             <Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
@@ -522,8 +519,6 @@ const VideoSection = () => {
                   <img 
                     src="/images/background-hero.webp" 
                     alt="Plataforma Preview" 
-                    width="1024"
-                    height="576"
                     loading="lazy" 
                     decoding="async" 
                     className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" 
