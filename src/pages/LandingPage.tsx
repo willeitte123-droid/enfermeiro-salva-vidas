@@ -210,7 +210,7 @@ const Hero = () => {
       {/* Background Image Layer - Updated opacity and overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/images/background-hero.png" 
+          src="/images/background-hero.webp" 
           alt="Enfermagem Background" 
           className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
         />
@@ -551,7 +551,7 @@ const VideoSection = () => {
                   onClick={() => setIsPlaying(true)}
                 >
                   {/* Poster/Thumb Restaurada */}
-                  <img src="/images/background-hero.png" alt="Plataforma Preview" className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
+                  <img src="/images/background-hero.webp" alt="Plataforma Preview" className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
                   
                   <div className="absolute inset-0 bg-blue-600/10 z-10" />
 
@@ -815,7 +815,7 @@ const FeaturesList = () => {
     {
       id: "04",
       title: "CASOS CLÍNICOS INTERATIVOS",
-      description: "Tome decisões como se estiver no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
+      description: "Tome decisões como se estivesse no plantão.\nDependendo da sua escolha, o desfecho muda. Você aprende o raciocínio clínico no ambiente seguro do estudo.",
       icon: Stethoscope,
       blockColor: "bg-cyan-600",
       textColor: "text-cyan-50",
@@ -987,7 +987,7 @@ const ForWhomSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {persona.map((persona) => (
+          {personas.map((persona) => (
             <div key={persona.title} className="relative flex flex-col group pt-[130px]">
               <div className={cn("flex-1 rounded-[60px] p-8 pt-32 pb-12 flex flex-col justify-start text-center shadow-2xl", persona.blockColor)}>
                 <h3 className="text-2xl font-bold text-white mb-4">{persona.title}</h3>
