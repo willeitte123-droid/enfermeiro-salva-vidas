@@ -211,8 +211,7 @@ const Hero = () => {
           src="/images/background-hero.webp" 
           alt="Enfermagem Background" 
           fetchPriority="high"
-          width="1920"
-          height="1080"
+          decoding="async"
           className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
         />
         <div className="absolute inset-0 bg-[#02040a]/70" />
@@ -260,8 +259,7 @@ const Hero = () => {
                         src="/images/mockup-hero.webp" 
                         alt="Plataforma Enfermagem Pro em dispositivos" 
                         fetchPriority="high"
-                        width="800"
-                        height="640"
+                        decoding="async"
                         className="w-full h-auto drop-shadow-2xl"
                     />
                 </div>
@@ -523,8 +521,6 @@ const VideoSection = () => {
                   <img 
                     src="/images/background-hero.webp" 
                     alt="Plataforma Preview" 
-                    width="1024"
-                    height="576"
                     loading="lazy" 
                     decoding="async" 
                     className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" 
@@ -1099,8 +1095,8 @@ const UnifiedSocialSection = () => {
 };
 
 const TestimonialsSection = () => {
+  // A imagem testimonial-1.webp foi removida porque não existe, evitando quebra.
   const testimonials = [
-    "/images/testimonial-8.webp", // Replaced broken testimonial-1 with testimonial-8
     "/images/testimonial-2.webp",
     "/images/testimonial-3.webp",
     "/images/testimonial-4.webp",
