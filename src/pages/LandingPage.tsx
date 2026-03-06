@@ -720,7 +720,7 @@ const EcosystemSection = () => {
                     evoluir na enfermagem, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">em um único sistema</span>
                 </h2>
                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
-                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. No é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
+                    O EnfermagemPro reúne estudo estratégico para concursos, prática clínica para o plantão, ferramentas inteligentes para cálculos e consultas rápidas e um ambiente que acompanha sua evolução. Não é apenas conteúdo isolado. É um ecossistema completo pensado para transformar insegurança em confiança e esforço em resultado.
                 </p>
             </div>
         </div>
@@ -1390,7 +1390,7 @@ const CreatorSection = () => {
                         
                         <div className="relative z-10 w-full overflow-hidden" style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}>
                             <img 
-                                src="/images/william-leite-full.png" 
+                                src="/images/william-leite-full.webp" 
                                 alt="William Leite - Fundador EnfermagemPro" 
                                 className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform translate-y-4"
                             />
