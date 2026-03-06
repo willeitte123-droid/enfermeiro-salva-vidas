@@ -37,7 +37,7 @@ const GlowButton = ({ text, href = "#planos", className }: { text: string, href?
       <a href={href} className="block relative z-10">
         <div className="btn-cta-box">
           <div className="btn-cta uppercase tracking-widest">{text}</div>
-          <svg className="arrow-icon-custom" viewBox="0 0 24 24" aria-hidden="true">
+          <svg className="arrow-icon-custom" viewBox="0 0 24 24" aria-hidden="true" width="24" height="24">
             <path d="M5 12h12M13 6l6 6-6 6"
                   fill="none"
                   stroke="currentColor"
@@ -67,7 +67,6 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#030014]/80 backdrop-blur-xl supports-[backdrop-filter]:bg-[#030014]/50 transition-all duration-300">
       <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          {/* Novo Logotipo com Efeito Mockup */}
           <div className="relative group">
              <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
              <div className="relative w-11 h-11 sm:w-12 sm:h-12 bg-slate-900 rounded-full flex items-center justify-center overflow-hidden border border-white/20 shadow-2xl transition-transform duration-500 group-hover:scale-110">
@@ -75,6 +74,8 @@ const Navbar = () => {
                     src="/images/logo-navbar-new.png" 
                     alt="Logo Enfermagem Pro" 
                     fetchPriority="high"
+                    width="48"
+                    height="48"
                     className="w-full h-full object-cover"
                 />
              </div>
@@ -106,7 +107,7 @@ const Navbar = () => {
         </div>
 
         <button className="md:hidden text-white p-2" onClick={() => setIsOpen(!isOpen)} aria-label="Menu">
-          {isOpen ? <X /> : <Menu />}
+          {isOpen ? <X width="24" height="24" /> : <Menu width="24" height="24" />}
         </button>
       </div>
 
@@ -147,23 +148,20 @@ const InfiniteMarquee = () => {
   ];
 
   return (
-    <div className="w-full border-y border-blue-500/20 bg-[#050811] overflow-hidden py-8 relative z-20 shadow-[0_0_50px_-10px_rgba(37,99,235,0.15)]">
-      {/* Top and Bottom Glow lines */}
+    <div className="w-full border-y border-blue-500/20 bg-[#050811] overflow-hidden py-8 relative z-20 shadow-[0_0_50px_-10px_rgba(37,99,235,0.15)] content-visibility-auto">
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
       
-      {/* Gradient Masks */}
       <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
       <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
       
-      {/* Container que move */}
       <div className="flex animate-marquee whitespace-nowrap items-center w-max will-change-transform">
         {[...words, ...words].map((word, i) => (
           <div key={i} className="flex items-center mx-10">
-            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-200 to-slate-500 hover:from-blue-400 hover:to-cyan-400 transition-all cursor-default drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+            <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-200 to-slate-500 cursor-default drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
               {word}
             </span>
-            <div className="ml-20 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse" />
+            <div className="ml-20 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
           </div>
         ))}
       </div>
@@ -175,23 +173,23 @@ const ParticlesBackground = () => {
   const [particles, setParticles] = useState<{ id: number; top: string; left: string; delay: string; duration: string }[]>([]);
 
   useEffect(() => {
-    // Generate particles only on client side
-    const newParticles = Array.from({ length: 30 }).map((_, i) => ({
+    // Reduzido para 12 partículas para aliviar a CPU no mobile
+    const newParticles = Array.from({ length: 12 }).map((_, i) => ({
       id: i,
       top: `${Math.random() * 100}%`,
       left: `${Math.random() * 100}%`,
       delay: `${Math.random() * 5}s`,
-      duration: `${Math.random() * 10 + 10}s`, // 10s to 20s
+      duration: `${Math.random() * 10 + 10}s`,
     }));
     setParticles(newParticles);
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-10 contain-strict">
       {particles.map((p) => (
         <div
           key={p.id}
-          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-30 animate-drift"
+          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-30 animate-drift will-change-transform"
           style={{
             top: p.top,
             left: p.left,
@@ -208,34 +206,28 @@ const Hero = () => {
   return (
     <>
     <section className="relative pt-32 pb-10 lg:pt-48 lg:pb-24 overflow-hidden bg-[#02040a]">
-      {/* Background Image Layer - Updated opacity and overlay */}
       <div className="absolute inset-0 z-0">
         <img 
           src="/images/background-hero.webp" 
           alt="Enfermagem Background" 
           fetchPriority="high"
-          decoding="async"
+          width="1920"
+          height="1080"
           className="w-full h-full object-cover opacity-40 mix-blend-luminosity" 
         />
-        {/* Dark overlay with gradient to ensure text readability while keeping image visible */}
         <div className="absolute inset-0 bg-[#02040a]/70" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#02040a]/80 via-transparent to-[#02040a]" />
       </div>
 
-      {/* Vibrant Gradient Blobs (Glow effects) */}
       <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen z-0 animate-pulse-subtle" />
       <div className="absolute bottom-[10%] right-[-5%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen z-0" />
-      <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-cyan-50/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen z-0" />
       
-      {/* Partículas Leves */}
       <ParticlesBackground />
 
       <div className="container mx-auto px-4 md:px-6 relative z-20">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             
-            {/* TEXT COLUMN (Left) */}
             <div className="flex-1 text-left max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {/* Title */}
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1] drop-shadow-lg">
                     Estude com foco. <br/>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-600">
@@ -243,17 +235,14 @@ const Hero = () => {
                     </span>
                 </h1>
 
-                {/* Subtitle */}
                 <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light drop-shadow-md">
                     O EnfermagemPro é o sistema que organiza seus estudos, aumenta seus acertos nas provas e te dá segurança real no plantão.
                 </p>
 
-                {/* CTA Area */}
                 <div className="flex flex-col sm:flex-row items-center gap-6">
                     <GlowButton text="Quero estudar com organização" href="#planos" className="w-full sm:w-auto" />
                 </div>
                 
-                {/* Progress Bar */}
                 <div className="mt-8 max-w-sm">
                    <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden backdrop-blur-sm">
                       <div className="bg-gradient-to-r from-blue-50 to-cyan-400 w-[85%] h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
@@ -265,19 +254,18 @@ const Hero = () => {
                 </div>
             </div>
 
-            {/* IMAGE COLUMN (Right) - Com animação de flutuação */}
             <div className="flex-1 relative w-full flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-200">
                 <div className="relative z-10 w-full max-w-[800px] animate-float">
                     <img 
                         src="/images/mockup-hero.webp" 
                         alt="Plataforma Enfermagem Pro em dispositivos" 
                         fetchPriority="high"
-                        decoding="async"
+                        width="800"
+                        height="640"
                         className="w-full h-auto drop-shadow-2xl"
                     />
                 </div>
                 
-                {/* Ambient Glow behind mockup */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-600/20 blur-[100px] -z-10 rounded-full mix-blend-screen" />
             </div>
         </div>
@@ -292,17 +280,10 @@ const Hero = () => {
 const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: string; spo2: number; resp: number; temp: number }) => {
   return (
     <div className="bg-black/90 border-4 border-slate-800 rounded-xl p-3 sm:p-6 shadow-2xl relative overflow-hidden font-mono mb-4 w-full">
-      {/* Reflexo de tela */}
       <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none" />
-      
-      {/* Grid de fundo */}
-      <div className="absolute inset-0 opacity-10" 
-           style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
-      />
+      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8 relative z-10">
-        
-        {/* ECG / FC */}
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-green-500">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">ECG</span>
@@ -314,7 +295,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
             </span>
             <span className="text-[10px] sm:text-xs text-green-500/70 mb-1">bpm</span>
           </div>
-          {/* Linha de ECG simulada */}
           <div className="h-6 sm:h-8 w-full overflow-hidden relative opacity-70">
              {hr > 0 && (
                <svg viewBox="0 0 100 20" className="w-full h-full stroke-green-500 fill-none stroke-[2px]">
@@ -326,7 +306,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
           </div>
         </div>
 
-        {/* PA (PNI) */}
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-red-500">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">PNI</span>
@@ -341,11 +320,9 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
           <span className="text-[9px] sm:text-xs text-red-500/50 block mt-0.5 sm:mt-1">PAM: {(parseInt(bp.split('/')[0]) + 2 * parseInt(bp.split('/')[1])) / 3 | 0}</span>
         </div>
 
-        {/* SpO2 */}
         <div className="space-y-0.5 sm:space-y-1">
           <div className="flex items-center justify-between text-blue-400">
             <span className="text-[10px] sm:text-xs uppercase tracking-widest font-bold">SpO2</span>
-            <button className="hidden">Droplet</button>
             <Droplet className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
           <div className="flex items-end gap-1 sm:gap-2">
@@ -364,7 +341,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
           </div>
         </div>
 
-        {/* FR / Temp */}
         <div className="flex flex-col justify-between h-full gap-2">
           <div className="flex items-end justify-between">
             <div className="text-yellow-400 text-[10px] sm:text-xs font-bold uppercase">RESP</div>
@@ -375,7 +351,6 @@ const VitalsMonitorDemo = ({ hr, bp, spo2, resp, temp }: { hr: number; bp: strin
             <div className="text-xl sm:text-2xl font-bold text-purple-400 leading-none">{temp}°C</div>
           </div>
         </div>
-
       </div>
     </div>
   );
@@ -393,8 +368,7 @@ const ClinicalCaseSection = () => {
   };
 
   return (
-    <section className="py-24 bg-[#050811] relative overflow-hidden">
-      {/* Lights Background */}
+    <section className="py-24 bg-[#050811] relative overflow-hidden content-visibility-auto">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-indigo-900/10 blur-[100px] pointer-events-none" />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -408,7 +382,6 @@ const ClinicalCaseSection = () => {
         </div>
 
         <div className="max-w-4xl mx-auto">
-            {/* Monitor Section */}
             <VitalsMonitorDemo 
                hr={selectedOption === 'A' || selectedOption === 'B' ? 0 : 45} 
                bp={selectedOption === 'A' || selectedOption === 'B' ? "0/0" : "220/110"} 
@@ -417,7 +390,6 @@ const ClinicalCaseSection = () => {
                temp={37.0} 
             />
 
-            {/* Case Content Card */}
             <Card className={cn(
                "border-2 shadow-2xl transition-all duration-500", 
                selectedOption === null ? "border-yellow-500/30 bg-yellow-950/10" :
@@ -460,7 +432,6 @@ const ClinicalCaseSection = () => {
                     </div>
                  )}
 
-                 {/* Options */}
                  {selectedOption === null ? (
                     <div className="space-y-3 pt-4">
                         <p className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">Qual sua conduta?</p>
@@ -514,7 +485,7 @@ const VideoSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <section className="py-24 bg-[#02040a] relative overflow-hidden">
+    <section className="py-24 bg-[#02040a] relative overflow-hidden content-visibility-auto">
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto mb-12">
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
@@ -525,16 +496,11 @@ const VideoSection = () => {
           </h2>
         </div>
 
-        {/* PREMIUM VIDEO MOCKUP CONTAINER */}
         <div className="max-w-5xl mx-auto relative group">
-          
-          {/* Floating Info Box - Visible only when NOT playing */}
           {!isPlaying && (
             <div className="absolute top-1/2 -right-4 sm:-right-10 translate-x-1/2 -translate-y-1/2 z-40 hidden lg:block animate-in fade-in slide-in-from-right-10 duration-700">
                <div className="bg-white rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.3)] w-72 border border-slate-100 relative">
-                  {/* Pointer/Tail pointing to video */}
                   <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white rotate-45 border-l border-b border-slate-100" />
-                  
                   <div className="flex items-center gap-3 mb-4">
                      <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30">!</div>
                      <h4 className="text-slate-900 font-black text-xl leading-tight">Assista ao vídeo!</h4>
@@ -546,21 +512,23 @@ const VideoSection = () => {
             </div>
           )}
 
-          {/* MAIN WHITE FRAME MOCKUP */}
           <div className="bg-white p-2 sm:p-5 rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] border-4 border-white/20 relative z-30">
-            
             <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-950 group/video shadow-inner">
               {!isPlaying ? (
                 <div 
                   className="absolute inset-0 z-20 cursor-pointer"
                   onClick={() => setIsPlaying(true)}
                 >
-                  {/* Poster/Thumb Restaurada */}
-                  <img src="/images/background-hero.webp" alt="Plataforma Preview" loading="lazy" decoding="async" className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
-                  
+                  <img 
+                    src="/images/background-hero.webp" 
+                    alt="Plataforma Preview" 
+                    width="1024"
+                    height="576"
+                    loading="lazy" 
+                    decoding="async" 
+                    className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" 
+                  />
                   <div className="absolute inset-0 bg-blue-600/10 z-10" />
-
-                  {/* Play Button Overlay */}
                   <div className="absolute inset-0 z-30 flex items-center justify-center">
                     <div className="w-20 h-20 sm:w-28 sm:h-28 bg-blue-600/90 hover:bg-blue-500 rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_0_50px_rgba(37,99,235,0.6)] transition-all duration-300 group-hover:scale-110 scale-95 group-hover:shadow-[0_0_80px_rgba(37,99,235,0.8)]">
                       <Play className="w-8 h-8 sm:w-12 sm:h-12 text-white fill-current ml-2" />
@@ -587,7 +555,6 @@ const VideoSection = () => {
               )}
             </div>
 
-            {/* Bottom Centered "Quero Assinar" Button (Overlapping frame) */}
             <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-[280px] sm:max-w-[320px]">
                <a href="#planos" className="block w-full">
                   <Button className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black h-12 sm:h-14 rounded-2xl text-lg sm:text-xl uppercase tracking-tighter shadow-[0_15px_35px_rgba(37,99,235,0.6)] border-t border-white/20 transition-all hover:scale-105 active:scale-95 hover:shadow-[0_20px_45px_rgba(37,99,235,0.8)]">
@@ -596,17 +563,13 @@ const VideoSection = () => {
                </a>
             </div>
           </div>
-
-          {/* Background Ambient Glows */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-blue-600/10 blur-[100px] -z-10 rounded-full" />
         </div>
-        
       </div>
     </section>
   );
 };
 
-// Nova Seção Ecossistema (Infinite Marquee Cards com Scroll Interativo)
 const EcosystemSection = () => {
   const tools = [
     { title: "BANCA DE QUESTÕES", desc: "Mais de 2.000 questões comentadas com foco em raciocínio clínico.", icon: FileQuestion, image: "/images/ecosystem/banca-de-questoes.webp" },
@@ -646,25 +609,22 @@ const EcosystemSection = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Auto-scroll Effect
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
     let animationFrameId: number;
     let accumulatedScroll = 0;
-    const speed = 0.5; // Velocidade do scroll (pixels por frame)
+    const speed = 0.5;
 
     const scroll = () => {
       if (!isPaused && !isDragging) {
         accumulatedScroll += speed;
-        // Só move se acumulou 1 pixel inteiro para suavidade
         if (accumulatedScroll >= 1) {
             scrollContainer.scrollLeft += 1;
             accumulatedScroll = 0;
         }
 
-        // Reset infinito: quando chegar na metade (fim da primeira lista), volta pro início
         if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
            scrollContainer.scrollLeft = 0;
         }
@@ -676,7 +636,6 @@ const EcosystemSection = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isPaused, isDragging]);
 
-  // Drag Handlers
   const onMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setIsPaused(true);
@@ -698,11 +657,10 @@ const EcosystemSection = () => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current!.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll-fast multiplier
+    const walk = (x - startX) * 2;
     scrollRef.current!.scrollLeft = scrollLeft - walk;
   };
 
-  // Touch Handlers para Mobile
   const onTouchStart = () => {
       setIsPaused(true);
       setIsDragging(true);
@@ -714,8 +672,7 @@ const EcosystemSection = () => {
   };
 
   return (
-    <section id="ecossistema" className="py-24 bg-[#02040a] relative overflow-hidden">
-        {/* Ambient background light */}
+    <section id="ecossistema" className="py-24 bg-[#02040a] relative overflow-hidden content-visibility-auto">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-blue-900/10 blur-[150px] pointer-events-none rounded-full" />
         
         <div className="container mx-auto px-4 mb-20 relative z-10">
@@ -730,13 +687,10 @@ const EcosystemSection = () => {
             </div>
         </div>
 
-        {/* Infinite Carousel Container */}
         <div className="relative w-full">
-            {/* Gradient Masks */}
             <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#02040a] to-transparent z-20 pointer-events-none" />
             <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#02040a] to-transparent z-20 pointer-events-none" />
 
-            {/* Scrollable Track */}
             <div 
                 ref={scrollRef}
                 className="flex overflow-x-auto no-scrollbar py-10 cursor-grab active:cursor-grabbing select-none"
@@ -746,28 +700,27 @@ const EcosystemSection = () => {
                 onMouseMove={onMouseMove}
                 onTouchStart={onTouchStart}
                 onTouchEnd={onTouchEnd}
-                onMouseEnter={() => setIsPaused(true)} // Pausa ao passar o mouse
+                onMouseEnter={() => setIsPaused(true)}
             >
                 <div className="flex">
-                    {/* Renderizamos a lista DUAS vezes para o efeito infinito */}
                     {[...tools, ...tools].map((tool, index) => (
                         <div 
                             key={index} 
                             className="relative mx-4 w-[280px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl overflow-hidden group transition-transform hover:scale-105 duration-500 border border-white/10"
                         >
-                            {/* Background Image with Overlay */}
                             <div className="absolute inset-0 z-0">
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/40 to-transparent z-10" />
                                 <img 
                                     src={tool.image} 
                                     alt={tool.title} 
+                                    width="320"
+                                    height="450"
                                     loading="lazy"
                                     decoding="async"
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"
                                 />
                             </div>
 
-                            {/* Content */}
                             <div className="relative z-20 h-full flex flex-col justify-end p-8 pointer-events-none">
                                 <div className="mb-4 w-12 h-12 rounded-xl bg-blue-600/20 backdrop-blur-md flex items-center justify-center border border-blue-500/30">
                                     <tool.icon className="w-6 h-6 text-blue-400" />
@@ -849,7 +802,7 @@ const FeaturesList = () => {
   ];
 
   return (
-    <section id="funcionalidades" className="py-24 bg-white relative">
+    <section id="funcionalidades" className="py-24 bg-white relative content-visibility-auto">
       <div className="container mx-auto px-4">
         <div className="mb-16">
            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-2">Funcionalidades</h2>
@@ -908,7 +861,7 @@ const AppShowcaseSection = () => {
     ];
 
     return (
-        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-20 pb-24 sm:pb-32">
+        <section id="showcase" className="bg-[#050811] relative border-t border-white/5 pt-20 pb-24 sm:pb-32 content-visibility-auto">
             <div className="max-w-6xl mx-auto px-4 relative z-10">
                 
                 <div className="text-center mb-24 max-w-3xl mx-auto">
@@ -936,6 +889,8 @@ const AppShowcaseSection = () => {
                              <img
                                 src={screen.image}
                                 alt={screen.title}
+                                width="1024"
+                                height="600"
                                 loading="lazy"
                                 decoding="async"
                                 className="w-full h-auto block"
@@ -944,7 +899,6 @@ const AppShowcaseSection = () => {
                     ))}
                 </div>
 
-                {/* Final Content Block - STATIC POSITIONED AFTER STICKY IMAGES */}
                 <div className="relative z-50 text-center space-y-10 py-12 sm:py-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
                     <h3 className="text-sm md:text-base font-black text-white italic tracking-tighter drop-shadow-2xl uppercase">
                        E muuuuito mais..
@@ -984,7 +938,7 @@ const ForWhomSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-white relative">
+    <section className="py-24 bg-white relative content-visibility-auto">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -1007,6 +961,8 @@ const ForWhomSection = () => {
                   <img 
                     src={persona.image} 
                     alt={persona.title} 
+                    width="260"
+                    height="260"
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-top"
@@ -1021,7 +977,6 @@ const ForWhomSection = () => {
   );
 };
 
-// --- SEÇÃO UNIFICADA: RANKING + ASSINANTES ---
 const UnifiedSocialSection = () => {
   const [activeJumpIndex, setActiveJumpIndex] = useState<number | null>(null);
 
@@ -1039,13 +994,11 @@ const UnifiedSocialSection = () => {
   };
 
   return (
-    <div className="bg-[#050811] relative overflow-hidden">
-        {/* Luzes de Fundo que conectam as duas partes */}
+    <div className="bg-[#050811] relative overflow-hidden content-visibility-auto">
         <div className="absolute top-1/4 left-0 w-full h-full bg-gradient-to-b from-transparent via-blue-900/10 to-transparent pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[800px] bg-indigo-900/10 blur-[180px] pointer-events-none rounded-full" />
         <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-yellow-50/5 blur-[120px] pointer-events-none rounded-full" />
 
-        {/* PARTE 1: RANKING */}
         <section id="ranking" className="py-24 relative z-10">
             <div className="container mx-auto px-4">
                 <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -1069,6 +1022,8 @@ const UnifiedSocialSection = () => {
                             <img 
                                 src="/images/ranking-mockup.png" 
                                 alt="Ranking EnfermagemPro"
+                                width="380"
+                                height="600"
                                 loading="lazy"
                                 decoding="async" 
                                 className="w-full h-auto drop-shadow-2xl"
@@ -1080,7 +1035,6 @@ const UnifiedSocialSection = () => {
             </div>
         </section>
 
-        {/* PARTE 2: ASSINANTES (Sem divisória) */}
         <section className="pb-32 pt-10 relative z-10">
             <div className="container mx-auto px-4 max-w-6xl">
                 <div className="flex flex-col md:flex-row items-center gap-12 md:gap-0">
@@ -1108,7 +1062,7 @@ const UnifiedSocialSection = () => {
                                     }}
                                 >
                                     <div className={cn("w-16 h-16 md:w-20 md:h-20 rounded-full border-[3px] overflow-hidden shadow-2xl bg-slate-800 transition-all", borderClass, isJumping && "ring-white ring-offset-2 ring-offset-black")}>
-                                        <img src={src} alt={`Assinante ${index+1}`} loading="lazy" decoding="async" className="w-full h-full object-cover select-none" />
+                                        <img src={src} alt={`Assinante ${index+1}`} width="80" height="80" loading="lazy" decoding="async" className="w-full h-full object-cover select-none" />
                                     </div>
                                 </div>
                             );
@@ -1155,7 +1109,7 @@ const TestimonialsSection = () => {
   ];
 
   return (
-    <section id="depoimentos" className="py-24 bg-[#020617] relative border-t border-white/5 overflow-hidden">
+    <section id="depoimentos" className="py-24 bg-[#020617] relative border-t border-white/5 overflow-hidden content-visibility-auto">
       <div className="container mx-auto px-4 mb-16 relative z-10">
          <div className="text-center max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
@@ -1179,6 +1133,8 @@ const TestimonialsSection = () => {
                    <img 
                       src={src} 
                       alt={`Depoimento ${index + 1}`} 
+                      width="350"
+                      height="350"
                       loading="lazy"
                       decoding="async"
                       className="w-full h-auto rounded-2xl shadow-xl border border-white/10 hover:border-blue-500/30 transition-all duration-300"
@@ -1197,7 +1153,7 @@ const TestimonialsSection = () => {
 
 const GuaranteeSection = () => {
   return (
-    <section className="py-24 bg-[#030014] relative overflow-hidden border-t border-white/5">
+    <section className="py-24 bg-[#030014] relative overflow-hidden border-t border-white/5 content-visibility-auto">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 blur-[120px] pointer-events-none rounded-full" />
         
         <div className="container mx-auto px-4 relative z-10 text-center flex flex-col items-center">
@@ -1206,6 +1162,8 @@ const GuaranteeSection = () => {
                 <img 
                     src="/images/no-code-pages-garantiav1.webp" 
                     alt="7 dias de garantia" 
+                    width="220"
+                    height="220"
                     loading="lazy"
                     decoding="async"
                     className="absolute w-[68%] h-[68%] object-contain z-10"
@@ -1213,6 +1171,8 @@ const GuaranteeSection = () => {
                 <img 
                     src="/images/no-code-pages-garantiav2.png.webp" 
                     alt="" 
+                    width="320"
+                    height="320"
                     loading="lazy"
                     decoding="async"
                     className="absolute w-full h-full object-contain z-20 animate-spin-slow"
@@ -1372,7 +1332,7 @@ const PricingSection = () => {
 
 const CreatorSection = () => {
     return (
-        <section className="py-24 bg-[#030014] relative overflow-hidden border-t border-white/5">
+        <section className="py-24 bg-[#030014] relative overflow-hidden border-t border-white/5 content-visibility-auto">
             <div className="container mx-auto px-4 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 max-w-6xl mx-auto">
                     
@@ -1411,6 +1371,8 @@ const CreatorSection = () => {
                             <img 
                                 src="/images/william-leite-full.webp" 
                                 alt="William Leite - Fundador EnfermagemPro" 
+                                width="550"
+                                height="550"
                                 loading="lazy"
                                 decoding="async"
                                 className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform translate-y-4"
@@ -1499,7 +1461,7 @@ const FAQSection = () => {
   ];
 
   return (
-    <section id="faq" className="py-24 bg-[#02040a] relative border-t border-white/5 overflow-hidden">
+    <section id="faq" className="py-24 bg-[#02040a] relative border-t border-white/5 overflow-hidden content-visibility-auto">
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto mb-16">
            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold uppercase tracking-wider text-blue-400 mb-6">
@@ -1553,7 +1515,7 @@ export default function LandingPage() {
       <PricingSection />
       <CreatorSection />
       <FAQSection />
-      <footer className="bg-black py-16 border-t border-white/5">
+      <footer className="bg-black py-16 border-t border-white/5 content-visibility-auto">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start text-center md:text-left">
             <div className="space-y-6">
@@ -1582,6 +1544,8 @@ export default function LandingPage() {
                   <img 
                     src="/images/footer-logo.png" 
                     alt="Logo Enfermagem Pro Circular" 
+                    width="200"
+                    height="200"
                     loading="lazy"
                     decoding="async"
                     className="w-[85%] h-[85%] object-contain rounded-full brightness-110 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]"

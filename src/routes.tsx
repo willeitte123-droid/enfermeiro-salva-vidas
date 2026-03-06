@@ -1,62 +1,62 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthContextType } from './context/AuthContext';
 
-// Layout
+// Layouts e Páginas Públicas (Carregamento Normal)
 import MainLayout from './components/MainLayout';
-
-// Importações diretas
-import Dashboard from './pages/Dashboard';
-import Calculator from './pages/Calculator';
-import Emergency from './pages/Emergency';
-import Medications from './pages/Medications';
-import WoundCare from './pages/WoundCare';
-import Procedures from './pages/Procedures';
-import Questions from './pages/Questions';
-import NotFound from './pages/NotFound';
+import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Admin from './pages/Admin';
-import ThemeCustomizer from './pages/admin/ThemeCustomizer';
-import Scales from './pages/Scales';
-import GlasgowScale from './pages/scales/GlasgowScale';
-import BradenScale from './pages/scales/BradenScale';
-import RassScale from './pages/scales/RassScale';
-import WongBakerScale from './pages/scales/WongBakerScale';
-import FugulinScale from './pages/scales/FugulinScale';
-import MorseScale from './pages/scales/MorseScale';
-import AldreteScale from './pages/scales/AldreteScale';
-import ApgarScale from './pages/scales/ApgarScale';
-import ManchesterScale from './pages/scales/ManchesterScale';
-import ParklandScale from './pages/scales/ParklandScale';
-import AsaScale from './pages/scales/AsaScale';
-import KatzScale from './pages/scales/KatzScale';
-import EcgGuide from './pages/EcgGuide';
-import ProfilePage from './pages/Profile';
-import PublicProfile from './pages/PublicProfile';
-import Semiology from './pages/Semiology';
-import SemioTechnique from './pages/Semiotechnique';
-import AnatomyPhysiology from './pages/AnatomyPhysiology';
-import ConcurseiroArea from './pages/ConcurseiroArea';
-import Flashcards from './pages/Flashcards';
-import Ranking from './pages/Ranking';
-import DoseCalculator from './pages/tools/DoseCalculator';
-import LabValues from './pages/tools/LabValues';
-import BlocoDeNotas from './pages/tools/BlocoDeNotas';
-import IntegratedCalculators from './pages/tools/IntegratedCalculators';
-import MyPerformance from './pages/tools/MyPerformance';
-import SimuladoPage from './pages/SimuladoPage';
-import ReviewArea from './pages/ReviewArea';
-import FavoritesPage from './pages/FavoritesPage';
-import NursingNotesGuide from './pages/NursingNotesGuide';
 import UpdatePassword from './pages/UpdatePassword';
-import TechnicalTerms from './pages/TechnicalTerms';
-import StudyTracks from './pages/StudyTracks';
-import DeepStudy from './pages/DeepStudy';
-import ClinicalCases from './pages/ClinicalCases';
-import Concursos from './pages/Concursos';
-import VideoLibrary from './pages/VideoLibrary';
-import LandingPage from './pages/LandingPage'; // Nova Importação
+import NotFound from './pages/NotFound';
+
+// Páginas Internas (Carregamento Lazy - Só baixam quando o usuário entra no app)
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Calculator = lazy(() => import('./pages/Calculator'));
+const Emergency = lazy(() => import('./pages/Emergency'));
+const Medications = lazy(() => import('./pages/Medications'));
+const WoundCare = lazy(() => import('./pages/WoundCare'));
+const Procedures = lazy(() => import('./pages/Procedures'));
+const Questions = lazy(() => import('./pages/Questions'));
+const Admin = lazy(() => import('./pages/Admin'));
+const ThemeCustomizer = lazy(() => import('./pages/admin/ThemeCustomizer'));
+const Scales = lazy(() => import('./pages/Scales'));
+const GlasgowScale = lazy(() => import('./pages/scales/GlasgowScale'));
+const BradenScale = lazy(() => import('./pages/scales/BradenScale'));
+const RassScale = lazy(() => import('./pages/scales/RassScale'));
+const WongBakerScale = lazy(() => import('./pages/scales/WongBakerScale'));
+const FugulinScale = lazy(() => import('./pages/scales/FugulinScale'));
+const MorseScale = lazy(() => import('./pages/scales/MorseScale'));
+const AldreteScale = lazy(() => import('./pages/scales/AldreteScale'));
+const ApgarScale = lazy(() => import('./pages/scales/ApgarScale'));
+const ManchesterScale = lazy(() => import('./pages/scales/ManchesterScale'));
+const ParklandScale = lazy(() => import('./pages/scales/ParklandScale'));
+const AsaScale = lazy(() => import('./pages/scales/AsaScale'));
+const KatzScale = lazy(() => import('./pages/scales/KatzScale'));
+const EcgGuide = lazy(() => import('./pages/EcgGuide'));
+const ProfilePage = lazy(() => import('./pages/Profile'));
+const PublicProfile = lazy(() => import('./pages/PublicProfile'));
+const Semiology = lazy(() => import('./pages/Semiology'));
+const SemioTechnique = lazy(() => import('./pages/Semiotechnique'));
+const AnatomyPhysiology = lazy(() => import('./pages/AnatomyPhysiology'));
+const ConcurseiroArea = lazy(() => import('./pages/ConcurseiroArea'));
+const Flashcards = lazy(() => import('./pages/Flashcards'));
+const Ranking = lazy(() => import('./pages/Ranking'));
+const DoseCalculator = lazy(() => import('./pages/tools/DoseCalculator'));
+const LabValues = lazy(() => import('./pages/tools/LabValues'));
+const BlocoDeNotas = lazy(() => import('./pages/tools/BlocoDeNotas'));
+const IntegratedCalculators = lazy(() => import('./pages/tools/IntegratedCalculators'));
+const MyPerformance = lazy(() => import('./pages/tools/MyPerformance'));
+const SimuladoPage = lazy(() => import('./pages/SimuladoPage'));
+const ReviewArea = lazy(() => import('./pages/ReviewArea'));
+const FavoritesPage = lazy(() => import('./pages/FavoritesPage'));
+const NursingNotesGuide = lazy(() => import('./pages/NursingNotesGuide'));
+const TechnicalTerms = lazy(() => import('./pages/TechnicalTerms'));
+const StudyTracks = lazy(() => import('./pages/StudyTracks'));
+const DeepStudy = lazy(() => import('./pages/DeepStudy'));
+const ClinicalCases = lazy(() => import('./pages/ClinicalCases'));
+const Concursos = lazy(() => import('./pages/Concursos'));
+const VideoLibrary = lazy(() => import('./pages/VideoLibrary'));
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -76,26 +76,15 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
     );
   }
 
-  // Rota Pública (Landing Page) - Acessível para todos
-  // Adicionada aqui para não interferir na lógica de Auth
-  // Se o usuário estiver logado, ele ainda pode acessar /oferta se quiser,
-  // mas o botão "Já sou aluno" o levará para o dashboard.
-
   // Se NÃO estiver logado
   if (!session) {
     return (
       <Routes>
-        {/* Landing Page como rota específica */}
         <Route path="/oferta" element={<LandingPage />} />
-        
-        {/* A Raiz (/) continua sendo o Login para manter o fluxo atual do app */}
         <Route path="/" element={<Login />} />
-        
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/update-password" element={<UpdatePassword />} />
-        
-        {/* Qualquer outra rota desconhecida joga para a raiz (Login) */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     );
@@ -104,7 +93,6 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
   // Se ESTIVER logado
   return (
     <Routes>
-      {/* Landing Page acessível mesmo logado */}
       <Route path="/oferta" element={<LandingPage />} />
 
       <Route path="/" element={<MainLayout />}>
@@ -157,7 +145,6 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="update-password" element={<UpdatePassword />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      {/* Fallback extra de segurança para rotas de auth quando logado */}
       <Route path="/login" element={<Navigate to="/" replace />} />
       <Route path="/register" element={<Navigate to="/" replace />} />
     </Routes>
