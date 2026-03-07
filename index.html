@@ -18,7 +18,7 @@
     <link rel="preload" href="/images/mockup-hero.webp" as="image" type="image/webp">
     <link rel="preload" href="/images/logo-navbar-new.png" as="image" type="image/png">
 
-    <!-- Meta Pixel Code -->
+    <!-- Meta Pixel Code (Script Only) -->
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -31,12 +31,15 @@
     fbq('init', '1336974837913423');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1336974837913423&ev=PageView&noscript=1"
-    /></noscript>
     <!-- End Meta Pixel Code -->
   </head>
   <body>
+    <!-- Meta Pixel NoScript Fallback -->
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1336974837913423&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel NoScript -->
+    
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
