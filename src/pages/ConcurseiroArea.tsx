@@ -35,13 +35,14 @@ interface StudyMaterial {
   is_premium: boolean;
 }
 
+// Dados de backup (Mocks) com um PDF real para permitir testes do leitor
 const MOCK_MATERIALS: StudyMaterial[] = [
   {
     id: "mock-1",
     title: "Resumo Definitivo: Lei 8.080/90",
     description: "Mapas mentais, mnemônicos e os artigos que mais caem em provas de concursos e residências. Foco na organização do SUS.",
     category: "Legislação do SUS",
-    file_url: "#",
+    file_url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
     file_size: "2.4 MB",
     page_count: 35,
     is_premium: true
@@ -191,7 +192,7 @@ const ConcurseiroArea = () => {
   };
 
   const handleDownload = async (url: string, title: string, id: string) => {
-    if (url === "#") {
+    if (url === "#" || url.includes("dummy.pdf")) {
       toast.info("Este é apenas um material de demonstração.");
       return;
     }
@@ -445,9 +446,9 @@ const ConcurseiroArea = () => {
                       <p className="text-sm text-muted-foreground font-medium">Carregando documento...</p>
                     </div>
                   )}
-                  {/* Utilizando o PDF nativo do navegador. Permite cópia de texto! */}
+                  {/* Utilizando o Google Docs Viewer para garantir compatibilidade e seleção de texto na web */}
                   <iframe 
-                    src={`${readingMaterial.file_url}#toolbar=0&navpanes=0`} 
+                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`} 
                     className="w-full h-full border-0 absolute inset-0 z-20 bg-white"
                     title={readingMaterial.title}
                     onLoad={() => setIframeLoading(false)}
