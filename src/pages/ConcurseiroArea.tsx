@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { 
   GraduationCap, Search, Download, FileText,
-  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check, Copy, Save, ExternalLink
+  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check, Copy, Save, ExternalLink, Zap
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -48,6 +48,20 @@ const MOCK_MATERIALS: StudyMaterial[] = [
   }
 ];
 
+const BIZUS_CONCURSO = [
+  "<strong>Dica da Plataforma:</strong> Para copiar textos dos PDFs e criar seus resumos com facilidade, clique no botão <strong>Nova Aba</strong> no topo do visualizador.",
+  "<strong>Legislação do SUS:</strong> A direção do SUS é ÚNICA em cada esfera de governo. Cuidado com bancas que colocam 'direção única nacional' para confundir.",
+  "<strong>Ética (Penalidades):</strong> A <strong>CASSAÇÃO</strong> é a única penalidade que o COREN não aplica diretamente. Ela exige o julgamento do COFEN e dura até 30 anos.",
+  "<strong>Cálculo de Medicação:</strong> Para achar <strong>microgotas/min</strong>, basta dividir o Volume (ml) pelo Tempo (h). É sempre 3 vezes o valor de macrogotas!",
+  "<strong>Imunização (PNI):</strong> Vacinas virais ATENUADAS: Tríplice Viral, Tetra Viral, Varicela, Febre Amarela, Rotavírus e VOP. (Atenção para gestantes e imunossuprimidos).",
+  "<strong>Urgência e Emergência:</strong> Ritmos de PCR <strong>CHOCÁVEIS</strong> são FV e TV sem pulso. Assistolia e AESP NÃO se choca, o tratamento é RCP + Adrenalina.",
+  "<strong>Saúde da Mulher:</strong> A vacina <strong>dTpa</strong> deve ser feita a partir da 20ª semana em TODA gestação (protege o recém-nascido contra a Coqueluche).",
+  "<strong>Centro Cirúrgico:</strong> Na classificação de Spaulding: Artigo <strong>CRÍTICO</strong> (penetra tecido) exige Esterilização. <strong>SEMICRÍTICO</strong> (toca mucosa) exige Desinfecção de Alto Nível.",
+  "<strong>Exercício Profissional:</strong> O Técnico de Enfermagem NÃO realiza Consulta de Enfermagem e NÃO prescreve cuidados. Essas atividades são privativas do Enfermeiro.",
+  "<strong>Fundamentos:</strong> Posição de <strong>Sim's</strong> (lateral com perna flexionada) é ideal para enema. Posição de <strong>Trendelenburg</strong> (cabeça baixa) para retorno venoso no choque.",
+  "<strong>Gerenciamento de Resíduos:</strong> Perfurocortantes vão na caixa rígida (Grupo E). Gaze com muito sangue fluido vai pro saco branco (Grupo A - Infectante)."
+];
+
 const fetchMaterials = async () => {
   const { data, error } = await supabase
     .from('study_materials')
@@ -83,9 +97,28 @@ const ConcurseiroArea = () => {
   const [isSavingNote, setIsSavingNote] = useState(false);
   const [isNoteSaved, setIsNoteSaved] = useState(false);
 
+  // Estados do Bizu do Dia
+  const [bizuIndex, setBizuIndex] = useState(0);
+  const [bizuProgress, setBizuProgress] = useState(0);
+
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Área do Concurseiro', path: '/concurseiro', icon: 'GraduationCap' });
   }, [addActivity]);
+
+  // Temporizador do Bizu (10 segundos)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setBizuProgress((prev) => {
+        if (prev >= 100) {
+          setBizuIndex((current) => (current + 1) % BIZUS_CONCURSO.length);
+          return 0;
+        }
+        return prev + 1; // Incrementa 1% a cada 100ms = 10 segundos
+      });
+    }, 100);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const { data: materials = [], isLoading } = useQuery({
     queryKey: ['studyMaterials'],
@@ -262,18 +295,39 @@ const ConcurseiroArea = () => {
         )}
       </div>
 
-      {/* BIZU DO DIA */}
-      <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200 dark:border-amber-900/50 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-sm relative overflow-hidden">
-         <div className="absolute top-0 right-0 p-4 opacity-10"><Lightbulb className="w-16 h-16 text-amber-500" /></div>
-         <div className="p-3 bg-amber-100 dark:bg-amber-900/50 rounded-xl shrink-0 z-10">
-            <Copy className="h-6 w-6 text-amber-600 dark:text-amber-400" />
-         </div>
-         <div className="z-10">
-            <h4 className="font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wide text-xs sm:text-sm mb-1">Bizu do Dia</h4>
-            <p className="text-sm sm:text-base text-amber-900/80 dark:text-amber-200/80 font-medium italic">
-               "Para copiar textos com facilidade e criar seus resumos, clique no botão <strong>Nova Aba</strong> no topo do visualizador."
-            </p>
-         </div>
+      {/* BIZU DO DIA DINÂMICO E MODERNO */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
+        
+        <div className="p-3 bg-white/20 backdrop-blur-md rounded-xl shrink-0 z-10 border border-white/20 shadow-inner">
+          <Zap className="h-6 w-6 text-yellow-300" />
+        </div>
+        
+        <div className="z-10 flex-1 w-full min-w-0 text-white">
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="font-bold text-blue-100 uppercase tracking-widest text-[10px] sm:text-xs flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-yellow-300" /> Bizus de Ouro
+            </h4>
+            <span className="text-[10px] font-mono text-blue-200/80 bg-black/20 px-2 py-0.5 rounded-full">
+              {bizuIndex + 1}/{BIZUS_CONCURSO.length}
+            </span>
+          </div>
+          
+          <div key={bizuIndex} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <p 
+               className="text-sm sm:text-base font-medium leading-relaxed drop-shadow-sm" 
+               dangerouslySetInnerHTML={{ __html: BIZUS_CONCURSO[bizuIndex] }} 
+            />
+          </div>
+        </div>
+        
+        {/* Barra de Progresso do Bizu */}
+        <div className="absolute bottom-0 left-0 h-1 bg-black/20 w-full">
+          <div 
+             className="h-full bg-yellow-400 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(250,204,21,0.8)]" 
+             style={{ width: `${bizuProgress}%` }} 
+          />
+        </div>
       </div>
 
       {/* CONTROLES E FILTROS */}
@@ -414,7 +468,7 @@ const ConcurseiroArea = () => {
                {profile && !isNotesOpen && (
                  <Button 
                     size="sm" 
-                    className="hidden sm:flex transition-all gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold shadow-md hover:shadow-lg border-none"
+                    className="hidden sm:flex transition-all gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold shadow-md hover:shadow-lg border-none px-4"
                     onClick={() => setIsNotesOpen(true)}
                  >
                     <PenLine className="w-4 h-4" /> Fazer anotações
@@ -441,7 +495,7 @@ const ConcurseiroArea = () => {
                     </div>
                   )}
                   <iframe 
-                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`}
+                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`} 
                     className="w-full h-full border-0 absolute inset-0 z-20 bg-white"
                     title={readingMaterial.title}
                     onLoad={() => setIframeLoading(false)}
