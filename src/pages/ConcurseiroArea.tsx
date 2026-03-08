@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
   GraduationCap, Search, Download, FileText,
-  Lightbulb, ShieldCheck, Trophy, Sparkles, Loader2, ArrowDownToLine
+  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -15,6 +15,9 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { toast } from "sonner";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 interface Profile {
   id: string;
@@ -87,6 +90,10 @@ const ConcurseiroArea = () => {
   const { addActivity } = useActivityTracker();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todas");
+  
+  // Estados para Leitura e Download
+  const [readingMaterial, setReadingMaterial] = useState<StudyMaterial | null>(null);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Área do Concurseiro', path: '/concurseiro', icon: 'GraduationCap' });
@@ -112,12 +119,55 @@ const ConcurseiroArea = () => {
     });
   }, [materials, searchTerm, activeCategory]);
 
+  // Função para forçar o download do PDF ao invés de abrir no navegador
+  const handleDownload = async (url: string, title: string, id: string) => {
+    if (url === "#") {
+      toast.info("Este é apenas um material de demonstração.");
+      return;
+    }
+
+    try {
+      setDownloadingId(id);
+      toast.info("Preparando download...");
+      
+      // Busca o arquivo como Blob
+      const response = await fetch(url);
+      const blob = await response.blob();
+      
+      // Cria uma URL local para o blob
+      const blobUrl = window.URL.createObjectURL(blob);
+      
+      // Cria um link temporário e simula o clique
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      
+      // Formata o nome do arquivo (Tira espaços e caracteres especiais)
+      const safeTitle = title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, "_");
+      link.download = `EnfermagemPro_${safeTitle}.pdf`;
+      
+      document.body.appendChild(link);
+      link.click();
+      
+      // Limpeza
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+      
+      toast.success("Download concluído!");
+    } catch (error) {
+      console.error("Erro no download:", error);
+      toast.error("Erro ao fazer o download. O arquivo pode estar indisponível.");
+      // Fallback: Tenta abrir em nova aba se o fetch falhar (ex: erro de CORS)
+      window.open(url, '_blank');
+    } finally {
+      setDownloadingId(null);
+    }
+  };
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
       
       {/* HEADER PREMIUM */}
       <div className="relative overflow-hidden rounded-3xl bg-[#0a0f1c] border border-blue-900/30 p-8 sm:p-12 text-white shadow-2xl isolate">
-        {/* Glow Effects */}
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-600/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 -z-10" />
         <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-emerald-600/10 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/3 -z-10" />
         
@@ -130,7 +180,7 @@ const ConcurseiroArea = () => {
               Materiais em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">PDF</span>
             </h1>
             <p className="text-blue-100/80 text-sm sm:text-lg max-w-xl leading-relaxed">
-              Baixe os resumos esquematizados, mapas mentais e bizus que vão acelerar a sua aprovação. Tudo formatado e pronto para imprimir.
+              Leia os resumos esquematizados diretamente na plataforma ou baixe-os para imprimir e estudar onde quiser.
             </p>
           </div>
 
@@ -255,17 +305,72 @@ const ConcurseiroArea = () => {
                    </div>
                 </CardContent>
 
-                <CardFooter className="pt-0 pb-5 px-5">
-                   <Button asChild className="w-full bg-slate-900 hover:bg-blue-600 text-white shadow-md transition-all group-hover:shadow-blue-500/20 font-bold h-11">
-                      <a href={material.file_url} target="_blank" rel="noopener noreferrer">
-                         <Download className="w-4 h-4 mr-2" /> Baixar PDF
-                      </a>
+                <CardFooter className="pt-0 pb-5 px-5 flex gap-3">
+                   <Button 
+                      onClick={() => setReadingMaterial(material)} 
+                      variant="outline" 
+                      className="flex-1 border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/50 font-semibold"
+                   >
+                      <Eye className="w-4 h-4 mr-2" /> Ler
+                   </Button>
+                   <Button 
+                      onClick={() => handleDownload(material.file_url, material.title, material.id)}
+                      disabled={downloadingId === material.id}
+                      className="flex-1 bg-slate-900 hover:bg-blue-600 text-white shadow-md transition-all font-bold"
+                   >
+                      {downloadingId === material.id ? (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      ) : (
+                        <Download className="w-4 h-4 mr-2" />
+                      )}
+                      Baixar
                    </Button>
                 </CardFooter>
              </Card>
           ))}
         </div>
       )}
+
+      {/* MODAL DE LEITURA DO PDF */}
+      <Dialog open={!!readingMaterial} onOpenChange={(open) => !open && setReadingMaterial(null)}>
+        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] p-0 overflow-hidden flex flex-col gap-0 border-none bg-background rounded-xl">
+          <VisuallyHidden.Root>
+             <DialogTitle>Leitor de PDF</DialogTitle>
+          </VisuallyHidden.Root>
+          
+          {/* Header do Modal */}
+          <div className="p-4 border-b bg-card flex flex-row items-center justify-between shrink-0 shadow-sm z-10">
+            <div className="flex flex-col min-w-0 pr-4">
+               <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">{readingMaterial?.category}</span>
+               <h3 className="font-bold text-sm sm:text-base truncate">{readingMaterial?.title}</h3>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+               <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="hidden sm:flex"
+                  onClick={() => readingMaterial && handleDownload(readingMaterial.file_url, readingMaterial.title, readingMaterial.id)}
+               >
+                  <Download className="w-4 h-4 mr-2" /> Baixar
+               </Button>
+               <Button variant="ghost" size="icon" onClick={() => setReadingMaterial(null)} className="rounded-full bg-muted/50 hover:bg-destructive/10 hover:text-destructive">
+                  <X className="h-5 w-5"/>
+               </Button>
+            </div>
+          </div>
+          
+          {/* Corpo do Modal (Iframe do PDF) */}
+          <div className="flex-1 w-full h-full bg-slate-100 dark:bg-slate-900 relative">
+            {readingMaterial && (
+              <iframe 
+                src={`${readingMaterial.file_url}#view=FitH&toolbar=0&navpanes=0`} 
+                className="w-full h-full border-0 absolute inset-0"
+                title={readingMaterial.title}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
     </div>
   );
