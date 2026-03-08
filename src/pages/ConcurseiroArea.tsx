@@ -75,7 +75,6 @@ const ConcurseiroArea = () => {
   const [readingMaterial, setReadingMaterial] = useState<StudyMaterial | null>(null);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [iframeLoading, setIframeLoading] = useState(true);
-  const [viewerMode, setViewerMode] = useState<"google" | "native">("google");
 
   // Estados do Bloco de Notas Integrado
   const [isNotesOpen, setIsNotesOpen] = useState(false);
@@ -172,7 +171,6 @@ const ConcurseiroArea = () => {
 
   const handleOpenReader = (material: StudyMaterial) => {
     setIframeLoading(true);
-    setViewerMode("google"); // Volta ao padrão sempre que abre
     setReadingMaterial(material);
     setIsNotesOpen(false);
   };
@@ -273,7 +271,7 @@ const ConcurseiroArea = () => {
          <div className="z-10">
             <h4 className="font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wide text-xs sm:text-sm mb-1">Bizu do Dia</h4>
             <p className="text-sm sm:text-base text-amber-900/80 dark:text-amber-200/80 font-medium italic">
-               "Para copiar o texto, mude para o <strong>Modo Cópia</strong> no botão acima do PDF, ou clique em <strong>Nova Aba</strong>."
+               "Para copiar textos com facilidade e criar seus resumos, clique no botão <strong>Nova Aba</strong> no topo do visualizador."
             </p>
          </div>
       </div>
@@ -395,35 +393,13 @@ const ConcurseiroArea = () => {
           </VisuallyHidden.Root>
           
           {/* Header do Modal */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 border-b bg-card shrink-0 shadow-sm z-20 gap-3">
+          <div className="p-3 sm:p-4 border-b bg-card flex flex-row items-center justify-between shrink-0 shadow-sm z-20 gap-3">
             <div className="flex flex-col min-w-0 pr-2 sm:pr-4 flex-1">
                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">{readingMaterial?.category}</span>
                <h3 className="font-bold text-sm sm:text-base truncate w-full">{readingMaterial?.title}</h3>
             </div>
             
             <div className="flex flex-wrap items-center gap-1 sm:gap-2 shrink-0">
-               
-               {/* Toggle de Visualizador */}
-               <div className="hidden md:flex items-center bg-muted rounded-md p-0.5 mr-1 border border-border/50">
-                  <Button 
-                     variant={viewerMode === 'google' ? 'secondary' : 'ghost'} 
-                     size="sm" 
-                     className="h-7 text-xs px-2 shadow-none" 
-                     onClick={() => { setIframeLoading(true); setViewerMode('google'); }}
-                     title="Modo de leitura estável e rápido"
-                  >
-                     Modo Leitura
-                  </Button>
-                  <Button 
-                     variant={viewerMode === 'native' ? 'secondary' : 'ghost'} 
-                     size="sm" 
-                     className="h-7 text-xs px-2 shadow-none" 
-                     onClick={() => { setIframeLoading(true); setViewerMode('native'); }}
-                     title="Permite selecionar e copiar texto (pode não funcionar em alguns celulares)"
-                  >
-                     Modo Cópia
-                  </Button>
-               </div>
 
                <Button 
                   size="sm" 
@@ -446,7 +422,7 @@ const ConcurseiroArea = () => {
                  </Button>
                )}
                
-               <Button variant="ghost" size="icon" onClick={handleCloseReader} className="rounded-full bg-muted/50 hover:bg-destructive/10 hover:text-destructive shrink-0">
+               <Button variant="ghost" size="icon" onClick={handleCloseReader} className="rounded-full bg-muted/50 hover:bg-destructive/10 hover:text-destructive shrink-0 ml-1 sm:ml-2">
                   <X className="h-5 w-5"/>
                </Button>
             </div>
@@ -465,11 +441,8 @@ const ConcurseiroArea = () => {
                       <p className="text-sm text-muted-foreground font-medium">Carregando documento...</p>
                     </div>
                   )}
-                  {/* Iframe dinâmico: Nativo vs Google Viewer */}
                   <iframe 
-                    src={viewerMode === 'google' 
-                        ? `https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true` 
-                        : readingMaterial.file_url} 
+                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`} 
                     className="w-full h-full border-0 absolute inset-0 z-20 bg-white"
                     title={readingMaterial.title}
                     onLoad={() => setIframeLoading(false)}
