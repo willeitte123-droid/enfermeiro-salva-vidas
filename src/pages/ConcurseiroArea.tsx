@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { 
   GraduationCap, Search, Download, FileText,
-  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check, Copy
+  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check, Copy, Save
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -35,7 +35,6 @@ interface StudyMaterial {
   is_premium: boolean;
 }
 
-// Dados de backup (Mocks) com um PDF real para permitir testes do leitor
 const MOCK_MATERIALS: StudyMaterial[] = [
   {
     id: "mock-1",
@@ -145,23 +144,15 @@ const ConcurseiroArea = () => {
       if (data?.id && !noteId) setNoteId(data.id);
       setIsSavingNote(false);
       setIsNoteSaved(true);
-      setTimeout(() => setIsNoteSaved(false), 2000);
+      toast.success("Resumo salvo com sucesso!");
+      setTimeout(() => setIsNoteSaved(false), 3000);
       queryClient.invalidateQueries({ queryKey: ["notes"] });
+    },
+    onError: () => {
+      setIsSavingNote(false);
+      toast.error("Erro ao salvar o resumo.");
     }
   });
-
-  // Autosave Effect
-  useEffect(() => {
-    if (!isNotesOpen || !readingMaterial || !profile) return;
-    // Previne salvar se o conteúdo for igual ao que veio do banco
-    if (documentNote && noteContent === (documentNote.content || "")) return;
-
-    const handler = setTimeout(() => {
-      saveNoteMutation.mutate(noteContent);
-    }, 1500);
-
-    return () => clearTimeout(handler);
-  }, [noteContent, isNotesOpen, profile, readingMaterial, documentNote]);
 
   const categories = useMemo(() => {
     const cats = new Set(materials.map(m => m.category));
@@ -446,9 +437,9 @@ const ConcurseiroArea = () => {
                       <p className="text-sm text-muted-foreground font-medium">Carregando documento...</p>
                     </div>
                   )}
-                  {/* Utilizando o Google Docs Viewer para garantir compatibilidade e seleção de texto na web */}
+                  {/* Utilizando o PDF nativo do navegador. Permite cópia de texto! */}
                   <iframe 
-                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`} 
+                    src={`${readingMaterial.file_url}#toolbar=0&navpanes=0`} 
                     className="w-full h-full border-0 absolute inset-0 z-20 bg-white"
                     title={readingMaterial.title}
                     onLoad={() => setIframeLoading(false)}
@@ -464,20 +455,23 @@ const ConcurseiroArea = () => {
                    <span className="font-bold text-sm flex items-center gap-2 text-amber-800 dark:text-amber-400">
                      <PenLine className="h-4 w-4" /> Suas Anotações
                    </span>
-                   <div className="flex items-center gap-3">
-                     <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider flex items-center gap-1">
-                       {isSavingNote ? (
-                         <><Loader2 className="w-3 h-3 animate-spin text-amber-500" /> Salvando</>
-                       ) : isNoteSaved ? (
-                         <><Check className="w-3 h-3 text-green-500" /> Salvo</>
-                       ) : (
-                         "Autosave ON"
-                       )}
-                     </span>
+                   <div className="flex items-center gap-2">
+                     {isNoteSaved && <span className="text-[10px] text-green-600 uppercase font-bold tracking-wider flex items-center gap-1 mr-2"><Check className="w-3 h-3" /> Salvo</span>}
+                     
+                     <Button 
+                       size="sm" 
+                       className="h-7 text-xs bg-green-600 hover:bg-green-700 text-white font-bold px-3 shadow-sm"
+                       onClick={() => saveNoteMutation.mutate(noteContent)}
+                       disabled={isSavingNote}
+                     >
+                       {isSavingNote ? <Loader2 className="w-3 h-3 mr-1.5 animate-spin" /> : <Save className="w-3 h-3 mr-1.5" />}
+                       Salvar Resumo
+                     </Button>
+
                      <Button 
                        variant="ghost" 
                        size="icon" 
-                       className="h-6 w-6 rounded-full hover:bg-amber-200/50 text-amber-800 dark:text-amber-400" 
+                       className="h-6 w-6 rounded-full hover:bg-amber-200/50 text-amber-800 dark:text-amber-400 ml-1" 
                        onClick={() => setIsNotesOpen(false)}
                        title="Fechar anotações"
                      >
@@ -488,7 +482,7 @@ const ConcurseiroArea = () => {
                  <Textarea 
                    value={noteContent}
                    onChange={(e) => setNoteContent(e.target.value)}
-                   placeholder="Digite seus resumos, macetes ou cole textos copiados do PDF aqui. Eles serão salvos automaticamente no seu Bloco de Notas."
+                   placeholder="Digite seus resumos, macetes ou cole textos copiados do PDF aqui. Eles serão salvos no seu Bloco de Notas pessoal e ficarão vinculados a este material."
                    className="flex-1 resize-none border-none focus-visible:ring-0 p-4 sm:p-6 text-sm sm:text-base leading-relaxed bg-transparent font-serif text-foreground/90 placeholder:text-muted-foreground/40"
                  />
                  <div className="p-2 bg-muted/20 text-center text-[10px] text-muted-foreground border-t shrink-0">
