@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Loader2, Plus, Edit, Trash2, FileText, Upload, Download, FileDown, Wrench, AlertTriangle, Sparkles, Globe, Search, CheckCircle2 } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, FileText, Upload, Download, FileDown, Wrench, AlertTriangle, Sparkles, Globe, Search, CheckCircle2, Eye } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -63,7 +63,7 @@ export default function MaterialsManager() {
 
   // Junta as categorias padrão com as categorias que já existem no banco
   const allCategories = useMemo(() => {
-    const dbCategories = materials.map(m => m.category);
+    const dbCategories = materials.map(m => m.category).filter(Boolean);
     return Array.from(new Set([...DEFAULT_CATEGORIES, ...dbCategories])).sort();
   }, [materials]);
 
@@ -94,7 +94,7 @@ export default function MaterialsManager() {
         const fileName = `${Date.now()}.${fileExt}`;
         const filePath = `pdfs/${fileName}`;
 
-        // Correção Crucial: Adicionando contentType explícito para que o navegador reconheça como PDF e não faça download forçado
+        // Adicionando contentType explícito para que o navegador reconheça como PDF
         const { error: uploadError } = await supabase.storage.from('concurso_pdfs').upload(filePath, pdfFile, {
           contentType: 'application/pdf',
           upsert: true
@@ -162,7 +162,7 @@ export default function MaterialsManager() {
   });
 
   const resetForm = () => {
-    setCurrentMaterial({ category: "Legislação do SUS", is_premium: true });
+    setCurrentMaterial({ category: "Legislação do SUS", is_premium: true, page_count: 0 });
     setPdfFile(null);
     setIsEditing(false);
     setIsCustomCategory(false);
@@ -174,11 +174,14 @@ export default function MaterialsManager() {
   };
 
   const openEdit = (material: StudyMaterial) => {
-    setCurrentMaterial(material);
+    setCurrentMaterial({
+      ...material,
+      page_count: material.page_count || 0 // Garante que não venha nulo
+    });
     setPdfFile(null);
     setIsEditing(true);
-    // Se a categoria do material não estiver na lista padrão, ativa o modo customizado
-    setIsCustomCategory(!DEFAULT_CATEGORIES.includes(material.category));
+    // Como estamos lendo as categorias do banco para o allCategories, a categoria já estará lá.
+    setIsCustomCategory(false);
     setIsDialogOpen(true);
   };
 
@@ -287,17 +290,17 @@ export default function MaterialsManager() {
                         )}
                       </TableCell>
                       <TableCell className="text-right pr-6">
-                        <div className="flex justify-end gap-1">
-                          <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50">
-                             <a href={item.file_url} target="_blank" rel="noopener noreferrer" title="Baixar PDF">
-                               <Download className="h-4 w-4" />
+                        <div className="flex justify-end gap-2">
+                          <Button variant="outline" size="sm" asChild className="text-muted-foreground hover:text-foreground">
+                             <a href={item.file_url} target="_blank" rel="noopener noreferrer" title="Visualizar/Baixar PDF">
+                               <Eye className="h-4 w-4" />
                              </a>
                           </Button>
-                          <Button variant="ghost" size="icon" onClick={() => openEdit(item)} className="h-8 w-8 hover:bg-primary/10 hover:text-primary">
-                            <Edit className="h-4 w-4" />
+                          <Button variant="outline" size="sm" onClick={() => openEdit(item)} className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:border-blue-800 dark:hover:bg-blue-900/30">
+                            <Edit className="h-4 w-4 mr-2" /> Editar
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => { if(confirm(`Deseja excluir "${item.title}" permanentemente?`)) deleteMutation.mutate(item.id); }}>
-                            <Trash2 className="h-4 w-4" />
+                          <Button variant="outline" size="sm" className="text-destructive border-red-200 hover:bg-red-50 hover:text-red-700 dark:border-red-900 dark:hover:bg-red-900/30" onClick={() => { if(confirm(`Deseja excluir "${item.title}" permanentemente?`)) deleteMutation.mutate(item.id); }}>
+                            <Trash2 className="h-4 w-4 mr-2" /> Excluir
                           </Button>
                         </div>
                       </TableCell>
@@ -320,7 +323,7 @@ export default function MaterialsManager() {
                {isEditing ? "Editar Material PDF" : "Adicionar Novo PDF"}
             </DialogTitle>
             <DialogDescription>
-              Preencha os dados e faça o upload do arquivo para disponibilizar na Área do Concurseiro.
+              Preencha os dados. Você pode alterar informações sem precisar reenviar o PDF.
             </DialogDescription>
           </DialogHeader>
           
@@ -387,8 +390,12 @@ export default function MaterialsManager() {
                 <Label>Nº de Páginas</Label>
                 <Input 
                   type="number" 
-                  value={currentMaterial.page_count || ""} 
-                  onChange={e => setCurrentMaterial({...currentMaterial, page_count: parseInt(e.target.value)})} 
+                  min="0"
+                  value={currentMaterial.page_count === 0 ? "" : currentMaterial.page_count} 
+                  onChange={e => {
+                    const val = parseInt(e.target.value);
+                    setCurrentMaterial({...currentMaterial, page_count: isNaN(val) ? 0 : val});
+                  }} 
                   placeholder="Ex: 45" 
                   className="border-muted-foreground/30 focus-visible:ring-primary"
                 />
@@ -409,7 +416,7 @@ export default function MaterialsManager() {
             </div>
 
             <div className="space-y-2 pt-2 border-t border-dashed">
-              <Label>Arquivo PDF <span className="text-red-500">*</span></Label>
+              <Label>Arquivo PDF {isEditing ? "(Opcional)" : <span className="text-red-500">*</span>}</Label>
               <div className="flex flex-col gap-2">
                 <Button variant="outline" asChild className="w-full relative overflow-hidden h-12 border-dashed border-2 hover:bg-primary/5 hover:text-primary hover:border-primary transition-all">
                   <label className="cursor-pointer">
@@ -421,7 +428,7 @@ export default function MaterialsManager() {
               </div>
               {currentMaterial.file_url && !pdfFile && (
                  <p className="text-xs text-green-600 dark:text-green-400 mt-1 flex items-center gap-1 font-medium">
-                    <CheckCircle2 className="h-3.5 w-3.5" /> Arquivo atual salvo no sistema.
+                    <CheckCircle2 className="h-3.5 w-3.5" /> Arquivo PDF já salvo e vinculado a este material.
                  </p>
               )}
             </div>
@@ -431,7 +438,7 @@ export default function MaterialsManager() {
             <Button variant="ghost" onClick={() => setIsDialogOpen(false)} className="w-full sm:w-auto">Cancelar</Button>
             <Button onClick={() => saveMutation.mutate()} disabled={isUploading || (!currentMaterial.file_url && !pdfFile)} className="w-full sm:w-auto bg-primary shadow-lg">
               {isUploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <FileDown className="h-4 w-4 mr-2" />} 
-              {isUploading ? "Fazendo Upload..." : "Salvar Material"}
+              {isUploading ? "Fazendo Upload..." : isEditing ? "Salvar Alterações" : "Salvar Material"}
             </Button>
           </DialogFooter>
         </DialogContent>
