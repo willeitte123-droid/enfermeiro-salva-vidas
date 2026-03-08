@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { 
   GraduationCap, Search, Download, FileText,
-  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check, Copy, Save
+  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check, Copy, Save, ExternalLink
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -75,6 +75,7 @@ const ConcurseiroArea = () => {
   const [readingMaterial, setReadingMaterial] = useState<StudyMaterial | null>(null);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [iframeLoading, setIframeLoading] = useState(true);
+  const [viewerMode, setViewerMode] = useState<"google" | "native">("google");
 
   // Estados do Bloco de Notas Integrado
   const [isNotesOpen, setIsNotesOpen] = useState(false);
@@ -171,6 +172,7 @@ const ConcurseiroArea = () => {
 
   const handleOpenReader = (material: StudyMaterial) => {
     setIframeLoading(true);
+    setViewerMode("google"); // Volta ao padrão sempre que abre
     setReadingMaterial(material);
     setIsNotesOpen(false);
   };
@@ -271,7 +273,7 @@ const ConcurseiroArea = () => {
          <div className="z-10">
             <h4 className="font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wide text-xs sm:text-sm mb-1">Bizu do Dia</h4>
             <p className="text-sm sm:text-base text-amber-900/80 dark:text-amber-200/80 font-medium italic">
-               "Ao clicar em 'Fazer Resumo', você pode <strong>selecionar e copiar o texto do PDF</strong> e colar diretamente nas suas anotações ao lado!"
+               "Para copiar o texto, mude para o <strong>Modo Cópia</strong> no botão acima do PDF, ou clique em <strong>Nova Aba</strong>."
             </p>
          </div>
       </div>
@@ -393,13 +395,46 @@ const ConcurseiroArea = () => {
           </VisuallyHidden.Root>
           
           {/* Header do Modal */}
-          <div className="p-3 sm:p-4 border-b bg-card flex flex-row items-center justify-between shrink-0 shadow-sm z-20">
-            <div className="flex flex-col min-w-0 pr-2 sm:pr-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 border-b bg-card shrink-0 shadow-sm z-20 gap-3">
+            <div className="flex flex-col min-w-0 pr-2 sm:pr-4 flex-1">
                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">{readingMaterial?.category}</span>
-               <h3 className="font-bold text-sm sm:text-base truncate max-w-[200px] sm:max-w-md">{readingMaterial?.title}</h3>
+               <h3 className="font-bold text-sm sm:text-base truncate w-full">{readingMaterial?.title}</h3>
             </div>
             
-            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <div className="flex flex-wrap items-center gap-1 sm:gap-2 shrink-0">
+               
+               {/* Toggle de Visualizador */}
+               <div className="hidden md:flex items-center bg-muted rounded-md p-0.5 mr-1 border border-border/50">
+                  <Button 
+                     variant={viewerMode === 'google' ? 'secondary' : 'ghost'} 
+                     size="sm" 
+                     className="h-7 text-xs px-2 shadow-none" 
+                     onClick={() => { setIframeLoading(true); setViewerMode('google'); }}
+                     title="Modo de leitura estável e rápido"
+                  >
+                     Modo Leitura
+                  </Button>
+                  <Button 
+                     variant={viewerMode === 'native' ? 'secondary' : 'ghost'} 
+                     size="sm" 
+                     className="h-7 text-xs px-2 shadow-none" 
+                     onClick={() => { setIframeLoading(true); setViewerMode('native'); }}
+                     title="Permite selecionar e copiar texto (pode não funcionar em alguns celulares)"
+                  >
+                     Modo Cópia
+                  </Button>
+               </div>
+
+               <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="hidden lg:flex transition-colors hover:text-blue-600 hover:border-blue-300"
+                  onClick={() => window.open(readingMaterial?.file_url, '_blank')}
+                  title="Abrir em Nova Aba (Recomendado para copiar)"
+               >
+                  <ExternalLink className="w-4 h-4 mr-2" /> Nova Aba
+               </Button>
+
                {profile && !isNotesOpen && (
                  <Button 
                     size="sm" 
@@ -407,18 +442,11 @@ const ConcurseiroArea = () => {
                     className="hidden sm:flex transition-all gap-2 border-border hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300 dark:hover:bg-amber-900/30"
                     onClick={() => setIsNotesOpen(true)}
                  >
-                    <PenLine className="w-4 h-4" /> Fazer Resumo
+                    <PenLine className="w-4 h-4" /> Resumir
                  </Button>
                )}
-               <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="hidden sm:flex"
-                  onClick={() => readingMaterial && handleDownload(readingMaterial.file_url, readingMaterial.title, readingMaterial.id)}
-               >
-                  <Download className="w-4 h-4 mr-2" /> Baixar
-               </Button>
-               <Button variant="ghost" size="icon" onClick={handleCloseReader} className="rounded-full bg-muted/50 hover:bg-destructive/10 hover:text-destructive shrink-0 ml-1 sm:ml-2">
+               
+               <Button variant="ghost" size="icon" onClick={handleCloseReader} className="rounded-full bg-muted/50 hover:bg-destructive/10 hover:text-destructive shrink-0">
                   <X className="h-5 w-5"/>
                </Button>
             </div>
@@ -437,9 +465,11 @@ const ConcurseiroArea = () => {
                       <p className="text-sm text-muted-foreground font-medium">Carregando documento...</p>
                     </div>
                   )}
-                  {/* Utilizando o PDF nativo do navegador. Permite cópia de texto! */}
+                  {/* Iframe dinâmico: Nativo vs Google Viewer */}
                   <iframe 
-                    src={`${readingMaterial.file_url}#toolbar=0&navpanes=0`} 
+                    src={viewerMode === 'google' 
+                        ? `https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true` 
+                        : readingMaterial.file_url} 
                     className="w-full h-full border-0 absolute inset-0 z-20 bg-white"
                     title={readingMaterial.title}
                     onLoad={() => setIframeLoading(false)}
@@ -482,7 +512,7 @@ const ConcurseiroArea = () => {
                  <Textarea 
                    value={noteContent}
                    onChange={(e) => setNoteContent(e.target.value)}
-                   placeholder="Digite seus resumos, macetes ou cole textos copiados do PDF aqui. Eles serão salvos no seu Bloco de Notas pessoal e ficarão vinculados a este material."
+                   placeholder="Digite seus resumos, macetes ou cole textos copiados do PDF aqui. Não esqueça de clicar em 'Salvar Resumo'."
                    className="flex-1 resize-none border-none focus-visible:ring-0 p-4 sm:p-6 text-sm sm:text-base leading-relaxed bg-transparent font-serif text-foreground/90 placeholder:text-muted-foreground/40"
                  />
                  <div className="p-2 bg-muted/20 text-center text-[10px] text-muted-foreground border-t shrink-0">
