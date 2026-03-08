@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { 
   GraduationCap, Search, Download, FileText,
-  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check, Copy, Save, ExternalLink, Zap
+  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check, Save, ExternalLink, Zap, Clock
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -48,21 +48,41 @@ const MOCK_MATERIALS: StudyMaterial[] = [
   }
 ];
 
-const BIZUS_CONCURSO = [
-  "<strong>Dica da Plataforma:</strong> Para copiar textos dos PDFs e criar seus resumos com facilidade, clique no botão <strong>Nova Aba</strong> no topo do visualizador.",
-  "<strong>Legislação do SUS:</strong> A direção do SUS é ÚNICA em cada esfera de governo. Cuidado com bancas que colocam 'direção única nacional' para confundir.",
-  "<strong>Ética (Penalidades):</strong> A <strong>CASSAÇÃO</strong> é a única penalidade que o COREN não aplica diretamente. Ela exige o julgamento do COFEN e dura até 30 anos.",
+// Banco massivo de Bizus que mais caem em provas
+const ALL_BIZUS = [
+  "<strong>Legislação do SUS:</strong> A direção do SUS é ÚNICA em cada esfera de governo. Bancas costumam colocar 'direção única nacional' para confundir. Cuidado!",
+  "<strong>Ética (Penalidades):</strong> A <strong>CASSAÇÃO</strong> é a única penalidade que o COREN não aplica diretamente. Ela exige o julgamento do COFEN e pode durar até 30 anos.",
   "<strong>Cálculo de Medicação:</strong> Para achar <strong>microgotas/min</strong>, basta dividir o Volume (ml) pelo Tempo (h). É sempre 3 vezes o valor de macrogotas!",
-  "<strong>Imunização (PNI):</strong> Vacinas virais ATENUADAS: Tríplice Viral, Tetra Viral, Varicela, Febre Amarela, Rotavírus e VOP. (Atenção para gestantes e imunossuprimidos).",
-  "<strong>Urgência e Emergência:</strong> Ritmos de PCR <strong>CHOCÁVEIS</strong> são FV e TV sem pulso. Assistolia e AESP NÃO se choca, o tratamento é RCP + Adrenalina.",
-  "<strong>Saúde da Mulher:</strong> A vacina <strong>dTpa</strong> deve ser feita a partir da 20ª semana em TODA gestação (protege o recém-nascido contra a Coqueluche).",
+  "<strong>Imunização (PNI):</strong> Vacinas virais ATENUADAS (Vivas): Tríplice Viral, Tetra Viral, Varicela, Febre Amarela, Rotavírus e VOP. São contraindicadas para gestantes.",
+  "<strong>Urgência e Emergência:</strong> Ritmos de PCR <strong>CHOCÁVEIS</strong> são FV e TV sem pulso. Assistolia e AESP NÃO se choca, o tratamento é RCP de alta qualidade + Adrenalina.",
+  "<strong>Saúde da Mulher:</strong> A vacina <strong>dTpa</strong> deve ser administrada a partir da 20ª semana em TODA gestação (protege o recém-nascido contra a Coqueluche).",
   "<strong>Centro Cirúrgico:</strong> Na classificação de Spaulding: Artigo <strong>CRÍTICO</strong> (penetra tecido) exige Esterilização. <strong>SEMICRÍTICO</strong> (toca mucosa) exige Desinfecção de Alto Nível.",
-  "<strong>Exercício Profissional:</strong> O Técnico de Enfermagem NÃO realiza Consulta de Enfermagem e NÃO prescreve cuidados. Essas atividades são privativas do Enfermeiro.",
-  "<strong>Fundamentos:</strong> Posição de <strong>Sim's</strong> (lateral com perna flexionada) é ideal para enema. Posição de <strong>Trendelenburg</strong> (cabeça baixa) para retorno venoso no choque.",
-  "<strong>Gerenciamento de Resíduos:</strong> Perfurocortantes vão na caixa rígida (Grupo E). Gaze com muito sangue fluido vai pro saco branco (Grupo A - Infectante)."
+  "<strong>Exercício Profissional:</strong> O Técnico de Enfermagem NÃO realiza Consulta de Enfermagem e NÃO prescreve cuidados (SAE). Essas atividades são privativas do Enfermeiro.",
+  "<strong>Fundamentos:</strong> Posição de <strong>Sim's</strong> (lateral com perna flexionada) é a ideal para lavagem intestinal/enema.",
+  "<strong>Gerenciamento de Resíduos:</strong> Perfurocortantes vão na caixa rígida amarela (Grupo E). Resíduo biológico com sangue fluido vai pro saco branco leitoso (Grupo A).",
+  "<strong>Legislação do SUS:</strong> O Conselho de Saúde tem caráter PERMANENTE e DELIBERATIVO. A Conferência de Saúde ocorre a cada 4 ANOS.",
+  "<strong>Imunização:</strong> A vacina BCG não impede a infecção tuberculosa, mas protege contra as formas GRAVES da doença (miliar e meníngea) na infância.",
+  "<strong>Saúde da Criança:</strong> O Teste do Pezinho deve ser realizado idealmente entre o 3º e 5º dia de vida. Fazer antes de 48h pode dar falso negativo para fenilcetonúria.",
+  "<strong>Urgência (Queimaduras):</strong> Na Regra dos Nove (Adulto), o tronco anterior vale 18%, dorso 18%, cada perna 18%, cada braço 9% e cabeça 9%.",
+  "<strong>Clínica Médica:</strong> A insulina NPH tem aspecto leitoso (turvo) e a Regular tem aspecto límpido (transparente). Lembre-se: 'Limpar antes de turvar' na mistura.",
+  "<strong>Saúde Pública:</strong> Tuberculose e Hanseníase são doenças de notificação compulsória SEMANAL. Já Sarampo e Raiva exigem notificação IMEDIATA (24h).",
+  "<strong>Biossegurança:</strong> Precaução por Aerossóis exige máscara N95 e quarto com pressão negativa. Principais doenças: Tuberculose, Sarampo e Varicela.",
+  "<strong>Urgência:</strong> A Tríade de Cushing (Hipertensão, Bradicardia e Respiração Irregular) indica aumento grave da Pressão Intracraniana (HIC).",
+  "<strong>Ética e Legislação:</strong> O processo ético-disciplinar nos conselhos de enfermagem prescreve em 5 (cinco) anos.",
+  "<strong>Administração em Enfermagem:</strong> A Liderança Autocrática foca no líder e nas tarefas, sendo a mais adequada para situações de emergência clínica (ex: PCR).",
+  "<strong>Saúde da Mulher:</strong> O preventivo (Papanicolau) deve ser coletado a partir dos 25 anos nas mulheres que já tiveram atividade sexual. Até os 64 anos.",
+  "<strong>Fundamentos:</strong> A respiração de Kussmaul (profunda e ruidosa com pausas) é clássica de pacientes em Cetoacidose Diabética.",
+  "<strong>Saúde do Trabalhador:</strong> A NR-32 proíbe expressamente o uso de calçados abertos e qualquer tipo de adorno (relógio, anel, brinco) no ambiente assistencial.",
+  "<strong>Centro Cirúrgico:</strong> A 'Diérese' é o tempo cirúrgico de incisão/corte (ex: uso do bisturi). A 'Síntese' é o fechamento/sutura.",
+  "<strong>Saúde Mental:</strong> A internação psiquiátrica involuntária deve ser comunicada obrigatoriamente ao Ministério Público em até 72 horas.",
+  "<strong>Obstetrícia:</strong> A Manobra de Leopold possui 4 tempos e serve para avaliar a estática fetal: Situação, Posição, Apresentação e Insinuação.",
+  "<strong>Clínica Médica:</strong> O Sinal de Blumberg (dor à descompressão brusca na fossa ilíaca direita) é indicativo clássico de Apendicite Aguda.",
+  "<strong>Saúde Pública:</strong> A notificação de violência contra a mulher, criança e idoso é COMPULSÓRIA, mesmo sendo apenas caso suspeito.",
+  "<strong>Fundamentos:</strong> O banho de leito obedece ao princípio de limpeza do local MAIS limpo para o MAIS sujo, e no sentido cefalocaudal.",
+  "<strong>Cálculos:</strong> 1 gota equivale a 3 microgotas. 1 ml (cm³) equivale a 20 gotas ou 60 microgotas."
 ];
 
-const fetchMaterials = async () => {
+const fetchMaterialsData = async () => {
   const { data, error } = await supabase
     .from('study_materials')
     .select('*')
@@ -101,31 +121,44 @@ const ConcurseiroArea = () => {
   const [bizuIndex, setBizuIndex] = useState(0);
   const [bizuProgress, setBizuProgress] = useState(0);
 
+  // Seleciona um subconjunto de Bizus diariamente (10 bizus diferentes por dia)
+  const dailyBizus = useMemo(() => {
+    const daysSinceEpoch = Math.floor(Date.now() / 86400000);
+    const tipsPerDay = 10;
+    const startIndex = (daysSinceEpoch * tipsPerDay) % ALL_BIZUS.length;
+    
+    let selected = [];
+    for (let i = 0; i < tipsPerDay; i++) {
+      selected.push(ALL_BIZUS[(startIndex + i) % ALL_BIZUS.length]);
+    }
+    return selected;
+  }, []);
+
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Área do Concurseiro', path: '/concurseiro', icon: 'GraduationCap' });
   }, [addActivity]);
 
-  // Temporizador do Bizu (10 segundos)
+  // Temporizador do Bizu (10 segundos de rotação)
   useEffect(() => {
     const timer = setInterval(() => {
       setBizuProgress((prev) => {
         if (prev >= 100) {
-          setBizuIndex((current) => (current + 1) % BIZUS_CONCURSO.length);
+          setBizuIndex((current) => (current + 1) % dailyBizus.length);
           return 0;
         }
-        return prev + 1; // Incrementa 1% a cada 100ms = 10 segundos
+        return prev + 1; // Incrementa 1% a cada 100ms = 10 segundos totais
       });
     }, 100);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [dailyBizus.length]);
 
   const { data: materials = [], isLoading } = useQuery({
     queryKey: ['studyMaterials'],
-    queryFn: fetchMaterials,
+    queryFn: fetchMaterialsData,
   });
 
-  // Busca anotação prévia do usuário para o material aberto
+  // Busca anotação prévia do usuário
   const { data: documentNote } = useQuery({
     queryKey: ['documentNote', profile?.id, readingMaterial?.id],
     queryFn: async () => {
@@ -144,7 +177,6 @@ const ConcurseiroArea = () => {
     staleTime: Infinity, 
   });
 
-  // Sincroniza o estado local quando a anotação carrega do banco
   useEffect(() => {
     if (documentNote && readingMaterial) {
       setNoteContent(documentNote.content || "");
@@ -152,7 +184,6 @@ const ConcurseiroArea = () => {
     }
   }, [documentNote, readingMaterial]);
 
-  // Mutação para salvar a anotação
   const saveNoteMutation = useMutation({
     mutationFn: async (content: string) => {
       if (!profile || !readingMaterial) return;
@@ -177,7 +208,7 @@ const ConcurseiroArea = () => {
       if (data?.id && !noteId) setNoteId(data.id);
       setIsSavingNote(false);
       setIsNoteSaved(true);
-      toast.success("Resumo salvo com sucesso!");
+      toast.success("Resumo salvo com sucesso no seu Bloco de Notas!");
       setTimeout(() => setIsNoteSaved(false), 3000);
       queryClient.invalidateQueries({ queryKey: ["notes"] });
     },
@@ -296,27 +327,30 @@ const ConcurseiroArea = () => {
       </div>
 
       {/* BIZU DO DIA DINÂMICO E MODERNO */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-xl relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
+      <div className="bg-gradient-to-r from-indigo-700 via-blue-700 to-indigo-800 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-5 shadow-xl relative overflow-hidden group border border-indigo-500/30">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
         
-        <div className="p-3 bg-white/20 backdrop-blur-md rounded-xl shrink-0 z-10 border border-white/20 shadow-inner">
-          <Zap className="h-6 w-6 text-yellow-300" />
+        <div className="p-3.5 bg-yellow-400/20 backdrop-blur-md rounded-xl shrink-0 z-10 border border-yellow-400/30 shadow-inner">
+          <Zap className="h-7 w-7 text-yellow-300 animate-pulse" />
         </div>
         
         <div className="z-10 flex-1 w-full min-w-0 text-white">
-          <div className="flex justify-between items-center mb-2">
-            <h4 className="font-bold text-blue-100 uppercase tracking-widest text-[10px] sm:text-xs flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-yellow-300" /> Bizus de Ouro
+          <div className="flex justify-between items-center mb-2.5">
+            <h4 className="font-bold text-yellow-300 uppercase tracking-widest text-[11px] sm:text-xs flex items-center gap-2 drop-shadow-md">
+              <Sparkles className="w-3.5 h-3.5" /> Bizus Diários (Top Concursos)
             </h4>
-            <span className="text-[10px] font-mono text-blue-200/80 bg-black/20 px-2 py-0.5 rounded-full">
-              {bizuIndex + 1}/{BIZUS_CONCURSO.length}
-            </span>
+            <div className="flex items-center gap-2">
+               <span className="text-[9px] uppercase tracking-wider text-indigo-200 flex items-center gap-1 hidden sm:flex"><Clock className="w-3 h-3"/> Atualiza a cada 10s</span>
+               <span className="text-[10px] font-mono font-bold text-white bg-indigo-900/50 border border-indigo-400/30 px-2 py-0.5 rounded-full shadow-inner">
+                 {bizuIndex + 1}/{dailyBizus.length}
+               </span>
+            </div>
           </div>
           
-          <div key={bizuIndex} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div key={bizuIndex} className="animate-in fade-in slide-in-from-bottom-2 duration-500 min-h-[3rem] flex items-center">
             <p 
-               className="text-sm sm:text-base font-medium leading-relaxed drop-shadow-sm" 
-               dangerouslySetInnerHTML={{ __html: BIZUS_CONCURSO[bizuIndex] }} 
+               className="text-sm sm:text-[15px] font-medium leading-relaxed drop-shadow-sm text-blue-50" 
+               dangerouslySetInnerHTML={{ __html: dailyBizus[bizuIndex] }} 
             />
           </div>
         </div>
@@ -324,7 +358,7 @@ const ConcurseiroArea = () => {
         {/* Barra de Progresso do Bizu */}
         <div className="absolute bottom-0 left-0 h-1 bg-black/20 w-full">
           <div 
-             className="h-full bg-yellow-400 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(250,204,21,0.8)]" 
+             className="h-full bg-gradient-to-r from-yellow-400 to-amber-400 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(250,204,21,0.8)]" 
              style={{ width: `${bizuProgress}%` }} 
           />
         </div>
@@ -439,7 +473,7 @@ const ConcurseiroArea = () => {
         </div>
       )}
 
-      {/* MODAL DE LEITURA DO PDF */}
+      {/* MODAL DE LEITURA DO PDF COM BLOCO DE NOTAS INTEGRADO */}
       <Dialog open={!!readingMaterial} onOpenChange={(open) => !open && handleCloseReader()}>
         <DialogContent className="max-w-[98vw] sm:max-w-7xl w-[98vw] h-[95vh] p-0 overflow-hidden flex flex-col gap-0 border-none bg-background rounded-xl">
           <VisuallyHidden.Root>
