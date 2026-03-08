@@ -1,236 +1,272 @@
-import { useState, useEffect, useMemo } from "react";
-import { useOutletContext, useNavigate } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useMemo, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { 
-  BookOpen, GraduationCap, Scale, ShieldAlert, 
-  Stethoscope, Baby, Lightbulb, CheckCircle2, Gavel,
-  Biohazard, Scissors, Activity, Thermometer, Heart, Search,
-  Calculator, Siren, Brain, ChevronRight, X
+  GraduationCap, Search, Download, FileText,
+  Lightbulb, ShieldCheck, Trophy, Sparkles, Loader2, ArrowDownToLine
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
-import concursoData from "@/data/concursoTopics.json";
 import { cn } from "@/lib/utils";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Profile {
   id: string;
 }
 
-const iconMap: Record<string, React.ElementType> = {
-  Scale, ShieldAlert, Stethoscope, Baby, Gavel, 
-  Biohazard, Scissors, Activity, Thermometer, Heart,
-  Calculator, Siren, Brain
+interface StudyMaterial {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  file_url: string;
+  file_size: string;
+  page_count: number;
+  is_premium: boolean;
+}
+
+// Dados de backup (Mocks) para caso o banco esteja vazio ou não configurado
+const MOCK_MATERIALS: StudyMaterial[] = [
+  {
+    id: "mock-1",
+    title: "Resumo Definitivo: Lei 8.080/90",
+    description: "Mapas mentais, mnemônicos e os artigos que mais caem em provas de concursos e residências. Foco na organização do SUS.",
+    category: "Legislação do SUS",
+    file_url: "#",
+    file_size: "2.4 MB",
+    page_count: 35,
+    is_premium: true
+  },
+  {
+    id: "mock-2",
+    title: "Guia Prático: Urgência e Emergência",
+    description: "Protocolos de PCR (AHA Atualizado), atendimento ao politraumatizado (XABCDE) e ritmos chocáveis.",
+    category: "Urgência e Emergência",
+    file_url: "#",
+    file_size: "5.1 MB",
+    page_count: 50,
+    is_premium: true
+  },
+  {
+    id: "mock-3",
+    title: "Calendário Vacinal Simplificado",
+    description: "Tabela colorida e esquematizada com todas as atualizações recentes do PNI para crianças, adolescentes, adultos e idosos.",
+    category: "Saúde Pública",
+    file_url: "#",
+    file_size: "1.2 MB",
+    page_count: 12,
+    is_premium: false
+  }
+];
+
+const fetchMaterials = async () => {
+  const { data, error } = await supabase
+    .from('study_materials')
+    .select('*')
+    .order('created_at', { ascending: false });
+  
+  if (error) {
+    if (error.code === '42P01') {
+      // Tabela não existe, retorna o mock
+      return MOCK_MATERIALS;
+    }
+    throw error;
+  }
+  
+  return data.length > 0 ? (data as StudyMaterial[]) : MOCK_MATERIALS;
 };
 
 const ConcurseiroArea = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
   const { addActivity } = useActivityTracker();
   const [searchTerm, setSearchTerm] = useState("");
-  const [openSections, setOpenSections] = useState<string[]>([]);
-  const [selectedTopic, setSelectedTopic] = useState<any | null>(null);
+  const [activeCategory, setActiveCategory] = useState("Todas");
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Área do Concurseiro', path: '/concurseiro', icon: 'GraduationCap' });
   }, [addActivity]);
 
-  const filteredData = useMemo(() => {
-    if (!searchTerm) return concursoData;
-    
-    const lowerTerm = searchTerm.toLowerCase();
-    
-    return concursoData.map(section => ({
-      ...section,
-      topics: section.topics.filter(topic => 
-        topic.title.toLowerCase().includes(lowerTerm) ||
-        topic.summary.toLowerCase().includes(lowerTerm)
-      )
-    })).filter(section => section.topics.length > 0);
-  }, [searchTerm]);
+  const { data: materials = [], isLoading } = useQuery({
+    queryKey: ['studyMaterials'],
+    queryFn: fetchMaterials,
+  });
 
-  useEffect(() => {
-    if (searchTerm) {
-      setOpenSections(filteredData.map(s => s.category));
-    }
-  }, [searchTerm, filteredData]);
+  const categories = useMemo(() => {
+    const cats = new Set(materials.map(m => m.category));
+    return ["Todas", ...Array.from(cats).sort()];
+  }, [materials]);
+
+  const filteredMaterials = useMemo(() => {
+    return materials.filter(material => {
+      const matchesSearch = 
+        material.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        material.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = activeCategory === "Todas" || material.category === activeCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [materials, searchTerm, activeCategory]);
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 pb-8">
-      {/* Header Section */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-white shadow-lg">
-        <div className="relative z-10 flex flex-col items-center text-center sm:items-start sm:text-left">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-              <GraduationCap className="h-8 w-8 text-white" />
+    <div className="space-y-8 animate-in fade-in duration-500 pb-12">
+      
+      {/* HEADER PREMIUM */}
+      <div className="relative overflow-hidden rounded-3xl bg-[#0a0f1c] border border-blue-900/30 p-8 sm:p-12 text-white shadow-2xl isolate">
+        {/* Glow Effects */}
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-600/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 -z-10" />
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-emerald-600/10 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/3 -z-10" />
+        
+        <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center justify-between">
+          <div className="flex-1 text-center md:text-left space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-blue-300">
+              <Trophy className="h-3 w-3" /> Exclusivo Assinantes
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold">Área do Concurseiro</h1>
+            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+              Materiais em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">PDF</span>
+            </h1>
+            <p className="text-blue-100/80 text-sm sm:text-lg max-w-xl leading-relaxed">
+              Baixe os resumos esquematizados, mapas mentais e bizus que vão acelerar a sua aprovação. Tudo formatado e pronto para imprimir.
+            </p>
           </div>
-          <p className="max-w-2xl text-blue-100 text-sm sm:text-base mb-4">
-            Aprovação sem rodeios. Conteúdo 'mastigado' e 100% focado nos temas que mais caem nos concursos de enfermagem.
-          </p>
+
+          <div className="hidden lg:block shrink-0">
+             <div className="relative w-32 h-40 bg-gradient-to-tr from-white to-slate-200 rounded-lg shadow-2xl rotate-12 transform hover:rotate-0 transition-transform duration-500 border border-slate-300 p-2">
+                <div className="w-full h-full bg-slate-50 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400">
+                   <FileText className="h-10 w-10 mb-2 text-blue-500" />
+                   <div className="w-16 h-1 bg-slate-300 rounded-full mb-1"></div>
+                   <div className="w-12 h-1 bg-slate-300 rounded-full"></div>
+                </div>
+             </div>
+          </div>
         </div>
-        
-        {/* Decorative Elements */}
-        <div className="absolute right-0 top-0 h-64 w-64 -translate-y-1/2 translate-x-1/4 rounded-full bg-white/10 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-32 w-32 translate-y-1/4 -translate-x-1/4 rounded-full bg-blue-400/20 blur-2xl" />
-        
+
         {profile && (
           <div className="absolute top-4 right-4 z-20">
             <FavoriteButton
               userId={profile.id}
               itemId="/concurseiro"
               itemType="Estudo"
-              itemTitle="Área do Concurseiro"
+              itemTitle="Materiais PDF"
               className="text-white hover:text-yellow-300"
             />
           </div>
         )}
       </div>
 
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Buscar por tema, lei ou assunto..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10 h-11"
-        />
+      {/* BIZU DO DIA */}
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200 dark:border-amber-900/50 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-sm relative overflow-hidden">
+         <div className="absolute top-0 right-0 p-4 opacity-10"><Lightbulb className="w-16 h-16 text-amber-500" /></div>
+         <div className="p-3 bg-amber-100 dark:bg-amber-900/50 rounded-xl shrink-0 z-10">
+            <Lightbulb className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+         </div>
+         <div className="z-10">
+            <h4 className="font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wide text-xs sm:text-sm mb-1">Bizu do Dia</h4>
+            <p className="text-sm sm:text-base text-amber-900/80 dark:text-amber-200/80 font-medium italic">
+               "Em provas da VUNESP, o foco em urgência sempre bate em ACLS. Não esqueça: Ritmos chocáveis (FV/TVSP) = Desfibrilação. Não chocáveis (AESP/Assistolia) = Adrenalina Precoce."
+            </p>
+         </div>
       </div>
 
-      {/* Content Sections - New List Layout */}
-      <Accordion type="multiple" value={openSections} onValueChange={setOpenSections} className="w-full space-y-4">
-        {filteredData.map((section) => {
-          const Icon = iconMap[section.icon] || BookOpen;
-          return (
-            <AccordionItem key={section.category} value={section.category} className="border rounded-xl bg-card shadow-sm overflow-hidden px-0">
-              <AccordionTrigger className="hover:no-underline py-4 px-4 hover:bg-muted/30 transition-colors">
-                <div className="flex items-center gap-4 text-left">
-                  <div className={cn("p-2.5 rounded-lg bg-muted/50 shadow-sm", section.color.replace('text-', 'bg-').replace('600', '100').replace('500', '100'))}>
-                    <Icon className={cn("h-6 w-6", section.color)} />
-                  </div>
-                  <div>
-                    <h2 className={cn("text-lg font-bold tracking-tight", section.color)}>{section.category}</h2>
-                    <p className="text-xs text-muted-foreground font-normal mt-0.5">
-                      {section.topics.length} aulas disponíveis
-                    </p>
-                  </div>
-                </div>
-              </AccordionTrigger>
-              
-              <AccordionContent className="px-0 pb-0">
-                <div className="divide-y divide-border/50">
-                  {section.topics.map((topic, index) => (
-                    <button 
-                        key={index} 
-                        onClick={() => setSelectedTopic({ ...topic, categoryName: section.category, categoryColor: section.color })}
-                        className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-muted/40 transition-all text-left group"
-                    >
-                        <div className="flex items-start gap-4 w-full">
-                            <div className="mt-1 hidden sm:block shrink-0">
-                                <div className="h-2 w-2 rounded-full bg-primary/40 group-hover:bg-primary transition-colors" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-tight">
-                                    {topic.title}
-                                </h3>
-                                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
-                                    {topic.summary}
-                                </p>
-                            </div>
-                            <ChevronRight className="h-5 w-5 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0 ml-2 self-center" />
-                        </div>
-                    </button>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
+      {/* CONTROLES E FILTROS */}
+      <div className="space-y-4">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por título, assunto ou palavra-chave..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 h-12 rounded-xl bg-card border-border/50 shadow-sm focus:ring-2 focus:ring-blue-500/20 transition-all"
+          />
+        </div>
 
-      {/* Reading Sheet (Detailed View) */}
-      <Sheet open={!!selectedTopic} onOpenChange={(open) => !open && setSelectedTopic(null)}>
-        <SheetContent side="right" className="w-full sm:max-w-2xl p-0 flex flex-col h-full bg-background border-l shadow-2xl">
-          {selectedTopic && (
-            <>
-              {/* Header */}
-              <div className="px-6 py-4 border-b bg-muted/10 shrink-0 flex items-start gap-4">
-                <div className="flex-1 pt-2">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="outline" className={cn("text-[10px] uppercase font-bold border-primary/20", selectedTopic.categoryColor)}>
-                            {selectedTopic.categoryName}
-                        </Badge>
-                        <Badge variant="secondary" className="text-[10px] bg-primary/10 text-primary">
-                            Aula Completa
-                        </Badge>
-                    </div>
-                    <SheetTitle className="text-xl sm:text-2xl font-bold leading-tight">
-                        {selectedTopic.title}
-                    </SheetTitle>
-                    <SheetDescription className="mt-1">
-                        {selectedTopic.summary}
-                    </SheetDescription>
-                </div>
-                <SheetClose asChild>
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted mt-2">
-                        <X className="h-5 w-5" />
-                    </Button>
-                </SheetClose>
-              </div>
+        <ScrollArea className="w-full whitespace-nowrap rounded-xl pb-2">
+          <Tabs value={activeCategory} onValueChange={setActiveCategory}>
+            <TabsList className="flex w-max space-x-2 bg-transparent p-0 h-auto">
+              {categories.map((cat) => (
+                <TabsTrigger 
+                  key={cat} 
+                  value={cat}
+                  className={cn(
+                    "rounded-full border px-4 py-2 text-xs sm:text-sm font-bold transition-all shadow-sm",
+                    activeCategory === cat 
+                      ? "bg-blue-600 text-white border-blue-600" 
+                      : "bg-card text-muted-foreground hover:bg-muted hover:text-foreground border-border/50"
+                  )}
+                >
+                  {cat}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+          <ScrollBar orientation="horizontal" className="hidden" />
+        </ScrollArea>
+      </div>
 
-              {/* Scrollable Content */}
-              <ScrollArea className="flex-1 w-full">
-                  <div className="px-6 py-6 sm:px-8 sm:py-8">
-                      
-                      {/* Dica de Ouro Box */}
-                      {selectedTopic.goldenTip && (
-                        <div className="mb-8 p-4 sm:p-5 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 shadow-sm">
-                            <div className="flex items-center gap-2 mb-2 text-amber-700 dark:text-amber-400 font-bold text-sm uppercase tracking-wider">
-                                <Lightbulb className="h-4 w-4" /> Dica de Ouro
-                            </div>
-                            <p className="text-sm sm:text-base text-amber-800 dark:text-amber-200 leading-relaxed font-medium italic">
-                                "{selectedTopic.goldenTip}"
-                            </p>
-                        </div>
+      {/* GRID DE MATERIAIS */}
+      {isLoading ? (
+         <div className="flex flex-col items-center justify-center py-20 text-blue-600">
+            <Loader2 className="w-10 h-10 animate-spin mb-4" />
+            <p className="font-semibold text-sm">Carregando a biblioteca...</p>
+         </div>
+      ) : filteredMaterials.length === 0 ? (
+        <div className="text-center py-20 bg-muted/20 rounded-3xl border border-dashed">
+          <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-3 opacity-20" />
+          <h3 className="text-lg font-bold text-foreground">Nenhum material encontrado</h3>
+          <p className="text-muted-foreground text-sm mt-1">Tente buscar com outras palavras ou limpe os filtros.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredMaterials.map((material) => (
+             <Card key={material.id} className="group hover:border-blue-500/50 transition-all duration-300 hover:shadow-xl flex flex-col overflow-hidden bg-card border-border/50">
+                <CardHeader className="pb-4 relative bg-muted/10 border-b border-border/50">
+                   <div className="flex justify-between items-start mb-3">
+                      <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800 font-bold uppercase text-[10px]">
+                         {material.category}
+                      </Badge>
+                      {material.is_premium && (
+                         <div className="p-1.5 bg-yellow-100 text-yellow-700 rounded-md" title="Conteúdo Premium">
+                            <Sparkles className="w-3.5 h-3.5" />
+                         </div>
                       )}
-
-                      {/* Conteúdo Principal (HTML Render) */}
-                      <div 
-                        className="prose prose-slate dark:prose-invert max-w-none prose-base sm:prose-lg prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:bg-muted/30 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:rounded-r-lg marker:text-primary/50 leading-loose"
-                        dangerouslySetInnerHTML={{ 
-                            __html: selectedTopic.detailedContent || selectedTopic.keyPoints.map((p: string) => `<p>• ${p}</p>`).join('') 
-                        }} 
-                      />
-
-                      {/* Footer do conteúdo */}
-                      <div className="mt-12 pt-6 border-t flex items-center justify-center text-muted-foreground text-sm">
-                          <CheckCircle2 className="h-4 w-4 mr-2 text-green-500" />
-                          Você concluiu a leitura deste tópico.
+                   </div>
+                   <CardTitle className="text-lg sm:text-xl font-bold leading-tight group-hover:text-blue-600 transition-colors line-clamp-2 min-h-[3.5rem]">
+                      {material.title}
+                   </CardTitle>
+                </CardHeader>
+                
+                <CardContent className="pt-4 flex-1 flex flex-col">
+                   <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed flex-1">
+                      {material.description}
+                   </p>
+                   
+                   <div className="flex items-center gap-4 mt-6 text-xs font-semibold text-slate-500 dark:text-slate-400 bg-muted/30 p-2.5 rounded-lg border border-border/50">
+                      <div className="flex items-center gap-1.5">
+                         <FileText className="w-3.5 h-3.5" /> {material.page_count} págs
                       </div>
-                  </div>
-              </ScrollArea>
-              
-              {/* Footer Actions */}
-              <div className="p-4 border-t bg-background shrink-0 flex justify-end">
-                 <Button onClick={() => setSelectedTopic(null)}>Concluir Leitura</Button>
-              </div>
-            </>
-          )}
-        </SheetContent>
-      </Sheet>
+                      <div className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+                      <div className="flex items-center gap-1.5">
+                         <ArrowDownToLine className="w-3.5 h-3.5" /> {material.file_size}
+                      </div>
+                   </div>
+                </CardContent>
 
-      {filteredData.length === 0 && (
-        <div className="text-center py-12 bg-muted/30 rounded-lg border border-dashed">
-          <Search className="h-10 w-10 text-muted-foreground mx-auto mb-3 opacity-20" />
-          <p className="text-muted-foreground">Nenhum conteúdo encontrado para "{searchTerm}".</p>
+                <CardFooter className="pt-0 pb-5 px-5">
+                   <Button asChild className="w-full bg-slate-900 hover:bg-blue-600 text-white shadow-md transition-all group-hover:shadow-blue-500/20 font-bold h-11">
+                      <a href={material.file_url} target="_blank" rel="noopener noreferrer">
+                         <Download className="w-4 h-4 mr-2" /> Baixar PDF
+                      </a>
+                   </Button>
+                </CardFooter>
+             </Card>
+          ))}
         </div>
       )}
+
     </div>
   );
 };
