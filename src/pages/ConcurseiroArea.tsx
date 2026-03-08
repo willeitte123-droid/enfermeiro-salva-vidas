@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { 
   GraduationCap, Search, Download, FileText,
-  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check
+  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check, Copy
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -35,7 +35,6 @@ interface StudyMaterial {
   is_premium: boolean;
 }
 
-// Dados de backup (Mocks) para caso o banco esteja vazio ou não configurado
 const MOCK_MATERIALS: StudyMaterial[] = [
   {
     id: "mock-1",
@@ -275,12 +274,12 @@ const ConcurseiroArea = () => {
       <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200 dark:border-amber-900/50 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-sm relative overflow-hidden">
          <div className="absolute top-0 right-0 p-4 opacity-10"><Lightbulb className="w-16 h-16 text-amber-500" /></div>
          <div className="p-3 bg-amber-100 dark:bg-amber-900/50 rounded-xl shrink-0 z-10">
-            <Lightbulb className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+            <Copy className="h-6 w-6 text-amber-600 dark:text-amber-400" />
          </div>
          <div className="z-10">
             <h4 className="font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wide text-xs sm:text-sm mb-1">Bizu do Dia</h4>
             <p className="text-sm sm:text-base text-amber-900/80 dark:text-amber-200/80 font-medium italic">
-               "Ao abrir um PDF para ler, clique no botão 'Fazer Resumo' no topo para ativar a tela dividida. Suas anotações são salvas automaticamente no seu Bloco de Notas!"
+               "Ao clicar em 'Fazer Resumo', você pode <strong>selecionar e copiar o texto do PDF</strong> e colar diretamente nas suas anotações ao lado!"
             </p>
          </div>
       </div>
@@ -409,19 +408,14 @@ const ConcurseiroArea = () => {
             </div>
             
             <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-               {profile && (
+               {profile && !isNotesOpen && (
                  <Button 
                     size="sm" 
-                    variant={isNotesOpen ? "default" : "outline"} 
-                    className={cn(
-                       "hidden sm:flex transition-all gap-2", 
-                       isNotesOpen 
-                         ? "bg-amber-500 hover:bg-amber-600 text-white border-amber-500 shadow-md" 
-                         : "border-border hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300 dark:hover:bg-amber-900/30"
-                    )}
-                    onClick={() => setIsNotesOpen(!isNotesOpen)}
+                    variant="outline" 
+                    className="hidden sm:flex transition-all gap-2 border-border hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300 dark:hover:bg-amber-900/30"
+                    onClick={() => setIsNotesOpen(true)}
                  >
-                    <PenLine className="w-4 h-4" /> {isNotesOpen ? "Fechar Resumo" : "Fazer Resumo"}
+                    <PenLine className="w-4 h-4" /> Fazer Resumo
                  </Button>
                )}
                <Button 
@@ -451,9 +445,10 @@ const ConcurseiroArea = () => {
                       <p className="text-sm text-muted-foreground font-medium">Carregando documento...</p>
                     </div>
                   )}
+                  {/* Utilizando o PDF nativo do navegador. Permite cópia de texto! */}
                   <iframe 
-                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`} 
-                    className="w-full h-full border-0 absolute inset-0 z-20"
+                    src={`${readingMaterial.file_url}#toolbar=0&navpanes=0`} 
+                    className="w-full h-full border-0 absolute inset-0 z-20 bg-white"
                     title={readingMaterial.title}
                     onLoad={() => setIframeLoading(false)}
                   />
@@ -468,20 +463,31 @@ const ConcurseiroArea = () => {
                    <span className="font-bold text-sm flex items-center gap-2 text-amber-800 dark:text-amber-400">
                      <PenLine className="h-4 w-4" /> Suas Anotações
                    </span>
-                   <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider flex items-center gap-1">
-                     {isSavingNote ? (
-                       <><Loader2 className="w-3 h-3 animate-spin text-amber-500" /> Salvando</>
-                     ) : isNoteSaved ? (
-                       <><Check className="w-3 h-3 text-green-500" /> Salvo</>
-                     ) : (
-                       "Autosave ON"
-                     )}
-                   </span>
+                   <div className="flex items-center gap-3">
+                     <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider flex items-center gap-1">
+                       {isSavingNote ? (
+                         <><Loader2 className="w-3 h-3 animate-spin text-amber-500" /> Salvando</>
+                       ) : isNoteSaved ? (
+                         <><Check className="w-3 h-3 text-green-500" /> Salvo</>
+                       ) : (
+                         "Autosave ON"
+                       )}
+                     </span>
+                     <Button 
+                       variant="ghost" 
+                       size="icon" 
+                       className="h-6 w-6 rounded-full hover:bg-amber-200/50 text-amber-800 dark:text-amber-400" 
+                       onClick={() => setIsNotesOpen(false)}
+                       title="Fechar anotações"
+                     >
+                        <X className="h-4 w-4" />
+                     </Button>
+                   </div>
                  </div>
                  <Textarea 
                    value={noteContent}
                    onChange={(e) => setNoteContent(e.target.value)}
-                   placeholder="Digite seus resumos, macetes e pontos importantes aqui. Eles serão salvos automaticamente no seu Bloco de Notas pessoal e ficarão vinculados a este material."
+                   placeholder="Digite seus resumos, macetes ou cole textos copiados do PDF aqui. Eles serão salvos automaticamente no seu Bloco de Notas."
                    className="flex-1 resize-none border-none focus-visible:ring-0 p-4 sm:p-6 text-sm sm:text-base leading-relaxed bg-transparent font-serif text-foreground/90 placeholder:text-muted-foreground/40"
                  />
                  <div className="p-2 bg-muted/20 text-center text-[10px] text-muted-foreground border-t shrink-0">
