@@ -4,15 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   GraduationCap, Search, Download, FileText,
-  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X
+  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, PenLine, Check
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -66,6 +67,7 @@ const fetchMaterials = async () => {
 
 const ConcurseiroArea = () => {
   const { profile } = useOutletContext<{ profile: Profile | null }>();
+  const queryClient = useQueryClient();
   const { addActivity } = useActivityTracker();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todas");
@@ -75,6 +77,13 @@ const ConcurseiroArea = () => {
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [iframeLoading, setIframeLoading] = useState(true);
 
+  // Estados do Bloco de Notas Integrado
+  const [isNotesOpen, setIsNotesOpen] = useState(false);
+  const [noteContent, setNoteContent] = useState("");
+  const [noteId, setNoteId] = useState<string | null>(null);
+  const [isSavingNote, setIsSavingNote] = useState(false);
+  const [isNoteSaved, setIsNoteSaved] = useState(false);
+
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Área do Concurseiro', path: '/concurseiro', icon: 'GraduationCap' });
   }, [addActivity]);
@@ -83,6 +92,76 @@ const ConcurseiroArea = () => {
     queryKey: ['studyMaterials'],
     queryFn: fetchMaterials,
   });
+
+  // Busca anotação prévia do usuário para o material aberto
+  const { data: documentNote } = useQuery({
+    queryKey: ['documentNote', profile?.id, readingMaterial?.id],
+    queryFn: async () => {
+      if (!profile || !readingMaterial) return null;
+      const { data, error } = await supabase
+        .from('notes')
+        .select('*')
+        .eq('user_id', profile.id)
+        .eq('title', `Anotações: ${readingMaterial.title}`)
+        .maybeSingle();
+      
+      if (error) throw error;
+      return data || { id: null, content: "" };
+    },
+    enabled: !!profile && !!readingMaterial,
+    staleTime: Infinity, 
+  });
+
+  // Sincroniza o estado local quando a anotação carrega do banco
+  useEffect(() => {
+    if (documentNote && readingMaterial) {
+      setNoteContent(documentNote.content || "");
+      setNoteId(documentNote.id || null);
+    }
+  }, [documentNote, readingMaterial]);
+
+  // Mutação para salvar a anotação
+  const saveNoteMutation = useMutation({
+    mutationFn: async (content: string) => {
+      if (!profile || !readingMaterial) return;
+      setIsSavingNote(true);
+      const noteTitle = `Anotações: ${readingMaterial.title}`;
+      
+      if (noteId) {
+        const { error } = await supabase.from('notes').update({ content, updated_at: new Date().toISOString() }).eq('id', noteId);
+        if (error) throw error;
+        return { id: noteId };
+      } else {
+        const { data, error } = await supabase.from('notes').insert({
+          user_id: profile.id,
+          title: noteTitle,
+          content
+        }).select().single();
+        if (error) throw error;
+        return { id: data.id };
+      }
+    },
+    onSuccess: (data) => {
+      if (data?.id && !noteId) setNoteId(data.id);
+      setIsSavingNote(false);
+      setIsNoteSaved(true);
+      setTimeout(() => setIsNoteSaved(false), 2000);
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
+    }
+  });
+
+  // Autosave Effect
+  useEffect(() => {
+    if (!isNotesOpen || !readingMaterial || !profile) return;
+    // Previne salvar se o conteúdo for igual ao que veio do banco
+    if (documentNote && noteContent === (documentNote.content || "")) return;
+
+    const handler = setTimeout(() => {
+      saveNoteMutation.mutate(noteContent);
+    }, 1500);
+
+    return () => clearTimeout(handler);
+  }, [noteContent, isNotesOpen, profile, readingMaterial, documentNote]);
 
   const categories = useMemo(() => {
     const cats = new Set(materials.map(m => m.category));
@@ -102,6 +181,14 @@ const ConcurseiroArea = () => {
   const handleOpenReader = (material: StudyMaterial) => {
     setIframeLoading(true);
     setReadingMaterial(material);
+    setIsNotesOpen(false);
+  };
+
+  const handleCloseReader = () => {
+    setReadingMaterial(null);
+    setIsNotesOpen(false);
+    setNoteContent("");
+    setNoteId(null);
   };
 
   const handleDownload = async (url: string, title: string, id: string) => {
@@ -156,7 +243,7 @@ const ConcurseiroArea = () => {
               Materiais em <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">PDF</span>
             </h1>
             <p className="text-blue-100/80 text-sm sm:text-lg max-w-xl leading-relaxed">
-              Leia os resumos esquematizados diretamente na plataforma ou baixe-os para imprimir e estudar onde quiser.
+              Leia os resumos esquematizados diretamente na plataforma, anote na tela dividida ou baixe para imprimir.
             </p>
           </div>
 
@@ -193,7 +280,7 @@ const ConcurseiroArea = () => {
          <div className="z-10">
             <h4 className="font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wide text-xs sm:text-sm mb-1">Bizu do Dia</h4>
             <p className="text-sm sm:text-base text-amber-900/80 dark:text-amber-200/80 font-medium italic">
-               "Em provas da VUNESP, o foco em urgência sempre bate em ACLS. Não esqueça: Ritmos chocáveis (FV/TVSP) = Desfibrilação. Não chocáveis (AESP/Assistolia) = Adrenalina Precoce."
+               "Ao abrir um PDF para ler, clique no botão 'Fazer Resumo' no topo para ativar a tela dividida. Suas anotações são salvas automaticamente no seu Bloco de Notas!"
             </p>
          </div>
       </div>
@@ -308,19 +395,35 @@ const ConcurseiroArea = () => {
       )}
 
       {/* MODAL DE LEITURA DO PDF */}
-      <Dialog open={!!readingMaterial} onOpenChange={(open) => !open && setReadingMaterial(null)}>
-        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] p-0 overflow-hidden flex flex-col gap-0 border-none bg-background rounded-xl">
+      <Dialog open={!!readingMaterial} onOpenChange={(open) => !open && handleCloseReader()}>
+        <DialogContent className="max-w-[98vw] sm:max-w-7xl w-[98vw] h-[95vh] p-0 overflow-hidden flex flex-col gap-0 border-none bg-background rounded-xl">
           <VisuallyHidden.Root>
              <DialogTitle>Leitor de PDF</DialogTitle>
           </VisuallyHidden.Root>
           
           {/* Header do Modal */}
-          <div className="p-3 sm:p-4 border-b bg-card flex flex-row items-center justify-between shrink-0 shadow-sm z-10">
+          <div className="p-3 sm:p-4 border-b bg-card flex flex-row items-center justify-between shrink-0 shadow-sm z-20">
             <div className="flex flex-col min-w-0 pr-2 sm:pr-4">
                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">{readingMaterial?.category}</span>
-               <h3 className="font-bold text-sm sm:text-base truncate">{readingMaterial?.title}</h3>
+               <h3 className="font-bold text-sm sm:text-base truncate max-w-[200px] sm:max-w-md">{readingMaterial?.title}</h3>
             </div>
+            
             <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+               {profile && (
+                 <Button 
+                    size="sm" 
+                    variant={isNotesOpen ? "default" : "outline"} 
+                    className={cn(
+                       "hidden sm:flex transition-all gap-2", 
+                       isNotesOpen 
+                         ? "bg-amber-500 hover:bg-amber-600 text-white border-amber-500 shadow-md" 
+                         : "border-border hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300 dark:hover:bg-amber-900/30"
+                    )}
+                    onClick={() => setIsNotesOpen(!isNotesOpen)}
+                 >
+                    <PenLine className="w-4 h-4" /> {isNotesOpen ? "Fechar Resumo" : "Fazer Resumo"}
+                 </Button>
+               )}
                <Button 
                   size="sm" 
                   variant="outline" 
@@ -329,32 +432,62 @@ const ConcurseiroArea = () => {
                >
                   <Download className="w-4 h-4 mr-2" /> Baixar
                </Button>
-               <Button variant="ghost" size="icon" onClick={() => setReadingMaterial(null)} className="rounded-full bg-muted/50 hover:bg-destructive/10 hover:text-destructive shrink-0 ml-2">
+               <Button variant="ghost" size="icon" onClick={handleCloseReader} className="rounded-full bg-muted/50 hover:bg-destructive/10 hover:text-destructive shrink-0 ml-1 sm:ml-2">
                   <X className="h-5 w-5"/>
                </Button>
             </div>
           </div>
           
-          {/* Corpo do Modal (Iframe do PDF via Google Docs Viewer para máxima compatibilidade) */}
-          <div className="flex-1 w-full h-full bg-slate-100 dark:bg-slate-900 relative">
-            {readingMaterial && (
-              <>
-                {iframeLoading && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 z-10">
-                    <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
-                    <p className="text-sm text-muted-foreground font-medium">Carregando documento...</p>
-                  </div>
-                )}
-                {/* Utilizamos o Google Docs Viewer para garantir que o PDF seja renderizado em iframes mobile/desktop 
-                    sem problemas de Headers (Content-Disposition).
-                */}
-                <iframe 
-                  src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`} 
-                  className="w-full h-full border-0 absolute inset-0 z-20"
-                  title={readingMaterial.title}
-                  onLoad={() => setIframeLoading(false)}
-                />
-              </>
+          {/* Corpo do Modal (Split Screen: Iframe + Editor) */}
+          <div className="flex-1 w-full h-full flex flex-col lg:flex-row relative bg-slate-100 dark:bg-slate-900 overflow-hidden">
+            
+            {/* Lado Esquerdo: PDF */}
+            <div className={cn("relative h-full transition-all duration-300 ease-in-out", isNotesOpen ? "lg:w-2/3" : "w-full")}>
+              {readingMaterial && (
+                <>
+                  {iframeLoading && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 z-10">
+                      <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
+                      <p className="text-sm text-muted-foreground font-medium">Carregando documento...</p>
+                    </div>
+                  )}
+                  <iframe 
+                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`} 
+                    className="w-full h-full border-0 absolute inset-0 z-20"
+                    title={readingMaterial.title}
+                    onLoad={() => setIframeLoading(false)}
+                  />
+                </>
+              )}
+            </div>
+
+            {/* Lado Direito: Bloco de Notas (Visível apenas se ativado) */}
+            {isNotesOpen && profile && (
+               <div className="w-full lg:w-1/3 h-1/3 lg:h-full border-t lg:border-t-0 lg:border-l border-border bg-background flex flex-col shadow-[-10px_0_30px_-15px_rgba(0,0,0,0.1)] z-30 animate-in slide-in-from-right-8 duration-300">
+                 <div className="p-3 border-b bg-amber-50/50 dark:bg-amber-950/20 flex justify-between items-center shrink-0">
+                   <span className="font-bold text-sm flex items-center gap-2 text-amber-800 dark:text-amber-400">
+                     <PenLine className="h-4 w-4" /> Suas Anotações
+                   </span>
+                   <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider flex items-center gap-1">
+                     {isSavingNote ? (
+                       <><Loader2 className="w-3 h-3 animate-spin text-amber-500" /> Salvando</>
+                     ) : isNoteSaved ? (
+                       <><Check className="w-3 h-3 text-green-500" /> Salvo</>
+                     ) : (
+                       "Autosave ON"
+                     )}
+                   </span>
+                 </div>
+                 <Textarea 
+                   value={noteContent}
+                   onChange={(e) => setNoteContent(e.target.value)}
+                   placeholder="Digite seus resumos, macetes e pontos importantes aqui. Eles serão salvos automaticamente no seu Bloco de Notas pessoal e ficarão vinculados a este material."
+                   className="flex-1 resize-none border-none focus-visible:ring-0 p-4 sm:p-6 text-sm sm:text-base leading-relaxed bg-transparent font-serif text-foreground/90 placeholder:text-muted-foreground/40"
+                 />
+                 <div className="p-2 bg-muted/20 text-center text-[10px] text-muted-foreground border-t shrink-0">
+                    Acesse depois em <strong>Ferramentas {'>'} Bloco de Notas</strong>
+                 </div>
+               </div>
             )}
           </div>
         </DialogContent>
