@@ -85,17 +85,54 @@ BEGIN
 END
 $$;
 
--- 4. Função de instalação (Stub)
-CREATE OR REPLACE FUNCTION public.install_analytics()
-RETURNS void
-LANGUAGE plpgsql
-SECURITY DEFINER
-AS $func$
+-- 4. Tabela de Materiais de Estudo (PDFs)
+CREATE TABLE IF NOT EXISTS public.study_materials (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+    category TEXT NOT NULL,
+    file_url TEXT NOT NULL,
+    file_size TEXT,
+    page_count INTEGER,
+    is_premium BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.study_materials ENABLE ROW LEVEL SECURITY;
+
+DO $$
 BEGIN
-   -- Tables already created directly
-   RETURN; 
-END;
-$func$;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'study_materials' AND policyname = 'Materials public select') THEN
+        CREATE POLICY "Materials public select" ON public.study_materials FOR SELECT TO authenticated USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'study_materials' AND policyname = 'Materials admin all') THEN
+        CREATE POLICY "Materials admin all" ON public.study_materials FOR ALL TO authenticated USING (
+            EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin')
+        );
+    END IF;
+END
+$$;
+
+-- 5. Criar o Bucket de Storage para os PDFs
+INSERT INTO storage.buckets (id, name, public) VALUES ('concurso_pdfs', 'concurso_pdfs', true) ON CONFLICT DO NOTHING;
+
+-- 6. Criar as Políticas de Segurança para o Storage (Permitindo o upload pelo sistema)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'objects' AND schemaname = 'storage' AND policyname = 'PDF public read') THEN
+        CREATE POLICY "PDF public read" ON storage.objects FOR SELECT TO public USING (bucket_id = 'concurso_pdfs');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'objects' AND schemaname = 'storage' AND policyname = 'PDF public insert') THEN
+        CREATE POLICY "PDF public insert" ON storage.objects FOR INSERT TO public WITH CHECK (bucket_id = 'concurso_pdfs');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'objects' AND schemaname = 'storage' AND policyname = 'PDF public update') THEN
+        CREATE POLICY "PDF public update" ON storage.objects FOR UPDATE TO public USING (bucket_id = 'concurso_pdfs');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'objects' AND schemaname = 'storage' AND policyname = 'PDF public delete') THEN
+        CREATE POLICY "PDF public delete" ON storage.objects FOR DELETE TO public USING (bucket_id = 'concurso_pdfs');
+    END IF;
+END
+$$;
 `;
 
 serve(async (req) => {
@@ -113,7 +150,7 @@ serve(async (req) => {
     await client.queryArray(INSTALL_SQL);
     await client.end();
 
-    return new Response(JSON.stringify({ success: true, message: "Tabelas criadas/atualizadas com sucesso!" }), {
+    return new Response(JSON.stringify({ success: true, message: "Tabelas e Buckets criados/atualizados com sucesso!" }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     });

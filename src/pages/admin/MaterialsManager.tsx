@@ -8,10 +8,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Plus, Edit, Trash2, FileText, Upload, Download, FileDown } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, FileText, Upload, Download, FileDown, Wrench, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface StudyMaterial {
   id: string;
@@ -38,15 +39,32 @@ export default function MaterialsManager() {
   const [currentMaterial, setCurrentMaterial] = useState<Partial<StudyMaterial>>({ category: "Legislação do SUS", is_premium: false });
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [isInstalling, setIsInstalling] = useState(false);
 
-  const { data: materials = [], isLoading } = useQuery({
+  const { data: materials = [], isLoading, isError } = useQuery({
     queryKey: ["adminMaterials"],
     queryFn: async () => {
       const { data, error } = await supabase.from("study_materials").select("*").order("created_at", { ascending: false });
-      if (error && error.code !== '42P01') throw error; // Ignora erro se tabela não existir ainda
+      if (error) throw error; // Não ignora mais o erro, para forçar a tela de instalação
       return (data || []) as StudyMaterial[];
-    }
+    },
+    retry: false
   });
+
+  const handleInstallDatabase = async () => {
+    setIsInstalling(true);
+    const toastId = toast.loading("Criando tabelas e pastas de armazenamento...");
+    try {
+      const { data, error } = await supabase.functions.invoke('install-schema');
+      if (error) throw new Error(error.message);
+      toast.success("Tudo pronto! Banco de dados configurado.", { id: toastId });
+      queryClient.invalidateQueries({ queryKey: ["adminMaterials"] });
+    } catch (err: any) {
+      toast.error("Erro: " + err.message, { id: toastId });
+    } finally {
+      setIsInstalling(false);
+    }
+  };
 
   const saveMutation = useMutation({
     mutationFn: async () => {
@@ -61,7 +79,13 @@ export default function MaterialsManager() {
         const filePath = `pdfs/${fileName}`;
 
         const { error: uploadError } = await supabase.storage.from('concurso_pdfs').upload(filePath, pdfFile);
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+            // Se der erro de Bucket not found, lança uma mensagem clara
+            if (uploadError.message.includes('Bucket not found')) {
+                throw new Error("O diretório de PDFs ainda não foi criado. Clique em 'Configurar Banco de Dados' acima.");
+            }
+            throw uploadError;
+        }
 
         const { data: urlData } = supabase.storage.from('concurso_pdfs').getPublicUrl(filePath);
         fileUrl = urlData.publicUrl;
@@ -134,7 +158,27 @@ export default function MaterialsManager() {
   const filteredMaterials = materials.filter(m => m.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      
+      {/* ALERTA DE INSTALAÇÃO DO BANCO */}
+      {isError && (
+        <Alert variant="destructive" className="border-red-200 bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-200">
+          <AlertTriangle className="h-5 w-5" />
+          <AlertTitle className="text-lg font-bold">Configuração Necessária</AlertTitle>
+          <AlertDescription className="mt-2 flex flex-col gap-4">
+            <p className="text-sm">A tabela de materiais e a pasta de armazenamento de PDFs ainda não existem. Clique no botão abaixo para criá-las automaticamente.</p>
+            <Button 
+              onClick={handleInstallDatabase} 
+              disabled={isInstalling}
+              className="w-fit bg-red-600 hover:bg-red-700 text-white border-0 shadow-lg"
+            >
+              {isInstalling ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wrench className="mr-2 h-4 w-4" />}
+              {isInstalling ? "Configurando..." : "Configurar Banco de Dados"}
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-xl font-bold flex items-center gap-2">
@@ -142,7 +186,7 @@ export default function MaterialsManager() {
           </h2>
           <p className="text-sm text-muted-foreground">Gerencie os PDFs premium da Área do Concurseiro.</p>
         </div>
-        <Button onClick={openNew}><Plus className="mr-2 h-4 w-4" /> Novo Material</Button>
+        <Button onClick={openNew} disabled={isError}><Plus className="mr-2 h-4 w-4" /> Novo Material</Button>
       </div>
 
       <div className="bg-card p-2 rounded-lg border shadow-sm">
@@ -151,6 +195,7 @@ export default function MaterialsManager() {
           className="border-none shadow-none focus-visible:ring-0"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
+          disabled={isError}
         />
       </div>
 
@@ -170,8 +215,10 @@ export default function MaterialsManager() {
               <TableBody>
                 {isLoading ? (
                   <TableRow><TableCell colSpan={5} className="text-center py-10"><Loader2 className="h-6 w-6 animate-spin mx-auto text-primary" /></TableCell></TableRow>
+                ) : isError ? (
+                  <TableRow><TableCell colSpan={5} className="text-center py-10 text-muted-foreground">O banco de dados precisa ser configurado acima.</TableCell></TableRow>
                 ) : filteredMaterials.length === 0 ? (
-                  <TableRow><TableCell colSpan={5} className="text-center py-10 text-muted-foreground">Nenhum material encontrado.</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={5} className="text-center py-10 text-muted-foreground">Nenhum material cadastrado.</TableCell></TableRow>
                 ) : (
                   filteredMaterials.map((item) => (
                     <TableRow key={item.id}>
