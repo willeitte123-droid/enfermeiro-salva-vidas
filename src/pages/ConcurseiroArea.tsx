@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
   GraduationCap, Search, Download, FileText,
-  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, ExternalLink
+  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -321,18 +321,6 @@ const ConcurseiroArea = () => {
                <h3 className="font-bold text-sm sm:text-base truncate">{readingMaterial?.title}</h3>
             </div>
             <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-               {readingMaterial && (
-                 <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    asChild
-                    className="hidden sm:flex text-muted-foreground hover:text-foreground"
-                 >
-                    <a href={readingMaterial.file_url} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4 mr-2" /> Abrir Externo
-                    </a>
-                 </Button>
-               )}
                <Button 
                   size="sm" 
                   variant="outline" 
