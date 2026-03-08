@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
   GraduationCap, Search, Download, FileText,
-  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X
+  Lightbulb, Trophy, Sparkles, Loader2, ArrowDownToLine, Eye, X, ExternalLink
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -45,26 +45,6 @@ const MOCK_MATERIALS: StudyMaterial[] = [
     file_size: "2.4 MB",
     page_count: 35,
     is_premium: true
-  },
-  {
-    id: "mock-2",
-    title: "Guia Prático: Urgência e Emergência",
-    description: "Protocolos de PCR (AHA Atualizado), atendimento ao politraumatizado (XABCDE) e ritmos chocáveis.",
-    category: "Urgência e Emergência",
-    file_url: "#",
-    file_size: "5.1 MB",
-    page_count: 50,
-    is_premium: true
-  },
-  {
-    id: "mock-3",
-    title: "Calendário Vacinal Simplificado",
-    description: "Tabela colorida e esquematizada com todas as atualizações recentes do PNI para crianças, adolescentes, adultos e idosos.",
-    category: "Saúde Pública",
-    file_url: "#",
-    file_size: "1.2 MB",
-    page_count: 12,
-    is_premium: false
   }
 ];
 
@@ -76,7 +56,6 @@ const fetchMaterials = async () => {
   
   if (error) {
     if (error.code === '42P01') {
-      // Tabela não existe, retorna o mock
       return MOCK_MATERIALS;
     }
     throw error;
@@ -94,6 +73,7 @@ const ConcurseiroArea = () => {
   // Estados para Leitura e Download
   const [readingMaterial, setReadingMaterial] = useState<StudyMaterial | null>(null);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [iframeLoading, setIframeLoading] = useState(true);
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Área do Concurseiro', path: '/concurseiro', icon: 'GraduationCap' });
@@ -119,7 +99,11 @@ const ConcurseiroArea = () => {
     });
   }, [materials, searchTerm, activeCategory]);
 
-  // Função para forçar o download do PDF ao invés de abrir no navegador
+  const handleOpenReader = (material: StudyMaterial) => {
+    setIframeLoading(true);
+    setReadingMaterial(material);
+  };
+
   const handleDownload = async (url: string, title: string, id: string) => {
     if (url === "#") {
       toast.info("Este é apenas um material de demonstração.");
@@ -130,33 +114,25 @@ const ConcurseiroArea = () => {
       setDownloadingId(id);
       toast.info("Preparando download...");
       
-      // Busca o arquivo como Blob
       const response = await fetch(url);
       const blob = await response.blob();
-      
-      // Cria uma URL local para o blob
       const blobUrl = window.URL.createObjectURL(blob);
       
-      // Cria um link temporário e simula o clique
       const link = document.createElement('a');
       link.href = blobUrl;
-      
-      // Formata o nome do arquivo (Tira espaços e caracteres especiais)
       const safeTitle = title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, "_");
       link.download = `EnfermagemPro_${safeTitle}.pdf`;
       
       document.body.appendChild(link);
       link.click();
       
-      // Limpeza
       document.body.removeChild(link);
       window.URL.revokeObjectURL(blobUrl);
       
       toast.success("Download concluído!");
     } catch (error) {
       console.error("Erro no download:", error);
-      toast.error("Erro ao fazer o download. O arquivo pode estar indisponível.");
-      // Fallback: Tenta abrir em nova aba se o fetch falhar (ex: erro de CORS)
+      toast.error("Erro ao fazer o download automático. Abrindo na nova aba.");
       window.open(url, '_blank');
     } finally {
       setDownloadingId(null);
@@ -307,7 +283,7 @@ const ConcurseiroArea = () => {
 
                 <CardFooter className="pt-0 pb-5 px-5 flex gap-3">
                    <Button 
-                      onClick={() => setReadingMaterial(material)} 
+                      onClick={() => handleOpenReader(material)} 
                       variant="outline" 
                       className="flex-1 border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/50 font-semibold"
                    >
@@ -339,12 +315,24 @@ const ConcurseiroArea = () => {
           </VisuallyHidden.Root>
           
           {/* Header do Modal */}
-          <div className="p-4 border-b bg-card flex flex-row items-center justify-between shrink-0 shadow-sm z-10">
-            <div className="flex flex-col min-w-0 pr-4">
+          <div className="p-3 sm:p-4 border-b bg-card flex flex-row items-center justify-between shrink-0 shadow-sm z-10">
+            <div className="flex flex-col min-w-0 pr-2 sm:pr-4">
                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">{readingMaterial?.category}</span>
                <h3 className="font-bold text-sm sm:text-base truncate">{readingMaterial?.title}</h3>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+               {readingMaterial && (
+                 <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    asChild
+                    className="hidden sm:flex text-muted-foreground hover:text-foreground"
+                 >
+                    <a href={readingMaterial.file_url} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="w-4 h-4 mr-2" /> Abrir Externo
+                    </a>
+                 </Button>
+               )}
                <Button 
                   size="sm" 
                   variant="outline" 
@@ -353,20 +341,32 @@ const ConcurseiroArea = () => {
                >
                   <Download className="w-4 h-4 mr-2" /> Baixar
                </Button>
-               <Button variant="ghost" size="icon" onClick={() => setReadingMaterial(null)} className="rounded-full bg-muted/50 hover:bg-destructive/10 hover:text-destructive">
+               <Button variant="ghost" size="icon" onClick={() => setReadingMaterial(null)} className="rounded-full bg-muted/50 hover:bg-destructive/10 hover:text-destructive shrink-0 ml-2">
                   <X className="h-5 w-5"/>
                </Button>
             </div>
           </div>
           
-          {/* Corpo do Modal (Iframe do PDF) */}
+          {/* Corpo do Modal (Iframe do PDF via Google Docs Viewer para máxima compatibilidade) */}
           <div className="flex-1 w-full h-full bg-slate-100 dark:bg-slate-900 relative">
             {readingMaterial && (
-              <iframe 
-                src={`${readingMaterial.file_url}#view=FitH&toolbar=0&navpanes=0`} 
-                className="w-full h-full border-0 absolute inset-0"
-                title={readingMaterial.title}
-              />
+              <>
+                {iframeLoading && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 z-10">
+                    <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
+                    <p className="text-sm text-muted-foreground font-medium">Carregando documento...</p>
+                  </div>
+                )}
+                {/* Utilizamos o Google Docs Viewer para garantir que o PDF seja renderizado em iframes mobile/desktop 
+                    sem problemas de Headers (Content-Disposition).
+                */}
+                <iframe 
+                  src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`} 
+                  className="w-full h-full border-0 absolute inset-0 z-20"
+                  title={readingMaterial.title}
+                  onLoad={() => setIframeLoading(false)}
+                />
+              </>
             )}
           </div>
         </DialogContent>

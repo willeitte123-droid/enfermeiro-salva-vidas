@@ -94,7 +94,12 @@ export default function MaterialsManager() {
         const fileName = `${Date.now()}.${fileExt}`;
         const filePath = `pdfs/${fileName}`;
 
-        const { error: uploadError } = await supabase.storage.from('concurso_pdfs').upload(filePath, pdfFile);
+        // Correção Crucial: Adicionando contentType explícito para que o navegador reconheça como PDF e não faça download forçado
+        const { error: uploadError } = await supabase.storage.from('concurso_pdfs').upload(filePath, pdfFile, {
+          contentType: 'application/pdf',
+          upsert: true
+        });
+        
         if (uploadError) {
             if (uploadError.message.includes('Bucket not found')) {
                 throw new Error("O diretório de PDFs ainda não foi criado. Clique em 'Configurar Banco de Dados' acima.");
