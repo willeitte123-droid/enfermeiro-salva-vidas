@@ -473,7 +473,7 @@ const ConcurseiroArea = () => {
         </div>
       )}
 
-      {/* MODAL DE LEITURA DO PDF */}
+      {/* MODAL DE LEITURA DO PDF COM BLOCO DE NOTAS INTEGRADO */}
       <Dialog open={!!readingMaterial} onOpenChange={(open) => !open && handleCloseReader()}>
         <DialogContent className="max-w-[98vw] sm:max-w-7xl w-[98vw] h-[95vh] p-0 overflow-hidden flex flex-col gap-0 border-none bg-background rounded-xl">
           <VisuallyHidden.Root>
@@ -528,9 +528,8 @@ const ConcurseiroArea = () => {
                       <p className="text-sm text-muted-foreground font-medium">Carregando documento...</p>
                     </div>
                   )}
-                  {/* Visualizador Nativo do Navegador com view=FitH */}
                   <iframe 
-                    src={`${readingMaterial.file_url}#view=FitH`} 
+                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(readingMaterial.file_url)}&embedded=true`} 
                     className="w-full h-full border-0 absolute inset-0 z-20 bg-white"
                     title={readingMaterial.title}
                     onLoad={() => setIframeLoading(false)}
