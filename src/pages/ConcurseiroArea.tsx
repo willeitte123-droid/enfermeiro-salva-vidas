@@ -337,7 +337,7 @@ const ConcurseiroArea = () => {
         <div className="z-10 flex-1 w-full min-w-0 text-white">
           <div className="flex justify-between items-center mb-2.5">
             <h4 className="font-bold text-yellow-300 uppercase tracking-widest text-[11px] sm:text-xs flex items-center gap-2 drop-shadow-md">
-              <Sparkles className="w-3.5 h-3.5" /> Bizus Diários (Top Concursos)
+              <Sparkles className="w-3.5 h-3.5" /> Bizus Diários
             </h4>
             <div className="flex items-center gap-2">
                <span className="text-[9px] uppercase tracking-wider text-indigo-200 flex items-center gap-1 hidden sm:flex"><Clock className="w-3 h-3"/> Atualiza a cada 10s</span>
