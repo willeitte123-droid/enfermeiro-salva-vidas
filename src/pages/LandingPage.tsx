@@ -488,9 +488,9 @@ const VideoSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto mb-12">
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
-            Veja como o EnfermagemPro <br className="hidden md:block"/>
+            Descubra tudo o que você vai encontrar <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-600">
-              organiza seus estudos na prática
+              dentro da plataforma
             </span>
           </h2>
         </div>
@@ -521,6 +521,8 @@ const VideoSection = () => {
                   <img 
                     src="/images/background-hero.webp" 
                     alt="Plataforma Preview" 
+                    width="1024"
+                    height="576"
                     loading="lazy" 
                     decoding="async" 
                     className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" 
@@ -534,7 +536,7 @@ const VideoSection = () => {
                 </div>
               ) : (
                 <YouTube 
-                  videoId="1LzPWeV6coU"
+                  videoId="GQMSKMkZkps"
                   opts={{
                     height: '100%',
                     width: '100%',
@@ -1095,8 +1097,8 @@ const UnifiedSocialSection = () => {
 };
 
 const TestimonialsSection = () => {
-  // A imagem testimonial-1.webp foi removida porque não existe, evitando quebra.
   const testimonials = [
+    "/images/testimonial-8.webp",
     "/images/testimonial-2.webp",
     "/images/testimonial-3.webp",
     "/images/testimonial-4.webp",
