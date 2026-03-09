@@ -114,10 +114,17 @@ const Dashboard = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const isFreePlan = !profile?.plan || profile.plan.toLowerCase() === 'free';
-  const isLocked = isFreePlan && profile?.role !== 'admin';
+  // Lógica blindada para garantir o bloqueio do usuário
+  const plan = profile?.plan?.toLowerCase().trim() || 'free';
+  const isPremium = plan !== 'free' && plan !== '';
+  const isAdmin = profile?.role === 'admin';
+  const isLocked = !isPremium && !isAdmin;
 
-  const handleLockedClick = () => {
+  const handleLockedClick = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     toast.info("Conteúdo Exclusivo", { 
       description: "Assine a plataforma para liberar o acesso a este módulo." 
     });
@@ -151,12 +158,12 @@ const Dashboard = () => {
             
             <div className="flex flex-col xl:flex-row items-center lg:items-start xl:items-center gap-4">
               <p className="text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed text-center lg:text-left">
-                {isFreePlan 
+                {isLocked 
                   ? "Assine o Plano mensal ou anual e tenha acesso completo da plataforma." 
                   : "Prepare-se para o plantão ou seus estudos. Você tem acesso rápido às ferramentas essenciais da enfermagem moderna."}
               </p>
               
-              {isFreePlan && (
+              {isLocked && (
                 <Button asChild className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-full shadow-lg shadow-orange-500/20 transition-all hover:scale-105 whitespace-nowrap shrink-0">
                   <a href="https://www.enfermagempro.com/oferta">
                     <Zap className="w-4 h-4 mr-2" /> Assinar Agora
@@ -166,25 +173,28 @@ const Dashboard = () => {
             </div>
 
             <div className="flex flex-wrap gap-3 pt-2 justify-center lg:justify-start">
-              <Button asChild={!isLocked} onClick={isLocked ? handleLockedClick : undefined} className={cn("font-bold rounded-full shadow-lg transition-all", isLocked ? "bg-slate-800 text-slate-400 hover:bg-slate-700 cursor-not-allowed" : "bg-white text-slate-900 hover:bg-blue-50 hover:scale-105 shadow-white/10")}>
-                {isLocked ? (
-                  <span><Lock className="mr-2 h-4 w-4" /> Iniciar Simulado</span>
-                ) : (
-                  <Link to="/simulado"><Brain className="mr-2 h-4 w-4" /> Iniciar Simulado</Link>
-                )}
-              </Button>
+              {isLocked ? (
+                 <Button onClick={handleLockedClick} className="font-bold rounded-full shadow-lg transition-all bg-slate-800 text-slate-400 hover:bg-slate-700 cursor-not-allowed">
+                   <Lock className="mr-2 h-4 w-4" /> Iniciar Simulado
+                 </Button>
+              ) : (
+                 <Button asChild className="font-bold rounded-full shadow-lg transition-all bg-white text-slate-900 hover:bg-blue-50 hover:scale-105 shadow-white/10">
+                   <Link to="/simulado"><Brain className="mr-2 h-4 w-4" /> Iniciar Simulado</Link>
+                 </Button>
+              )}
               
-              <Button asChild={!isLocked} variant="outline" onClick={isLocked ? handleLockedClick : undefined} className={cn("rounded-full transition-all", isLocked ? "bg-slate-800/50 border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-slate-300 cursor-not-allowed" : "bg-transparent border-white/20 text-white hover:bg-white/10")}>
-                {isLocked ? (
-                  <span><Lock className="mr-2 h-4 w-4" /> Banca de Questões</span>
-                ) : (
-                  <Link to="/questions"><FileQuestion className="mr-2 h-4 w-4" /> Banca de Questões</Link>
-                )}
-              </Button>
+              {isLocked ? (
+                 <Button onClick={handleLockedClick} variant="outline" className="rounded-full transition-all bg-slate-800/50 border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-slate-300 cursor-not-allowed">
+                   <Lock className="mr-2 h-4 w-4" /> Banca de Questões
+                 </Button>
+              ) : (
+                 <Button asChild variant="outline" className="rounded-full transition-all bg-transparent border-white/20 text-white hover:bg-white/10">
+                   <Link to="/questions"><FileQuestion className="mr-2 h-4 w-4" /> Banca de Questões</Link>
+                 </Button>
+              )}
             </div>
           </div>
 
-          {/* Card Flutuante de Dica (Insight) */}
           <div className="lg:col-span-2">
             <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 shadow-xl relative overflow-hidden group hover:bg-white/15 transition-colors">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -219,32 +229,38 @@ const Dashboard = () => {
           {quickAccessLinks.map((link) => {
             const Icon = link.icon;
             
-            const CardContentInner = (
-              <Card className={cn("h-full border-2 border-transparent transition-all duration-300 bg-card relative", link.border, isLocked ? "opacity-70 hover:-translate-y-0" : "hover:-translate-y-1 hover:shadow-lg")}>
-                {isLocked && <Lock className="absolute top-3 right-3 h-4 w-4 text-muted-foreground opacity-50" />}
-                <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center gap-3">
-                  <div className={cn("p-3 rounded-2xl transition-transform shadow-sm", link.bg, link.color, isLocked ? "grayscale" : "group-hover:scale-110")}>
-                    <Icon className="h-6 w-6 sm:h-8 sm:w-8" />
-                  </div>
-                  <div>
-                    <h3 className={cn("font-bold text-sm sm:text-base text-foreground transition-colors", !isLocked && "group-hover:text-primary")}>{link.title}</h3>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 line-clamp-2">{link.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-
             if (isLocked) {
               return (
-                <div key={link.title} onClick={handleLockedClick} className="group outline-none cursor-not-allowed">
-                  {CardContentInner}
+                <div key={link.title} onClick={handleLockedClick} className="group outline-none cursor-pointer">
+                  <Card className="h-full border-2 border-transparent bg-card relative opacity-70 transition-all hover:bg-muted/50">
+                    <Lock className="absolute top-3 right-3 h-4 w-4 text-muted-foreground opacity-50" />
+                    <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center gap-3">
+                      <div className={cn("p-3 rounded-2xl shadow-sm grayscale", link.bg, link.color)}>
+                        <Icon className="h-6 w-6 sm:h-8 sm:w-8" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-sm sm:text-base text-foreground">{link.title}</h3>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 line-clamp-2">{link.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
               );
             }
 
             return (
               <Link to={link.path} key={link.title} className="group outline-none">
-                {CardContentInner}
+                <Card className={cn("h-full border-2 border-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-lg bg-card", link.border)}>
+                  <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center gap-3">
+                    <div className={cn("p-3 rounded-2xl transition-transform group-hover:scale-110 shadow-sm", link.bg, link.color)}>
+                      <Icon className="h-6 w-6 sm:h-8 sm:w-8" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-primary transition-colors">{link.title}</h3>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 line-clamp-2">{link.description}</p>
+                    </div>
+                  </CardContent>
+                </Card>
               </Link>
             );
           })}
@@ -293,7 +309,7 @@ const Dashboard = () => {
                     )}
                   </div>
                   <p className={cn("font-semibold text-base sm:text-lg text-white leading-relaxed line-clamp-4 drop-shadow-sm", isLocked && "blur-sm select-none")}>
-                    {isLocked ? "Conteúdo exclusivo para assinantes. O texto desta questão está oculto." : randomQuestion.question}
+                    {isLocked ? "Conteúdo exclusivo para assinantes. O texto desta questão está oculto para usuários gratuitos." : randomQuestion.question}
                   </p>
                 </div>
               ) : (
@@ -302,15 +318,17 @@ const Dashboard = () => {
             </CardContent>
             
             <CardFooter className="pt-4 border-t border-white/10 bg-black/10 relative z-10">
-              <Button asChild={!isLocked} onClick={isLocked ? handleLockedClick : undefined} className={cn("w-full sm:w-auto ml-auto group font-bold border-none shadow-lg transition-all", isLocked ? "bg-slate-800 text-slate-400 hover:bg-slate-700 cursor-not-allowed" : "bg-white text-blue-700 hover:bg-blue-50")} disabled={isLoadingQuestion || (!randomQuestion && !isLocked)}>
-                {isLocked ? (
-                   <span><Lock className="mr-2 h-4 w-4" /> Responder Agora</span>
-                ) : (
+              {isLocked ? (
+                 <Button onClick={handleLockedClick} className="w-full sm:w-auto ml-auto group font-bold border-none shadow-lg transition-all bg-slate-800 text-slate-400 hover:bg-slate-700 cursor-not-allowed">
+                   <Lock className="mr-2 h-4 w-4" /> Responder Agora
+                 </Button>
+              ) : (
+                 <Button asChild disabled={isLoadingQuestion || !randomQuestion} className="w-full sm:w-auto ml-auto group font-bold border-none shadow-lg transition-all bg-white text-blue-700 hover:bg-blue-50">
                    <Link to={randomQuestion ? `/questions?id=${randomQuestion.id}` : "/questions"}>
                      Responder Agora <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                    </Link>
-                )}
-              </Button>
+                 </Button>
+              )}
             </CardFooter>
           </Card>
         </div>
@@ -331,7 +349,7 @@ const Dashboard = () => {
                       
                       if (isLocked) {
                          return (
-                           <div key={`${activity.path}-${i}`} onClick={handleLockedClick} className="flex items-center gap-3 p-4 bg-muted/20 opacity-70 cursor-not-allowed">
+                           <div key={`${activity.path}-${i}`} onClick={handleLockedClick} className="flex items-center gap-3 p-4 bg-muted/20 opacity-70 cursor-pointer hover:bg-muted/40 transition-colors">
                              <div className="p-2 rounded-lg bg-muted grayscale">
                                {Icon ? <Icon className="h-4 w-4" /> : <Activity className="h-4 w-4" />}
                              </div>
