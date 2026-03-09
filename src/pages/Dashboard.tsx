@@ -5,7 +5,7 @@ import { Link, useOutletContext } from "react-router-dom";
 import { 
   Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, 
   ClipboardList, Loader2, History, Sparkles, Activity, 
-  ChevronRight, Brain, Zap, Clock, GraduationCap, BrainCircuit
+  ChevronRight, Brain, Zap, Clock, GraduationCap, BrainCircuit, Lock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
@@ -15,6 +15,7 @@ import * as LucideIcons from "lucide-react";
 import { Question } from "@/context/QuestionsContext";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "sonner";
 
 interface Profile {
   id: string;
@@ -101,22 +102,26 @@ const Dashboard = () => {
   const { data: randomQuestion, isLoading: isLoadingQuestion } = useQuery({
     queryKey: ['randomQuestion'],
     queryFn: fetchRandomQuestion,
-    refetchInterval: 30000, // Rotate question every 30 seconds
+    refetchInterval: 30000, 
     staleTime: 10000,
   });
 
   useEffect(() => {
-    // Set initial tip
     setRandomTip(clinicalTips[Math.floor(Math.random() * clinicalTips.length)]);
-
     const intervalId = setInterval(() => {
       setRandomTip(clinicalTips[Math.floor(Math.random() * clinicalTips.length)]);
     }, 20000); 
-
     return () => clearInterval(intervalId);
   }, []);
 
   const isFreePlan = !profile?.plan || profile.plan.toLowerCase() === 'free';
+  const isLocked = isFreePlan && profile?.role !== 'admin';
+
+  const handleLockedClick = () => {
+    toast.info("Conteúdo Exclusivo", { 
+      description: "Assine a plataforma para liberar o acesso a este módulo." 
+    });
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700 pb-10">
@@ -126,13 +131,11 @@ const Dashboard = () => {
         className="relative overflow-hidden rounded-3xl text-white shadow-2xl"
         style={{ backgroundColor: 'hsl(var(--hero-background))' }}
       >
-        {/* Background Gradients & Patterns */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-blue-600/30 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none" />
 
         <div className="relative z-10 grid lg:grid-cols-5 gap-8 p-6 sm:p-10 items-center">
-          {/* Saudação e Info - CENTRALIZADO */}
           <div className="lg:col-span-3 space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-blue-200">
               <Sparkles className="w-3 h-3 text-yellow-300" />
@@ -163,15 +166,20 @@ const Dashboard = () => {
             </div>
 
             <div className="flex flex-wrap gap-3 pt-2 justify-center lg:justify-start">
-              <Button asChild className="bg-white text-slate-900 hover:bg-blue-50 font-bold rounded-full shadow-lg shadow-white/10 transition-all hover:scale-105">
-                <Link to="/simulado">
-                  <Brain className="mr-2 h-4 w-4" /> Iniciar Simulado
-                </Link>
+              <Button asChild={!isLocked} onClick={isLocked ? handleLockedClick : undefined} className={cn("font-bold rounded-full shadow-lg transition-all", isLocked ? "bg-slate-800 text-slate-400 hover:bg-slate-700 cursor-not-allowed" : "bg-white text-slate-900 hover:bg-blue-50 hover:scale-105 shadow-white/10")}>
+                {isLocked ? (
+                  <span><Lock className="mr-2 h-4 w-4" /> Iniciar Simulado</span>
+                ) : (
+                  <Link to="/simulado"><Brain className="mr-2 h-4 w-4" /> Iniciar Simulado</Link>
+                )}
               </Button>
-              <Button asChild variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 rounded-full">
-                <Link to="/questions">
-                  <FileQuestion className="mr-2 h-4 w-4" /> Banca de Questões
-                </Link>
+              
+              <Button asChild={!isLocked} variant="outline" onClick={isLocked ? handleLockedClick : undefined} className={cn("rounded-full transition-all", isLocked ? "bg-slate-800/50 border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-slate-300 cursor-not-allowed" : "bg-transparent border-white/20 text-white hover:bg-white/10")}>
+                {isLocked ? (
+                  <span><Lock className="mr-2 h-4 w-4" /> Banca de Questões</span>
+                ) : (
+                  <Link to="/questions"><FileQuestion className="mr-2 h-4 w-4" /> Banca de Questões</Link>
+                )}
               </Button>
             </div>
           </div>
@@ -210,19 +218,33 @@ const Dashboard = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {quickAccessLinks.map((link) => {
             const Icon = link.icon;
+            
+            const CardContentInner = (
+              <Card className={cn("h-full border-2 border-transparent transition-all duration-300 bg-card relative", link.border, isLocked ? "opacity-70 hover:-translate-y-0" : "hover:-translate-y-1 hover:shadow-lg")}>
+                {isLocked && <Lock className="absolute top-3 right-3 h-4 w-4 text-muted-foreground opacity-50" />}
+                <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center gap-3">
+                  <div className={cn("p-3 rounded-2xl transition-transform shadow-sm", link.bg, link.color, isLocked ? "grayscale" : "group-hover:scale-110")}>
+                    <Icon className="h-6 w-6 sm:h-8 sm:w-8" />
+                  </div>
+                  <div>
+                    <h3 className={cn("font-bold text-sm sm:text-base text-foreground transition-colors", !isLocked && "group-hover:text-primary")}>{link.title}</h3>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 line-clamp-2">{link.description}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+
+            if (isLocked) {
+              return (
+                <div key={link.title} onClick={handleLockedClick} className="group outline-none cursor-not-allowed">
+                  {CardContentInner}
+                </div>
+              );
+            }
+
             return (
               <Link to={link.path} key={link.title} className="group outline-none">
-                <Card className={cn("h-full border-2 border-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-lg bg-card", link.border)}>
-                  <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center gap-3">
-                    <div className={cn("p-3 rounded-2xl transition-transform group-hover:scale-110 shadow-sm", link.bg, link.color)}>
-                      <Icon className="h-6 w-6 sm:h-8 sm:w-8" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-primary transition-colors">{link.title}</h3>
-                      <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 line-clamp-2">{link.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+                {CardContentInner}
               </Link>
             );
           })}
@@ -232,10 +254,8 @@ const Dashboard = () => {
       {/* 3. Seção Mista: Desafio + Histórico */}
       <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
         
-        {/* Coluna Esquerda: Desafio da Questão - UPDATE DE COR E ESTILO */}
         <div className="lg:col-span-2">
           <Card className="h-full border-none shadow-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex flex-col relative overflow-hidden group hover:shadow-2xl transition-all duration-300">
-            {/* Background Decoration */}
             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12">
                <Brain className="w-32 h-32 text-white" />
             </div>
@@ -272,8 +292,8 @@ const Dashboard = () => {
                         </Badge>
                     )}
                   </div>
-                  <p className="font-semibold text-base sm:text-lg text-white leading-relaxed line-clamp-4 drop-shadow-sm">
-                    {randomQuestion.question}
+                  <p className={cn("font-semibold text-base sm:text-lg text-white leading-relaxed line-clamp-4 drop-shadow-sm", isLocked && "blur-sm select-none")}>
+                    {isLocked ? "Conteúdo exclusivo para assinantes. O texto desta questão está oculto." : randomQuestion.question}
                   </p>
                 </div>
               ) : (
@@ -282,16 +302,19 @@ const Dashboard = () => {
             </CardContent>
             
             <CardFooter className="pt-4 border-t border-white/10 bg-black/10 relative z-10">
-              <Button asChild className="w-full sm:w-auto ml-auto group bg-white text-blue-700 hover:bg-blue-50 font-bold border-none shadow-lg" disabled={isLoadingQuestion || !randomQuestion}>
-                <Link to={randomQuestion ? `/questions?id=${randomQuestion.id}` : "/questions"}>
-                  Responder Agora <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+              <Button asChild={!isLocked} onClick={isLocked ? handleLockedClick : undefined} className={cn("w-full sm:w-auto ml-auto group font-bold border-none shadow-lg transition-all", isLocked ? "bg-slate-800 text-slate-400 hover:bg-slate-700 cursor-not-allowed" : "bg-white text-blue-700 hover:bg-blue-50")} disabled={isLoadingQuestion || (!randomQuestion && !isLocked)}>
+                {isLocked ? (
+                   <span><Lock className="mr-2 h-4 w-4" /> Responder Agora</span>
+                ) : (
+                   <Link to={randomQuestion ? `/questions?id=${randomQuestion.id}` : "/questions"}>
+                     Responder Agora <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                   </Link>
+                )}
               </Button>
             </CardFooter>
           </Card>
         </div>
 
-        {/* Coluna Direita: Atividade Recente */}
         <div className="lg:col-span-1">
           <Card className="h-full flex flex-col shadow-sm">
             <CardHeader className="pb-3 border-b">
@@ -305,6 +328,26 @@ const Dashboard = () => {
                   <div className="flex flex-col divide-y">
                     {recentActivities.map((activity, i) => {
                       const Icon = LucideIcons[activity.icon] as LucideIcons.LucideIcon;
+                      
+                      if (isLocked) {
+                         return (
+                           <div key={`${activity.path}-${i}`} onClick={handleLockedClick} className="flex items-center gap-3 p-4 bg-muted/20 opacity-70 cursor-not-allowed">
+                             <div className="p-2 rounded-lg bg-muted grayscale">
+                               {Icon ? <Icon className="h-4 w-4" /> : <Activity className="h-4 w-4" />}
+                             </div>
+                             <div className="flex-1 min-w-0">
+                               <p className="text-sm font-medium truncate text-muted-foreground">
+                                 {activity.title}
+                               </p>
+                               <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                                 {activity.type}
+                               </p>
+                             </div>
+                             <Lock className="h-4 w-4 text-muted-foreground/50" />
+                           </div>
+                         )
+                      }
+
                       return (
                         <Link 
                           to={activity.path} 
