@@ -29,6 +29,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { useThemeCustomization } from "@/context/ThemeCustomizationContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Link } from "react-router-dom";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor, insira um email válido." }),
@@ -332,6 +333,17 @@ const Login = () => {
                 <span className="ml-2">Microsoft</span>
               </Button>
             </div>
+
+            {/* SEÇÃO DE CADASTRO ADICIONADA AQUI */}
+            <div className="mt-4 pt-6 border-t border-border/50 text-center">
+              <p className="text-sm text-muted-foreground">
+                Não tem uma conta na plataforma?
+              </p>
+              <Button asChild variant="link" className="mt-1 font-bold text-primary text-base">
+                <Link to="/register">Crie sua conta agora</Link>
+              </Button>
+            </div>
+
           </div>
           
           <p className="text-center text-xs text-muted-foreground mt-8 px-4">

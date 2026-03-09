@@ -47,6 +47,7 @@ const editUserSchema = z.object({
   role: z.string(),
   status: z.string(),
   plan: z.string(),
+  customPlan: z.string().optional(), // Campo opcional para o plano digitado manualmente
 });
 
 const fetchAllUsers = async (): Promise<AppUser[]> => {
@@ -58,21 +59,29 @@ const fetchAllUsers = async (): Promise<AppUser[]> => {
 
 const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; open: boolean; onOpenChange: (open: boolean) => void }) => {
   const queryClient = useQueryClient();
+  
   const form = useForm<z.infer<typeof editUserSchema>>({
     resolver: zodResolver(editUserSchema),
     defaultValues: {
       role: 'user',
       status: 'pending',
-      plan: 'free'
+      plan: 'free',
+      customPlan: ''
     }
   });
 
+  const selectedPlan = form.watch("plan");
+
   useEffect(() => {
     if (user) {
+      const planVal = user.plan || 'free';
+      const isCustom = !['free', 'Plano Essencial', 'Plano Premium anual', 'Plano Pro anual'].includes(planVal);
+      
       form.reset({
         role: user.role || 'user',
         status: user.status || 'pending',
-        plan: user.plan || 'free',
+        plan: isCustom ? 'custom' : planVal,
+        customPlan: isCustom ? planVal : ''
       });
     }
   }, [user, form]);
@@ -81,11 +90,13 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
     mutationFn: async (values: z.infer<typeof editUserSchema>) => {
       if (!user) throw new Error("Usuário não selecionado.");
       
+      const finalPlan = values.plan === 'custom' ? values.customPlan : values.plan;
+
       const { data, error } = await supabase.rpc('admin_update_profile', {
         target_user_id: user.id,
         new_role: values.role,
         new_status: values.status,
-        new_plan: values.plan
+        new_plan: finalPlan
       });
 
       if (error) throw new Error(error.message);
@@ -138,17 +149,37 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
               </SelectContent>
             </Select></div>
           )} />
+          
           <Controller name="plan" control={form.control} render={({ field }) => (
-            <div className="space-y-2"><Label>Plano de Acesso</Label><Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="free">Gratuito (Free)</SelectItem>
-                <SelectItem value="Plano Essencial">Essencial</SelectItem>
-                <SelectItem value="Plano Premium anual">Premium Anual</SelectItem>
-                <SelectItem value="Plano Pro anual">Pro Anual</SelectItem>
-              </SelectContent>
-            </Select></div>
+            <div className="space-y-2">
+              <Label>Plano de Acesso</Label>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="free">Gratuito (Free)</SelectItem>
+                  <SelectItem value="Plano Essencial">Essencial</SelectItem>
+                  <SelectItem value="Plano Premium anual">Premium Anual</SelectItem>
+                  <SelectItem value="Plano Pro anual">Pro Anual</SelectItem>
+                  <SelectItem value="custom" className="font-bold text-primary">Outro Plano (Digitar)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           )} />
+
+          {selectedPlan === 'custom' && (
+            <Controller name="customPlan" control={form.control} render={({ field }) => (
+              <div className="space-y-2 animate-in fade-in zoom-in duration-200">
+                <Label>Nome do Plano Personalizado</Label>
+                <Input placeholder="Ex: Vitalício VIP" {...field} />
+              </div>
+            )} />
+          )}
+
+          <div className="text-xs text-muted-foreground bg-muted p-3 rounded-lg flex gap-2 items-start mt-4">
+            <Info className="w-4 h-4 text-blue-500 shrink-0" />
+            <p>Ao alterar o plano do usuário, ele terá acesso instantâneo aos conteúdos bloqueados do sistema.</p>
+          </div>
+
           <DialogFooter className="pt-4 flex-col sm:flex-row gap-2">
             <DialogClose asChild><Button type="button" variant="outline" className="w-full sm:w-auto">Cancelar</Button></DialogClose>
             <Button type="submit" disabled={mutation.isPending} className="bg-primary w-full sm:w-auto">{mutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Salvar Alterações</Button>
@@ -214,6 +245,7 @@ const UserManagement = () => {
     if (plan.includes('premium')) return "bg-gradient-to-r from-amber-100 to-amber-200 text-amber-900 border-amber-300 dark:from-amber-900/40 dark:to-amber-800/40 dark:text-amber-200 dark:border-amber-700 shadow-sm font-bold ring-1 ring-amber-500/20";
     if (plan.includes('essencial')) return "bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-900 border-emerald-300 dark:from-emerald-900/40 dark:to-emerald-800/40 dark:text-emerald-200 dark:border-emerald-700 shadow-sm font-bold ring-1 ring-emerald-500/20";
     if (plan.includes('pro')) return "bg-gradient-to-r from-blue-100 to-indigo-200 text-blue-900 border-blue-300 dark:from-blue-900/40 dark:to-indigo-800/40 dark:text-blue-200 dark:border-blue-700 shadow-sm font-bold ring-1 ring-blue-500/20";
+    if (plan !== 'free' && plan !== '') return "bg-purple-100 text-purple-800 border-purple-300 font-bold"; // Custom plans
     return "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
   };
 
@@ -338,7 +370,7 @@ const UserManagement = () => {
                     
                     <TableCell>
                       <div className="flex flex-col items-start gap-2">
-                        <Badge variant="outline" className={cn("rounded-md px-2.5 py-0.5 border font-medium w-fit transition-all", getPlanBadgeStyle(user.plan))}>
+                        <Badge variant="outline" className={cn("rounded-md px-2.5 py-0.5 border font-medium w-fit transition-all max-w-[150px] truncate", getPlanBadgeStyle(user.plan))}>
                             {user.plan || "Free"}
                         </Badge>
                         <div className="flex items-center gap-1.5 px-1">
