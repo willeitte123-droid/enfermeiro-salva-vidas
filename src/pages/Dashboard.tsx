@@ -22,6 +22,7 @@ interface Profile {
   status: string;
   first_name?: string;
   last_name?: string;
+  plan?: string;
 }
 
 const quickAccessLinks = [
@@ -115,6 +116,8 @@ const Dashboard = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  const isFreePlan = !profile?.plan || profile.plan.toLowerCase() === 'free';
+
   return (
     <div className="space-y-8 animate-in fade-in duration-700 pb-10">
       
@@ -144,7 +147,9 @@ const Dashboard = () => {
             </h1>
             
             <p className="text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed text-center lg:text-left">
-              Prepare-se para o plantão ou seus estudos. Você tem acesso rápido às ferramentas essenciais da enfermagem moderna.
+              {isFreePlan 
+                ? "Assine o Plano mensal ou anual e tenha acesso completo da plataforma" 
+                : "Prepare-se para o plantão ou seus estudos. Você tem acesso rápido às ferramentas essenciais da enfermagem moderna."}
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2 justify-center lg:justify-start">
