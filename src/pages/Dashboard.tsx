@@ -146,11 +146,21 @@ const Dashboard = () => {
               </span>
             </h1>
             
-            <p className="text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed text-center lg:text-left">
-              {isFreePlan 
-                ? "Assine o Plano mensal ou anual e tenha acesso completo da plataforma" 
-                : "Prepare-se para o plantão ou seus estudos. Você tem acesso rápido às ferramentas essenciais da enfermagem moderna."}
-            </p>
+            <div className="flex flex-col xl:flex-row items-center lg:items-start xl:items-center gap-4">
+              <p className="text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed text-center lg:text-left">
+                {isFreePlan 
+                  ? "Assine o Plano mensal ou anual e tenha acesso completo da plataforma." 
+                  : "Prepare-se para o plantão ou seus estudos. Você tem acesso rápido às ferramentas essenciais da enfermagem moderna."}
+              </p>
+              
+              {isFreePlan && (
+                <Button asChild className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-full shadow-lg shadow-orange-500/20 transition-all hover:scale-105 whitespace-nowrap shrink-0">
+                  <a href="https://www.enfermagempro.com/oferta">
+                    <Zap className="w-4 h-4 mr-2" /> Assinar Agora
+                  </a>
+                </Button>
+              )}
+            </div>
 
             <div className="flex flex-wrap gap-3 pt-2 justify-center lg:justify-start">
               <Button asChild className="bg-white text-slate-900 hover:bg-blue-50 font-bold rounded-full shadow-lg shadow-white/10 transition-all hover:scale-105">
