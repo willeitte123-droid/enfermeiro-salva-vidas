@@ -4,6 +4,7 @@ import { AppRoutes } from "./routes";
 import { Toaster } from "@/components/ui/sonner";
 import { Loader2 } from "lucide-react";
 import { TimerProvider } from "./context/TimerContext";
+import { MetaPixel } from "./components/MetaPixel";
 
 function App() {
   const auth = useAuth();
@@ -18,6 +19,7 @@ function App() {
 
   return (
     <Router>
+      <MetaPixel />
       <TimerProvider>
         <AppRoutes auth={auth} />
         <Toaster richColors position="top-right" />
