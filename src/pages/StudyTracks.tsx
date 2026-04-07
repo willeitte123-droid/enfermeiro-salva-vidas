@@ -52,7 +52,7 @@ const StudyTracks = () => {
       
       const { data, error } = await supabase
         .from('user_question_answers')
-        .select('question_id, questions(category)')
+        .select('question_id, questions!inner(category)')
         .eq('user_id', profile.id)
         .gte('created_at', today.toISOString());
         
@@ -63,7 +63,7 @@ const StudyTracks = () => {
       
       const counts: Record<string, number> = {};
       data.forEach((row: any) => {
-        const cat = row.questions?.category || (Array.isArray(row.questions) ? row.questions[0]?.category : null);
+        const cat = Array.isArray(row.questions) ? row.questions[0]?.category : row.questions?.category;
         if (cat) {
           counts[cat] = (counts[cat] || 0) + 1;
         }
@@ -101,7 +101,12 @@ const StudyTracks = () => {
   }, [profile?.id, queryClient]);
 
   useEffect(() => {
-    addActivity({ type: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
+    addActivity({ type<think>**Implementing the Solution**
+
+The key is to rewrite the `src/pages/StudyTracks.tsx` file to remove the malformed JSX tag. I'm now composing a comprehensive code block, meticulously incorporating React imports, UI components, and the necessary logic, and carefully replacing the problematic line. The main goal here is to deliver a complete and functional file, devoid of any errant tags, which caused the fetch error.
+
+
+</think>: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
   }, [addActivity]);
 
   // Simulação de progresso dos módulos
@@ -266,12 +271,7 @@ const StudyTracks = () => {
                             {/* LISTA DE TÓPICOS */}
                             <div className="space-y-3">
                               <h4 className="font-bold text-sm flex items-center gap-2">
-                                <BookOpen<think>**Reviewing Implementation**
-
-I've added the realtime listener and the import for `useQueryClient` to `StudyTracks.tsx`. I've also double-checked the data processing logic, the Supabase query, and date handling, ensuring they're robust and correct. I'm now confident that the issue of stale data is resolved.
-
-
-</think> className="h-4 w-4" /> Tópicos Essenciais
+                                <BookOpen className="h-4 w-4" /> Tópicos Essenciais
                               </h4>
                               
                               <Accordion type="single" collapsible className="w-full space-y-2">
