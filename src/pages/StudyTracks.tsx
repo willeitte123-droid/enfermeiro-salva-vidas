@@ -411,7 +411,6 @@ const StudyTracks = () => {
                     <h4 className="font-bold text-sm">Técnica Feynman</h4>
                     <p className="text-xs text-muted-foreground">Tente explicar o conteúdo em voz alta como se ensinasse uma criança. Se travar, revise aquele ponto.</p>
                   </div>
-                  <div className="space-y```tsx
                   <div className="space-y-2">
                     <h4 className="font-bold text-sm">Estudo Intercalado</h4>
                     <p className="text-xs text-muted-foreground">Não estude só uma matéria o dia todo. Misture 2 ou 3 disciplinas para manter o cérebro alerta.</p>
