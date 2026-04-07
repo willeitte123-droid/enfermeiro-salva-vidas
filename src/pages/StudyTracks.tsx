@@ -42,7 +42,7 @@ const StudyTracks = () => {
   // Hook de Gamificação
   const { data: levelData, isLoading: isLoadingLevel } = useUserLevel(profile?.id);
 
-  // Busca o progresso diário por categoria
+  // Busca o progresso diário por categoria (Corrigido para evitar falhas de JOIN)
   const { data: dailyProgress = {} } = useQuery({
     queryKey: ['dailyProgress', profile?.id],
     queryFn: async () => {
@@ -50,24 +50,50 @@ const StudyTracks = () => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      const { data, error } = await supabase
+      // 1. Busca apenas as respostas de hoje
+      const { data: answers, error: answersError } = await supabase
         .from('user_question_answers')
-        .select('question_id, questions!inner(category)')
+        .select('question_id')
         .eq('user_id', profile.id)
         .gte('created_at', today.toISOString());
         
-      if (error) {
-        console.error("Error fetching daily progress:", error);
+      if (answersError) {
+        console.error("Error fetching daily progress:", answersError);
         return {};
       }
-      
+
+      if (!answers || answers.length === 0) return {};
+
+      // 2. Extrai os IDs únicos das questões respondidas
+      const questionIds = [...new Set(answers.map(a => a.question_id))];
+
+      // 3. Busca as categorias dessas questões
+      const { data: questions, error: questionsError } = await supabase
+        .from('questions')
+        .select('id, category')
+        .in('id', questionIds);
+
+      if (questionsError) {
+        console.error("Error fetching question categories:", questionsError);
+        return {};
+      }
+
+      // 4. Mapeia o ID da questão para a categoria
+      const questionCategoryMap = questions.reduce((acc, q) => {
+        acc[q.id] = q.category;
+        return acc;
+      }, {} as Record<number, string>);
+
+      // 5. Conta quantas respostas existem por categoria
       const counts: Record<string, number> = {};
-      data.forEach((row: any) => {
-        const cat = Array.isArray(row.questions) ? row.questions[0]?.category : row.questions?.category;
+      answers.forEach((ans) => {
+        const cat = questionCategoryMap[ans.question_id];
         if (cat) {
-          counts[cat] = (counts[cat] || 0) + 1;
+          const cleanCat = cat.trim();
+          counts[cleanCat] = (counts[cleanCat] || 0) + 1;
         }
       });
+      
       return counts;
     },
     enabled: !!profile?.id,
@@ -301,7 +327,7 @@ const StudyTracks = () => {
                             <div className="w-full">
                               {(() => {
                                 const targetGoal = parseInt(track.dailyGoal.replace(/\D/g, '')) || 20;
-                                const currentProgress = dailyProgress[track.dbCategory] || 0;
+                                const currentProgress = dailyProgress[track.dbCategory.trim()] || 0;
                                 const isCompleted = currentProgress >= targetGoal;
                                 const remaining = Math.max(0, targetGoal - currentProgress);
 
