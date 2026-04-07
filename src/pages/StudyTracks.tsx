@@ -19,7 +19,7 @@ import { useActivityTracker } from "@/hooks/useActivityTracker";
 import studyData from "@/data/studyTracks.json";
 import { cn } from "@/lib/utils";
 import { useUserLevel } from "@/hooks/useUserLevel";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 
 interface Profile {
@@ -37,6 +37,7 @@ const StudyTracks = () => {
   const { addActivity } = useActivityTracker();
   const [activeTab, setActiveTab] = useState("tracks");
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // Hook de Gamificação
   const { data: levelData, isLoading: isLoadingLevel } = useUserLevel(profile?.id);
@@ -51,7 +52,7 @@ const StudyTracks = () => {
       
       const { data, error } = await supabase
         .from('user_question_answers')
-        .select('question_id, questions!inner(category)')
+        .select('question_id, questions(category)')
         .eq('user_id', profile.id)
         .gte('created_at', today.toISOString());
         
@@ -62,7 +63,7 @@ const StudyTracks = () => {
       
       const counts: Record<string, number> = {};
       data.forEach((row: any) => {
-        const cat = Array.isArray(row.questions) ? row.questions[0]?.category : row.questions?.category;
+        const cat = row.questions?.category || (Array.isArray(row.questions) ? row.questions[0]?.category : null);
         if (cat) {
           counts[cat] = (counts[cat] || 0) + 1;
         }
@@ -72,6 +73,32 @@ const StudyTracks = () => {
     enabled: !!profile?.id,
     refetchOnWindowFocus: true
   });
+
+  // Atualização em tempo real do progresso diário
+  useEffect(() => {
+    if (!profile?.id) return;
+
+    const channel = supabase
+      .channel('daily-progress-tracker')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'user_question_answers',
+          filter: `user_id=eq.${profile.id}`,
+        },
+        () => {
+          // Invalida o cache para forçar a busca dos novos dados imediatamente
+          queryClient.invalidateQueries({ queryKey: ['dailyProgress', profile.id] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [profile?.id, queryClient]);
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
@@ -239,7 +266,12 @@ const StudyTracks = () => {
                             {/* LISTA DE TÓPICOS */}
                             <div className="space-y-3">
                               <h4 className="font-bold text-sm flex items-center gap-2">
-                                <BookOpen className="h-4 w-4" /> Tópicos Essenciais
+                                <BookOpen<think>**Reviewing Implementation**
+
+I've added the realtime listener and the import for `useQueryClient` to `StudyTracks.tsx`. I've also double-checked the data processing logic, the Supabase query, and date handling, ensuring they're robust and correct. I'm now confident that the issue of stale data is resolved.
+
+
+</think> className="h-4 w-4" /> Tópicos Essenciais
                               </h4>
                               
                               <Accordion type="single" collapsible className="w-full space-y-2">
