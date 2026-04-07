@@ -50,7 +50,8 @@ const StudyTracks = () => {
   };
 
   const handleStartSession = (category: string) => {
-    navigate(`/questions?category=${encodeURIComponent(category)}`);
+    // Adicionado o parâmetro filter=unanswered para continuar de onde parou
+    navigate(`/questions?category=${encodeURIComponent(category)}&filter=unanswered`);
   };
 
   return (

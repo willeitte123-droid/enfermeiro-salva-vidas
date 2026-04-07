@@ -66,9 +66,10 @@ const Questions = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const questionId = searchParams.get('id');
   const categoryParam = searchParams.get('category');
+  const filterParam = searchParams.get('filter');
 
   const [selectedCategory, setSelectedCategory] = useState(categoryParam || "Todas");
-  const [answerStatusFilter, setAnswerStatusFilter] = useState("all");
+  const [answerStatusFilter, setAnswerStatusFilter] = useState(filterParam || "all");
   const [currentPage, setCurrentPage] = useState(0);
   const [randomSeed, setRandomSeed] = useState(0);
   
@@ -100,6 +101,12 @@ const Questions = () => {
     }
   }, [categoryParam]);
 
+  useEffect(() => {
+    if (filterParam && filterParam !== answerStatusFilter) {
+      setAnswerStatusFilter(filterParam);
+    }
+  }, [filterParam]);
+
   const handleCategoryChange = (value: string) => {
     setSelectedCategory(value);
     setSearchParams(prev => {
@@ -107,6 +114,18 @@ const Questions = () => {
         prev.delete("category");
       } else {
         prev.set("category", value);
+      }
+      return prev;
+    });
+  };
+
+  const handleFilterChange = (value: string) => {
+    setAnswerStatusFilter(value);
+    setSearchParams(prev => {
+      if (value === "all") {
+        prev.delete("filter");
+      } else {
+        prev.set("filter", value);
       }
       return prev;
     });
@@ -342,7 +361,7 @@ const Questions = () => {
              </div>
 
              {profile && (
-               <Select value={answerStatusFilter} onValueChange={setAnswerStatusFilter}>
+               <Select value={answerStatusFilter} onValueChange={handleFilterChange}>
                   <SelectTrigger className="w-full md:w-[180px] bg-card"><SelectValue placeholder="Status" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todas as Questões</SelectItem>
@@ -396,7 +415,7 @@ const Questions = () => {
                 <h3 className="text-xl font-bold">{getNoQuestionsMessage()}</h3>
                 <p className="text-muted-foreground max-w-md mx-auto">Tente mudar os filtros ou selecionar outra categoria para continuar estudando.</p>
              </div>
-             <Button variant="outline" onClick={() => {setAnswerStatusFilter('all'); setSelectedCategory('Todas');}}>Limpar Filtros</Button>
+             <Button variant="outline" onClick={() => {handleFilterChange('all'); handleCategoryChange('Todas');}}>Limpar Filtros</Button>
           </div>
         ) : (
           <Card className="overflow-hidden border-t-4 border-t-blue-500 shadow-lg transition-all duration-300">
