@@ -101,12 +101,7 @@ const StudyTracks = () => {
   }, [profile?.id, queryClient]);
 
   useEffect(() => {
-    addActivity({ type<think>**Implementing the Solution**
-
-The key is to rewrite the `src/pages/StudyTracks.tsx` file to remove the malformed JSX tag. I'm now composing a comprehensive code block, meticulously incorporating React imports, UI components, and the necessary logic, and carefully replacing the problematic line. The main goal here is to deliver a complete and functional file, devoid of any errant tags, which caused the fetch error.
-
-
-</think>: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
+    addActivity({ type: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
   }, [addActivity]);
 
   // Simulação de progresso dos módulos
