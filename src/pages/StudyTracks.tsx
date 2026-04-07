@@ -19,6 +19,8 @@ import { useActivityTracker } from "@/hooks/useActivityTracker";
 import studyData from "@/data/studyTracks.json";
 import { cn } from "@/lib/utils";
 import { useUserLevel } from "@/hooks/useUserLevel";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
 
 interface Profile {
   id: string;
@@ -38,6 +40,38 @@ const StudyTracks = () => {
 
   // Hook de Gamificação
   const { data: levelData, isLoading: isLoadingLevel } = useUserLevel(profile?.id);
+
+  // Busca o progresso diário por categoria
+  const { data: dailyProgress = {} } = useQuery({
+    queryKey: ['dailyProgress', profile?.id],
+    queryFn: async () => {
+      if (!profile?.id) return {};
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const { data, error } = await supabase
+        .from('user_question_answers')
+        .select('question_id, questions!inner(category)')
+        .eq('user_id', profile.id)
+        .gte('created_at', today.toISOString());
+        
+      if (error) {
+        console.error("Error fetching daily progress:", error);
+        return {};
+      }
+      
+      const counts: Record<string, number> = {};
+      data.forEach((row: any) => {
+        const cat = Array.isArray(row.questions) ? row.questions[0]?.category : row.questions?.category;
+        if (cat) {
+          counts[cat] = (counts[cat] || 0) + 1;
+        }
+      });
+      return counts;
+    },
+    enabled: !!profile?.id,
+    refetchOnWindowFocus: true
+  });
 
   useEffect(() => {
     addActivity({ type: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
@@ -236,28 +270,66 @@ const StudyTracks = () => {
                               </Accordion>
                             </div>
 
-                            {/* CARD DE AÇÃO */}
+                            {/* CARD DE AÇÃO (META DIÁRIA) */}
                             <div className="w-full">
-                              <Card className="bg-background border-dashed flex flex-col sm:flex-row sm:items-center justify-between">
-                                <div className="flex-1">
-                                  <CardHeader className="pb-2 pt-4 px-4 sm:pt-6 sm:px-6">
-                                    <CardTitle className="text-xs uppercase tracking-wide text-muted-foreground">Meta Diária</CardTitle>
-                                  </CardHeader>
-                                  <CardContent className="pb-4 px-4 sm:pb-6 sm:px-6">
-                                    <div className="text-2xl sm:text-3xl font-black text-primary mb-1">{track.dailyGoal}</div>
-                                    <p className="text-[10px] sm:text-xs text-muted-foreground">Questões selecionadas para este módulo.</p>
-                                  </CardContent>
-                                </div>
-                                <CardFooter className="pt-0 pb-4 px-4 sm:pt-6 sm:pb-6 sm:px-6">
-                                  <Button 
-                                    className="w-full sm:w-auto h-auto py-3 px-6 flex items-center justify-center gap-2 whitespace-normal text-sm" 
-                                    onClick={() => handleStartSession(track.dbCategory)}
-                                  >
-                                    <PlayCircle className="h-4 w-4 shrink-0" /> 
-                                    <span className="text-center leading-tight">Iniciar Sessão</span>
-                                  </Button>
-                                </CardFooter>
-                              </Card>
+                              {(() => {
+                                const targetGoal = parseInt(track.dailyGoal.replace(/\D/g, '')) || 20;
+                                const currentProgress = dailyProgress[track.dbCategory] || 0;
+                                const isCompleted = currentProgress >= targetGoal;
+                                const remaining = Math.max(0, targetGoal - currentProgress);
+
+                                return (
+                                  <Card className={cn("bg-background border-dashed flex flex-col sm:flex-row sm:items-center justify-between transition-colors", isCompleted && "border-green-500/50 bg-green-50/50 dark:bg-green-900/10")}>
+                                    <div className="flex-1">
+                                      <CardHeader className="pb-2 pt-4 px-4 sm:pt-6 sm:px-6">
+                                        <CardTitle className={cn("text-xs uppercase tracking-wide", isCompleted ? "text-green-600 dark:text-green-400 font-bold" : "text-muted-foreground")}>
+                                          {isCompleted ? "Meta Concluída" : "Meta Diária"}
+                                        </CardTitle>
+                                      </CardHeader>
+                                      <CardContent className="pb-4 px-4 sm:pb-6 sm:px-6">
+                                        {isCompleted ? (
+                                          <div className="animate-in fade-in zoom-in duration-500">
+                                            <div className="flex items-center gap-2 text-green-600 dark:text-green-400 mb-1">
+                                              <Trophy className="h-6 w-6 sm:h-8 sm:w-8" />
+                                              <span className="text-xl sm:text-2xl font-black">Parabéns!</span>
+                                            </div>
+                                            <p className="text-[10px] sm:text-xs text-green-700/80 dark:text-green-300/80 font-medium">
+                                              Você concluiu seu desafio diário neste módulo.
+                                            </p>
+                                          </div>
+                                        ) : (
+                                          <div>
+                                            <div className="text-2xl sm:text-3xl font-black text-primary mb-1">
+                                              {currentProgress} <span className="text-lg sm:text-xl text-muted-foreground font-medium">/ {targetGoal}</span>
+                                            </div>
+                                            <p className="text-[10px] sm:text-xs text-muted-foreground">
+                                              Faltam {remaining} questões para bater a meta de hoje.
+                                            </p>
+                                          </div>
+                                        )}
+                                      </CardContent>
+                                    </div>
+                                    <CardFooter className="pt-0 pb-4 px-4 sm:pt-6 sm:pb-6 sm:px-6">
+                                      <Button 
+                                        className={cn("w-full sm:w-auto h-auto py-3 px-6 flex items-center justify-center gap-2 whitespace-normal text-sm shadow-md transition-all hover:scale-105", isCompleted ? "bg-green-600 hover:bg-green-700 text-white" : "")} 
+                                        onClick={() => handleStartSession(track.dbCategory)}
+                                      >
+                                        {isCompleted ? (
+                                          <>
+                                            <Zap className="h-4 w-4 shrink-0" /> 
+                                            <span className="text-center leading-tight">Novo Desafio</span>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <PlayCircle className="h-4 w-4 shrink-0" /> 
+                                            <span className="text-center leading-tight">Iniciar Sessão</span>
+                                          </>
+                                        )}
+                                      </Button>
+                                    </CardFooter>
+                                  </Card>
+                                );
+                              })()}
                             </div>
                           </div>
                         </div>
