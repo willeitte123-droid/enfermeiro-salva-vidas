@@ -325,20 +325,31 @@ const StudyTracks = () => {
                   <p className="text-sm opacity-90 font-medium leading-relaxed">
                     Sua meta: Acertar <strong>{levelData?.weeklyTarget || 30} questões</strong> nesta semana para avançar mais rápido.
                   </p>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-bold uppercase opacity-80">
-                      <span>Progresso</span>
-                      <span>{levelData?.weeklyProgress || 0}/{levelData?.weeklyTarget || 30} Acertos</span>
+                  
+                  {levelData && levelData.weeklyProgress >= levelData.weeklyTarget ? (
+                    <div className="mt-4 flex flex-col gap-3 animate-in fade-in zoom-in duration-500">
+                      <div className="flex items-center justify-center gap-2 bg-green-400/20 border border-green-400/30 p-3 rounded-xl text-sm font-bold text-white shadow-inner">
+                        <Trophy className="w-5 h-5 text-yellow-300" /> 
+                        Parabéns! Você concluiu seu desafio!
+                      </div>
+                      <Button 
+                        onClick={() => navigate('/questions')} 
+                        className="w-full bg-white text-primary hover:bg-blue-50 font-bold shadow-lg transition-all hover:scale-105"
+                      >
+                        <Zap className="w-4 h-4 mr-2 text-yellow-500" /> Realizar Novos Desafios
+                      </Button>
                     </div>
-                    <Progress 
-                      value={levelData ? Math.min(100, (levelData.weeklyProgress / levelData.weeklyTarget) * 100) : 0} 
-                      className="h-3 bg-primary-foreground/20" 
-                      indicatorClassName="bg-yellow-300" 
-                    />
-                  </div>
-                  {levelData && levelData.weeklyProgress >= levelData.weeklyTarget && (
-                    <div className="flex items-center gap-2 bg-white/20 p-2 rounded-lg text-xs font-bold animate-pulse">
-                      <CheckCircle2 className="w-4 h-4 text-green-300" /> Meta Batida! Continue assim!
+                  ) : (
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs font-bold uppercase opacity-80">
+                        <span>Progresso</span>
+                        <span>{levelData?.weeklyProgress || 0}/{levelData?.weeklyTarget || 30} Acertos</span>
+                      </div>
+                      <Progress 
+                        value={levelData ? Math.min(100, (levelData.weeklyProgress / levelData.weeklyTarget) * 100) : 0} 
+                        className="h-3 bg-primary-foreground/20" 
+                        indicatorClassName="bg-yellow-300" 
+                      />
                     </div>
                   )}
                 </CardContent>
@@ -400,6 +411,7 @@ const StudyTracks = () => {
                     <h4 className="font-bold text-sm">Técnica Feynman</h4>
                     <p className="text-xs text-muted-foreground">Tente explicar o conteúdo em voz alta como se ensinasse uma criança. Se travar, revise aquele ponto.</p>
                   </div>
+                  <div className="space-y```tsx
                   <div className="space-y-2">
                     <h4 className="font-bold text-sm">Estudo Intercalado</h4>
                     <p className="text-xs text-muted-foreground">Não estude só uma matéria o dia todo. Misture 2 ou 3 disciplinas para manter o cérebro alerta.</p>
