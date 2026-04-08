@@ -341,24 +341,55 @@ const MyPerformance = () => {
 
         <TabsContent value="overview" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           
-          {/* NOVO GRÁFICO: Tempo de Estudo */}
-          <Card className="shadow-lg border-t-4 border-t-blue-500">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <div className="space-y-1">
-                <CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5 text-blue-500" /> Tempo de Estudo</CardTitle>
-                <CardDescription>Seu foco nos últimos 7 dias (Cronômetro).</CardDescription>
+          {/* GRÁFICO: Tempo de Estudo (Design Modernizado) */}
+          <Card className="shadow-xl border-0 ring-1 ring-blue-500/20 bg-gradient-to-br from-card to-blue-50/30 dark:to-blue-950/20 relative overflow-hidden">
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            <CardHeader className="flex flex-row items-center justify-between pb-6 border-b border-border/50 bg-muted/10 relative z-10">
+              <div className="space-y-1.5">
+                <CardTitle className="flex items-center gap-2 text-lg font-bold text-blue-700 dark:text-blue-400">
+                  <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg shadow-sm">
+                    <Clock className="h-5 w-5" />
+                  </div>
+                  Tempo de Estudo
+                </CardTitle>
+                <CardDescription className="font-medium">Seu foco nos últimos 7 dias</CardDescription>
               </div>
-              <div className="text-right">
-                <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Ontem</p>
-                <p className="text-xl font-black text-blue-600 dark:text-blue-400">{studyTimeStats.yesterdayFormatted}</p>
+              <div className="text-right bg-background/80 backdrop-blur-sm p-3 rounded-xl border shadow-sm">
+                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-0.5">Ontem</p>
+                <p className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
+                  {studyTimeStats.yesterdayFormatted}
+                </p>
               </div>
             </CardHeader>
-            <CardContent className="h-[250px]">
+
+            <CardContent className="h-[280px] pt-6 relative z-10">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={studyTimeStats.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="timeGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#06b6d4" stopOpacity={1}/> {/* Cyan */}
+                      <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8}/> {/* Blue */}
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
-                  <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} style={{ textTransform: 'capitalize' }} />
-                  <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `${val}m`} />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="#888888" 
+                    fontSize={12} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    style={{ textTransform: 'capitalize' }} 
+                    dy={10}
+                  />
+                  <YAxis 
+                    stroke="#888888" 
+                    fontSize={12} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    tickFormatter={(val) => `${val}m`} 
+                    dx={-10}
+                  />
                   <Tooltip 
                     cursor={{ fill: 'var(--muted)', opacity: 0.4 }}
                     content={({ active, payload, label }) => {
@@ -367,9 +398,9 @@ const MyPerformance = () => {
                           <div className="bg-background/95 backdrop-blur-md p-3 border rounded-xl shadow-xl text-xs sm:text-sm ring-1 ring-border/50">
                             <p className="font-bold mb-1.5 text-foreground capitalize">{label}</p>
                             <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 rounded-full bg-blue-500" />
+                              <div className="w-2 h-2 rounded-full bg-cyan-500" />
                               <span className="text-muted-foreground">Tempo:</span>
-                              <span className="font-bold font-mono">{payload[0].value} min</span>
+                              <span className="font-bold font-mono text-cyan-600 dark:text-cyan-400">{payload[0].value} min</span>
                             </div>
                           </div>
                         );
@@ -377,7 +408,13 @@ const MyPerformance = () => {
                       return null;
                     }} 
                   />
-                  <Bar dataKey="minutos" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                  <Bar 
+                    dataKey="minutos" 
+                    fill="url(#timeGradient)" 
+                    radius={[6, 6, 0, 0]} 
+                    maxBarSize={40} 
+                    animationDuration={1500}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
