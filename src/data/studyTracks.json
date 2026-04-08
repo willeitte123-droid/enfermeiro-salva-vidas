@@ -13,49 +13,139 @@
       "content": "Você esquecerá 50% do que estudou em 24h se não revisar. Cronograma de revisão: 24h após o estudo, 7 dias após e 30 dias após. Use Flashcards para isso."
     }
   ],
-  "schedule": [
-    {
-      "day": "Dia 1: A Base do Sistema",
-      "focus": "Legislação do SUS + Ética",
-      "tasks": ["Ler CF/88 Art. 196-200", "Ler Lei 8.080 na íntegra", "Resolver 20 questões de SUS", "Ler Cap I e II do Código de Ética"],
-      "questionGoal": 30
-    },
-    {
-      "day": "Dia 2: Mãos à Obra",
-      "focus": "Fundamentos de Enfermagem",
-      "tasks": ["Técnicas de Sinais Vitais", "Cálculo de Gotejamento e Doses", "Vias de Administração", "Resolver 15 questões de cálculo"],
-      "questionGoal": 25
-    },
-    {
-      "day": "Dia 3: Proteção e Prevenção",
-      "focus": "Saúde Pública e Imunização",
-      "tasks": ["Calendário Vacinal (Criança/Adulto)", "Doenças de Notificação Compulsória", "Rede de Frio"],
-      "questionGoal": 40
-    },
-    {
-      "day": "Dia 4: O Paciente Crítico",
-      "focus": "Urgência e Emergência",
-      "tasks": ["Protocolo de PCR (AHA Atualizado)", "Trauma (XABCDE)", "Queimaduras (Regra dos 9 e Parkland)"],
-      "questionGoal": 30
-    },
-    {
-      "day": "Dia 5: Ciclos da Vida",
-      "focus": "Saúde da Mulher e Criança",
-      "tasks": ["Pré-natal (Exames/Vacinas)", "Parto Humanizado", "Puericultura", "Aleitamento Materno"],
-      "questionGoal": 35
-    },
-    {
-      "day": "Dia 6: Clínica Médica",
-      "focus": "Doenças Crônicas e Infecto",
-      "tasks": ["HAS e Diabetes (Cadernos AB)", "Tuberculose e Hanseníase", "ISTs principais"],
-      "questionGoal": 30
-    },
-    {
-      "day": "Dia 7: Simulado Geral",
-      "focus": "Revisão e Teste",
-      "tasks": ["Realizar um Simulado com 50 questões mistas", "Revisar erros da semana", "Organizar material da próxima semana"],
-      "questionGoal": 50
-    }
+  "schedules": [
+    [
+      {
+        "day": "Dia 1: A Base do Sistema",
+        "focus": "Legislação do SUS + Ética",
+        "tasks": ["Ler CF/88 Art. 196-200", "Ler Lei 8.080 na íntegra", "Resolver 20 questões de SUS", "Ler Cap I e II do Código de Ética"],
+        "questionGoal": 30
+      },
+      {
+        "day": "Dia 2: Mãos à Obra",
+        "focus": "Fundamentos de Enfermagem",
+        "tasks": ["Técnicas de Sinais Vitais", "Cálculo de Gotejamento e Doses", "Vias de Administração", "Resolver 15 questões de cálculo"],
+        "questionGoal": 25
+      },
+      {
+        "day": "Dia 3: Proteção e Prevenção",
+        "focus": "Saúde Pública e Imunização",
+        "tasks": ["Calendário Vacinal (Criança/Adulto)", "Doenças de Notificação Compulsória", "Rede de Frio"],
+        "questionGoal": 40
+      },
+      {
+        "day": "Dia 4: O Paciente Crítico",
+        "focus": "Urgência e Emergência",
+        "tasks": ["Protocolo de PCR (AHA Atualizado)", "Trauma (XABCDE)", "Queimaduras (Regra dos 9 e Parkland)"],
+        "questionGoal": 30
+      },
+      {
+        "day": "Dia 5: Ciclos da Vida",
+        "focus": "Saúde da Mulher e Criança",
+        "tasks": ["Pré-natal (Exames/Vacinas)", "Parto Humanizado", "Puericultura", "Aleitamento Materno"],
+        "questionGoal": 35
+      },
+      {
+        "day": "Dia 6: Clínica Médica",
+        "focus": "Doenças Crônicas e Infecto",
+        "tasks": ["HAS e Diabetes (Cadernos AB)", "Tuberculose e Hanseníase", "ISTs principais"],
+        "questionGoal": 30
+      },
+      {
+        "day": "Dia 7: Simulado Geral",
+        "focus": "Revisão e Teste",
+        "tasks": ["Realizar um Simulado com 50 questões mistas", "Revisar erros da semana", "Organizar material da próxima semana"],
+        "questionGoal": 50
+      }
+    ],
+    [
+      {
+        "day": "Dia 1: Gestão e Liderança",
+        "focus": "Administração em Enfermagem",
+        "tasks": ["Dimensionamento de Pessoal (Res. 543/17)", "Teorias Administrativas", "Estilos de Liderança", "Auditoria em Saúde"],
+        "questionGoal": 25
+      },
+      {
+        "day": "Dia 2: Ambiente Cirúrgico",
+        "focus": "Centro Cirúrgico e CME",
+        "tasks": ["Tempos Cirúrgicos", "Classificação de Cirurgias", "RDC 15 (CME e Esterilização)", "Checklist de Cirurgia Segura"],
+        "questionGoal": 30
+      },
+      {
+        "day": "Dia 3: Segurança e Trabalho",
+        "focus": "Biossegurança e Saúde do Trabalhador",
+        "tasks": ["NR-32 (Riscos Biológicos e Químicos)", "Precauções e Isolamentos", "Gerenciamento de Resíduos (RDC 222)"],
+        "questionGoal": 35
+      },
+      {
+        "day": "Dia 4: Terapia Intensiva",
+        "focus": "UTI e Paciente Grave",
+        "tasks": ["Drogas Vasoativas (Noradrenalina, Dobutamina)", "Monitorização Hemodinâmica (PAM, PVC)", "Cuidados com Ventilação Mecânica"],
+        "questionGoal": 30
+      },
+      {
+        "day": "Dia 5: Mente e Envelhecimento",
+        "focus": "Saúde Mental e do Idoso",
+        "tasks": ["Reforma Psiquiátrica (Lei 10.216)", "Rede de Atenção Psicossocial (RAPS)", "Estatuto do Idoso", "Prevenção de Quedas"],
+        "questionGoal": 25
+      },
+      {
+        "day": "Dia 6: Aprofundamento SUS",
+        "focus": "Legislação do SUS Avançada",
+        "tasks": ["Decreto 7.508/2011 (COAP, Regiões de Saúde)", "Resolução 453/2012 (Conselhos)", "Financiamento do SUS"],
+        "questionGoal": 30
+      },
+      {
+        "day": "Dia 7: Simulado Específico",
+        "focus": "Revisão da Semana 2",
+        "tasks": ["Realizar Simulado focado nos temas da semana", "Revisar Flashcards atrasados", "Descanso estratégico"],
+        "questionGoal": 40
+      }
+    ],
+    [
+      {
+        "day": "Dia 1: Pele e Lesões",
+        "focus": "Feridas e Curativos",
+        "tasks": ["Estadiamento de LPP (NPUAP)", "Tipos de Desbridamento", "Coberturas (Alginato, Hidrogel, Prata)", "Pé Diabético"],
+        "questionGoal": 30
+      },
+      {
+        "day": "Dia 2: Farmacologia Aplicada",
+        "focus": "Farmacologia",
+        "tasks": ["Vias de Administração e Absorção", "Antimicrobianos principais", "Anti-hipertensivos e Diuréticos", "Regra de Três para Doses"],
+        "questionGoal": 35
+      },
+      {
+        "day": "Dia 3: Doenças Transmissíveis",
+        "focus": "Epidemiologia e Infectologia",
+        "tasks": ["Arboviroses (Dengue, Zika, Chikungunya)", "Doenças Exantemáticas (Sarampo, Varicela)", "Sífilis e HIV"],
+        "questionGoal": 30
+      },
+      {
+        "day": "Dia 4: O Método Científico",
+        "focus": "Sistematização (SAE)",
+        "tasks": ["Resolução COFEN 358/2009", "Etapas do Processo de Enfermagem", "Diagnósticos NANDA (Estrutura PES)"],
+        "questionGoal": 25
+      },
+      {
+        "day": "Dia 5: Urgências Específicas",
+        "focus": "Urgência e Emergência II",
+        "tasks": ["Choque (Tipos e Manejo)", "IAM e AVC (Protocolos de Tempo)", "Crise Convulsiva e Asma"],
+        "questionGoal": 30
+      },
+      {
+        "day": "Dia 6: Revisão de Ouro",
+        "focus": "Imunização e Ética",
+        "tasks": ["Revisar Calendário Vacinal completo", "Revisar Infrações e Penalidades do Código de Ética"],
+        "questionGoal": 40
+      },
+      {
+        "day": "Dia 7: Simulado Final",
+        "focus": "Simulado Geral Nível Difícil",
+        "tasks": ["Simulado de 50 questões mistas", "Análise profunda de erros", "Planejamento do próximo ciclo"],
+        "questionGoal": 50
+      }
+    ]
   ],
   "tracks": [
     {

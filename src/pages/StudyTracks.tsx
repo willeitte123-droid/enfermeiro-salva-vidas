@@ -6,7 +6,7 @@ import {
   Trophy, Flame, Scale, Stethoscope, Biohazard, 
   Siren, Users, Lock, PlayCircle, Brain, Star, ChevronDown,
   Calculator, Gavel, Briefcase, Scissors, Activity,
-  Clock, Zap, Coffee, Crosshair, HelpCircle, Repeat, Timer
+  Clock, Zap, Coffee, Crosshair, HelpCircle, Repeat, Timer, Check
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { useUserLevel } from "@/hooks/useUserLevel";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 interface Profile {
   id: string;
@@ -42,7 +43,23 @@ const StudyTracks = () => {
   // Hook de Gamificação
   const { data: levelData, isLoading: isLoadingLevel } = useUserLevel(profile?.id);
 
-  // Busca o progresso diário por categoria (Corrigido para evitar falhas de JOIN)
+  // --- ESTADOS DO CRONOGRAMA ---
+  const [currentWeekIndex, setCurrentWeekIndex] = useState(() => {
+    const saved = localStorage.getItem('study_current_week');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+
+  const [completedDays, setCompletedDays] = useState<number[]>(() => {
+    const saved = localStorage.getItem(`study_completed_days_w${currentWeekIndex}`);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Atualiza o localStorage quando os dias concluídos mudam
+  useEffect(() => {
+    localStorage.setItem(`study_completed_days_w${currentWeekIndex}`, JSON.stringify(completedDays));
+  }, [completedDays, currentWeekIndex]);
+
+  // Busca o progresso diário por categoria
   const { data: dailyProgress = {} } = useQuery({
     queryKey: ['dailyProgress', profile?.id],
     queryFn: async () => {
@@ -50,50 +67,24 @@ const StudyTracks = () => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      // 1. Busca apenas as respostas de hoje
-      const { data: answers, error: answersError } = await supabase
+      const { data, error } = await supabase
         .from('user_question_answers')
-        .select('question_id')
+        .select('question_id, questions!inner(category)')
         .eq('user_id', profile.id)
         .gte('created_at', today.toISOString());
         
-      if (answersError) {
-        console.error("Error fetching daily progress:", answersError);
+      if (error) {
+        console.error("Error fetching daily progress:", error);
         return {};
       }
-
-      if (!answers || answers.length === 0) return {};
-
-      // 2. Extrai os IDs únicos das questões respondidas
-      const questionIds = [...new Set(answers.map(a => a.question_id))];
-
-      // 3. Busca as categorias dessas questões
-      const { data: questions, error: questionsError } = await supabase
-        .from('questions')
-        .select('id, category')
-        .in('id', questionIds);
-
-      if (questionsError) {
-        console.error("Error fetching question categories:", questionsError);
-        return {};
-      }
-
-      // 4. Mapeia o ID da questão para a categoria
-      const questionCategoryMap = questions.reduce((acc, q) => {
-        acc[q.id] = q.category;
-        return acc;
-      }, {} as Record<number, string>);
-
-      // 5. Conta quantas respostas existem por categoria
+      
       const counts: Record<string, number> = {};
-      answers.forEach((ans) => {
-        const cat = questionCategoryMap[ans.question_id];
+      data.forEach((row: any) => {
+        const cat = Array.isArray(row.questions) ? row.questions[0]?.category : row.questions?.category;
         if (cat) {
-          const cleanCat = cat.trim();
-          counts[cleanCat] = (counts[cleanCat] || 0) + 1;
+          counts[cat] = (counts[cat] || 0) + 1;
         }
       });
-      
       return counts;
     },
     enabled: !!profile?.id,
@@ -115,7 +106,6 @@ const StudyTracks = () => {
           filter: `user_id=eq.${profile.id}`,
         },
         () => {
-          // Invalida o cache para forçar a busca dos novos dados imediatamente
           queryClient.invalidateQueries({ queryKey: ['dailyProgress', profile.id] });
         }
       )
@@ -130,16 +120,40 @@ const StudyTracks = () => {
     addActivity({ type: 'Estudo', title: 'Trilha de Estudos', path: '/study-tracks', icon: 'Map' });
   }, [addActivity]);
 
-  // Simulação de progresso dos módulos
   const getProgress = (moduleId: string) => {
     const hash = moduleId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return hash % 100;
   };
 
   const handleStartSession = (category: string) => {
-    // Adicionado o parâmetro filter=unanswered para continuar de onde parou
     navigate(`/questions?category=${encodeURIComponent(category)}&filter=unanswered`);
   };
+
+  // --- FUNÇÕES DO CRONOGRAMA ---
+  const toggleDayCompletion = (dayIndex: number) => {
+    setCompletedDays(prev => {
+      if (prev.includes(dayIndex)) {
+        return prev.filter(i => i !== dayIndex);
+      } else {
+        return [...prev, dayIndex];
+      }
+    });
+  };
+
+  const handleNextWeek = () => {
+    const nextIndex = (currentWeekIndex + 1) % studyData.schedules.length;
+    setCurrentWeekIndex(nextIndex);
+    setCompletedDays([]);
+    localStorage.setItem('study_current_week', nextIndex.toString());
+    localStorage.removeItem(`study_completed_days_w${nextIndex}`); // Limpa a próxima semana caso tenha lixo
+    toast.success("Nova semana iniciada! Novos desafios disponíveis.", {
+      icon: <Trophy className="h-4 w-4 text-yellow-500" />
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const currentSchedule = studyData.schedules[currentWeekIndex] || studyData.schedules[0];
+  const isWeekCompleted = completedDays.length === currentSchedule.length;
 
   return (
     <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500 pb-12">
@@ -356,7 +370,7 @@ const StudyTracks = () => {
                                               {currentProgress} <span className="text-lg sm:text-xl text-muted-foreground font-medium">/ {targetGoal}</span>
                                             </div>
                                             <p className="text-[10px] sm:text-xs text-muted-foreground">
-                                              Faltam {remaining} questões para bater a meta de hoje.
+                                              Faltam {remaining} questions para bater a meta de hoje.
                                             </p>
                                           </div>
                                         )}
@@ -400,41 +414,101 @@ const StudyTracks = () => {
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center justify-between px-1">
-                <h2 className="text-lg sm:text-xl font-bold flex items-center gap-2">
-                  <CalendarDays className="h-5 w-5 text-primary" /> Sugestão Semanal
-                </h2>
-                <Badge variant="outline">Ciclo 7 Dias</Badge>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-lg sm:text-xl font-bold flex items-center gap-2">
+                    <CalendarDays className="h-5 w-5 text-primary" /> Cronograma
+                  </h2>
+                  <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20">
+                    Semana {currentWeekIndex + 1}
+                  </Badge>
+                </div>
+                <span className="text-xs text-muted-foreground font-medium">
+                  {completedDays.length} de {currentSchedule.length} concluídos
+                </span>
               </div>
               
               <div className="space-y-3">
-                {studyData.schedule.map((day, idx) => (
-                  <Card key={idx} className="transition-all hover:border-primary/50 group">
-                    <div className="flex">
-                      <div className="bg-primary/5 p-3 sm:p-4 flex flex-col items-center justify-center border-r min-w-[60px] sm:min-w-[80px]">
-                        <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase">Dia</span>
-                        <span className="text-xl sm:text-2xl font-black text-primary">{idx + 1}</span>
-                      </div>
-                      <div className="p-3 sm:p-4 flex-1">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-1">
-                          <div>
-                            <h3 className="font-bold text-sm sm:text-base leading-tight">{day.focus}</h3>
-                            <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide font-semibold mt-0.5">{day.day.split(':')[1]}</p>
+                {currentSchedule.map((day, idx) => {
+                  const isDone = completedDays.includes(idx);
+                  
+                  return (
+                    <Card key={idx} className={cn(
+                      "transition-all duration-300 group overflow-hidden",
+                      isDone ? "bg-muted/30 border-green-500/30" : "hover:border-primary/50"
+                    )}>
+                      <div className="flex flex-col sm:flex-row">
+                        <div className={cn(
+                          "p-3 sm:p-4 flex flex-row sm:flex-col items-center justify-between sm:justify-center border-b sm:border-b-0 sm:border-r min-w-[60px] sm:min-w-[80px] transition-colors",
+                          isDone ? "bg-green-500/10" : "bg-primary/5"
+                        )}>
+                          <div className="flex flex-col items-center">
+                            <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase">Dia</span>
+                            <span className={cn("text-xl sm:text-2xl font-black", isDone ? "text-green-600" : "text-primary")}>{idx + 1}</span>
                           </div>
-                          <Badge variant="secondary" className="font-mono text-[10px] sm:text-xs w-fit">Meta: {day.questionGoal} Qts</Badge>
+                          
+                          {/* Botão Concluir (Mobile fica ao lado do Dia, Desktop fica embaixo) */}
+                          <Button 
+                            variant={isDone ? "default" : "outline"} 
+                            size="sm"
+                            onClick={() => toggleDayCompletion(idx)}
+                            className={cn(
+                              "sm:mt-3 h-8 px-3 sm:w-full transition-all",
+                              isDone ? "bg-green-600 hover:bg-green-700 text-white" : "hover:bg-primary/10 hover:text-primary"
+                            )}
+                          >
+                            {isDone ? <Check className="h-4 w-4" /> : "Feito"}
+                          </Button>
                         </div>
-                        <ul className="space-y-1 mt-2">
-                          {day.tasks.map((task, tIdx) => (
-                            <li key={tIdx} className="text-xs sm:text-sm text-foreground/80 flex items-start gap-2">
-                              <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-green-500 shrink-0 mt-0.5" />
-                              <span className="group-hover:text-primary transition-colors leading-snug">{task}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        
+                        <div className={cn("p-3 sm:p-4 flex-1 transition-opacity", isDone && "opacity-60")}>
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-1">
+                            <div>
+                              <h3 className={cn("font-bold text-sm sm:text-base leading-tight", isDone && "line-through decoration-green-500/50")}>
+                                {day.focus}
+                              </h3>
+                              <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide font-semibold mt-0.5">
+                                {day.day.split(':')[1]}
+                              </p>
+                            </div>
+                            <Badge variant="secondary" className="font-mono text-[10px] sm:text-xs w-fit">Meta: {day.questionGoal} Qts</Badge>
+                          </div>
+                          <ul className="space-y-1 mt-2">
+                            {day.tasks.map((task, tIdx) => (
+                              <li key={tIdx} className="text-xs sm:text-sm text-foreground/80 flex items-start gap-2">
+                                <CheckCircle2 className={cn("h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0 mt-0.5", isDone ? "text-green-500/50" : "text-green-500")} />
+                                <span className={cn("leading-snug", isDone && "line-through text-muted-foreground")}>{task}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  );
+                })}
               </div>
+
+              {/* Botão de Próxima Semana */}
+              {isWeekCompleted && (
+                <div className="pt-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <Card className="bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none shadow-lg">
+                    <CardContent className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                      <div>
+                        <h3 className="text-xl font-bold flex items-center justify-center sm:justify-start gap-2">
+                          <Trophy className="h-6 w-6 text-yellow-300" /> Semana Concluída!
+                        </h3>
+                        <p className="text-green-100 mt-1 text-sm">Você finalizou todas as metas desta semana. Pronto para o próximo nível?</p>
+                      </div>
+                      <Button 
+                        onClick={handleNextWeek}
+                        size="lg" 
+                        className="bg-white text-green-700 hover:bg-green-50 font-bold shadow-md shrink-0 w-full sm:w-auto"
+                      >
+                        Iniciar Próxima Semana <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
 
             <div className="space-y-6">
