@@ -140,17 +140,16 @@ export function StudyTimer() {
           </Button>
         </div>
 
-        {/* Botão Discreto de Salvar */}
-        <div className="px-4 pb-3 bg-muted/30 flex justify-center">
+        {/* Botão Chamativo de Salvar */}
+        <div className="px-4 pb-4 bg-muted/30 flex justify-center">
           <Button
-            variant="ghost"
-            size="sm"
+            variant="default"
             onClick={handleSaveTime}
             disabled={seconds === 0 || isSaving}
-            className="text-xs text-muted-foreground hover:text-primary hover:bg-primary/10 w-full transition-colors"
+            className="w-full bg-green-500 hover:bg-green-600 text-white font-bold shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] transition-all hover:scale-[1.02] active:scale-[0.98] h-auto py-2.5 whitespace-normal text-xs sm:text-sm"
           >
-            {isSaving ? <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" /> : <Save className="h-3.5 w-3.5 mr-2" />}
-            {isSaving ? "Salvando..." : "Salvar tempo de estudo"}
+            {isSaving ? <Loader2 className="h-4 w-4 mr-2 animate-spin shrink-0" /> : <Save className="h-4 w-4 mr-2 shrink-0" />}
+            {isSaving ? "Salvando..." : "Salvar tempo de estudo para área de desempenho"}
           </Button>
         </div>
       </PopoverContent>
