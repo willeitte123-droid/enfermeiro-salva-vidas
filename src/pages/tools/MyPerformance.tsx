@@ -16,7 +16,7 @@ import {
 import { 
   Trophy, Target, AlertTriangle, TrendingUp, 
   Brain, FileQuestion, ArrowRight, Loader2, Zap, 
-  Calendar, CheckCircle2, ListFilter, ClipboardList
+  Calendar, CheckCircle2, ListFilter, ClipboardList, Clock
 } from "lucide-react";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { format } from "date-fns";
@@ -91,6 +91,28 @@ const MyPerformance = () => {
     staleTime: 0,
   });
 
+  // Nova Query para buscar o tempo de estudo diário dos últimos 7 dias
+  const { data: dailyStudyTime } = useQuery({
+    queryKey: ['dailyStudyTime', profile?.id],
+    queryFn: async () => {
+      if (!profile?.id) return [];
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6); // Pega os últimos 7 dias incluindo hoje
+      
+      const { data, error } = await supabase
+        .from('daily_activity_time')
+        .select('activity_date, seconds')
+        .eq('user_id', profile.id)
+        .gte('activity_date', sevenDaysAgo.toISOString().split('T')[0])
+        .order('activity_date', { ascending: true });
+        
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!profile,
+    refetchInterval: 10000, // Atualiza a cada 10s para refletir o cronômetro
+  });
+
   // Configuração do Realtime para atualização automática instantânea
   useEffect(() => {
     if (!profile?.id) return;
@@ -127,6 +149,41 @@ const MyPerformance = () => {
       supabase.removeChannel(channel);
     };
   }, [profile?.id, queryClient]);
+
+  // Processamento dos dados de tempo de estudo
+  const studyTimeStats = useMemo(() => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    
+    const yesterdayData = dailyStudyTime?.find(d => d.activity_date === yesterdayStr);
+    const yesterdaySeconds = yesterdayData?.seconds || 0;
+    
+    const formatTime = (secs: number) => {
+      if (!secs) return "0m";
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      if (h > 0) return `${h}h ${m}m`;
+      return `${m}m`;
+    };
+
+    const chartData = Array.from({length: 7}).map((_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - (6 - i));
+      const dateStr = d.toISOString().split('T')[0];
+      const dayData = dailyStudyTime?.find(x => x.activity_date === dateStr);
+      return {
+        name: format(d, 'EEE', { locale: ptBR }).replace('.', ''), // seg, ter, qua
+        fullDate: format(d, 'dd/MM'),
+        minutos: dayData ? Math.round(dayData.seconds / 60) : 0
+      };
+    });
+
+    return {
+      yesterdayFormatted: formatTime(yesterdaySeconds),
+      chartData
+    };
+  }, [dailyStudyTime]);
 
   const processedData = useMemo(() => {
     if (!stats) return null;
@@ -283,6 +340,49 @@ const MyPerformance = () => {
         </div>
 
         <TabsContent value="overview" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          
+          {/* NOVO GRÁFICO: Tempo de Estudo */}
+          <Card className="shadow-lg border-t-4 border-t-blue-500">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <div className="space-y-1">
+                <CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5 text-blue-500" /> Tempo de Estudo</CardTitle>
+                <CardDescription>Seu foco nos últimos 7 dias (Cronômetro).</CardDescription>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Ontem</p>
+                <p className="text-xl font-black text-blue-600 dark:text-blue-400">{studyTimeStats.yesterdayFormatted}</p>
+              </div>
+            </CardHeader>
+            <CardContent className="h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={studyTimeStats.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
+                  <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} style={{ textTransform: 'capitalize' }} />
+                  <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `${val}m`} />
+                  <Tooltip 
+                    cursor={{ fill: 'var(--muted)', opacity: 0.4 }}
+                    content={({ active, payload, label }) => {
+                      if (active && payload && payload.length) {
+                        return (
+                          <div className="bg-background/95 backdrop-blur-md p-3 border rounded-xl shadow-xl text-xs sm:text-sm ring-1 ring-border/50">
+                            <p className="font-bold mb-1.5 text-foreground capitalize">{label}</p>
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 rounded-full bg-blue-500" />
+                              <span className="text-muted-foreground">Tempo:</span>
+                              <span className="font-bold font-mono">{payload[0].value} min</span>
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }} 
+                  />
+                  <Bar dataKey="minutos" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
           <Card className="shadow-lg border-t-4 border-t-emerald-500">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-emerald-500" /> Evolução nos Simulados</CardTitle>

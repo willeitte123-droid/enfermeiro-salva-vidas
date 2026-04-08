@@ -2,12 +2,14 @@ import { useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import { useProfile } from '@/hooks/useProfile';
+import { useTimer } from '@/context/TimerContext';
 
 const INTERVAL_SECONDS = 10; // Salvar a cada 10 segundos para maior precisão
 
 export const TimeTracker = () => {
   const { session } = useAuth();
   const { data: profile } = useProfile(session);
+  const { isActive } = useTimer(); // Pega o estado do cronômetro manual
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -17,12 +19,12 @@ export const TimeTracker = () => {
     if (profile?.role === 'admin') return;
 
     const saveTime = async () => {
-      // Só salva se a página estiver realmente visível para o usuário
-      if (document.visibilityState === 'visible') {
+      // Só salva se a página estiver visível E o cronômetro manual estiver rodando
+      if (document.visibilityState === 'visible' && isActive) {
         // Chamada para o tempo total (usado em Meu Desempenho)
         supabase.rpc('increment_user_activity', { seconds_to_add: INTERVAL_SECONDS }).then();
         
-        // Nova chamada para o tempo diário (usado no Dashboard Admin)
+        // Chamada para o tempo diário (usado no Gráfico de 7 dias)
         supabase.rpc('increment_daily_activity', { seconds_to_add: INTERVAL_SECONDS }).then();
       }
     };
@@ -39,14 +41,16 @@ export const TimeTracker = () => {
       }
     };
 
-    // Iniciar o timer se a página já estiver visível e o perfil carregado
-    if (document.visibilityState === 'visible' && profile) {
+    // Iniciar o timer se a página já estiver visível, o perfil carregado e o cronômetro ativo
+    if (document.visibilityState === 'visible' && profile && isActive) {
       startTimer();
+    } else {
+      stopTimer();
     }
 
     // Ouvinte de eventos para pausar/retomar quando o usuário troca de aba
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && profile?.role !== 'admin') {
+      if (document.visibilityState === 'visible' && profile?.role !== 'admin' && isActive) {
         startTimer(); // Retoma
       } else {
         stopTimer(); // Pausa
@@ -60,7 +64,7 @@ export const TimeTracker = () => {
       stopTimer();
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [session, profile]); // Dependência do perfil adicionada para reagir ao carregamento
+  }, [session, profile, isActive]); // Reage também às mudanças do cronômetro (isActive)
 
   return null;
 };
