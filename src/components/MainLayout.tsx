@@ -9,7 +9,6 @@ import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import SuspendedAccount from "@/pages/SuspendedAccount";
-import { TimeTracker } from "@/components/TimeTracker";
 import { IpTracker } from "@/components/IpTracker";
 import { RouteTracker } from "@/components/RouteTracker";
 
@@ -40,7 +39,6 @@ const MainLayout = () => {
 
   return (
     <div className="flex min-h-screen w-full bg-muted/40 overflow-hidden">
-      <TimeTracker />
       <IpTracker />
       <RouteTracker />
       <Sidebar isAdmin={isAdmin} user={user} isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />

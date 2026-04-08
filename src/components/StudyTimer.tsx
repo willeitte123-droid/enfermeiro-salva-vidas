@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Timer, Play, Pause, RotateCcw, Clock } from "lucide-react";
+import { Timer, Play, Pause, RotateCcw, Clock, Save, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useTimer } from "@/context/TimerContext";
+import { toast } from "sonner";
 
 export function StudyTimer() {
-  const { seconds, isActive, toggleTimer, resetTimer } = useTimer();
+  const { seconds, isActive, toggleTimer, resetTimer, saveTime } = useTimer();
+  const [isSaving, setIsSaving] = useState(false);
 
   const formatTime = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -22,6 +25,22 @@ export function StudyTimer() {
   };
 
   const timeObj = formatTime(seconds);
+
+  const handleSaveTime = async () => {
+    if (seconds === 0) return;
+    
+    setIsSaving(true);
+    try {
+      await saveTime();
+      toast.success("Tempo salvo com sucesso!", {
+        description: "Seu progresso foi atualizado na aba Meu Desempenho."
+      });
+    } catch (error) {
+      toast.error("Erro ao salvar o tempo de estudo.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <Popover>
@@ -118,6 +137,20 @@ export function StudyTimer() {
             className="shrink-0 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30"
           >
             <RotateCcw className="h-4 w-4" />
+          </Button>
+        </div>
+
+        {/* Botão Discreto de Salvar */}
+        <div className="px-4 pb-3 bg-muted/30 flex justify-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleSaveTime}
+            disabled={seconds === 0 || isSaving}
+            className="text-xs text-muted-foreground hover:text-primary hover:bg-primary/10 w-full transition-colors"
+          >
+            {isSaving ? <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" /> : <Save className="h-3.5 w-3.5 mr-2" />}
+            {isSaving ? "Salvando..." : "Salvar tempo de estudo"}
           </Button>
         </div>
       </PopoverContent>
