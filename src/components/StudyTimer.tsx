@@ -35,8 +35,10 @@ export function StudyTimer() {
       toast.success("Tempo salvo com sucesso!", {
         description: "Seu progresso foi atualizado na aba Meu Desempenho."
       });
-    } catch (error) {
-      toast.error("Erro ao salvar o tempo de estudo.");
+    } catch (error: any) {
+      toast.error("Erro ao salvar o tempo de estudo.", {
+        description: error.message || "Tente novamente em alguns instantes."
+      });
     } finally {
       setIsSaving(false);
     }

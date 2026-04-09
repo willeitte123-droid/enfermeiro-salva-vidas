@@ -11,11 +11,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, 
-  AreaChart, Area, PieChart, Pie, Cell, Legend
+  AreaChart, Area, PieChart, Pie, Cell
 } from "recharts";
 import { 
   Trophy, Target, AlertTriangle, TrendingUp, 
-  Brain, FileQuestion, ArrowRight, Loader2, Zap, 
+  Brain, FileQuestion, Loader2, Zap, 
   Calendar, CheckCircle2, ListFilter, ClipboardList, Clock
 } from "lucide-react";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -64,7 +64,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
           <div key={index} className="flex items-center gap-2 mb-0.5">
             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
             <span className="text-muted-foreground">{entry.name}:</span>
-            <span className="font-bold font-mono">{entry.value}%</span>
+            <span className="font-bold font-mono">{entry.value}{entry.name === 'Tempo' ? ' min' : '%'}</span>
           </div>
         ))}
       </div>
@@ -91,15 +91,13 @@ const MyPerformance = () => {
     staleTime: 0,
   });
 
-  // Nova Query para buscar o tempo de estudo diário dos últimos 7 dias
   const { data: dailyStudyTime } = useQuery({
     queryKey: ['dailyStudyTime', profile?.id],
     queryFn: async () => {
       if (!profile?.id) return [];
       const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6); // Pega os últimos 7 dias incluindo hoje
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6); 
       
-      // Formata a data para o fuso horário local (YYYY-MM-DD)
       const year = sevenDaysAgo.getFullYear();
       const month = String(sevenDaysAgo.getMonth() + 1).padStart(2, '0');
       const day = String(sevenDaysAgo.getDate()).padStart(2, '0');
@@ -116,10 +114,9 @@ const MyPerformance = () => {
       return data;
     },
     enabled: !!profile,
-    refetchInterval: 5000, // Atualiza a cada 5s para refletir o cronômetro mais rápido
+    refetchInterval: 5000, 
   });
 
-  // Configuração do Realtime para atualização automática instantânea
   useEffect(() => {
     if (!profile?.id) return;
 
@@ -127,40 +124,18 @@ const MyPerformance = () => {
       .channel('performance-realtime')
       .on(
         'postgres_changes',
-        {
-          event: '*', 
-          schema: 'public',
-          table: 'user_question_answers',
-          filter: `user_id=eq.${profile.id}`,
-        },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
-        }
+        { event: '*', schema: 'public', table: 'user_question_answers', filter: `user_id=eq.${profile.id}` },
+        () => queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] })
       )
       .on(
         'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'user_simulations',
-          filter: `user_id=eq.${profile.id}`,
-        },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
-        }
+        { event: '*', schema: 'public', table: 'user_simulations', filter: `user_id=eq.${profile.id}` },
+        () => queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] })
       )
       .on(
         'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'daily_activity_time',
-          filter: `user_id=eq.${profile.id}`,
-        },
-        () => {
-          // Invalida a query de tempo diário quando houver mudanças no banco
-          queryClient.invalidateQueries({ queryKey: ['dailyStudyTime', profile.id] });
-        }
+        { event: '*', schema: 'public', table: 'daily_activity_time', filter: `user_id=eq.${profile.id}` },
+        () => queryClient.invalidateQueries({ queryKey: ['dailyStudyTime', profile.id] })
       )
       .subscribe();
 
@@ -169,48 +144,51 @@ const MyPerformance = () => {
     };
   }, [profile?.id, queryClient]);
 
-  // Processamento dos dados de tempo de estudo
   const studyTimeStats = useMemo(() => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
+    const today = new Date();
+    const tYear = today.getFullYear();
+    const tMonth = String(today.getMonth() + 1).padStart(2, '0');
+    const tDay = String(today.getDate()).padStart(2, '0');
+    const todayStr = `${tYear}-${tMonth}-${tDay}`;
     
-    // Formata a data de ontem para o fuso horário local (YYYY-MM-DD)
-    const yYear = yesterday.getFullYear();
-    const yMonth = String(yesterday.getMonth() + 1).padStart(2, '0');
-    const yDay = String(yesterday.getDate()).padStart(2, '0');
-    const yesterdayStr = `${yYear}-${yMonth}-${yDay}`;
-    
-    const yesterdayData = dailyStudyTime?.find(d => d.activity_date === yesterdayStr);
-    const yesterdaySeconds = yesterdayData?.seconds || 0;
+    const todayData = dailyStudyTime?.find(d => d.activity_date === todayStr);
+    const todaySeconds = todayData?.seconds || 0;
     
     const formatTime = (secs: number) => {
-      if (!secs) return "0m";
+      if (!secs || secs === 0) return "0s";
       const h = Math.floor(secs / 3600);
       const m = Math.floor((secs % 3600) / 60);
+      const s = secs % 60;
+      
       if (h > 0) return `${h}h ${m}m`;
-      return `${m}m`;
+      if (m > 0) return `${m}m ${s}s`;
+      return `${s}s`; // Mostra os segundos para dar feedback imediato
     };
 
     const chartData = Array.from({length: 7}).map((_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - (6 - i));
       
-      // Formata a data para o fuso horário local (YYYY-MM-DD)
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, '0');
       const day = String(d.getDate()).padStart(2, '0');
       const dateStr = `${year}-${month}-${day}`;
       
       const dayData = dailyStudyTime?.find(x => x.activity_date === dateStr);
+      const secs = dayData?.seconds || 0;
+      
+      // Se houver segundos, mostra pelo menos 1 minuto no gráfico para a barra aparecer
+      const mins = secs > 0 ? Math.max(1, Math.round(secs / 60)) : 0;
+
       return {
-        name: format(d, 'EEE', { locale: ptBR }).replace('.', ''), // seg, ter, qua
+        name: format(d, 'EEE', { locale: ptBR }).replace('.', ''),
         fullDate: format(d, 'dd/MM'),
-        minutos: dayData ? Math.round(dayData.seconds / 60) : 0
+        Tempo: mins
       };
     });
 
     return {
-      yesterdayFormatted: formatTime(yesterdaySeconds),
+      todayFormatted: formatTime(todaySeconds),
       chartData
     };
   }, [dailyStudyTime]);
@@ -218,7 +196,6 @@ const MyPerformance = () => {
   const processedData = useMemo(() => {
     if (!stats) return null;
 
-    // Processamento de categorias e simulados
     const allCategories = [...stats.categories].map(cat => ({
         ...cat,
         accuracy: Math.round((cat.total_correct / cat.total_answered) * 100) || 0,
@@ -258,8 +235,8 @@ const MyPerformance = () => {
     const globalAccuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
 
     const pieData = [
-      { name: 'Acertos', value: totalCorrect, color: '#10b981' }, // emerald-500
-      { name: 'Erros', value: totalIncorrect, color: '#ef4444' }, // red-500
+      { name: 'Acertos', value: totalCorrect, color: '#10b981' },
+      { name: 'Erros', value: totalIncorrect, color: '#ef4444' },
     ];
 
     return {
@@ -324,7 +301,6 @@ const MyPerformance = () => {
             </div>
             
             <div className="flex flex-wrap gap-4 pt-2">
-              {/* Card Questões Resolvidas */}
               <div className="flex items-center gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-3 pr-6 border border-white/10">
                 <div className="p-2 bg-blue-500/20 rounded-lg text-blue-300"><CheckCircle2 className="w-5 h-5" /></div>
                 <div>
@@ -332,7 +308,6 @@ const MyPerformance = () => {
                   <p className="text-xl font-bold tabular-nums">{processedData.totalQuestions}</p>
                 </div>
               </div>
-              {/* Card Simulados */}
               <div className="flex items-center gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-3 pr-6 border border-white/10">
                 <div className="p-2 bg-amber-500/20 rounded-lg text-amber-300"><ClipboardList className="w-5 h-5" /></div>
                 <div>
@@ -371,7 +346,7 @@ const MyPerformance = () => {
 
         <TabsContent value="overview" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           
-          {/* GRÁFICO: Tempo de Estudo (Design Modernizado) */}
+          {/* GRÁFICO: Tempo de Estudo */}
           <Card className="shadow-xl border-0 ring-1 ring-blue-500/20 bg-gradient-to-br from-card to-blue-50/30 dark:to-blue-950/20 relative overflow-hidden">
             <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -386,9 +361,9 @@ const MyPerformance = () => {
                 <CardDescription className="font-medium">Seu foco nos últimos 7 dias</CardDescription>
               </div>
               <div className="text-right bg-background/80 backdrop-blur-sm p-3 rounded-xl border shadow-sm">
-                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-0.5">Ontem</p>
+                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-0.5">Hoje</p>
                 <p className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
-                  {studyTimeStats.yesterdayFormatted}
+                  {studyTimeStats.todayFormatted}
                 </p>
               </div>
             </CardHeader>
@@ -398,8 +373,8 @@ const MyPerformance = () => {
                 <BarChart data={studyTimeStats.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="timeGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#06b6d4" stopOpacity={1}/> {/* Cyan */}
-                      <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8}/> {/* Blue */}
+                      <stop offset="0%" stopColor="#06b6d4" stopOpacity={1}/>
+                      <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
@@ -420,26 +395,9 @@ const MyPerformance = () => {
                     tickFormatter={(val) => `${val}m`} 
                     dx={-10}
                   />
-                  <Tooltip 
-                    cursor={{ fill: 'var(--muted)', opacity: 0.4 }}
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        return (
-                          <div className="bg-background/95 backdrop-blur-md p-3 border rounded-xl shadow-xl text-xs sm:text-sm ring-1 ring-border/50">
-                            <p className="font-bold mb-1.5 text-foreground capitalize">{label}</p>
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 rounded-full bg-cyan-500" />
-                              <span className="text-muted-foreground">Tempo:</span>
-                              <span className="font-bold font-mono text-cyan-600 dark:text-cyan-400">{payload[0].value} min</span>
-                            </div>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }} 
-                  />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
                   <Bar 
-                    dataKey="minutos" 
+                    dataKey="Tempo" 
                     fill="url(#timeGradient)" 
                     radius={[6, 6, 0, 0]} 
                     maxBarSize={40} 
