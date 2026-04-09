@@ -5,7 +5,7 @@ import { Link, useOutletContext } from "react-router-dom";
 import { 
   Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, 
   ClipboardList, Loader2, History, Sparkles, Activity, 
-  ChevronRight, Brain, Zap, Clock, GraduationCap, BrainCircuit, Lock
+  ChevronRight, Brain, Zap, Clock, GraduationCap, BrainCircuit, Lock, AlertTriangle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
@@ -16,6 +16,7 @@ import { Question } from "@/context/QuestionsContext";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface Profile {
   id: string;
@@ -104,6 +105,43 @@ const Dashboard = () => {
     queryFn: fetchRandomQuestion,
     refetchInterval: 30000, 
     staleTime: 10000,
+  });
+
+  // Query para verificar inatividade (Questões > 6 dias, Flashcards > 2 dias)
+  const { data: inactivityAlerts } = useQuery({
+    queryKey: ['inactivityAlerts', profile?.id],
+    queryFn: async () => {
+      if (!profile?.id) return null;
+      
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+      // Busca a última questão respondida
+      const { data: lastQ } = await supabase.from('user_question_answers').select('created_at').eq('user_id', profile.id).order('created_at', { ascending: false }).limit(1);
+      
+      // Busca o último simulado realizado
+      const { data: lastS } = await supabase.from('user_simulations').select('created_at').eq('user_id', profile.id).order('created_at', { ascending: false }).limit(1);
+      
+      // Busca flashcards atrasados há mais de 2 dias
+      const { count: overdueFlashcards } = await supabase.from('user_flashcard_progress').select('*', { count: 'exact', head: true }).eq('user_id', profile.id).lt('next_review', twoDaysAgo.toISOString());
+
+      let daysSinceLastQuestionOrSim = Infinity;
+      const qDate = lastQ?.[0]?.created_at ? new Date(lastQ[0].created_at).getTime() : 0;
+      const sDate = lastS?.[0]?.created_at ? new Date(lastS[0].created_at).getTime() : 0;
+      const maxDate = Math.max(qDate, sDate);
+
+      if (maxDate > 0) {
+          daysSinceLastQuestionOrSim = (Date.now() - maxDate) / (1000 * 60 * 60 * 24);
+      }
+
+      return {
+          needsQuestionAlert: daysSinceLastQuestionOrSim > 6,
+          needsFlashcardAlert: (overdueFlashcards || 0) > 0,
+          overdueFlashcardsCount: overdueFlashcards || 0,
+          daysInactive: maxDate > 0 ? Math.floor(daysSinceLastQuestionOrSim) : null
+      };
+    },
+    enabled: !!profile?.id,
   });
 
   useEffect(() => {
@@ -216,6 +254,36 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Alertas de Inatividade */}
+      {inactivityAlerts && (inactivityAlerts.needsQuestionAlert || inactivityAlerts.needsFlashcardAlert) && !isLocked && (
+        <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-top-4 duration-500">
+          {inactivityAlerts.needsQuestionAlert && (
+            <Alert className="bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 shadow-sm">
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500" />
+              <AlertTitle className="text-amber-800 dark:text-amber-400 font-bold text-base">Alerta de Inatividade</AlertTitle>
+              <AlertDescription className="text-amber-700 dark:text-amber-300 text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-1">
+                <span>Você está há <strong>{inactivityAlerts.daysInactive ? `${inactivityAlerts.daysInactive} dias` : 'muito tempo'}</strong> sem resolver questões ou simulados. A constância é a chave da aprovação!</span>
+                <Button asChild size="sm" className="bg-amber-500 hover:bg-amber-600 text-white border-none w-full sm:w-auto shadow-md">
+                  <Link to="/questions">Resolver Questões</Link>
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
+          {inactivityAlerts.needsFlashcardAlert && (
+            <Alert className="bg-indigo-50 dark:bg-indigo-950/30 border-indigo-200 dark:border-indigo-800 shadow-sm">
+              <BrainCircuit className="h-5 w-5 text-indigo-600 dark:text-indigo-500" />
+              <AlertTitle className="text-indigo-800 dark:text-indigo-400 font-bold text-base">Revisões Acumuladas</AlertTitle>
+              <AlertDescription className="text-indigo-700 dark:text-indigo-300 text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-1">
+                <span>Você tem <strong>{inactivityAlerts.overdueFlashcardsCount} flashcards</strong> atrasados há mais de 2 dias. Não deixe a curva do esquecimento apagar seu progresso!</span>
+                <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white border-none w-full sm:w-auto shadow-md">
+                  <Link to="/flashcards">Revisar Agora</Link>
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
+        </div>
+      )}
 
       {/* 2. Grid de Acesso Rápido */}
       <div>
