@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription<think>Continuing the `MyPerformance.tsx` file write operation from where it was cut off.</think>} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
