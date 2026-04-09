@@ -202,13 +202,7 @@ const Dashboard = () => {
               </p>
               
               {isLocked && (
-                <Button asChild className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-full shadow-lg shadow-orange-500/20 transition-all hover:scale-105 whitespace-nowrap shrink-0">
-                  <a href="https://www.enfermagempro.com/oferta">
-                    <Zap className="w-4 h-4 mr-2" /> Assinar Agora
-                  </a>
-                </Button>
-              )}
-            </div>
+                <Button asChild className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white</div>
 
             <div className="flex flex-wrap gap-3 pt-2 justify-center lg:justify-start">
               {isLocked ? (
@@ -275,7 +269,7 @@ const Dashboard = () => {
               <BrainCircuit className="h-5 w-5 text-indigo-600 dark:text-indigo-500" />
               <AlertTitle className="text-indigo-800 dark:text-indigo-400 font-bold text-base">Revisões Acumuladas</AlertTitle>
               <AlertDescription className="text-indigo-700 dark:text-indigo-300 text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-1">
-                <span>Você tem <strong>{inactivityAlerts.overdueFlashcardsCount} flashcards</strong> atrasados há mais de 2 dias. Não deixe a curva do esquecimento apagar seu progresso!</span>
+                <span>Você tem <strong>{inactivityAlerts.overdueFlashcardsCount} flashcards</strong> atrasados. Não deixe a curva do esquecimento apagar seu progresso!</span>
                 <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white border-none w-full sm:w-auto shadow-md">
                   <Link to="/flashcards">Revisar Agora</Link>
                 </Button>
