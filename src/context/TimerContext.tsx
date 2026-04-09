@@ -76,9 +76,37 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
       if (!session?.user) return;
 
       try {
-        // Salva o tempo total e o tempo diário no banco de dados
+        // 1. Atualiza o tempo total de atividade do usuário
         await supabase.rpc('increment_user_activity', { seconds_to_add: currentTotal });
-        await supabase.rpc('increment_daily_activity', { seconds_to_add: currentTotal });
+        
+        // 2. Atualiza o tempo diário (Garantindo o fuso horário local correto)
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const today = `${year}-${month}-${day}`; // Formato YYYY-MM-DD local
+        
+        // Busca o tempo que já existe hoje
+        const { data: currentDaily } = await supabase
+          .from('daily_activity_time')
+          .select('seconds')
+          .eq('user_id', session.user.id)
+          .eq('activity_date', today)
+          .maybeSingle();
+
+        const currentSeconds = currentDaily?.seconds || 0;
+        
+        // Soma o tempo novo com o tempo que já existia e salva
+        const { error } = await supabase
+          .from('daily_activity_time')
+          .upsert({
+            user_id: session.user.id,
+            activity_date: today,
+            seconds: currentSeconds + currentTotal,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'user_id, activity_date' });
+          
+        if (error) throw error;
         
         // Após salvar com sucesso, reseta o cronômetro
         resetTimer();

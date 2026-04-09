@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription<think>Continuing the `MyPerformance.tsx` file write operation from where it was cut off.</think>} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -99,18 +99,24 @@ const MyPerformance = () => {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6); // Pega os últimos 7 dias incluindo hoje
       
+      // Formata a data para o fuso horário local (YYYY-MM-DD)
+      const year = sevenDaysAgo.getFullYear();
+      const month = String(sevenDaysAgo.getMonth() + 1).padStart(2, '0');
+      const day = String(sevenDaysAgo.getDate()).padStart(2, '0');
+      const localDateString = `${year}-${month}-${day}`;
+      
       const { data, error } = await supabase
         .from('daily_activity_time')
         .select('activity_date, seconds')
         .eq('user_id', profile.id)
-        .gte('activity_date', sevenDaysAgo.toISOString().split('T')[0])
+        .gte('activity_date', localDateString)
         .order('activity_date', { ascending: true });
         
       if (error) throw error;
       return data;
     },
     enabled: !!profile,
-    refetchInterval: 10000, // Atualiza a cada 10s para refletir o cronômetro
+    refetchInterval: 5000, // Atualiza a cada 5s para refletir o cronômetro mais rápido
   });
 
   // Configuração do Realtime para atualização automática instantânea
@@ -143,6 +149,19 @@ const MyPerformance = () => {
           queryClient.invalidateQueries({ queryKey: ['detailedStats', profile.id] });
         }
       )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'daily_activity_time',
+          filter: `user_id=eq.${profile.id}`,
+        },
+        () => {
+          // Invalida a query de tempo diário quando houver mudanças no banco
+          queryClient.invalidateQueries({ queryKey: ['dailyStudyTime', profile.id] });
+        }
+      )
       .subscribe();
 
     return () => {
@@ -154,7 +173,12 @@ const MyPerformance = () => {
   const studyTimeStats = useMemo(() => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    
+    // Formata a data de ontem para o fuso horário local (YYYY-MM-DD)
+    const yYear = yesterday.getFullYear();
+    const yMonth = String(yesterday.getMonth() + 1).padStart(2, '0');
+    const yDay = String(yesterday.getDate()).padStart(2, '0');
+    const yesterdayStr = `${yYear}-${yMonth}-${yDay}`;
     
     const yesterdayData = dailyStudyTime?.find(d => d.activity_date === yesterdayStr);
     const yesterdaySeconds = yesterdayData?.seconds || 0;
@@ -170,7 +194,13 @@ const MyPerformance = () => {
     const chartData = Array.from({length: 7}).map((_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - (6 - i));
-      const dateStr = d.toISOString().split('T')[0];
+      
+      // Formata a data para o fuso horário local (YYYY-MM-DD)
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${day}`;
+      
       const dayData = dailyStudyTime?.find(x => x.activity_date === dateStr);
       return {
         name: format(d, 'EEE', { locale: ptBR }).replace('.', ''), // seg, ter, qua
