@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, BarChart3, Info, Crown, Users, UserCheck, Clock, Zap, CheckCircle2, XCircle, AlertCircle, FileDown } from "lucide-react";
+import { Loader2, Search, AlertTriangle, Edit, Webhook, MapPin, Globe, Shield, Calendar, Mail, Video, Wrench, BarChart3, Info, Crown, Users, UserCheck, Clock, Zap, CheckCircle2, XCircle, AlertCircle, FileDown, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { format, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -26,7 +26,7 @@ import AccessReport from "./admin/AccessReport";
 import MaterialsManager from "./admin/MaterialsManager";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import * as XLSX from 'xlsx';
 
 interface AppUser {
   id: string;
@@ -47,7 +47,7 @@ const editUserSchema = z.object({
   role: z.string(),
   status: z.string(),
   plan: z.string(),
-  customPlan: z.string().optional(), // Campo opcional para o plano digitado manualmente
+  customPlan: z.string().optional(),
 });
 
 const fetchAllUsers = async (): Promise<AppUser[]> => {
@@ -219,6 +219,53 @@ const UserManagement = () => {
     toast.success("Lista de usuários atualizada");
   };
 
+  const handleExportToExcel = () => {
+    if (filteredUsers.length === 0) {
+      toast.error("Nenhum usuário para exportar.");
+      return;
+    }
+
+    try {
+      // Mapear os dados para um formato mais legível no Excel
+      const excelData = filteredUsers.map(u => ({
+        "ID": u.id,
+        "Nome": u.first_name || "",
+        "Sobrenome": u.last_name || "",
+        "Email": u.email || "",
+        "Cargo/Role": u.role,
+        "Status": u.status,
+        "Plano": u.plan || "Free",
+        "Início do Plano": u.plan_start_date ? format(new Date(u.plan_start_date), "yyyy-MM-dd HH:mm:ss") : "",
+        "Expiração do Acesso": u.access_expires_at ? format(new Date(u.access_expires_at), "yyyy-MM-dd HH:mm:ss") : "Indeterminado",
+        "Último IP": u.last_ip || "",
+        "Localização": u.location || ""
+      }));
+
+      // Criar worksheet e workbook
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Usuários");
+
+      // Auto-ajustar a largura das colunas
+      const maxColWidth = excelData.reduce((acc, row) => {
+        Object.keys(row).forEach((key, colIndex) => {
+          const val = row[key as keyof typeof row] || "";
+          const len = val.toString().length;
+          acc[colIndex] = Math.max(acc[colIndex] || 10, len + 3);
+        });
+        return acc;
+      }, [] as number[]);
+      
+      worksheet["!cols"] = maxColWidth.map(w => ({ wch: w }));
+
+      // Gerar e baixar arquivo excel
+      XLSX.writeFile(workbook, `usuarios_enfermagem_pro_${format(new Date(), "dd-MM-yyyy")}.xlsx`);
+      toast.success("Planilha de usuários exportada com sucesso!");
+    } catch (err: any) {
+      toast.error("Falha ao exportar excel: " + err.message);
+    }
+  };
+
   const handleFixPermissions = async () => {
     setIsFixing(true);
     const toastId = toast.loading("Aplicando correções no banco de dados...");
@@ -238,14 +285,13 @@ const UserManagement = () => {
     }
   };
 
-  // Helper para Estilo do Plano
   const getPlanBadgeStyle = (planName: string | null) => {
     const plan = (planName || "").toLowerCase();
     
     if (plan.includes('premium')) return "bg-gradient-to-r from-amber-100 to-amber-200 text-amber-900 border-amber-300 dark:from-amber-900/40 dark:to-amber-800/40 dark:text-amber-200 dark:border-amber-700 shadow-sm font-bold ring-1 ring-amber-500/20";
     if (plan.includes('essencial')) return "bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-900 border-emerald-300 dark:from-emerald-900/40 dark:to-emerald-800/40 dark:text-emerald-200 dark:border-emerald-700 shadow-sm font-bold ring-1 ring-emerald-500/20";
     if (plan.includes('pro')) return "bg-gradient-to-r from-blue-100 to-indigo-200 text-blue-900 border-blue-300 dark:from-blue-900/40 dark:to-indigo-800/40 dark:text-blue-200 dark:border-blue-700 shadow-sm font-bold ring-1 ring-blue-500/20";
-    if (plan !== 'free' && plan !== '') return "bg-purple-100 text-purple-800 border-purple-300 font-bold"; // Custom plans
+    if (plan !== 'free' && plan !== '') return "bg-purple-100 text-purple-800 border-purple-300 font-bold";
     return "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
   };
 
@@ -319,6 +365,15 @@ const UserManagement = () => {
           />
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
+             <Button 
+               variant="outline" 
+               size="sm" 
+               onClick={handleExportToExcel} 
+               className="flex-1 sm:flex-none border-emerald-500/30 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-950/20"
+             >
+                <Download className="h-3.5 w-3.5 mr-2" /> 
+                Exportar Excel (XLS)
+             </Button>
              <Button 
                variant="outline" 
                size="sm" 
@@ -526,7 +581,6 @@ const KiwifySettings = () => {
 
 const Admin = () => (
   <div className="space-y-6 sm:space-y-8 pb-10">
-    {/* Header Imersivo do Admin */}
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-900 p-6 sm:p-12 text-white shadow-2xl">
       <div className="relative z-10">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
@@ -555,7 +609,6 @@ const Admin = () => (
       <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-48 sm:w-64 h-48 sm:h-64 bg-blue-500/10 rounded-full blur-3xl" />
     </div>
 
-    {/* Navegação */}
     <Tabs defaultValue="dashboard" className="w-full space-y-6">
       <div className="w-full overflow-x-auto pb-1">
         <TabsList className="bg-muted/50 p-1 rounded-full h-11 w-full min-w-[800px] grid grid-cols-7">
