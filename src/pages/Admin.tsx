@@ -26,7 +26,6 @@ import AccessReport from "./admin/AccessReport";
 import MaterialsManager from "./admin/MaterialsManager";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import * as XLSX from 'xlsx';
 
 interface AppUser {
   id: string;
@@ -219,50 +218,50 @@ const UserManagement = () => {
     toast.success("Lista de usuários atualizada");
   };
 
-  const handleExportToExcel = () => {
+  const handleExportToCSV = () => {
     if (filteredUsers.length === 0) {
       toast.error("Nenhum usuário para exportar.");
       return;
     }
 
     try {
-      // Mapear os dados para um formato mais legível no Excel
-      const excelData = filteredUsers.map(u => ({
-        "ID": u.id,
-        "Nome": u.first_name || "",
-        "Sobrenome": u.last_name || "",
-        "Email": u.email || "",
-        "Cargo/Role": u.role,
-        "Status": u.status,
-        "Plano": u.plan || "Free",
-        "Início do Plano": u.plan_start_date ? format(new Date(u.plan_start_date), "yyyy-MM-dd HH:mm:ss") : "",
-        "Expiração do Acesso": u.access_expires_at ? format(new Date(u.access_expires_at), "yyyy-MM-dd HH:mm:ss") : "Indeterminado",
-        "Último IP": u.last_ip || "",
-        "Localização": u.location || ""
-      }));
-
-      // Criar worksheet e workbook
-      const worksheet = XLSX.utils.json_to_sheet(excelData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Usuários");
-
-      // Auto-ajustar a largura das colunas
-      const maxColWidth = excelData.reduce((acc, row) => {
-        Object.keys(row).forEach((key, colIndex) => {
-          const val = row[key as keyof typeof row] || "";
-          const len = val.toString().length;
-          acc[colIndex] = Math.max(acc[colIndex] || 10, len + 3);
-        });
-        return acc;
-      }, [] as number[]);
+      // Usaremos CSV formatado com BOM UTF-8 para que o Excel abra acentos e cedilhas perfeitamente.
+      const headers = ["ID", "Nome", "Sobrenome", "Email", "Função", "Status", "Plano", "Início do Plano", "Expiração", "IP", "Localização"];
       
-      worksheet["!cols"] = maxColWidth.map(w => ({ wch: w }));
+      const rows = filteredUsers.map(u => [
+        u.id,
+        u.first_name || "",
+        u.last_name || "",
+        u.email || "",
+        u.role,
+        u.status,
+        u.plan || "Free",
+        u.plan_start_date ? format(new Date(u.plan_start_date), "yyyy-MM-dd HH:mm:ss") : "",
+        u.access_expires_at ? format(new Date(u.access_expires_at), "yyyy-MM-dd HH:mm:ss") : "Indeterminado",
+        u.last_ip || "",
+        u.location || ""
+      ]);
 
-      // Gerar e baixar arquivo excel
-      XLSX.writeFile(workbook, `usuarios_enfermagem_pro_${format(new Date(), "dd-MM-yyyy")}.xlsx`);
-      toast.success("Planilha de usuários exportada com sucesso!");
+      // Escapa as aspas duplas de cada campo
+      const csvContent = [
+        headers.join(";"),
+        ...rows.map(row => row.map(val => `"${String(val).replace(/"/g, '""')}"`).join(";"))
+      ].join("\n");
+
+      // Adiciona o caractere de marca de ordem de byte (BOM) do UTF-8 para que o Excel interprete corretamente a codificação
+      const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      
+      link.setAttribute("href", url);
+      link.setAttribute("download", `usuarios_enfermagem_pro_${format(new Date(), "dd-MM-yyyy")}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success("Usuários exportados com sucesso!");
     } catch (err: any) {
-      toast.error("Falha ao exportar excel: " + err.message);
+      toast.error("Falha ao exportar planilha: " + err.message);
     }
   };
 
@@ -368,11 +367,11 @@ const UserManagement = () => {
              <Button 
                variant="outline" 
                size="sm" 
-               onClick={handleExportToExcel} 
+               onClick={handleExportToCSV} 
                className="flex-1 sm:flex-none border-emerald-500/30 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-950/20"
              >
                 <Download className="h-3.5 w-3.5 mr-2" /> 
-                Exportar Excel (XLS)
+                Exportar Planilha (Excel/CSV)
              </Button>
              <Button 
                variant="outline" 
