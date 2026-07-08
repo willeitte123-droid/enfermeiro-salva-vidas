@@ -130,7 +130,7 @@ const Flashcards = () => {
 
       nextReview = addDays(new Date(), nextInterval);
 
-      // Usar upsert para criar ou atualizar
+      // Usar upsert para criar ou atualizar com a data correta
       const { error } = await supabase
         .from('user_flashcard_progress')
         .upsert({
@@ -138,13 +138,17 @@ const Flashcards = () => {
           flashcard_id: cardId,
           next_review: nextReview.toISOString(),
           interval_days: nextInterval,
-          // ease_factor could be updated here for full SM-2
+          updated_at: new Date().toISOString() // Atualizar carimbo de data
+        }, {
+          onConflict: 'user_id,flashcard_id'
         });
 
       if (error) throw error;
     },
     onSuccess: () => {
+      // Invalida a lista de progressos e força a re-renderização dos contadores
       queryClient.invalidateQueries({ queryKey: ['flashcardProgress'] });
+      queryClient.invalidateQueries({ queryKey: ['flashcards'] });
     }
   });
 

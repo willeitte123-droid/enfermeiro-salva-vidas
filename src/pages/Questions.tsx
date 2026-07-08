@@ -143,7 +143,7 @@ const Questions = () => {
     }
   });
 
-  const { data, isLoading, isFetching, error } = useQuery({
+  const { data, isLoading, isFetching, error } = useQuery<{ questions: Question[]; count: number }>({
     queryKey: ['questions', selectedCategory, answerStatusFilter, currentPage, questionId, randomSeed],
     queryFn: async () => {
       if (questionId) {
@@ -157,7 +157,7 @@ const Questions = () => {
         const { data, error } = await supabase.rpc('get_random_questions', { limit_count: 1 });
         if (error) throw error;
         const shuffledQuestions = (data as Question[]).map(shuffleQuestionOptions);
-        return { questions: shuffledQuestions, count: -1 }; 
+        return { questions: shuffledQuestions, count: -1 };
       }
 
       const from = currentPage * QUESTIONS_PER_PAGE;
@@ -202,9 +202,9 @@ const Questions = () => {
       if (error) throw error;
       
       const shuffledQuestions = (data as Question[]).map(shuffleQuestionOptions);
-      return { questions: shuffledQuestions, count };
+      return { questions: shuffledQuestions, count: count || 0 };
     },
-    keepPreviousData: !questionId && !isRandomMode,
+    placeholderData: (prev) => prev, // Substitui 'keepPreviousData' no TanStack Query v5 de forma elegante e segura
   });
 
   const currentQuestion = data?.questions?.[0];
@@ -251,11 +251,24 @@ const Questions = () => {
     setAnsweredCorrectly(isCorrect);
 
     if (profile) {
-      await supabase.from('user_question_answers').insert({
-        user_id: profile.id,
-        question_id: currentQuestion.id,
-        is_correct: isCorrect,
-      });
+      // Usamos upsert para atualizar se o usuário responder a mesma questão novamente, ou inserir se for inédita.
+      // Desta forma, o progresso dele e os contadores ficam sempre perfeitamente atualizados!
+      const { error } = await supabase.from('user_question_answers').upsert(
+        {
+          user_id: profile.id,
+          question_id: currentQuestion.id,
+          is_correct: isCorrect,
+          created_at: new Date().toISOString()
+        },
+        { onConflict: 'user_id,question_id' }
+      );
+
+      if (error) {
+        console.error("Erro ao salvar resposta:", error);
+      } else {
+        // Invalida a query do React Query para recalcular imediatamente a lista e os filtros
+        queryClient.invalidateQueries({ queryKey: ['questions'] });
+      }
     }
   };
 
