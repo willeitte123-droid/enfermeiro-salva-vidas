@@ -130,51 +130,49 @@ const Flashcards = () => {
 
       nextReview = addDays(new Date(), nextInterval);
 
-      // Usar upsert para criar ou atualizar com a data correta
-      const { error } = await supabase
-        .from('user_flashcard_progress')
-        .upsert({
-          user_id: profile.id,
-          flashcard_id: cardId,
-          next_review: nextReview.toISOString(),
-          interval_days: nextInterval
-        }, {
-          onConflict: 'id' // Correção: user_flashcard_progress usa 'id' como primary key, e unique constraint em user_id+flashcard_id se existir, mas para upsert genérico, se não houver unique configurada, pode falhar. Vamos tentar primeiro sem onConflict para ver se a tabela tem primary key definida ou vamos delegar ao Supabase
-        });
+      // Em vez de usar upsert genérico (que falha ou duplica se faltar a Unique Constraint),
+      // vamos consultar ativamente se o registro já existe para este cartão e atualizar diretamente!
+      const { data: existingRecords, error: fetchError } = await supabase
+          .from('user_flashcard_progress')
+          .select('id')
+          .eq('user_id', profile.id)
+          .eq('flashcard_id', cardId);
 
-      if (error) {
-        console.error("Erro ao salvar progresso do flashcard:", error);
-        
-        // Fallback: se o upsert falhar por causa da constraint onConflict, fazemos de forma manual
-        if (error.code === 'PGRST116' || error.code === '23505' || error.message.includes('conflict')) {
-            const { data: existing } = await supabase
-                .from('user_flashcard_progress')
-                .select('id')
-                .eq('user_id', profile.id)
-                .eq('flashcard_id', cardId)
-                .single();
-                
-            if (existing) {
-                await supabase
-                    .from('user_flashcard_progress')
-                    .update({
-                        next_review: nextReview.toISOString(),
-                        interval_days: nextInterval
-                    })
-                    .eq('id', existing.id);
-            } else {
-                await supabase
-                    .from('user_flashcard_progress')
-                    .insert({
-                        user_id: profile.id,
-                        flashcard_id: cardId,
-                        next_review: nextReview.toISOString(),
-                        interval_days: nextInterval
-                    });
-            }
-        } else {
-            throw error;
-        }
+      if (fetchError) {
+          console.error("Erro ao verificar progresso existente:", fetchError);
+          throw fetchError;
+      }
+
+      // Limpa possíveis registros duplicados que foram criados no passado por erro do upsert
+      if (existingRecords && existingRecords.length > 0) {
+          // Atualiza o primeiro registro encontrado
+          const { error: updateError } = await supabase
+              .from('user_flashcard_progress')
+              .update({
+                  next_review: nextReview.toISOString(),
+                  interval_days: nextInterval
+              })
+              .eq('id', existingRecords[0].id);
+              
+          if (updateError) throw updateError;
+          
+          // Se por um acaso houver duplicatas da mesma carta, apaga as excedentes
+          if (existingRecords.length > 1) {
+             const duplicateIds = existingRecords.slice(1).map(r => r.id);
+             await supabase.from('user_flashcard_progress').delete().in('id', duplicateIds);
+          }
+      } else {
+          // Se não houver nenhum registro, cria do zero
+          const { error: insertError } = await supabase
+              .from('user_flashcard_progress')
+              .insert({
+                  user_id: profile.id,
+                  flashcard_id: cardId,
+                  next_review: nextReview.toISOString(),
+                  interval_days: nextInterval
+              });
+              
+          if (insertError) throw insertError;
       }
     },
     onSuccess: () => {

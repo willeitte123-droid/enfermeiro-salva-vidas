@@ -251,30 +251,65 @@ const Questions = () => {
     setAnsweredCorrectly(isCorrect);
 
     if (profile) {
-      // Usamos upsert para atualizar se o usuário responder a mesma questão novamente, ou inserir se for inédita.
-      // Desta forma, o progresso dele e os contadores ficam sempre perfeitamente atualizados!
-      const { error } = await supabase.from('user_question_answers').upsert(
-        {
-          user_id: profile.id,
-          question_id: currentQuestion.id,
-          is_correct: isCorrect,
-          created_at: new Date().toISOString()
-        },
-        { onConflict: 'user_id,question_id' }
-      );
+      try {
+        const { data: existingRecords, error: fetchError } = await supabase
+          .from('user_question_answers')
+          .select('id')
+          .eq('user_id', profile.id)
+          .eq('question_id', currentQuestion.id);
 
-      if (error) {
-        console.error("Erro ao salvar resposta:", error);
-      } else {
-        // Invalida a query do React Query para recalcular imediatamente a lista e os filtros
-        queryClient.invalidateQueries({ queryKey: ['questions'] });
+        if (fetchError) throw fetchError;
+
+        if (existingRecords && existingRecords.length > 0) {
+          // Se a resposta já existe, nós atualizamos o registro antigo
+          await supabase.from('user_question_answers').update({
+            is_correct: isCorrect,
+            created_at: new Date().toISOString()
+          }).eq('id', existingRecords[0].id);
+
+          // E garantimos que não haja lixo de duplicações na tabela, apagando eventuais sobras
+          if (existingRecords.length > 1) {
+             const duplicateIds = existingRecords.slice(1).map(r => r.id);
+             await supabase.from('user_question_answers').delete().in('id', duplicateIds);
+          }
+        } else {
+          // Se for inédita, cria um registro novo
+          await supabase.from('user_question_answers').insert({
+            user_id: profile.id,
+            question_id: currentQuestion.id,
+            is_correct: isCorrect
+          });
+        }
+        
+        // Removemos o invalidateQueries DAQUI porque se invalidar agora, a questão sumiria
+        // da tela antes do usuário conseguir ler a explicação!
+        // Vamos invalidar o cache apenas quando ele clicar em "Próxima Questão".
+      } catch (err) {
+        console.error("Erro inesperado ao salvar resposta:", err);
       }
     }
   };
 
   const handleNextQuestion = () => {
+    // Quando estamos num filtro que remove a questão após respondida (ex: "Não Respondidas"
+    // ou respondendo certo numa lista de "Erradas"), a lista encolhe.
+    // Precisamos resetar a página para não pular questões!
+    const listWillShrink = answerStatusFilter === 'unanswered' ||
+                           (answerStatusFilter === 'incorrect' && answeredCorrectly === true) ||
+                           (answerStatusFilter === 'correct' && answeredCorrectly === false);
+
+    if (showExplanation && profile) {
+       queryClient.invalidateQueries({ queryKey: ['questions'] });
+    }
+
     if (isRandomMode) {
       setRandomSeed(prev => prev + 1);
+    } else if (listWillShrink && showExplanation) {
+      // Como a questão atual vai sumir da lista deste filtro, a próxima questão
+      // assumirá a posição (index) atual. Portanto, não avançamos a página!
+      // Apenas forçamos um re-fetch mudando o randomSeed (ou mantendo a page).
+      setRandomSeed(prev => prev + 1);
+      // Se não fosse o re-fetch forçado, o currentPage se manteria o mesmo e a query buscaria o novo item no index antigo.
     } else if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
     }
