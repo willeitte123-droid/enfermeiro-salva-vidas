@@ -85,7 +85,7 @@ const Questions = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState<string | null>(null);
   const [isDeletingComment, setIsDeletingComment] = useState(false);
-
+  const [isSavingAnswer, setIsSavingAnswer] = useState(false);
   const form = useForm<z.infer<typeof commentSchema>>({
     resolver: zodResolver(commentSchema),
     defaultValues: { content: "" },
@@ -266,48 +266,31 @@ const Questions = () => {
 
   const handleAnswerSubmit = async () => {
     if (!selectedAnswer || !currentQuestion) return;
-    setShowExplanation(true);
+    
+    setIsSavingAnswer(true);
     const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
     setAnsweredCorrectly(isCorrect);
 
     if (profile) {
       try {
-        const { data: existingRecords, error: fetchError } = await supabase
-          .from('user_question_answers')
-          .select('id')
-          .eq('user_id', profile.id)
-          .eq('question_id', currentQuestion.id);
-
-        if (fetchError) throw fetchError;
-
-        if (existingRecords && existingRecords.length > 0) {
-          // Se a resposta já existe, nós atualizamos o registro antigo
-          await supabase.from('user_question_answers').update({
-            is_correct: isCorrect,
-            created_at: new Date().toISOString()
-          }).eq('id', existingRecords[0].id);
-
-          // E garantimos que não haja lixo de duplicações na tabela, apagando eventuais sobras
-          if (existingRecords.length > 1) {
-             const duplicateIds = existingRecords.slice(1).map(r => r.id);
-             await supabase.from('user_question_answers').delete().in('id', duplicateIds);
-          }
-        } else {
-          // Se for inédita, cria um registro novo
-          await supabase.from('user_question_answers').insert({
-            user_id: profile.id,
-            question_id: currentQuestion.id,
-            is_correct: isCorrect
-          });
-        }
+        // Inserimos a nova tentativa como histórico. Assim evitamos qualquer bloqueio
+        // de RLS no update, mantemos os dados íntegros e as queries pegarão a resposta mais recente.
+        const { error } = await supabase.from('user_question_answers').insert({
+          user_id: profile.id,
+          question_id: currentQuestion.id,
+          is_correct: isCorrect
+        });
         
-        // Removemos o invalidateQueries DAQUI porque se invalidar agora, a questão sumiria
-        // da tela antes do usuário conseguir ler a explicação!
-        // Vamos invalidar o cache apenas quando ele clicar em "Próxima Questão".
+        if (error) {
+           console.error("Erro ao salvar resposta no banco:", error);
+        }
       } catch (err) {
         console.error("Erro inesperado ao salvar resposta:", err);
       }
     }
+    
+    setShowExplanation(true);
+    setIsSavingAnswer(false);
   };
 
   const handleNextQuestion = () => {
@@ -647,26 +630,26 @@ const Questions = () => {
                
                <div className="w-full sm:w-auto flex justify-end">
                  {!showExplanation ? (
-                   <Button 
-                     onClick={handleAnswerSubmit} 
-                     disabled={!selectedAnswer || isFetching} 
-                     size="lg" 
+                   <Button
+                     onClick={handleAnswerSubmit}
+                     disabled={!selectedAnswer || isFetching || isSavingAnswer}
+                     size="lg"
                      className="w-full sm:w-auto shadow-md font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0"
                    >
-                     {isFetching ? <Loader2 className="h-4 w-4 animate-spin mr-2"/> : <CheckCircle2 className="h-4 w-4 mr-2" />}
+                     {isSavingAnswer ? <Loader2 className="h-4 w-4 animate-spin mr-2"/> : <CheckCircle2 className="h-4 w-4 mr-2" />}
                      Responder
                    </Button>
                  ) : !isSingleQuestionMode ? (
-                   <Button 
-                     onClick={handleNextQuestion} 
-                     disabled={(currentPage >= totalPages - 1 && !isRandomMode) || isFetching}
+                   <Button
+                     onClick={handleNextQuestion}
+                     disabled={isFetching || isSavingAnswer}
                      size="lg"
                      className="w-full sm:w-auto font-bold animate-pulse-subtle bg-blue-600 hover:bg-blue-700 text-white"
                    >
                      {isRandomMode ? "Sortear Próxima" : "Próxima Questão"} <ChevronRight className="h-4 w-4 ml-2" />
                    </Button>
                  ) : (
-                    <div className="w-20"></div> 
+                    <div className="w-20"></div>
                  )}
                </div>
             </CardFooter>
