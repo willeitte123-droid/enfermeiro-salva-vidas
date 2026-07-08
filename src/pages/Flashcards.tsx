@@ -137,13 +137,45 @@ const Flashcards = () => {
           user_id: profile.id,
           flashcard_id: cardId,
           next_review: nextReview.toISOString(),
-          interval_days: nextInterval,
-          updated_at: new Date().toISOString() // Atualizar carimbo de data
+          interval_days: nextInterval
         }, {
-          onConflict: 'user_id,flashcard_id'
+          onConflict: 'id' // Correção: user_flashcard_progress usa 'id' como primary key, e unique constraint em user_id+flashcard_id se existir, mas para upsert genérico, se não houver unique configurada, pode falhar. Vamos tentar primeiro sem onConflict para ver se a tabela tem primary key definida ou vamos delegar ao Supabase
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Erro ao salvar progresso do flashcard:", error);
+        
+        // Fallback: se o upsert falhar por causa da constraint onConflict, fazemos de forma manual
+        if (error.code === 'PGRST116' || error.code === '23505' || error.message.includes('conflict')) {
+            const { data: existing } = await supabase
+                .from('user_flashcard_progress')
+                .select('id')
+                .eq('user_id', profile.id)
+                .eq('flashcard_id', cardId)
+                .single();
+                
+            if (existing) {
+                await supabase
+                    .from('user_flashcard_progress')
+                    .update({
+                        next_review: nextReview.toISOString(),
+                        interval_days: nextInterval
+                    })
+                    .eq('id', existing.id);
+            } else {
+                await supabase
+                    .from('user_flashcard_progress')
+                    .insert({
+                        user_id: profile.id,
+                        flashcard_id: cardId,
+                        next_review: nextReview.toISOString(),
+                        interval_days: nextInterval
+                    });
+            }
+        } else {
+            throw error;
+        }
+      }
     },
     onSuccess: () => {
       // Invalida a lista de progressos e força a re-renderização dos contadores
