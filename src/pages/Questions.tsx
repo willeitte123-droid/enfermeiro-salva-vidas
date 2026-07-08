@@ -172,22 +172,34 @@ const Questions = () => {
       if (profile && answerStatusFilter !== 'all') {
         const answeredQuery = supabase
           .from('user_question_answers')
-          .select('question_id, is_correct')
-          .eq('user_id', profile.id);
+          .select('question_id, is_correct, created_at')
+          .eq('user_id', profile.id)
+          .order('created_at', { ascending: false });
         
         const { data: answeredData, error: answeredError } = await answeredQuery;
         if (answeredError) throw answeredError;
 
+        // Deduplicar respostas mantendo apenas o status da tentativa MAIS RECENTE
+        const latestAnswers = new Map<number, boolean>();
+        if (answeredData) {
+          for (const a of answeredData) {
+             if (!latestAnswers.has(a.question_id)) {
+                 latestAnswers.set(a.question_id, a.is_correct);
+             }
+          }
+        }
+
         if (answerStatusFilter === 'unanswered') {
-          const answeredIds = answeredData.map(a => a.question_id);
+          const answeredIds = Array.from(latestAnswers.keys());
           if (answeredIds.length > 0) {
             query = query.not('id', 'in', `(${answeredIds.join(',')})`);
           }
         } else {
-          const isCorrect = answerStatusFilter === 'correct';
-          const relevantIds = answeredData
-            .filter(a => a.is_correct === isCorrect)
-            .map(a => a.question_id);
+          const isCorrectFilter = answerStatusFilter === 'correct';
+          const relevantIds = [];
+          for (const [qId, isCorrect] of latestAnswers.entries()) {
+             if (isCorrect === isCorrectFilter) relevantIds.push(qId);
+          }
           
           if (relevantIds.length === 0) {
             return { questions: [], count: 0 };
@@ -196,7 +208,8 @@ const Questions = () => {
         }
       }
 
-      query = query.range(from, to);
+      // Adicionando ordenação por ID para estabilidade na paginação e evitar perguntas repetidas
+      query = query.range(from, to).order('id', { ascending: true });
 
       const { data, error, count } = await query;
       if (error) throw error;
@@ -211,6 +224,13 @@ const Questions = () => {
   const totalQuestions = data?.count ?? 0;
   const totalPages = Math.ceil(totalQuestions / QUESTIONS_PER_PAGE);
   const isSingleQuestionMode = !!questionId;
+
+  useEffect(() => {
+    // Se a lista encolheu dinamicamente e a página atual ficou fora dos limites, volta para a última página válida
+    if (data && totalPages > 0 && currentPage >= totalPages) {
+      setCurrentPage(Math.max(0, totalPages - 1));
+    }
+  }, [data, totalPages, currentPage]);
 
   useEffect(() => {
     setSelectedAnswer("");
