@@ -57,6 +57,7 @@ const DeepStudy = lazy(() => import('./pages/DeepStudy'));
 const ClinicalCases = lazy(() => import('./pages/ClinicalCases'));
 const Concursos = lazy(() => import('./pages/Concursos'));
 const VideoLibrary = lazy(() => import('./pages/VideoLibrary'));
+const Faq = lazy(() => import('./pages/Faq'));
 
 interface AppRoutesProps {
   auth: AuthContextType;
@@ -128,6 +129,7 @@ export const AppRoutes = ({ auth }: AppRoutesProps) => {
         <Route path="library" element={<DeepStudy />} />
         <Route path="video-library" element={<VideoLibrary />} />
         <Route path="flashcards" element={<Flashcards />} />
+        <Route path="faq" element={<Faq />} />
         <Route path="ranking" element={<Ranking />} />
         <Route path="tools/dose-calculator" element={<DoseCalculator />} />
         <Route path="tools/lab-values" element={<LabValues />} />

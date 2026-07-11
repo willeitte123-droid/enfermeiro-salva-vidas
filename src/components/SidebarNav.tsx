@@ -40,7 +40,9 @@ import {
   User,
   Shield,
   Palette,
-  Lock
+  Lock,
+  HelpCircle,
+  Headphones
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
@@ -73,6 +75,7 @@ type NavItem = {
   href: string;
   variant: "default" | "ghost";
   highlight?: boolean;
+  isExternal?: boolean;
 };
 
 type NavGroup = {
@@ -167,6 +170,14 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
         { title: "Favoritos", icon: Star, href: "/favorites", variant: "ghost" },
         { title: "Meu Perfil", icon: User, href: "/profile", variant: "ghost" },
       ]
+    },
+    {
+      title: "Suporte e FAQ",
+      icon: HelpCircle,
+      items: [
+        { title: "Perguntas Frequentes", icon: FileQuestion, href: "/faq", variant: "ghost" },
+        { title: "Suporte no WhatsApp", icon: Headphones, href: "https://wa.me/5568981018368", variant: "ghost", isExternal: true },
+      ]
     }
   ];
 
@@ -225,16 +236,27 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
     }
 
     // Link Funcional
-    const linkElement = (
+    const linkClassName = cn(
+      "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-sidebar-hover hover:text-white",
+      isActive && !item.isExternal ? "bg-sidebar-active text-sidebar-active-foreground shadow-sm" : "text-sidebar-foreground",
+      isChild && "ml-4 text-xs pl-4 border-l border-sidebar-border/50 hover:border-sidebar-foreground/30",
+      item.highlight && "text-amber-500 hover:text-amber-400 font-bold bg-amber-500/10",
+      isCollapsed && "justify-center px-0 h-10 w-10 ml-0 border-0"
+    );
+
+    const linkElement = item.isExternal ? (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClassName}
+      >
+        {LinkContent}
+      </a>
+    ) : (
       <NavLink
         to={item.href}
-        className={cn(
-          "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-sidebar-hover hover:text-white",
-          isActive ? "bg-sidebar-active text-sidebar-active-foreground shadow-sm" : "text-sidebar-foreground",
-          isChild && "ml-4 text-xs pl-4 border-l border-sidebar-border/50 hover:border-sidebar-foreground/30",
-          item.highlight && "text-amber-500 hover:text-amber-400 font-bold bg-amber-500/10",
-          isCollapsed && "justify-center px-0 h-10 w-10 ml-0 border-0"
-        )}
+        className={linkClassName}
       >
         {LinkContent}
       </NavLink>
@@ -302,6 +324,16 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
                  return (
                     <DropdownMenuItem key={item.href} disabled className="opacity-50 cursor-not-allowed">
                       <item.icon className="h-4 w-4 mr-2" /> {item.title} <Lock className="h-3 w-3 ml-auto" />
+                    </DropdownMenuItem>
+                 );
+               }
+               if (item.isExternal) {
+                 return (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <a href={item.href} target="_blank" rel="noopener noreferrer" className="cursor-pointer flex items-center gap-2">
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.title}</span>
+                      </a>
                     </DropdownMenuItem>
                  );
                }
