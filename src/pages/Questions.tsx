@@ -72,6 +72,7 @@ const Questions = () => {
   const [answerStatusFilter, setAnswerStatusFilter] = useState(filterParam || "all");
   const [currentPage, setCurrentPage] = useState(0);
   const [randomSeed, setRandomSeed] = useState(0);
+  const [sessionStartTime, setSessionStartTime] = useState(() => new Date().toISOString());
   
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [showExplanation, setShowExplanation] = useState(false);
@@ -144,7 +145,7 @@ const Questions = () => {
   });
 
   const { data, isLoading, isFetching, error } = useQuery<{ questions: Question[]; count: number }>({
-    queryKey: ['questions', selectedCategory, answerStatusFilter, currentPage, questionId, randomSeed],
+    queryKey: ['questions', selectedCategory, answerStatusFilter, currentPage, questionId, randomSeed, sessionStartTime],
     queryFn: async () => {
       if (questionId) {
         const { data, error } = await supabase.from('questions').select('*').eq('id', questionId).single();
@@ -174,6 +175,7 @@ const Questions = () => {
           .from('user_question_answers')
           .select('question_id, is_correct, created_at')
           .eq('user_id', profile.id)
+          .lt('created_at', sessionStartTime)
           .order('created_at', { ascending: false });
         
         const { data: answeredData, error: answeredError } = await answeredQuery;
@@ -243,6 +245,7 @@ const Questions = () => {
   useEffect(() => {
     setCurrentPage(0);
     setRandomSeed(0);
+    setSessionStartTime(new Date().toISOString());
   }, [selectedCategory, answerStatusFilter]);
 
   const fetchComments = async (questionId: number) => {
@@ -294,25 +297,8 @@ const Questions = () => {
   };
 
   const handleNextQuestion = () => {
-    // Quando estamos num filtro que remove a questão após respondida (ex: "Não Respondidas"
-    // ou respondendo certo numa lista de "Erradas"), a lista encolhe.
-    // Precisamos resetar a página para não pular questões!
-    const listWillShrink = answerStatusFilter === 'unanswered' ||
-                           (answerStatusFilter === 'incorrect' && answeredCorrectly === true) ||
-                           (answerStatusFilter === 'correct' && answeredCorrectly === false);
-
-    if (showExplanation && profile) {
-       queryClient.invalidateQueries({ queryKey: ['questions'] });
-    }
-
     if (isRandomMode) {
       setRandomSeed(prev => prev + 1);
-    } else if (listWillShrink && showExplanation) {
-      // Como a questão atual vai sumir da lista deste filtro, a próxima questão
-      // assumirá a posição (index) atual. Portanto, não avançamos a página!
-      // Apenas forçamos um re-fetch mudando o randomSeed (ou mantendo a page).
-      setRandomSeed(prev => prev + 1);
-      // Se não fosse o re-fetch forçado, o currentPage se manteria o mesmo e a query buscaria o novo item no index antigo.
     } else if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
     }
