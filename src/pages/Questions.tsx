@@ -70,9 +70,9 @@ const Questions = () => {
 
   const [selectedCategory, setSelectedCategory] = useState(categoryParam || "Todas");
   const [answerStatusFilter, setAnswerStatusFilter] = useState(filterParam || "all");
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentOffset, setCurrentOffset] = useState(0);
+  const [questionsViewed, setQuestionsViewed] = useState(1);
   const [randomSeed, setRandomSeed] = useState(0);
-  const [sessionStartTime, setSessionStartTime] = useState(() => new Date().toISOString());
   
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [showExplanation, setShowExplanation] = useState(false);
@@ -145,7 +145,7 @@ const Questions = () => {
   });
 
   const { data, isLoading, isFetching, error } = useQuery<{ questions: Question[]; count: number }>({
-    queryKey: ['questions', selectedCategory, answerStatusFilter, currentPage, questionId, randomSeed, sessionStartTime],
+    queryKey: ['questions', selectedCategory, answerStatusFilter, currentOffset, questionId, randomSeed],
     queryFn: async () => {
       if (questionId) {
         const { data, error } = await supabase.from('questions').select('*').eq('id', questionId).single();
@@ -161,7 +161,7 @@ const Questions = () => {
         return { questions: shuffledQuestions, count: -1 };
       }
 
-      const from = currentPage * QUESTIONS_PER_PAGE;
+      const from = currentOffset * QUESTIONS_PER_PAGE;
       const to = from + QUESTIONS_PER_PAGE - 1;
 
       let query = supabase.from('questions').select('*', { count: 'exact' });
@@ -175,7 +175,6 @@ const Questions = () => {
           .from('user_question_answers')
           .select('question_id, is_correct, created_at')
           .eq('user_id', profile.id)
-          .lt('created_at', sessionStartTime)
           .order('created_at', { ascending: false });
         
         const { data: answeredData, error: answeredError } = await answeredQuery;
@@ -229,10 +228,10 @@ const Questions = () => {
 
   useEffect(() => {
     // Se a lista encolheu dinamicamente e a página atual ficou fora dos limites, volta para a última página válida
-    if (data && totalPages > 0 && currentPage >= totalPages) {
-      setCurrentPage(Math.max(0, totalPages - 1));
+    if (data && totalPages > 0 && currentOffset >= totalPages) {
+      setCurrentOffset(Math.max(0, totalPages - 1));
     }
-  }, [data, totalPages, currentPage]);
+  }, [data, totalPages, currentOffset]);
 
   useEffect(() => {
     setSelectedAnswer("");
@@ -240,12 +239,12 @@ const Questions = () => {
     setAnsweredCorrectly(null);
     setIsCommentsOpen(false);
     setComments([]);
-  }, [currentPage, selectedCategory, answerStatusFilter, currentQuestion, randomSeed]);
+  }, [currentOffset, selectedCategory, answerStatusFilter, currentQuestion, randomSeed]);
 
   useEffect(() => {
-    setCurrentPage(0);
+    setCurrentOffset(0);
+    setQuestionsViewed(1);
     setRandomSeed(0);
-    setSessionStartTime(new Date().toISOString());
   }, [selectedCategory, answerStatusFilter]);
 
   const fetchComments = async (questionId: number) => {
@@ -299,8 +298,27 @@ const Questions = () => {
   const handleNextQuestion = () => {
     if (isRandomMode) {
       setRandomSeed(prev => prev + 1);
-    } else if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
+      setQuestionsViewed(prev => prev + 1);
+    } else {
+      // Verifica se a questão vai sumir da lista baseada no resultado atual
+      const willDisappear =
+        answerStatusFilter === 'unanswered' ||
+        (answerStatusFilter === 'incorrect' && answeredCorrectly === true) ||
+        (answerStatusFilter === 'correct' && answeredCorrectly === false);
+
+      if (willDisappear) {
+        // Se vai sumir, a próxima ocupa o lugar dela no banco, não precisamos avançar o offset
+        setRandomSeed(prev => prev + 1);
+      } else if (currentOffset < totalPages - 1) {
+        setCurrentOffset(prev => prev + 1);
+      }
+      
+      setQuestionsViewed(prev => prev + 1); // Avança contador visual
+      
+      if (profile) {
+        // Invalida a query para o número atualizar IMEDIATAMENTE (133 -> 132)
+        queryClient.invalidateQueries({ queryKey: ['questions'] });
+      }
     }
   };
 
@@ -416,7 +434,7 @@ const Questions = () => {
              ) : (
                 <>
                   <span className="hidden md:inline">Progresso:</span>
-                  <span className="font-mono font-bold text-foreground">{currentPage + 1}</span>
+                  <span className="font-mono font-bold text-foreground">{questionsViewed}</span>
                   <span className="opacity-50">/</span>
                   <span className="font-mono font-bold">{totalQuestions > 0 ? totalQuestions : "-"}</span>
                 </>
@@ -598,10 +616,13 @@ const Questions = () => {
             <CardFooter className="bg-muted/10 p-4 border-t flex flex-col sm:flex-row gap-4 justify-between items-center sticky bottom-0 z-10 backdrop-blur-md">
                <div className="flex gap-2 w-full sm:w-auto">
                  {!isSingleQuestionMode && (
-                   <Button 
-                      variant="ghost" 
-                      onClick={() => setCurrentPage(p => p - 1)} 
-                      disabled={currentPage === 0 || isFetching || isRandomMode}
+                   <Button
+                      variant="ghost"
+                      onClick={() => {
+                         setCurrentOffset(p => Math.max(0, p - 1));
+                         setQuestionsViewed(p => Math.max(1, p - 1));
+                      }}
+                      disabled={currentOffset === 0 || isFetching || isRandomMode}
                       className="text-muted-foreground hover:text-foreground"
                    >
                      <ChevronLeft className="h-4 w-4 mr-1" /> Anterior
