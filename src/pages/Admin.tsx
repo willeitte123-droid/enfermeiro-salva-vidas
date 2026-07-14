@@ -260,12 +260,24 @@ const UserManagement = () => {
   const { data: users = [], isLoading, error, refetch } = useQuery<AppUser[]>({ queryKey: ["allUsers"], queryFn: fetchAllUsers });
 
   const filteredUsers = useMemo(() => {
-    if (!searchTerm) return users;
-    return users.filter(user => 
-      (user.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.first_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.last_name || '').toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Garante que a lista de usuários nunca venha nula ou vazia por erro de leitura de campos opcionais
+    if (!users || users.length === 0) return [];
+    if (!searchTerm || searchTerm.trim() === "") return users;
+    
+    const term = searchTerm.toLowerCase().trim();
+    return users.filter(user => {
+      const name = `${user.first_name || ""} ${user.last_name || ""}`.toLowerCase();
+      const email = (user.email || "").toLowerCase();
+      const id = (user.id || "").toLowerCase();
+      const status = (user.status || "").toLowerCase();
+      const plan = (user.plan || "").toLowerCase();
+      
+      return name.includes(term) ||
+             email.includes(term) ||
+             id.includes(term) ||
+             status.includes(term) ||
+             plan.includes(term);
+    });
   }, [users, searchTerm]);
 
   // Estatísticas Rápidas
