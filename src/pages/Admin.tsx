@@ -92,8 +92,6 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       const finalPlan = values.plan === 'custom' ? values.customPlan : values.plan;
 
       // Chama explicitamente a Edge Function que tem privilégios totais de Service Role.
-      // Esta função agora suporta UPSERT (criação automática do profile na tabela public caso
-      // ele só exista no Auth)
       const { data, error } = await supabase.functions.invoke('update-user-admin', {
         body: {
           userId: user.id,
@@ -102,25 +100,17 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
             status: values.status,
             plan: finalPlan,
             updated_at: new Date().toISOString(),
-            email: user.email // Passamos o email para caso a function precise criar a linha do zero
+            email: user.email || '' // Passamos o email para caso a function precise criar a linha do zero
           }
         }
       });
 
       if (error) {
         console.error("Falha ao invocar edge function:", error);
-        
-        // Fallback para a RPC caso a edge function não tenha sido "deployada" ainda.
-        const { error: rpcError } = await supabase.rpc('admin_update_profile', {
-            target_user_id: user.id,
-            new_role: values.role,
-            new_status: values.status,
-            new_plan: finalPlan
-        });
-        
-        if (rpcError) throw new Error(error.message || rpcError.message);
+        throw new Error(error.message);
       } else if (data?.error) {
-         throw new Error(data.error);
+        console.error("Erro retornado pela Edge Function:", data.error);
+        throw new Error(data.error);
       }
       
       return data;
