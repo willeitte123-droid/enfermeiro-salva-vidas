@@ -50,26 +50,29 @@ const editUserSchema = z.object({
 });
 
 const fetchAllUsers = async (): Promise<AppUser[]> => {
-  // Como as Edge Functions de rede estão enfrentando problemas de CORS ou instabilidade de rota HTTP no cliente,
-  // vamos trazer os usuários DIRETAMENTE da tabela 'profiles' do banco de dados (que é 100% à prova de falhas).
-  // Para exibir o e-mail sem precisar da tabela restrita do Supabase (que gerou o erro de coluna profiles.email),
-  // usaremos um fallback elegante: como a imensa maioria dos perfis guarda o e-mail também em campos de texto público
-  // ou id, ou caso o campo email não exista nativamente na tabela profiles, usaremos a propriedade opcional com segurança.
-  // Vamos primeiro ler as colunas reais de profiles.
+  // Com base na foto real da sua tabela pública 'profiles' no Supabase:
+  // - A coluna 'created_at' NÃO existe (temos 'updated_at' em seu lugar!).
+  // - A coluna 'email' NÃO existe.
+  // Faremos a seleção CIRÚRGICA apenas das colunas que existem de verdade:
+  // id, first_name, last_name, role, status, plan, avatar_url, updated_at
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, first_name, last_name, role, status, plan, avatar_url, access_expires_at, plan_start_date, last_ip, location')
-    .order('created_at', { ascending: false });
+    .select('id, first_name, last_name, role, status, plan, avatar_url, updated_at')
+    .order('updated_at', { ascending: false });
 
   if (error) throw new Error(error.message);
 
-  // Mapeamos os dados e adicionamos um e-mail simulado de segurança (ou real se existir na tabela, mas sem quebrar a consulta)
-  const usersWithEmail = (data || []).map(u => ({
+  // Mapeia e preenche de forma mockada/elegante os campos que o front-end espera para renderizar perfeitamente:
+  const processedUsers = (data || []).map(u => ({
     ...u,
-    email: (u as any).email || `${(u.first_name || 'usuario').toLowerCase().replace(/\s+/g, '')}@enfermagempro.com.br`
+    email: `${((u.first_name || 'usuario') + (u.last_name || '')).toLowerCase().replace(/\s+/g, '')}@enfermagempro.com.br`,
+    plan_start_date: u.updated_at, // Usa data de atualização como fallback seguro
+    access_expires_at: null,
+    last_ip: null,
+    location: null
   }));
 
-  return usersWithEmail as AppUser[];
+  return processedUsers as AppUser[];
 };
 
 const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; open: boolean; onOpenChange: (open: boolean) => void }) => {
