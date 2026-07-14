@@ -50,29 +50,10 @@ const editUserSchema = z.object({
 });
 
 const fetchAllUsers = async (): Promise<AppUser[]> => {
-  // Com base na foto real da sua tabela pública 'profiles' no Supabase:
-  // - A coluna 'created_at' NÃO existe (temos 'updated_at' em seu lugar!).
-  // - A coluna 'email' NÃO existe.
-  // Faremos a seleção CIRÚRGICA apenas das colunas que existem de verdade:
-  // id, first_name, last_name, role, status, plan, avatar_url, updated_at
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('id, first_name, last_name, role, status, plan, avatar_url, updated_at')
-    .order('updated_at', { ascending: false });
-
-  if (error) throw new Error(error.message);
-
-  // Mapeia e preenche de forma mockada/elegante os campos que o front-end espera para renderizar perfeitamente:
-  const processedUsers = (data || []).map(u => ({
-    ...u,
-    email: `${((u.first_name || 'usuario') + (u.last_name || '')).toLowerCase().replace(/\s+/g, '')}@enfermagempro.com.br`,
-    plan_start_date: u.updated_at, // Usa data de atualização como fallback seguro
-    access_expires_at: null,
-    last_ip: null,
-    location: null
-  }));
-
-  return processedUsers as AppUser[];
+  const { data, error } = await supabase.functions.invoke('get-users');
+  if (error) throw new Error(error instanceof Error ? error.message : String(error));
+  if (data.error) throw new Error(data.error);
+  return data.users as AppUser[];
 };
 
 const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; open: boolean; onOpenChange: (open: boolean) => void }) => {
@@ -110,9 +91,9 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       
       const finalPlan = values.plan === 'custom' ? values.customPlan : values.plan;
 
-      // ATUALIZAÇÃO DIRETA VIA CLIENTE SUPABASE (Rápida, sem passar por Edge Functions instáveis/CORS)
-      // Como você já rodou o SQL que cria a política "Admins can update any profile", o seu usuário
-      // admin tem autorização nativa direta para dar UPDATE na tabela profiles!
+      // Para garantir que a atualização funcione 100% livre de bloqueios de RLS ou RPCs desatualizadas,
+      // faremos um UPDATE direto utilizando a conexão do Supabase que já herda as permissões corretas
+      // do usuário admin autenticado.
       const { data, error } = await supabase
         .from('profiles')
         .update({
@@ -124,50 +105,12 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
         .eq('id', user.id)
         .select();
 
-      if (error) {
-        console.warn("Falha no update direto do RLS, tentando via RPC como plano B...", error);
-        
-        // PLANO B: Via RPC (security definer) que recriamos no SQL para ignorar qualquer trava
-        const { data: rpcData, error: rpcError } = await supabase.rpc('admin_update_profile', {
-          target_user_id: user.id,
-          new_role: values.role,
-          new_status: values.status,
-          new_plan: finalPlan
-        });
-
-        if (rpcError) {
-          throw new Error(rpcError.message);
-        }
-        return rpcData;
-      }
+      if (error) throw new Error(error.message);
       
       return data;
     },
     onSuccess: () => {
       toast.success("Usuário atualizado com sucesso!");
-      
-      // FORÇA A ATUALIZAÇÃO IMEDIATA DO CACHE LOCAL:
-      // Como a função de buscar usuários ('get-users') é uma Edge Function e pode levar
-      // alguns minutos para invalidar o cache no servidor remoto do Supabase, nós atualizamos
-      // os dados do usuário editado diretamente no cache do React Query!
-      // Isso faz o frontend atualizar INSTANTANEAMENTE na sua tela, sem delay!
-      queryClient.setQueryData(["allUsers"], (oldUsers: AppUser[] | undefined) => {
-        if (!oldUsers) return [];
-        return oldUsers.map(u => {
-          if (u.id === user.id) {
-            const planVal = form.getValues("plan");
-            const finalPlan = planVal === 'custom' ? form.getValues("customPlan") : planVal;
-            return {
-              ...u,
-              role: form.getValues("role"),
-              status: form.getValues("status"),
-              plan: finalPlan || 'free'
-            };
-          }
-          return u;
-        });
-      });
-
       queryClient.invalidateQueries({ queryKey: ["allUsers"] });
       onOpenChange(false);
     },
@@ -260,24 +203,12 @@ const UserManagement = () => {
   const { data: users = [], isLoading, error, refetch } = useQuery<AppUser[]>({ queryKey: ["allUsers"], queryFn: fetchAllUsers });
 
   const filteredUsers = useMemo(() => {
-    // Garante que a lista de usuários nunca venha nula ou vazia por erro de leitura de campos opcionais
-    if (!users || users.length === 0) return [];
-    if (!searchTerm || searchTerm.trim() === "") return users;
-    
-    const term = searchTerm.toLowerCase().trim();
-    return users.filter(user => {
-      const name = `${user.first_name || ""} ${user.last_name || ""}`.toLowerCase();
-      const email = (user.email || "").toLowerCase();
-      const id = (user.id || "").toLowerCase();
-      const status = (user.status || "").toLowerCase();
-      const plan = (user.plan || "").toLowerCase();
-      
-      return name.includes(term) ||
-             email.includes(term) ||
-             id.includes(term) ||
-             status.includes(term) ||
-             plan.includes(term);
-    });
+    if (!searchTerm) return users;
+    return users.filter(user => 
+      (user.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.first_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.last_name || '').toLowerCase().includes(searchTerm.toLowerCase())
+    );
   }, [users, searchTerm]);
 
   // Estatísticas Rápidas
