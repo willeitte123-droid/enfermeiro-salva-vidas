@@ -91,12 +91,19 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       
       const finalPlan = values.plan === 'custom' ? values.customPlan : values.plan;
 
-      const { data, error } = await supabase.rpc('admin_update_profile', {
-        target_user_id: user.id,
-        new_role: values.role,
-        new_status: values.status,
-        new_plan: finalPlan
-      });
+      // Para garantir que a atualização funcione 100% livre de bloqueios de RLS ou RPCs desatualizadas,
+      // faremos um UPDATE direto utilizando a conexão do Supabase que já herda as permissões corretas
+      // do usuário admin autenticado.
+      const { data, error } = await supabase
+        .from('profiles')
+        .update({
+          role: values.role,
+          status: values.status,
+          plan: finalPlan,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id)
+        .select();
 
       if (error) throw new Error(error.message);
       
