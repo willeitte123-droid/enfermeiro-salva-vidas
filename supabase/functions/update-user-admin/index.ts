@@ -56,11 +56,40 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { data, error } = await supabaseAdmin
+    // Check if profile exists
+    const { data: existingProfile } = await supabaseAdmin
       .from('profiles')
-      .update(updates)
+      .select('id')
       .eq('id', userId)
-      .select()
+      .single()
+
+    let data, error
+
+    if (existingProfile) {
+      // Profile exists, perform UPDATE
+      const response = await supabaseAdmin
+        .from('profiles')
+        .update(updates)
+        .eq('id', userId)
+        .select()
+      data = response.data
+      error = response.error
+    } else {
+      // Profile is missing (auth only), perform INSERT
+      const response = await supabaseAdmin
+        .from('profiles')
+        .insert({
+          id: userId,
+          email: updates.email,
+          role: updates.role,
+          status: updates.status,
+          plan: updates.plan,
+          updated_at: updates.updated_at
+        })
+        .select()
+      data = response.data
+      error = response.error
+    }
 
     if (error) throw error
 

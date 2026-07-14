@@ -92,8 +92,8 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       const finalPlan = values.plan === 'custom' ? values.customPlan : values.plan;
 
       // Chama explicitamente a Edge Function que tem privilégios totais de Service Role.
-      // Como o update direto falhou, isso indica que as políticas de RLS estão barrando
-      // a sua conta de admin de alterar outros profiles na tabela pública do Supabase.
+      // Esta função agora suporta UPSERT (criação automática do profile na tabela public caso
+      // ele só exista no Auth)
       const { data, error } = await supabase.functions.invoke('update-user-admin', {
         body: {
           userId: user.id,
@@ -101,7 +101,8 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
             role: values.role,
             status: values.status,
             plan: finalPlan,
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
+            email: user.email // Passamos o email para caso a function precise criar a linha do zero
           }
         }
       });
@@ -109,8 +110,7 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       if (error) {
         console.error("Falha ao invocar edge function:", error);
         
-        // Fallback: se a function update-user-admin não existir, tentamos a RPC antiga
-        // mas rodando pelo admin diretamente (caso a RLS esteja bloqueando chamadas diretas)
+        // Fallback para a RPC caso a edge function não tenha sido "deployada" ainda.
         const { error: rpcError } = await supabase.rpc('admin_update_profile', {
             target_user_id: user.id,
             new_role: values.role,
