@@ -50,16 +50,20 @@ const editUserSchema = z.object({
 });
 
 const fetchAllUsers = async (): Promise<AppUser[]> => {
-  // Buscamos os usuários DIRETAMENTE do banco de dados ao invés de usar a Edge Function.
-  // Isso resolve DEFINITIVAMENTE o problema de receber dados cacheados e antigos que ficavam
-  // revertendo a sua edição em menos de 1 segundo!
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('id, first_name, last_name, role, status, plan, avatar_url, email, access_expires_at, plan_start_date, last_ip, location')
-    .order('created_at', { ascending: false });
-
-  if (error) throw new Error(error.message);
-  return data as AppUser[];
+  // Como a coluna 'email' fica guardada no auth.users do Supabase (e não na tabela pública 'profiles' por padrão),
+  // a Edge Function 'get-users' é quem faz a junção das duas informações com segurança.
+  // Para evitar o cache agressivo da Edge Function sem quebrar a consulta, chamamos ela passando
+  // um cabeçalho de cache buster para forçar o Supabase a ignorar o cache e ler as alterações do banco em tempo real!
+  const { data, error } = await supabase.functions.invoke('get-users', {
+    headers: {
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache'
+    }
+  });
+  
+  if (error) throw new Error(error instanceof Error ? error.message : String(error));
+  if (data.error) throw new Error(data.error);
+  return data.users as AppUser[];
 };
 
 const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; open: boolean; onOpenChange: (open: boolean) => void }) => {
