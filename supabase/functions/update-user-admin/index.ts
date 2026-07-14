@@ -4,6 +4,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
 }
 
 serve(async (req) => {
@@ -12,96 +13,117 @@ serve(async (req) => {
   }
 
   try {
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
-    )
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
 
-    // Verify caller is admin
-    const { data: { user } } = await supabaseClient.auth.getUser()
-    
-    if (!user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      })
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error('Server configuration error: Missing environment variables')
     }
 
-    const { data: adminProfile } = await supabaseClient
+    const authHeader = req.headers.get('Authorization')
+    if (!authHeader) {
+      throw new Error('Missing Authorization header')
+    }
+
+    const supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    })
+
+    // Verify caller is admin
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser()
+    
+    if (authError || !user) {
+      throw new Error('Unauthorized or invalid token')
+    }
+
+    const { data: adminProfile, error: profileError } = await supabaseClient
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single()
 
-    if (adminProfile?.role !== 'admin') {
-      return new Response(JSON.stringify({ error: 'Forbidden: Admins only' }), {
-        status: 403,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      })
+    if (profileError || adminProfile?.role !== 'admin') {
+      throw new Error('Forbidden: Admins only')
     }
 
-    const { userId, updates } = await req.json()
+    let requestData
+    try {
+      requestData = await req.json()
+    } catch (e) {
+      throw new Error('Invalid JSON payload')
+    }
+
+    const { userId, updates } = requestData
 
     if (!userId || !updates) {
-       return new Response(JSON.stringify({ error: 'Missing userId or updates' }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      })
+       throw new Error('Missing userId or updates in payload')
     }
 
     // Use Service Role Key to bypass RLS and force the update
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
 
-    // Check if profile exists
+    // Check if profile exists using Service Role
     const { data: existingProfile } = await supabaseAdmin
       .from('profiles')
       .select('id')
       .eq('id', userId)
-      .single()
+      .maybeSingle()
 
-    let data, error
+    let resultData, operationError
 
     if (existingProfile) {
       // Profile exists, perform UPDATE
-      const response = await supabaseAdmin
+      const { data, error } = await supabaseAdmin
         .from('profiles')
-        .update(updates)
-        .eq('id', userId)
-        .select()
-      data = response.data
-      error = response.error
-    } else {
-      // Profile is missing (auth only), perform INSERT
-      const response = await supabaseAdmin
-        .from('profiles')
-        .insert({
-          id: userId,
-          email: updates.email,
+        .update({
           role: updates.role,
           status: updates.status,
           plan: updates.plan,
           updated_at: updates.updated_at
         })
+        .eq('id', userId)
         .select()
-      data = response.data
-      error = response.error
+        
+      resultData = data
+      operationError = error
+    } else {
+      // Profile is missing (auth only), perform INSERT
+      const { data, error } = await supabaseAdmin
+        .from('profiles')
+        .insert({
+          id: userId,
+          email: updates.email || '',
+          role: updates.role || 'user',
+          status: updates.status || 'pending',
+          plan: updates.plan || 'free',
+          updated_at: updates.updated_at || new Date().toISOString()
+        })
+        .select()
+        
+      resultData = data
+      operationError = error
     }
 
-    if (error) throw error
+    if (operationError) {
+      throw new Error(`Database operation failed: ${operationError.message}`)
+    }
 
-    return new Response(JSON.stringify({ success: true, data }), {
+    return new Response(JSON.stringify({ success: true, data: resultData }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     })
 
   } catch (error: any) {
+    console.error("Function error:", error.message)
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 400,
+      status: 400, // Changed from 500/etc to 400 so the frontend can read the exact error payload
     })
   }
 })
