@@ -91,21 +91,37 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       
       const finalPlan = values.plan === 'custom' ? values.customPlan : values.plan;
 
-      // Para garantir que a atualização funcione 100% livre de bloqueios de RLS ou RPCs desatualizadas,
-      // faremos um UPDATE direto utilizando a conexão do Supabase que já herda as permissões corretas
-      // do usuário admin autenticado.
-      const { data, error } = await supabase
-        .from('profiles')
-        .update({
-          role: values.role,
-          status: values.status,
-          plan: finalPlan,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id)
-        .select();
+      // Chama explicitamente a Edge Function que tem privilégios totais de Service Role.
+      // Como o update direto falhou, isso indica que as políticas de RLS estão barrando
+      // a sua conta de admin de alterar outros profiles na tabela pública do Supabase.
+      const { data, error } = await supabase.functions.invoke('update-user-admin', {
+        body: {
+          userId: user.id,
+          updates: {
+            role: values.role,
+            status: values.status,
+            plan: finalPlan,
+            updated_at: new Date().toISOString()
+          }
+        }
+      });
 
-      if (error) throw new Error(error.message);
+      if (error) {
+        console.error("Falha ao invocar edge function:", error);
+        
+        // Fallback: se a function update-user-admin não existir, tentamos a RPC antiga
+        // mas rodando pelo admin diretamente (caso a RLS esteja bloqueando chamadas diretas)
+        const { error: rpcError } = await supabase.rpc('admin_update_profile', {
+            target_user_id: user.id,
+            new_role: values.role,
+            new_status: values.status,
+            new_plan: finalPlan
+        });
+        
+        if (rpcError) throw new Error(error.message || rpcError.message);
+      } else if (data?.error) {
+         throw new Error(data.error);
+      }
       
       return data;
     },
@@ -115,7 +131,7 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       onOpenChange(false);
     },
     onError: (error) => {
-      toast.error("Erro ao atualizar", { description: error.message });
+      toast.error("Erro ao atualizar usuário", { description: error.message });
     },
   });
 
