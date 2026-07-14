@@ -126,6 +126,29 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
     },
     onSuccess: () => {
       toast.success("Usuário atualizado com sucesso!");
+      
+      // FORÇA A ATUALIZAÇÃO IMEDIATA DO CACHE LOCAL:
+      // Como a função de buscar usuários ('get-users') é uma Edge Function e pode levar
+      // alguns minutos para invalidar o cache no servidor remoto do Supabase, nós atualizamos
+      // os dados do usuário editado diretamente no cache do React Query!
+      // Isso faz o frontend atualizar INSTANTANEAMENTE na sua tela, sem delay!
+      queryClient.setQueryData(["allUsers"], (oldUsers: AppUser[] | undefined) => {
+        if (!oldUsers) return [];
+        return oldUsers.map(u => {
+          if (u.id === user.id) {
+            const planVal = form.getValues("plan");
+            const finalPlan = planVal === 'custom' ? form.getValues("customPlan") : planVal;
+            return {
+              ...u,
+              role: form.getValues("role"),
+              status: form.getValues("status"),
+              plan: finalPlan || 'free'
+            };
+          }
+          return u;
+        });
+      });
+
       queryClient.invalidateQueries({ queryKey: ["allUsers"] });
       onOpenChange(false);
     },
