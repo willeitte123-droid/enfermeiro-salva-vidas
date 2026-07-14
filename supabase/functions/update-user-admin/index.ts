@@ -1,5 +1,5 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,113 +8,65 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // 1. Trata OPTIONS para CORS
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    console.log("=== INICIANDO EXECUÇÃO DO UPDATE-USER-ADMIN ===");
+    // 1. Instancia o cliente Admin com a Service Key (pula regras RLS)
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      { auth: { persistSession: false } }
+    )
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
-    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? ''
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-
-    console.log("1. Verificando Variáveis de Ambiente:");
-    console.log(`- SUPABASE_URL existe? ${!!supabaseUrl}`);
-    console.log(`- SUPABASE_ANON_KEY existe? ${!!supabaseAnonKey}`);
-    console.log(`- SUPABASE_SERVICE_ROLE_KEY existe? ${!!supabaseServiceKey}`);
-
-    if (!supabaseUrl || !supabaseServiceKey) {
-      throw new Error('Erro de Configuração: SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY não estão definidas nas variáveis de ambiente da Edge Function.')
-    }
-
+    // 2. Extrai e valida o token do Admin
     const authHeader = req.headers.get('Authorization')
-    if (!authHeader) {
-      throw new Error('Header de Autorização (Bearer token) ausente na requisição.')
-    }
-
-    console.log("2. Criando cliente Supabase para validar quem chamou a função...");
-    const supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: authHeader } }
-    })
-
-    console.log("3. Obtendo usuário do Token JWT...");
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser()
+    if (!authHeader) throw new Error('Authorization header missing')
     
-    if (authError) {
-        console.error("- Erro no getUser:", authError.message);
-        throw new Error(`Token inválido ou expirado: ${authError.message}`);
-    }
-    if (!user) {
-      throw new Error('Usuário não encontrado no token fornecido.')
-    }
-    console.log(`- Usuário chamador identificado: ID ${user.id}`);
+    const jwt = authHeader.replace('Bearer ', '')
+    const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(jwt)
+    
+    if (userError || !user) throw userError || new Error('User not found or token invalid')
 
-    console.log("4. Verificando se o chamador é um Administrador...");
-    const { data: adminProfile, error: profileError } = await supabaseClient
+    // 3. Verifica se quem chamou é realmente Admin
+    const { data: adminProfile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single()
 
-    if (profileError) {
-        console.error("- Erro ao buscar perfil do admin:", profileError.message);
-    }
-    console.log(`- Role do chamador: ${adminProfile?.role}`);
-
-    if (adminProfile?.role !== 'admin') {
-      throw new Error('Acesso Negado: Apenas administradores podem executar esta ação.')
+    if (profileError || adminProfile?.role !== 'admin') {
+      return new Response(JSON.stringify({ error: 'Access denied: Admins only' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
 
-    console.log("5. Lendo os dados enviados (Payload)...");
-    let requestData
-    try {
-      requestData = await req.json()
-      console.log("- Payload recebido:", JSON.stringify(requestData));
-    } catch (e) {
-      console.error("- Erro ao ler JSON:", e);
-      throw new Error('Corpo da requisição inválido (Não é um JSON).')
-    }
-
+    // 4. Processa os dados que vieram do painel
+    const requestData = await req.json()
     const { userId, updates } = requestData
 
-    if (!userId || !updates) {
-       throw new Error('Payload incompleto: userId ou updates faltando.')
-    }
+    if (!userId || !updates) throw new Error('Missing userId or updates in payload')
 
-    console.log("6. Criando cliente Supabase ADMIN (Bypass RLS)...");
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
-    })
-
-    console.log(`7. Buscando se o perfil alvo já existe na tabela 'profiles'. Alvo ID: ${userId}`);
-    const { data: existingProfile, error: existError } = await supabaseAdmin
+    // 5. Verifica se o usuário que vai ser editado tem perfil
+    const { data: existingProfile } = await supabaseAdmin
       .from('profiles')
       .select('id')
       .eq('id', userId)
       .maybeSingle()
 
-    if (existError) {
-        console.error("- Erro ao checar existencia do perfil:", existError.message);
-        throw existError;
-    }
-    console.log(`- Perfil existe no banco? ${!!existingProfile}`);
-
     let resultData, operationError
 
     if (existingProfile) {
-      console.log("8. Executando UPDATE no perfil...");
+      // Perfil existe: FAZ UPDATE
       const { data, error } = await supabaseAdmin
         .from('profiles')
         .update({
           role: updates.role,
           status: updates.status,
           plan: updates.plan,
-          updated_at: updates.updated_at
+          updated_at: updates.updated_at || new Date().toISOString()
         })
         .eq('id', userId)
         .select()
@@ -122,7 +74,7 @@ serve(async (req) => {
       resultData = data
       operationError = error
     } else {
-      console.log("8. Executando INSERT no perfil (Criando do zero)...");
+      // Perfil não existe: FAZ INSERT
       const { data, error } = await supabaseAdmin
         .from('profiles')
         .insert({
@@ -139,25 +91,19 @@ serve(async (req) => {
       operationError = error
     }
 
-    if (operationError) {
-      console.error("9. Erro na operação no banco de dados:", operationError.message);
-      throw new Error(`Database operation failed: ${operationError.message}`)
-    }
+    if (operationError) throw operationError
 
-    console.log("=== SUCESSO: OPERAÇÃO CONCLUÍDA ===");
+    // Tudo deu certo! Retorna sucesso pro React
     return new Response(JSON.stringify({ success: true, data: resultData }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     })
 
   } catch (error: any) {
-    console.error("=== ERRO CRÍTICO CAPTURADO NO CATCH ===");
-    console.error("Mensagem:", error.message)
-    if (error.stack) console.error("Stack:", error.stack)
-
+    console.error("Function error:", error.message)
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 400,
+      status: 400, // Status 400 permite que o frontend leia a mensagem real do erro
     })
   }
 })
