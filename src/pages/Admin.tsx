@@ -92,20 +92,19 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       const finalPlan = values.plan === 'custom' ? values.customPlan : values.plan;
 
       // Para garantir que a atualização funcione 100% livre de bloqueios de RLS ou RPCs desatualizadas,
-      // faremos um UPDATE direto utilizando a conexão do Supabase que já herda as permissões corretas
-      // do usuário admin autenticado.
-      const { data, error } = await supabase
-        .from('profiles')
-        .update({
+      // usaremos a Edge Function 'update-user' dedicada (que roda com a service_role bypassando RLS)
+      // para gravar com sucesso absoluto no banco de dados.
+      const { data, error } = await supabase.functions.invoke('update-user', {
+        body: {
+          userId: user.id,
           role: values.role,
           status: values.status,
-          plan: finalPlan,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id)
-        .select();
+          plan: finalPlan
+        }
+      });
 
       if (error) throw new Error(error.message);
+      if (data?.error) throw new Error(data.error);
       
       return data;
     },
