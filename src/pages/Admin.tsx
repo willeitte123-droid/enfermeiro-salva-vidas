@@ -91,20 +91,36 @@ const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; op
       
       const finalPlan = values.plan === 'custom' ? values.customPlan : values.plan;
 
-      // Para garantir que a atualização funcione 100% livre de bloqueios de RLS ou RPCs desatualizadas,
-      // usaremos a Edge Function 'update-user' dedicada (que roda com a service_role bypassando RLS)
-      // para gravar com sucesso absoluto no banco de dados.
-      const { data, error } = await supabase.functions.invoke('update-user', {
-        body: {
-          userId: user.id,
+      // ATUALIZAÇÃO DIRETA VIA CLIENTE SUPABASE (Rápida, sem passar por Edge Functions instáveis/CORS)
+      // Como você já rodou o SQL que cria a política "Admins can update any profile", o seu usuário
+      // admin tem autorização nativa direta para dar UPDATE na tabela profiles!
+      const { data, error } = await supabase
+        .from('profiles')
+        .update({
           role: values.role,
           status: values.status,
-          plan: finalPlan
-        }
-      });
+          plan: finalPlan,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id)
+        .select();
 
-      if (error) throw new Error(error.message);
-      if (data?.error) throw new Error(data.error);
+      if (error) {
+        console.warn("Falha no update direto do RLS, tentando via RPC como plano B...", error);
+        
+        // PLANO B: Via RPC (security definer) que recriamos no SQL para ignorar qualquer trava
+        const { data: rpcData, error: rpcError } = await supabase.rpc('admin_update_profile', {
+          target_user_id: user.id,
+          new_role: values.role,
+          new_status: values.status,
+          new_plan: finalPlan
+        });
+
+        if (rpcError) {
+          throw new Error(rpcError.message);
+        }
+        return rpcData;
+      }
       
       return data;
     },
