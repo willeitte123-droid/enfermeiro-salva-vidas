@@ -50,10 +50,16 @@ const editUserSchema = z.object({
 });
 
 const fetchAllUsers = async (): Promise<AppUser[]> => {
-  const { data, error } = await supabase.functions.invoke('get-users');
-  if (error) throw new Error(error instanceof Error ? error.message : String(error));
-  if (data.error) throw new Error(data.error);
-  return data.users as AppUser[];
+  // Buscamos os usuários DIRETAMENTE do banco de dados ao invés de usar a Edge Function.
+  // Isso resolve DEFINITIVAMENTE o problema de receber dados cacheados e antigos que ficavam
+  // revertendo a sua edição em menos de 1 segundo!
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, first_name, last_name, role, status, plan, avatar_url, email, access_expires_at, plan_start_date, last_ip, location')
+    .order('created_at', { ascending: false });
+
+  if (error) throw new Error(error.message);
+  return data as AppUser[];
 };
 
 const EditUserDialog = ({ user, open, onOpenChange }: { user: AppUser | null; open: boolean; onOpenChange: (open: boolean) => void }) => {
