@@ -49,35 +49,50 @@
     "title": "Calendário Vacinal (PNI) - Atualizado 2024/2025",
     "icon": "Syringe",
     "color": "text-green-500",
-    "summary": "Principais vacinas do PNI com destaque para as mudanças recentes (HPV dose única e fim da VOP).",
+    "summary": "Principais vacinas do PNI com destaque para mudanças recentes (Fim da VOP, Vacina da Dengue, HPV Dose Única).",
     "details": [
       {
-        "subtitle": "Crianças (Destaques)",
+        "subtitle": "Crianças (0 a 4 anos)",
         "points": [
-          "<strong>Mudança Pólio (Importante):</strong> Substituição da VOP (gotinha) pela <strong>VIP (injetável)</strong> em todas as doses, inclusive nos reforços de 15 meses e 4 anos.",
+          "<strong>Fim da VOP (Importante):</strong> Substituição total da VOP (gotinha) pela <strong>VIP (injetável)</strong>. O esquema agora é feito com VIP aos 2, 4, 6 meses, com reforços de VIP aos 15 meses e 4 anos.",
           "<strong>Ao nascer:</strong> BCG (ID) e Hepatite B (IM).",
-          "<strong>2, 4, 6 meses:</strong> Pentavalente, VIP (Pólio Inativada), Rotavírus (apenas 2 e 4 meses).",
-          "<strong>3, 5 meses:</strong> Meningocócica C.",
-          "<strong>6 meses:</strong> Início esquema COVID-19 (Pfizer Baby) e Influenza (campanha).",
-          "<strong>9 meses:</strong> Febre Amarela.",
+          "<strong>2 meses:</strong> Pentavalente, VIP, Pneumocócica 10V, Rotavírus.",
+          "<strong>3 meses:</strong> Meningocócica C.",
+          "<strong>4 meses:</strong> Pentavalente, VIP, Pneumocócica 10V, Rotavírus.",
+          "<strong>5 meses:</strong> Meningocócica C.",
+          "<strong>6 meses:</strong> Pentavalente, VIP, início do esquema COVID-19 (pediátrico).",
+          "<strong>9 meses:</strong> Febre Amarela (Dose inicial).",
           "<strong>12 meses:</strong> Tríplice Viral (D1), Pneumo 10 (Reforço), Meningo C (Reforço).",
-          "<strong>15 meses:</strong> DTP (Reforço), <strong>VIP</strong> (Reforço - substitui VOP), Hep A, Tetra Viral."
+          "<strong>15 meses:</strong> DTP (1º Reforço), VIP (1º Reforço), Hepatite A, Tetra Viral (ou Tríplice + Varicela).",
+          "<strong>4 anos:</strong> DTP (2º Reforço), VIP (2º Reforço), Varicela (D2), Febre Amarela (Reforço)."
         ]
       },
       {
         "subtitle": "Adolescentes (10 a 19 anos)",
         "points": [
-          "<strong>HPV (Mudança Recente):</strong> Esquema de <strong>DOSE ÚNICA</strong> para meninas e meninos de 9 a 14 anos. (Imunossuprimidos mantêm 3 doses: 0-2-6 meses).",
+          "<strong>Vacina da Dengue (Qdenga):</strong> Esquema de <strong>2 doses</strong> (intervalo de 3 meses) focado na faixa de <strong>10 a 14 anos</strong> (em municípios prioritários).",
+          "<strong>HPV (Mudança):</strong> Esquema de <strong>DOSE ÚNICA</strong> para meninas e meninos de 9 a 14 anos. (Pessoas imunossuprimidas e vítimas de violência sexual até 45 anos mantêm 3 doses: 0-2-6 meses).",
           "<strong>Meningocócica ACWY:</strong> Dose única para adolescentes de 11 a 14 anos.",
           "<strong>dT (Dupla Adulto):</strong> Reforço a cada 10 anos.",
-          "<strong>Febre Amarela e Tríplice Viral:</strong> Verificar cartão e atualizar se necessário."
+          "<strong>Rotina:</strong> Verificar cartão para Febre Amarela, Tríplice Viral e Hepatite B e atualizar se necessário."
         ]
       },
       {
-        "subtitle": "Gestantes e Idosos",
+        "subtitle": "Gestantes",
         "points": [
-          "<strong>Gestantes:</strong> <strong>dTpa</strong> (a partir da 20ª semana, a CADA gestação), dT (se esquema incompleto), Hepatite B, Influenza, COVID-19.",
-          "<strong>Idosos (60+):</strong> Influenza (anual), COVID-19 (reforços), Pneumocócica 23V (acamados/institucionalizados - dose única + 1 reforço em 5 anos)."
+          "<strong>dTpa (Acelular):</strong> 1 dose a partir da <strong>20ª semana</strong> de gravidez. Deve ser tomada <strong>a cada nova gestação</strong> (protege o bebê contra coqueluche).",
+          "<strong>dT (Dupla Adulto):</strong> Aplicar se a gestante estiver com o esquema primário do tétano incompleto.",
+          "<strong>Hepatite B:</strong> 3 doses, dependendo do histórico vacinal prévio.",
+          "<strong>Campanhas/Rotina:</strong> Influenza (em qualquer idade gestacional) e COVID-19 (vacinas bivalentes/atualizadas)."
+        ]
+      },
+      {
+        "subtitle": "Idosos (60 anos ou mais)",
+        "points": [
+          "<strong>Influenza:</strong> 1 dose anual durante a Campanha Nacional.",
+          "<strong>COVID-19:</strong> Grupos prioritários de alto risco (idosos) devem receber dose de reforço anual ou semestral conforme as notas técnicas vigentes.",
+          "<strong>Hepatite B e dT:</strong> Verificar histórico e atualizar (reforço de dT a cada 10 anos).",
+          "<strong>Pneumocócica 23-Valente (Pneumo 23):</strong> Oferecida apenas para idosos <strong>acamados ou institucionalizados</strong> (asilos, casas de repouso). O esquema é 1 dose + 1 único reforço após 5 anos."
         ]
       }
     ]
