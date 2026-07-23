@@ -616,8 +616,12 @@ export default function Planner() {
                      <Button
                        variant="outline"
                        size="sm"
+                       type="button"
                        className="w-full h-8 text-xs border-dashed text-muted-foreground hover:text-primary hover:border-primary/50 bg-background"
-                       onClick={() => openWeeklyModal(dayIndex)}
+                       onClick={(e) => {
+                         e.preventDefault();
+                         openWeeklyModal(dayIndex);
+                       }}
                      >
                        <Plus className="w-3.5 h-3.5 mr-1" /> Agendar
                      </Button>
