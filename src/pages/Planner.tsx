@@ -11,11 +11,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { 
-  Calendar, Clock, Plus, Trash2, CheckCircle2, Play, Pause, RotateCcw, 
-  BookOpen, FileQuestion, BrainCircuit, Sparkles, RefreshCw, Trophy, 
+import {
+  Calendar, Clock, Plus, Trash2, CheckCircle2, Play, Pause, RotateCcw,
+  BookOpen, FileQuestion, BrainCircuit, Sparkles, RefreshCw, Trophy,
   ArrowRight, Flame, Layers, Check, Zap, Target, Edit2, X,
-  CalendarDays, RotateCw, Loader2
+  CalendarDays, RotateCw, Loader2, AlignLeft
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -43,6 +43,9 @@ interface WeeklyEvent {
   user_id: string;
   day_of_week: number;
   content: string;
+  start_time?: string;
+  category_name?: string;
+  color?: string;
 }
 
 const CATEGORIES = [
@@ -94,13 +97,17 @@ export default function Planner() {
   const [blockDuration, setBlockDuration] = useState("60");
   const [blockColor, setBlockColor] = useState("blue");
 
-  // Estados do Cronograma Semanal (Agenda Livre)
-  const [newEvents, setNewEvents] = useState<Record<number, string>>({});
-  const [editingEventId, setEditingEventId] = useState<string | null>(null);
-  const [editContent, setEditContent] = useState("");
+  // MODAL SEMANAL
+  const [isWeeklyModalOpen, setIsWeeklyModalOpen] = useState(false);
+  const [editingWeeklyEvent, setEditingWeeklyEvent] = useState<WeeklyEvent | null>(null);
+  const [weeklyDay, setWeeklyDay] = useState<number>(0);
+  const [weeklyTime, setWeeklyTime] = useState("08:00");
+  const [weeklyCategory, setWeeklyCategory] = useState("Legislação do SUS");
+  const [weeklyColor, setWeeklyColor] = useState("blue");
+  const [weeklyContent, setWeeklyContent] = useState("");
 
   // Timer Pomodoro / Sessão de Estudo
-  const [activePomodoroBlock, setActivePomodoroBlock] = useState<StudyBlock | null>(null);
+  const [activePomodoroBlock, setActivePomodoroBlock] = useState<{category_name: string; duration_minutes: number} | null>(null);
   const [timerSeconds, setTimerSeconds] = useState(25 * 60);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [pomodoroMode, setPomodoroMode] = useState<"focus" | "break">("focus");
@@ -221,24 +228,31 @@ export default function Planner() {
 
   // MUTAÇÕES DA GRADE SEMANAL
   const addWeeklyEventMutation = useMutation({
-    mutationFn: async ({ day, content }: { day: number; content: string }) => {
+    mutationFn: async (data: Omit<WeeklyEvent, 'id' | 'user_id'>) => {
       if (!profile?.id) return;
       const { error } = await supabase.from('user_weekly_events').insert({
         user_id: profile.id,
-        day_of_week: day,
-        content: content
+        ...data
       });
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] })
+    onSuccess: () => {
+      toast.success("Agendamento salvo!");
+      queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] });
+      setIsWeeklyModalOpen(false);
+    }
   });
 
   const updateWeeklyEventMutation = useMutation({
-    mutationFn: async ({ id, content }: { id: string; content: string }) => {
-      const { error } = await supabase.from('user_weekly_events').update({ content }).eq('id', id);
+    mutationFn: async ({ id, data }: { id: string; data: Partial<WeeklyEvent> }) => {
+      const { error } = await supabase.from('user_weekly_events').update(data).eq('id', id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] })
+    onSuccess: () => {
+      toast.success("Agendamento atualizado!");
+      queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] });
+      setIsWeeklyModalOpen(false);
+    }
   });
 
   const deleteWeeklyEventMutation = useMutation({
@@ -256,20 +270,40 @@ export default function Planner() {
     }
   });
 
-  // Handlers para a grade semanal
-  const handleAddEvent = (dayIndex: number) => {
-    const content = newEvents[dayIndex]?.trim();
-    if (!content) return;
-    addWeeklyEventMutation.mutate({ day: dayIndex, content });
-    setNewEvents(prev => ({ ...prev, [dayIndex]: "" }));
+  // Handlers Semanais
+  const openWeeklyModal = (dayIndex: number, event?: WeeklyEvent) => {
+    if (event) {
+      setEditingWeeklyEvent(event);
+      setWeeklyDay(event.day_of_week);
+      setWeeklyTime(event.start_time || "08:00");
+      setWeeklyCategory(event.category_name || "Outra Matéria");
+      setWeeklyColor(event.color || "blue");
+      setWeeklyContent(event.content || "");
+    } else {
+      setEditingWeeklyEvent(null);
+      setWeeklyDay(dayIndex);
+      setWeeklyTime("08:00");
+      setWeeklyCategory("Legislação do SUS");
+      setWeeklyColor("blue");
+      setWeeklyContent("");
+    }
+    setIsWeeklyModalOpen(true);
   };
 
-  const handleSaveEdit = () => {
-    if (editingEventId && editContent.trim()) {
-      updateWeeklyEventMutation.mutate({ id: editingEventId, content: editContent.trim() });
+  const handleSaveWeeklyEvent = () => {
+    const payload = {
+      day_of_week: weeklyDay,
+      start_time: weeklyTime,
+      category_name: weeklyCategory,
+      color: weeklyColor,
+      content: weeklyContent
+    };
+
+    if (editingWeeklyEvent) {
+      updateWeeklyEventMutation.mutate({ id: editingWeeklyEvent.id, data: payload });
+    } else {
+      addWeeklyEventMutation.mutate(payload);
     }
-    setEditingEventId(null);
-    setEditContent("");
   };
 
   // Timer Effect
@@ -301,13 +335,13 @@ export default function Planner() {
   const cycleProgress = cycleBlocks.length > 0 ? Math.round((completedCycleCount / cycleBlocks.length) * 100) : 0;
   const totalCycleMinutes = useMemo(() => cycleBlocks.reduce((acc, b) => acc + b.duration_minutes, 0), [cycleBlocks]);
 
-  const handleStartBlockStudy = (block: StudyBlock) => {
-    setActivePomodoroBlock(block);
+  const handleStartBlockStudy = (category: string, duration_minutes: number) => {
+    setActivePomodoroBlock({ category_name: category, duration_minutes });
     setPomodoroMode("focus");
-    setTimerSeconds(Math.min(block.duration_minutes * 60, 25 * 60)); // 25m Pomodoro ou tempo total
+    setTimerSeconds(Math.min(duration_minutes * 60, 25 * 60)); // 25m Pomodoro ou tempo total
     setIsTimerRunning(true);
     setActiveTab("timer");
-    toast.info(`Iniciando foco: ${block.category_name}`);
+    toast.info(`Iniciando foco: ${category}`);
   };
 
   const getColorConfig = (colorVal: string) => {
@@ -477,7 +511,7 @@ export default function Planner() {
                         variant={block.is_completed ? "outline" : "default"}
                         size="sm"
                         className={cn("flex-1 text-xs font-bold", !block.is_completed && "bg-primary text-primary-foreground")}
-                        onClick={() => handleStartBlockStudy(block)}
+                        onClick={() => handleStartBlockStudy(block.category_name, block.duration_minutes)}
                       >
                         <Play className="mr-1.5 h-3.5 w-3.5 fill-current" />
                         {block.is_completed ? "Reestudar" : "Foco"}
@@ -516,56 +550,77 @@ export default function Planner() {
                   <CardHeader className="p-3 border-b bg-muted/40 text-center">
                     <CardTitle className="text-sm font-bold text-foreground">{dayName}</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 flex-1 flex flex-col gap-2 bg-gradient-to-b from-background to-muted/20">
-                    {dayEvents.map(event => (
-                      <div key={event.id} className="relative group">
-                        {editingEventId === event.id ? (
-                          <Input
-                            autoFocus
-                            value={editContent}
-                            onChange={(e) => setEditContent(e.target.value)}
-                            onBlur={handleSaveEdit}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') handleSaveEdit();
-                              if (e.key === 'Escape') setEditingEventId(null);
-                            }}
-                            className="h-auto py-2 px-3 text-xs bg-background shadow-inner"
-                          />
-                        ) : (
-                          <div className="p-3 rounded-lg border border-border/80 bg-background text-xs text-foreground/90 shadow-sm leading-relaxed pr-8 hover:border-primary/30 transition-colors">
-                            <span 
-                              className="cursor-text break-words w-full block" 
-                              onClick={() => {
-                                setEditingEventId(event.id);
-                                setEditContent(event.content);
-                              }}
-                            >
-                              {event.content}
-                            </span>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all"
-                              onClick={() => deleteWeeklyEventMutation.mutate(event.id)}
-                            >
-                              <X className="h-3.5 w-3.5" />
-                            </Button>
-                          </div>
-                        )}
+                  <CardContent className="p-2 flex-1 flex flex-col gap-2 bg-gradient-to-b from-background to-muted/20">
+                    {dayEvents.length === 0 ? (
+                      <div className="flex-1 flex items-center justify-center text-center p-2 text-muted-foreground text-xs italic">
+                        Livre
                       </div>
-                    ))}
+                    ) : (
+                      dayEvents.map(event => {
+                        const colorCfg = getColorConfig(event.color || 'blue');
+                        return (
+                          <div
+                            key={event.id}
+                            onClick={() => openWeeklyModal(dayIndex, event)}
+                            className={cn(
+                              "p-2.5 rounded-lg border flex flex-col gap-1.5 relative group cursor-pointer transition-transform hover:scale-[1.02] shadow-sm",
+                              colorCfg.cardBg, colorCfg.border
+                            )}
+                          >
+                            <div className="flex justify-between items-start">
+                              <div className={cn("flex items-center gap-1.5 text-[10px] font-black tracking-wider uppercase opacity-80", colorCfg.text)}>
+                                <Clock className="w-3 h-3" /> {event.start_time || "00:00"}
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="absolute top-1.5 right-1.5 h-5 w-5 opacity-0 group-hover:opacity-100 text-destructive p-0 hover:bg-destructive/10"
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Evita abrir o modal de edição ao clicar em apagar
+                                  deleteWeeklyEventMutation.mutate(event.id);
+                                }}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                            
+                            <span className="font-bold text-sm leading-tight text-foreground">{event.category_name}</span>
+                            
+                            {event.content && (
+                              <div className="flex items-start gap-1.5 mt-1 opacity-70">
+                                <AlignLeft className="w-3 h-3 shrink-0 mt-0.5" />
+                                <span className="text-[10px] line-clamp-2 italic">{event.content}</span>
+                              </div>
+                            )}
+
+                            {/* Botão rápido para ir para o timer com essa matéria */}
+                            <div className="mt-2 pt-2 border-t border-current/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                               <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="w-full h-6 text-[10px] hover:bg-background/50"
+                                  onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleStartBlockStudy(event.category_name, 60);
+                                  }}
+                               >
+                                  <Play className="w-3 h-3 mr-1" /> Estudar Agora
+                               </Button>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
                   </CardContent>
-                  <CardFooter className="p-2 border-t bg-background">
-                    <Input
-                      placeholder="+ Nova anotação"
-                      className="text-xs h-9 border-dashed focus-visible:ring-primary/50 shadow-none bg-muted/20"
-                      value={newEvents[dayIndex] || ""}
-                      onChange={(e) => setNewEvents(prev => ({ ...prev, [dayIndex]: e.target.value }))}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') handleAddEvent(dayIndex);
-                      }}
-                      onBlur={() => handleAddEvent(dayIndex)}
-                    />
+                  <CardFooter className="p-2 border-t bg-muted/10">
+                     <Button
+                       variant="outline"
+                       size="sm"
+                       className="w-full h-8 text-xs border-dashed text-muted-foreground hover:text-primary hover:border-primary/50 bg-background"
+                       onClick={() => openWeeklyModal(dayIndex)}
+                     >
+                       <Plus className="w-3.5 h-3.5 mr-1" /> Agendar
+                     </Button>
                   </CardFooter>
                 </Card>
               );
@@ -581,7 +636,7 @@ export default function Planner() {
                 {pomodoroMode === "focus" ? "🔥 Modo Foco Total" : "☕ Pausa Agradável"}
               </Badge>
               <CardTitle className="text-2xl font-bold">
-                {activePomodoroBlock ? activePomodoroBlock.category_name : "Sessão de Estudos Geral"}
+                {activePomodoroBlock ? activePomodoroBlock.category_name : "Sessão Livre"}
               </CardTitle>
               <CardDescription>
                 {pomodoroMode === "focus" ? "Concentre-se totalmente nesta matéria até o timer finalizar." : "Aproveite para relaxar, beber água e esticar as pernas."}
@@ -610,12 +665,12 @@ export default function Planner() {
                   {isTimerRunning ? <><Pause className="mr-2 h-5 w-5" /> Pausar</> : <><Play className="mr-2 h-5 w-5" /> Iniciar</>}
                 </Button>
 
-                <Button 
-                  size="lg" 
-                  variant="outline" 
+                <Button
+                  size="lg"
+                  variant="outline"
                   onClick={() => {
                     setIsTimerRunning(false);
-                    setTimerSeconds(pomodoroMode === "focus" ? 25 * 60 : 5 * 60);
+                    setTimerSeconds(pomodoroMode === "focus" ? (activePomodoroBlock ? activePomodoroBlock.duration_minutes * 60 : 25 * 60) : 5 * 60);
                   }}
                   className="h-12 w-12 p-0 shrink-0"
                   title="Reiniciar Timer"
