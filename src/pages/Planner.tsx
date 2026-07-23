@@ -326,7 +326,7 @@ export default function Planner() {
             </div>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight">Meu Cronograma & Ciclos</h1>
             <p className="text-blue-100/80 max-w-xl text-xs sm:text-base leading-relaxed">
-              Monte seu ciclo dinâmico para não se atrasar, e use a agenda livre da semana para compromissos rápidos.
+              Monte seu ciclo dinâmico de estudos. Avance nas matérias no seu próprio ritmo sem a culpa dos cronogramas fixos que geram atraso.
             </p>
           </div>
 
@@ -355,12 +355,9 @@ export default function Planner() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex justify-center mb-6">
-          <TabsList className="grid w-full max-w-xl grid-cols-3 h-10 sm:h-12 bg-muted/50 p-1 rounded-full">
+          <TabsList className="grid w-full max-w-md grid-cols-2 h-10 sm:h-12 bg-muted/50 p-1 rounded-full">
             <TabsTrigger value="cycle" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all px-1">
               <RotateCw className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Ciclo Ativo
-            </TabsTrigger>
-            <TabsTrigger value="weekly" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all px-1">
-              <CalendarDays className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Agenda Semanal
             </TabsTrigger>
             <TabsTrigger value="timer" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all relative px-1">
               <Clock className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Foco (Timer)
