@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import FavoriteButton from "@/components/FavoriteButton";
+import { usePomodoro } from "@/context/PomodoroContext";
 
 interface Profile {
   id: string;
@@ -108,11 +109,10 @@ export default function Planner() {
   const [blockDuration, setBlockDuration] = useState("60");
   const [blockColor, setBlockColor] = useState("blue");
 
-  // Timer Pomodoro / Sessão de Estudo
-  const [activePomodoroBlock, setActivePomodoroBlock] = useState<StudyBlock | null>(null);
-  const [timerSeconds, setTimerSeconds] = useState(25 * 60);
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [pomodoroMode, setPomodoroMode] = useState<"focus" | "break">("focus");
+  // Timer Pomodoro Global
+  const { timerSeconds, isTimerRunning, pomodoroMode, activeBlock, startPomodoro, togglePomodoro, resetPomodoro, stopPomodoro } = usePomodoro();
+  // Para manter a tipagem da UI que antes usava o StudyBlock completo, mapeamos o activeBlock para o formato esperado pela UI onde preciso
+  const activePomodoroBlock = activeBlock as StudyBlock | null;
 
   // 1. Fetch Blocos do Ciclo
   const { data: cycleBlocks = [], isLoading: isLoadingBlocks } = useQuery<StudyBlock[]>({
@@ -249,47 +249,16 @@ export default function Planner() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] })
   });
 
-  const saveSessionMutation = useMutation({
-    mutationFn: async ({ category, seconds }: { category: string; seconds: number }) => {
-      if (!profile?.id || seconds <= 0) return;
-      await supabase.rpc('increment_user_activity', { seconds_to_add: seconds });
-    }
-  });
-
-  // Timer Effect
-  useEffect(() => {
-    let interval: any = null;
-    if (isTimerRunning && timerSeconds > 0) {
-      interval = setInterval(() => {
-        setTimerSeconds(prev => prev - 1);
-      }, 1000);
-    } else if (timerSeconds === 0 && isTimerRunning) {
-      setIsTimerRunning(false);
-      if (pomodoroMode === "focus") {
-        toast.success("Sessão de Foco Concluída!", { description: "Hora de uma pausa rápida de 5 minutos." });
-        if (activePomodoroBlock) {
-          saveSessionMutation.mutate({ category: activePomodoroBlock.category_name, seconds: activePomodoroBlock.duration_minutes * 60 });
-        }
-        setPomodoroMode("break");
-        setTimerSeconds(5 * 60);
-      } else {
-        toast.info("Pausa terminada!", { description: "Pronto para o próximo bloco de estudos?" });
-        setPomodoroMode("focus");
-        setTimerSeconds(25 * 60);
-      }
-    }
-    return () => clearInterval(interval);
-  }, [isTimerRunning, timerSeconds, pomodoroMode, activePomodoroBlock]);
-
   const completedCycleCount = useMemo(() => cycleBlocks.filter(b => b.is_completed).length, [cycleBlocks]);
   const cycleProgress = cycleBlocks.length > 0 ? Math.round((completedCycleCount / cycleBlocks.length) * 100) : 0;
   const totalCycleMinutes = useMemo(() => cycleBlocks.reduce((acc, b) => acc + b.duration_minutes, 0), [cycleBlocks]);
 
   const handleStartBlockStudy = (block: StudyBlock) => {
-    setActivePomodoroBlock(block);
-    setPomodoroMode("focus");
-    setTimerSeconds(Math.min(block.duration_minutes * 60, 25 * 60)); 
-    setIsTimerRunning(true);
+    startPomodoro({
+      id: block.id,
+      category_name: block.category_name,
+      duration_minutes: block.duration_minutes
+    });
     setActiveTab("timer");
     toast.info(`Iniciando foco: ${block.category_name}`);
   };
@@ -595,21 +564,18 @@ export default function Planner() {
               </div>
 
               <div className="flex gap-4 w-full max-w-xs">
-                <Button 
-                  size="lg" 
-                  onClick={() => setIsTimerRunning(!isTimerRunning)} 
+                <Button
+                  size="lg"
+                  onClick={togglePomodoro}
                   className={cn("flex-1 font-bold h-12 text-base shadow-lg", isTimerRunning ? "bg-amber-600 hover:bg-amber-700" : "bg-primary")}
                 >
                   {isTimerRunning ? <><Pause className="mr-2 h-5 w-5" /> Pausar</> : <><Play className="mr-2 h-5 w-5" /> Iniciar</>}
                 </Button>
 
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  onClick={() => {
-                    setIsTimerRunning(false);
-                    setTimerSeconds(pomodoroMode === "focus" ? 25 * 60 : 5 * 60);
-                  }}
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={resetPomodoro}
                   className="h-12 w-12 p-0 shrink-0"
                   title="Reiniciar Timer"
                 >

@@ -85,9 +85,29 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
            await supabase.from('user_study_sessions').insert({
              user_id: userId,
              category_name: activeBlock.category_name,
-             duration_seconds: activeBlock.duration_minutes * 60 
+             duration_seconds: activeBlock.duration_minutes * 60
            });
            await supabase.rpc('increment_user_activity', { seconds_to_add: activeBlock.duration_minutes * 60 });
+           
+           const now = new Date();
+           const year = now.getFullYear();
+           const month = String(now.getMonth() + 1).padStart(2, '0');
+           const day = String(now.getDate()).padStart(2, '0');
+           const today = `${year}-${month}-${day}`;
+           
+           const { data: currentDaily } = await supabase
+             .from('daily_activity_time')
+             .select('seconds')
+             .eq('user_id', userId)
+             .eq('activity_date', today)
+             .maybeSingle();
+
+           const currentSeconds = currentDaily?.seconds || 0;
+           await supabase.from('daily_activity_time').upsert({
+             user_id: userId,
+             activity_date: today,
+             seconds: currentSeconds + (activeBlock.duration_minutes * 60)
+           }, { onConflict: 'user_id,activity_date' });
            
            // Atualiza os relatórios globalmente
            queryClient.invalidateQueries({ queryKey: ['dailyStudyTime'] });
