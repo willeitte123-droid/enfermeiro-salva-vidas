@@ -612,19 +612,18 @@ export default function Planner() {
                       })
                     )}
                   </CardContent>
-                  <CardFooter className="p-2 border-t bg-muted/10">
-                     <Button
-                       variant="outline"
-                       size="sm"
+                  <CardFooter className="p-2 border-t bg-muted/10 relative z-50">
+                     <button
                        type="button"
-                       className="w-full h-8 text-xs border-dashed text-muted-foreground hover:text-primary hover:border-primary/50 bg-background"
+                       className="w-full h-8 text-xs border border-dashed border-border text-muted-foreground hover:text-primary hover:border-primary/50 bg-background rounded-md flex items-center justify-center transition-colors cursor-pointer z-50"
                        onClick={(e) => {
                          e.preventDefault();
+                         e.stopPropagation();
                          openWeeklyModal(dayIndex);
                        }}
                      >
                        <Plus className="w-3.5 h-3.5 mr-1" /> Agendar
-                     </Button>
+                     </button>
                   </CardFooter>
                 </Card>
               );
