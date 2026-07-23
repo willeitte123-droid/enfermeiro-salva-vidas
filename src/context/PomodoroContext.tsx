@@ -119,7 +119,7 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
       } else {
         toast.info("Pausa terminada!", { description: "Pronto para o próximo bloco?" });
         setPomodoroMode("focus");
-        setTimerSeconds(25 * 60);
+        setTimerSeconds(activeBlock ? activeBlock.duration_minutes * 60 : 25 * 60);
       }
   };
 
@@ -141,7 +141,7 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
   const startPomodoro = (block: StudyBlockInfo) => {
     setActiveBlock(block);
     setPomodoroMode('focus');
-    setTimerSeconds(Math.min(block.duration_minutes * 60, 25 * 60)); 
+    setTimerSeconds(block.duration_minutes * 60);
     setIsTimerRunning(true);
   };
 
@@ -149,7 +149,7 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
   
   const resetPomodoro = () => {
     setIsTimerRunning(false);
-    setTimerSeconds(pomodoroMode === 'focus' ? 25 * 60 : 5 * 60);
+    setTimerSeconds(pomodoroMode === 'focus' ? (activeBlock ? activeBlock.duration_minutes * 60 : 25 * 60) : 5 * 60);
   };
 
   const stopPomodoro = () => {
