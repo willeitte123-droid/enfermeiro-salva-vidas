@@ -42,6 +42,8 @@ interface WeeklyEvent {
   id: string;
   user_id: string;
   day_of_week: number;
+  time_string: string;
+  color: string;
   content: string;
 }
 
@@ -87,46 +89,30 @@ export default function Planner() {
   }, [addActivity]);
 
   const [activeTab, setActiveTab] = useState("cycle");
+  
+  // MODAIS E ESTADOS
   const [isAddBlockOpen, setIsAddBlockOpen] = useState(false);
+  
+  // Eventos tipo Google Agenda
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
+  const [eventForm, setEventForm] = useState({
+    id: "",
+    content: "",
+    day_of_week: 0,
+    time_string: "08:00",
+    color: "blue"
+  });
 
-  // Estados Formulário de Bloco (Ciclo)
+  // Formulário de Bloco (Ciclo)
   const [blockCategory, setBlockCategory] = useState("Legislação do SUS");
   const [blockDuration, setBlockDuration] = useState("60");
   const [blockColor, setBlockColor] = useState("blue");
-
-  // Estados do Cronograma Semanal (Agenda Livre)
-  const [newEvents, setNewEvents] = useState<Record<number, string>>({});
-  const [editingEventId, setEditingEventId] = useState<string | null>(null);
-  const [editContent, setEditContent] = useState("");
 
   // Timer Pomodoro / Sessão de Estudo
   const [activePomodoroBlock, setActivePomodoroBlock] = useState<StudyBlock | null>(null);
   const [timerSeconds, setTimerSeconds] = useState(25 * 60);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [pomodoroMode, setPomodoroMode] = useState<"focus" | "break">("focus");
-
-  // Fetch Nível e XP (Simulação visual de progresso diário)
-  const { data: dailyProgress = {} } = useQuery({
-    queryKey: ['dailyProgress', profile?.id],
-    queryFn: async () => {
-      if (!profile?.id) return {};
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const { data } = await supabase
-        .from('user_question_answers')
-        .select('question_id, questions!inner(category)')
-        .eq('user_id', profile.id)
-        .gte('created_at', today.toISOString());
-      
-      const counts: Record<string, number> = {};
-      data?.forEach((row: any) => {
-        const cat = Array.isArray(row.questions) ? row.questions[0]?.category : row.questions?.category;
-        if (cat) counts[cat] = (counts[cat] || 0) + 1;
-      });
-      return counts;
-    },
-    enabled: !!profile?.id,
-  });
 
   // 1. Fetch Blocos do Ciclo
   const { data: cycleBlocks = [], isLoading: isLoadingBlocks } = useQuery<StudyBlock[]>({
@@ -153,9 +139,8 @@ export default function Planner() {
       const { data, error } = await supabase
         .from('user_weekly_events')
         .select('*')
-        .eq('user_id', profile.id)
-        .order('created_at', { ascending: true });
-      if (error && error.code !== '42P01') throw error; // Ignora erro se tabela não existir
+        .eq('user_id', profile.id);
+      if (error && error.code !== '42P01') throw error;
       return data as WeeklyEvent[] || [];
     },
     enabled: !!profile?.id,
@@ -221,24 +206,39 @@ export default function Planner() {
 
   // MUTAÇÕES DA GRADE SEMANAL
   const addWeeklyEventMutation = useMutation({
-    mutationFn: async ({ day, content }: { day: number; content: string }) => {
+    mutationFn: async (values: typeof eventForm) => {
       if (!profile?.id) return;
       const { error } = await supabase.from('user_weekly_events').insert({
         user_id: profile.id,
-        day_of_week: day,
-        content: content
+        day_of_week: values.day_of_week,
+        time_string: values.time_string,
+        color: values.color,
+        content: values.content
       });
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] });
+      setIsEventModalOpen(false);
+      toast.success("Evento salvo na agenda!");
+    }
   });
 
   const updateWeeklyEventMutation = useMutation({
-    mutationFn: async ({ id, content }: { id: string; content: string }) => {
-      const { error } = await supabase.from('user_weekly_events').update({ content }).eq('id', id);
+    mutationFn: async (values: typeof eventForm) => {
+      const { error } = await supabase.from('user_weekly_events').update({
+        day_of_week: values.day_of_week,
+        time_string: values.time_string,
+        color: values.color,
+        content: values.content
+      }).eq('id', values.id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] });
+      setIsEventModalOpen(false);
+      toast.success("Agenda atualizada!");
+    }
   });
 
   const deleteWeeklyEventMutation = useMutation({
@@ -255,22 +255,6 @@ export default function Planner() {
       await supabase.rpc('increment_user_activity', { seconds_to_add: seconds });
     }
   });
-
-  // Handlers para a grade semanal
-  const handleAddEvent = (dayIndex: number) => {
-    const content = newEvents[dayIndex]?.trim();
-    if (!content) return;
-    addWeeklyEventMutation.mutate({ day: dayIndex, content });
-    setNewEvents(prev => ({ ...prev, [dayIndex]: "" }));
-  };
-
-  const handleSaveEdit = () => {
-    if (editingEventId && editContent.trim()) {
-      updateWeeklyEventMutation.mutate({ id: editingEventId, content: editContent.trim() });
-    }
-    setEditingEventId(null);
-    setEditContent("");
-  };
 
   // Timer Effect
   useEffect(() => {
@@ -304,7 +288,7 @@ export default function Planner() {
   const handleStartBlockStudy = (block: StudyBlock) => {
     setActivePomodoroBlock(block);
     setPomodoroMode("focus");
-    setTimerSeconds(Math.min(block.duration_minutes * 60, 25 * 60)); // 25m Pomodoro ou tempo total
+    setTimerSeconds(Math.min(block.duration_minutes * 60, 25 * 60)); 
     setIsTimerRunning(true);
     setActiveTab("timer");
     toast.info(`Iniciando foco: ${block.category_name}`);
@@ -326,7 +310,7 @@ export default function Planner() {
             </div>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight">Meu Cronograma & Ciclos</h1>
             <p className="text-blue-100/80 max-w-xl text-xs sm:text-base leading-relaxed">
-              Monte seu ciclo dinâmico de estudos. Avance nas matérias no seu próprio ritmo sem a culpa dos cronogramas fixos que geram atraso.
+              Monte seu ciclo dinâmico para não se atrasar, e use a agenda estruturada da semana para organizar os seus horários e plantões.
             </p>
           </div>
 
@@ -355,9 +339,12 @@ export default function Planner() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex justify-center mb-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2 h-10 sm:h-12 bg-muted/50 p-1 rounded-full">
+          <TabsList className="grid w-full max-w-xl grid-cols-3 h-10 sm:h-12 bg-muted/50 p-1 rounded-full">
             <TabsTrigger value="cycle" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all px-1">
               <RotateCw className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Ciclo Ativo
+            </TabsTrigger>
+            <TabsTrigger value="weekly" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all px-1">
+              <CalendarDays className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Agenda Semanal
             </TabsTrigger>
             <TabsTrigger value="timer" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all relative px-1">
               <Clock className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Foco (Timer)
@@ -495,75 +482,84 @@ export default function Planner() {
           )}
         </TabsContent>
 
-        {/* --- TAB 2: AGENDA SEMANAL LIVRE --- */}
+        {/* --- TAB 2: AGENDA SEMANAL ESTRUTURADA --- */}
         <TabsContent value="weekly" className="space-y-6 animate-in fade-in duration-300">
           <div className="flex justify-between items-center px-1">
             <h2 className="text-lg font-bold flex items-center gap-2">
               <Calendar className="h-5 w-5 text-primary" /> Agenda da Semana
             </h2>
-            <p className="text-xs text-muted-foreground hidden sm:block">Clique em um item para editar. Use "Enter" para adicionar novos.</p>
+            <Button 
+              size="sm" 
+              onClick={() => {
+                setEventForm({ id: "", content: "", day_of_week: 0, time_string: "08:00", color: "blue" });
+                setIsEventModalOpen(true);
+              }}
+              className="text-xs font-semibold bg-primary text-primary-foreground shadow-sm"
+            >
+              <Plus className="mr-1.5 h-3.5 w-3.5" /> Novo Compromisso
+            </Button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
             {DAYS_OF_WEEK.map((dayName, dayIndex) => {
-              const dayEvents = weeklyEvents.filter(e => e.day_of_week === dayIndex);
+              // Filtrar os eventos do dia e ordenar crescentemente pelo horário!
+              const dayEvents = weeklyEvents
+                .filter(e => e.day_of_week === dayIndex)
+                .sort((a, b) => (a.time_string || "00:00").localeCompare(b.time_string || "00:00"));
 
               return (
                 <Card key={dayName} className="bg-card/30 flex flex-col min-h-[300px] border-border/60 shadow-sm overflow-hidden">
                   <CardHeader className="p-3 border-b bg-muted/40 text-center">
                     <CardTitle className="text-sm font-bold text-foreground">{dayName}</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 flex-1 flex flex-col gap-2 bg-gradient-to-b from-background to-muted/20">
-                    {dayEvents.map(event => (
-                      <div key={event.id} className="relative group">
-                        {editingEventId === event.id ? (
-                          <Input
-                            autoFocus
-                            value={editContent}
-                            onChange={(e) => setEditContent(e.target.value)}
-                            onBlur={handleSaveEdit}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') handleSaveEdit();
-                              if (e.key === 'Escape') setEditingEventId(null);
-                            }}
-                            className="h-auto py-2 px-3 text-xs bg-background shadow-inner"
-                          />
-                        ) : (
-                          <div className="p-3 rounded-lg border border-border/80 bg-background text-xs text-foreground/90 shadow-sm leading-relaxed pr-8 hover:border-primary/30 transition-colors">
-                            <span 
-                              className="cursor-text break-words w-full block" 
-                              onClick={() => {
-                                setEditingEventId(event.id);
-                                setEditContent(event.content);
-                              }}
-                            >
-                              {event.content}
-                            </span>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all"
-                              onClick={() => deleteWeeklyEventMutation.mutate(event.id)}
-                            >
-                              <X className="h-3.5 w-3.5" />
-                            </Button>
-                          </div>
-                        )}
+                  <CardContent className="p-2 flex-1 flex flex-col gap-2 bg-gradient-to-b from-background to-muted/20">
+                    {dayEvents.length === 0 ? (
+                      <div className="flex-1 flex items-center justify-center text-center p-2 text-muted-foreground text-xs italic opacity-50">
+                        Livre
                       </div>
-                    ))}
+                    ) : (
+                      dayEvents.map(event => {
+                        const colorCfg = getColorConfig(event.color || "blue");
+                        return (
+                          <div 
+                            key={event.id} 
+                            onClick={() => {
+                               setEventForm({
+                                 id: event.id,
+                                 content: event.content,
+                                 day_of_week: event.day_of_week,
+                                 time_string: event.time_string || "12:00",
+                                 color: event.color || "blue"
+                               });
+                               setIsEventModalOpen(true);
+                            }}
+                            className={cn(
+                              "p-2 rounded-md border text-xs flex flex-col gap-1 relative group cursor-pointer hover:ring-2 ring-primary/50 transition-all",
+                              colorCfg.cardBg, colorCfg.border
+                            )}
+                          >
+                            <div className="flex justify-between items-start gap-2">
+                              <span className={cn("font-bold text-[10px] px-1.5 py-0.5 rounded-sm", colorCfg.bg, "text-white")}>
+                                {event.time_string}
+                              </span>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-5 w-5 opacity-0 group-hover:opacity-100 text-destructive hover:bg-destructive/10 shrink-0 -mt-1 -mr-1"
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Impede abrir o modal de edição ao deletar
+                                  deleteWeeklyEventMutation.mutate(event.id);
+                                }}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                            <span className="font-medium text-foreground/90 mt-1 leading-snug">{event.content}</span>
+                          </div>
+                        );
+                      })
+                    )}
                   </CardContent>
-                  <CardFooter className="p-2 border-t bg-background">
-                    <Input
-                      placeholder="+ Nova anotação"
-                      className="text-xs h-9 border-dashed focus-visible:ring-primary/50 shadow-none bg-muted/20"
-                      value={newEvents[dayIndex] || ""}
-                      onChange={(e) => setNewEvents(prev => ({ ...prev, [dayIndex]: e.target.value }))}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') handleAddEvent(dayIndex);
-                      }}
-                      onBlur={() => handleAddEvent(dayIndex)}
-                    />
-                  </CardFooter>
                 </Card>
               );
             })}
@@ -704,6 +700,91 @@ export default function Planner() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* DIALOG: ADICIONAR / EDITAR EVENTO NA SEMANA (AGENDA) */}
+      <Dialog open={isEventModalOpen} onOpenChange={setIsEventModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CalendarDays className="h-5 w-5 text-primary" />
+              {eventForm.id ? "Editar Evento" : "Novo Compromisso"}
+            </DialogTitle>
+            <DialogDescription>
+              Organize seus horários ou plantões na semana de forma rápida.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <div className="space-y-2">
+              <Label>Título / Descrição</Label>
+              <Input 
+                placeholder="Ex: Plantão na UTI, Estudo Guiado, etc." 
+                value={eventForm.content}
+                onChange={e => setEventForm(p => ({ ...p, content: e.target.value }))}
+                autoFocus
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Dia da Semana</Label>
+                <Select 
+                  value={eventForm.day_of_week.toString()} 
+                  onValueChange={v => setEventForm(p => ({ ...p, day_of_week: parseInt(v) }))}
+                >
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {DAYS_OF_WEEK.map((day, i) => <SelectItem key={i} value={i.toString()}>{day}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Horário</Label>
+                <Input 
+                  type="time" 
+                  value={eventForm.time_string}
+                  onChange={e => setEventForm(p => ({ ...p, time_string: e.target.value }))}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Cor do Bloco</Label>
+              <div className="flex gap-2">
+                {COLOR_OPTIONS.map(c => (
+                  <button
+                    key={c.value}
+                    type="button"
+                    onClick={() => setEventForm(p => ({ ...p, color: c.value }))}
+                    className={cn(
+                      "w-8 h-8 rounded-full transition-transform",
+                      c.bg,
+                      eventForm.color === c.value ? "scale-110 ring-2 ring-offset-2 ring-primary" : "opacity-70 hover:opacity-100"
+                    )}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEventModalOpen(false)}>Cancelar</Button>
+            <Button 
+              onClick={() => {
+                 if (!eventForm.content.trim()) return toast.error("O título é obrigatório!");
+                 if (eventForm.id) updateWeeklyEventMutation.mutate(eventForm);
+                 else addWeeklyEventMutation.mutate(eventForm);
+              }} 
+              disabled={addWeeklyEventMutation.isPending || updateWeeklyEventMutation.isPending} 
+              className="bg-primary"
+            >
+              {(addWeeklyEventMutation.isPending || updateWeeklyEventMutation.isPending) ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
     </div>
   );
 }
