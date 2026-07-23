@@ -20,7 +20,6 @@ import {
   Trophy,
   ChevronDown,
   ChevronRight,
-  PlayCircle,
   Map,
   BookOpen,
   Library,
@@ -38,11 +37,12 @@ import {
   Briefcase,
   Star,
   User,
-  Shield,
   Palette,
   Lock,
   HelpCircle,
-  Headphones
+  Headphones,
+  Calendar,
+  Zap
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
@@ -115,32 +115,33 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
     highlight: true
   };
 
-  // Mapeamento completo de todos os links existentes nas novas categorias
+  // Mapeamento completo de todos os links do sistema
   const navGroups: NavGroup[] = [
     {
-      title: "Estudos",
+      title: "Estudos & Concursos",
       icon: GraduationCap,
       items: [
+        { title: "Meu Cronograma", icon: Calendar, href: "/planner", variant: "ghost" },
+        { title: "Trilha de Estudos", icon: Map, href: "/study-tracks", variant: "ghost" },
         { title: "Banca de Questões", icon: FileQuestion, href: "/questions", variant: "ghost" },
         { title: "Área de Simulado", icon: Timer, href: "/simulado", variant: "ghost" },
-        { title: "Vídeo Aulas", icon: MonitorPlay, href: "/video-library", variant: "ghost" },
-        { title: "Trilha de Estudos", icon: Map, href: "/study-tracks", variant: "ghost" },
         { title: "Área do Concurseiro", icon: GraduationCap, href: "/concurseiro", variant: "ghost" },
-        { title: "Casos Clínicos", icon: Stethoscope, href: "/clinical-cases", variant: "ghost" },
-        { title: "Biblioteca Digital", icon: BookOpen, href: "/library", variant: "ghost" },
+        { title: "Vídeo Aulas", icon: MonitorPlay, href: "/video-library", variant: "ghost" },
         { title: "Flashcards", icon: BrainCircuit, href: "/flashcards", variant: "ghost" },
         { title: "Área de Revisão", icon: Library, href: "/review-area", variant: "ghost" },
-        { title: "Anatomia", icon: Activity, href: "/anatomy", variant: "ghost" },
+        { title: "Casos Clínicos", icon: Stethoscope, href: "/clinical-cases", variant: "ghost" },
+        { title: "Biblioteca Digital", icon: BookOpen, href: "/library", variant: "ghost" },
+        { title: "Anatomia e Fisiologia", icon: Activity, href: "/anatomy", variant: "ghost" },
         { title: "Meu Desempenho", icon: LineChart, href: "/tools/performance", variant: "ghost" },
       ]
     },
     {
-      title: "Prática Clínica",
+      title: "Prática Clínica & Guias",
       icon: Stethoscope,
       items: [
         { title: "Medicamentos", icon: Syringe, href: "/medications", variant: "ghost" },
         { title: "Emergências", icon: Siren, href: "/emergency", variant: "ghost" },
-        { title: "Curativos", icon: Bandage, href: "/wound-care", variant: "ghost" },
+        { title: "Curativos e Feridas", icon: Bandage, href: "/wound-care", variant: "ghost" },
         { title: "Procedimentos", icon: ClipboardList, href: "/procedures", variant: "ghost" },
         { title: "Semiologia", icon: FileSearch, href: "/semiology", variant: "ghost" },
         { title: "Semiotécnica", icon: HandHeart, href: "/semiotechnique", variant: "ghost" },
@@ -150,7 +151,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
       ]
     },
     {
-      title: "Ferramentas",
+      title: "Ferramentas & Calculadoras",
       icon: Calculator,
       items: [
         { title: "Gotejamento", icon: Calculator, href: "/calculator", variant: "ghost" },
@@ -162,17 +163,17 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
       ]
     },
     {
-      title: "Comunidade",
+      title: "Comunidade & Concursos",
       icon: Users,
       items: [
-        { title: "Concursos", icon: Briefcase, href: "/concursos", variant: "ghost" },
-        { title: "Ranking", icon: Trophy, href: "/ranking", variant: "ghost" },
-        { title: "Favoritos", icon: Star, href: "/favorites", variant: "ghost" },
+        { title: "Mural de Concursos", icon: Briefcase, href: "/concursos", variant: "ghost" },
+        { title: "Ranking Geral", icon: Trophy, href: "/ranking", variant: "ghost" },
+        { title: "Meus Favoritos", icon: Star, href: "/favorites", variant: "ghost" },
         { title: "Meu Perfil", icon: User, href: "/profile", variant: "ghost" },
       ]
     },
     {
-      title: "Suporte e FAQ",
+      title: "Suporte & Ajuda",
       icon: HelpCircle,
       items: [
         { title: "Perguntas Frequentes", icon: FileQuestion, href: "/faq", variant: "ghost" },
@@ -203,7 +204,6 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
     const isActive = pathname === item.href;
     const locked = isLinkLocked(item.href);
     
-    // Conteúdo do Link
     const LinkContent = (
       <>
         <item.icon className={cn("mr-2 h-4 w-4", isChild && "h-3.5 w-3.5 opacity-70", isCollapsed && "mr-0")} />
@@ -212,7 +212,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
       </>
     );
 
-    // Se estiver bloqueado (apenas visual, sem link funcional)
+    // Se estiver bloqueado
     if (locked) {
       return (
         <TooltipProvider key={item.href} delayDuration={0}>
@@ -262,7 +262,6 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
       </NavLink>
     );
 
-    // Wrapper para Tooltip (se colapsado) e SheetClose (se mobile)
     if (isCollapsed && !isMobile) {
       return (
         <TooltipProvider key={item.href} delayDuration={0}>
@@ -290,7 +289,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
     const isActiveGroup = group.items.some(item => pathname === item.href);
     const isOpen = openGroups.includes(group.title);
 
-    // Modo Colapsado (Ícone que abre Dropdown)
+    // Modo Colapsado
     if (isCollapsed && !isMobile) {
       return (
         <DropdownMenu key={group.title}>
@@ -351,7 +350,7 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
       );
     }
 
-    // Modo Expandido (Accordion)
+    // Modo Expandido
     return (
       <Collapsible
         key={group.title}
@@ -403,7 +402,6 @@ const SidebarNav = ({ isAdmin, userPlan, isCollapsed, isMobile }: SidebarNavProp
           {!isCollapsed && <div className="mx-3 my-2 border-t border-sidebar-border/50" />}
           <div className="mt-auto pt-2">
             {renderNavItem(adminItem)}
-            {/* Opção extra de tema se não estiver colapsado, ou tratado no Sidebar principal */}
             {!isCollapsed && (
                 <NavLink to="/admin/theme" className="group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-sidebar-hover hover:text-white text-sidebar-foreground ml-4 text-xs pl-4 border-l border-sidebar-border/50">
                     <Palette className="mr-2 h-3.5 w-3.5 opacity-70" />
