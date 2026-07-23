@@ -15,7 +15,7 @@ import {
   Calendar, Clock, Plus, Trash2, CheckCircle2, Play, Pause, RotateCcw, 
   BookOpen, FileQuestion, BrainCircuit, Sparkles, RefreshCw, Trophy, 
   ArrowRight, Flame, Layers, Check, Zap, Target, PieChart, ShieldAlert,
-  CalendarDays, RotateCw
+  CalendarDays, RotateCw, Loader2
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -291,14 +291,14 @@ export default function Planner() {
       {/* TABS PRINCIPAIS */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex justify-center mb-6">
-          <TabsList className="grid w-full max-w-xl grid-cols-3 bg-card border shadow-sm p-1 rounded-xl h-12">
-            <TabsTrigger value="cycle" className="rounded-lg text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
+          <TabsList className="grid w-full max-w-xl grid-cols-3 h-10 sm:h-12 bg-muted/50 p-1 rounded-full">
+            <TabsTrigger value="cycle" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all px-1">
               <RotateCw className="mr-2 h-4 w-4" /> Ciclo Ativo
             </TabsTrigger>
-            <TabsTrigger value="weekly" className="rounded-lg text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
+            <TabsTrigger value="weekly" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all px-1">
               <CalendarDays className="mr-2 h-4 w-4" /> Semanal
             </TabsTrigger>
-            <TabsTrigger value="timer" className="rounded-lg text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all relative">
+            <TabsTrigger value="timer" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all relative">
               <Clock className="mr-2 h-4 w-4" /> Foco (Pomodoro)
               {isTimerRunning && <span className="absolute top-1 right-1 w-2 h-2 bg-emerald-500 rounded-full animate-ping" />}
             </TabsTrigger>
