@@ -549,7 +549,11 @@ export default function Planner() {
                 <div
                   key={dayName}
                   className="bg-card flex flex-col min-h-[300px] border border-border shadow-sm rounded-xl overflow-hidden relative group/day cursor-pointer hover:border-primary/50 transition-colors"
-                  onMouseDown={() => openWeeklyModal(dayIndex)}
+                  onMouseDown={(e) => {
+                      if (e.target === e.currentTarget || (e.target as HTMLElement).classList.contains('bg-gradient-to-b') || (e.target as HTMLElement).tagName === 'H3') {
+                          openWeeklyModal(dayIndex);
+                      }
+                  }}
                 >
                   <div className="p-3 border-b bg-muted/40 text-center relative z-10 pointer-events-none">
                     <h3 className="text-sm font-bold text-foreground">{dayName}</h3>
@@ -621,8 +625,14 @@ export default function Planner() {
                     )}
                   </div>
                   <div className="p-2 border-t bg-muted/10 relative z-10 pointer-events-none">
-                     <div className="w-full h-8 text-xs border border-dashed border-border text-muted-foreground bg-background rounded-md flex items-center justify-center transition-colors group-hover/day:border-primary/50 group-hover/day:text-primary">
-                       <Plus className="w-3.5 h-3.5 mr-1" /> Agendar
+                     <div
+                        className="w-full h-8 text-xs border border-dashed border-border text-muted-foreground bg-background rounded-md flex items-center justify-center transition-colors group-hover/day:border-primary/50 group-hover/day:text-primary pointer-events-auto cursor-pointer"
+                        onMouseDown={(e) => {
+                            e.stopPropagation();
+                            openWeeklyModal(dayIndex);
+                        }}
+                     >
+                       <Plus className="w-3.5 h-3.5 mr-1 pointer-events-none" /> <span className="pointer-events-none">Agendar</span>
                      </div>
                   </div>
                 </div>
