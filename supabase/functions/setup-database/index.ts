@@ -27,7 +27,6 @@ serve(async (req) => {
 
     console.log(`Buscando usuário: ${TARGET_EMAIL}`);
 
-    // 1. Busca o ID real do usuário pelo email usando RPC ou Auth Admin
     let targetUserId = null;
 
     // Tentativa A: Via RPC (se existir)
@@ -36,8 +35,8 @@ serve(async (req) => {
         targetUserId = rpcId;
         console.log("ID encontrado via RPC:", targetUserId);
     } else {
-        // Tentativa B: Via Auth Admin (List Users) - Fallback
-        console.log("RPC falhou ou não retornou ID. Tentando listUsers...");
+        // Tentativa B: Via Auth Admin
+        console.log("RPC falhou. Buscando em listUsers...");
         const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers();
         if (!listError && users) {
              const foundUser = users.find(u => u.email === TARGET_EMAIL);
@@ -46,12 +45,12 @@ serve(async (req) => {
     }
 
     if (!targetUserId) {
-        throw new Error(`Usuário ${TARGET_EMAIL} não encontrado no sistema de autenticação.`);
+        throw new Error(`Usuário ${TARGET_EMAIL} não encontrado.`);
     }
 
     console.log(`Aplicando permissões de Admin para ID: ${targetUserId}`);
 
-    // 2. Atualiza o perfil com o ID correto
+    // Atualiza o perfil com o ID correto
     const { data, error } = await supabaseAdmin
       .from('profiles')
       .upsert({
@@ -61,7 +60,6 @@ serve(async (req) => {
         role: 'admin',
         status: 'active',
         plan: 'premium',
-        // email: TARGET_EMAIL, // Removido para evitar erro de coluna inexistente
         updated_at: new Date().toISOString()
       })
       .select()
@@ -81,7 +79,7 @@ serve(async (req) => {
       status: 200 
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erro geral na função:", error);
     return new Response(JSON.stringify({ error: error.message }), { 
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
