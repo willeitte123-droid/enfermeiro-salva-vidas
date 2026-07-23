@@ -11,7 +11,7 @@ import {
 import {
   Calculator, Scale, Syringe, Siren, Bandage, ClipboardList, FileQuestion,
   BookHeart, FileSearch, HandHeart, FlaskConical, FileText, NotebookText, Timer, Library, Star, Calendar,
-  GraduationCap, Map, MonitorPlay, Stethoscope, BrainCircuit, Activity, LineChart, Briefcase, Trophy, User, HelpCircle
+  GraduationCap, Map, MonitorPlay, Stethoscope, BrainCircuit, Activity, LineChart, Briefcase, Trophy, User, HelpCircle, BookOpen
 } from "lucide-react";
 
 const searchItems = [
