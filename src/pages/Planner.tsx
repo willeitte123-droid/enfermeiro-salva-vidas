@@ -546,21 +546,16 @@ export default function Planner() {
               const dayEvents = weeklyEvents.filter(e => e.day_of_week === dayIndex);
 
               return (
-                <Card key={dayName} className="bg-card/30 flex flex-col min-h-[300px] border-border/60 shadow-sm overflow-hidden relative group/day">
+                <div
+                  key={dayName}
+                  className="bg-card flex flex-col min-h-[300px] border border-border shadow-sm rounded-xl overflow-hidden relative group/day cursor-pointer hover:border-primary/50 transition-colors"
+                  onMouseDown={() => openWeeklyModal(dayIndex)}
+                >
+                  <div className="p-3 border-b bg-muted/40 text-center relative z-10 pointer-events-none">
+                    <h3 className="text-sm font-bold text-foreground">{dayName}</h3>
+                  </div>
                   
-                  {/* Clicar em qualquer lugar da área (fundo) abre o modal sem disparar eventos nocivos */}
-                  <div
-                    className="absolute inset-0 z-0 cursor-pointer hover:bg-muted/10 transition-colors"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      openWeeklyModal(dayIndex);
-                    }}
-                  />
-
-                  <CardHeader className="p-3 border-b bg-muted/40 text-center relative z-10 pointer-events-none">
-                    <CardTitle className="text-sm font-bold text-foreground">{dayName}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-2 flex-1 flex flex-col gap-2 bg-gradient-to-b from-background to-muted/20 relative z-10 pointer-events-none">
+                  <div className="p-2 flex-1 flex flex-col gap-2 bg-gradient-to-b from-background to-muted/20 relative z-10">
                     {dayEvents.length === 0 ? (
                       <div className="flex-1 flex items-center justify-center text-center p-2 text-muted-foreground text-xs italic pointer-events-none">
                         Clique para agendar
@@ -571,12 +566,12 @@ export default function Planner() {
                         return (
                           <div
                             key={event.id}
-                            onClick={(e) => {
+                            onMouseDown={(e) => {
                                 e.stopPropagation();
                                 openWeeklyModal(dayIndex, event);
                             }}
                             className={cn(
-                              "p-2.5 rounded-lg border flex flex-col gap-1.5 relative group cursor-pointer transition-transform hover:scale-[1.02] shadow-sm pointer-events-auto",
+                              "p-2.5 rounded-lg border flex flex-col gap-1.5 relative group cursor-pointer transition-transform hover:scale-[1.02] shadow-sm",
                               colorCfg.cardBg, colorCfg.border
                             )}
                           >
@@ -587,20 +582,20 @@ export default function Planner() {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="absolute top-1.5 right-1.5 h-5 w-5 opacity-0 group-hover:opacity-100 text-destructive p-0 hover:bg-destructive/10 pointer-events-auto"
-                                onClick={(e) => {
+                                className="absolute top-1.5 right-1.5 h-5 w-5 opacity-0 group-hover:opacity-100 text-destructive p-0 hover:bg-destructive/10"
+                                onMouseDown={(e) => {
                                   e.stopPropagation();
                                   deleteWeeklyEventMutation.mutate(event.id);
                                 }}
                               >
-                                <Trash2 className="h-3 w-3" />
+                                <Trash2 className="h-3 w-3 pointer-events-none" />
                               </Button>
                             </div>
                             
-                            <span className="font-bold text-sm leading-tight text-foreground">{event.category_name}</span>
+                            <span className="font-bold text-sm leading-tight text-foreground pointer-events-none">{event.category_name}</span>
                             
                             {event.content && (
-                              <div className="flex items-start gap-1.5 mt-1 opacity-70">
+                              <div className="flex items-start gap-1.5 mt-1 opacity-70 pointer-events-none">
                                 <AlignLeft className="w-3 h-3 shrink-0 mt-0.5" />
                                 <span className="text-[10px] line-clamp-2 italic">{event.content}</span>
                               </div>
@@ -611,26 +606,26 @@ export default function Planner() {
                                <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="w-full h-6 text-[10px] hover:bg-background/50 pointer-events-auto"
-                                  onClick={(e) => {
+                                  className="w-full h-6 text-[10px] hover:bg-background/50"
+                                  onMouseDown={(e) => {
                                       e.stopPropagation();
                                       handleStartBlockStudy(event.category_name, 60);
                                   }}
                                >
-                                  <Play className="w-3 h-3 mr-1" /> Estudar Agora
+                                  <Play className="w-3 h-3 mr-1 pointer-events-none" /> <span className="pointer-events-none">Estudar Agora</span>
                                </Button>
                             </div>
                           </div>
                         );
                       })
                     )}
-                  </CardContent>
-                  <CardFooter className="p-2 border-t bg-muted/10 relative z-10 pointer-events-none">
+                  </div>
+                  <div className="p-2 border-t bg-muted/10 relative z-10 pointer-events-none">
                      <div className="w-full h-8 text-xs border border-dashed border-border text-muted-foreground bg-background rounded-md flex items-center justify-center transition-colors group-hover/day:border-primary/50 group-hover/day:text-primary">
                        <Plus className="w-3.5 h-3.5 mr-1" /> Agendar
                      </div>
-                  </CardFooter>
-                </Card>
+                  </div>
+                </div>
               );
             })}
           </div>
