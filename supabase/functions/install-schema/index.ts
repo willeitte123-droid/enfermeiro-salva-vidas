@@ -113,10 +113,51 @@ BEGIN
 END
 $$;
 
--- 5. Criar o Bucket de Storage para os PDFs
+-- 5. Tabelas do Planejador de Estudos (Ciclos, Blocos e Sessões)
+CREATE TABLE IF NOT EXISTS public.user_study_blocks (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    category_name TEXT NOT NULL,
+    duration_minutes INTEGER DEFAULT 60,
+    color TEXT DEFAULT 'blue',
+    order_index INTEGER DEFAULT 0,
+    day_of_week INTEGER DEFAULT NULL, -- NULL para ciclo, 0-6 para segunda-domingo
+    is_completed BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.user_study_blocks ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'user_study_blocks' AND policyname = 'Users manage own blocks') THEN
+        CREATE POLICY "Users manage own blocks" ON public.user_study_blocks FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+    END IF;
+END
+$$;
+
+CREATE TABLE IF NOT EXISTS public.user_study_sessions (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    category_name TEXT NOT NULL,
+    duration_seconds INTEGER DEFAULT 0,
+    completed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.user_study_sessions ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'user_study_sessions' AND policyname = 'Users manage own sessions') THEN
+        CREATE POLICY "Users manage own sessions" ON public.user_study_sessions FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+    END IF;
+END
+$$;
+
+-- 6. Criar o Bucket de Storage para os PDFs
 INSERT INTO storage.buckets (id, name, public) VALUES ('concurso_pdfs', 'concurso_pdfs', true) ON CONFLICT DO NOTHING;
 
--- 6. Criar as Políticas de Segurança para o Storage (Permitindo o upload pelo sistema)
+-- 7. Criar as Políticas de Segurança para o Storage
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'objects' AND schemaname = 'storage' AND policyname = 'PDF public read') THEN
