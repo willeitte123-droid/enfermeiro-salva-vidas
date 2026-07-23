@@ -14,7 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import { 
   Calendar, Clock, Plus, Trash2, CheckCircle2, Play, Pause, RotateCcw, 
   BookOpen, FileQuestion, BrainCircuit, Sparkles, RefreshCw, Trophy, 
-  ArrowRight, Flame, Layers, Check, Zap, Target, PieChart, ShieldAlert,
+  ArrowRight, Flame, Layers, Check, Zap, Target, Edit2, X,
   CalendarDays, RotateCw, Loader2
 } from "lucide-react";
 import { toast } from "sonner";
@@ -34,8 +34,15 @@ interface StudyBlock {
   duration_minutes: number;
   color: string;
   order_index: number;
-  day_of_week: number | null; // null = ciclo, 0-6 = seg-dom
+  day_of_week: number | null;
   is_completed: boolean;
+}
+
+interface WeeklyEvent {
+  id: string;
+  user_id: string;
+  day_of_week: number;
+  content: string;
 }
 
 const CATEGORIES = [
@@ -81,13 +88,16 @@ export default function Planner() {
 
   const [activeTab, setActiveTab] = useState("cycle");
   const [isAddBlockOpen, setIsAddBlockOpen] = useState(false);
-  const [targetType, setTargetType] = useState<"cycle" | "weekly">("cycle");
-  const [selectedDay, setSelectedDay] = useState<number>(0);
 
-  // Formulário de Bloco
+  // Estados Formulário de Bloco (Ciclo)
   const [blockCategory, setBlockCategory] = useState("Legislação do SUS");
   const [blockDuration, setBlockDuration] = useState("60");
   const [blockColor, setBlockColor] = useState("blue");
+
+  // Estados do Cronograma Semanal (Agenda Livre)
+  const [newEvents, setNewEvents] = useState<Record<number, string>>({});
+  const [editingEventId, setEditingEventId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState("");
 
   // Timer Pomodoro / Sessão de Estudo
   const [activePomodoroBlock, setActivePomodoroBlock] = useState<StudyBlock | null>(null);
@@ -95,8 +105,31 @@ export default function Planner() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [pomodoroMode, setPomodoroMode] = useState<"focus" | "break">("focus");
 
-  // Fetch Blocos do Usuário
-  const { data: blocks = [], isLoading: isLoadingBlocks } = useQuery<StudyBlock[]>({
+  // Fetch Nível e XP (Simulação visual de progresso diário)
+  const { data: dailyProgress = {} } = useQuery({
+    queryKey: ['dailyProgress', profile?.id],
+    queryFn: async () => {
+      if (!profile?.id) return {};
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const { data } = await supabase
+        .from('user_question_answers')
+        .select('question_id, questions!inner(category)')
+        .eq('user_id', profile.id)
+        .gte('created_at', today.toISOString());
+      
+      const counts: Record<string, number> = {};
+      data?.forEach((row: any) => {
+        const cat = Array.isArray(row.questions) ? row.questions[0]?.category : row.questions?.category;
+        if (cat) counts[cat] = (counts[cat] || 0) + 1;
+      });
+      return counts;
+    },
+    enabled: !!profile?.id,
+  });
+
+  // 1. Fetch Blocos do Ciclo
+  const { data: cycleBlocks = [], isLoading: isLoadingBlocks } = useQuery<StudyBlock[]>({
     queryKey: ['userStudyBlocks', profile?.id],
     queryFn: async () => {
       if (!profile?.id) return [];
@@ -104,53 +137,61 @@ export default function Planner() {
         .from('user_study_blocks')
         .select('*')
         .eq('user_id', profile.id)
+        .is('day_of_week', null)
         .order('order_index', { ascending: true });
-
-      if (error) {
-        console.error("Erro ao buscar blocos:", error);
-        return [];
-      }
+      if (error) throw error;
       return data as StudyBlock[];
     },
     enabled: !!profile?.id,
   });
 
-  // Mutação: Adicionar Bloco
-  const addBlockMutation = useMutation({
+  // 2. Fetch Eventos Semanais
+  const { data: weeklyEvents = [] } = useQuery<WeeklyEvent[]>({
+    queryKey: ['userWeeklyEvents', profile?.id],
+    queryFn: async () => {
+      if (!profile?.id) return [];
+      const { data, error } = await supabase
+        .from('user_weekly_events')
+        .select('*')
+        .eq('user_id', profile.id)
+        .order('created_at', { ascending: true });
+      if (error && error.code !== '42P01') throw error; // Ignora erro se tabela não existir
+      return data as WeeklyEvent[] || [];
+    },
+    enabled: !!profile?.id,
+  });
+
+  // MUTAÇÕES DO CICLO
+  const addCycleBlockMutation = useMutation({
     mutationFn: async () => {
       if (!profile?.id) return;
-      const orderIndex = blocks.length;
+      const orderIndex = cycleBlocks.length;
       const { error } = await supabase.from('user_study_blocks').insert({
         user_id: profile.id,
         category_name: blockCategory,
         duration_minutes: parseInt(blockDuration) || 60,
         color: blockColor,
         order_index: orderIndex,
-        day_of_week: targetType === 'weekly' ? selectedDay : null,
+        day_of_week: null,
         is_completed: false
       });
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success("Matéria adicionada ao cronograma!");
+      toast.success("Matéria adicionada ao ciclo!");
       queryClient.invalidateQueries({ queryKey: ['userStudyBlocks', profile?.id] });
       setIsAddBlockOpen(false);
-    },
-    onError: (err: any) => toast.error("Erro ao adicionar: " + err.message)
+    }
   });
 
-  // Mutação: Toggle Concluído
   const toggleBlockMutation = useMutation({
     mutationFn: async ({ id, is_completed }: { id: string; is_completed: boolean }) => {
       const { error } = await supabase.from('user_study_blocks').update({ is_completed }).eq('id', id);
       if (error) throw error;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['userStudyBlocks', profile?.id] });
-    }
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userStudyBlocks', profile?.id] })
   });
 
-  // Mutação: Deletar Bloco
   const deleteBlockMutation = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from('user_study_blocks').delete().eq('id', id);
@@ -162,7 +203,6 @@ export default function Planner() {
     }
   });
 
-  // Mutação: Resetar Todo o Ciclo (Reiniciar Roda)
   const resetCycleMutation = useMutation({
     mutationFn: async () => {
       if (!profile?.id) return;
@@ -179,25 +219,58 @@ export default function Planner() {
     }
   });
 
-  // Mutação: Salvar Sessão de Estudo no Banco
+  // MUTAÇÕES DA GRADE SEMANAL
+  const addWeeklyEventMutation = useMutation({
+    mutationFn: async ({ day, content }: { day: number; content: string }) => {
+      if (!profile?.id) return;
+      const { error } = await supabase.from('user_weekly_events').insert({
+        user_id: profile.id,
+        day_of_week: day,
+        content: content
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] })
+  });
+
+  const updateWeeklyEventMutation = useMutation({
+    mutationFn: async ({ id, content }: { id: string; content: string }) => {
+      const { error } = await supabase.from('user_weekly_events').update({ content }).eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] })
+  });
+
+  const deleteWeeklyEventMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('user_weekly_events').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userWeeklyEvents', profile?.id] })
+  });
+
   const saveSessionMutation = useMutation({
     mutationFn: async ({ category, seconds }: { category: string; seconds: number }) => {
       if (!profile?.id || seconds <= 0) return;
-      const { error } = await supabase.from('user_study_sessions').insert({
-        user_id: profile.id,
-        category_name: category,
-        duration_seconds: seconds
-      });
-      if (error) console.error("Erro ao salvar sessão:", error);
-      
-      // Atualiza também a tabela de tempo diário global da plataforma
       await supabase.rpc('increment_user_activity', { seconds_to_add: seconds });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['dailyStudyTime', profile?.id] });
-      queryClient.invalidateQueries({ queryKey: ['userStudySessions', profile?.id] });
     }
   });
+
+  // Handlers para a grade semanal
+  const handleAddEvent = (dayIndex: number) => {
+    const content = newEvents[dayIndex]?.trim();
+    if (!content) return;
+    addWeeklyEventMutation.mutate({ day: dayIndex, content });
+    setNewEvents(prev => ({ ...prev, [dayIndex]: "" }));
+  };
+
+  const handleSaveEdit = () => {
+    if (editingEventId && editContent.trim()) {
+      updateWeeklyEventMutation.mutate({ id: editingEventId, content: editContent.trim() });
+    }
+    setEditingEventId(null);
+    setEditContent("");
+  };
 
   // Timer Effect
   useEffect(() => {
@@ -224,12 +297,8 @@ export default function Planner() {
     return () => clearInterval(interval);
   }, [isTimerRunning, timerSeconds, pomodoroMode, activePomodoroBlock]);
 
-  // Filtros de Blocos
-  const cycleBlocks = useMemo(() => blocks.filter(b => b.day_of_week === null), [blocks]);
-  
   const completedCycleCount = useMemo(() => cycleBlocks.filter(b => b.is_completed).length, [cycleBlocks]);
   const cycleProgress = cycleBlocks.length > 0 ? Math.round((completedCycleCount / cycleBlocks.length) * 100) : 0;
-
   const totalCycleMinutes = useMemo(() => cycleBlocks.reduce((acc, b) => acc + b.duration_minutes, 0), [cycleBlocks]);
 
   const handleStartBlockStudy = (block: StudyBlock) => {
@@ -246,35 +315,31 @@ export default function Planner() {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-12">
+    <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500 pb-12">
       
       {/* HEADER PRINCIPAL */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 p-6 sm:p-8 text-white shadow-2xl border border-white/10">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-xs font-bold uppercase tracking-wider text-blue-300">
-              <Sparkles className="h-3 w-3" /> Metodologia Ativa de Estudo
+              <Sparkles className="h-3 w-3" /> Produtividade Diária
             </div>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight">Meu Cronograma & Ciclos</h1>
             <p className="text-blue-100/80 max-w-xl text-xs sm:text-base leading-relaxed">
-              Monte seu ciclo dinâmico ou grade semanal. Estude sem culpa de atrasos e integre diretamente com o acervo da plataforma.
+              Monte seu ciclo dinâmico para não se atrasar, e use a agenda livre da semana para compromissos rápidos.
             </p>
           </div>
 
           <div className="flex gap-3 w-full md:w-auto">
             <Button 
-              onClick={() => { setTargetType('cycle'); setIsAddBlockOpen(true); }}
+              onClick={() => setIsAddBlockOpen(true)}
               className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-lg w-full md:w-auto"
             >
-              <Plus className="mr-2 h-4 w-4" /> Nova Matéria
+              <Plus className="mr-2 h-4 w-4" /> Nova Matéria (Ciclo)
             </Button>
           </div>
         </div>
-
-        {/* Background FX */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-        
         {profile && (
           <div className="absolute top-4 right-4 z-20 hidden sm:block">
             <FavoriteButton
@@ -288,18 +353,17 @@ export default function Planner() {
         )}
       </div>
 
-      {/* TABS PRINCIPAIS */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex justify-center mb-6">
           <TabsList className="grid w-full max-w-xl grid-cols-3 h-10 sm:h-12 bg-muted/50 p-1 rounded-full">
             <TabsTrigger value="cycle" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all px-1">
-              <RotateCw className="mr-2 h-4 w-4" /> Ciclo Ativo
+              <RotateCw className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Ciclo Ativo
             </TabsTrigger>
             <TabsTrigger value="weekly" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all px-1">
-              <CalendarDays className="mr-2 h-4 w-4" /> Semanal
+              <CalendarDays className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Agenda Semanal
             </TabsTrigger>
-            <TabsTrigger value="timer" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all relative">
-              <Clock className="mr-2 h-4 w-4" /> Foco (Pomodoro)
+            <TabsTrigger value="timer" className="rounded-full text-xs sm:text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all relative px-1">
+              <Clock className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Foco (Timer)
               {isTimerRunning && <span className="absolute top-1 right-1 w-2 h-2 bg-emerald-500 rounded-full animate-ping" />}
             </TabsTrigger>
           </TabsList>
@@ -307,8 +371,6 @@ export default function Planner() {
 
         {/* --- TAB 1: CICLO DE ESTUDOS --- */}
         <TabsContent value="cycle" className="space-y-6 animate-in fade-in duration-300">
-          
-          {/* Card de Progresso do Ciclo */}
           <Card className="border-t-4 border-t-primary shadow-sm bg-card/60 backdrop-blur-sm">
             <CardHeader className="pb-3">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -345,20 +407,17 @@ export default function Planner() {
             </CardContent>
           </Card>
 
-          {/* Lista de Blocos do Ciclo */}
           {cycleBlocks.length === 0 ? (
             <Card className="border-dashed border-2 py-12 text-center bg-muted/20">
               <CardContent className="space-y-4">
-                <div className="p-4 bg-muted rounded-full w-fit mx-auto">
-                  <Layers className="h-8 w-8 text-muted-foreground opacity-50" />
-                </div>
+                <div className="p-4 bg-muted rounded-full w-fit mx-auto"><Layers className="h-8 w-8 text-muted-foreground opacity-50" /></div>
                 <div>
                   <h3 className="text-lg font-bold">Nenhuma matéria no ciclo</h3>
                   <p className="text-sm text-muted-foreground max-w-md mx-auto mt-1">
                     Adicione disciplinas para criar sua roda de estudos. O modelo de ciclo garante que você avance sem se atrasar se perder um dia.
                   </p>
                 </div>
-                <Button onClick={() => { setTargetType('cycle'); setIsAddBlockOpen(true); }} className="bg-primary">
+                <Button onClick={() => setIsAddBlockOpen(true)} className="bg-primary">
                   <Plus className="mr-2 h-4 w-4" /> Adicionar Primeira Matéria
                 </Button>
               </CardContent>
@@ -367,7 +426,6 @@ export default function Planner() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {cycleBlocks.map((block, idx) => {
                 const colorCfg = getColorConfig(block.color);
-
                 return (
                   <Card 
                     key={block.id} 
@@ -399,38 +457,16 @@ export default function Planner() {
                     <CardContent className="pb-3 space-y-3">
                       <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
                         <Clock className="h-3.5 w-3.5 text-primary" />
-                        <span>Tempo estimado: <strong>{block.duration_minutes} minutos</strong></span>
+                        <span>Tempo estimado: <strong>{block.duration_minutes} min</strong></span>
                       </div>
-
-                      {/* Integrações Rápidas da Plataforma */}
                       <div className="pt-2 border-t border-border/40 grid grid-cols-3 gap-1">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 text-[10px] font-bold gap-1 px-1 hover:bg-primary/10 hover:text-primary"
-                          title="Responder Questões desta Matéria"
-                          onClick={() => navigate(`/questions?category=${encodeURIComponent(block.category_name)}`)}
-                        >
+                        <Button variant="ghost" size="sm" className="h-8 text-[10px] font-bold gap-1 px-1 hover:bg-primary/10 hover:text-primary" onClick={() => navigate(`/questions?category=${encodeURIComponent(block.category_name)}`)}>
                           <FileQuestion className="h-3 w-3 text-blue-500" /> Questões
                         </Button>
-                        
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 text-[10px] font-bold gap-1 px-1 hover:bg-primary/10 hover:text-primary"
-                          title="Revisar Flashcards"
-                          onClick={() => navigate('/flashcards')}
-                        >
-                          <BrainCircuit className="h-3 w-3 text-purple-500" /> Flashcards
+                        <Button variant="ghost" size="sm" className="h-8 text-[10px] font-bold gap-1 px-1 hover:bg-primary/10 hover:text-primary" onClick={() => navigate('/flashcards')}>
+                          <BrainCircuit className="h-3 w-3 text-purple-500" /> Revisar
                         </Button>
-
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 text-[10px] font-bold gap-1 px-1 hover:bg-primary/10 hover:text-primary"
-                          title="Ler PDF"
-                          onClick={() => navigate('/concurseiro')}
-                        >
+                        <Button variant="ghost" size="sm" className="h-8 text-[10px] font-bold gap-1 px-1 hover:bg-primary/10 hover:text-primary" onClick={() => navigate('/concurseiro')}>
                           <BookOpen className="h-3 w-3 text-emerald-500" /> PDFs
                         </Button>
                       </div>
@@ -444,15 +480,13 @@ export default function Planner() {
                         onClick={() => handleStartBlockStudy(block)}
                       >
                         <Play className="mr-1.5 h-3.5 w-3.5 fill-current" />
-                        {block.is_completed ? "Reestudar" : "Iniciar Foco"}
+                        {block.is_completed ? "Reestudar" : "Foco"}
                       </Button>
-
                       <Button
                         variant={block.is_completed ? "default" : "outline"}
                         size="sm"
                         className={cn("text-xs font-bold shrink-0", block.is_completed && "bg-emerald-600 hover:bg-emerald-700 text-white")}
                         onClick={() => toggleBlockMutation.mutate({ id: block.id, is_completed: !block.is_completed })}
-                        title={block.is_completed ? "Marcar como pendente" : "Marcar como concluído"}
                       >
                         <Check className="h-4 w-4" />
                       </Button>
@@ -464,64 +498,75 @@ export default function Planner() {
           )}
         </TabsContent>
 
-        {/* --- TAB 2: CRONOGRAMA SEMANAL --- */}
+        {/* --- TAB 2: AGENDA SEMANAL LIVRE --- */}
         <TabsContent value="weekly" className="space-y-6 animate-in fade-in duration-300">
           <div className="flex justify-between items-center px-1">
             <h2 className="text-lg font-bold flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-primary" /> Grade Semanal Fixa
+              <Calendar className="h-5 w-5 text-primary" /> Agenda da Semana
             </h2>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              onClick={() => { setTargetType('weekly'); setIsAddBlockOpen(true); }}
-              className="text-xs font-semibold"
-            >
-              <Plus className="mr-1.5 h-3.5 w-3.5" /> Adicionar na Semana
-            </Button>
+            <p className="text-xs text-muted-foreground hidden sm:block">Clique em um item para editar. Use "Enter" para adicionar novos.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
             {DAYS_OF_WEEK.map((dayName, dayIndex) => {
-              const dayBlocks = blocks.filter(b => b.day_of_week === dayIndex);
+              const dayEvents = weeklyEvents.filter(e => e.day_of_week === dayIndex);
 
               return (
-                <Card key={dayName} className="bg-card/50 flex flex-col min-h-[220px]">
-                  <CardHeader className="p-3 border-b bg-muted/30 text-center">
-                    <CardTitle className="text-sm font-bold">{dayName}</CardTitle>
+                <Card key={dayName} className="bg-card/30 flex flex-col min-h-[300px] border-border/60 shadow-sm overflow-hidden">
+                  <CardHeader className="p-3 border-b bg-muted/40 text-center">
+                    <CardTitle className="text-sm font-bold text-foreground">{dayName}</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-2 flex-1 flex flex-col gap-2">
-                    {dayBlocks.length === 0 ? (
-                      <div className="flex-1 flex items-center justify-center text-center p-2 text-muted-foreground text-xs italic">
-                        Livre / Descanso
-                      </div>
-                    ) : (
-                      dayBlocks.map(block => {
-                        const colorCfg = getColorConfig(block.color);
-                        return (
-                          <div 
-                            key={block.id} 
-                            className={cn(
-                              "p-2 rounded-lg border text-xs flex flex-col gap-1 relative group",
-                              colorCfg.cardBg, colorCfg.border
-                            )}
-                          >
-                            <div className="flex justify-between items-start">
-                              <span className="font-bold truncate text-foreground">{block.category_name}</span>
-                              <Button 
-                                variant="ghost" 
-                                size="icon" 
-                                className="h-4 w-4 opacity-0 group-hover:opacity-100 text-destructive p-0"
-                                onClick={() => deleteBlockMutation.mutate(block.id)}
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
-                            </div>
-                            <span className="text-[10px] text-muted-foreground font-semibold">{block.duration_minutes} min</span>
+                  <CardContent className="p-3 flex-1 flex flex-col gap-2 bg-gradient-to-b from-background to-muted/20">
+                    {dayEvents.map(event => (
+                      <div key={event.id} className="relative group">
+                        {editingEventId === event.id ? (
+                          <Input
+                            autoFocus
+                            value={editContent}
+                            onChange={(e) => setEditContent(e.target.value)}
+                            onBlur={handleSaveEdit}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') handleSaveEdit();
+                              if (e.key === 'Escape') setEditingEventId(null);
+                            }}
+                            className="h-auto py-2 px-3 text-xs bg-background shadow-inner"
+                          />
+                        ) : (
+                          <div className="p-3 rounded-lg border border-border/80 bg-background text-xs text-foreground/90 shadow-sm leading-relaxed pr-8 hover:border-primary/30 transition-colors">
+                            <span 
+                              className="cursor-text break-words w-full block" 
+                              onClick={() => {
+                                setEditingEventId(event.id);
+                                setEditContent(event.content);
+                              }}
+                            >
+                              {event.content}
+                            </span>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all"
+                              onClick={() => deleteWeeklyEventMutation.mutate(event.id)}
+                            >
+                              <X className="h-3.5 w-3.5" />
+                            </Button>
                           </div>
-                        );
-                      })
-                    )}
+                        )}
+                      </div>
+                    ))}
                   </CardContent>
+                  <CardFooter className="p-2 border-t bg-background">
+                    <Input
+                      placeholder="+ Nova anotação"
+                      className="text-xs h-9 border-dashed focus-visible:ring-primary/50 shadow-none bg-muted/20"
+                      value={newEvents[dayIndex] || ""}
+                      onChange={(e) => setNewEvents(prev => ({ ...prev, [dayIndex]: e.target.value }))}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleAddEvent(dayIndex);
+                      }}
+                      onBlur={() => handleAddEvent(dayIndex)}
+                    />
+                  </CardFooter>
                 </Card>
               );
             })}
@@ -544,8 +589,6 @@ export default function Planner() {
             </CardHeader>
 
             <CardContent className="flex flex-col items-center justify-center p-8 space-y-6">
-              
-              {/* DISPLAY DO TIMER */}
               <div className="relative flex items-center justify-center w-64 h-64 rounded-full border-8 border-primary/20 bg-muted/20 shadow-inner">
                 <div className="text-center space-y-1">
                   <span className="text-6xl font-black font-mono tracking-tighter text-primary">
@@ -558,7 +601,6 @@ export default function Planner() {
                 </div>
               </div>
 
-              {/* CONTROLES */}
               <div className="flex gap-4 w-full max-w-xs">
                 <Button 
                   size="lg" 
@@ -582,26 +624,15 @@ export default function Planner() {
                 </Button>
               </div>
 
-              {/* ATALHOS RÁPIDOS DA MATÉRIA ATIVA */}
               {activePomodoroBlock && (
                 <div className="w-full pt-4 border-t border-border/50 text-center space-y-3">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Atalhos da Matéria</p>
                   <div className="flex justify-center gap-2">
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      onClick={() => navigate(`/questions?category=${encodeURIComponent(activePomodoroBlock.category_name)}`)}
-                      className="text-xs gap-1.5"
-                    >
-                      <FileQuestion className="h-3.5 w-3.5 text-blue-500" /> Responder Questões
+                    <Button size="sm" variant="outline" onClick={() => navigate(`/questions?category=${encodeURIComponent(activePomodoroBlock.category_name)}`)} className="text-xs gap-1.5">
+                      <FileQuestion className="h-3.5 w-3.5 text-blue-500" /> Questões
                     </Button>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      onClick={() => navigate('/concurseiro')}
-                      className="text-xs gap-1.5"
-                    >
-                      <BookOpen className="h-3.5 w-3.5 text-emerald-500" /> Abrir PDF
+                    <Button size="sm" variant="outline" onClick={() => navigate('/concurseiro')} className="text-xs gap-1.5">
+                      <BookOpen className="h-3.5 w-3.5 text-emerald-500" /> PDFs
                     </Button>
                   </div>
                 </div>
@@ -611,16 +642,16 @@ export default function Planner() {
         </TabsContent>
       </Tabs>
 
-      {/* DIALOG: ADICIONAR NOVO BLOCO */}
+      {/* DIALOG: ADICIONAR NOVO BLOCO AO CICLO */}
       <Dialog open={isAddBlockOpen} onOpenChange={setIsAddBlockOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Plus className="h-5 w-5 text-primary" />
-              {targetType === 'cycle' ? "Adicionar ao Ciclo" : "Agendar na Semana"}
+              Adicionar ao Ciclo
             </DialogTitle>
             <DialogDescription>
-              Escolha a disciplina e o tempo que deseja dedicar a este bloco.
+              Escolha a disciplina e o tempo que deseja dedicar a este bloco no seu ciclo de estudos.
             </DialogDescription>
           </DialogHeader>
 
@@ -634,18 +665,6 @@ export default function Planner() {
                 </SelectContent>
               </Select>
             </div>
-
-            {targetType === 'weekly' && (
-              <div className="space-y-2">
-                <Label>Dia da Semana</Label>
-                <Select value={selectedDay.toString()} onValueChange={v => setSelectedDay(parseInt(v))}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {DAYS_OF_WEEK.map((day, i) => <SelectItem key={i} value={i.toString()}>{day}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
 
             <div className="space-y-2">
               <Label>Duração Estimada (Minutos)</Label>
@@ -682,8 +701,8 @@ export default function Planner() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsAddBlockOpen(false)}>Cancelar</Button>
-            <Button onClick={() => addBlockMutation.mutate()} disabled={addBlockMutation.isPending} className="bg-primary">
-              {addBlockMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar Bloco"}
+            <Button onClick={() => addCycleBlockMutation.mutate()} disabled={addCycleBlockMutation.isPending} className="bg-primary">
+              {addCycleBlockMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar Bloco"}
             </Button>
           </DialogFooter>
         </DialogContent>
