@@ -88,7 +88,6 @@ const Questions = () => {
   const [isDeletingComment, setIsDeletingComment] = useState(false);
   const [isSavingAnswer, setIsSavingAnswer] = useState(false);
 
-  const [isScissorModeActive, setIsScissorModeActive] = useState(false);
   const [eliminatedOptions, setEliminatedOptions] = useState<string[]>([]);
 
   const form = useForm<z.infer<typeof commentSchema>>({
@@ -494,16 +493,6 @@ const Questions = () => {
                     <Badge variant="secondary" className="opacity-70">Enfermagem</Badge>
                     {isRandomMode && <Badge variant="secondary" className="gap-1 bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300"><Shuffle className="w-3 h-3"/> Aleatório</Badge>}
                  </div>
-                 <Button
-                    variant={isScissorModeActive ? "default" : "outline"}
-                    size="sm"
-                    className={cn("gap-2 h-8 text-xs font-bold rounded-full transition-all", isScissorModeActive ? "bg-amber-500 hover:bg-amber-600 text-white border-amber-600 shadow-md" : "text-muted-foreground")}
-                    onClick={() => setIsScissorModeActive(!isScissorModeActive)}
-                    title={isScissorModeActive ? "Modo Tesoura Ativado" : "Ativar Modo Tesoura para riscar alternativas"}
-                 >
-                    <Scissors className="w-3.5 h-3.5" />
-                    {isScissorModeActive ? "Tesoura Ativa" : "Modo Tesoura"}
-                 </Button>
               </div>
               <h3 className="text-lg md:text-xl font-medium leading-relaxed text-foreground/90 font-serif tracking-wide">
                  {currentQuestion.question}
@@ -534,9 +523,11 @@ const Questions = () => {
                            isEliminated && !showExplanation && "opacity-40 grayscale bg-muted/50 border-dashed"
                         )}
                         onClick={(e) => {
-                           if (isScissorModeActive && !showExplanation) {
-                              e.preventDefault();
-                              toggleEliminateOption(option.id);
+                           if (!showExplanation) {
+                              // O usuário clicou na label. Para não interferir no RadioGroup padrão,
+                              // vamos deixar o RadioGroup lidar com a seleção normal e o clique apenas
+                              // acontecerá via RadioGroup.
+                              // A eliminação agora será tratada apenas pelo botão do ícone da tesoura.
                            }
                         }}
                       >
@@ -563,12 +554,12 @@ const Questions = () => {
                               isEliminated && "line-through text-muted-foreground"
                            )}>{option.text}</span>
                         </div>
-                        {isScissorModeActive && !showExplanation && (
+                        {!showExplanation && (
                            <Button
                              type="button"
                              variant="ghost"
                              size="icon"
-                             className={cn("absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full", isEliminated ? "text-amber-500 opacity-100" : "opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-amber-500 hover:bg-amber-100 dark:hover:bg-amber-900/30")}
+                             className={cn("absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full", isEliminated ? "text-amber-500 opacity-100 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30" : "opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-amber-500 hover:bg-amber-100 dark:hover:bg-amber-900/30")}
                              onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
@@ -576,7 +567,7 @@ const Questions = () => {
                              }}
                              title={isEliminated ? "Restaurar alternativa" : "Eliminar alternativa"}
                            >
-                             <Scissors className="h-4 w-4" />
+                             <Scissors className="h-5 w-5" />
                            </Button>
                         )}
                       </Label>
