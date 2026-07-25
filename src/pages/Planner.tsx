@@ -63,8 +63,6 @@ const CATEGORIES = [
   "Ética e Legislação Profissional",
   "Farmacologia e Cálculos",
   "Terapia Intensiva (UTI)",
-  "Língua Portuguesa",
-  "Raciocínio Lógico / Matemática",
   "Outra Matéria"
 ];
 
