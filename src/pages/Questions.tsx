@@ -8,10 +8,10 @@ import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { 
-  CheckCircle2, XCircle, Loader2, Lightbulb, MessageSquare, 
-  Smile, Trash2, ChevronLeft, ChevronRight, Shuffle, Filter, 
-  BookOpen, Trophy, AlertCircle
+import {
+  CheckCircle2, XCircle, Loader2, Lightbulb, MessageSquare,
+  Smile, Trash2, ChevronLeft, ChevronRight, Shuffle, Filter,
+  BookOpen, Trophy, AlertCircle, Scissors
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -87,6 +87,10 @@ const Questions = () => {
   const [commentToDelete, setCommentToDelete] = useState<string | null>(null);
   const [isDeletingComment, setIsDeletingComment] = useState(false);
   const [isSavingAnswer, setIsSavingAnswer] = useState(false);
+
+  const [isScissorModeActive, setIsScissorModeActive] = useState(false);
+  const [eliminatedOptions, setEliminatedOptions] = useState<string[]>([]);
+
   const form = useForm<z.infer<typeof commentSchema>>({
     resolver: zodResolver(commentSchema),
     defaultValues: { content: "" },
@@ -130,6 +134,12 @@ const Questions = () => {
       }
       return prev;
     });
+  };
+
+  const toggleEliminateOption = (optionId: string) => {
+    setEliminatedOptions(prev =>
+      prev.includes(optionId) ? prev.filter(id => id !== optionId) : [...prev, optionId]
+    );
   };
 
   const isRandomMode = !questionId && selectedCategory === "Todas" && answerStatusFilter === "all";
@@ -239,6 +249,7 @@ const Questions = () => {
     setAnsweredCorrectly(null);
     setIsCommentsOpen(false);
     setComments([]);
+    setEliminatedOptions([]);
   }, [currentOffset, selectedCategory, answerStatusFilter, currentQuestion, randomSeed]);
 
   useEffect(() => {
@@ -483,6 +494,16 @@ const Questions = () => {
                     <Badge variant="secondary" className="opacity-70">Enfermagem</Badge>
                     {isRandomMode && <Badge variant="secondary" className="gap-1 bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300"><Shuffle className="w-3 h-3"/> Aleatório</Badge>}
                  </div>
+                 <Button
+                    variant={isScissorModeActive ? "default" : "outline"}
+                    size="sm"
+                    className={cn("gap-2 h-8 text-xs font-bold rounded-full transition-all", isScissorModeActive ? "bg-amber-500 hover:bg-amber-600 text-white border-amber-600 shadow-md" : "text-muted-foreground")}
+                    onClick={() => setIsScissorModeActive(!isScissorModeActive)}
+                    title={isScissorModeActive ? "Modo Tesoura Ativado" : "Ativar Modo Tesoura para riscar alternativas"}
+                 >
+                    <Scissors className="w-3.5 h-3.5" />
+                    {isScissorModeActive ? "Tesoura Ativa" : "Modo Tesoura"}
+                 </Button>
               </div>
               <h3 className="text-lg md:text-xl font-medium leading-relaxed text-foreground/90 font-serif tracking-wide">
                  {currentQuestion.question}
@@ -494,39 +515,70 @@ const Questions = () => {
                 {currentQuestion.options.map((option) => {
                    const isSelected = option.id === selectedAnswer;
                    const isCorrect = option.id === currentQuestion.correctAnswer;
+                   const isEliminated = eliminatedOptions.includes(option.id);
                    const showSuccess = showExplanation && isCorrect;
                    const showError = showExplanation && isSelected && !isCorrect;
                    const isNeutral = !showExplanation;
 
                    return (
-                      <Label 
-                        key={option.id} 
-                        htmlFor={`${option.id}-${currentQuestion.id}`} 
+                      <Label
+                        key={option.id}
+                        htmlFor={`${option.id}-${currentQuestion.id}`}
                         className={cn(
                            "flex items-start space-x-4 p-4 rounded-xl border transition-all duration-200 cursor-pointer relative overflow-hidden group",
-                           isNeutral && "hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 hover:shadow-sm",
-                           isSelected && isNeutral && "border-blue-500 bg-blue-50/80 dark:bg-blue-900/30 ring-1 ring-blue-500/30",
+                           isNeutral && !isEliminated && "hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 hover:shadow-sm",
+                           isSelected && isNeutral && !isEliminated && "border-blue-500 bg-blue-50/80 dark:bg-blue-900/30 ring-1 ring-blue-500/30",
                            showSuccess && "border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-500/50",
                            showError && "border-red-500 bg-red-50 dark:bg-red-950/30 opacity-90",
-                           showExplanation && !isCorrect && !isSelected && "opacity-50 grayscale"
+                           showExplanation && !isCorrect && !isSelected && "opacity-50 grayscale",
+                           isEliminated && !showExplanation && "opacity-40 grayscale bg-muted/50 border-dashed"
                         )}
+                        onClick={(e) => {
+                           if (isScissorModeActive && !showExplanation) {
+                              e.preventDefault();
+                              toggleEliminateOption(option.id);
+                           }
+                        }}
                       >
                         {showSuccess && <div className="absolute right-0 top-0 p-1 bg-green-500 text-white rounded-bl-lg"><CheckCircle2 className="w-4 h-4" /></div>}
                         {showError && <div className="absolute right-0 top-0 p-1 bg-red-500 text-white rounded-bl-lg"><XCircle className="w-4 h-4" /></div>}
                         
-                        <RadioGroupItem value={option.id} id={`${option.id}-${currentQuestion.id}`} className="mt-1 border-blue-500 text-blue-600 focus:ring-blue-500" />
+                        <RadioGroupItem
+                           value={option.id}
+                           id={`${option.id}-${currentQuestion.id}`}
+                           className={cn("mt-1 border-blue-500 text-blue-600 focus:ring-blue-500", isEliminated && "opacity-0")}
+                           disabled={isEliminated || showExplanation}
+                        />
                         <div className="flex-1 space-y-1">
                            <span className={cn(
-                              "font-bold mr-2 inline-block w-6", 
-                              showSuccess ? "text-green-600 dark:text-green-400" : 
-                              showError ? "text-red-600 dark:text-red-400" : "text-muted-foreground"
+                              "font-bold mr-2 inline-block w-6",
+                              showSuccess ? "text-green-600 dark:text-green-400" :
+                              showError ? "text-red-600 dark:text-red-400" : "text-muted-foreground",
+                              isEliminated && "line-through"
                            )}>{option.id})</span>
                            <span className={cn(
                               "text-base leading-relaxed",
                               showSuccess && "font-medium text-green-900 dark:text-green-100",
-                              showError && "text-red-900 dark:text-red-100"
+                              showError && "text-red-900 dark:text-red-100",
+                              isEliminated && "line-through text-muted-foreground"
                            )}>{option.text}</span>
                         </div>
+                        {isScissorModeActive && !showExplanation && (
+                           <Button
+                             type="button"
+                             variant="ghost"
+                             size="icon"
+                             className={cn("absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full", isEliminated ? "text-amber-500 opacity-100" : "opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-amber-500 hover:bg-amber-100 dark:hover:bg-amber-900/30")}
+                             onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                toggleEliminateOption(option.id);
+                             }}
+                             title={isEliminated ? "Restaurar alternativa" : "Eliminar alternativa"}
+                           >
+                             <Scissors className="h-4 w-4" />
+                           </Button>
+                        )}
                       </Label>
                    );
                 })}
