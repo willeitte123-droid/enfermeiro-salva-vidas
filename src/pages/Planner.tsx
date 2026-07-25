@@ -55,7 +55,7 @@ const CATEGORIES = [
   "Saúde Pública e Imunização",
   "Saúde da Mulher",
   "Saúde da Criança",
-  "Saúde do Adulto",
+  "Saúde do Adulto e Idoso",
   "Saúde Mental",
   "Administração em Enfermagem",
   "Biossegurança e Controle de Infecção",
