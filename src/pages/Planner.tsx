@@ -277,7 +277,7 @@ export default function Planner() {
             </div>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight">Meu Cronograma & Ciclos</h1>
             <p className="text-blue-100/80 max-w-xl text-xs sm:text-base leading-relaxed">
-              Monte seu ciclo dinâmico para não se atrasar, e use a agenda estruturada da semana para organizar os seus horários e plantões.
+              Monte seu ciclo dinâmico para não se atrasar, e use a agenda estruturada da semana para organizar os seus horários e estudos.
             </p>
           </div>
 
