@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useOutletContext } from "react-router-dom";
-import { 
-  Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion, 
-  ClipboardList, Loader2, History, Sparkles, Activity, 
-  ChevronRight, Brain, Zap, Clock, GraduationCap, BrainCircuit, Lock, AlertTriangle
+import {
+  Syringe, ListChecks, Lightbulb, ArrowRight, FileQuestion,
+  ClipboardList, Loader2, History, Sparkles, Activity,
+  ChevronRight, Brain, Zap, Clock, GraduationCap, BrainCircuit, Lock, AlertTriangle, BookOpen, Calendar, Calculator, Microscope, Dna, Target
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
@@ -27,7 +27,7 @@ interface Profile {
   plan?: string;
 }
 
-const quickAccessLinks = [
+const ALL_QUICK_LINKS = [
   {
     title: "Medicamentos",
     icon: Syringe,
@@ -50,7 +50,7 @@ const quickAccessLinks = [
     title: "Flashcards",
     icon: BrainCircuit,
     path: "/flashcards",
-    description: "Memorização ativa e repetição espaçada.",
+    description: "Memorização ativa e repetição.",
     color: "text-indigo-500",
     bg: "bg-indigo-50 dark:bg-indigo-950/30",
     border: "group-hover:border-indigo-200 dark:group-hover:border-indigo-800"
@@ -64,6 +64,60 @@ const quickAccessLinks = [
     bg: "bg-cyan-50 dark:bg-cyan-950/30",
     border: "group-hover:border-cyan-200 dark:group-hover:border-cyan-800"
   },
+  {
+    title: "Banca de Questões",
+    icon: FileQuestion,
+    path: "/questions",
+    description: "Treine com questões comentadas.",
+    color: "text-blue-500",
+    bg: "bg-blue-50 dark:bg-blue-950/30",
+    border: "group-hover:border-blue-200 dark:group-hover:border-blue-800"
+  },
+  {
+    title: "Leitor de PDF",
+    icon: BookOpen,
+    path: "/concurseiro",
+    description: "Materiais teóricos e apostilas.",
+    color: "text-amber-500",
+    bg: "bg-amber-50 dark:bg-amber-950/30",
+    border: "group-hover:border-amber-200 dark:group-hover:border-amber-800"
+  },
+  {
+    title: "Cronograma",
+    icon: Calendar,
+    path: "/planner",
+    description: "Organize seus estudos e plantões.",
+    color: "text-violet-500",
+    bg: "bg-violet-50 dark:bg-violet-950/30",
+    border: "group-hover:border-violet-200 dark:group-hover:border-violet-800"
+  },
+  {
+    title: "Simulados",
+    icon: Target,
+    path: "/simulado",
+    description: "Teste seus conhecimentos na prática.",
+    color: "text-red-500",
+    bg: "bg-red-50 dark:bg-red-950/30",
+    border: "group-hover:border-red-200 dark:group-hover:border-red-800"
+  },
+  {
+    title: "Calculadoras",
+    icon: Calculator,
+    path: "/calculators",
+    description: "Cálculos de dosagem, gotejamento, etc.",
+    color: "text-fuchsia-500",
+    bg: "bg-fuchsia-50 dark:bg-fuchsia-950/30",
+    border: "group-hover:border-fuchsia-200 dark:group-hover:border-fuchsia-800"
+  },
+  {
+    title: "Casos Clínicos",
+    icon: Microscope,
+    path: "/clinical-cases",
+    description: "Raciocínio clínico em cenários reais.",
+    color: "text-teal-500",
+    bg: "bg-teal-50 dark:bg-teal-950/30",
+    border: "group-hover:border-teal-200 dark:group-hover:border-teal-800"
+  }
 ];
 
 const clinicalTips = [
@@ -99,6 +153,29 @@ const Dashboard = () => {
   const { activities } = useActivityTracker();
   const recentActivities = activities.slice(0, 4);
   const [randomTip, setRandomTip] = useState("");
+  
+  // Rotação dinâmica de atalhos
+  const [quickAccessLinks, setQuickAccessLinks] = useState<typeof ALL_QUICK_LINKS>([]);
+
+  useEffect(() => {
+    const now = new Date();
+    // Usa o dia e a hora atual para criar um "seed" para embaralhar os links
+    const seed = now.getFullYear() * 1000 + now.getDate() + now.getHours();
+    
+    let linksCopy = [...ALL_QUICK_LINKS];
+    let m = linksCopy.length, t, i;
+    let localSeed = seed;
+    
+    while (m) {
+      localSeed = (localSeed * 9301 + 49297) % 233280;
+      i = Math.floor((localSeed / 233280) * m--);
+      t = linksCopy[m];
+      linksCopy[m] = linksCopy[i];
+      linksCopy[i] = t;
+    }
+    
+    setQuickAccessLinks(linksCopy.slice(0, 4));
+  }, []);
 
   const { data: randomQuestion, isLoading: isLoadingQuestion } = useQuery({
     queryKey: ['randomQuestion'],
