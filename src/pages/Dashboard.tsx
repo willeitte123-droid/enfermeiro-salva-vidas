@@ -103,7 +103,7 @@ const ALL_QUICK_LINKS = [
   {
     title: "Calculadoras",
     icon: Calculator,
-    path: "/calculators",
+    path: "/calculator",
     description: "Cálculos de dosagem, gotejamento, etc.",
     color: "text-fuchsia-500",
     bg: "bg-fuchsia-50 dark:bg-fuchsia-950/30",
